@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Order Type</string>
+		<key>valuePropertyKey</key>
+		<string>orderType</string>
+		<key>titlePropertyKey</key>
+		<string>orderType</string>
+		<key>allValue</key>
+		<string>Both</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>State</string>
+		<key>valuePropertyKey</key>
+		<string>state</string>
+		<key>titlePropertyKey</key>
+		<string>state</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Character</string>
+		<key>valuePropertyKey</key>
+		<string>characterName</string>
+		<key>titlePropertyKey</key>
+		<string>characterName</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Item</string>
+		<key>valuePropertyKey</key>
+		<string>type.typeName</string>
+		<key>titlePropertyKey</key>
+		<string>type.typeName</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+</array>
+</plist>

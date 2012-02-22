@@ -1,0 +1,6 @@
+[submodule "EVEOnlineAPI"]
+	path = EVEOnlineAPI
+	url = git@github.com:mrdepth/EVEOnlineAPI.git
+[submodule "eufe"]
+	path = eufe
+	url = git@github.com:mrdepth/eufe.git

@@ -1,0 +1,41 @@
+//
+//  EUHTTPRequest.h
+//  EVEUniverse
+//
+//  Created by Shimanski on 8/30/11.
+//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "EUHTTPRequest.h"
+#import "EUHTTPResponse.h"
+
+@class EUHTTPConnection;
+@protocol EUHTTPConnectionDelegate
+
+- (void) connectionDidClose:(EUHTTPConnection*) connection;
+- (BOOL) connection:(EUHTTPConnection*) server didReceiveKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
+
+@end
+
+
+@interface EUHTTPConnection: NSObject<EUHTTPRequestDelegate, EUHTTPResponseDelegate> {
+	NSString *peerName;
+	id <EUHTTPConnectionDelegate> delegate;
+	CFHTTPMessageRef requestMessage;
+	EUHTTPRequest *request;
+	EUHTTPResponse *response;
+}
+@property (nonatomic, retain) NSString *peerName;
+@property (nonatomic, assign) id <EUHTTPConnectionDelegate> delegate;
+@property (nonatomic, retain) EUHTTPRequest *request;
+@property (nonatomic, retain) EUHTTPResponse *response;
+
+- (id)initWithInputStream:(NSInputStream *)readStream 
+			 outputStream:(NSOutputStream *) writeStream 
+					 peer:(NSString *) peerAddress 
+				 delegate:(id<EUHTTPConnectionDelegate>) anObject;
+
+- (void) run;
+
+@end

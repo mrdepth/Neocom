@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Contract Type</string>
+		<key>valuePropertyKey</key>
+		<string>typeString</string>
+		<key>titlePropertyKey</key>
+		<string>typeString</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Contract Status</string>
+		<key>valuePropertyKey</key>
+		<string>statusString</string>
+		<key>titlePropertyKey</key>
+		<string>statusString</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Issued By</string>
+		<key>valuePropertyKey</key>
+		<string>issuerName</string>
+		<key>titlePropertyKey</key>
+		<string>issuerName</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Assigned To</string>
+		<key>valuePropertyKey</key>
+		<string>assigneeName</string>
+		<key>titlePropertyKey</key>
+		<string>assigneeName</string>
+		<key>allValue</key>
+		<string>All</string>
+	</dict>
+</array>
+</plist>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>requirementID</key>
+		<string>182</string>
+		<key>skillLevelID</key>
+		<string>277</string>
+	</dict>
+	<dict>
+		<key>requirementID</key>
+		<string>183</string>
+		<key>skillLevelID</key>
+		<string>278</string>
+	</dict>
+	<dict>
+		<key>requirementID</key>
+		<string>184</string>
+		<key>skillLevelID</key>
+		<string>279</string>
+	</dict>
+	<dict>
+		<key>requirementID</key>
+		<string>1285</string>
+		<key>skillLevelID</key>
+		<string>1286</string>
+	</dict>
+	<dict>
+		<key>requirementID</key>
+		<string>1289</string>
+		<key>skillLevelID</key>
+		<string>1287</string>
+	</dict>
+	<dict>
+		<key>requirementID</key>
+		<string>1290</string>
+		<key>skillLevelID</key>
+		<string>1288</string>
+	</dict>
+</array>
+</plist>

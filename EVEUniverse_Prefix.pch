@@ -1,0 +1,13 @@
+//
+// Prefix header for all source files of the 'EVEUniverse' target in the 'EVEUniverse' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+	#import <CoreGraphics/CoreGraphics.h>
+	#import <ImageIO/ImageIO.h>
+	#import <StoreKit/StoreKit.h>
+	#import <iAd/iAd.h>
+	#import <QuartzCore/QuartzCore.h>
+#endif

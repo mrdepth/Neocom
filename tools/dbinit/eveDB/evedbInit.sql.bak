@@ -1,0 +1,80 @@
+
+DROP TABLE IF EXISTS eveDB.invControlTowerResources;
+CREATE TABLE eveDB.invControlTowerResources AS SELECT * FROM invControlTowerResources;
+
+DROP TABLE IF EXISTS eveDB.invCategories;
+CREATE TABLE eveDB.invCategories AS SELECT * FROM invCategories WHERE categoryID in (2,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46);
+
+DROP TABLE IF EXISTS eveDB.invGroups;
+CREATE TABLE eveDB.invGroups AS SELECT invGroups.* FROM invGroups,eveDB.invCategories WHERE invGroups.categoryID=eveDB.invCategories.categoryID;
+
+DROP TABLE IF EXISTS eveDB.invTypes;
+CREATE TABLE eveDB.invTypes AS SELECT invTypes.* FROM invTypes,eveDB.invGroups WHERE invTypes.groupID=eveDB.invGroups.groupID;
+
+DROP TABLE IF EXISTS eveDB.dgmAttributeCategories;
+CREATE TABLE eveDB.dgmAttributeCategories AS SELECT * FROM dgmAttributeCategories;
+
+DROP TABLE IF EXISTS eveDB.dgmEffects;
+CREATE TABLE eveDB.dgmEffects AS SELECT * FROM dgmEffects;
+
+DROP TABLE IF EXISTS eveDB.dgmAttributeTypes;
+CREATE TABLE eveDB.dgmAttributeTypes AS SELECT * FROM dgmAttributeTypes;
+
+DROP TABLE IF EXISTS eveDB.dgmTypeAttributes;
+CREATE TABLE eveDB.dgmTypeAttributes AS SELECT dgmTypeAttributes.* FROM dgmTypeAttributes,eveDB.invTypes WHERE dgmTypeAttributes.typeID=eveDB.invTypes.typeID;
+
+DROP TABLE IF EXISTS eveDB.dgmTypeEffects;
+CREATE TABLE eveDB.dgmTypeEffects AS SELECT dgmTypeEffects.* FROM dgmTypeEffects,eveDB.invTypes WHERE dgmTypeEffects.typeID=eveDB.invTypes.typeID;
+
+DROP TABLE IF EXISTS eveDB.invMarketGroups;
+CREATE TABLE eveDB.invMarketGroups AS SELECT * FROM invMarketGroups;
+
+DROP TABLE IF EXISTS eveDB.mapRegions;
+CREATE TABLE eveDB.mapRegions AS SELECT * FROM mapRegions;
+
+DROP TABLE IF EXISTS eveDB.mapSolarSystems;
+CREATE TABLE eveDB.mapSolarSystems AS SELECT * FROM mapSolarSystems;
+
+DROP TABLE IF EXISTS eveDB.staStations;
+CREATE TABLE eveDB.staStations AS SELECT * FROM staStations;
+
+DROP TABLE IF EXISTS eveDB.mapConstellations;
+CREATE TABLE eveDB.mapConstellations AS SELECT * FROM mapConstellations;
+
+DROP TABLE IF EXISTS eveDB.eveIcons;
+CREATE TABLE eveDB.eveIcons AS SELECT * FROM eveIcons;
+
+DROP TABLE IF EXISTS eveDB.eveUnits;
+CREATE TABLE eveDB.eveUnits AS SELECT * FROM eveUnits;
+
+DROP TABLE IF EXISTS eveDB.ramActivities;
+CREATE TABLE eveDB.ramActivities AS SELECT * FROM ramActivities;
+
+DROP TABLE IF EXISTS eveDB.mapDenormalize;
+CREATE TABLE eveDB.mapDenormalize AS SELECT * FROM mapDenormalize WHERE groupID in (5,7,8,15);
+
+DROP TABLE IF EXISTS eveDB.invControlTowerResourcePurposes;
+CREATE TABLE eveDB.invControlTowerResourcePurposes AS SELECT * FROM invControlTowerResourcePurposes;
+
+DROP TABLE IF EXISTS eveDB.invMetaGroups;
+CREATE TABLE eveDB.invMetaGroups AS SELECT * FROM invMetaGroups;
+
+DROP TABLE IF EXISTS eveDB.invMetaTypes;
+CREATE TABLE eveDB.invMetaTypes AS SELECT * FROM invMetaTypes;
+
+
+BEGIN TRANSACTION;
+UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL;
+UPDATE eveDB.dgmAttributeTypes SET categoryID=4 WHERE attributeID IN (109,110,111,113);
+UPDATE eveDB.dgmAttributeTypes SET categoryID=1 WHERE attributeID IN (1547,1132,1367);
+UPDATE eveDB.dgmAttributeTypes SET iconID=1396 WHERE attributeID=974;
+UPDATE eveDB.dgmAttributeTypes SET iconID=1395 WHERE attributeID=975;
+UPDATE eveDB.dgmAttributeTypes SET iconID=1393 WHERE attributeID=976;
+UPDATE eveDB.dgmAttributeTypes SET iconID=1394 WHERE attributeID=977;
+
+INSERT INTO eveDB.invMetaTypes VALUES (29984,NULL,14);
+INSERT INTO eveDB.invMetaTypes VALUES (29986,NULL,14);
+INSERT INTO eveDB.invMetaTypes VALUES (29988,NULL,14);
+INSERT INTO eveDB.invMetaTypes VALUES (29990,NULL,14);
+
+COMMIT TRANSACTION;

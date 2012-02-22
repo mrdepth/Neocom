@@ -1,0 +1,8 @@
+//
+// Prefix header for all source files of the 'EVETypesConverter' target in the 'EVETypesConverter' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+	#import <AppKit/AppKit.h>
+#endif

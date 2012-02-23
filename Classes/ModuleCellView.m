@@ -14,8 +14,9 @@
 @synthesize stateView;
 @synthesize targetView;
 @synthesize titleLabel;
-@synthesize chargeLabel;
-@synthesize rangeLabel;
+@synthesize row1Label;
+@synthesize row2Label;
+@synthesize row3Label;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
@@ -40,8 +41,9 @@
 	[stateView release];
 	[targetView release];
 	[titleLabel release];
-	[chargeLabel release];
-	[rangeLabel release];
+	[row1Label release];
+	[row2Label release];
+	[row3Label release];
     [super dealloc];
 }
 

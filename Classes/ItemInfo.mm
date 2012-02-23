@@ -56,6 +56,18 @@ private:
 	return item.lock();
 }
 
+- (void) updateAttributes {
+	const eufe::AttributesMap &attributesMap = item.lock()->getAttributes();
+	NSMutableDictionary* attributes = self.attributesDictionary;
+	eufe::AttributesMap::const_iterator i, end = attributesMap.end();
+	for (i = attributesMap.begin(); i != end; i++) {
+		NSString* key = [NSString stringWithFormat:@"%d", i->first];
+		float value = i->second->getValue();
+		EVEDBDgmTypeAttribute* attribute = [attributes valueForKey:key];
+		attribute.value = value;
+	}
+}
+
 @end
 
 @implementation ItemInfo(Private)

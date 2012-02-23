@@ -122,9 +122,6 @@
 		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		cell.titleLabel.text = @"Add Fleet Member";
 		cell.stateView.image = nil;
-		cell.chargeLabel.text = nil;
-		cell.rangeLabel.text = nil;
-		cell.stateView.image = nil;
 		return cell;
 	}
 	else {
@@ -324,6 +321,7 @@
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																					  bundle:nil];
 		
+		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

@@ -85,7 +85,6 @@
 }
 
 - (void) save {
-	//[[NSFileManager defaultManager] createDirectoryAtURL:[NSURL fileURLWithPath:[EUMailBox mailBoxDirectory]] withIntermediateDirectories:NO attributes:nil error:nil];
 	[[NSFileManager defaultManager] createDirectoryAtPath:[EUMailBox mailBoxDirectory] withIntermediateDirectories:NO attributes:nil error:nil];
 	NSMutableArray* readMessages = [[NSMutableArray alloc] init];
 	for (EUMailMessage* message in inbox)

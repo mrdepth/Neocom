@@ -22,6 +22,7 @@
 #define SettingsMarketOrdersOwner @"SettingsMarketOrdersOwner"
 #define SettingsContractsOwner @"SettingsContractsOwner"
 #define SettingsIndustryJobsOwner @"SettingsIndustryJobsOwner"
+#define SettingsAssetsOwner @"SettingsAssetsOwner"
 #define SettingsTipsMarketInfo @"SettingsTipsMarketInfo"
 #define SettingsTipsAddAccount @"SettingsTipsAddAccount"
 #define SettingsTipsPosFuel @"SettingsTipsPosFuel"

@@ -58,7 +58,7 @@
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsIndustryJobsOwner];
+	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[self reloadAssets];
@@ -119,7 +119,7 @@
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsIndustryJobsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsAssetsOwner];
 	[self reloadAssets];
 }
 
@@ -152,13 +152,7 @@
 	
     ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-		NSString *nibName;
-//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//			nibName = tableView == jobsTableView ? @"IndustryJobCellView-iPad" : @"IndustryJobCellView";
-//		else
-			nibName = @"ItemCellView";
-		
-        cell = [ItemCellView cellWithNibName:nibName bundle:nil reuseIdentifier:cellIdentifier];
+        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
 	EVEAssetListItem* asset;
 	

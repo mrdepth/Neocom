@@ -14,13 +14,15 @@
 	UIImageView *stateView;
 	UIImageView *targetView;
 	UILabel *titleLabel;
-	UILabel *chargeLabel;
-	UILabel *rangeLabel;
+	UILabel *row1Label;
+	UILabel *row2Label;
+	UILabel *row3Label;
 }
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UIImageView *stateView;
 @property (nonatomic, retain) IBOutlet UIImageView *targetView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *chargeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *rangeLabel;
+@property (nonatomic, retain) IBOutlet UILabel *row1Label;
+@property (nonatomic, retain) IBOutlet UILabel *row2Label;
+@property (nonatomic, retain) IBOutlet UILabel *row3Label;
 @end

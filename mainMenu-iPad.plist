@@ -54,7 +54,7 @@
 		<key>image</key>
 		<string>Icons/icon07_13.png</string>
 		<key>charAccessMask</key>
-		<integer>65666</integer>
+		<integer>2</integer>
 		<key>corpAccessMask</key>
 		<integer>2</integer>
 	</dict>

@@ -160,8 +160,6 @@
 		//cell.titleLabel.text = indexPath.section == 0 ? @"Add implant" : @"Add booster";
 		cell.titleLabel.text = [NSString stringWithFormat:@"Slot %d", indexPath.row + 1];
 		cell.stateView.image = nil;
-		cell.chargeLabel.text = nil;
-		cell.rangeLabel.text = nil;
 		return cell;
 	}
 	else {
@@ -301,6 +299,7 @@
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																					  bundle:nil];
 		
+		[type updateAttributes];
 		itemViewController.type = type;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

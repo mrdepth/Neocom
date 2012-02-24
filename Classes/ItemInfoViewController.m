@@ -494,6 +494,8 @@
 						
 						if (attribute.attributeID == 1281) {
 							float v = [(EVEDBDgmTypeAttribute*) [type.attributesDictionary valueForKey:@"600"] value];
+							if (v == 0.0)
+								v = 1.0;
 							value = [NSNumber numberWithFloat:3 * v];
 							unit = @"AU/sec";
 						}

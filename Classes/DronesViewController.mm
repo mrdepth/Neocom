@@ -132,8 +132,6 @@
 		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
 		cell.stateView.image = nil;
 		cell.titleLabel.text = @"Add Drone";
-		cell.chargeLabel.text = nil;
-		cell.rangeLabel.text = nil;
 		cell.targetView.image = nil;
 		return cell;
 	}
@@ -142,16 +140,40 @@
 		NSArray* array = [rows objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
-		NSString *cellIdentifier = @"ModuleCellView";
+		
+		int optimal = (int) drone->getMaxRange();
+		int falloff = (int) drone->getFalloff();
+		float trackingSpeed = drone->getTrackingSpeed();
+		
+		NSString *cellIdentifier;
+		int additionalRows = 0;
+		if (optimal > 0)
+			additionalRows = 1;
+		else
+			additionalRows = 0;
+		
+		if (additionalRows > 0)
+			cellIdentifier = [NSString stringWithFormat:@"ModuleCellView%d", additionalRows];
+		else
+			cellIdentifier = @"ModuleCellView";
 		
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		
-		//cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", drone.item.typeName, drone.amount];
 		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", itemInfo.typeName, array.count];
 		cell.iconView.image = [UIImage imageNamed:[itemInfo typeSmallImageName]];
+		
+		if (optimal > 0) {
+			NSString *s = [NSString stringWithFormat:@"%@m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:optimal] numberStyle:NSNumberFormatterDecimalStyle]];
+			if (falloff > 0)
+				s = [s stringByAppendingFormat:@" + %@m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:falloff] numberStyle:NSNumberFormatterDecimalStyle]];
+			if (trackingSpeed > 0)
+				s = [s stringByAppendingFormat:@" (%@ rad/sec)", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:trackingSpeed] numberStyle:NSNumberFormatterDecimalStyle]];
+			cell.row1Label.text = s;
+		}
+		
 		
 		if (drone->isActive())
 			cell.stateView.image = [UIImage imageNamed:@"active.png"];
@@ -337,7 +359,9 @@
 																					  bundle:nil];
 		
 		//itemViewController.type = drone.item;
-		itemViewController.type = [array objectAtIndex:0];
+		ItemInfo* itemInfo = [array objectAtIndex:0];
+		[itemInfo updateAttributes];
+		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];

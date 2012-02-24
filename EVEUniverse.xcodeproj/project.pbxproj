@@ -296,6 +296,7 @@
 		37B967C014D9C0B3003F3900 /* DamagePatternCellView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967BF14D9C0B2003F3900 /* DamagePatternCellView-iPad.xib */; };
 		37B967C214D9C139003F3900 /* DamagePatternEditViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C114D9C138003F3900 /* DamagePatternEditViewController-iPad.xib */; };
 		37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C314D9C478003F3900 /* damagePatterns.plist */; };
+		37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BA2E3714F66015004C4538 /* HeatSimulator.cpp */; };
 		37BE978714DC3C4300575642 /* SkillPlannerViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */; };
 		37C355B414EBE0330009B590 /* AssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C355B214EBE0330009B590 /* AssetsViewController.m */; };
 		37C355B714EBE25D0009B590 /* AssetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C355B614EBE25D0009B590 /* AssetsViewController.xib */; };
@@ -1118,8 +1119,8 @@
 		37AB467B14F521A5007B4C33 /* LocationRequiredSkillModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationRequiredSkillModifier.h; sourceTree = "<group>"; };
 		37AB467D14F521A5007B4C33 /* Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifier.cpp; sourceTree = "<group>"; };
 		37AB467E14F521A5007B4C33 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
-		37AB467F14F521A5007B4C33 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Module.cpp; sourceTree = "<group>"; };
-		37AB468014F521A5007B4C33 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
+		37AB467F14F521A5007B4C33 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Module.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		37AB468014F521A5007B4C33 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Module.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		37AB468114F521A5007B4C33 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
 		37AB468214F521A5007B4C33 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
 		37AB468314F521A5007B4C33 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
@@ -1183,6 +1184,8 @@
 		37B967BF14D9C0B2003F3900 /* DamagePatternCellView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DamagePatternCellView-iPad.xib"; sourceTree = "<group>"; };
 		37B967C114D9C138003F3900 /* DamagePatternEditViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DamagePatternEditViewController-iPad.xib"; sourceTree = "<group>"; };
 		37B967C314D9C478003F3900 /* damagePatterns.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = damagePatterns.plist; sourceTree = "<group>"; };
+		37BA2E3714F66015004C4538 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = HeatSimulator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		37BA2E3814F66015004C4538 /* HeatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatSimulator.h; sourceTree = "<group>"; };
 		37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SkillPlannerViewController-iPad.xib"; sourceTree = "<group>"; };
 		37C355B114EBE0330009B590 /* AssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsViewController.h; sourceTree = "<group>"; };
 		37C355B214EBE0330009B590 /* AssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsViewController.m; sourceTree = "<group>"; };
@@ -1591,7 +1594,7 @@
 		71A0E8A91379D86300CE4062 /* ProgressLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressLabel.h; sourceTree = "<group>"; };
 		71A0E8AA1379D86300CE4062 /* ProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressLabel.m; sourceTree = "<group>"; };
 		71A0E8B11379DAD500CE4062 /* ModulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModulesViewController.h; sourceTree = "<group>"; };
-		71A0E8B21379DAD500CE4062 /* ModulesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulesViewController.mm; sourceTree = "<group>"; };
+		71A0E8B21379DAD500CE4062 /* ModulesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = ModulesViewController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		71A0E8B31379DAD500CE4062 /* ModulesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModulesViewController.xib; sourceTree = "<group>"; };
 		71A0E8FE1379DDBE00CE4062 /* StatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewController.h; sourceTree = "<group>"; };
 		71A0E8FF1379DDBE00CE4062 /* StatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatsViewController.mm; sourceTree = "<group>"; };
@@ -2628,6 +2631,8 @@
 			children = (
 				37AB464B14F521A4007B4C33 /* CapacitorSimulator.cpp */,
 				37AB464C14F521A4007B4C33 /* CapacitorSimulator.h */,
+				37BA2E3714F66015004C4538 /* HeatSimulator.cpp */,
+				37BA2E3814F66015004C4538 /* HeatSimulator.h */,
 				37AB464F14F521A4007B4C33 /* Charge.cpp */,
 				37AB465014F521A4007B4C33 /* Charge.h */,
 				37AB465314F521A4007B4C33 /* DamagePattern.cpp */,
@@ -4688,6 +4693,7 @@
 				37AB46A814F521A5007B4C33 /* Module.cpp in Sources */,
 				37AB46A914F521A5007B4C33 /* Ship.cpp in Sources */,
 				37AB46AA14F521A5007B4C33 /* Skill.cpp in Sources */,
+				37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

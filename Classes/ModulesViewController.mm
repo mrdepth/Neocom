@@ -16,6 +16,7 @@
 #import "EUOperationQueue.h"
 #import "Fit.h"
 #import "EVEDBAPI.h"
+#import "NSString+TimeLeft.h"
 
 #import "ItemInfo.h"
 
@@ -35,7 +36,8 @@
 #define ActionButtonDelete @"Delete"
 #define ActionButtonChangeState @"Change State"
 #define ActionButtonUnloadAmmo @"Unload Ammo"
-#define ActionButtonShowInfo @"Show Info"
+#define ActionButtonShowModuleInfo @"Show Module Info"
+#define ActionButtonShowAmmoInfo @"Show Ammo Info"
 #define ActionButtonSetTarget @"Set Target"
 #define ActionButtonClearTarget @"Clear Target"
 
@@ -189,8 +191,6 @@
 				cell.iconView.image = nil;
 				cell.titleLabel.text = nil;
 		}
-		cell.chargeLabel.text = nil;
-		cell.rangeLabel.text = nil;
 		return cell;
 	}
 	else {
@@ -201,20 +201,32 @@
 		bool useCharge = charge != NULL;
 		int optimal = (int) module->getMaxRange();
 		int falloff = (int) module->getFalloff();
+		float trackingSpeed = module->getTrackingSpeed();
+		float lifeTime = module->getLifeTime();
 		
 		NSString *cellIdentifier;
+		int additionalRows = 0;
 		if (useCharge) {
 			if (optimal > 0)
-				cellIdentifier = @"ModuleCellViewAmmoRange";
+				additionalRows = 2;
 			else
-				cellIdentifier = @"ModuleCellViewAmmo";
+				additionalRows = 1;
 		}
 		else {
 			if (optimal > 0)
-				cellIdentifier = @"ModuleCellViewRange";
+				additionalRows = 1;
 			else
-				cellIdentifier = @"ModuleCellView";
+				additionalRows = 0;
 		}
+		
+		if (lifeTime > 0)
+			additionalRows++;
+		
+		if (additionalRows > 0)
+			cellIdentifier = [NSString stringWithFormat:@"ModuleCellView%d", additionalRows];
+		else
+			cellIdentifier = @"ModuleCellView";
+	
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
@@ -224,14 +236,19 @@
 		if (charge != NULL)
 		{
 			ItemInfo* chargeInfo = [ItemInfo itemInfoWithItem: boost::static_pointer_cast<eufe::Item>(charge) error:nil];
-			cell.chargeLabel.text = chargeInfo.typeName;
+			cell.row1Label.text = chargeInfo.typeName;
 		}
 		
 		if (optimal > 0) {
 			NSString *s = [NSString stringWithFormat:@"%@m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:optimal] numberStyle:NSNumberFormatterDecimalStyle]];
 			if (falloff > 0)
 				s = [s stringByAppendingFormat:@" + %@m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:falloff] numberStyle:NSNumberFormatterDecimalStyle]];
-			cell.rangeLabel.text = s;
+			if (trackingSpeed > 0)
+				s = [s stringByAppendingFormat:@" (%@ rad/sec)", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:trackingSpeed] numberStyle:NSNumberFormatterDecimalStyle]];
+			if (charge != NULL)
+				cell.row2Label.text = s;
+			else
+				cell.row1Label.text = s;
 		}
 		
 		cell.iconView.image = [UIImage imageNamed:[itemInfo typeSmallImageName]];
@@ -254,6 +271,16 @@
 		}
 		else
 			cell.stateView.image = nil;
+		
+		if (lifeTime > 0) {
+			NSString* s = [NSString stringWithFormat:@"Lifetime: %@", [NSString stringWithTimeLeft:lifeTime]];
+			if (additionalRows == 1)
+				cell.row1Label.text = s;
+			else if (additionalRows == 2)
+				cell.row2Label.text = s;
+			else if (additionalRows == 3)
+				cell.row3Label.text = s;
+		}
 		
 		cell.targetView.image = module->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
 		
@@ -372,7 +399,13 @@
 														cancelButtonTitle:nil
 												   destructiveButtonTitle:nil
 														otherButtonTitles:nil];
-		[actionSheet addButtonWithTitle:ActionButtonShowInfo];
+		[actionSheet addButtonWithTitle:ActionButtonDelete];
+		actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 1;
+
+		[actionSheet addButtonWithTitle:ActionButtonShowModuleInfo];
+		if (module->getCharge() != nil)
+			[actionSheet addButtonWithTitle:ActionButtonShowAmmoInfo];
+
 		eufe::Module::State state = module->getState();
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -397,7 +430,7 @@
 		else
 			[actionSheet addButtonWithTitle:ActionButtonChangeState];
 
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		/*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)*/ {
 			if (chargeGroups.size() > 0) {
 				[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
 				if (multiple)
@@ -411,7 +444,7 @@
 					[actionSheet addButtonWithTitle:ActionButtonClearTarget];
 			}
 		}
-		else {
+/*		else {
 			if (module->requireTarget() && fittingViewController.fits.count > 1) {
 				if (chargeGroups.size() > 0) {
 					[actionSheet addButtonWithTitle:ActionButtonAmmo];
@@ -429,10 +462,8 @@
 						[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
 				}
 			}
-		}
-		[actionSheet addButtonWithTitle:ActionButtonDelete];
+		}*/
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
-		actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 2;
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
@@ -664,11 +695,28 @@
 		[actionSheet showFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView animated:YES];
 		[actionSheet autorelease];
 	}
-	else if ([button isEqualToString:ActionButtonShowInfo]) {
+	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																					  bundle:nil];
-		
+		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
+		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[fittingViewController presentModalViewController:navController animated:YES];
+			[navController release];
+		}
+		else
+			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
+		[itemViewController release];
+	}
+	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
+																					  bundle:nil];
+		ItemInfo* ammo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(module->getCharge()) error:nil];
+		[ammo updateAttributes];
+		itemViewController.type = ammo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];

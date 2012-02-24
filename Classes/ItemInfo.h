@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "EVEDBInvType.h"
+#import "EVEDBAPI.h"
 #include "eufe.h"
 
 @interface ItemInfo: EVEDBInvType {
@@ -16,5 +16,6 @@
 
 + (id) itemInfoWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr;
 - (id) initWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr;
+- (void) updateAttributes;
 
 @end

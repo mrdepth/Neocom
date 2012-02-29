@@ -9,6 +9,12 @@
 #import "WalletJournalCellView.h"
 
 @implementation WalletJournalCellView
+@synthesize dateLabel;
+@synthesize amountLabel;
+@synthesize titleLabel;
+@synthesize nameLabel;
+@synthesize balanceLabel;
+@synthesize taxLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -26,4 +32,13 @@
     // Configure the view for the selected state
 }
 
+- (void)dealloc {
+	[dateLabel release];
+	[amountLabel release];
+	[titleLabel release];
+	[nameLabel release];
+	[balanceLabel release];
+	[taxLabel release];
+	[super dealloc];
+}
 @end

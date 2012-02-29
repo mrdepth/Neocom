@@ -221,6 +221,8 @@
 				else
 					message.to = @"Unknown corporation or alliance";
 			}
+			if (!message.to)
+				message.to = @"Unknown recipient";
 			
 			NSString* from = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", message.header.senderID]];
 			if (from)

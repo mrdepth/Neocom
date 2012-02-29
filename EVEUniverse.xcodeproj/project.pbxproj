@@ -62,6 +62,9 @@
 		371583581417B14900A20C92 /* ContractInfoCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371583571417B14900A20C92 /* ContractInfoCellView.xib */; };
 		371583A11417BAF000A20C92 /* ContractViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371583A01417BAF000A20C92 /* ContractViewController-iPad.xib */; };
 		371583A91417BB7A00A20C92 /* ContractCellView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371583A81417BB7A00A20C92 /* ContractCellView-iPad.xib */; };
+		371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */; };
+		371B780E14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */; };
+		371B780F14FBFC0E005127C2 /* WalletJournalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */; };
 		3750A44314E00E8400F06FA0 /* RequiredSkillsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */; };
 		3750A44414E00E8400F06FA0 /* RequiredSkillsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */; };
 		3750A44714E0249000F06FA0 /* CharacterAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44614E0249000F06FA0 /* CharacterAttributes.m */; };
@@ -298,6 +301,10 @@
 		37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C314D9C478003F3900 /* damagePatterns.plist */; };
 		37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BA2E3714F66015004C4538 /* HeatSimulator.cpp */; };
 		37BE978714DC3C4300575642 /* SkillPlannerViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */; };
+		37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C0FB2414FD0E6E006A153D /* WalletJournalCellView.m */; };
+		37C0FB2714FD0E7F006A153D /* WalletJournalCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C0FB2614FD0E7F006A153D /* WalletJournalCellView.xib */; };
+		37C0FB2914FD1319006A153D /* walletJournalFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37C0FB2814FD1319006A153D /* walletJournalFilter.plist */; };
+		37C0FB3414FD31FF006A153D /* WalletJournalCellView-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C0FB3314FD31FF006A153D /* WalletJournalCellView-iPad.xib */; };
 		37C355B414EBE0330009B590 /* AssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C355B214EBE0330009B590 /* AssetsViewController.m */; };
 		37C355B714EBE25D0009B590 /* AssetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C355B614EBE25D0009B590 /* AssetsViewController.xib */; };
 		37C355BA14EBEA2D0009B590 /* EVEAssetListItem+AssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C355B914EBEA2D0009B590 /* EVEAssetListItem+AssetsViewController.m */; };
@@ -750,6 +757,10 @@
 		371583571417B14900A20C92 /* ContractInfoCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContractInfoCellView.xib; sourceTree = "<group>"; };
 		371583A01417BAF000A20C92 /* ContractViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "ContractViewController-iPad.xib"; sourceTree = "<group>"; };
 		371583A81417BB7A00A20C92 /* ContractCellView-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "ContractCellView-iPad.xib"; sourceTree = "<group>"; };
+		371B780914FBFBE3005127C2 /* WalletJournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletJournalViewController.h; sourceTree = "<group>"; };
+		371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalViewController.m; sourceTree = "<group>"; };
+		371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WalletJournalViewController-iPad.xib"; sourceTree = "<group>"; };
+		371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletJournalViewController.xib; sourceTree = "<group>"; };
 		3750A44014E00E8400F06FA0 /* RequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredSkillsViewController.h; sourceTree = "<group>"; };
 		3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RequiredSkillsViewController.mm; sourceTree = "<group>"; };
 		3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequiredSkillsViewController.xib; sourceTree = "<group>"; };
@@ -1187,6 +1198,11 @@
 		37BA2E3714F66015004C4538 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = HeatSimulator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		37BA2E3814F66015004C4538 /* HeatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatSimulator.h; sourceTree = "<group>"; };
 		37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SkillPlannerViewController-iPad.xib"; sourceTree = "<group>"; };
+		37C0FB2314FD0E6E006A153D /* WalletJournalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletJournalCellView.h; sourceTree = "<group>"; };
+		37C0FB2414FD0E6E006A153D /* WalletJournalCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalCellView.m; sourceTree = "<group>"; };
+		37C0FB2614FD0E7F006A153D /* WalletJournalCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletJournalCellView.xib; sourceTree = "<group>"; };
+		37C0FB2814FD1319006A153D /* walletJournalFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = walletJournalFilter.plist; sourceTree = "<group>"; };
+		37C0FB3314FD31FF006A153D /* WalletJournalCellView-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WalletJournalCellView-iPad.xib"; sourceTree = "<group>"; };
 		37C355B114EBE0330009B590 /* AssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsViewController.h; sourceTree = "<group>"; };
 		37C355B214EBE0330009B590 /* AssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsViewController.m; sourceTree = "<group>"; };
 		37C355B614EBE25D0009B590 /* AssetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssetsViewController.xib; sourceTree = "<group>"; };
@@ -1748,6 +1764,7 @@
 				37AE99C214E418B7007F7A25 /* MessagesViewController */,
 				37AF875314E988EF0047360D /* DonationViewController */,
 				37C355AF14EBE0120009B590 /* AssetsViewController */,
+				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
 			);
@@ -1904,6 +1921,7 @@
 				377CC0D814140E7C000415BE /* contractsFilter.plist */,
 				379F2D801418191B0018B2CA /* marketOrdersFilter.plist */,
 				378480101418D51900450645 /* walletTransactionsFilter.plist */,
+				37C0FB2814FD1319006A153D /* walletJournalFilter.plist */,
 				378481271418E3D500450645 /* industryJobsFilter.plist */,
 				37AE99D414E4319F007F7A25 /* mailMessagesFilter.plist */,
 				370CCEB314ED7B8F00605A42 /* assetsFilter.plist */,
@@ -1966,6 +1984,18 @@
 				371583571417B14900A20C92 /* ContractInfoCellView.xib */,
 			);
 			name = ContractInfoCellView;
+			sourceTree = "<group>";
+		};
+		371B780714FBFBC6005127C2 /* WalletJournalViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37C0FB2114FD0E54006A153D /* WalletJournalCellView */,
+				371B780914FBFBE3005127C2 /* WalletJournalViewController.h */,
+				371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */,
+				371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */,
+				371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */,
+			);
+			name = WalletJournalViewController;
 			sourceTree = "<group>";
 		};
 		3750A43E14E00E6D00F06FA0 /* RequiredSkillsViewController */ = {
@@ -2787,6 +2817,17 @@
 				37B967C114D9C138003F3900 /* DamagePatternEditViewController-iPad.xib */,
 			);
 			name = DamagePatternEditViewController;
+			sourceTree = "<group>";
+		};
+		37C0FB2114FD0E54006A153D /* WalletJournalCellView */ = {
+			isa = PBXGroup;
+			children = (
+				37C0FB2314FD0E6E006A153D /* WalletJournalCellView.h */,
+				37C0FB2414FD0E6E006A153D /* WalletJournalCellView.m */,
+				37C0FB2614FD0E7F006A153D /* WalletJournalCellView.xib */,
+				37C0FB3314FD31FF006A153D /* WalletJournalCellView-iPad.xib */,
+			);
+			name = WalletJournalCellView;
 			sourceTree = "<group>";
 		};
 		37C355AF14EBE0120009B590 /* AssetsViewController */ = {
@@ -4379,6 +4420,11 @@
 				37B063E514EEAAB00040D9FC /* AssetContentsViewController-iPad.xib in Resources */,
 				37B063EA14EEC2590040D9FC /* DonationViewController.xib in Resources */,
 				37B063F714EED7070040D9FC /* DonationViewController-iPad.xib in Resources */,
+				371B780E14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib in Resources */,
+				371B780F14FBFC0E005127C2 /* WalletJournalViewController.xib in Resources */,
+				37C0FB2714FD0E7F006A153D /* WalletJournalCellView.xib in Resources */,
+				37C0FB2914FD1319006A153D /* walletJournalFilter.plist in Resources */,
+				37C0FB3414FD31FF006A153D /* WalletJournalCellView-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4694,6 +4740,8 @@
 				37AB46A914F521A5007B4C33 /* Ship.cpp in Sources */,
 				37AB46AA14F521A5007B4C33 /* Skill.cpp in Sources */,
 				37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */,
+				371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */,
+				37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

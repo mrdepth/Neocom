@@ -150,11 +150,25 @@
 		<key>title</key>
 		<string>Wallet Transactions</string>
 		<key>image</key>
-		<string>Icons/icon07_12.png</string>
+		<string>Icons/icon64_15.png</string>
 		<key>charAccessMask</key>
 		<integer>4194304</integer>
 		<key>corpAccessMask</key>
 		<integer>2097169</integer>
+	</dict>
+	<dict>
+		<key>className</key>
+		<string>WalletJournalViewController</string>
+		<key>nibName</key>
+		<string>WalletJournalViewController-iPad</string>
+		<key>title</key>
+		<string>Wallet Journal</string>
+		<key>image</key>
+		<string>Icons/icon07_12.png</string>
+		<key>charAccessMask</key>
+		<integer>2097152</integer>
+		<key>corpAccessMask</key>
+		<integer>1048576</integer>
 	</dict>
 	<dict>
 		<key>className</key>

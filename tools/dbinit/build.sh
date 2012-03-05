@@ -1,7 +1,7 @@
 #!/bin/sh
 rm *.sqlite
 cd dump
-datadump.py
+#./datadump.py
 cd ..
 sqlite3 database.sqlite ".read init.sql"
 sqlite3 database.sqlite ".read eufe/fixes.sql"

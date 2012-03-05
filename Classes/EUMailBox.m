@@ -190,6 +190,24 @@
 		}
 		
 		EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil];
+		if (characterName.characters.count == 0 && ids.count > 0) {
+			NSMutableDictionary* characters = [NSMutableDictionary dictionary];
+			NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
+			for (NSString* charID in ids) {
+				[operationQueue addOperationWithBlock:^{
+					NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+					EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[NSArray arrayWithObject:charID] error:nil];
+					if (characterName.characters.count == 1) {
+						@synchronized(characters) {
+							[characters addEntriesFromDictionary:characterName.characters];
+						}
+					}
+					[pool release];
+				}];
+			}
+			[operationQueue waitUntilAllOperationsAreFinished];
+			characterName.characters = characters;
+		}
 		
 		for (EUMailMessage* message in [inbox arrayByAddingObjectsFromArray:sent]) {
 			if (message.header.toCharacterIDs.count > 0) {
@@ -202,9 +220,9 @@
 				message.to = [names componentsJoinedByString:@", "];
 				[names release];
 			}
-			else if (message.header.toListIDs.count > 0) {
+			else if (message.header.toListID.count > 0) {
 				NSMutableArray* lists = [NSMutableArray array];
-				for (NSNumber* listID in message.header.toListIDs) {
+				for (NSNumber* listID in message.header.toListID) {
 					EVEMailingListsItem* list = [mailingLists.mailingListsMap valueForKey:[NSString stringWithFormat:@"%@", listID]];
 					if (list.displayName)
 						[lists addObject:list.displayName];

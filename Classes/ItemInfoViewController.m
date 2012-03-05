@@ -28,6 +28,7 @@
 
 @interface ItemInfoViewController(Private)
 - (void) loadAttributes;
+- (void) loadNPCAttributes;
 @end
 
 
@@ -89,7 +90,10 @@
 	
 	trainingTime = 0;
 	sections = [[NSMutableArray alloc] init];
-	[self loadAttributes];
+	if (type.group.categoryID == 11)
+		[self loadNPCAttributes];
+	else
+		[self loadAttributes];
 	
 //	attributesTable.frame = CGRectMake(attributesTable.frame.origin.x, typeInfoView.frame.size.height, attributesTable.frame.size.width, self.view.frame.size.height);
 }
@@ -167,7 +171,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
-	if (cellType == 0 || cellType == 2 || cellType == 4) {
+	if (cellType == 0 || cellType == 2 || cellType == 4 || cellType == 5) {
 		static NSString *cellIdentifier = @"AttributeCellView";
 		
 		AttributeCellView *cell = (AttributeCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -182,7 +186,7 @@
 		else
 			cell.iconView.image = [UIImage imageNamed:@"Icons/icon105_32.png"];
 		
-		cell.accessoryType = cellType == 2 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+		cell.accessoryType = (cellType == 2 || cellType == 5) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 		
 		return cell;
 	}
@@ -217,7 +221,7 @@
 		else
 			cell.iconView.image = nil;
 
-		NSInteger hierarchyLevel = [[row valueForKey:@"skill"] hierarchyLevel];
+		NSInteger hierarchyLevel = [[row valueForKey:@"type"] hierarchyLevel];
 		float rightBorder = cell.hierarchyView.frame.origin.x + cell.hierarchyView.frame.size.width;
 		cell.hierarchyView.frame = CGRectMake(hierarchyLevel * 16, cell.hierarchyView.frame.origin.y, rightBorder - (hierarchyLevel * 16), cell.hierarchyView.frame.size.height);
 		return cell;
@@ -249,10 +253,10 @@
 	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
-	if (cellType == 1) {
+	if (cellType == 1 || cellType == 5) {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																			  bundle:nil];
-		controller.type = [row valueForKey:@"skill"];
+		controller.type = [row valueForKey:@"type"];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -424,7 +428,7 @@
 								NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 															[NSNumber numberWithInteger:1], @"cellType", 
 															[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
-															skill, @"skill",
+															skill, @"type",
 															nil];
 								switch (skill.skillAvailability) {
 									case SkillTreeItemAvailabilityLearned:
@@ -601,6 +605,378 @@
 			[section setValue:rows forKey:@"rows"];
 		}
 		
+		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		[pool release];
+	}];
+}
+
+- (void) loadNPCAttributes {
+	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
+		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [type.attributesDictionary valueForKey:@"116"];
+		EVEDBDgmTypeAttribute* kineticDamageAttribute = [type.attributesDictionary valueForKey:@"117"];
+		EVEDBDgmTypeAttribute* thermalDamageAttribute = [type.attributesDictionary valueForKey:@"118"];
+		EVEDBDgmTypeAttribute* damageMultiplierAttribute = [type.attributesDictionary valueForKey:@"64"];
+		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = [type.attributesDictionary valueForKey:@"212"];
+		EVEDBDgmTypeAttribute* missileTypeIDAttribute = [type.attributesDictionary valueForKey:@"507"];
+		EVEDBDgmTypeAttribute* missileVelocityMultiplierAttribute = [type.attributesDictionary valueForKey:@"645"];
+		EVEDBDgmTypeAttribute* missileFlightTimeMultiplierAttribute = [type.attributesDictionary valueForKey:@"646"];
+		
+		EVEDBDgmTypeAttribute* armorEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"267"];
+		EVEDBDgmTypeAttribute* armorExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"268"];
+		EVEDBDgmTypeAttribute* armorKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"269"];
+		EVEDBDgmTypeAttribute* armorThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"270"];
+
+		EVEDBDgmTypeAttribute* shieldEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"271"];
+		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"272"];
+		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"273"];
+		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"274"];
+		
+		EVEDBDgmTypeAttribute* armorHPAttribute = [type.attributesDictionary valueForKey:@"265"];
+		EVEDBDgmTypeAttribute* hpAttribute = [type.attributesDictionary valueForKey:@"9"];
+		EVEDBDgmTypeAttribute* shieldCapacityAttribute = [type.attributesDictionary valueForKey:@"263"];
+		EVEDBDgmTypeAttribute* shieldRechargeRate = [type.attributesDictionary valueForKey:@"479"];
+
+		EVEDBDgmTypeAttribute* optimalAttribute = [type.attributesDictionary valueForKey:@"54"];
+		EVEDBDgmTypeAttribute* falloffAttribute = [type.attributesDictionary valueForKey:@"158"];
+		EVEDBDgmTypeAttribute* trackingSpeedAttribute = [type.attributesDictionary valueForKey:@"160"];
+
+		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [type.attributesDictionary valueForKey:@"51"];
+		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [type.attributesDictionary valueForKey:@"506"];
+
+		EVEDBDgmTypeAttribute* maxVelocityAttribute = [type.attributesDictionary valueForKey:@"37"];
+		
+
+		NSMutableDictionary *section;
+		NSMutableArray *rows;
+
+		//Turrets damage
+
+		float emDamageTurret = 0;
+		float explosiveDamageTurret = 0;
+		float kineticDamageTurret = 0;
+		float thermalDamageTurret = 0;
+		float intervalTurret = 0;
+		float totalDamageTurret = 0;
+
+		if ([type.effectsDictionary valueForKey:@"10"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Turrets Damage" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			float damageMultiplier = [damageMultiplierAttribute value];
+			if (damageMultiplier == 0)
+				damageMultiplier = 1;
+
+			emDamageTurret = [emDamageAttribute value] * damageMultiplier;
+			explosiveDamageTurret = [explosiveDamageAttribute value] * damageMultiplier;
+			kineticDamageTurret = [kineticDamageAttribute value] * damageMultiplier;
+			thermalDamageTurret = [thermalDamageAttribute value] * damageMultiplier;
+			intervalTurret = [turretFireSpeedAttribute value] / 1000.0;
+			totalDamageTurret = emDamageTurret + explosiveDamageTurret + kineticDamageTurret + thermalDamageTurret;
+			float optimal = [optimalAttribute value];
+			float fallof = [falloffAttribute value];
+			float trackingSpeed = [trackingSpeedAttribute value];
+			
+			NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range", @"Falloff", @"Tracking speed"};
+			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"turrets.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png", @"Icons/icon22_23.png", @"Icons/icon22_22.png"};
+			NSString* values[] = {
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret, emDamageTurret / intervalTurret, emDamageTurret / totalDamageTurret * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / intervalTurret, explosiveDamageTurret / totalDamageTurret * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret, kineticDamageTurret / intervalTurret, kineticDamageTurret / totalDamageTurret * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / intervalTurret, thermalDamageTurret / totalDamageTurret * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret, totalDamageTurret / intervalTurret],
+				[NSString stringWithFormat:@"%.0f s", intervalTurret],
+				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fallof] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%f rad/sec", trackingSpeed]
+			};
+			
+			for (int i = 0; i < 9; i++) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 titles[i], @"title",
+								 values[i], @"value",
+								 icons[i], @"icon",
+								 nil]];
+			}
+			[sections addObject:section];
+		}
+		else
+			intervalTurret = 0;
+		
+		//Missiles damage
+		float emDamageMissile = 0;
+		float explosiveDamageMissile = 0;
+		float kineticDamageMissile = 0;
+		float thermalDamageMissile = 0;
+		float intervalMissile = 0;
+		float totalDamageMissile = 0;
+
+		if ([type.effectsDictionary valueForKey:@"569"]) {
+			EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
+			if (missile) {
+				section = [NSMutableDictionary dictionary];
+				rows = [NSMutableArray array];
+				[section setValue:@"Missiles Damage" forKey:@"name"];
+				[section setValue:rows forKey:@"rows"];
+				
+				EVEDBDgmTypeAttribute* emDamageAttribute = [missile.attributesDictionary valueForKey:@"114"];
+				EVEDBDgmTypeAttribute* explosiveDamageAttribute = [missile.attributesDictionary valueForKey:@"116"];
+				EVEDBDgmTypeAttribute* kineticDamageAttribute = [missile.attributesDictionary valueForKey:@"117"];
+				EVEDBDgmTypeAttribute* thermalDamageAttribute = [missile.attributesDictionary valueForKey:@"118"];
+				EVEDBDgmTypeAttribute* maxVelocityAttribute = [missile.attributesDictionary valueForKey:@"37"];
+				EVEDBDgmTypeAttribute* explosionDelayAttribute = [missile.attributesDictionary valueForKey:@"281"];
+				EVEDBDgmTypeAttribute* agilityAttribute = [missile.attributesDictionary valueForKey:@"70"];
+				
+				float missileDamageMultiplier = [missileDamageMultiplierAttribute value];
+				if (missileDamageMultiplier == 0)
+					missileDamageMultiplier = 1;
+				
+				emDamageMissile = [emDamageAttribute value] * missileDamageMultiplier;
+				explosiveDamageMissile = [explosiveDamageAttribute value] * missileDamageMultiplier;
+				kineticDamageMissile = [kineticDamageAttribute value] * missileDamageMultiplier;
+				thermalDamageMissile = [thermalDamageAttribute value] * missileDamageMultiplier;
+				intervalMissile = [missileLaunchDurationAttribute value] / 1000.0;
+				totalDamageMissile = emDamageMissile + explosiveDamageMissile + kineticDamageMissile + thermalDamageMissile;
+				
+				float missileVelocityMultiplier = missileVelocityMultiplierAttribute.value;
+				if (missileVelocityMultiplier == 0)
+					missileDamageMultiplier = 1;
+				float missileFlightTimeMultiplier = missileFlightTimeMultiplierAttribute.value;
+				if (missileFlightTimeMultiplier == 0)
+					missileFlightTimeMultiplier = 1;
+				
+				float maxVelocity = maxVelocityAttribute.value * missileVelocityMultiplier;
+				float flightTime = explosionDelayAttribute.value * missileFlightTimeMultiplier / 1000.0;
+				float mass = missile.mass;
+				float agility = agilityAttribute.value;
+				
+				float accelTime = MIN(flightTime, mass * agility / 1000000.0);
+				float duringAcceleration = maxVelocity / 2 * accelTime;
+				float fullSpeed = maxVelocity * (flightTime - accelTime);
+				float optimal =  duringAcceleration + fullSpeed;
+				
+				NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range"};
+				NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"launchers.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png"};
+				NSString* values[] = {
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageMissile, emDamageMissile / intervalMissile, emDamageMissile / totalDamageMissile * 100],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / intervalMissile, explosiveDamageMissile / totalDamageMissile * 100],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageMissile, kineticDamageMissile / intervalMissile, kineticDamageMissile / totalDamageMissile * 100],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / intervalMissile, thermalDamageMissile / totalDamageMissile * 100],
+					[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageMissile, totalDamageMissile / intervalMissile],
+					[NSString stringWithFormat:@"%.0f s", intervalMissile],
+					[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]]
+				};
+				
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:5], @"cellType", 
+								 @"Missile Type", @"title",
+								 missile.typeName, @"value",
+								 [missile typeSmallImageName], @"icon",
+								 missile, @"type",
+								 nil]];
+				
+				for (int i = 0; i < 7; i++) {
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+									 [NSNumber numberWithInteger:0], @"cellType", 
+									 titles[i], @"title",
+									 values[i], @"value",
+									 icons[i], @"icon",
+									 nil]];
+				}
+				[sections addObject:section];
+			}
+		}
+		
+		//Total damage
+		if (totalDamageTurret > 0 && totalDamageMissile > 0) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Total Damage" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			float emDPSTurret = emDamageTurret / intervalTurret;
+			float explosiveDPSTurret = explosiveDamageTurret / intervalTurret;
+			float kineticDPSTurret = kineticDamageTurret / intervalTurret;
+			float thermalDPSTurret = thermalDamageTurret / intervalTurret;
+			float totalDPSTurret = emDPSTurret + explosiveDPSTurret + kineticDPSTurret + thermalDPSTurret;
+			
+			if (intervalMissile == 0)
+				intervalMissile = 1;
+
+			float emDPSMissile = emDamageMissile / intervalMissile;
+			float explosiveDPSMissile = explosiveDamageMissile / intervalMissile;
+			float kineticDPSMissile = kineticDamageMissile / intervalMissile;
+			float thermalDPSMissile = thermalDamageMissile / intervalMissile;
+			float totalDPSMissile = emDPSMissile + explosiveDPSMissile + kineticDPSMissile + thermalDPSMissile;
+			
+			float emDPS = emDPSTurret + emDPSMissile;
+			float explosiveDPS = explosiveDPSTurret + explosiveDPSMissile;
+			float kineticDPS = kineticDPSTurret + kineticDPSMissile;
+			float thermalDPS = thermalDPSTurret + thermalDPSMissile;
+			float totalDPS = totalDPSTurret + totalDPSMissile;
+			
+			
+			NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage"};
+			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"dps.png"};
+			NSString* values[] = {
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret + emDamageMissile, emDPS, emDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret + explosiveDamageMissile, explosiveDPS, explosiveDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret + kineticDamageMissile, kineticDPS, kineticDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret + thermalDamageMissile, thermalDPS, thermalDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret + totalDamageMissile, totalDPS]
+			};
+			
+			for (int i = 0; i < 5; i++) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 titles[i], @"title",
+								 values[i], @"value",
+								 icons[i], @"icon",
+								 nil]];
+			}
+			[sections addObject:section];
+		}
+		
+		//Shield
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Shield" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+
+			float passiveRechargeRate = shieldRechargeRate.value > 0 ? 10.0 / (shieldRechargeRate.value / 1000.0) * 0.5 * (1 - 0.5) * shieldCapacityAttribute.value : 0;
+			float em = shieldEmDamageResonanceAttribute ? shieldEmDamageResonanceAttribute.value : 1;
+			float explosive = shieldExplosiveDamageResonanceAttribute ? shieldExplosiveDamageResonanceAttribute.value : 1;
+			float kinetic = shieldKineticDamageResonanceAttribute ? shieldKineticDamageResonanceAttribute.value : 1;
+			float thermal = shieldThermalDamageResonanceAttribute ? shieldThermalDamageResonanceAttribute.value : 1;
+
+
+			NSString* titles[] = {
+				@"Shield Capacity",
+				@"Shield Em Damage Resistance",
+				@"Shield Explosive Damage Resistance",
+				@"Shield Kinetic Damage Resistance",
+				@"Shield Thermal Damage Resistance",
+				@"Shield Recharge Time",
+				@"Passive Recharge Rate"};
+			NSString* icons[] = {@"shield.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"Icons/icon22_16.png", @"shieldRecharge.png"};
+			NSString* values[] = {
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) shieldCapacityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - thermal) * 100],
+				[NSString stringWithFormat:@"%@ s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) shieldRechargeRate.value / 1000.0] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%.2f HP/s", passiveRechargeRate],
+			};
+			
+			for (int i = 0; i < 7; i++) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 titles[i], @"title",
+								 values[i], @"value",
+								 icons[i], @"icon",
+								 nil]];
+			}
+			
+			if ([type.effectsDictionary valueForKey:@"2192"] || [type.effectsDictionary valueForKey:@"2193"] || [type.effectsDictionary valueForKey:@"2194"]) {
+				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = [type.attributesDictionary valueForKey:@"637"];
+				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = [type.attributesDictionary valueForKey:@"636"];
+				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"639"];
+				
+				if (!shieldBoostDelayChanceAttribute)
+					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1006"];
+				if (!shieldBoostDelayChanceAttribute)
+					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1007"];
+				if (!shieldBoostDelayChanceAttribute)
+					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1008"];
+				
+				float shieldBoostAmount = shieldBoostAmountAttribute.value;
+				float shieldBoostDuration = shieldBoostDurationAttribute.value;
+				float shieldBoostDelayChance = shieldBoostDelayChanceAttribute.value;
+				float repairRate = shieldBoostDuration > 0 ? shieldBoostAmount * shieldBoostDelayChance / (shieldBoostDuration / 1000.0) : 0;
+				
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Repair Rate", @"title",
+								 [NSString stringWithFormat:@"%.2f HP/s", repairRate + passiveRechargeRate], @"value",
+								 @"shieldBooster.png", @"icon",
+								 nil]];
+
+			}
+			[sections addObject:section];
+		}
+		
+		//Armor
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Armor" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			float em = armorEmDamageResonanceAttribute ? armorEmDamageResonanceAttribute.value : 1;
+			float explosive = armorExplosiveDamageResonanceAttribute ? armorExplosiveDamageResonanceAttribute.value : 1;
+			float kinetic = armorKineticDamageResonanceAttribute ? armorKineticDamageResonanceAttribute.value : 1;
+			float thermal = armorThermalDamageResonanceAttribute ? armorThermalDamageResonanceAttribute.value : 1;
+			
+			
+			NSString* titles[] = {
+				@"Armor Hitpoints",
+				@"Armor Em Damage Resistance",
+				@"Armor Explosive Damage Resistance",
+				@"Armor Kinetic Damage Resistance",
+				@"Armor Thermal Damage Resistance"};
+			NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
+			NSString* values[] = {
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) armorHPAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - thermal) * 100]
+			};
+			
+			for (int i = 0; i < 5; i++) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 titles[i], @"title",
+								 values[i], @"value",
+								 icons[i], @"icon",
+								 nil]];
+			}
+			
+			if ([type.effectsDictionary valueForKey:@"2195"] || [type.effectsDictionary valueForKey:@"2196"] || [type.effectsDictionary valueForKey:@"2197"]) {
+				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = [type.attributesDictionary valueForKey:@"631"];
+				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = [type.attributesDictionary valueForKey:@"630"];
+				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"638"];
+				
+				if (!armorRepairDelayChanceAttribute)
+					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1009"];
+				if (!armorRepairDelayChanceAttribute)
+					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1010"];
+				if (!armorRepairDelayChanceAttribute)
+					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1011"];
+				
+				float armorRepairAmount = armorRepairAmountAttribute.value;
+				float armorRepairDuration = armorRepairDurationAttribute.value;
+				float armorRepairDelayChance = armorRepairDelayChanceAttribute.value;
+				float repairRate = armorRepairDuration > 0 ? armorRepairAmount * armorRepairDelayChance / (armorRepairDuration / 1000.0) : 0;
+				
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Repair Rate", @"title",
+								 [NSString stringWithFormat:@"%.2f HP/s", repairRate], @"value",
+								 @"armorRepairer.png", @"icon",
+								 nil]];
+				
+			}
+			[sections addObject:section];
+		}
+
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];

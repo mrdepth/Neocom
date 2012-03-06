@@ -633,7 +633,12 @@
 		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"272"];
 		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"273"];
 		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"274"];
-		
+
+		EVEDBDgmTypeAttribute* structureEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"113"];
+		EVEDBDgmTypeAttribute* structureExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"111"];
+		EVEDBDgmTypeAttribute* structureKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"109"];
+		EVEDBDgmTypeAttribute* structureThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"110"];
+
 		EVEDBDgmTypeAttribute* armorHPAttribute = [type.attributesDictionary valueForKey:@"265"];
 		EVEDBDgmTypeAttribute* hpAttribute = [type.attributesDictionary valueForKey:@"9"];
 		EVEDBDgmTypeAttribute* shieldCapacityAttribute = [type.attributesDictionary valueForKey:@"263"];
@@ -645,13 +650,54 @@
 
 		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [type.attributesDictionary valueForKey:@"51"];
 		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [type.attributesDictionary valueForKey:@"506"];
-
-		EVEDBDgmTypeAttribute* maxVelocityAttribute = [type.attributesDictionary valueForKey:@"37"];
 		
 
 		NSMutableDictionary *section;
 		NSMutableArray *rows;
 
+		//NPC Info
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"NPC Info" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* bountyAttribute = [type.attributesDictionary valueForKey:@"481"];
+			if (bountyAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 bountyAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) bountyAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 bountyAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* securityStatusBonusAttribute = [type.attributesDictionary valueForKey:@"252"];
+			if (securityStatusBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Security Increase", @"title",
+								 [NSString stringWithFormat:@"%f", securityStatusBonusAttribute.value], @"value",
+								 securityStatusBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			
+			EVEDBDgmTypeAttribute* factionLossAttribute = [type.attributesDictionary valueForKey:@"562"];
+			if (factionLossAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Faction Stading Loss", @"title",
+								 [NSString stringWithFormat:@"%f", factionLossAttribute.value], @"value",
+								 factionLossAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+
+		
 		//Turrets damage
 
 		float emDamageTurret = 0;
@@ -661,7 +707,7 @@
 		float intervalTurret = 0;
 		float totalDamageTurret = 0;
 
-		if ([type.effectsDictionary valueForKey:@"10"]) {
+		if ([type.effectsDictionary valueForKey:@"10"] || [type.effectsDictionary valueForKey:@"1086"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:@"Turrets Damage" forKey:@"name"];
@@ -680,15 +726,17 @@
 			float optimal = [optimalAttribute value];
 			float fallof = [falloffAttribute value];
 			float trackingSpeed = [trackingSpeedAttribute value];
+
+			float tmpInterval = intervalTurret > 0 ? intervalTurret : 1;
 			
 			NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range", @"Falloff", @"Tracking speed"};
 			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"turrets.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png", @"Icons/icon22_23.png", @"Icons/icon22_22.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret, emDamageTurret / intervalTurret, emDamageTurret / totalDamageTurret * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / intervalTurret, explosiveDamageTurret / totalDamageTurret * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret, kineticDamageTurret / intervalTurret, kineticDamageTurret / totalDamageTurret * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / intervalTurret, thermalDamageTurret / totalDamageTurret * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret, totalDamageTurret / intervalTurret],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret, emDamageTurret / tmpInterval, totalDamageTurret > 0 ? emDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / tmpInterval, totalDamageTurret > 0 ? explosiveDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret, kineticDamageTurret / tmpInterval, totalDamageTurret > 0 ? kineticDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / tmpInterval, totalDamageTurret > 0 ? thermalDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret, totalDamageTurret / tmpInterval],
 				[NSString stringWithFormat:@"%.0f s", intervalTurret],
 				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]],
 				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fallof] numberStyle:NSNumberFormatterDecimalStyle]],
@@ -705,8 +753,6 @@
 			}
 			[sections addObject:section];
 		}
-		else
-			intervalTurret = 0;
 		
 		//Missiles damage
 		float emDamageMissile = 0;
@@ -760,14 +806,16 @@
 				float fullSpeed = maxVelocity * (flightTime - accelTime);
 				float optimal =  duringAcceleration + fullSpeed;
 				
+				float tmpInterval = intervalMissile > 0 ? intervalTurret : 1;
+
 				NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range"};
 				NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"launchers.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png"};
 				NSString* values[] = {
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageMissile, emDamageMissile / intervalMissile, emDamageMissile / totalDamageMissile * 100],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / intervalMissile, explosiveDamageMissile / totalDamageMissile * 100],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageMissile, kineticDamageMissile / intervalMissile, kineticDamageMissile / totalDamageMissile * 100],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / intervalMissile, thermalDamageMissile / totalDamageMissile * 100],
-					[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageMissile, totalDamageMissile / intervalMissile],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageMissile, emDamageMissile / tmpInterval, totalDamageMissile > 0 ? emDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / tmpInterval, totalDamageMissile > 0 ? explosiveDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageMissile, kineticDamageMissile / tmpInterval, totalDamageMissile > 0 ? kineticDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / tmpInterval, totalDamageMissile > 0 ? thermalDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageMissile, totalDamageMissile / tmpInterval],
 					[NSString stringWithFormat:@"%.0f s", intervalMissile],
 					[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]]
 				};
@@ -884,7 +932,7 @@
 								 nil]];
 			}
 			
-			if ([type.effectsDictionary valueForKey:@"2192"] || [type.effectsDictionary valueForKey:@"2193"] || [type.effectsDictionary valueForKey:@"2194"]) {
+			if ([type.effectsDictionary valueForKey:@"2192"] || [type.effectsDictionary valueForKey:@"2193"] || [type.effectsDictionary valueForKey:@"2194"] || [type.effectsDictionary valueForKey:@"876"]) {
 				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = [type.attributesDictionary valueForKey:@"637"];
 				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = [type.attributesDictionary valueForKey:@"636"];
 				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"639"];
@@ -949,7 +997,7 @@
 								 nil]];
 			}
 			
-			if ([type.effectsDictionary valueForKey:@"2195"] || [type.effectsDictionary valueForKey:@"2196"] || [type.effectsDictionary valueForKey:@"2197"]) {
+			if ([type.effectsDictionary valueForKey:@"2195"] || [type.effectsDictionary valueForKey:@"2196"] || [type.effectsDictionary valueForKey:@"2197"] || [type.effectsDictionary valueForKey:@"878"]) {
 				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = [type.attributesDictionary valueForKey:@"631"];
 				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = [type.attributesDictionary valueForKey:@"630"];
 				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"638"];
@@ -964,6 +1012,8 @@
 				float armorRepairAmount = armorRepairAmountAttribute.value;
 				float armorRepairDuration = armorRepairDurationAttribute.value;
 				float armorRepairDelayChance = armorRepairDelayChanceAttribute.value;
+				if (armorRepairDelayChance == 0)
+					armorRepairDelayChance = 1.0;
 				float repairRate = armorRepairDuration > 0 ? armorRepairAmount * armorRepairDelayChance / (armorRepairDuration / 1000.0) : 0;
 				
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -976,7 +1026,596 @@
 			}
 			[sections addObject:section];
 		}
+		
+		//Structure
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Structure" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
 
+			float em = structureEmDamageResonanceAttribute ? structureEmDamageResonanceAttribute.value : 1;
+			float explosive = structureExplosiveDamageResonanceAttribute ? structureExplosiveDamageResonanceAttribute.value : 1;
+			float kinetic = structureKineticDamageResonanceAttribute ? structureKineticDamageResonanceAttribute.value : 1;
+			float thermal = structureThermalDamageResonanceAttribute ? structureThermalDamageResonanceAttribute.value : 1;
+			
+			
+			NSString* titles[] = {
+				@"Structure Hitpoints",
+				@"Structure Em Damage Resistance",
+				@"Structure Explosive Damage Resistance",
+				@"Structure Kinetic Damage Resistance",
+				@"Structure Thermal Damage Resistance"};
+			NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
+			NSString* values[] = {
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) hpAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
+				[NSString stringWithFormat:@"%.0f %%", (1 - thermal) * 100]
+			};
+			
+			for (int i = 0; i < 5; i++) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 titles[i], @"title",
+								 values[i], @"value",
+								 icons[i], @"icon",
+								 nil]];
+			}
+			[sections addObject:section];
+		}
+		
+		//Targeting
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Targeting" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* attackRangeAttribute = [type.attributesDictionary valueForKey:@"247"];
+			if (attackRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Attack Range", @"title",
+								 [NSString stringWithFormat:@"%.0@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) attackRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 attackRangeAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* signatureRadiusAttribute = [type.attributesDictionary valueForKey:@"552"];
+			if (signatureRadiusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 signatureRadiusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) signatureRadiusAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 signatureRadiusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			
+			EVEDBDgmTypeAttribute* scanResolutionAttribute = [type.attributesDictionary valueForKey:@"564"];
+			if (scanResolutionAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 scanResolutionAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0f mm", scanResolutionAttribute.value], @"value",
+								 scanResolutionAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"208"];
+			if (sensorStrengthAttribute.value == 0)
+				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"209"];
+			if (sensorStrengthAttribute.value == 0)
+				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"210"];
+			if (sensorStrengthAttribute.value == 0)
+				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"211"];
+			if (sensorStrengthAttribute.value > 0) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 sensorStrengthAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0f", sensorStrengthAttribute.value], @"value",
+								 sensorStrengthAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+
+		//Movement
+		{
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Movement" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* maxVelocityAttribute = [type.attributesDictionary valueForKey:@"37"];
+			if (maxVelocityAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 maxVelocityAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%@ m/s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) maxVelocityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 maxVelocityAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* orbitVelocityAttribute = [type.attributesDictionary valueForKey:@"508"];
+			if (orbitVelocityAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 orbitVelocityAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%@ m/s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) orbitVelocityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_13.png", @"icon",
+								 nil]];
+			}
+			
+			
+			EVEDBDgmTypeAttribute* entityFlyRangeAttribute = [type.attributesDictionary valueForKey:@"416"];
+			if (entityFlyRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Orbit Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) entityFlyRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		//Stasis Webifying
+		if ([type.effectsDictionary valueForKey:@"575"] || [type.effectsDictionary valueForKey:@"3714"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Stasis Webifying" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+
+			EVEDBDgmTypeAttribute* speedFactorAttribute = [type.attributesDictionary valueForKey:@"20"];
+			if (speedFactorAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 speedFactorAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0f %%", speedFactorAttribute.value], @"value",
+								 speedFactorAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* modifyTargetSpeedRangeAttribute = [type.attributesDictionary valueForKey:@"514"];
+			if (modifyTargetSpeedRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) modifyTargetSpeedRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"targetingRange.png", @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* modifyTargetSpeedDurationAttribute = [type.attributesDictionary valueForKey:@"513"];
+			if (modifyTargetSpeedDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", modifyTargetSpeedDurationAttribute.value / 1000.0], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* modifyTargetSpeedChanceAttribute = [type.attributesDictionary valueForKey:@"512"];
+			if (modifyTargetSpeedChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Webbing Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", modifyTargetSpeedChanceAttribute.value * 100], @"value",
+								 modifyTargetSpeedChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		//Warp Scramble
+		if ([type.effectsDictionary valueForKey:@"39"] || [type.effectsDictionary valueForKey:@"563"] || [type.effectsDictionary valueForKey:@"3713"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Warp Scramble" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* warpScrambleStrengthAttribute = [type.attributesDictionary valueForKey:@"105"];
+			if (warpScrambleStrengthAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 warpScrambleStrengthAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0f", warpScrambleStrengthAttribute.value], @"value",
+								 warpScrambleStrengthAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* warpScrambleRangeAttribute = [type.attributesDictionary valueForKey:@"103"];
+			if (warpScrambleRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 warpScrambleRangeAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) warpScrambleRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 warpScrambleRangeAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* warpScrambleDurationAttribute = [type.attributesDictionary valueForKey:@"505"];
+			if (warpScrambleDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 warpScrambleDurationAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.2f s", warpScrambleDurationAttribute.value / 1000], @"value",
+								 warpScrambleDurationAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* warpScrambleChanceAttribute = [type.attributesDictionary valueForKey:@"504"];
+			if (warpScrambleChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Scrambling Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", warpScrambleChanceAttribute.value * 100], @"value",
+								 warpScrambleChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+
+		//Target Painting
+		if ([type.effectsDictionary valueForKey:@"1879"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Target Painting" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* signatureRadiusBonusAttribute = [type.attributesDictionary valueForKey:@"554"];
+			if (signatureRadiusBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 signatureRadiusBonusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.0f %%", signatureRadiusBonusAttribute.value], @"value",
+								 signatureRadiusBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* targetPaintRangeAttribute = [type.attributesDictionary valueForKey:@"941"];
+			if (targetPaintRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Optimal Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetPaintRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* targetPaintFalloffAttribute = [type.attributesDictionary valueForKey:@"954"];
+			if (targetPaintFalloffAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Accuracy Falloff", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetPaintFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_23.png", @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* targetPaintDurationAttribute = [type.attributesDictionary valueForKey:@"945"];
+			if (targetPaintDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", targetPaintDurationAttribute.value / 1000], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* targetPaintChanceAttribute = [type.attributesDictionary valueForKey:@"935"];
+			if (targetPaintChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", targetPaintChanceAttribute.value * 100], @"value",
+								 targetPaintChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		//Tracking Disruption
+		if ([type.effectsDictionary valueForKey:@"1877"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Tracking Disruption" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* trackingDisruptMultiplierAttribute = [type.attributesDictionary valueForKey:@"948"];
+			if (trackingDisruptMultiplierAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Tracking Speed Bonus", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", (trackingDisruptMultiplierAttribute.value - 1) * 100], @"value",
+								 @"Icons/icon22_22.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* trackingDisruptRangeAttribute = [type.attributesDictionary valueForKey:@"940"];
+			if (trackingDisruptRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Optimal Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) trackingDisruptRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* trackingDisruptFalloffAttribute = [type.attributesDictionary valueForKey:@"951"];
+			if (trackingDisruptFalloffAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Accuracy Falloff", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) trackingDisruptFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_23.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* trackingDisruptDurationAttribute = [type.attributesDictionary valueForKey:@"944"];
+			if (trackingDisruptDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", trackingDisruptDurationAttribute.value / 1000], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* trackingDisruptChanceAttribute = [type.attributesDictionary valueForKey:@"933"];
+			if (trackingDisruptChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", trackingDisruptChanceAttribute.value * 100], @"value",
+								 trackingDisruptChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}		
+		
+		//Sensor Dampening
+		if ([type.effectsDictionary valueForKey:@"1878"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Sensor Dampening" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* maxTargetRangeMultiplierAttribute = [type.attributesDictionary valueForKey:@"237"];
+			if (maxTargetRangeMultiplierAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Max Targeting Range Bonus", @"title", 
+								 [NSString stringWithFormat:@"%.0f %%", (maxTargetRangeMultiplierAttribute.value - 1) * 100], @"value",
+								 maxTargetRangeMultiplierAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* scanResolutionMultiplierAttribute = [type.attributesDictionary valueForKey:@"565"];
+			if (scanResolutionMultiplierAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Scan Resolution Bonus", @"title", 
+								 [NSString stringWithFormat:@"%.0f %%", (scanResolutionMultiplierAttribute.value - 1) * 100], @"value",
+								 scanResolutionMultiplierAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* sensorDampenRangeAttribute = [type.attributesDictionary valueForKey:@"938"];
+			if (sensorDampenRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Optimal Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) sensorDampenRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* sensorDampenFalloffAttribute = [type.attributesDictionary valueForKey:@"950"];
+			if (sensorDampenFalloffAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Accuracy falloff", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) sensorDampenFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_23.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* sensorDampenDurationAttribute = [type.attributesDictionary valueForKey:@"943"];
+			if (sensorDampenDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", sensorDampenDurationAttribute.value / 1000], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* sensorDampenChanceAttribute = [type.attributesDictionary valueForKey:@"932"];
+			if (sensorDampenChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", sensorDampenChanceAttribute.value * 100], @"value",
+								 sensorDampenChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		//ECM Jamming
+		if ([type.effectsDictionary valueForKey:@"1871"] || [type.effectsDictionary valueForKey:@"1752"] || [type.effectsDictionary valueForKey:@"3710"] || [type.effectsDictionary valueForKey:@"4656"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"ECM Jamming" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* scanGravimetricStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"238"];
+			if (scanGravimetricStrengthBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 scanGravimetricStrengthBonusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.2f", scanGravimetricStrengthBonusAttribute.value], @"value",
+								 scanGravimetricStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* scanLadarStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"239"];
+			if (scanLadarStrengthBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 scanLadarStrengthBonusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.2f", scanLadarStrengthBonusAttribute.value], @"value",
+								 scanLadarStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* scanMagnetometricStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"240"];
+			if (scanMagnetometricStrengthBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 scanMagnetometricStrengthBonusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.2f", scanMagnetometricStrengthBonusAttribute.value], @"value",
+								 scanMagnetometricStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* scanRadarStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"241"];
+			if (scanLadarStrengthBonusAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 scanRadarStrengthBonusAttribute.attribute.displayName, @"title",
+								 [NSString stringWithFormat:@"%.2f", scanRadarStrengthBonusAttribute.value], @"value",
+								 scanRadarStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+
+			EVEDBDgmTypeAttribute* targetJamRangeAttribute = [type.attributesDictionary valueForKey:@"936"];
+			if (targetJamRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Optimal Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetJamRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* targetJamFalloffAttribute = [type.attributesDictionary valueForKey:@"953"];
+			if (targetJamFalloffAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Accuracy falloff", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetJamFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_23.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* targetJamDurationAttribute = [type.attributesDictionary valueForKey:@"929"];
+			if (targetJamDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", targetJamDurationAttribute.value / 1000], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* targetJamChanceAttribute = [type.attributesDictionary valueForKey:@"930"];
+			if (targetJamChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", targetJamChanceAttribute.value * 100], @"value",
+								 targetJamChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+
+		//Energy Vampire
+		if ([type.effectsDictionary valueForKey:@"1872"]) {
+			section = [NSMutableDictionary dictionary];
+			rows = [NSMutableArray array];
+			[section setValue:@"Energy Vampire" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			
+			EVEDBDgmTypeAttribute* capacitorDrainAmountAttribute = [type.attributesDictionary valueForKey:@"946"];
+			if (!capacitorDrainAmountAttribute)
+				capacitorDrainAmountAttribute = [type.attributesDictionary valueForKey:@"90"];
+			
+			EVEDBDgmTypeAttribute* capacitorDrainDurationAttribute = [type.attributesDictionary valueForKey:@"942"];
+			if (capacitorDrainAmountAttribute.value > 0) {
+				NSString* value;
+				if (capacitorDrainDurationAttribute) {
+					value = [NSString stringWithFormat:@"%@ GJ (%.2f GJ/s)",
+							 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:(NSInteger) capacitorDrainAmountAttribute.value] numberStyle:NSNumberFormatterDecimalStyle],
+							 capacitorDrainAmountAttribute.value / (capacitorDrainDurationAttribute.value / 1000)];
+
+				}
+				else {
+					value = [NSString stringWithFormat:@"%@ GJ", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:(NSInteger) capacitorDrainAmountAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]];
+				}
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Amount", @"title", 
+								 value, @"value",
+								 @"Icons/icon22_08.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* capacitorDrainRangeAttribute = [type.attributesDictionary valueForKey:@"937"];
+			if (capacitorDrainRangeAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Optimal Range", @"title",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) capacitorDrainRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 @"Icons/icon22_15.png", @"icon",
+								 nil]];
+			}
+			
+			if (capacitorDrainDurationAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Duration", @"title",
+								 [NSString stringWithFormat:@"%.2f s", capacitorDrainDurationAttribute.value / 1000], @"value",
+								 @"Icons/icon22_16.png", @"icon",
+								 nil]];
+			}
+			
+			EVEDBDgmTypeAttribute* capacitorDrainChanceAttribute = [type.attributesDictionary valueForKey:@"931"];
+			if (capacitorDrainChanceAttribute) {
+				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithInteger:0], @"cellType", 
+								 @"Chance", @"title",
+								 [NSString stringWithFormat:@"%.0f %%", capacitorDrainChanceAttribute.value * 100], @"value",
+								 capacitorDrainChanceAttribute.attribute.icon.iconImageName, @"icon",
+								 nil]];
+			}
+			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];

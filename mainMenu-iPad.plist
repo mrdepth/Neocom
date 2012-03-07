@@ -88,6 +88,20 @@
 	</dict>
 	<dict>
 		<key>className</key>
+		<string>NPCGroupsViewController</string>
+		<key>nibName</key>
+		<string>NPCGroupsViewController-iPad</string>
+		<key>title</key>
+		<string>NPC</string>
+		<key>image</key>
+		<string>Icons/icon04_07.png</string>
+		<key>charAccessMask</key>
+		<integer>0</integer>
+		<key>corpAccessMask</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>className</key>
 		<string>FittingServiceMenuViewController</string>
 		<key>nibName</key>
 		<string>FittingServiceMenuViewController-iPad</string>

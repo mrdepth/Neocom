@@ -85,6 +85,9 @@
 		378481281418E3D500450645 /* industryJobsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378481271418E3D500450645 /* industryJobsFilter.plist */; };
 		378481861418F5D300450645 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 378481841418F5D300450645 /* checkmark.png */; };
 		378481871418F5D300450645 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 378481851418F5D300450645 /* checkmark@2x.png */; };
+		379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */; };
+		379B8DA41507AAED00326B5D /* NPCGroupsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */; };
+		379B8DA61507AC9D00326B5D /* NPCGroupsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */; };
 		379F2D811418191B0018B2CA /* marketOrdersFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 379F2D801418191B0018B2CA /* marketOrdersFilter.plist */; };
 		37A0C25D14B35A92008ACDB4 /* AreaEffectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */; };
 		37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A0C25C14B35A92008ACDB4 /* AreaEffectsViewController.xib */; };
@@ -790,6 +793,10 @@
 		378481271418E3D500450645 /* industryJobsFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = industryJobsFilter.plist; sourceTree = "<group>"; };
 		378481841418F5D300450645 /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
 		378481851418F5D300450645 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
+		379B8DA01507A9E300326B5D /* NPCGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPCGroupsViewController.h; sourceTree = "<group>"; };
+		379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPCGroupsViewController.m; sourceTree = "<group>"; };
+		379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NPCGroupsViewController.xib; sourceTree = "<group>"; };
+		379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NPCGroupsViewController-iPad.xib"; sourceTree = "<group>"; };
 		379F2D801418191B0018B2CA /* marketOrdersFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = marketOrdersFilter.plist; sourceTree = "<group>"; };
 		37A0C25A14B35A92008ACDB4 /* AreaEffectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaEffectsViewController.h; sourceTree = "<group>"; };
 		37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaEffectsViewController.m; sourceTree = "<group>"; };
@@ -1765,6 +1772,7 @@
 				37AF875314E988EF0047360D /* DonationViewController */,
 				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
+				379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
 			);
@@ -2060,6 +2068,17 @@
 				3715824F141794DA00A20C92 /* FilterViewController-iPad.xib */,
 			);
 			name = FilterViewController;
+			sourceTree = "<group>";
+		};
+		379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				379B8DA01507A9E300326B5D /* NPCGroupsViewController.h */,
+				379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */,
+				379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */,
+				379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */,
+			);
+			name = NPCGroupsViewController;
 			sourceTree = "<group>";
 		};
 		37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */ = {
@@ -4425,6 +4444,8 @@
 				37C0FB2714FD0E7F006A153D /* WalletJournalCellView.xib in Resources */,
 				37C0FB2914FD1319006A153D /* walletJournalFilter.plist in Resources */,
 				37C0FB3414FD31FF006A153D /* WalletJournalCellView-iPad.xib in Resources */,
+				379B8DA41507AAED00326B5D /* NPCGroupsViewController.xib in Resources */,
+				379B8DA61507AC9D00326B5D /* NPCGroupsViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4742,6 +4763,7 @@
 				37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */,
 				371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */,
 				37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */,
+				379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

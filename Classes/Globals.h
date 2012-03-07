@@ -19,6 +19,8 @@
 #define SettingsNoAds @"SettingsNoAds"
 #define SettingsWalletTransactionsOwner @"SettingsWalletTransactionsOwner"
 #define SettingsWalletTransactionsCorpAccount @"SettingsWalletTransactionsCorpAccount"
+#define SettingsWalletJournalOwner @"SettingsWalletJournalOwner"
+#define SettingsWalletJournalCorpAccount @"SettingsWalletJournalCorpAccount"
 #define SettingsMarketOrdersOwner @"SettingsMarketOrdersOwner"
 #define SettingsContractsOwner @"SettingsContractsOwner"
 #define SettingsIndustryJobsOwner @"SettingsIndustryJobsOwner"

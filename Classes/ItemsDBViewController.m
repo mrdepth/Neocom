@@ -43,6 +43,7 @@
 		self.title = @"Database";
 
 	publishedFilterSegment.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
+	self.searchDisplayController.searchBar.selectedScopeButtonIndex = publishedFilterSegment.selectedSegmentIndex;
 //	if (publishedFilterSegment.selectedSegmentIndex == 0)
 		[self reload];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !modalMode)
@@ -86,6 +87,15 @@
 	[self reload];
 	self.searchDisplayController.searchBar.selectedScopeButtonIndex = publishedFilterSegment.selectedSegmentIndex;
 	[[NSUserDefaults standardUserDefaults] setInteger:publishedFilterSegment.selectedSegmentIndex forKey:SettingsPublishedFilterKey];
+}
+
+- (ItemsDBViewControllerMode) mode {
+	if (publishedFilterSegment.selectedSegmentIndex == 0)
+		return ItemsDBViewControllerModePublished;
+	else if (publishedFilterSegment.selectedSegmentIndex == 2)
+		return ItemsDBViewControllerModeNotPublished;
+	else
+		return ItemsDBViewControllerModeAll;
 }
 
 #pragma mark -
@@ -174,15 +184,13 @@
 		[controller release];
 	}
 	else if (category == nil) {
-		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewController-iPad" : @"ItemsDBViewController")
-																					bundle:nil];
+		ItemsDBViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
 		controller.category = [rows objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else if (group == nil) {
-		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewController-iPad" : @"ItemsDBViewController")
-																					bundle:nil];
+		ItemsDBViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
 		controller.category = self.category;
 		controller.group = [rows objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
@@ -248,8 +256,8 @@
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (category == nil)
 			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories%@ ORDER BY categoryName;",
-																publishedFilterSegment.selectedSegmentIndex == 0 ? @" WHERE published=1" :
-																publishedFilterSegment.selectedSegmentIndex == 2 ? @" WHERE published=0" : @""]
+																self.mode == ItemsDBViewControllerModePublished ? @" WHERE published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" WHERE published=0" : @""]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 													   [values addObject:[EVEDBInvCategory invCategoryWithDictionary:record]];
 													   if ([operation isCancelled])
@@ -257,8 +265,8 @@
 												   }];
 		else if (group == nil)
 			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", category.categoryID,
-																publishedFilterSegment.selectedSegmentIndex == 0 ? @" AND published=1" :
-																publishedFilterSegment.selectedSegmentIndex == 2 ? @" AND published=0" : @""]
+																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 													   [values addObject:[EVEDBInvGroup invGroupWithDictionary:record]];
 													   if ([operation isCancelled])
@@ -266,8 +274,8 @@
 												   }];
 		else
 			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", group.groupID,
-																publishedFilterSegment.selectedSegmentIndex == 0 ? @" AND published=1" :
-																publishedFilterSegment.selectedSegmentIndex == 2 ? @" AND published=0" : @""]
+																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 													   [values addObject:[EVEDBInvType invTypeWithDictionary:record]];
 													   if ([operation isCancelled])
@@ -306,21 +314,21 @@
 				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
 																	group.groupID,
 																	searchString,
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0 ? @" AND published=1" :
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 2 ? @" AND published=0" : @""]
+																	self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
 													   resultBlock:block];
 			else if (category != nil)
 				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invGroups.categoryID=%d AND invTypes.groupID=invGroups.groupID AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
 																	category.categoryID,
 																	searchString,
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0 ? @" AND invTypes.published=1" :
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 2 ? @" AND invTypes.published=0" : @""]
+																	self.mode == ItemsDBViewControllerModePublished ? @" AND invTypes.published=1" :
+																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND invTypes.published=0" : @""]
 													   resultBlock:block];
 			else
 				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
 																	searchString,
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0 ? @" AND published=1" :
-																	self.searchDisplayController.searchBar.selectedScopeButtonIndex == 2 ? @" AND published=0" : @""]
+																	self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
 													   resultBlock:block];
 		}
 		[pool release];

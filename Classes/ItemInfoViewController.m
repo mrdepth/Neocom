@@ -419,33 +419,34 @@
 				else if (attribute.attribute.unitID == 116) {
 					int typeID = attribute.value;
 					EVEDBInvType *skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
-					
-					for (NSDictionary *requirementMap in skillRequirementsMap) {
-						if ([[requirementMap valueForKey:SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
-							EVEDBDgmTypeAttribute *level = [type.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
-							SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:level.value];
-							for (SkillTreeItem *skill in skillTree.skills) {
-								NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-															[NSNumber numberWithInteger:1], @"cellType", 
-															[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
-															skill, @"type",
-															nil];
-								switch (skill.skillAvailability) {
-									case SkillTreeItemAvailabilityLearned:
-										[row setValue:@"Icons/icon38_193.png" forKey:@"icon"];
-										break;
-									case SkillTreeItemAvailabilityNotLearned:
-										[row setValue:@"Icons/icon38_194.png" forKey:@"icon"];
-										break;
-									case SkillTreeItemAvailabilityLowLevel:
-										[row setValue:@"Icons/icon38_195.png" forKey:@"icon"];
-										break;
-									default:
-										break;
+					if (skill) {
+						for (NSDictionary *requirementMap in skillRequirementsMap) {
+							if ([[requirementMap valueForKey:SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
+								EVEDBDgmTypeAttribute *level = [type.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
+								SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:level.value];
+								for (SkillTreeItem *skill in skillTree.skills) {
+									NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																[NSNumber numberWithInteger:1], @"cellType", 
+																[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
+																skill, @"type",
+																nil];
+									switch (skill.skillAvailability) {
+										case SkillTreeItemAvailabilityLearned:
+											[row setValue:@"Icons/icon38_193.png" forKey:@"icon"];
+											break;
+										case SkillTreeItemAvailabilityNotLearned:
+											[row setValue:@"Icons/icon38_194.png" forKey:@"icon"];
+											break;
+										case SkillTreeItemAvailabilityLowLevel:
+											[row setValue:@"Icons/icon38_195.png" forKey:@"icon"];
+											break;
+										default:
+											break;
+									}
+									[rows addObject:row];
 								}
-								[rows addObject:row];
+								break;
 							}
-							break;
 						}
 					}
 				}
@@ -732,12 +733,12 @@
 			NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range", @"Falloff", @"Tracking speed"};
 			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"turrets.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png", @"Icons/icon22_23.png", @"Icons/icon22_22.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret, emDamageTurret / tmpInterval, totalDamageTurret > 0 ? emDamageTurret / totalDamageTurret * 100 : 0.0],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / tmpInterval, totalDamageTurret > 0 ? explosiveDamageTurret / totalDamageTurret * 100 : 0.0],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret, kineticDamageTurret / tmpInterval, totalDamageTurret > 0 ? kineticDamageTurret / totalDamageTurret * 100 : 0.0],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / tmpInterval, totalDamageTurret > 0 ? thermalDamageTurret / totalDamageTurret * 100 : 0.0],
-				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret, totalDamageTurret / tmpInterval],
-				[NSString stringWithFormat:@"%.0f s", intervalTurret],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret, emDamageTurret / tmpInterval, totalDamageTurret > 0 ? emDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / tmpInterval, totalDamageTurret > 0 ? explosiveDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", kineticDamageTurret, kineticDamageTurret / tmpInterval, totalDamageTurret > 0 ? kineticDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / tmpInterval, totalDamageTurret > 0 ? thermalDamageTurret / totalDamageTurret * 100 : 0.0],
+				[NSString stringWithFormat:@"%.2f (%.2f/s)", totalDamageTurret, totalDamageTurret / tmpInterval],
+				[NSString stringWithFormat:@"%.2f s", intervalTurret],
 				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]],
 				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fallof] numberStyle:NSNumberFormatterDecimalStyle]],
 				[NSString stringWithFormat:@"%f rad/sec", trackingSpeed]
@@ -806,17 +807,17 @@
 				float fullSpeed = maxVelocity * (flightTime - accelTime);
 				float optimal =  duringAcceleration + fullSpeed;
 				
-				float tmpInterval = intervalMissile > 0 ? intervalTurret : 1;
+				float tmpInterval = intervalMissile > 0 ? intervalMissile : 1;
 
 				NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage", @"Rate of fire", @"Optimal range"};
 				NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"launchers.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png"};
 				NSString* values[] = {
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageMissile, emDamageMissile / tmpInterval, totalDamageMissile > 0 ? emDamageMissile / totalDamageMissile * 100 : 0.0],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / tmpInterval, totalDamageMissile > 0 ? explosiveDamageMissile / totalDamageMissile * 100 : 0.0],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageMissile, kineticDamageMissile / tmpInterval, totalDamageMissile > 0 ? kineticDamageMissile / totalDamageMissile * 100 : 0.0],
-					[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / tmpInterval, totalDamageMissile > 0 ? thermalDamageMissile / totalDamageMissile * 100 : 0.0],
-					[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageMissile, totalDamageMissile / tmpInterval],
-					[NSString stringWithFormat:@"%.0f s", intervalMissile],
+					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageMissile, emDamageMissile / tmpInterval, totalDamageMissile > 0 ? emDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / tmpInterval, totalDamageMissile > 0 ? explosiveDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", kineticDamageMissile, kineticDamageMissile / tmpInterval, totalDamageMissile > 0 ? kineticDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / tmpInterval, totalDamageMissile > 0 ? thermalDamageMissile / totalDamageMissile * 100 : 0.0],
+					[NSString stringWithFormat:@"%.2f (%.2f/s)", totalDamageMissile, totalDamageMissile / tmpInterval],
+					[NSString stringWithFormat:@"%.2f s", intervalMissile],
 					[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]]
 				};
 				
@@ -872,11 +873,11 @@
 			NSString* titles[] = {@"Em damage", @"Explosive damage", @"Kinetic damage", @"Thermal damage", @"Total damage"};
 			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"dps.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", emDamageTurret + emDamageMissile, emDPS, emDPS / totalDPS * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", explosiveDamageTurret + explosiveDamageMissile, explosiveDPS, explosiveDPS / totalDPS * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", kineticDamageTurret + kineticDamageMissile, kineticDPS, kineticDPS / totalDPS * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s, %.0f%%)", thermalDamageTurret + thermalDamageMissile, thermalDPS, thermalDPS / totalDPS * 100],
-				[NSString stringWithFormat:@"%.0f (%.0f/s)", totalDamageTurret + totalDamageMissile, totalDPS]
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret + emDamageMissile, emDPS, emDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageTurret + explosiveDamageMissile, explosiveDPS, explosiveDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", kineticDamageTurret + kineticDamageMissile, kineticDPS, kineticDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", thermalDamageTurret + thermalDamageMissile, thermalDPS, thermalDPS / totalDPS * 100],
+				[NSString stringWithFormat:@"%.2f (%.2f/s)", totalDamageTurret + totalDamageMissile, totalDPS]
 			};
 			
 			for (int i = 0; i < 5; i++) {

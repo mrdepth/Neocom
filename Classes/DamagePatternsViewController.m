@@ -14,6 +14,8 @@
 #import "ItemViewController.h"
 #import "CharacterCellView.h"
 #import "DamagePatternEditViewController.h"
+#import "ItemCellView.h"
+#import "FittingNPCGroupsViewController.h"
 
 @interface DamagePatternsViewController(Private)
 - (void) reload;
@@ -85,7 +87,7 @@
 	[super setEditing:editing animated:animated];
 	[tableView setEditing:editing animated:animated];
 	
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[sections objectAtIndex:1] count] inSection:1];
+	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[sections objectAtIndex:1] count] inSection:2];
 	NSArray* array = [NSArray arrayWithObject:indexPath];
 	if (editing)
 		[tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
@@ -112,12 +114,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
     // Return the number of sections.
-	return sections.count;
+	return sections.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-	NSInteger count = [[sections objectAtIndex:section] count];
-	if (section == 0 || !self.editing)
+	if (section == 0)
+		return 1;
+	NSInteger count = [[sections objectAtIndex:section - 1] count];
+	if (section == 1 || !self.editing)
 		return count;
 	else
 		return count + 1;
@@ -126,7 +130,18 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([[sections objectAtIndex:indexPath.section] count] == indexPath.row) {
+	if (indexPath.section == 0) {
+		static NSString *cellIdentifier = @"ItemCellView";
+		
+		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil) {
+			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		}
+		cell.titleLabel.text = @"Select NPC Type";
+		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon04_07.png"];
+		return cell;
+	}
+	else if ([[sections objectAtIndex:indexPath.section - 1] count] == indexPath.row) {
 		NSString *cellIdentifier = @"CharacterCellView";
 		
 		CharacterCellView *cell = (CharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -138,14 +153,13 @@
 	}
 	else {
 		static NSString *cellIdentifier = @"DamagePatternCellView";
-		
 		DamagePatternCellView *cell = (DamagePatternCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [DamagePatternCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternCellView-iPad" : @"DamagePatternCellView")
 												   bundle:nil
 										  reuseIdentifier:cellIdentifier];
 		}
-		DamagePattern* damagePattern = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		DamagePattern* damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.titleLabel.text = damagePattern.patternName;
 		cell.emLabel.progress = damagePattern.emAmount;
 		cell.thermalLabel.progress = damagePattern.thermalAmount;
@@ -162,6 +176,8 @@
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
+		return nil;
+	else if (section == 1)
 		return @"Predefined";
 	else
 		return @"Custom";
@@ -169,12 +185,12 @@
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[[sections objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+		[[sections objectAtIndex:indexPath.section - 1] removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
 		DamagePattern* damagePattern = [[[DamagePattern alloc] init] autorelease];
-		[[sections objectAtIndex:indexPath.section] addObject:damagePattern];
+		[[sections objectAtIndex:indexPath.section - 1] addObject:damagePattern];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
@@ -189,10 +205,10 @@
 #pragma mark Table view delegate
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
+	if (indexPath.section == 0 || indexPath.section == 1)
 		return UITableViewCellEditingStyleNone;
 	else
-		return indexPath.row == [[sections objectAtIndex:indexPath.section] count] ? UITableViewCellEditingStyleInsert : UITableViewCellEditingStyleDelete;
+		return indexPath.row == [[sections objectAtIndex:indexPath.section - 1] count] ? UITableViewCellEditingStyleInsert : UITableViewCellEditingStyleDelete;
 }
 
 - (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
@@ -214,12 +230,19 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return indexPath.section == 0 ? 36 : 44;
 }
 
 - (void)tableView:(UITableView*) aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	if (indexPath.row == [[sections objectAtIndex:indexPath.section] count]) {
+	if (indexPath.section == 0) {
+		FittingNPCGroupsViewController* controller = [[FittingNPCGroupsViewController alloc] initWithNibName:@"NPCGroupsViewControllerModal-iPad" bundle:nil];
+		controller.modalMode = YES;
+		controller.damagePatternsViewController = self;
+		[self.navigationController pushViewController:controller animated:YES];
+		[controller release];
+	}
+	else if (indexPath.row == [[sections objectAtIndex:indexPath.section - 1] count]) {
 		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
 	else {
@@ -227,13 +250,13 @@
 			if (indexPath.section == 1) {
 				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
 																												bundle:nil];
-				controller.damagePattern = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+				controller.damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 				[self.navigationController pushViewController:controller animated:YES];
 				[controller release];
 			}
 		}
 		else {
-			[delegate damagePatternsViewController:self didSelectDamagePattern:[[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+			[delegate damagePatternsViewController:self didSelectDamagePattern:[[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row]];
 		}
 	}
 }

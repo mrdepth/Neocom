@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "EVEDBAPI.h"
 
+typedef enum {
+	ItemsDBViewControllerModePublished,
+	ItemsDBViewControllerModeNotPublished,
+	ItemsDBViewControllerModeAll
+} ItemsDBViewControllerMode;
+
 @interface ItemsDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
 	UITableView *itemsTable;
 	UISearchBar *searchBar;
@@ -27,6 +33,7 @@
 @property (nonatomic, retain) NSMutableArray *rows;
 @property (nonatomic, retain) NSArray *filteredValues;
 @property (nonatomic, getter=isModalMode) BOOL modalMode;
+@property (nonatomic, readonly) ItemsDBViewControllerMode mode;
 
 - (IBAction) onChangePublishedFilterSegment: (id) sender;
 @end

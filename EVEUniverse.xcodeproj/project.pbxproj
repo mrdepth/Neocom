@@ -72,6 +72,10 @@
 		3764AC8614CDDCCD00C7DEC5 /* CertificateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3764AC8414CDDCCD00C7DEC5 /* CertificateViewController.m */; };
 		3764AC8714CDDCCD00C7DEC5 /* CertificateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3764AC8514CDDCCD00C7DEC5 /* CertificateViewController.xib */; };
 		3764AC8C14CDDDB300C7DEC5 /* CertificateTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3764AC8B14CDDDB300C7DEC5 /* CertificateTreeView.m */; };
+		37763D22150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37763D21150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib */; };
+		37763D27150E15D50096A467 /* FittingNPCGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37763D26150E15D50096A467 /* FittingNPCGroupsViewController.m */; };
+		37763D2C150E1A5B0096A467 /* FittingNPCItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37763D2B150E1A5B0096A467 /* FittingNPCItemViewController.m */; };
+		37763D2E150E1F5F0096A467 /* damagePattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 37763D2D150E1F5F0096A467 /* damagePattern.png */; };
 		377CC0D914140E7C000415BE /* contractsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 377CC0D814140E7C000415BE /* contractsFilter.plist */; };
 		377CC0DE14141118000415BE /* EUFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 377CC0DD14141118000415BE /* EUFilter.m */; };
 		377CC0E114141B17000415BE /* EUFilterItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 377CC0E014141B17000415BE /* EUFilterItem.m */; };
@@ -85,6 +89,9 @@
 		378481281418E3D500450645 /* industryJobsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378481271418E3D500450645 /* industryJobsFilter.plist */; };
 		378481861418F5D300450645 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 378481841418F5D300450645 /* checkmark.png */; };
 		378481871418F5D300450645 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 378481851418F5D300450645 /* checkmark@2x.png */; };
+		379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */; };
+		379B8DA41507AAED00326B5D /* NPCGroupsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */; };
+		379B8DA61507AC9D00326B5D /* NPCGroupsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */; };
 		379F2D811418191B0018B2CA /* marketOrdersFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 379F2D801418191B0018B2CA /* marketOrdersFilter.plist */; };
 		37A0C25D14B35A92008ACDB4 /* AreaEffectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */; };
 		37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A0C25C14B35A92008ACDB4 /* AreaEffectsViewController.xib */; };
@@ -772,6 +779,12 @@
 		3764AC8514CDDCCD00C7DEC5 /* CertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateViewController.xib; sourceTree = "<group>"; };
 		3764AC8A14CDDDB300C7DEC5 /* CertificateTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateTreeView.h; sourceTree = "<group>"; };
 		3764AC8B14CDDDB300C7DEC5 /* CertificateTreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateTreeView.m; sourceTree = "<group>"; };
+		37763D21150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NPCGroupsViewControllerModal-iPad.xib"; sourceTree = "<group>"; };
+		37763D25150E15D50096A467 /* FittingNPCGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingNPCGroupsViewController.h; sourceTree = "<group>"; };
+		37763D26150E15D50096A467 /* FittingNPCGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingNPCGroupsViewController.m; sourceTree = "<group>"; };
+		37763D2A150E1A5B0096A467 /* FittingNPCItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingNPCItemViewController.h; sourceTree = "<group>"; };
+		37763D2B150E1A5B0096A467 /* FittingNPCItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingNPCItemViewController.m; sourceTree = "<group>"; };
+		37763D2D150E1F5F0096A467 /* damagePattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = damagePattern.png; sourceTree = "<group>"; };
 		377CC0D814140E7C000415BE /* contractsFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = contractsFilter.plist; sourceTree = "<group>"; };
 		377CC0DC14141118000415BE /* EUFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUFilter.h; sourceTree = "<group>"; };
 		377CC0DD14141118000415BE /* EUFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUFilter.m; sourceTree = "<group>"; };
@@ -790,6 +803,10 @@
 		378481271418E3D500450645 /* industryJobsFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = industryJobsFilter.plist; sourceTree = "<group>"; };
 		378481841418F5D300450645 /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
 		378481851418F5D300450645 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
+		379B8DA01507A9E300326B5D /* NPCGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPCGroupsViewController.h; sourceTree = "<group>"; };
+		379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPCGroupsViewController.m; sourceTree = "<group>"; };
+		379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NPCGroupsViewController.xib; sourceTree = "<group>"; };
+		379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NPCGroupsViewController-iPad.xib"; sourceTree = "<group>"; };
 		379F2D801418191B0018B2CA /* marketOrdersFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = marketOrdersFilter.plist; sourceTree = "<group>"; };
 		37A0C25A14B35A92008ACDB4 /* AreaEffectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaEffectsViewController.h; sourceTree = "<group>"; };
 		37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaEffectsViewController.m; sourceTree = "<group>"; };
@@ -1765,6 +1782,7 @@
 				37AF875314E988EF0047360D /* DonationViewController */,
 				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
+				379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
 			);
@@ -2037,6 +2055,25 @@
 			name = CertificateTreeView;
 			sourceTree = "<group>";
 		};
+		37763D24150E15AF0096A467 /* FittingNPCGroupsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37763D29150E1A340096A467 /* FittingNPCItemViewController */,
+				37763D25150E15D50096A467 /* FittingNPCGroupsViewController.h */,
+				37763D26150E15D50096A467 /* FittingNPCGroupsViewController.m */,
+			);
+			name = FittingNPCGroupsViewController;
+			sourceTree = "<group>";
+		};
+		37763D29150E1A340096A467 /* FittingNPCItemViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37763D2A150E1A5B0096A467 /* FittingNPCItemViewController.h */,
+				37763D2B150E1A5B0096A467 /* FittingNPCItemViewController.m */,
+			);
+			name = FittingNPCItemViewController;
+			sourceTree = "<group>";
+		};
 		377CC0DB141410FC000415BE /* EUFilter */ = {
 			isa = PBXGroup;
 			children = (
@@ -2060,6 +2097,18 @@
 				3715824F141794DA00A20C92 /* FilterViewController-iPad.xib */,
 			);
 			name = FilterViewController;
+			sourceTree = "<group>";
+		};
+		379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				379B8DA01507A9E300326B5D /* NPCGroupsViewController.h */,
+				379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */,
+				379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */,
+				379B8DA51507AC9D00326B5D /* NPCGroupsViewController-iPad.xib */,
+				37763D21150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib */,
+			);
+			name = NPCGroupsViewController;
 			sourceTree = "<group>";
 		};
 		37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */ = {
@@ -2779,6 +2828,7 @@
 				37B965BB14D98ED8003F3900 /* DamagePattern */,
 				37B965B514D98519003F3900 /* DamagePatternCellView */,
 				37B965DC14D99BFE003F3900 /* DamagePatternEditViewController */,
+				37763D24150E15AF0096A467 /* FittingNPCGroupsViewController */,
 				37B965AF14D98224003F3900 /* DamagePatternsViewController.h */,
 				37B965B014D98224003F3900 /* DamagePatternsViewController.m */,
 				37B965B114D98224003F3900 /* DamagePatternsViewController.xib */,
@@ -3710,6 +3760,7 @@
 		71955A651376B5390068DBD7 /* FittingIcons */ = {
 			isa = PBXGroup;
 			children = (
+				37763D2D150E1F5F0096A467 /* damagePattern.png */,
 				7197DC37137F685800C3B3F4 /* thumbsDown.png */,
 				7197DC38137F685800C3B3F4 /* thumbsUp.png */,
 				7189ACB0137E077C0006B2D1 /* battleclinic.png */,
@@ -4425,6 +4476,10 @@
 				37C0FB2714FD0E7F006A153D /* WalletJournalCellView.xib in Resources */,
 				37C0FB2914FD1319006A153D /* walletJournalFilter.plist in Resources */,
 				37C0FB3414FD31FF006A153D /* WalletJournalCellView-iPad.xib in Resources */,
+				379B8DA41507AAED00326B5D /* NPCGroupsViewController.xib in Resources */,
+				379B8DA61507AC9D00326B5D /* NPCGroupsViewController-iPad.xib in Resources */,
+				37763D22150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib in Resources */,
+				37763D2E150E1F5F0096A467 /* damagePattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4742,6 +4797,9 @@
 				37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */,
 				371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */,
 				37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */,
+				379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */,
+				37763D27150E15D50096A467 /* FittingNPCGroupsViewController.m in Sources */,
+				37763D2C150E1A5B0096A467 /* FittingNPCItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

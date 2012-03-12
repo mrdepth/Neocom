@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class EVEDBInvType;
 @interface DamagePattern : NSObject<NSCoding> {
 	float emAmount;
 	float thermalAmount;
@@ -24,5 +25,7 @@
 @property (nonatomic, copy) NSString* uuid;
 
 + (id) uniformDamagePattern;
++ (id) damagePatternWithNPCType:(EVEDBInvType*) type;
+- (id) initWithNPCType:(EVEDBInvType*) type;
 
 @end

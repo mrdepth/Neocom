@@ -37,6 +37,10 @@
 	ProgressLabel *hullThermalLabel;
 	ProgressLabel *hullKineticLabel;
 	ProgressLabel *hullExplosiveLabel;
+	ProgressLabel *damagePatternEMLabel;
+	ProgressLabel *damagePatternThermalLabel;
+	ProgressLabel *damagePatternKineticLabel;
+	ProgressLabel *damagePatternExplosiveLabel;
 	
 	UILabel *shieldHPLabel;
 	UILabel *armorHPLabel;
@@ -96,6 +100,10 @@
 @property (nonatomic, retain) IBOutlet ProgressLabel *hullThermalLabel;
 @property (nonatomic, retain) IBOutlet ProgressLabel *hullKineticLabel;
 @property (nonatomic, retain) IBOutlet ProgressLabel *hullExplosiveLabel;
+@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternEMLabel;
+@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternThermalLabel;
+@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternKineticLabel;
+@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternExplosiveLabel;
 
 @property (nonatomic, retain) IBOutlet UILabel *shieldHPLabel;
 @property (nonatomic, retain) IBOutlet UILabel *armorHPLabel;

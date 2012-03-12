@@ -70,8 +70,8 @@
 	corpWalletJournal  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
 	
 	[ownerSegmentControl layoutSubviews];
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsOwner];
-	accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsCorpAccount];
+	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletJournalOwner];
+	accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletJournalCorpAccount];
 	
 	[self reloadJournal];
 	[self downloadAccountBalance];
@@ -156,7 +156,7 @@
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletJournalOwner];
 	
 	[walletJournalTableView reloadData];
 	[self reloadJournal];
@@ -190,7 +190,7 @@
 }
 
 - (IBAction) onChangeAccount:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsCorpAccount];
+	[[NSUserDefaults standardUserDefaults] setInteger:accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletJournalCorpAccount];
 	
 	[walletJournalTableView reloadData];
 	[self reloadJournal];

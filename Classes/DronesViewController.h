@@ -7,15 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewControllerDelegate.h"
 #import "ProgressLabel.h"
 #import "DronesAmountViewController.h"
 #import "FittingSection.h"
 #import "TargetsViewController.h"
+#import "FittingItemsViewController.h"
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, FittingItemsViewControllerDelegate, UIActionSheetDelegate, DronesAmountViewControllerDelegate, TargetsViewControllerDelegate> {
+@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate, TargetsViewControllerDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;
 	ProgressLabel *droneBayLabel;

@@ -19,6 +19,7 @@
 @implementation CharactersViewController
 @synthesize charactersTableView;
 @synthesize delegate;
+@synthesize modifiedFit;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -118,6 +119,7 @@
 - (void)dealloc {
 	[charactersTableView release];
 	[sections release];
+	[modifiedFit release];
 	[super dealloc];
 }
 

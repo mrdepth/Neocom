@@ -10,7 +10,6 @@
 #import "FittingViewController.h"
 #import "ModuleCellView.h"
 #import "NibTableViewCell.h"
-#import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
@@ -74,12 +73,6 @@
 	self.tableView = nil;
 	self.implantsHeaderView = nil;
 	self.boostersHeaderView = nil;
-/*	[implants release];
-	[boosters release];
-	[modifiedIndexPath release];
-	implants = nil;
-	boosters = nil;
-	modifiedIndexPath = nil;*/
 }
 
 
@@ -112,39 +105,6 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	/*EVEFittingItem *item = nil;
-	if (indexPath.section == 0)
-		item = [[implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]] item];
-	else
-		item = [[boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]] item];
-	if (!item) {
-		NSString *cellIdentifier = @"ModuleCellView";
-		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.iconView.image = [UIImage imageNamed:indexPath.section == 0 ? @"implant.png" : @"booster.png"];
-		//cell.titleLabel.text = indexPath.section == 0 ? @"Add implant" : @"Add booster";
-		cell.titleLabel.text = [NSString stringWithFormat:@"Slot %d", indexPath.row + 1];
-		cell.stateView.image = nil;
-		cell.chargeLabel.text = nil;
-		cell.rangeLabel.text = nil;
-		return cell;
-	}
-	else {
-		NSString *cellIdentifier = @"ModuleCellView";
-		
-		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.stateView.image = [UIImage imageNamed:@"active.png"];
-		
-		cell.titleLabel.text = item.typeName;
-		cell.iconView.image = [UIImage imageNamed:[item typeSmallImageName]];
-		return cell;
-	}*/
-	
 	ItemInfo* itemInfo = nil;
 	if (indexPath.section == 0)
 		itemInfo = [implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
@@ -157,7 +117,6 @@
 			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.iconView.image = [UIImage imageNamed:indexPath.section == 0 ? @"implant.png" : @"booster.png"];
-		//cell.titleLabel.text = indexPath.section == 0 ? @"Add implant" : @"Add booster";
 		cell.titleLabel.text = [NSString stringWithFormat:@"Slot %d", indexPath.row + 1];
 		cell.stateView.image = nil;
 		return cell;
@@ -194,11 +153,6 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-/*	EVEFittingItem *item = nil;
-	if (indexPath.section == 0)
-		item = [[implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]] item];
-	else
-		item = [[boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]] item];*/
 	
 	ItemInfo* itemInfo = nil;
 	if (indexPath.section == 0)
@@ -227,7 +181,7 @@
 			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:303 error:nil];
 			fittingItemsViewController.title = @"Boosters";
 		}
-		fittingItemsViewController.delegate = self;
+		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 		else
@@ -250,26 +204,6 @@
 		[modifiedIndexPath release];
 		modifiedIndexPath = [indexPath retain];
 	}
-}
-
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-	if ([type.attributesDictionary valueForKey:@"331"]) {
-		//EVEFittingImplant *implant = [EVEFittingImplant implantWithTypeID:type.typeID];
-		//[fit.implants addObject:implant];
-		fittingViewController.fit.character.get()->addImplant(type.typeID);
-	}
-	else {
-//		EVEFittingBooster *booster = [EVEFittingBooster boosterWithTypeID:type.typeID];
-//		[fit.boosters addObject:booster];
-		fittingViewController.fit.character.get()->addBooster(type.typeID);
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController dismissPopoverAnimated:YES];
-	}
-	[fittingViewController update];
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self.fittingViewController dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark UIActionSheetDelegate

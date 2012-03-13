@@ -16,7 +16,7 @@
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface ModulesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, FittingItemsViewControllerDelegate, UIActionSheetDelegate, TargetsViewControllerDelegate> {
+@interface ModulesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, TargetsViewControllerDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;
 	ProgressLabel *powerGridLabel;

@@ -9,11 +9,9 @@
 #import "FleetViewController.h"
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"
-#import "FittingViewController.h"
 #import "ModuleCellView.h"
 #import "FleetMemberCellView.h"
 #import "NibTableViewCell.h"
-#import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
@@ -36,8 +34,6 @@
 @implementation FleetViewController
 @synthesize fittingViewController;
 @synthesize tableView;
-@synthesize fittingItemsViewController;
-@synthesize popoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -89,8 +85,6 @@
 
 - (void)dealloc {
 	[tableView release];
-	[fittingItemsViewController release];
-	[popoverController release];
 	[modifiedIndexPath release];
 	[pilots release];
     [super dealloc];
@@ -155,20 +149,7 @@
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if (indexPath.row == pilots.count) {
-		FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitsViewController-iPad" : @"FitsViewController")
-																					  bundle:nil];
-		fitsViewController.delegate = self;
-		fitsViewController.engine = fittingViewController.fittingEngine;
-		
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fitsViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[fittingViewController presentModalViewController:navController animated:YES];
-		[navController release];
-		[fitsViewController release];
+		[fittingViewController addFleetMember];
 	}
 	else {
 		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
@@ -221,29 +202,13 @@
 	
 }
 
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-}
-
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonCharacter]) {
-		CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
-																										bundle:nil];
-		charactersViewController.delegate = self;
-		
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[fittingViewController presentModalViewController:navController animated:YES];
-		[navController release];
-		[charactersViewController release];
+		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		[fittingViewController selectCharacterForFit:fit];
 	}
 	else if ([button isEqualToString:ActionButtonSelect]) {
 		fittingViewController.fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
@@ -334,37 +299,6 @@
 			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 		[itemViewController release];
 	}
-}
-
-#pragma mark CharactersViewControllerDelegate
-
-- (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
-	if (modifiedIndexPath) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		eufe::Character* eufeCharacter = fit.character.get();
-		eufeCharacter->setSkillLevels(*[character skillsMap]);
-		eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
-		[fittingViewController update];
-	}
-	[fittingViewController dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark FitsViewControllerDelegate
-
-- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(Fit*) fit {
-	boost::shared_ptr<eufe::Character> character = fit.character;
-	fittingViewController.fittingEngine->getGang()->addPilot(character);
-	[fittingViewController.fits addObject:fit];
-	
-	eufe::DamagePattern eufeDamagePattern;
-	eufeDamagePattern.emAmount = fittingViewController.damagePattern.emAmount;
-	eufeDamagePattern.thermalAmount = fittingViewController.damagePattern.thermalAmount;
-	eufeDamagePattern.kineticAmount = fittingViewController.damagePattern.kineticAmount;
-	eufeDamagePattern.explosiveAmount = fittingViewController.damagePattern.explosiveAmount;
-	character->getShip()->setDamagePattern(eufeDamagePattern);
-	
-	[fittingViewController dismissModalViewControllerAnimated:YES];
-	[fittingViewController update];
 }
 
 #pragma mark FittingSection

@@ -191,7 +191,6 @@
 								<string key="NSFrame">{{12, 7}, {237, 31}}</string>
 								<reference key="NSSuperview" ref="509237442"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -327,7 +326,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="156330847">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="965698579">
-							<reference key="IBUINavigationBar"/>
 							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="37767238">
 								<string key="IBUITitle">Close</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -369,7 +367,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="89715205">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="395717697">
-							<reference key="IBUINavigationBar"/>
 							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="370113000">
 								<string key="IBUITitle">Close</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -571,6 +568,14 @@
 						<int key="IBEventType">13</int>
 					</object>
 					<int key="connectionID">139</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="528767570"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">194</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1083,7 +1088,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">193</int>
+			<int key="maxID">194</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1266,11 +1271,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>didChangeSection:</string>
 							<string>didCloseModalViewController:</string>
+							<string>onBack:</string>
 							<string>onDone:</string>
 							<string>onMenu:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1283,6 +1290,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>didChangeSection:</string>
 							<string>didCloseModalViewController:</string>
+							<string>onBack:</string>
 							<string>onDone:</string>
 							<string>onMenu:</string>
 						</object>
@@ -1294,6 +1302,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">didCloseModalViewController:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">onBack:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -1697,6 +1709,10 @@
 							<string>cargoLabel</string>
 							<string>contentView</string>
 							<string>cpuLabel</string>
+							<string>damagePatternEMLabel</string>
+							<string>damagePatternExplosiveLabel</string>
+							<string>damagePatternKineticLabel</string>
+							<string>damagePatternThermalLabel</string>
 							<string>dpsLabel</string>
 							<string>droneBandwidthLabel</string>
 							<string>droneBayLabel</string>
@@ -1750,6 +1766,10 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIView</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
 							<string>ProgressLabel</string>
 							<string>UILabel</string>
 							<string>ProgressLabel</string>
@@ -1808,6 +1828,10 @@
 							<string>cargoLabel</string>
 							<string>contentView</string>
 							<string>cpuLabel</string>
+							<string>damagePatternEMLabel</string>
+							<string>damagePatternExplosiveLabel</string>
+							<string>damagePatternKineticLabel</string>
+							<string>damagePatternThermalLabel</string>
 							<string>dpsLabel</string>
 							<string>droneBandwidthLabel</string>
 							<string>droneBayLabel</string>
@@ -1908,6 +1932,22 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">cpuLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternEMLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternExplosiveLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternKineticLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternThermalLabel</string>
 								<string key="candidateClassName">ProgressLabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">

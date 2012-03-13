@@ -28,7 +28,7 @@ INSERT INTO eveDB.crtRecommendations SELECT * FROM crtRecommendations;
 INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
 
 
-UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL;
+UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=4 WHERE attributeID IN (109,110,111,113);
 UPDATE eveDB.dgmAttributeTypes SET categoryID=1 WHERE attributeID IN (1547,1132,1367);

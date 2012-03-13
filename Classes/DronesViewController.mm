@@ -199,7 +199,7 @@
 	if (indexPath.row >= rows.count) {
 		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023) %@ %@ ORDER BY invTypes.typeName;";
-		fittingItemsViewController.delegate = self;
+		fittingItemsViewController.modifiedItem = nil;
 		fittingItemsViewController.title = @"Drones";
 		fittingItemsViewController.group = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -341,13 +341,13 @@
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
 
-		targetsViewController.delegate = self;
+		targetsViewController.modifiedItem = itemInfo;
+		targetsViewController.delegate = fittingViewController;
 		targetsViewController.currentTarget = drone->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 		else
 			[self.fittingViewController presentModalViewController:targetsViewController.navigationController animated:YES];
-		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonClearTarget]) {
 		for (ItemInfo* itemInfo in array)

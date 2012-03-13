@@ -356,7 +356,7 @@
 				
 		
 		fittingItemsViewController.group = nil;
-		fittingItemsViewController.delegate = self;
+		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 		else
@@ -449,35 +449,6 @@
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
 		[actionSheet autorelease];
 	}
-}
-
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self.fittingViewController dismissModalViewControllerAnimated:YES];
-	
-	if (type.group.category.categoryID == 8) {// Charge
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController dismissPopoverAnimated:YES];
-		if (modifiedIndexPath) {
-			NSArray *modules = [[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"modules"];
-			ItemInfo* itemInfo = [modules objectAtIndex:modifiedIndexPath.row];
-			eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item.get());
-			module->setCharge(type.typeID);
-		}
-		else {
-			boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
-			eufe::ModulesList::const_iterator i, end = ship->getModules().end();
-			for (i = ship->getModules().begin(); i != end; i++) {
-				(*i)->setCharge(type.typeID);
-			}
-		}
-	}
-	else {
-		fittingViewController.fit.character.get()->getShip()->addModule(type.typeID);
-	}
-	[fittingViewController update];
 }
 
 #pragma mark TargetsViewControllerDelegate
@@ -582,7 +553,10 @@
 													   groups, module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
 		}
 		fittingItemsViewController.title = @"Ammo";
-		fittingItemsViewController.delegate = self;
+		if ([button isEqualToString:ActionButtonAmmoAllModules])
+			fittingItemsViewController.modifiedItem = nil;
+		else
+			fittingItemsViewController.modifiedItem = itemInfo;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
@@ -628,13 +602,13 @@
 		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
-		targetsViewController.delegate = self;
+		targetsViewController.modifiedItem = itemInfo;
+		targetsViewController.delegate = self.fittingViewController;
 		targetsViewController.currentTarget = module->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 		else
 			[self.fittingViewController presentModalViewController:targetsViewController.navigationController animated:YES];
-		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonClearTarget]) {
 		module->clearTarget();

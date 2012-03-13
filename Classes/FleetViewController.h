@@ -7,20 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewControllerDelegate.h"
 #import "FittingSection.h"
-#import "CharactersViewController.h"
-#import "FitsViewController.h"
 
 #include "eufe.h"
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface FleetViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, FittingItemsViewControllerDelegate, UIActionSheetDelegate, CharactersViewControllerDelegate, FitsViewControllerDelegate> {
+@interface FleetViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;
-	FittingItemsViewController *fittingItemsViewController;
-	UIPopoverController *popoverController;
 	
 @private
 	NSMutableArray* pilots;
@@ -28,7 +23,5 @@
 }
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) UIPopoverController *popoverController;
 
 @end

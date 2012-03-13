@@ -10,6 +10,7 @@
 #import "FittingItemsViewControllerDelegate.h"
 
 @class EVEDBInvGroup;
+@class ItemInfo;
 @interface FittingItemsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, FittingItemsViewControllerDelegate, UIPopoverControllerDelegate> {
 	UITableView *tableView;
 	NSString *groupsRequest;
@@ -17,6 +18,7 @@
 	EVEDBInvGroup *group;
 	id<FittingItemsViewControllerDelegate> delegate;
 	UIViewController *mainViewController;
+	ItemInfo* modifiedItem;
 @protected
 	NSMutableArray *sections;
 	NSMutableArray *filteredSections;
@@ -28,5 +30,6 @@
 @property (nonatomic, retain) NSString *typesRequest;
 @property (nonatomic, retain) EVEDBInvGroup *group;
 @property (nonatomic, assign) IBOutlet id<FittingItemsViewControllerDelegate> delegate;
+@property (nonatomic, retain) ItemInfo* modifiedItem;
 
 @end

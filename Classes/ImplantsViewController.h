@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewControllerDelegate.h"
 #import "FittingSection.h"
+#import "FittingItemsViewController.h"
 
 #include "eufe.h"
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface ImplantsViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, FittingItemsViewControllerDelegate, UIActionSheetDelegate> {
+@interface ImplantsViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;
 	UIView *implantsHeaderView;

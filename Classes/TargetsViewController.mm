@@ -21,6 +21,7 @@
 @synthesize fittingViewController;
 @synthesize currentTarget;
 @synthesize delegate;
+@synthesize modifiedItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,17 +51,17 @@
 
 - (void)viewDidUnload
 {
-	[self setTableView:nil];
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+	[self setTableView:nil];
+	[targets release];
+	targets = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
 	NSMutableArray* targetsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
+	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"TargetsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
@@ -119,6 +120,8 @@
 
 - (void)dealloc {
 	[tableView release];
+	[targets release];
+	[modifiedItem release];
 	[super dealloc];
 }
 

@@ -17,24 +17,35 @@
 #import "AreaEffectsViewController.h"
 #import "CharactersViewController.h"
 #import "DamagePatternsViewController.h"
+#import "FitsViewController.h"
+#import "TargetsViewController.h"
 
 #import "eufe.h"
 
 @class EVEFittingFit;
 @class Fit;
 @class DamagePattern;
-@interface FittingViewController : UIViewController<UIActionSheetDelegate, UITextFieldDelegate, BrowserViewControllerDelegate, AreaEffectsViewControllerDelegate, CharactersViewControllerDelegate, DamagePatternsViewControllerDelegate> {
+@interface FittingViewController : UIViewController<UIActionSheetDelegate,
+													UITextFieldDelegate,
+													BrowserViewControllerDelegate,
+													AreaEffectsViewControllerDelegate,
+													CharactersViewControllerDelegate,
+													DamagePatternsViewControllerDelegate,
+													FitsViewControllerDelegate,
+													TargetsViewControllerDelegate> {
 	UIView *sectionsView;
 	UISegmentedControl *sectionSegmentControl;
 	UINavigationController *modalController;
 	UINavigationController *targetsModalController;
 	UINavigationController *areaEffectsModalController;
+	TargetsViewController* targetsViewController;
 	AreaEffectsViewController* areaEffectsViewController;
 	ModulesViewController *modulesViewController;
 	DronesViewController *dronesViewController;
 	ImplantsViewController *implantsViewController;
 	StatsViewController *statsViewController;
 	FleetViewController *fleetViewController;
+
 	UIView *shadeView;
 	UIToolbar *fitNameView;
 	UITextField *fitNameTextField;
@@ -49,6 +60,7 @@
 	DamagePattern* damagePattern;
 @private
 	UIViewController<FittingSection> *currentSection;
+	NSInteger currentSectionIndex;
 	UIActionSheet *actionSheet;
 }
 @property (nonatomic, retain) IBOutlet UIView *sectionsView;
@@ -56,12 +68,14 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;
 @property (nonatomic, retain) IBOutlet UINavigationController *targetsModalController;
 @property (nonatomic, retain) IBOutlet UINavigationController *areaEffectsModalController;
+@property (nonatomic, retain) IBOutlet TargetsViewController* targetsViewController;
 @property (nonatomic, retain) IBOutlet AreaEffectsViewController* areaEffectsViewController;
 @property (nonatomic, retain) IBOutlet ModulesViewController *modulesViewController;
 @property (nonatomic, retain) IBOutlet DronesViewController *dronesViewController;
 @property (nonatomic, retain) IBOutlet ImplantsViewController *implantsViewController;
 @property (nonatomic, retain) IBOutlet StatsViewController *statsViewController;
 @property (nonatomic, retain) IBOutlet FleetViewController *fleetViewController;
+
 @property (nonatomic, retain) IBOutlet UIView *shadeView;
 @property (nonatomic, retain) IBOutlet UIToolbar *fitNameView;
 @property (nonatomic, retain) IBOutlet UITextField *fitNameTextField;
@@ -70,8 +84,6 @@
 @property (nonatomic, retain) UIPopoverController *targetsPopoverController;
 @property (nonatomic, retain) UIPopoverController *areaEffectsPopoverController;
 
-
-//@property (nonatomic, retain) EVEFittingFit *fit;
 @property (nonatomic, retain) Fit* fit;
 
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
@@ -83,7 +95,8 @@
 - (IBAction) onMenu:(id) sender;
 - (IBAction) onDone:(id) sender;
 - (IBAction) onBack:(id) sender;
-- (void) recalculateFit;
 - (void) update;
+- (void) addFleetMember;
+- (void) selectCharacterForFit:(Fit*) fit;
 
 @end

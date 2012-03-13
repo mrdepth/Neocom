@@ -43,6 +43,7 @@
 @synthesize modalController;
 @synthesize targetsModalController;
 @synthesize areaEffectsModalController;
+@synthesize targetsViewController;
 @synthesize areaEffectsViewController;
 @synthesize modulesViewController;
 @synthesize dronesViewController;
@@ -80,10 +81,22 @@
 	self.fitNameTextField.text = fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
 
-	[self.sectionsView addSubview:modulesViewController.view];
-	modulesViewController.view.frame = self.sectionsView.bounds;
-	[modulesViewController viewWillAppear:NO];
-	currentSection = modulesViewController;
+	if (currentSectionIndex == 0)
+		currentSection = modulesViewController;
+	else if (currentSectionIndex == 1)
+		currentSection = dronesViewController;
+	else if (currentSectionIndex == 2)
+		currentSection = implantsViewController;
+	else if (currentSectionIndex == 3)
+		currentSection = fleetViewController;
+	else if (currentSectionIndex == 4)
+		currentSection = statsViewController;
+
+	[self.sectionsView addSubview:currentSection.view];
+	currentSection.view.frame = self.sectionsView.bounds;
+	[currentSection viewWillAppear:NO];
+	
+	sectionSegmentControl.selectedSegmentIndex = currentSectionIndex;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.statsSectionView addSubview:statsViewController.view];
@@ -100,7 +113,6 @@
 		modulesViewController.popoverController = self.popoverController;
 		dronesViewController.popoverController = self.popoverController;
 		implantsViewController.popoverController = self.popoverController;
-		fleetViewController.popoverController = self.popoverController;
 	}
 	
 	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
@@ -150,7 +162,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-/*	self.sectionsView = nil;
+	self.sectionsView = nil;
 	self.sectionSegmentControl = nil;
 	self.modalController = nil;
 	self.targetsModalController = nil;
@@ -168,7 +180,7 @@
 	self.popoverController = nil;
 	self.targetsPopoverController = nil;
 	self.areaEffectsPopoverController = nil;
-	currentSection = nil;*/
+	currentSection = nil;
 }
 
 
@@ -179,6 +191,7 @@
 	[modalController release];
 	[targetsModalController release];
 	[areaEffectsModalController release];
+	[targetsViewController release];
 	[areaEffectsViewController release];
 	[modulesViewController release];
 	[dronesViewController release];
@@ -221,6 +234,9 @@
 		newSection = statsViewController;
 	if (newSection == currentSection)
 		return;
+	
+	currentSectionIndex = sectionSegmentControl.selectedSegmentIndex;
+
 	[currentSection.view removeFromSuperview];
 	[self.sectionsView addSubview:newSection.view];
 	newSection.view.frame = self.sectionsView.bounds;
@@ -305,31 +321,44 @@
 	return fits;
 }
 
-- (void) recalculateFit {
-	/*__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingViewController+RecalculateFit"];
-	 [operation addExecutionBlock:^(void) {
-	 if ([operation isCancelled])
-	 return;
-	 NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	 [fit clear];
-	 [fit calculateModifiedAttributes];
-	 [pool release];
-	 }];
-	 [operation setCompletionBlockInCurrentThread:^(void) {
-	 if (![operation isCancelled]) {
-	 [currentSection update];
-	 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	 [statsViewController update];
-	 }
-	 }];
-	 [[EUOperationQueue sharedQueue] addOperation:operation];*/
-	[currentSection update];
-}
-
 - (void) update {
 	[currentSection update];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[statsViewController update];
+}
+
+- (void) addFleetMember {
+	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitsViewController-iPad" : @"FitsViewController")
+																				  bundle:nil];
+	fitsViewController.delegate = self;
+	fitsViewController.engine = fittingEngine;
+	
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fitsViewController];
+	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+	
+	[self presentModalViewController:navController animated:YES];
+	[navController release];
+	[fitsViewController release];
+}
+
+- (void) selectCharacterForFit:(Fit*) aFit {
+	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
+																									bundle:nil];
+	charactersViewController.delegate = self;
+	charactersViewController.modifiedFit = aFit;
+	
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
+	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+	
+	[self presentModalViewController:navController animated:YES];
+	[navController release];
+	[charactersViewController release];
 }
 
 - (void) setFit:(Fit*) value {
@@ -383,19 +412,7 @@
 		[fit save];
 	}
 	else if ([button isEqualToString:ActionButtonCharacter]) {
-		CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
-																										bundle:nil];
-		charactersViewController.delegate = self;
-		
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[self presentModalViewController:navController animated:YES];
-		[navController release];
-		[charactersViewController release];
+		[self selectCharacterForFit:fit];
 	}
 	else if ([button isEqualToString:ActionButtonViewInBrowser]) {
 		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
@@ -477,7 +494,7 @@
 #pragma mark CharactersViewControllerDelegate
 
 - (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
-	eufe::Character* eufeCharacter = fit.character.get();
+	eufe::Character* eufeCharacter = aController.modifiedFit.character.get();
 	eufeCharacter->setSkillLevels(*[character skillsMap]);
 	eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
 	[self update];
@@ -490,6 +507,115 @@
 	self.damagePattern = aDamagePattern;
 	[self update];
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark FittingItemsViewControllerDelegate
+
+- (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
+	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
+		[aController dismissModalViewControllerAnimated:YES];
+	
+	boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+
+	if (type.group.categoryID == 8) {// Charge
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[popoverController dismissPopoverAnimated:YES];
+		if (aController.modifiedItem) {
+			eufe::Module* module = dynamic_cast<eufe::Module*>(aController.modifiedItem.item.get());
+			module->setCharge(type.typeID);
+		}
+		else {
+			eufe::ModulesList::const_iterator i, end = ship->getModules().end();
+			for (i = ship->getModules().begin(); i != end; i++) {
+				(*i)->setCharge(type.typeID);
+			}
+		}
+	}
+	else if (type.group.categoryID == 18) {// Drone
+		eufe::TypeID typeID = type.typeID;
+		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+		
+		const eufe::DronesList& drones = ship->getDrones();
+		eufe::Drone* sameDrone = NULL;
+		eufe::DronesList::const_iterator i, end = drones.end();
+		for (i = drones.begin(); i != end; i++) {
+			if ((*i)->getTypeID() == typeID) {
+				sameDrone = i->get();
+				break;
+			}
+		}
+		eufe::Drone* drone = ship->addDrone(type.typeID).get();
+		
+		if (sameDrone)
+			drone->setTarget(sameDrone->getTarget());
+		else {
+			int dronesLeft = ship->getMaxActiveDrones() - 1;
+			for (;dronesLeft > 0; dronesLeft--)
+				ship->addDrone(boost::shared_ptr<eufe::Drone>(new eufe::Drone(*drone)));
+		}
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[popoverController dismissPopoverAnimated:YES];
+	}
+	else if (type.group.categoryID == 20) {// Implant
+		if ([type.attributesDictionary valueForKey:@"331"]) {
+			fit.character.get()->addImplant(type.typeID);
+		}
+		else {
+			fit.character.get()->addBooster(type.typeID);
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				[popoverController dismissPopoverAnimated:YES];
+		}
+	}
+	else { //Module
+		fit.character.get()->getShip()->addModule(type.typeID);
+	}
+	[self update];
+}
+
+#pragma mark FitsViewControllerDelegate
+
+- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(Fit*) aFit {
+	boost::shared_ptr<eufe::Character> character = aFit.character;
+	fittingEngine->getGang()->addPilot(character);
+	[fits addObject:aFit];
+	
+	eufe::DamagePattern eufeDamagePattern;
+	eufeDamagePattern.emAmount = damagePattern.emAmount;
+	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
+	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
+	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
+	character->getShip()->setDamagePattern(eufeDamagePattern);
+	
+	[self dismissModalViewControllerAnimated:YES];
+	[self update];
+}
+
+#pragma mark TargetsViewControllerDelegate
+- (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
+	ItemInfo* itemInfo = controller.modifiedItem;
+	if (itemInfo.group.categoryID == 18) { // Drone
+		boost::shared_ptr<eufe::Drone> drone = boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item);
+		eufe::TypeID typeID = drone->getTypeID();
+		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+		
+		const eufe::DronesList& drones = ship->getDrones();
+		eufe::DronesList::const_iterator i, end = drones.end();
+		for (i = drones.begin(); i != end; i++) {
+			if ((*i)->getTypeID() == typeID)
+				(*i)->setTarget(target);
+		}
+	}
+	else {
+		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
+		module->setTarget(target);
+	}
+	[self update];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.targetsPopoverController dismissPopoverAnimated:YES];
+	else
+		[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

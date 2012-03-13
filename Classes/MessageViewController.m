@@ -43,14 +43,15 @@
 																encoding:NSUTF8StringEncoding error:nil];
 	NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		[template replaceOccurrencesOfString:@"{subject}" withString:message.header.title options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{from}" withString:message.from options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{to}" withString:message.to options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{text}" withString:message.text options:0 range:NSMakeRange(0, template.length)];
+		[template replaceOccurrencesOfString:@"{subject}" withString:message.header.title ? message.header.title : @"" options:0 range:NSMakeRange(0, template.length)];
+		[template replaceOccurrencesOfString:@"{from}" withString:message.from ? message.from : @"" options:0 range:NSMakeRange(0, template.length)];
+		[template replaceOccurrencesOfString:@"{to}" withString:message.to ? message.to : @""options:0 range:NSMakeRange(0, template.length)];
+		[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : @"" options:0 range:NSMakeRange(0, template.length)];
 		
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
-		[template replaceOccurrencesOfString:@"{date}" withString:[dateFormatter stringFromDate:message.header.sentDate] options:0 range:NSMakeRange(0, template.length)];
+		NSString* dateString = [dateFormatter stringFromDate:message.header.sentDate];
+		[template replaceOccurrencesOfString:@"{date}" withString:dateString ? dateString : @"" options:0 range:NSMakeRange(0, template.length)];
 		[dateFormatter release];
 
 		[pool release];

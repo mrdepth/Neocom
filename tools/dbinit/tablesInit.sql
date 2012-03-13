@@ -1,195 +1,252 @@
 CREATE TABLE "crtCategories" (
-"categoryID"  INTEGER NOT NULL,
-"description"  TEXT(500),
-"categoryName"  TEXT(256),
-PRIMARY KEY ("categoryID")
+  "categoryID" tinyint(3) NOT NULL,
+  "description" varchar(500) DEFAULT NULL,
+  "categoryName" varchar(256) DEFAULT NULL,
+  PRIMARY KEY ("categoryID")
 );
+
 CREATE TABLE "crtCertificates" (
-"certificateID"  INTEGER NOT NULL,
-"categoryID"  INTEGER,
-"classID"  INTEGER,
-"grade"  INTEGER,
-"corpID"  INTEGER,
-"iconID"  INTEGER,
-"description"  TEXT(500),
-PRIMARY KEY ("certificateID")
+  "certificateID" int(11) NOT NULL,
+  "categoryID" tinyint(3) DEFAULT NULL,
+  "classID" int(11) DEFAULT NULL,
+  "grade" tinyint(4) DEFAULT NULL,
+  "corpID" int(11) DEFAULT NULL,
+  "iconID" smallint(6) DEFAULT NULL,
+  "description" varchar(500) DEFAULT NULL,
+  PRIMARY KEY ("certificateID")
 );
+
 CREATE TABLE "crtClasses" (
-"classID"  INTEGER NOT NULL,
-"description"  TEXT(500),
-"className"  TEXT(256),
-PRIMARY KEY ("classID")
+  "classID" int(11) NOT NULL,
+  "description" varchar(500) DEFAULT NULL,
+  "className" varchar(256) DEFAULT NULL,
+  PRIMARY KEY ("classID")
 );
+
 CREATE TABLE "crtRecommendations" (
-"recommendationID"  INTEGER NOT NULL,
-"shipTypeID"  INTEGER,
-"certificateID"  INTEGER,
-"recommendationLevel"  INTEGER NOT NULL,
-PRIMARY KEY ("recommendationID")
+  "recommendationID" int(11) NOT NULL,
+  "shipTypeID" int(11) DEFAULT NULL,
+  "certificateID" int(11) DEFAULT NULL,
+  "recommendationLevel" tinyint(4) NOT NULL,
+  PRIMARY KEY ("recommendationID")
 );
+
 CREATE TABLE "crtRelationships" (
-"relationshipID"  INTEGER NOT NULL,
-"parentID"  INTEGER,
-"parentTypeID"  INTEGER,
-"parentLevel"  INTEGER,
-"childID"  INTEGER,
-PRIMARY KEY ("relationshipID")
+  "relationshipID" int(11) NOT NULL,
+  "parentID" int(11) DEFAULT NULL,
+  "parentTypeID" int(11) DEFAULT NULL,
+  "parentLevel" tinyint(4) DEFAULT NULL,
+  "childID" int(11) DEFAULT NULL,
+  PRIMARY KEY ("relationshipID")
 );
+
 CREATE TABLE "dgmAttributeCategories" (
-"categoryID"  INTEGER NOT NULL,
-"categoryName"  TEXT(50),
-"categoryDescription"  TEXT(200),
-PRIMARY KEY ("categoryID")
+  "categoryID" tinyint(3) NOT NULL,
+  "categoryName" varchar(50) DEFAULT NULL,
+  "categoryDescription" varchar(200) DEFAULT NULL,
+  PRIMARY KEY ("categoryID")
 );
+
 CREATE TABLE "eveIcons" (
-"iconID"  INTEGER NOT NULL,
-"iconFile"  TEXT(500) NOT NULL,
-"description"  TEXT NOT NULL,
-PRIMARY KEY ("iconID")
+  "iconID" smallint(6) NOT NULL DEFAULT '0',
+  "iconFile" varchar(500) NOT NULL,
+  "description" varchar(16000) NOT NULL,
+  PRIMARY KEY ("iconID")
 );
+
 CREATE TABLE "eveUnits" (
-"unitID"  INTEGER NOT NULL,
-"unitName"  TEXT(100),
-"displayName"  TEXT(50),
-"description"  TEXT(1000),
-PRIMARY KEY ("unitID")
+  "unitID" tinyint(3) NOT NULL,
+  "unitName" varchar(100) DEFAULT NULL,
+  "displayName" varchar(50) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  PRIMARY KEY ("unitID")
 );
+
 CREATE TABLE "invControlTowerResourcePurposes" (
-"purpose"  INTEGER NOT NULL,
-"purposeText"  TEXT(100),
-PRIMARY KEY ("purpose")
+  "purpose" tinyint(4) NOT NULL,
+  "purposeText" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("purpose")
 );
+
 CREATE TABLE "invMarketGroups" (
-"marketGroupID"  INTEGER NOT NULL,
-"parentGroupID"  INTEGER,
-"marketGroupName"  TEXT(100),
-"description"  TEXT(3000),
-"iconID"  INTEGER,
-"hasTypes"  INTEGER,
-PRIMARY KEY ("marketGroupID")
+  "marketGroupID" smallint(6) NOT NULL,
+  "parentGroupID" smallint(6) DEFAULT NULL,
+  "marketGroupName" varchar(100) DEFAULT NULL,
+  "description" varchar(3000) DEFAULT NULL,
+  "iconID" smallint(6) DEFAULT NULL,
+  "hasTypes" tinyint(1) DEFAULT NULL,
+  PRIMARY KEY ("marketGroupID")
 );
+
 CREATE TABLE "invMetaGroups" (
-"metaGroupID"  INTEGER NOT NULL,
-"metaGroupName"  TEXT(100),
-"description"  TEXT(1000),
-"iconID"  INTEGER,
-PRIMARY KEY ("metaGroupID")
+  "metaGroupID" smallint(6) NOT NULL,
+  "metaGroupName" varchar(100) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "iconID" smallint(6) DEFAULT NULL,
+  PRIMARY KEY ("metaGroupID")
 );
+
 CREATE TABLE "invMetaTypes" (
-"typeID"  INTEGER NOT NULL,
-"parentTypeID"  INTEGER,
-"metaGroupID"  INTEGER,
-PRIMARY KEY ("typeID")
+  "typeID" int(11) NOT NULL,
+  "parentTypeID" int(11) DEFAULT NULL,
+  "metaGroupID" smallint(6) DEFAULT NULL,
+  PRIMARY KEY ("typeID")
 );
+
 CREATE TABLE "mapConstellations" (
-"regionID"  INTEGER,
-"constellationID"  INTEGER NOT NULL,
-"constellationName"  TEXT(100),
-"x"  REAL(53),
-"y"  REAL(53),
-"z"  REAL(53),
-"xMin"  REAL(53),
-"xMax"  REAL(53),
-"yMin"  REAL(53),
-"yMax"  REAL(53),
-"zMin"  REAL(53),
-"zMax"  REAL(53),
-"factionID"  INTEGER,
-"radius"  REAL(53),
-PRIMARY KEY ("constellationID")
+  "regionID" int(11) DEFAULT NULL,
+  "constellationID" int(11) NOT NULL,
+  "constellationName" varchar(100) DEFAULT NULL,
+  "x" double DEFAULT NULL,
+  "y" double DEFAULT NULL,
+  "z" double DEFAULT NULL,
+  "xMin" double DEFAULT NULL,
+  "xMax" double DEFAULT NULL,
+  "yMin" double DEFAULT NULL,
+  "yMax" double DEFAULT NULL,
+  "zMin" double DEFAULT NULL,
+  "zMax" double DEFAULT NULL,
+  "factionID" int(11) DEFAULT NULL,
+  "radius" double DEFAULT NULL,
+  PRIMARY KEY ("constellationID")
 );
+
 CREATE TABLE "mapDenormalize" (
-"itemID"  INTEGER NOT NULL,
-"typeID"  INTEGER,
-"groupID"  INTEGER,
-"solarSystemID"  INTEGER,
-"constellationID"  INTEGER,
-"regionID"  INTEGER,
-"orbitID"  INTEGER,
-"x"  REAL(53),
-"y"  REAL(53),
-"z"  REAL(53),
-"radius"  REAL(53),
-"itemName"  TEXT(100),
-"security"  REAL(53),
-"celestialIndex"  INTEGER,
-"orbitIndex"  INTEGER,
-PRIMARY KEY ("itemID")
+  "itemID" int(11) NOT NULL,
+  "typeID" int(11) DEFAULT NULL,
+  "groupID" smallint(6) DEFAULT NULL,
+  "solarSystemID" int(11) DEFAULT NULL,
+  "constellationID" int(11) DEFAULT NULL,
+  "regionID" int(11) DEFAULT NULL,
+  "orbitID" int(11) DEFAULT NULL,
+  "x" double DEFAULT NULL,
+  "y" double DEFAULT NULL,
+  "z" double DEFAULT NULL,
+  "radius" double DEFAULT NULL,
+  "itemName" varchar(100) DEFAULT NULL,
+  "security" double DEFAULT NULL,
+  "celestialIndex" tinyint(4) DEFAULT NULL,
+  "orbitIndex" tinyint(4) DEFAULT NULL,
+  PRIMARY KEY ("itemID")
 );
+
 CREATE TABLE "mapRegions" (
-"regionID"  INTEGER NOT NULL,
-"regionName"  TEXT(100),
-"x"  REAL(53),
-"y"  REAL(53),
-"z"  REAL(53),
-"xMin"  REAL(53),
-"xMax"  REAL(53),
-"yMin"  REAL(53),
-"yMax"  REAL(53),
-"zMin"  REAL(53),
-"zMax"  REAL(53),
-"factionID"  INTEGER,
-"radius"  REAL(53),
-PRIMARY KEY ("regionID")
+  "regionID" int(11) NOT NULL,
+  "regionName" varchar(100) DEFAULT NULL,
+  "x" double DEFAULT NULL,
+  "y" double DEFAULT NULL,
+  "z" double DEFAULT NULL,
+  "xMin" double DEFAULT NULL,
+  "xMax" double DEFAULT NULL,
+  "yMin" double DEFAULT NULL,
+  "yMax" double DEFAULT NULL,
+  "zMin" double DEFAULT NULL,
+  "zMax" double DEFAULT NULL,
+  "factionID" int(11) DEFAULT NULL,
+  "radius" double DEFAULT NULL,
+  PRIMARY KEY ("regionID")
 );
+
 CREATE TABLE "mapSolarSystems" (
-"regionID"  INTEGER,
-"constellationID"  INTEGER,
-"solarSystemID"  INTEGER NOT NULL,
-"solarSystemName"  TEXT(100),
-"x"  REAL(53),
-"y"  REAL(53),
-"z"  REAL(53),
-"xMin"  REAL(53),
-"xMax"  REAL(53),
-"yMin"  REAL(53),
-"yMax"  REAL(53),
-"zMin"  REAL(53),
-"zMax"  REAL(53),
-"luminosity"  REAL(53),
-"border"  INTEGER,
-"fringe"  INTEGER,
-"corridor"  INTEGER,
-"hub"  INTEGER,
-"international"  INTEGER,
-"regional"  INTEGER,
-"constellation"  INTEGER,
-"security"  REAL(53),
-"factionID"  INTEGER,
-"radius"  REAL(53),
-"sunTypeID"  INTEGER,
-"securityClass"  TEXT(2),
-PRIMARY KEY ("solarSystemID")
+  "regionID" int(11) DEFAULT NULL,
+  "constellationID" int(11) DEFAULT NULL,
+  "solarSystemID" int(11) NOT NULL,
+  "solarSystemName" varchar(100) DEFAULT NULL,
+  "x" double DEFAULT NULL,
+  "y" double DEFAULT NULL,
+  "z" double DEFAULT NULL,
+  "xMin" double DEFAULT NULL,
+  "xMax" double DEFAULT NULL,
+  "yMin" double DEFAULT NULL,
+  "yMax" double DEFAULT NULL,
+  "zMin" double DEFAULT NULL,
+  "zMax" double DEFAULT NULL,
+  "luminosity" double DEFAULT NULL,
+  "border" tinyint(1) DEFAULT NULL,
+  "fringe" tinyint(1) DEFAULT NULL,
+  "corridor" tinyint(1) DEFAULT NULL,
+  "hub" tinyint(1) DEFAULT NULL,
+  "international" tinyint(1) DEFAULT NULL,
+  "regional" tinyint(1) DEFAULT NULL,
+  "constellation" tinyint(1) DEFAULT NULL,
+  "security" double DEFAULT NULL,
+  "factionID" int(11) DEFAULT NULL,
+  "radius" double DEFAULT NULL,
+  "sunTypeID" int(11) DEFAULT NULL,
+  "securityClass" varchar(2) DEFAULT NULL,
+  PRIMARY KEY ("solarSystemID")
 );
+
 CREATE TABLE "ramActivities" (
-"activityID"  INTEGER NOT NULL,
-"activityName"  TEXT(100),
-"iconNo"  TEXT(5),
-"description"  TEXT(1000),
-"published"  INTEGER,
-PRIMARY KEY ("activityID")
+  "activityID" tinyint(3) NOT NULL,
+  "activityName" varchar(100) DEFAULT NULL,
+  "iconNo" varchar(5) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "published" tinyint(1) DEFAULT NULL,
+  PRIMARY KEY ("activityID")
 );
+
 CREATE TABLE "staStations" (
-"stationID"  INTEGER NOT NULL,
-"security"  INTEGER,
-"dockingCostPerVolume"  REAL(53),
-"maxShipVolumeDockable"  REAL(53),
-"officeRentalCost"  INTEGER,
-"operationID"  INTEGER,
-"stationTypeID"  INTEGER,
-"corporationID"  INTEGER,
-"solarSystemID"  INTEGER,
-"constellationID"  INTEGER,
-"regionID"  INTEGER,
-"stationName"  TEXT(100),
-"x"  REAL(53),
-"y"  REAL(53),
-"z"  REAL(53),
-"reprocessingEfficiency"  REAL(53),
-"reprocessingStationsTake"  REAL(53),
-"reprocessingHangarFlag"  INTEGER,
-PRIMARY KEY ("stationID")
+  "stationID" int(11) NOT NULL,
+  "security" smallint(6) DEFAULT NULL,
+  "dockingCostPerVolume" double DEFAULT NULL,
+  "maxShipVolumeDockable" double DEFAULT NULL,
+  "officeRentalCost" int(11) DEFAULT NULL,
+  "operationID" tinyint(3) DEFAULT NULL,
+  "stationTypeID" int(11) DEFAULT NULL,
+  "corporationID" int(11) DEFAULT NULL,
+  "solarSystemID" int(11) DEFAULT NULL,
+  "constellationID" int(11) DEFAULT NULL,
+  "regionID" int(11) DEFAULT NULL,
+  "stationName" varchar(100) DEFAULT NULL,
+  "x" double DEFAULT NULL,
+  "y" double DEFAULT NULL,
+  "z" double DEFAULT NULL,
+  "reprocessingEfficiency" double DEFAULT NULL,
+  "reprocessingStationsTake" double DEFAULT NULL,
+  "reprocessingHangarFlag" tinyint(4) DEFAULT NULL,
+  PRIMARY KEY ("stationID")
 );
+
+CREATE INDEX "crtCertificates_IX_category" ON "crtCertificates" ("categoryID");
+CREATE INDEX "crtCertificates_IX_class" ON "crtCertificates" ("classID");
+CREATE INDEX "crtCertificates_IX_corpID" ON "crtCertificates" ("corpID");
+CREATE INDEX "crtCertificates_IX_iconID" ON "crtCertificates" ("iconID");
+CREATE INDEX "crtRecommendations_IX_certificate" ON "crtRecommendations" ("certificateID");
+CREATE INDEX "crtRecommendations_IX_shipType" ON "crtRecommendations" ("shipTypeID");
+CREATE INDEX "crtRelationships_IX_child" ON "crtRelationships" ("childID");
+CREATE INDEX "crtRelationships_IX_parent" ON "crtRelationships" ("parentID");
+CREATE INDEX "crtRelationships_IX_parentTypeID" ON "crtRelationships" ("parentTypeID");
+CREATE INDEX "invMarketGroups_IX_parentGroupID" ON "invMarketGroups" ("parentGroupID");
+CREATE INDEX "invMarketGroups_IX_iconID" ON "invMarketGroups" ("iconID");
+CREATE INDEX "invMetaGroups_IX_iconID" ON "invMetaGroups" ("iconID");
+CREATE INDEX "invMetaTypes_IX_parentTypeID" ON "invMetaTypes" ("parentTypeID");
+CREATE INDEX "invMetaTypes_IX_metaGroupID" ON "invMetaTypes" ("metaGroupID");
+CREATE UNIQUE INDEX "mapConstellations_IX_constellationID" ON "mapConstellations" ("constellationID","regionID");
+CREATE INDEX "mapConstellations_IX_region" ON "mapConstellations" ("regionID");
+CREATE INDEX "mapConstellations_IX_factionID" ON "mapConstellations" ("factionID");
+CREATE INDEX "mapDenormalize_IX_constellation" ON "mapDenormalize" ("constellationID");
+CREATE INDEX "mapDenormalize_IX_groupConstellation" ON "mapDenormalize" ("groupID","constellationID");
+CREATE INDEX "mapDenormalize_IX_groupRegion" ON "mapDenormalize" ("groupID","regionID");
+CREATE INDEX "mapDenormalize_IX_groupSystem" ON "mapDenormalize" ("groupID","solarSystemID");
+CREATE INDEX "mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
+CREATE INDEX "mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
+CREATE INDEX "mapDenormalize_IX_system" ON "mapDenormalize" ("solarSystemID");
+CREATE INDEX "mapDenormalize_IX_typeID" ON "mapDenormalize" ("typeID");
+CREATE INDEX "mapRegions_IX_factionID" ON "mapRegions" ("factionID");
+CREATE UNIQUE INDEX "mapSolarSystems_IX_solarSystemID" ON "mapSolarSystems" ("solarSystemID","constellationID","regionID");
+CREATE INDEX "mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
+CREATE INDEX "mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
+CREATE INDEX "mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
+CREATE INDEX "mapSolarSystems_IX_factionID" ON "mapSolarSystems" ("factionID");
+CREATE INDEX "mapSolarSystems_IX_sunTypeID" ON "mapSolarSystems" ("sunTypeID");
+CREATE INDEX "staStations_IX_constellation" ON "staStations" ("constellationID");
+CREATE INDEX "staStations_IX_corporation" ON "staStations" ("corporationID");
+CREATE INDEX "staStations_IX_operation" ON "staStations" ("operationID");
+CREATE INDEX "staStations_IX_region" ON "staStations" ("regionID");
+CREATE INDEX "staStations_IX_system" ON "staStations" ("solarSystemID");
+CREATE INDEX "staStations_IX_type" ON "staStations" ("stationTypeID");
+CREATE INDEX "staStations_IX_solarSystemID" ON "staStations" ("solarSystemID","constellationID","regionID");
 CREATE TABLE dgmAttributeTypes (
   "attributeID" smallint(6) NOT NULL,
   "attributeName" varchar(100) default NULL,
@@ -306,6 +363,7 @@ CREATE TABLE invTypes (
   dataID smallint(6) default NULL,
   typeNameID smallint(6) default NULL,
   descriptionID smallint(6) default NULL,
+  copyTypeID smallint(6) default NULL,
   PRIMARY KEY  ("typeID")
 );
 

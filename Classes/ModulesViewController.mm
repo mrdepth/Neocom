@@ -451,20 +451,6 @@
 	}
 }
 
-#pragma mark TargetsViewControllerDelegate
-- (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
-	NSArray* modules = [[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"modules"];
-	ItemInfo* itemInfo = [modules objectAtIndex:modifiedIndexPath.row];
-	boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
-	module->setTarget(target);
-	[fittingViewController update];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.fittingViewController.targetsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self.fittingViewController dismissModalViewControllerAnimated:YES];
-}
-
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

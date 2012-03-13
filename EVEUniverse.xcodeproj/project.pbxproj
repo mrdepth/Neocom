@@ -4829,7 +4829,7 @@
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
 				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4B397AE1-F0FE-4BD8-AE86-250CA4698BFA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8DDE5B44-967E-4AFE-B832-292143A44315";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -15,7 +15,7 @@
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate, TargetsViewControllerDelegate> {
+@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;
 	ProgressLabel *droneBayLabel;

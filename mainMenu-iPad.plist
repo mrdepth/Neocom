@@ -64,7 +64,7 @@
 		<key>nibName</key>
 		<string>CertificateCategoriesViewController-iPad</string>
 		<key>title</key>
-		<string>Certification Planner</string>
+		<string>Certificates</string>
 		<key>image</key>
 		<string>Icons/icon79_06.png</string>
 		<key>charAccessMask</key>

@@ -287,22 +287,6 @@
 - (void) dronesAmountViewControllerDidCancel:(DronesAmountViewController*) controller {
 }
 
-#pragma mark TargetsViewControllerDelegate
-- (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
-	NSArray* array = [rows objectAtIndex:modifiedIndexPath.row];
-	
-	for (ItemInfo* itemInfo in array)
-		boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item)->setTarget(target);
-
-	[fittingViewController update];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.fittingViewController.targetsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self.fittingViewController dismissModalViewControllerAnimated:YES];
-	
-}
-
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

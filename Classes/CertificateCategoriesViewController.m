@@ -44,7 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Certification Planner";
+	self.title = @"Certificates";
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];

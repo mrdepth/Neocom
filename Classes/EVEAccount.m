@@ -174,46 +174,48 @@
 			NSError *error = nil;
 			if (!self.charKeyID || !self.charVCode || !self.characterID)
 				return nil;
-			//self.characterSheet = [EVECharacterSheet characterSheetWithUserID:self.userID apiKey:self.apiKey characterID:self.characterID error:&error];
-			self.characterSheet = [EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
+			[characterSheet release];
+			characterSheet = [[EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error] retain];
 		}
-		return characterSheet;
+		return [[characterSheet retain] autorelease];
 	}
 }
 
 - (void) setCharacterSheet:(EVECharacterSheet *) value {
-	[value retain];
-	[characterSheet release];
-	characterSheet = value;
-	
-	self.characterAttributes = [CharacterAttributes defaultCharacterAttributes];
-	if (characterSheet) {
-		characterAttributes.charisma = characterSheet.attributes.charisma;
-		characterAttributes.intelligence = characterSheet.attributes.intelligence;
-		characterAttributes.memory = characterSheet.attributes.memory;
-		characterAttributes.perception = characterSheet.attributes.perception;
-		characterAttributes.willpower = characterSheet.attributes.willpower;
+	@synchronized(self) {
+		[value retain];
+		[characterSheet release];
+		characterSheet = value;
 		
-		for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-			switch (enhancer.attribute) {
-				case EVECharacterAttributeCharisma:
-					characterAttributes.charisma += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeIntelligence:
-					characterAttributes.intelligence += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeMemory:
-					characterAttributes.memory += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributePerception:
-					characterAttributes.perception += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeWillpower:
-					characterAttributes.willpower += enhancer.augmentatorValue;
-					break;
+		self.characterAttributes = [CharacterAttributes defaultCharacterAttributes];
+		if (characterSheet) {
+			characterAttributes.charisma = characterSheet.attributes.charisma;
+			characterAttributes.intelligence = characterSheet.attributes.intelligence;
+			characterAttributes.memory = characterSheet.attributes.memory;
+			characterAttributes.perception = characterSheet.attributes.perception;
+			characterAttributes.willpower = characterSheet.attributes.willpower;
+			
+			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+				switch (enhancer.attribute) {
+					case EVECharacterAttributeCharisma:
+						characterAttributes.charisma += enhancer.augmentatorValue;
+						break;
+					case EVECharacterAttributeIntelligence:
+						characterAttributes.intelligence += enhancer.augmentatorValue;
+						break;
+					case EVECharacterAttributeMemory:
+						characterAttributes.memory += enhancer.augmentatorValue;
+						break;
+					case EVECharacterAttributePerception:
+						characterAttributes.perception += enhancer.augmentatorValue;
+						break;
+					case EVECharacterAttributeWillpower:
+						characterAttributes.willpower += enhancer.augmentatorValue;
+						break;
+				}
 			}
+			[self updateSkillpoints];
 		}
-		[self updateSkillpoints];
 	}
 }
 
@@ -237,11 +239,13 @@
 }
 
 - (void) setSkillQueue:(EVESkillQueue *) value {
-	[value retain];
-	[skillQueue release];
-	skillQueue = value;
-	if (skillQueue)
-		[self updateSkillpoints];
+	@synchronized(self) {
+		[value retain];
+		[skillQueue release];
+		skillQueue = value;
+		if (skillQueue)
+			[self updateSkillpoints];
+	}
 }
 
 - (SkillPlan*) skillPlan {
@@ -252,7 +256,15 @@
 			skillPlan = [[SkillPlan skillPlanWithAccount:self] retain];
 			[skillPlan load];
 		}
-		return skillPlan;
+		return [[skillPlan retain] autorelease];
+	}
+}
+
+- (void) setSkillPlan:(SkillPlan *)value {
+	@synchronized(self) {
+		[value retain];
+		[skillPlan release];
+		skillPlan = value;
 	}
 }
 
@@ -264,7 +276,15 @@
 			mailBox = [[EUMailBox alloc] initWithAccount:self];
 			[mailBox inbox];
 		}
-		return mailBox;
+		return [[mailBox retain] autorelease];
+	}
+}
+
+- (void) setMailBox:(EUMailBox *)value {
+	@synchronized(self) {
+		[value retain];
+		[mailBox release];
+		mailBox = value;
 	}
 }
 

@@ -56,10 +56,6 @@
 				[text retain];
 			}
 			else {
-/*				NSMutableString *s = [NSMutableString stringWithString:[[bodies.messages objectAtIndex:0] text]];
-				[s removeHTMLTags];
-				[s replaceHTMLEscapes];
-				text = [s retain];*/
 				text = [[[bodies.messages objectAtIndex:0] text] retain];
 			}
 		}

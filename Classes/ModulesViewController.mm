@@ -198,6 +198,7 @@
 		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
 		boost::shared_ptr<eufe::Charge> charge = module->getCharge();
 		
+		
 		bool useCharge = charge != NULL;
 		int optimal = (int) module->getMaxRange();
 		int falloff = (int) module->getFalloff();
@@ -430,39 +431,18 @@
 		else
 			[actionSheet addButtonWithTitle:ActionButtonChangeState];
 
-		/*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)*/ {
-			if (chargeGroups.size() > 0) {
-				[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
-				if (multiple)
-					[actionSheet addButtonWithTitle:ActionButtonAmmoAllModules];
-				if (module->getCharge() != nil)
-					[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
-			}
-			if (module->requireTarget() && fittingViewController.fits.count > 1) {
-				[actionSheet addButtonWithTitle:ActionButtonSetTarget];
-				if (module->getTarget() != NULL)
-					[actionSheet addButtonWithTitle:ActionButtonClearTarget];
-			}
+		if (chargeGroups.size() > 0) {
+			[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
+			if (multiple)
+				[actionSheet addButtonWithTitle:ActionButtonAmmoAllModules];
+			if (module->getCharge() != nil)
+				[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
 		}
-/*		else {
-			if (module->requireTarget() && fittingViewController.fits.count > 1) {
-				if (chargeGroups.size() > 0) {
-					[actionSheet addButtonWithTitle:ActionButtonAmmo];
-				}
-				[actionSheet addButtonWithTitle:ActionButtonSetTarget];
-				if (module->getTarget() != NULL)
-					[actionSheet addButtonWithTitle:ActionButtonClearTarget];
-			}
-			else {
-				if (chargeGroups.size() > 0) {
-					[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
-					if (multiple)
-						[actionSheet addButtonWithTitle:ActionButtonAmmoAllModules];
-					if (module->getCharge() != nil)
-						[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
-				}
-			}
-		}*/
+		if (module->requireTarget() && fittingViewController.fits.count > 1) {
+			[actionSheet addButtonWithTitle:ActionButtonSetTarget];
+			if (module->getTarget() != NULL)
+				[actionSheet addButtonWithTitle:ActionButtonClearTarget];
+		}
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
@@ -487,11 +467,6 @@
 			module->setCharge(type.typeID);
 		}
 		else {
-			/*NSArray *modules = [[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"modules"];
-			for (ItemInfo *itemInfo in modules) {
-				eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item.get());
-				module->setCharge(type.typeID);
-			}*/
 			boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
 			eufe::ModulesList::const_iterator i, end = ship->getModules().end();
 			for (i = ship->getModules().begin(); i != end; i++) {

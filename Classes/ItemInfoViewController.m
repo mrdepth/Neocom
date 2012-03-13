@@ -66,7 +66,8 @@
 	massLabel.text = [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.mass] numberStyle:NSNumberFormatterDecimalStyle]];
 	capacityLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.capacity] numberStyle:NSNumberFormatterDecimalStyle]];
 	radiusLabel.text = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.radius] numberStyle:NSNumberFormatterDecimalStyle]];
-	NSMutableString* description = [NSMutableString stringWithString:[[type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes]];
+	NSString* s = [[type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+	NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
 	[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
 	[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
 	[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];

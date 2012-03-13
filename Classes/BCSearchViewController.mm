@@ -55,7 +55,8 @@
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
 
-	selectedTags = [[NSMutableArray alloc] init];
+	if (!selectedTags)
+		selectedTags = [[NSMutableArray alloc] init];
 	
 	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -75,6 +76,7 @@
 		[menuTableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+	[self testInputData];
 }
 
 
@@ -103,9 +105,9 @@
 	self.popoverController = nil;
 	
 	[tags release];
-	[selectedTags release];
+	//[selectedTags release];
 	tags = nil;
-	selectedTags = nil;
+	//selectedTags = nil;
 }
 
 

@@ -152,7 +152,7 @@
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"MMMM dd, yyyy hh:mm a"];
 			for (RSSItem *item in rss.feed.items) {
-				NSMutableString *description = [NSMutableString stringWithString:item.description];
+				NSMutableString *description = [NSMutableString stringWithString:item.description ? item.description : @""];
 				[description removeHTMLTags];
 				[description replaceHTMLEscapes];
 				[description removeSpaces];

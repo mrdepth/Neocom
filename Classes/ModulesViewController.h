@@ -15,7 +15,6 @@
 #include "eufe.h"
 
 @class FittingViewController;
-@class EVEFittingFit;
 @interface ModulesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
 	FittingViewController *fittingViewController;
 	UITableView *tableView;

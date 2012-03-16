@@ -12,9 +12,11 @@
 #import "NibTableViewCell.h"
 #import "Globals.h"
 #import "FittingViewController.h"
+#import "POSFittingViewController.h"
 #import "EVEDBAPI.h"
 #import "BCSearchViewController.h"
 #import "Fit.h"
+#import "POSFit.h"
 #import "EVEAccount.h"
 #import "CharacterEVE.h"
 
@@ -118,7 +120,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 2 : fits.count;
+	return section == 0 ? 3 : fits.count;
 }
 
 // Customize the appearance of table view cells.
@@ -136,9 +138,13 @@
 			cell.titleLabel.text = @"Browse Fits on BattleClinic";
 			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
-		else {
-			cell.titleLabel.text = @"New Fit";
+		else if (indexPath.row == 1) {
+			cell.titleLabel.text = @"New Ship Fit";
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+		}
+		else {
+			cell.titleLabel.text = @"New POS Fit";
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
 		}
 		return cell;
 	}
@@ -212,9 +218,18 @@
 			[controller release];
 		}
 		else if (indexPath.row == 1) {
-			fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) ORDER BY groupName;";
-			//fittingItemsViewController.typesRequest = @"SELECT * FROM invTypes WHERE published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName;";
-			fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName";
+			fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE categoryID = 6 ORDER BY groupName;";
+			fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, invGroups LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.groupID = invGroups.groupID and invGroups.categoryID = 6 %@ %@ ORDER BY invTypes.typeName";
+			fittingItemsViewController.title = @"Ships";
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			else
+				[self presentModalViewController:modalController animated:YES];
+		}
+		else if (indexPath.row == 2) {
+			fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID = 365 ORDER BY groupName;";
+			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:365 error:nil];
+			fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID = 365 %@ %@ ORDER BY invTypes.typeName";
 			fittingItemsViewController.title = @"Ships";
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -224,40 +239,63 @@
 	}
 	else {
 		NSDictionary *row = [fits objectAtIndex:indexPath.row];
-		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																							   bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
-		__block Fit* fit = nil;
-		__block boost::shared_ptr<eufe::Character> *character = NULL;
-		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
-
-			EVEAccount* currentAccount = [EVEAccount currentAccount];
-			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
-			}
-			else
-				(*character)->setCharacterName("All Skills 0");
-
-			fit = [[Fit fitWithDictionary:row character:*character] retain];
-			[pool release];
-		}];
-		
-		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
-				fittingViewController.fittingEngine->getGang()->addPilot(*character);
-				fittingViewController.fit = fit;
-				[fittingViewController.fits addObject:fit];
-				[self.navigationController pushViewController:fittingViewController animated:YES];
-			}
-			[fittingViewController release];
-			[fit release];
-			delete character;
-		}];
-		[[EUOperationQueue sharedQueue] addOperation:operation];
+		if ([row valueForKey:@"isPOS"]) {
+			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
+																											bundle:nil];
+			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			__block POSFit* fit = nil;
+			[operation addExecutionBlock:^{
+				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+				fit = [[POSFit posFitWithDictionary:row engine:posFittingViewController.fittingEngine] retain];
+				[pool release];
+			}];
+			
+			[operation setCompletionBlockInCurrentThread:^{
+				if (![operation isCancelled]) {
+					posFittingViewController.fit = fit;
+					[self.navigationController pushViewController:posFittingViewController animated:YES];
+				}
+				[posFittingViewController release];
+				[fit release];
+			}];
+			[[EUOperationQueue sharedQueue] addOperation:operation];
+		}
+		else {
+			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
+																								   bundle:nil];
+			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			__block Fit* fit = nil;
+			__block boost::shared_ptr<eufe::Character> *character = NULL;
+			[operation addExecutionBlock:^{
+				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+				character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+				
+				EVEAccount* currentAccount = [EVEAccount currentAccount];
+				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
+					CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
+					(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+				}
+				else
+					(*character)->setCharacterName("All Skills 0");
+				
+				fit = [[Fit fitWithDictionary:row character:*character] retain];
+				[pool release];
+			}];
+			
+			[operation setCompletionBlockInCurrentThread:^{
+				if (![operation isCancelled]) {
+					fittingViewController.fittingEngine->getGang()->addPilot(*character);
+					fittingViewController.fit = fit;
+					[fittingViewController.fits addObject:fit];
+					[self.navigationController pushViewController:fittingViewController animated:YES];
+				}
+				[fittingViewController release];
+				[fit release];
+				delete character;
+			}];
+			[[EUOperationQueue sharedQueue] addOperation:operation];
+		}
 	}
 	return;
 }
@@ -277,41 +315,70 @@
 	else
 		[self dismissModalViewControllerAnimated:YES];
 
-	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																						   bundle:nil];
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
-	__block Fit* fit = nil;
-	__block boost::shared_ptr<eufe::Character> *character = NULL;
-	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
-		(*character)->setShip(type.typeID);
+	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
+																										bundle:nil];
+		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		__block POSFit* posFit = nil;
+		__block boost::shared_ptr<eufe::ControlTower> *controlTower = NULL;
+		[operation addExecutionBlock:^{
+			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+			controlTower = new boost::shared_ptr<eufe::ControlTower>(new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID));
+
+			posFit = [[POSFit posFitWithFitID:-1 fitName:type.typeName controlTower:*controlTower] retain];
+			[pool release];
+		}];
 		
-		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-			(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			(*character)->setSkillLevels(*[eveCharacter skillsMap]);
-		}
-		else
-			(*character)->setCharacterName("All Skills 0");
-		fit = [[Fit fitWithFitID:-1 fitName:type.typeName character:*character] retain];
-		[pool release];
-	}];
-	
-	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
-			[fit save];
-			fittingViewController.fittingEngine->getGang()->addPilot(*character);
-			fittingViewController.fit = fit;
-			[fittingViewController.fits addObject:fit];
-			[self.navigationController pushViewController:fittingViewController animated:YES];
-		}
-		[fittingViewController release];
-		[fit release];
-		delete character;
-	}];
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+		[operation setCompletionBlockInCurrentThread:^{
+			if (![operation isCancelled]) {
+				[posFit save];
+				posFittingViewController.fittingEngine->setControlTower(*controlTower);
+				posFittingViewController.fit = posFit;
+				[self.navigationController pushViewController:posFittingViewController animated:YES];
+			}
+			[posFittingViewController release];
+			[posFit release];
+			delete controlTower;
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
+	else {
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
+																							   bundle:nil];
+		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		__block Fit* fit = nil;
+		__block boost::shared_ptr<eufe::Character> *character = NULL;
+		[operation addExecutionBlock:^{
+			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+			(*character)->setShip(type.typeID);
+			
+			EVEAccount* currentAccount = [EVEAccount currentAccount];
+			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
+				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
+				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+			}
+			else
+				(*character)->setCharacterName("All Skills 0");
+			fit = [[Fit fitWithFitID:-1 fitName:type.typeName character:*character] retain];
+			[pool release];
+		}];
+		
+		[operation setCompletionBlockInCurrentThread:^{
+			if (![operation isCancelled]) {
+				[fit save];
+				fittingViewController.fittingEngine->getGang()->addPilot(*character);
+				fittingViewController.fit = fit;
+				[fittingViewController.fits addObject:fit];
+				[self.navigationController pushViewController:fittingViewController animated:YES];
+			}
+			[fittingViewController release];
+			[fit release];
+			delete character;
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
 }
 	
 @end

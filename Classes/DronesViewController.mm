@@ -324,9 +324,7 @@
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
-
 		targetsViewController.modifiedItem = itemInfo;
-		targetsViewController.delegate = fittingViewController;
 		targetsViewController.currentTarget = drone->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];

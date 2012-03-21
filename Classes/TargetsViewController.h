@@ -15,16 +15,16 @@
 @interface TargetsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate> {
 	UITableView *tableView;
 	FittingViewController* fittingViewController;
-	eufe::Ship* currentTarget;
 	id<TargetsViewControllerDelegate> delegate;
+	eufe::Ship* currentTarget;
 	ItemInfo* modifiedItem;
 @private
 	NSArray* targets;
 }
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) IBOutlet FittingViewController* fittingViewController;
+@property (nonatomic, assign) IBOutlet id<TargetsViewControllerDelegate> delegate;
 @property (nonatomic, assign) eufe::Ship* currentTarget;
-@property (nonatomic, assign) id<TargetsViewControllerDelegate> delegate;
 @property (nonatomic, retain) ItemInfo* modifiedItem;
 
 @end

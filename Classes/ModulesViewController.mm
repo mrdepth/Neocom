@@ -589,7 +589,6 @@
 	}
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
 		targetsViewController.modifiedItem = itemInfo;
-		targetsViewController.delegate = self.fittingViewController;
 		targetsViewController.currentTarget = module->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];

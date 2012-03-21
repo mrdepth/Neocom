@@ -10,11 +10,12 @@
 #import "FittingItemsViewControllerDelegate.h"
 #import "ProgressLabel.h"
 #import "FittingSection.h"
+#import "DronesAmountViewController.h"
 
 #include "eufe.h"
 
 @class POSFittingViewController;
-@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
+@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate> {
 	POSFittingViewController *posFittingViewController;
 	UITableView *tableView;
 	ProgressLabel *powerGridLabel;

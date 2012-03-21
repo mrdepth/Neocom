@@ -437,7 +437,8 @@
 }
 
 - (void) save {
-	[fit save];
+	if (fit.fitID > 0)
+		[fit save];
 }
 
 @end

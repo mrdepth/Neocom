@@ -19,6 +19,7 @@
 #import "POSFit.h"
 #import "EVEAccount.h"
 #import "CharacterEVE.h"
+#import "NSArray+GroupBy.h"
 
 
 @implementation FittingServiceMenuViewController
@@ -65,11 +66,49 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[fits release];
-	NSArray *fitsArray = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
-	lastID = [[[fitsArray lastObject] valueForKey:@"fitID"] integerValue];
-	fits = [[NSMutableArray arrayWithArray:[fitsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]]] retain];
-	[menuTableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+	
+	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load"];
+	NSMutableArray* fitsTmp = [NSMutableArray array];
+	[operation addExecutionBlock:^{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
+		lastID = [[[fitsArray lastObject] valueForKey:@"fitID"] integerValue];
+		
+		for (NSMutableDictionary* row in fitsArray) {
+			EVEDBInvType* type;
+			if (![row valueForKey:@"isPOS"])
+				[row setValue:[NSNumber numberWithBool:NO] forKey:@"isPOS"];
+			if ([[row valueForKey:@"isPOS"] boolValue])
+				type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.controlTowerID"] integerValue] error:nil];
+			else
+				type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil];
+			if (type) {
+				[row setValue:type forKey:@"type"];
+				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
+			}
+		}
+		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
+		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.group.groupName"]];
+		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+			NSDictionary* a = [obj1 objectAtIndex:0];
+			NSDictionary* b = [obj2 objectAtIndex:0];
+			NSComparisonResult result = [[a valueForKey:@"isPOS"] compare:[b valueForKey:@"isPOS"]];
+			if (result == NSOrderedSame)
+				return [[a valueForKeyPath:@"type.group.groupName"] compare:[b valueForKeyPath:@"type.group.groupName"]];
+			else
+				return result;
+		}];
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^{
+		if (![operation isCancelled]) {
+			[fits release];
+			fits = [fitsTmp retain];
+			[menuTableView reloadData];
+		}
+	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,6 +142,19 @@
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
 	[menuTableView setEditing:editing animated:animated];
+	if (!editing) {
+		NSMutableArray* allFits = [NSMutableArray array];
+		for (NSArray* rows in fits) {
+			for (NSDictionary* row in rows) {
+				NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
+				[dictionary setValue:nil forKey:@"type"];
+				[allFits addObject:dictionary];
+			}
+		}
+		
+		[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
+		 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
+	}
 }
 
 - (IBAction) didCloseModalViewController:(id) sender {
@@ -115,12 +167,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return 2;
+	return [fits count] + 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 3 : fits.count;
+	return section == 0 ? 3 : [[fits objectAtIndex:section - 1] count];
 }
 
 // Customize the appearance of table view cells.
@@ -157,7 +209,7 @@
 										 bundle:nil
 								reuseIdentifier:cellIdentifier];
 		}
-		NSDictionary *fit = [fits objectAtIndex:indexPath.row];
+		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];
 		cell.fitNameLabel.text = [fit valueForKey:@"fitName"];
 		cell.iconView.image = [UIImage imageNamed:[fit valueForKey:@"imageName"]];
@@ -168,16 +220,27 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return @"Menu";
-	else
-		return @"My Fits";
+	else {
+		NSArray* rows = [fits objectAtIndex:section - 1];
+		if (rows.count > 0)
+			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
+		else
+			return @"";
+	}
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UITableViewCellEditingStyleDelete) {
-		[fits removeObjectAtIndex:indexPath.row];
-		[[fits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
-		 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
-		[menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		NSMutableArray* rows = [fits objectAtIndex:indexPath.section - 1];
+		[rows removeObjectAtIndex:indexPath.row];
+
+		if (rows.count == 0) {
+			[fits removeObjectAtIndex:indexPath.section - 1];
+			[menuTableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		else {
+			[menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
 	}
 }
 
@@ -238,8 +301,8 @@
 		}
 	}
 	else {
-		NSDictionary *row = [fits objectAtIndex:indexPath.row];
-		if ([row valueForKey:@"isPOS"]) {
+		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		if ([[row valueForKey:@"isPOS"] boolValue]) {
 			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
 																											bundle:nil];
 			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];

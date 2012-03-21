@@ -247,7 +247,7 @@
 	}
 	else {
 		if (self.editing) {
-			if (indexPath.section == 1) {
+			if (indexPath.section == 2) {
 				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
 																												bundle:nil];
 				controller.damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];

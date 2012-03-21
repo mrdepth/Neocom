@@ -65,6 +65,11 @@
 		371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */; };
 		371B780E14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */; };
 		371B780F14FBFC0E005127C2 /* WalletJournalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */; };
+		37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */; };
+		37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */; };
+		37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */; };
+		3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */; };
+		3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */; };
 		3750A44314E00E8400F06FA0 /* RequiredSkillsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */; };
 		3750A44414E00E8400F06FA0 /* RequiredSkillsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */; };
 		3750A44714E0249000F06FA0 /* CharacterAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44614E0249000F06FA0 /* CharacterAttributes.m */; };
@@ -777,6 +782,15 @@
 		371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalViewController.m; sourceTree = "<group>"; };
 		371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WalletJournalViewController-iPad.xib"; sourceTree = "<group>"; };
 		371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletJournalViewController.xib; sourceTree = "<group>"; };
+		37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
+		37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
+		37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
+		37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamAssemblyLineType.m; sourceTree = "<group>"; };
+		37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
+		37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
+		37410519151A309E00BCED1B /* AssemblyLinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssemblyLinesViewController.h; sourceTree = "<group>"; };
+		3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssemblyLinesViewController.mm; sourceTree = "<group>"; };
+		3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssemblyLinesViewController.xib; sourceTree = "<group>"; };
 		3750A44014E00E8400F06FA0 /* RequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredSkillsViewController.h; sourceTree = "<group>"; };
 		3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RequiredSkillsViewController.mm; sourceTree = "<group>"; };
 		3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequiredSkillsViewController.xib; sourceTree = "<group>"; };
@@ -2040,6 +2054,16 @@
 			name = WalletJournalViewController;
 			sourceTree = "<group>";
 		};
+		37410500151A1DCC00BCED1B /* AssemblyLinesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37410519151A309E00BCED1B /* AssemblyLinesViewController.h */,
+				3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */,
+				3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */,
+			);
+			name = AssemblyLinesViewController;
+			sourceTree = "<group>";
+		};
 		3750A43E14E00E6D00F06FA0 /* RequiredSkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2296,6 +2320,8 @@
 				37AB44D514F52173007B4C33 /* EVEDBInvMarketGroup.m */,
 				37AB44D614F52173007B4C33 /* EVEDBInvType+ControlTower.h */,
 				37AB44D714F52173007B4C33 /* EVEDBInvType+ControlTower.m */,
+				37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */,
+				37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */,
 				37AB44DA14F52173007B4C33 /* EVEDBInvType+Skill.h */,
 				37AB44DB14F52173007B4C33 /* EVEDBInvType+Skill.m */,
 				37AB44DC14F52173007B4C33 /* EVEDBInvType.h */,
@@ -2310,6 +2336,10 @@
 				37AB44E514F52173007B4C33 /* EVEDBMapSolarSystem.m */,
 				37AB44E614F52173007B4C33 /* EVEDBRamActivity.h */,
 				37AB44E714F52173007B4C33 /* EVEDBRamActivity.m */,
+				37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */,
+				37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */,
+				37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */,
+				37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */,
 				37AB44E814F52173007B4C33 /* EVEDBStaStation.h */,
 				37AB44E914F52173007B4C33 /* EVEDBStaStation.m */,
 				37AB44EA14F52173007B4C33 /* Utility */,
@@ -2910,6 +2940,7 @@
 			children = (
 				37BBC5AB151263EF00EDE204 /* StructuresViewController */,
 				37CE795215135C8600621D52 /* POSStatsViewController */,
+				37410500151A1DCC00BCED1B /* AssemblyLinesViewController */,
 				37BBC5A815125D7600EDE204 /* POSFittingViewController.h */,
 				37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */,
 				37CE795A1513603900621D52 /* POSFittingViewController.xib */,
@@ -4554,6 +4585,7 @@
 				37CE795715135F7A00621D52 /* POSStatsViewController.xib in Resources */,
 				37CE79591513600200621D52 /* StructuresViewController.xib in Resources */,
 				37CE795B1513603A00621D52 /* POSFittingViewController.xib in Resources */,
+				3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4880,6 +4912,10 @@
 				37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */,
 				37CE795015134D8B00621D52 /* POSFit.mm in Sources */,
 				37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */,
+				37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */,
+				37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */,
+				37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */,
+				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

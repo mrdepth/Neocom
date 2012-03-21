@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "StructuresViewController.h"
+#import "AssemblyLinesViewController.h"
 #import "POSStatsViewController.h"
 #import "FittingSection.h"
 #import "AreaEffectsViewController.h"
@@ -24,6 +25,7 @@
 	UINavigationController *areaEffectsModalController;
 	AreaEffectsViewController* areaEffectsViewController;
 	StructuresViewController *structuresViewController;
+	AssemblyLinesViewController* assemblyLinesViewController;
 	POSStatsViewController *posStatsViewController;
 	
 	UIView *shadeView;
@@ -47,6 +49,7 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *areaEffectsModalController;
 @property (nonatomic, retain) IBOutlet AreaEffectsViewController* areaEffectsViewController;
 @property (nonatomic, retain) IBOutlet StructuresViewController *structuresViewController;
+@property (nonatomic, retain) IBOutlet AssemblyLinesViewController* assemblyLinesViewController;
 @property (nonatomic, retain) IBOutlet POSStatsViewController *posStatsViewController;
 
 @property (nonatomic, retain) IBOutlet UIView *shadeView;

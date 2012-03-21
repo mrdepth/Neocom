@@ -41,6 +41,7 @@
 @synthesize areaEffectsModalController;
 @synthesize areaEffectsViewController;
 @synthesize structuresViewController;
+@synthesize assemblyLinesViewController;
 @synthesize posStatsViewController;
 @synthesize shadeView;
 @synthesize fitNameView;
@@ -74,7 +75,9 @@
 	
 	if (currentSectionIndex == 0)
 		currentSection = structuresViewController;
-	else 
+	else if (currentSectionIndex == 1)
+		currentSection = assemblyLinesViewController;
+	else
 		currentSection = posStatsViewController;
 	
 	[self.sectionsView addSubview:currentSection.view];
@@ -148,6 +151,7 @@
 	self.areaEffectsModalController = nil;
 	self.areaEffectsViewController = nil;
 	self.structuresViewController = nil;
+	self.assemblyLinesViewController = nil;
 	self.posStatsViewController = nil;
 	self.shadeView = nil;
 	self.fitNameView = nil;
@@ -167,6 +171,7 @@
 	[areaEffectsModalController release];
 	[areaEffectsViewController release];
 	[structuresViewController release];
+	[assemblyLinesViewController release];
 	[posStatsViewController release];
 	[shadeView release];
 	[fitNameView release];
@@ -192,6 +197,8 @@
 	UIViewController<FittingSection> *newSection = nil;
 	if (sectionSegmentControl.selectedSegmentIndex == 0)
 		newSection = structuresViewController;
+	else if (sectionSegmentControl.selectedSegmentIndex == 1)
+		newSection = assemblyLinesViewController;
 	else
 		newSection = posStatsViewController;
 	if (newSection == currentSection)

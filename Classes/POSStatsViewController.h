@@ -42,22 +42,13 @@
 	UILabel *ehpLabel;
 	
 	UILabel *shieldRecharge;
-	UILabel *shieldBoost;
-	UILabel *armorRepair;
-	UILabel *hullRepair;
 	
 	UILabel *weaponDPSLabel;
-	UILabel *volleyDamageLabel;
 	
-	UILabel *targetsLabel;
-	UILabel *targetRangeLabel;
-	UILabel *scanResLabel;
-	UILabel *sensorStrLabel;
-	UILabel *speedLabel;
-	UILabel *alignTimeLabel;
-	UILabel *signatureLabel;
-	UILabel *cargoLabel;
-	UIImageView *sensorImageView;
+	UILabel *fuelTypeLabel;
+	UILabel *fuelCostLabel;
+	UIImageView *fuelImageView;
+	UILabel *infrastructureUpgradesCostLabel;
 }
 @property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -89,23 +80,13 @@
 @property (nonatomic, retain) IBOutlet UILabel *ehpLabel;
 
 @property (nonatomic, retain) IBOutlet UILabel *shieldRecharge;
-@property (nonatomic, retain) IBOutlet UILabel *shieldBoost;
-@property (nonatomic, retain) IBOutlet UILabel *armorRepair;
-@property (nonatomic, retain) IBOutlet UILabel *hullRepair;
 
 @property (nonatomic, retain) IBOutlet UILabel *weaponDPSLabel;
-@property (nonatomic, retain) IBOutlet UILabel *volleyDamageLabel;
 
-@property (nonatomic, retain) IBOutlet UILabel *targetsLabel;
-@property (nonatomic, retain) IBOutlet UILabel *targetRangeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *scanResLabel;
-@property (nonatomic, retain) IBOutlet UILabel *sensorStrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *speedLabel;
-@property (nonatomic, retain) IBOutlet UILabel *alignTimeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *signatureLabel;
-@property (nonatomic, retain) IBOutlet UILabel *cargoLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *sensorImageView;
-
+@property (nonatomic, retain) IBOutlet UILabel *fuelTypeLabel;
+@property (nonatomic, retain) IBOutlet UILabel *fuelCostLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *fuelImageView;
+@property (nonatomic, retain) IBOutlet UILabel *infrastructureUpgradesCostLabel;
 
 
 @end

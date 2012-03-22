@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface POSesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
 	UITableView *posesTableView;
 	UISearchBar *searchBar;

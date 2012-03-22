@@ -507,11 +507,6 @@
 		@synchronized(posFittingViewController) {
 			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
 			
-			/*const eufe::StructuresList& structuresList = controlTower->getStructures();
-			eufe::StructuresList::const_iterator i, end = structuresList.end();
-			for (i = structuresList.begin(); i != end; i++)
-				[structuresTmp addObject:[ItemInfo itemInfoWithItem:*i error:nil]];*/
-			
 			NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();

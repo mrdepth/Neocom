@@ -13,11 +13,13 @@
 #import "FittingSection.h"
 #import "AreaEffectsViewController.h"
 #import "DamagePatternsViewController.h"
+#import "EVECentralAPI.h"
 
 #import "eufe.h"
 
 @class POSFit;
 @class DamagePattern;
+@class EVEDBInvControlTowerResource;
 @interface POSFittingViewController : UIViewController<UIActionSheetDelegate,UITextFieldDelegate, AreaEffectsViewControllerDelegate, DamagePatternsViewControllerDelegate> {
 	UIView *sectionsView;
 	UISegmentedControl *sectionSegmentControl;
@@ -38,6 +40,9 @@
 	
 	eufe::Engine* fittingEngine;
 	DamagePattern* damagePattern;
+	
+	EVECentralMarketStat* posFuelMarketStat;
+	EVEDBInvControlTowerResource* posFuelRequirements;
 @private
 	UIViewController<FittingSection> *currentSection;
 	NSInteger currentSectionIndex;
@@ -63,6 +68,9 @@
 
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
 @property (nonatomic, retain) DamagePattern* damagePattern;
+
+@property (nonatomic, retain) IBOutlet EVECentralMarketStat* posFuelMarketStat;
+@property (nonatomic, retain) EVEDBInvControlTowerResource* posFuelRequirements;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

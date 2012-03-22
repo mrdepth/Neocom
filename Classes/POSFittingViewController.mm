@@ -15,6 +15,7 @@
 #import "ItemInfo.h"
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
+#import "EVEDBAPI.h"
 
 #include "eufe.h"
 
@@ -53,6 +54,9 @@
 
 @synthesize fittingEngine;
 @synthesize damagePattern;
+
+@synthesize posFuelMarketStat;
+@synthesize posFuelRequirements;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -160,6 +164,8 @@
 	self.popoverController = nil;
 	self.areaEffectsPopoverController = nil;
 	currentSection = nil;
+	self.posFuelMarketStat = nil;
+	self.posFuelRequirements = nil;
 }
 
 
@@ -185,6 +191,9 @@
 	[actionSheet release];
 	[damagePattern release];
 	
+	[posFuelMarketStat release];
+	[posFuelRequirements release];
+
 	delete fittingEngine;
     [super dealloc];
 }
@@ -300,6 +309,36 @@
 	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
 	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
 	fit.controlTower.get()->setDamagePattern(eufeDamagePattern);
+}
+
+- (EVECentralMarketStat*) posFuelMarketStat {
+	@synchronized(self) {
+		if (!posFuelMarketStat) {
+			EVEDBInvType* type = self.posFuelRequirements.resourceType;
+			if (type) {
+				posFuelMarketStat = [[EVECentralMarketStat marketStatWithTypeIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:type.typeID]]
+																	   regionIDs:nil
+																		   hours:0
+																			minQ:0
+																		   error:nil] retain];
+			}
+			if (!posFuelMarketStat)
+				posFuelMarketStat = (EVECentralMarketStat*) [[NSNull null] retain];
+		}
+		return posFuelMarketStat != (EVECentralMarketStat*) [NSNull null] ? posFuelMarketStat : nil;
+	}
+}
+
+- (EVEDBInvControlTowerResource*) posFuelRequirements {
+	if (!posFuelRequirements) {
+		for (EVEDBInvControlTowerResource* resource in fit.resources) {
+			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
+				posFuelRequirements = [resource retain];
+				break;
+			}
+		}
+	}
+	return posFuelRequirements;
 }
 
 #pragma mark UIActionSheetDelegate

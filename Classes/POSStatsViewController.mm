@@ -46,22 +46,13 @@
 @synthesize ehpLabel;
 
 @synthesize shieldRecharge;
-@synthesize shieldBoost;
-@synthesize armorRepair;
-@synthesize hullRepair;
 
 @synthesize weaponDPSLabel;
-@synthesize volleyDamageLabel;
 
-@synthesize targetsLabel;
-@synthesize targetRangeLabel;
-@synthesize scanResLabel;
-@synthesize sensorStrLabel;
-@synthesize speedLabel;
-@synthesize alignTimeLabel;
-@synthesize signatureLabel;
-@synthesize cargoLabel;
-@synthesize sensorImageView;
+@synthesize fuelTypeLabel;
+@synthesize fuelCostLabel;
+@synthesize fuelImageView;
+@synthesize infrastructureUpgradesCostLabel;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -80,6 +71,9 @@
     [super viewDidLoad];
 	[self.scrollView addSubview:self.contentView];
 	self.scrollView.contentSize = self.contentView.frame.size;
+
+	self.fuelImageView.image = [UIImage imageNamed:posFittingViewController.posFuelRequirements.resourceType.typeSmallImageName];
+	self.fuelTypeLabel.text = posFittingViewController.posFuelRequirements.resourceType.typeName;
 }
 
 
@@ -130,22 +124,13 @@
 	self.ehpLabel = nil;
 	
 	self.shieldRecharge = nil;
-	self.shieldBoost = nil;
-	self.armorRepair = nil;
-	self.hullRepair = nil;
 	
 	self.weaponDPSLabel = nil;
-	self.volleyDamageLabel = nil;
 	
-	self.targetsLabel = nil;
-	self.targetRangeLabel = nil;
-	self.scanResLabel = nil;
-	self.sensorStrLabel = nil;
-	self.speedLabel = nil;
-	self.alignTimeLabel = nil;
-	self.signatureLabel = nil;
-	self.cargoLabel = nil;
-	self.sensorImageView = nil;
+	self.fuelTypeLabel = nil;
+	self.fuelCostLabel = nil;
+	self.fuelImageView = nil;
+	self.infrastructureUpgradesCostLabel = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -183,23 +168,14 @@
 	[ehpLabel release];
 	
 	[shieldRecharge release];
-	[shieldBoost release];
-	[armorRepair release];
-	[hullRepair release];
 	
 	[weaponDPSLabel release];
-	[volleyDamageLabel release];
 	
-	[targetsLabel release];
-	[targetRangeLabel release];
-	[scanResLabel release];
-	[sensorStrLabel release];
-	[speedLabel release];
-	[alignTimeLabel release];
-	[signatureLabel release];
-	[cargoLabel release];
-	[sensorImageView release];
-	
+	[fuelTypeLabel release];
+	[fuelCostLabel release];
+	[fuelImageView release];
+	[infrastructureUpgradesCostLabel release];
+
     [super dealloc];
 }
 
@@ -211,48 +187,21 @@
 	__block float usedPG;
 	__block float totalCPU;
 	__block float usedCPU;
-	__block float totalCalibration;
-	__block float usedCalibration;
-	__block int usedTurretHardpoints;
-	__block int totalTurretHardpoints;
-	__block int usedMissileHardpoints;
-	__block int totalMissileHardpoints;
-	
-	__block float totalDB;
-	__block float usedDB;
-	__block float totalBandwidth;
-	__block float usedBandwidth;
-	__block int maxActiveDrones;
-	__block int activeDrones;
 	__block eufe::Resistances resistances;
 	__block eufe::HitPoints hp;
 	__block float ehp;
 	__block eufe::Tank rtank;
-	__block eufe::Tank stank;
 	__block eufe::Tank ertank;
-	__block eufe::Tank estank;
-	
-	__block float capCapacity;
-	__block BOOL capStable;
-	__block float capState;
-	__block float capacitorRechargeTime;
-	__block float delta;
 	
 	__block float weaponDPS;
-	__block float droneDPS;
 	__block float volleyDamage;
-	__block float dps;
 	
-	__block int targets;
-	__block float targetRange;
-	__block float scanRes;
-	__block float sensorStr;
-	__block float speed;
-	__block float alignTime;
-	__block float signature;
-	__block float cargo;
 	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
+	
+	__block int fuelConsumtion;
+	__block float fuelDailyCost;
+	__block float upgradesDailyCost;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
@@ -260,6 +209,40 @@
 		@synchronized(posFittingViewController) {
 			
 			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			EVECentralMarketStat* posFuelMarketStat = posFittingViewController.posFuelMarketStat;
+			fuelConsumtion = posFittingViewController.posFuelRequirements.quantity;
+
+			if (posFuelMarketStat.types.count == 1)
+				fuelDailyCost = fuelConsumtion * [[[posFuelMarketStat.types objectAtIndex:0] sell] avg] * 24;
+			else
+				fuelDailyCost = fuelConsumtion * posFittingViewController.posFuelRequirements.resourceType.basePrice * 24;
+			
+			upgradesDailyCost = 0;
+			NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
+			const eufe::StructuresList& structuresList = controlTower->getStructures();
+			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			for (i = structuresList.begin(); i != end; i++) {
+				if ((*i)->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
+					NSInteger typeID = (NSInteger) (*i)->getAttribute(1595)->getValue();
+					NSString* key = [NSString stringWithFormat:@"%d", typeID];
+					EVEDBInvType* value = [infrastructureUpgrades valueForKey:key];
+					if (!value) {
+						value = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+						if (value) {
+							[infrastructureUpgrades setValue:value forKey:key];
+							EVEDBDgmTypeAttribute* attribute = [value.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
+							upgradesDailyCost += attribute.value; 
+						}
+					}
+				}
+			}
+			
+			if (upgradesDailyCost > 0) {
+				EVEDBInvType* claim = [EVEDBInvType invTypeWithTypeID:32226 error:nil];
+				EVEDBDgmTypeAttribute* attribute = [claim.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
+				upgradesDailyCost += attribute.value; 
+			}
+
 			
 			totalPG = controlTower->getTotalPowerGrid();
 			usedPG = controlTower->getPowerGridUsed();
@@ -313,13 +296,16 @@
 			
 			ehpLabel.text = [NSString stringWithFormat:@"EHP: %@", [NSString stringWithResource:ehp unit:nil]];
 			
-			shieldBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.shieldRepair, ertank.shieldRepair];
-			armorRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.armorRepair, ertank.armorRepair];
-			hullRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.hullRepair, ertank.hullRepair];
 			shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.passiveShield, ertank.passiveShield];
 			
-			weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f DPS",weaponDPS];
-			volleyDamageLabel.text = [NSString stringWithFormat:@"%.0f",volleyDamage];
+			weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f\n%.0f",weaponDPS, volleyDamage];
+			
+			fuelCostLabel.text = [NSString stringWithFormat:@"%d/h (%@ ISK/day)",
+								  fuelConsumtion,
+								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
+
+			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:@"%@ ISK/day",
+													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 		[sensorImage release];
 		[damagePattern release];

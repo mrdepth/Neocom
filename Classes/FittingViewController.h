@@ -25,6 +25,7 @@
 @class EVEFittingFit;
 @class Fit;
 @class DamagePattern;
+@class PriceManager;
 @interface FittingViewController : UIViewController<UIActionSheetDelegate,
 													UITextFieldDelegate,
 													BrowserViewControllerDelegate,
@@ -58,6 +59,7 @@
 	eufe::Engine* fittingEngine;
 	NSMutableArray* fits;
 	DamagePattern* damagePattern;
+	PriceManager* priceManager;
 @private
 	UIViewController<FittingSection> *currentSection;
 	NSInteger currentSectionIndex;
@@ -89,6 +91,7 @@
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
 @property (nonatomic, retain, readonly) NSMutableArray* fits;
 @property (nonatomic, retain) DamagePattern* damagePattern;
+@property (nonatomic, retain) PriceManager* priceManager;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

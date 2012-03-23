@@ -15,6 +15,7 @@
 #import "ItemInfo.h"
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
+#import "PriceManager.h"
 
 #include "eufe.h"
 
@@ -61,6 +62,7 @@
 
 @synthesize fittingEngine;
 @synthesize damagePattern;
+@synthesize priceManager;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -114,7 +116,7 @@
 		dronesViewController.popoverController = self.popoverController;
 		implantsViewController.popoverController = self.popoverController;
 	}
-	
+	priceManager = [[PriceManager alloc] init];
 	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
 	[self update];
 }
@@ -180,6 +182,7 @@
 	self.popoverController = nil;
 	self.targetsPopoverController = nil;
 	self.areaEffectsPopoverController = nil;
+	self.priceManager = nil;
 	currentSection = nil;
 }
 
@@ -211,7 +214,7 @@
 	[actionSheet release];
 	[fits release];
 	[damagePattern release];
-	
+	[priceManager release];
 	delete fittingEngine;
     [super dealloc];
 }

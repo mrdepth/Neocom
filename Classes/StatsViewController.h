@@ -74,6 +74,12 @@
 	UILabel *signatureLabel;
 	UILabel *cargoLabel;
 	UIImageView *sensorImageView;
+	UILabel *droneRangeLabel;
+	UILabel *warpSpeedLabel;
+
+	UILabel *shipPriceLabel;
+	UILabel *fittingsPriceLabel;
+	UILabel *totalPriceLabel;
 }
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -137,6 +143,12 @@
 @property (nonatomic, retain) IBOutlet UILabel *signatureLabel;
 @property (nonatomic, retain) IBOutlet UILabel *cargoLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *sensorImageView;
+@property (nonatomic, retain) IBOutlet UILabel *droneRangeLabel;
+@property (nonatomic, retain) IBOutlet UILabel *warpSpeedLabel;
+
+@property (nonatomic, retain) IBOutlet UILabel *shipPriceLabel;
+@property (nonatomic, retain) IBOutlet UILabel *fittingsPriceLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalPriceLabel;
 
 
 

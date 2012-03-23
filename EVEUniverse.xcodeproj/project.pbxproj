@@ -365,6 +365,7 @@
 		37DDFDA914A23A9C00BCDEBB /* CharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */; };
 		37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */; };
 		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
+		37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */; };
 		37E352E114B4AA93004367AB /* FleetViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */; };
 		37E352E614B4AC3D004367AB /* FitsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */; };
 		37E352E814B4ADF6004367AB /* CharactersViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */; };
@@ -1316,6 +1317,9 @@
 		37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterCellView.xib; sourceTree = "<group>"; };
 		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
 		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
+		37DF48EC151CE47B00BC87A5 /* EVEC0rporationAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationAPI.h; sourceTree = "<group>"; };
+		37DF48ED151CE47B00BC87A5 /* EVEC0rporationFaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationFaction.h; sourceTree = "<group>"; };
+		37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEC0rporationFaction.m; sourceTree = "<group>"; };
 		37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FitsViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharactersViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -2226,6 +2230,7 @@
 				37AB44A614F52173007B4C33 /* EVECentralAPI */,
 				37AB44B014F52173007B4C33 /* EVEDBAPI */,
 				37AB44FA14F52173007B4C33 /* EVEOnlineAPI */,
+				37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */,
 				37AB458A14F52173007B4C33 /* RSS */,
 				37AB45A314F52173007B4C33 /* Utility */,
 			);
@@ -3086,6 +3091,16 @@
 				37DF48C7151C8DBC00BC87A5 /* PriceManager.m */,
 			);
 			name = PriceManager;
+			sourceTree = "<group>";
+		};
+		37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */ = {
+			isa = PBXGroup;
+			children = (
+				37DF48EC151CE47B00BC87A5 /* EVEC0rporationAPI.h */,
+				37DF48ED151CE47B00BC87A5 /* EVEC0rporationFaction.h */,
+				37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */,
+			);
+			path = EVEC0rporationAPI;
 			sourceTree = "<group>";
 		};
 		37FD3AA514D84080005FA724 /* SkillPlanner */ = {
@@ -4930,6 +4945,7 @@
 				37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */,
 				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
 				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
+				37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

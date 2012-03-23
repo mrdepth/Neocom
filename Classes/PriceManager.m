@@ -9,11 +9,10 @@
 #import "PriceManager.h"
 #import "EVEDBAPI.h"
 #import "EVECentralAPI.h"
-
-@interface PriceManager(Private)
-@end
+#import "EVEC0rporationAPI.h"
 
 @implementation PriceManager
+@synthesize faction;
 
 - (id) init {
 	if (self = [super init]) {
@@ -24,6 +23,7 @@
 
 - (void) dealloc {
 	[prices release];
+	[faction release];
 	[super dealloc];
 }
 
@@ -36,8 +36,13 @@
 			float price = 0;
 			if (marketStat.types.count == 1)
 				price = [[[marketStat.types objectAtIndex:0] sell] avg];
-			else
-				price = type.basePrice;
+			else {
+				EVEC0rporationFactionItem* item = [self.faction.types valueForKey:key];
+				if (item)
+					price = item.avg;
+				else
+					price = type.basePrice;
+			}
 			[prices setValue:[NSNumber numberWithFloat:price] forKey:key];
 			return price;
 		}
@@ -47,28 +52,58 @@
 }
 
 - (NSDictionary*) pricesWithTypes:(NSArray*) types {
-	NSMutableDictionary* result = [NSMutableDictionary dictionary];
-	NSMutableArray* typeIDs = [NSMutableArray array];
-
-	for (EVEDBInvType* type in types) {
-		NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-		NSNumber* price = [prices valueForKey:key];
-
-		if (!price) {
-			[typeIDs addObject:key];
-			[result setValue:[NSNumber numberWithFloat:type.basePrice] forKey:key];
-		}
-		else
-			[result setValue:price forKey:key];
-	}
-	if (typeIDs.count > 0) {
-		EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:typeIDs regionIDs:nil hours:0 minQ:0 error:nil];
-		for (EVECentralMarketStatType* type in marketStat.types) {
+	@synchronized(self) {
+		NSMutableDictionary* result = [NSMutableDictionary dictionary];
+		NSMutableArray* typeIDs = [NSMutableArray array];
+		for (EVEDBInvType* type in types) {
 			NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-			[result setValue:[NSNumber numberWithFloat:type.sell.avg] forKey:key];
+			NSNumber* price = [prices valueForKey:key];
+			
+			if (!price) {
+				[typeIDs addObject:key];
+				[result setValue:[NSNull null] forKey:key];
+			}
+			else
+				[result setValue:price forKey:key];
 		}
+		if (typeIDs.count > 0) {
+			EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:typeIDs regionIDs:nil hours:0 minQ:0 error:nil];
+			for (EVECentralMarketStatType* type in marketStat.types) {
+				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
+				if (type.sell.avg > 0) {
+					NSNumber* value = [NSNumber numberWithFloat:type.sell.avg];
+					[result setValue:value forKey:key];
+					[prices setValue:value forKey:key];
+				}
+			}
+			for (EVEDBInvType* type in types) {
+				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
+				if ([result valueForKey:key] == [NSNull null]) {
+					EVEC0rporationFactionItem* item = [self.faction.types valueForKey:key];
+					if (item) {
+						NSNumber* value = [NSNumber numberWithFloat:item.avg];
+						[result setValue:value forKey:key];
+						[prices setValue:value forKey:key];
+					}
+					else {
+						NSNumber* value = [NSNumber numberWithFloat:type.basePrice];
+						[result setValue:value forKey:key];
+						[prices setValue:value forKey:key];
+					}
+				}
+			}
+		}
+		return result;
 	}
-	return result;
+}
+
+- (EVEC0rporationFaction*) faction {
+	@synchronized(self) {
+		if (!faction) {
+			faction = [[EVEC0rporationFaction factionWithError:nil] retain];
+		}
+		return faction;
+	}
 }
 
 @end

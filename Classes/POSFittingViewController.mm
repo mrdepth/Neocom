@@ -258,9 +258,9 @@
 	[fitNameTextField resignFirstResponder];
 	fit.fitName = fitNameTextField.text;
 	
-	/*boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
-	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:controlTower error:nil];
-	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, fit.fitName ? fit.fitName : itemInfo.typeName];
+//	boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
+//	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:controlTower error:nil];
+	self.title = [NSString stringWithFormat:@"%@ - %@", fit.typeName, fit.fitName ? fit.fitName : fit.typeName];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[UIView beginAnimations:nil context:nil];
@@ -271,8 +271,7 @@
 											self.fitNameView.frame.size.width,
 											self.fitNameView.frame.size.height);
 		[UIView commitAnimations];
-	}*/
-	
+	}
 }
 
 - (IBAction) onBack:(id) sender {

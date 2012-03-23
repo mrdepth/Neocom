@@ -364,6 +364,7 @@
 		37DDFDA414A22BD600BCDEBB /* CharacterCustom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA314A22BD500BCDEBB /* CharacterCustom.mm */; };
 		37DDFDA914A23A9C00BCDEBB /* CharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */; };
 		37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */; };
+		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
 		37E352E114B4AA93004367AB /* FleetViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */; };
 		37E352E614B4AC3D004367AB /* FitsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */; };
 		37E352E814B4ADF6004367AB /* CharactersViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */; };
@@ -1313,6 +1314,8 @@
 		37DDFDA714A23A9C00BCDEBB /* CharacterCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCellView.h; sourceTree = "<group>"; };
 		37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterCellView.m; sourceTree = "<group>"; };
 		37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterCellView.xib; sourceTree = "<group>"; };
+		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
+		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
 		37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FitsViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharactersViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -3076,6 +3079,15 @@
 			name = CharacterCellView;
 			sourceTree = "<group>";
 		};
+		37DF48C4151C8D7300BC87A5 /* PriceManager */ = {
+			isa = PBXGroup;
+			children = (
+				37DF48C6151C8DBC00BC87A5 /* PriceManager.h */,
+				37DF48C7151C8DBC00BC87A5 /* PriceManager.m */,
+			);
+			name = PriceManager;
+			sourceTree = "<group>";
+		};
 		37FD3AA514D84080005FA724 /* SkillPlanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -3826,6 +3838,7 @@
 		71955A511376AFEF0068DBD7 /* FittingService */ = {
 			isa = PBXGroup;
 			children = (
+				37DF48C4151C8D7300BC87A5 /* PriceManager */,
 				71196C9214B1E60300614711 /* Fit */,
 				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				71997B86137F4AF70061BA4E /* BCSearchViewController */,
@@ -4916,6 +4929,7 @@
 				37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */,
 				37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */,
 				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
+				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

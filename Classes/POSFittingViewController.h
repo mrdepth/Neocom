@@ -20,6 +20,7 @@
 @class POSFit;
 @class DamagePattern;
 @class EVEDBInvControlTowerResource;
+@class PriceManager;
 @interface POSFittingViewController : UIViewController<UIActionSheetDelegate,UITextFieldDelegate, AreaEffectsViewControllerDelegate, DamagePatternsViewControllerDelegate> {
 	UIView *sectionsView;
 	UISegmentedControl *sectionSegmentControl;
@@ -41,8 +42,8 @@
 	eufe::Engine* fittingEngine;
 	DamagePattern* damagePattern;
 	
-	EVECentralMarketStat* posFuelMarketStat;
 	EVEDBInvControlTowerResource* posFuelRequirements;
+	PriceManager* priceManager;
 @private
 	UIViewController<FittingSection> *currentSection;
 	NSInteger currentSectionIndex;
@@ -69,8 +70,8 @@
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
 @property (nonatomic, retain) DamagePattern* damagePattern;
 
-@property (nonatomic, retain) IBOutlet EVECentralMarketStat* posFuelMarketStat;
 @property (nonatomic, retain) EVEDBInvControlTowerResource* posFuelRequirements;
+@property (nonatomic, retain) PriceManager* priceManager;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

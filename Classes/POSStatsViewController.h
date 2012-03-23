@@ -49,6 +49,7 @@
 	UILabel *fuelCostLabel;
 	UIImageView *fuelImageView;
 	UILabel *infrastructureUpgradesCostLabel;
+	UILabel *posCostLabel;
 }
 @property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -87,6 +88,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *fuelCostLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *fuelImageView;
 @property (nonatomic, retain) IBOutlet UILabel *infrastructureUpgradesCostLabel;
+@property (nonatomic, retain) IBOutlet UILabel *posCostLabel;
 
 
 @end

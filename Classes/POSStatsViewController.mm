@@ -12,8 +12,13 @@
 #import "NSString+TimeLeft.h"
 #import "EUOperationQueue.h"
 #import "POSFit.h"
+#import "PriceManager.h"
 
 #import "eufe.h"
+
+@interface POSStatsViewController(Private)
+- (void) updatePrice;
+@end
 
 @implementation POSStatsViewController
 @synthesize posFittingViewController;
@@ -53,6 +58,7 @@
 @synthesize fuelCostLabel;
 @synthesize fuelImageView;
 @synthesize infrastructureUpgradesCostLabel;
+@synthesize posCostLabel;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -131,6 +137,7 @@
 	self.fuelCostLabel = nil;
 	self.fuelImageView = nil;
 	self.infrastructureUpgradesCostLabel = nil;
+	self.posCostLabel = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -175,6 +182,7 @@
 	[fuelCostLabel release];
 	[fuelImageView release];
 	[infrastructureUpgradesCostLabel release];
+	[posCostLabel release];
 
     [super dealloc];
 }
@@ -199,50 +207,12 @@
 	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
 	
-	__block int fuelConsumtion;
-	__block float fuelDailyCost;
-	__block float upgradesDailyCost;
-	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+Update"];
+	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
 			
 			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
-			EVECentralMarketStat* posFuelMarketStat = posFittingViewController.posFuelMarketStat;
-			fuelConsumtion = posFittingViewController.posFuelRequirements.quantity;
-
-			if (posFuelMarketStat.types.count == 1)
-				fuelDailyCost = fuelConsumtion * [[[posFuelMarketStat.types objectAtIndex:0] sell] avg] * 24;
-			else
-				fuelDailyCost = fuelConsumtion * posFittingViewController.posFuelRequirements.resourceType.basePrice * 24;
-			
-			upgradesDailyCost = 0;
-			NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
-			const eufe::StructuresList& structuresList = controlTower->getStructures();
-			eufe::StructuresList::const_iterator i, end = structuresList.end();
-			for (i = structuresList.begin(); i != end; i++) {
-				if ((*i)->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
-					NSInteger typeID = (NSInteger) (*i)->getAttribute(1595)->getValue();
-					NSString* key = [NSString stringWithFormat:@"%d", typeID];
-					EVEDBInvType* value = [infrastructureUpgrades valueForKey:key];
-					if (!value) {
-						value = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
-						if (value) {
-							[infrastructureUpgrades setValue:value forKey:key];
-							EVEDBDgmTypeAttribute* attribute = [value.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
-							upgradesDailyCost += attribute.value; 
-						}
-					}
-				}
-			}
-			
-			if (upgradesDailyCost > 0) {
-				EVEDBInvType* claim = [EVEDBInvType invTypeWithTypeID:32226 error:nil];
-				EVEDBDgmTypeAttribute* attribute = [claim.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
-				upgradesDailyCost += attribute.value; 
-			}
-
 			
 			totalPG = controlTower->getTotalPowerGrid();
 			usedPG = controlTower->getPowerGridUsed();
@@ -299,16 +269,110 @@
 			shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.passiveShield, ertank.passiveShield];
 			
 			weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f\n%.0f",weaponDPS, volleyDamage];
-			
-			fuelCostLabel.text = [NSString stringWithFormat:@"%d/h (%@ ISK/day)",
-								  fuelConsumtion,
-								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
-
-			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:@"%@ ISK/day",
-													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 		[sensorImage release];
 		[damagePattern release];
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+	[self updatePrice];
+}
+
+@end
+
+@implementation POSStatsViewController(Private)
+
+- (void) updatePrice {
+	__block int fuelConsumtion;
+	__block float fuelDailyCost;
+	__block float upgradesCost;
+	__block float upgradesDailyCost;
+	__block float posCost;
+	
+	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice"];
+	[operation addExecutionBlock:^(void) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+		NSMutableSet* types = [NSMutableSet set];
+		NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
+
+		@synchronized(posFittingViewController) {
+			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			fuelConsumtion = posFittingViewController.posFuelRequirements.quantity;
+			
+			const eufe::StructuresList& structuresList = controlTower->getStructures();
+			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			
+			[types addObject:posFittingViewController.fit];
+
+			upgradesDailyCost = 0;
+			for (i = structuresList.begin(); i != end; i++) {
+				ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
+				if (itemInfo)
+					[types addObject:itemInfo];
+				
+				if ((*i)->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
+					NSInteger typeID = (NSInteger) (*i)->getAttribute(1595)->getValue();
+					NSString* key = [NSString stringWithFormat:@"%d", typeID];
+					EVEDBInvType* upgrade = [infrastructureUpgrades valueForKey:key];
+					if (!upgrade) {
+						upgrade = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+						if (upgrade) {
+							[types addObject:upgrade];
+							[infrastructureUpgrades setValue:upgrade forKey:key];
+							EVEDBDgmTypeAttribute* attribute = [upgrade.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
+							upgradesDailyCost += attribute.value; 
+						}
+					}
+				}
+			}
+		}
+		[types addObject:posFittingViewController.posFuelRequirements.resourceType];
+			
+		NSDictionary* prices = [posFittingViewController.priceManager pricesWithTypes:[types allObjects]];
+
+		float fuelPrice = [posFittingViewController.priceManager priceWithType:posFittingViewController.posFuelRequirements.resourceType];
+		fuelDailyCost = fuelConsumtion * fuelPrice * 24;
+		
+		if (upgradesDailyCost > 0) {
+			EVEDBInvType* claim = [EVEDBInvType invTypeWithTypeID:32226 error:nil];
+			EVEDBDgmTypeAttribute* attribute = [claim.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
+			upgradesDailyCost += attribute.value;
+			//upgradesCost += [posFittingViewController.priceManager priceWithType:claim];
+		}
+		
+		posCost = 0;
+		
+		@synchronized(posFittingViewController) {
+			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			const eufe::StructuresList& structuresList = controlTower->getStructures();
+			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			for (i = structuresList.begin(); i != end; i++) {
+				NSInteger typeID = (NSInteger) (*i)->getTypeID();
+				NSString* key = [NSString stringWithFormat:@"%d", typeID];
+				posCost += [[prices valueForKey:key] floatValue];
+			}
+		}
+		
+		upgradesCost = 0;
+		prices = [posFittingViewController.priceManager pricesWithTypes:[infrastructureUpgrades allValues]];
+		for (NSNumber* number in [prices allValues])
+			upgradesCost += [number floatValue];
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^(void) {
+		if (![operation isCancelled]) {
+			fuelCostLabel.text = [NSString stringWithFormat:@"%d/h (%@ ISK/day)",
+								  fuelConsumtion,
+								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
+			
+			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:@"%@ ISK (%@ ISK/day)",
+													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
+													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
+			posCostLabel.text = [NSString stringWithFormat:@"%@ ISK",
+								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:posCost] numberStyle:NSNumberFormatterDecimalStyle]];
+		}
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

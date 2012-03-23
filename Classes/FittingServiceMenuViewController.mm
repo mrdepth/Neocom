@@ -88,7 +88,7 @@
 			}
 		}
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
-		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.group.groupName"]];
+		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
 		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			NSDictionary* a = [obj1 objectAtIndex:0];
 			NSDictionary* b = [obj2 objectAtIndex:0];

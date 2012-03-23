@@ -18,6 +18,7 @@
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "CharacterEVE.h"
+#import "NSArray+GroupBy.h"
 
 
 @implementation FitsViewController
@@ -66,11 +67,40 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[fits release];
-	NSArray *fitsArray = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
-	lastID = [[[fitsArray lastObject] valueForKey:@"fitID"] integerValue];
-	fits = [[NSMutableArray arrayWithArray:[fitsArray sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]]] retain];
-	[menuTableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+	
+	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FitsViewController+Load"];
+	NSMutableArray* fitsTmp = [NSMutableArray array];
+	[operation addExecutionBlock:^{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
+		[fitsArray filterUsingPredicate:[NSPredicate predicateWithFormat:@"isPOS != 1"]];
+		
+		for (NSMutableDictionary* row in fitsArray) {
+			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil];
+			if (type) {
+				[row setValue:type forKey:@"type"];
+				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
+			}
+		}
+
+		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
+		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
+		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+			NSDictionary* a = [obj1 objectAtIndex:0];
+			NSDictionary* b = [obj2 objectAtIndex:0];
+			return [[a valueForKeyPath:@"type.group.groupName"] compare:[b valueForKeyPath:@"type.group.groupName"]];
+		}];
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^{
+		if (![operation isCancelled]) {
+			[fits release];
+			fits = [fitsTmp retain];
+			[menuTableView reloadData];
+		}
+	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,12 +144,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return 2;
+	return [fits count] + 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 1 : fits.count;
+	return section == 0 ? 1 : [[fits objectAtIndex:section - 1] count];
 }
 
 // Customize the appearance of table view cells.
@@ -133,7 +163,7 @@
 											  bundle:nil
 									 reuseIdentifier:cellIdentifier];
 		}
-		cell.titleLabel.text = @"New Fit";
+		cell.titleLabel.text = @"New Ship Fit";
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		return cell;
 	}
@@ -146,7 +176,7 @@
 										 bundle:nil
 								reuseIdentifier:cellIdentifier];
 		}
-		NSDictionary *fit = [fits objectAtIndex:indexPath.row];
+		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];
 		cell.fitNameLabel.text = [fit valueForKey:@"fitName"];
 		cell.iconView.image = [UIImage imageNamed:[fit valueForKey:@"imageName"]];
@@ -157,8 +187,13 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return @"Menu";
-	else
-		return @"My Fits";
+	else {
+		NSArray* rows = [fits objectAtIndex:section - 1];
+		if (rows.count > 0)
+			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
+		else
+			return @"";
+	}
 }
 
 #pragma mark -
@@ -201,7 +236,7 @@
 			[self presentModalViewController:modalController animated:YES];
 	}
 	else {
-		NSDictionary *row = [fits objectAtIndex:indexPath.row];
+		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 		__block Fit* fit = nil;
 		__block boost::shared_ptr<eufe::Character> *character = NULL;

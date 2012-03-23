@@ -71,7 +71,7 @@
 			for (EVECentralMarketStatType* type in marketStat.types) {
 				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
 				if (type.sell.avg > 0) {
-					NSNumber* value = [NSNumber numberWithFloat:type.sell.avg];
+					NSNumber* value = [NSNumber numberWithFloat:type.sell.median];
 					[result setValue:value forKey:key];
 					[prices setValue:value forKey:key];
 				}
@@ -81,7 +81,7 @@
 				if ([result valueForKey:key] == [NSNull null]) {
 					EVEC0rporationFactionItem* item = [self.faction.types valueForKey:key];
 					if (item) {
-						NSNumber* value = [NSNumber numberWithFloat:item.avg];
+						NSNumber* value = [NSNumber numberWithFloat:item.median];
 						[result setValue:value forKey:key];
 						[prices setValue:value forKey:key];
 					}

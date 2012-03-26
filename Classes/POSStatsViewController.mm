@@ -352,6 +352,7 @@
 				NSString* key = [NSString stringWithFormat:@"%d", typeID];
 				posCost += [[prices valueForKey:key] floatValue];
 			}
+			posCost += [[prices valueForKey:[NSString stringWithFormat:@"%d", controlTower->getTypeID()]] floatValue];
 		}
 		
 		upgradesCost = 0;

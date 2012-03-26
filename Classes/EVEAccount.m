@@ -174,7 +174,6 @@
 			NSError *error = nil;
 			if (!self.charKeyID || !self.charVCode || !self.characterID)
 				return nil;
-			[characterSheet release];
 			self.characterSheet = [EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
 		}
 		return [[characterSheet retain] autorelease];
@@ -234,7 +233,7 @@
 			//self.skillQueue = [EVESkillQueue skillQueueWithUserID:self.userID apiKey:self.apiKey characterID:self.characterID error:&error];
 			self.skillQueue = [EVESkillQueue skillQueueWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
 		}
-		return skillQueue;
+		return [[skillQueue retain] autorelease];
 	}
 }
 

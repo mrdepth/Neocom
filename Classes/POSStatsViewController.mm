@@ -334,12 +334,12 @@
 		float fuelPrice = [posFittingViewController.priceManager priceWithType:posFittingViewController.posFuelRequirements.resourceType];
 		fuelDailyCost = fuelConsumtion * fuelPrice * 24;
 		
-		if (upgradesDailyCost > 0) {
+/*		if (upgradesDailyCost > 0) {
 			EVEDBInvType* claim = [EVEDBInvType invTypeWithTypeID:32226 error:nil];
 			EVEDBDgmTypeAttribute* attribute = [claim.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
 			upgradesDailyCost += attribute.value;
 			//upgradesCost += [posFittingViewController.priceManager priceWithType:claim];
-		}
+		}*/
 		
 		posCost = 0;
 		

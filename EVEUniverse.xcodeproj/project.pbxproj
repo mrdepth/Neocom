@@ -65,6 +65,10 @@
 		371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */; };
 		371B780E14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */; };
 		371B780F14FBFC0E005127C2 /* WalletJournalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */; };
+		3724FE2815208CF400823332 /* POSFittingViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */; };
+		3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */; };
+		3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */; };
+		3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */; };
 		37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */; };
 		37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */; };
 		37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */; };
@@ -784,6 +788,10 @@
 		371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalViewController.m; sourceTree = "<group>"; };
 		371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WalletJournalViewController-iPad.xib"; sourceTree = "<group>"; };
 		371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletJournalViewController.xib; sourceTree = "<group>"; };
+		3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "POSFittingViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "StructuresViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "POSStatsViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AssemblyLinesViewController-iPad.xib"; sourceTree = "<group>"; };
 		37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
 		37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
 		37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
@@ -2067,6 +2075,7 @@
 				37410519151A309E00BCED1B /* AssemblyLinesViewController.h */,
 				3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */,
 				3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */,
+				3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */,
 			);
 			name = AssemblyLinesViewController;
 			sourceTree = "<group>";
@@ -2952,6 +2961,7 @@
 				37BBC5A815125D7600EDE204 /* POSFittingViewController.h */,
 				37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */,
 				37CE795A1513603900621D52 /* POSFittingViewController.xib */,
+				3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */,
 			);
 			name = POSFittingViewController;
 			sourceTree = "<group>";
@@ -2962,6 +2972,7 @@
 				37BBC5AC1512640E00EDE204 /* StructuresViewController.h */,
 				37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */,
 				37CE79581513600200621D52 /* StructuresViewController.xib */,
+				3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */,
 			);
 			name = StructuresViewController;
 			sourceTree = "<group>";
@@ -3040,6 +3051,7 @@
 				37CE795315135CA800621D52 /* POSStatsViewController.h */,
 				37CE795415135CA800621D52 /* POSStatsViewController.mm */,
 				37CE795615135F7A00621D52 /* POSStatsViewController.xib */,
+				3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */,
 			);
 			name = POSStatsViewController;
 			sourceTree = "<group>";
@@ -4614,6 +4626,10 @@
 				37CE79591513600200621D52 /* StructuresViewController.xib in Resources */,
 				37CE795B1513603A00621D52 /* POSFittingViewController.xib in Resources */,
 				3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */,
+				3724FE2815208CF400823332 /* POSFittingViewController-iPad.xib in Resources */,
+				3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */,
+				3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */,
+				3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

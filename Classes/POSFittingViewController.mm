@@ -97,8 +97,8 @@
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 		
-		self.areaEffectsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:areaEffectsModalController] autorelease];
-		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
+//		self.areaEffectsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:areaEffectsModalController] autorelease];
+//		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
 		
 		structuresViewController.popoverController = self.popoverController;
 	}

@@ -175,7 +175,7 @@
 			if (!self.charKeyID || !self.charVCode || !self.characterID)
 				return nil;
 			[characterSheet release];
-			characterSheet = [[EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error] retain];
+			self.characterSheet = [EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
 		}
 		return [[characterSheet retain] autorelease];
 	}

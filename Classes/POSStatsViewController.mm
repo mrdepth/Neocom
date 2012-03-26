@@ -366,13 +366,13 @@
 		if (![operation isCancelled]) {
 			fuelCostLabel.text = [NSString stringWithFormat:@"%d/h (%@ ISK/day)",
 								  fuelConsumtion,
-								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
+								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 			
 			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:@"%@ ISK (%@ ISK/day)",
-													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
-													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
+													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
+													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 			posCostLabel.text = [NSString stringWithFormat:@"%@ ISK",
-								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:posCost] numberStyle:NSNumberFormatterDecimalStyle]];
+								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:posCost] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 	}];
 	

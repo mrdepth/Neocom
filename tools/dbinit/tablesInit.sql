@@ -114,7 +114,7 @@ CREATE TABLE "mapConstellations" (
 CREATE TABLE "mapDenormalize" (
   "itemID" int(11) NOT NULL,
   "typeID" int(11) DEFAULT NULL,
-  "groupID" smallint(6) DEFAULT NULL,
+  "groupID" int(11) DEFAULT NULL,
   "solarSystemID" int(11) DEFAULT NULL,
   "constellationID" int(11) DEFAULT NULL,
   "regionID" int(11) DEFAULT NULL,
@@ -186,6 +186,25 @@ CREATE TABLE "ramActivities" (
   PRIMARY KEY ("activityID")
 );
 
+CREATE TABLE "ramAssemblyLineTypes" (
+  "assemblyLineTypeID" tinyint(3) NOT NULL,
+  "assemblyLineTypeName" varchar(100) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "baseTimeMultiplier" double DEFAULT NULL,
+  "baseMaterialMultiplier" double DEFAULT NULL,
+  "volume" double DEFAULT NULL,
+  "activityID" tinyint(3) DEFAULT NULL,
+  "minCostPerHour" double DEFAULT NULL,
+  PRIMARY KEY ("assemblyLineTypeID")
+);
+
+CREATE TABLE "ramInstallationTypeContents" (
+  "installationTypeID" int(11) NOT NULL,
+  "assemblyLineTypeID" tinyint(3) NOT NULL,
+  "quantity" tinyint(4) DEFAULT NULL,
+  PRIMARY KEY ("installationTypeID","assemblyLineTypeID")
+);
+
 CREATE TABLE "staStations" (
   "stationID" int(11) NOT NULL,
   "security" smallint(6) DEFAULT NULL,
@@ -240,6 +259,8 @@ CREATE INDEX "mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
 CREATE INDEX "mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
 CREATE INDEX "mapSolarSystems_IX_factionID" ON "mapSolarSystems" ("factionID");
 CREATE INDEX "mapSolarSystems_IX_sunTypeID" ON "mapSolarSystems" ("sunTypeID");
+CREATE INDEX "ramAssemblyLineTypes_IX_activityID" ON "ramAssemblyLineTypes" ("activityID");
+CREATE INDEX "ramInstallationTypeContents_IX_assemblyLineTypeID" ON "ramInstallationTypeContents" ("assemblyLineTypeID");
 CREATE INDEX "staStations_IX_constellation" ON "staStations" ("constellationID");
 CREATE INDEX "staStations_IX_corporation" ON "staStations" ("corporationID");
 CREATE INDEX "staStations_IX_operation" ON "staStations" ("operationID");

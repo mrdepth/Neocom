@@ -153,6 +153,9 @@
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:support@eveuniverseiphone.com"]];
 }
 
+- (IBAction) onSources:(id) sender {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/mrdepth"]];
+}
 
 #pragma mark UIAlertViewDelegate
 

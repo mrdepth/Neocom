@@ -43,5 +43,6 @@
 - (IBAction) onDonate:(id) sender;
 - (IBAction) onHomepage:(id) sender;
 - (IBAction) onMail:(id) sender;
+- (IBAction) onSources:(id) sender;
 
 @end

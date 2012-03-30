@@ -12,8 +12,14 @@
 #import "NSString+TimeLeft.h"
 #import "EUOperationQueue.h"
 #import "Fit.h"
+#import "ItemInfo.h"
+#import "PriceManager.h"
 
 #import "eufe.h"
+
+@interface StatsViewController(Private)
+- (void) updatePrice;
+@end
 
 @implementation StatsViewController
 @synthesize fittingViewController;
@@ -78,6 +84,13 @@
 @synthesize signatureLabel;
 @synthesize cargoLabel;
 @synthesize sensorImageView;
+@synthesize droneRangeLabel;
+@synthesize warpSpeedLabel;
+
+@synthesize shipPriceLabel;
+@synthesize fittingsPriceLabel;
+@synthesize totalPriceLabel;
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -178,6 +191,13 @@
 	self.signatureLabel = nil;
 	self.cargoLabel = nil;
 	self.sensorImageView = nil;
+	self.droneRangeLabel = nil;
+	self.warpSpeedLabel = nil;
+	
+	self.shipPriceLabel = nil;
+	self.fittingsPriceLabel = nil;
+	self.totalPriceLabel = nil;
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -247,6 +267,12 @@
 	[signatureLabel release];
 	[cargoLabel release];
 	[sensorImageView release];
+	[droneRangeLabel release];
+	[warpSpeedLabel release];
+	
+	[shipPriceLabel release];
+	[fittingsPriceLabel release];
+	[totalPriceLabel release];
 
     [super dealloc];
 }
@@ -301,13 +327,15 @@
 	__block float cargo;
 	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
+	__block float droneRange;
+	__block float warpSpeed;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			
-			boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
+			boost::shared_ptr<eufe::Character> character = fittingViewController.fit.character;
+			boost::shared_ptr<eufe::Ship> ship = character->getShip();
 			
 			totalPG = ship->getTotalPowerGrid();
 			usedPG = ship->getPowerGridUsed();
@@ -382,6 +410,9 @@
 					break;
 			}
 			
+			droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
+			warpSpeed = ship->getWarpSpeed();
+
 			damagePattern = [fittingViewController.damagePattern retain];
 		}
 		[pool release];
@@ -458,7 +489,7 @@
 			dpsLabel.text = [NSString stringWithFormat:@"%.0f",dps];
 			
 			targetsLabel.text = [NSString stringWithFormat:@"%d", targets];
-			targetRangeLabel.text = [NSString stringWithFormat:@"%.0f km", targetRange];
+			targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", targetRange];
 			scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", scanRes];
 			sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", sensorStr];
 			speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", speed];
@@ -466,9 +497,81 @@
 			signatureLabel.text = [NSString stringWithFormat:@"%.0f", signature];
 			cargoLabel.text = [NSString stringWithResource:cargo unit:@"m3"];
 			sensorImageView.image = sensorImage;
+
+			droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", droneRange];
+			warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", warpSpeed];
+
 		}
 		[sensorImage release];
 		[damagePattern release];
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+	[self updatePrice];
+}
+
+@end
+
+@implementation StatsViewController(Private)
+
+- (void) updatePrice {
+	__block float shipPrice;
+	__block float fittingsPrice;
+	__block float totalPrice;
+	
+	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+UpdatePrice"];
+	[operation addExecutionBlock:^(void) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		NSCountedSet* types = [NSCountedSet set];
+		ItemInfo* shipInfo = nil;
+		
+		@synchronized(fittingViewController) {
+			boost::shared_ptr<eufe::Character> character = fittingViewController.fit.character;
+			boost::shared_ptr<eufe::Ship> ship = character->getShip();
+			
+			shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
+			[types addObject:shipInfo];
+			
+			const eufe::ModulesList& modulesList = ship->getModules();
+			eufe::ModulesList::const_iterator i, end = modulesList.end();
+			
+			for (i = modulesList.begin(); i != end; i++) {
+				ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
+				if (itemInfo)
+					[types addObject:itemInfo];
+			}
+
+			const eufe::DronesList& dronesList = ship->getDrones();
+			eufe::DronesList::const_iterator j, endj = dronesList.end();
+			
+			for (j = dronesList.begin(); j != endj; j++) {
+				ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*j error:nil];
+				if (itemInfo)
+					[types addObject:itemInfo];
+			}
+		}
+		NSDictionary* prices = [fittingViewController.priceManager pricesWithTypes:[types allObjects]];
+		shipPrice = [fittingViewController.priceManager priceWithType:shipInfo];
+		fittingsPrice = 0;
+		for (ItemInfo* itemInfo in types) {
+			if (itemInfo != shipInfo) {
+				int count = [types countForObject:itemInfo];
+				NSString* key = [NSString stringWithFormat:@"%d", itemInfo.typeID];
+				fittingsPrice += [[prices valueForKey:key] floatValue] * count;
+			}
+		}
+		
+		totalPrice = shipPrice + fittingsPrice;
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^(void) {
+		if (![operation isCancelled]) {
+			shipPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:shipPrice unit:nil]];
+			fittingsPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:fittingsPrice unit:nil]];
+			totalPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:totalPrice unit:nil]];
+		}
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

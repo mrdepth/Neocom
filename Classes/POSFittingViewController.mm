@@ -1,20 +1,21 @@
 //
-//  FittingViewController.m
+//  POSFittingViewController.m
 //  EVEUniverse
 //
-//  Created by Artem Shimanski on 5/8/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Mr. Depth on 3/15/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "FittingViewController.h"
+#import "POSFittingViewController.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "FittingItemsViewController.h"
-#import "Fit.h"
+#import "POSFit.h"
 #import "ItemInfo.h"
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
+#import "EVEDBAPI.h"
 #import "PriceManager.h"
 
 #include "eufe.h"
@@ -22,15 +23,12 @@
 #define ActionButtonBack @"Back"
 #define ActionButtonSetName @"Set Fit Name"
 #define ActionButtonSave @"Save Fit"
-#define ActionButtonCharacter @"Switch Character"
-#define ActionButtonViewInBrowser @"View in Browser"
 #define ActionButtonAreaEffect @"Select Area Effect"
 #define ActionButtonClearAreaEffect @"Clear Area Effect"
 #define ActionButtonSetDamagePattern @"Set Damage Pattern"
-#define ActionButtonRequiredSkills @"Required Skills"
 #define ActionButtonCancel @"Cancel"
 
-@interface FittingViewController(Private)
+@interface POSFittingViewController(Private)
 
 - (void) keyboardWillShow: (NSNotification*) notification;
 - (void) keyboardWillHide: (NSNotification*) notification;
@@ -38,42 +36,39 @@
 
 @end
 
-@implementation FittingViewController
+@implementation POSFittingViewController
 @synthesize sectionsView;
 @synthesize sectionSegmentControl;
 @synthesize modalController;
-@synthesize targetsModalController;
 @synthesize areaEffectsModalController;
-@synthesize targetsViewController;
 @synthesize areaEffectsViewController;
-@synthesize modulesViewController;
-@synthesize dronesViewController;
-@synthesize implantsViewController;
-@synthesize statsViewController;
-@synthesize fleetViewController;
+@synthesize structuresViewController;
+@synthesize assemblyLinesViewController;
+@synthesize posStatsViewController;
 @synthesize shadeView;
 @synthesize fitNameView;
 @synthesize fitNameTextField;
 @synthesize statsSectionView;
 @synthesize popoverController;
-@synthesize targetsPopoverController;
 @synthesize areaEffectsPopoverController;
 @synthesize fit;
 
 @synthesize fittingEngine;
 @synthesize damagePattern;
+
+@synthesize posFuelRequirements;
 @synthesize priceManager;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
+ - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+ self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+ if (self) {
+ // Custom initialization.
+ }
+ return self;
+ }
+ */
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -82,18 +77,14 @@
 	
 	self.fitNameTextField.text = fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
-
+	
 	if (currentSectionIndex == 0)
-		currentSection = modulesViewController;
+		currentSection = structuresViewController;
 	else if (currentSectionIndex == 1)
-		currentSection = dronesViewController;
-	else if (currentSectionIndex == 2)
-		currentSection = implantsViewController;
-	else if (currentSectionIndex == 3)
-		currentSection = fleetViewController;
-	else if (currentSectionIndex == 4)
-		currentSection = statsViewController;
-
+		currentSection = assemblyLinesViewController;
+	else
+		currentSection = posStatsViewController;
+	
 	[self.sectionsView addSubview:currentSection.view];
 	currentSection.view.frame = self.sectionsView.bounds;
 	[currentSection viewWillAppear:NO];
@@ -101,22 +92,19 @@
 	sectionSegmentControl.selectedSegmentIndex = currentSectionIndex;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.statsSectionView addSubview:statsViewController.view];
-		statsViewController.view.frame = self.statsSectionView.bounds;
+		[self.statsSectionView addSubview:posStatsViewController.view];
+		posStatsViewController.view.frame = self.statsSectionView.bounds;
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
-
-		self.targetsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:targetsModalController] autorelease];
-		self.targetsPopoverController.delegate = (FittingItemsViewController*)  self.targetsModalController.topViewController;
 		
-		self.areaEffectsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:areaEffectsModalController] autorelease];
-		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
+//		self.areaEffectsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:areaEffectsModalController] autorelease];
+//		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
 		
-		modulesViewController.popoverController = self.popoverController;
-		dronesViewController.popoverController = self.popoverController;
-		implantsViewController.popoverController = self.popoverController;
+		structuresViewController.popoverController = self.popoverController;
 	}
+	
 	priceManager = [[PriceManager alloc] init];
+	
 	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
 	[self update];
 }
@@ -167,54 +155,48 @@
 	self.sectionsView = nil;
 	self.sectionSegmentControl = nil;
 	self.modalController = nil;
-	self.targetsModalController = nil;
 	self.areaEffectsModalController = nil;
 	self.areaEffectsViewController = nil;
-	self.modulesViewController = nil;
-	self.dronesViewController = nil;
-	self.implantsViewController = nil;
-	self.statsViewController = nil;
-	self.fleetViewController = nil;
+	self.structuresViewController = nil;
+	self.assemblyLinesViewController = nil;
+	self.posStatsViewController = nil;
 	self.shadeView = nil;
 	self.fitNameView = nil;
 	self.fitNameTextField = nil;
 	self.statsSectionView = nil;
 	self.popoverController = nil;
-	self.targetsPopoverController = nil;
 	self.areaEffectsPopoverController = nil;
-	self.priceManager = nil;
 	currentSection = nil;
+	self.posFuelRequirements = nil;
+	self.priceManager = nil;
 }
 
 
 - (void)dealloc {
-
+	
 	[sectionsView release];
 	[sectionSegmentControl release];
 	[modalController release];
-	[targetsModalController release];
 	[areaEffectsModalController release];
-	[targetsViewController release];
 	[areaEffectsViewController release];
-	[modulesViewController release];
-	[dronesViewController release];
-	[implantsViewController release];
-	[statsViewController release];
-	[fleetViewController release];
+	[structuresViewController release];
+	[assemblyLinesViewController release];
+	[posStatsViewController release];
 	[shadeView release];
 	[fitNameView release];
 	[fitNameTextField release];
 	[statsSectionView release];
 	[popoverController release];
-	[targetsPopoverController release];
 	[areaEffectsPopoverController release];
 	
 	[fit release];
 	
 	[actionSheet release];
-	[fits release];
 	[damagePattern release];
+	
+	[posFuelRequirements release];
 	[priceManager release];
+
 	delete fittingEngine;
     [super dealloc];
 }
@@ -226,20 +208,16 @@
 - (IBAction) didChangeSection:(id) sender {
 	UIViewController<FittingSection> *newSection = nil;
 	if (sectionSegmentControl.selectedSegmentIndex == 0)
-		newSection = modulesViewController;
+		newSection = structuresViewController;
 	else if (sectionSegmentControl.selectedSegmentIndex == 1)
-		newSection = dronesViewController;
-	else if (sectionSegmentControl.selectedSegmentIndex == 2)
-		newSection = implantsViewController;
-	else if (sectionSegmentControl.selectedSegmentIndex == 3)
-		newSection = fleetViewController;
-	else if (sectionSegmentControl.selectedSegmentIndex == 4)
-		newSection = statsViewController;
+		newSection = assemblyLinesViewController;
+	else
+		newSection = posStatsViewController;
 	if (newSection == currentSection)
 		return;
 	
 	currentSectionIndex = sectionSegmentControl.selectedSegmentIndex;
-
+	
 	[currentSection.view removeFromSuperview];
 	[self.sectionsView addSubview:newSection.view];
 	newSection.view.frame = self.sectionsView.bounds;
@@ -257,24 +235,18 @@
 									 cancelButtonTitle:nil
 								destructiveButtonTitle:nil
 									 otherButtonTitles:nil];
-//	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-//		[actionSheet addButtonWithTitle:ActionButtonBack];
 	
-	if (fittingEngine->getArea() != NULL) {
+/*	if (fittingEngine->getArea() != NULL) {
 		[actionSheet addButtonWithTitle:ActionButtonClearAreaEffect];
 		actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 1;
-	}
-
+	}*/
+	
 	[actionSheet addButtonWithTitle:ActionButtonSetName];
 	if (fit.fitID <= 0)
 		[actionSheet addButtonWithTitle:ActionButtonSave];
-	[actionSheet addButtonWithTitle:ActionButtonCharacter];
-	if (fit.fitURL)
-		[actionSheet addButtonWithTitle:ActionButtonViewInBrowser];
-	[actionSheet addButtonWithTitle:ActionButtonAreaEffect];
+	//[actionSheet addButtonWithTitle:ActionButtonAreaEffect];
 	
 	[actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
-	[actionSheet addButtonWithTitle:ActionButtonRequiredSkills];
 	[actionSheet addButtonWithTitle:ActionButtonCancel];
 	
 	actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
@@ -286,13 +258,9 @@
 	[fitNameTextField resignFirstResponder];
 	fit.fitName = fitNameTextField.text;
 	
-	boost::shared_ptr<eufe::Character> character = fit.character;
-	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
-	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, fit.fitName ? fit.fitName : itemInfo.typeName];
-	
-	if (currentSection == fleetViewController)
-		[fleetViewController update];
-
+//	boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
+//	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:controlTower error:nil];
+	self.title = [NSString stringWithFormat:@"%@ - %@", fit.typeName, fit.fitName ? fit.fitName : fit.typeName];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[UIView beginAnimations:nil context:nil];
@@ -304,7 +272,6 @@
 											self.fitNameView.frame.size.height);
 		[UIView commitAnimations];
 	}
-	
 }
 
 - (IBAction) onBack:(id) sender {
@@ -318,59 +285,19 @@
 	return fittingEngine;
 }
 
-- (NSMutableArray*) fits {
-	if (!fits)
-		fits = [[NSMutableArray alloc] init];
-	return fits;
-}
-
 - (void) update {
 	[currentSection update];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[statsViewController update];
+		[posStatsViewController update];
 }
 
-- (void) addFleetMember {
-	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitsViewController-iPad" : @"FitsViewController")
-																				  bundle:nil];
-	fitsViewController.delegate = self;
-	fitsViewController.engine = fittingEngine;
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fitsViewController];
-	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	
-	[self presentModalViewController:navController animated:YES];
-	[navController release];
-	[fitsViewController release];
-}
-
-- (void) selectCharacterForFit:(Fit*) aFit {
-	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
-																									bundle:nil];
-	charactersViewController.delegate = self;
-	charactersViewController.modifiedFit = aFit;
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
-	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	
-	[self presentModalViewController:navController animated:YES];
-	[navController release];
-	[charactersViewController release];
-}
-
-- (void) setFit:(Fit*) value {
+- (void) setFit:(POSFit*) value {
 	[value retain];
 	[fit release];
 	fit = value;
-	boost::shared_ptr<eufe::Character> character = fit.character;
-	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
-	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, fit.fitName ? fit.fitName : itemInfo.typeName];
+	//boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
+//	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
+	self.title = [NSString stringWithFormat:@"%@ - %@", fit.typeName, fit.fitName ? fit.fitName : fit.typeName];
 	self.fitNameTextField.text = fit.fitName;
 }
 
@@ -383,10 +310,19 @@
 	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
 	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
 	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
-	for (Fit* item in fits) {
-		boost::shared_ptr<eufe::Character> character = item.character;
-		character->getShip()->setDamagePattern(eufeDamagePattern);
+	fit.controlTower.get()->setDamagePattern(eufeDamagePattern);
+}
+
+- (EVEDBInvControlTowerResource*) posFuelRequirements {
+	if (!posFuelRequirements) {
+		for (EVEDBInvControlTowerResource* resource in fit.resources) {
+			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
+				posFuelRequirements = [resource retain];
+				break;
+			}
+		}
 	}
+	return posFuelRequirements;
 }
 
 #pragma mark UIActionSheetDelegate
@@ -403,7 +339,7 @@
 			[UIView beginAnimations:nil context:nil];
 			[UIView setAnimationDuration:0.3];
 			[UIView setAnimationBeginsFromCurrentState:YES];
-//			self.shadeView.alpha = 1;
+			//			self.shadeView.alpha = 1;
 			self.fitNameView.frame = CGRectMake(self.sectionsView.frame.size.width,
 												self.fitNameView.frame.origin.y,
 												self.fitNameView.frame.size.width,
@@ -413,15 +349,6 @@
 	}
 	else if ([button isEqualToString:ActionButtonSave]) {
 		[fit save];
-	}
-	else if ([button isEqualToString:ActionButtonCharacter]) {
-		[self selectCharacterForFit:fit];
-	}
-	else if ([button isEqualToString:ActionButtonViewInBrowser]) {
-		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
-		//controller.delegate = self;
-		controller.startPageURL = fit.fitURL;
-		[self presentModalViewController:controller animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonAreaEffect]) {
 		boost::shared_ptr<eufe::Item> area = fittingEngine->getArea();
@@ -451,20 +378,6 @@
 		[navController release];
 		[damagePatternsViewController release];
 	}
-	else if ([button isEqualToString:ActionButtonRequiredSkills]) {
-		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RequiredSkillsViewController-iPad" : @"RequiredSkillsViewController")
-																													bundle:nil];
-		requiredSkillsViewController.fit = self.fit;
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[self presentModalViewController:navController animated:YES];
-		[navController release];
-		[requiredSkillsViewController release];
-	}
 	[actionSheet release];
 	actionSheet = nil;
 }
@@ -477,12 +390,6 @@
 	return YES;
 }
 
-#pragma mark BrowserViewControllerDelegate
-
-- (void) browserViewControllerDidFinish:(BrowserViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 #pragma mark AreaEffectsViewControllerDelegate
 
 - (void) areaEffectsViewController:(AreaEffectsViewController*) controller didSelectAreaEffect:(EVEDBInvType*) areaEffect {
@@ -492,16 +399,6 @@
 	else
 		[self dismissModalViewControllerAnimated:YES];
 	[self update];
-}
-
-#pragma mark CharactersViewControllerDelegate
-
-- (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
-	eufe::Character* eufeCharacter = aController.modifiedFit.character.get();
-	eufeCharacter->setSkillLevels(*[character skillsMap]);
-	eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
-	[self update];
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark DamagePatternsViewControllerDelegate
@@ -518,113 +415,32 @@
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[aController dismissModalViewControllerAnimated:YES];
 	
-	boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
-
+	boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
+	
 	if (type.group.categoryID == 8) {// Charge
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController dismissPopoverAnimated:YES];
 		if (aController.modifiedItem) {
-			eufe::Module* module = dynamic_cast<eufe::Module*>(aController.modifiedItem.item.get());
-			module->setCharge(type.typeID);
+			eufe::Structure* structure = dynamic_cast<eufe::Structure*>(aController.modifiedItem.item.get());
+			structure->setCharge(type.typeID);
 		}
 		else {
-			eufe::ModulesList::const_iterator i, end = ship->getModules().end();
-			for (i = ship->getModules().begin(); i != end; i++) {
+			eufe::StructuresList::const_iterator i, end = controlTower->getStructures().end();
+			for (i = controlTower->getStructures().begin(); i != end; i++) {
 				(*i)->setCharge(type.typeID);
 			}
 		}
 	}
-	else if (type.group.categoryID == 18) {// Drone
-		eufe::TypeID typeID = type.typeID;
-		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
-		
-		const eufe::DronesList& drones = ship->getDrones();
-		eufe::Drone* sameDrone = NULL;
-		eufe::DronesList::const_iterator i, end = drones.end();
-		for (i = drones.begin(); i != end; i++) {
-			if ((*i)->getTypeID() == typeID) {
-				sameDrone = i->get();
-				break;
-			}
-		}
-		eufe::Drone* drone = ship->addDrone(type.typeID).get();
-		
-		if (sameDrone)
-			drone->setTarget(sameDrone->getTarget());
-		else {
-			int dronesLeft = ship->getMaxActiveDrones() - 1;
-			for (;dronesLeft > 0; dronesLeft--)
-				ship->addDrone(boost::shared_ptr<eufe::Drone>(new eufe::Drone(*drone)));
-		}
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController dismissPopoverAnimated:YES];
-	}
-	else if (type.group.categoryID == 20) {// Implant
-		if ([type.attributesDictionary valueForKey:@"331"]) {
-			fit.character.get()->addImplant(type.typeID);
-		}
-		else {
-			fit.character.get()->addBooster(type.typeID);
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[popoverController dismissPopoverAnimated:YES];
-		}
-	}
 	else { //Module
-		fit.character.get()->getShip()->addModule(type.typeID);
+		controlTower->addStructure(type.typeID);
 	}
 	[self update];
-}
-
-#pragma mark FitsViewControllerDelegate
-
-- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(Fit*) aFit {
-	boost::shared_ptr<eufe::Character> character = aFit.character;
-	fittingEngine->getGang()->addPilot(character);
-	[fits addObject:aFit];
-	
-	eufe::DamagePattern eufeDamagePattern;
-	eufeDamagePattern.emAmount = damagePattern.emAmount;
-	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
-	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
-	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
-	character->getShip()->setDamagePattern(eufeDamagePattern);
-	
-	[self dismissModalViewControllerAnimated:YES];
-	[self update];
-}
-
-#pragma mark TargetsViewControllerDelegate
-- (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
-	ItemInfo* itemInfo = controller.modifiedItem;
-	if (itemInfo.group.categoryID == 18) { // Drone
-		boost::shared_ptr<eufe::Drone> drone = boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item);
-		eufe::TypeID typeID = drone->getTypeID();
-		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
-		
-		const eufe::DronesList& drones = ship->getDrones();
-		eufe::DronesList::const_iterator i, end = drones.end();
-		for (i = drones.begin(); i != end; i++) {
-			if ((*i)->getTypeID() == typeID)
-				(*i)->setTarget(target);
-		}
-	}
-	else {
-		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
-		module->setTarget(target);
-	}
-	[self update];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.targetsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
 }
 
 @end
 
 
-@implementation FittingViewController(Private)
+@implementation POSFittingViewController(Private)
 
 - (void) keyboardWillShow: (NSNotification*) notification {
 	CGRect r = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -651,9 +467,8 @@
 }
 
 - (void) save {
-	for (Fit* item in fits)
-		if (item.fitID > 0)
-			[item save];
+	if (fit.fitID > 0)
+		[fit save];
 }
 
 @end

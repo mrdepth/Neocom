@@ -99,6 +99,7 @@
 	[sections release];
 	[sovereigntySolarSystems release];
 	[filteredValues release];
+
     [super dealloc];
 }
 

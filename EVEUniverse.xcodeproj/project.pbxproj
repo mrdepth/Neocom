@@ -65,6 +65,15 @@
 		371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */; };
 		371B780E14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */; };
 		371B780F14FBFC0E005127C2 /* WalletJournalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */; };
+		3724FE2815208CF400823332 /* POSFittingViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */; };
+		3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */; };
+		3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */; };
+		3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */; };
+		37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */; };
+		37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */; };
+		37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */; };
+		3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */; };
+		3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */; };
 		3750A44314E00E8400F06FA0 /* RequiredSkillsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */; };
 		3750A44414E00E8400F06FA0 /* RequiredSkillsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */; };
 		3750A44714E0249000F06FA0 /* CharacterAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44614E0249000F06FA0 /* CharacterAttributes.m */; };
@@ -307,6 +316,10 @@
 		37B967C214D9C139003F3900 /* DamagePatternEditViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C114D9C138003F3900 /* DamagePatternEditViewController-iPad.xib */; };
 		37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C314D9C478003F3900 /* damagePatterns.plist */; };
 		37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BA2E3714F66015004C4538 /* HeatSimulator.cpp */; };
+		37BBC5A51512373700EDE204 /* ControlTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A11512373700EDE204 /* ControlTower.cpp */; };
+		37BBC5A61512373700EDE204 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A31512373700EDE204 /* Structure.cpp */; };
+		37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */; };
+		37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */; };
 		37BE978714DC3C4300575642 /* SkillPlannerViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */; };
 		37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C0FB2414FD0E6E006A153D /* WalletJournalCellView.m */; };
 		37C0FB2714FD0E7F006A153D /* WalletJournalCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C0FB2614FD0E7F006A153D /* WalletJournalCellView.xib */; };
@@ -333,6 +346,11 @@
 		37C76E0A14D07EE700EABCA7 /* CertificatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0814D07EE700EABCA7 /* CertificatesViewController.xib */; };
 		37C76E0E14D0882400EABCA7 /* CertificateCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C76E0D14D0882400EABCA7 /* CertificateCellView.m */; };
 		37C76E1014D0883400EABCA7 /* CertificateCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */; };
+		37CE795015134D8B00621D52 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37CE794F15134D8B00621D52 /* POSFit.mm */; };
+		37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37CE795415135CA800621D52 /* POSStatsViewController.mm */; };
+		37CE795715135F7A00621D52 /* POSStatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37CE795615135F7A00621D52 /* POSStatsViewController.xib */; };
+		37CE79591513600200621D52 /* StructuresViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37CE79581513600200621D52 /* StructuresViewController.xib */; };
+		37CE795B1513603A00621D52 /* POSFittingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37CE795A1513603900621D52 /* POSFittingViewController.xib */; };
 		37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEED14B5C61200BF148F /* cellBackground.png */; };
 		37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEEE14B5C61200BF148F /* cellBackground@2x.png */; };
 		37CFDEF314B5C61300BF148F /* cellBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEEF14B5C61300BF148F /* cellBackgroundSelected.png */; };
@@ -350,6 +368,8 @@
 		37DDFDA414A22BD600BCDEBB /* CharacterCustom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA314A22BD500BCDEBB /* CharacterCustom.mm */; };
 		37DDFDA914A23A9C00BCDEBB /* CharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */; };
 		37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */; };
+		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
+		37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */; };
 		37E352E114B4AA93004367AB /* FleetViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */; };
 		37E352E614B4AC3D004367AB /* FitsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */; };
 		37E352E814B4ADF6004367AB /* CharactersViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */; };
@@ -768,6 +788,19 @@
 		371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalViewController.m; sourceTree = "<group>"; };
 		371B780C14FBFC0E005127C2 /* WalletJournalViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WalletJournalViewController-iPad.xib"; sourceTree = "<group>"; };
 		371B780D14FBFC0E005127C2 /* WalletJournalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletJournalViewController.xib; sourceTree = "<group>"; };
+		3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "POSFittingViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "StructuresViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "POSStatsViewController-iPad.xib"; sourceTree = "<group>"; };
+		3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AssemblyLinesViewController-iPad.xib"; sourceTree = "<group>"; };
+		37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
+		37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
+		37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
+		37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamAssemblyLineType.m; sourceTree = "<group>"; };
+		37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
+		37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
+		37410519151A309E00BCED1B /* AssemblyLinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssemblyLinesViewController.h; sourceTree = "<group>"; };
+		3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssemblyLinesViewController.mm; sourceTree = "<group>"; };
+		3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssemblyLinesViewController.xib; sourceTree = "<group>"; };
 		3750A44014E00E8400F06FA0 /* RequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredSkillsViewController.h; sourceTree = "<group>"; };
 		3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RequiredSkillsViewController.mm; sourceTree = "<group>"; };
 		3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequiredSkillsViewController.xib; sourceTree = "<group>"; };
@@ -1214,6 +1247,14 @@
 		37B967C314D9C478003F3900 /* damagePatterns.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = damagePatterns.plist; sourceTree = "<group>"; };
 		37BA2E3714F66015004C4538 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = HeatSimulator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		37BA2E3814F66015004C4538 /* HeatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatSimulator.h; sourceTree = "<group>"; };
+		37BBC5A11512373700EDE204 /* ControlTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlTower.cpp; sourceTree = "<group>"; };
+		37BBC5A21512373700EDE204 /* ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlTower.h; sourceTree = "<group>"; };
+		37BBC5A31512373700EDE204 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
+		37BBC5A41512373700EDE204 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		37BBC5A815125D7600EDE204 /* POSFittingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFittingViewController.h; sourceTree = "<group>"; };
+		37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFittingViewController.mm; sourceTree = "<group>"; };
+		37BBC5AC1512640E00EDE204 /* StructuresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StructuresViewController.h; sourceTree = "<group>"; };
+		37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StructuresViewController.mm; sourceTree = "<group>"; };
 		37BE978614DC3C4300575642 /* SkillPlannerViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SkillPlannerViewController-iPad.xib"; sourceTree = "<group>"; };
 		37C0FB2314FD0E6E006A153D /* WalletJournalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletJournalCellView.h; sourceTree = "<group>"; };
 		37C0FB2414FD0E6E006A153D /* WalletJournalCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalCellView.m; sourceTree = "<group>"; };
@@ -1252,6 +1293,13 @@
 		37C76E0C14D0882400EABCA7 /* CertificateCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateCellView.h; sourceTree = "<group>"; };
 		37C76E0D14D0882400EABCA7 /* CertificateCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateCellView.m; sourceTree = "<group>"; };
 		37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateCellView.xib; sourceTree = "<group>"; };
+		37CE794E15134D8B00621D52 /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
+		37CE794F15134D8B00621D52 /* POSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFit.mm; sourceTree = "<group>"; };
+		37CE795315135CA800621D52 /* POSStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSStatsViewController.h; sourceTree = "<group>"; };
+		37CE795415135CA800621D52 /* POSStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSStatsViewController.mm; sourceTree = "<group>"; };
+		37CE795615135F7A00621D52 /* POSStatsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POSStatsViewController.xib; sourceTree = "<group>"; };
+		37CE79581513600200621D52 /* StructuresViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StructuresViewController.xib; sourceTree = "<group>"; };
+		37CE795A1513603900621D52 /* POSFittingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POSFittingViewController.xib; sourceTree = "<group>"; };
 		37CFDEED14B5C61200BF148F /* cellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackground.png; sourceTree = "<group>"; };
 		37CFDEEE14B5C61200BF148F /* cellBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellBackground@2x.png"; sourceTree = "<group>"; };
 		37CFDEEF14B5C61300BF148F /* cellBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackgroundSelected.png; sourceTree = "<group>"; };
@@ -1275,6 +1323,11 @@
 		37DDFDA714A23A9C00BCDEBB /* CharacterCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCellView.h; sourceTree = "<group>"; };
 		37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterCellView.m; sourceTree = "<group>"; };
 		37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterCellView.xib; sourceTree = "<group>"; };
+		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
+		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
+		37DF48EC151CE47B00BC87A5 /* EVEC0rporationAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationAPI.h; sourceTree = "<group>"; };
+		37DF48ED151CE47B00BC87A5 /* EVEC0rporationFaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationFaction.h; sourceTree = "<group>"; };
+		37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEC0rporationFaction.m; sourceTree = "<group>"; };
 		37E352E014B4AA93004367AB /* FleetViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E514B4AC3C004367AB /* FitsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FitsViewController-iPad.xib"; sourceTree = "<group>"; };
 		37E352E714B4ADF6004367AB /* CharactersViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharactersViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -2016,6 +2069,17 @@
 			name = WalletJournalViewController;
 			sourceTree = "<group>";
 		};
+		37410500151A1DCC00BCED1B /* AssemblyLinesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37410519151A309E00BCED1B /* AssemblyLinesViewController.h */,
+				3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */,
+				3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */,
+				3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */,
+			);
+			name = AssemblyLinesViewController;
+			sourceTree = "<group>";
+		};
 		3750A43E14E00E6D00F06FA0 /* RequiredSkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2175,6 +2239,7 @@
 				37AB44A614F52173007B4C33 /* EVECentralAPI */,
 				37AB44B014F52173007B4C33 /* EVEDBAPI */,
 				37AB44FA14F52173007B4C33 /* EVEOnlineAPI */,
+				37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */,
 				37AB458A14F52173007B4C33 /* RSS */,
 				37AB45A314F52173007B4C33 /* Utility */,
 			);
@@ -2272,6 +2337,8 @@
 				37AB44D514F52173007B4C33 /* EVEDBInvMarketGroup.m */,
 				37AB44D614F52173007B4C33 /* EVEDBInvType+ControlTower.h */,
 				37AB44D714F52173007B4C33 /* EVEDBInvType+ControlTower.m */,
+				37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */,
+				37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */,
 				37AB44DA14F52173007B4C33 /* EVEDBInvType+Skill.h */,
 				37AB44DB14F52173007B4C33 /* EVEDBInvType+Skill.m */,
 				37AB44DC14F52173007B4C33 /* EVEDBInvType.h */,
@@ -2286,6 +2353,10 @@
 				37AB44E514F52173007B4C33 /* EVEDBMapSolarSystem.m */,
 				37AB44E614F52173007B4C33 /* EVEDBRamActivity.h */,
 				37AB44E714F52173007B4C33 /* EVEDBRamActivity.m */,
+				37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */,
+				37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */,
+				37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */,
+				37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */,
 				37AB44E814F52173007B4C33 /* EVEDBStaStation.h */,
 				37AB44E914F52173007B4C33 /* EVEDBStaStation.m */,
 				37AB44EA14F52173007B4C33 /* Utility */,
@@ -2623,6 +2694,7 @@
 				37AB46AE14F52222007B4C33 /* Modifiers */,
 				37AB46AF14F5223C007B4C33 /* Character */,
 				37AB46B014F52261007B4C33 /* Ship */,
+				37BBC59F1512372200EDE204 /* ControlTower */,
 				37AB464514F521A4007B4C33 /* Area.cpp */,
 				37AB464614F521A4007B4C33 /* Area.h */,
 				37AB464714F521A4007B4C33 /* Attribute.cpp */,
@@ -2869,6 +2941,42 @@
 			name = DamagePatternEditViewController;
 			sourceTree = "<group>";
 		};
+		37BBC59F1512372200EDE204 /* ControlTower */ = {
+			isa = PBXGroup;
+			children = (
+				37BBC5A11512373700EDE204 /* ControlTower.cpp */,
+				37BBC5A21512373700EDE204 /* ControlTower.h */,
+				37BBC5A31512373700EDE204 /* Structure.cpp */,
+				37BBC5A41512373700EDE204 /* Structure.h */,
+			);
+			name = ControlTower;
+			sourceTree = "<group>";
+		};
+		37BBC5A715125D4F00EDE204 /* POSFittingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37BBC5AB151263EF00EDE204 /* StructuresViewController */,
+				37CE795215135C8600621D52 /* POSStatsViewController */,
+				37410500151A1DCC00BCED1B /* AssemblyLinesViewController */,
+				37BBC5A815125D7600EDE204 /* POSFittingViewController.h */,
+				37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */,
+				37CE795A1513603900621D52 /* POSFittingViewController.xib */,
+				3724FE2715208CF400823332 /* POSFittingViewController-iPad.xib */,
+			);
+			name = POSFittingViewController;
+			sourceTree = "<group>";
+		};
+		37BBC5AB151263EF00EDE204 /* StructuresViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37BBC5AC1512640E00EDE204 /* StructuresViewController.h */,
+				37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */,
+				37CE79581513600200621D52 /* StructuresViewController.xib */,
+				3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */,
+			);
+			name = StructuresViewController;
+			sourceTree = "<group>";
+		};
 		37C0FB2114FD0E54006A153D /* WalletJournalCellView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2937,6 +3045,17 @@
 			name = CertificateCellView;
 			sourceTree = "<group>";
 		};
+		37CE795215135C8600621D52 /* POSStatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				37CE795315135CA800621D52 /* POSStatsViewController.h */,
+				37CE795415135CA800621D52 /* POSStatsViewController.mm */,
+				37CE795615135F7A00621D52 /* POSStatsViewController.xib */,
+				3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */,
+			);
+			name = POSStatsViewController;
+			sourceTree = "<group>";
+		};
 		37DDFD8F14A202E100BCDEBB /* CharactersViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2975,6 +3094,25 @@
 				37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */,
 			);
 			name = CharacterCellView;
+			sourceTree = "<group>";
+		};
+		37DF48C4151C8D7300BC87A5 /* PriceManager */ = {
+			isa = PBXGroup;
+			children = (
+				37DF48C6151C8DBC00BC87A5 /* PriceManager.h */,
+				37DF48C7151C8DBC00BC87A5 /* PriceManager.m */,
+			);
+			name = PriceManager;
+			sourceTree = "<group>";
+		};
+		37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */ = {
+			isa = PBXGroup;
+			children = (
+				37DF48EC151CE47B00BC87A5 /* EVEC0rporationAPI.h */,
+				37DF48ED151CE47B00BC87A5 /* EVEC0rporationFaction.h */,
+				37DF48EE151CE47B00BC87A5 /* EVEC0rporationFaction.m */,
+			);
+			path = EVEC0rporationAPI;
 			sourceTree = "<group>";
 		};
 		37FD3AA514D84080005FA724 /* SkillPlanner */ = {
@@ -3027,6 +3165,8 @@
 				37AC5E13149A71E9005DEAEB /* ItemInfo.mm */,
 				370814DD14A0EAF300919C0B /* Fit.h */,
 				370814DE14A0EAF500919C0B /* Fit.mm */,
+				37CE794E15134D8B00621D52 /* POSFit.h */,
+				37CE794F15134D8B00621D52 /* POSFit.mm */,
 			);
 			name = Fit;
 			sourceTree = "<group>";
@@ -3725,12 +3865,14 @@
 		71955A511376AFEF0068DBD7 /* FittingService */ = {
 			isa = PBXGroup;
 			children = (
+				37DF48C4151C8D7300BC87A5 /* PriceManager */,
 				71196C9214B1E60300614711 /* Fit */,
 				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				71997B86137F4AF70061BA4E /* BCSearchViewController */,
 				7197DC3B137F686400C3B3F4 /* BCSearchResultViewController */,
 				71B978C2137DDC6200301218 /* FittingServiceMenuViewController */,
 				71955A521376AFFC0068DBD7 /* FittingViewController */,
+				37BBC5A715125D4F00EDE204 /* POSFittingViewController */,
 			);
 			name = FittingService;
 			sourceTree = "<group>";
@@ -4480,6 +4622,14 @@
 				379B8DA61507AC9D00326B5D /* NPCGroupsViewController-iPad.xib in Resources */,
 				37763D22150E12570096A467 /* NPCGroupsViewControllerModal-iPad.xib in Resources */,
 				37763D2E150E1F5F0096A467 /* damagePattern.png in Resources */,
+				37CE795715135F7A00621D52 /* POSStatsViewController.xib in Resources */,
+				37CE79591513600200621D52 /* StructuresViewController.xib in Resources */,
+				37CE795B1513603A00621D52 /* POSFittingViewController.xib in Resources */,
+				3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */,
+				3724FE2815208CF400823332 /* POSFittingViewController-iPad.xib in Resources */,
+				3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */,
+				3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */,
+				3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4800,6 +4950,18 @@
 				379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */,
 				37763D27150E15D50096A467 /* FittingNPCGroupsViewController.m in Sources */,
 				37763D2C150E1A5B0096A467 /* FittingNPCItemViewController.m in Sources */,
+				37BBC5A51512373700EDE204 /* ControlTower.cpp in Sources */,
+				37BBC5A61512373700EDE204 /* Structure.cpp in Sources */,
+				37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */,
+				37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */,
+				37CE795015134D8B00621D52 /* POSFit.mm in Sources */,
+				37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */,
+				37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */,
+				37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */,
+				37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */,
+				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
+				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
+				37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

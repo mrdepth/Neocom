@@ -20,7 +20,6 @@
 	eufe::Engine* engine;
 @private
 	NSMutableArray *fits;
-	NSInteger lastID;
 }
 @property (nonatomic, retain) IBOutlet UITableView *menuTableView;
 @property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;

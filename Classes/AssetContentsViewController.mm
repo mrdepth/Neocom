@@ -19,8 +19,10 @@
 #import "EVEAssetListItem+AssetsViewController.h"
 #import "ItemViewController.h"
 #import "FittingViewController.h"
+#import "POSFittingViewController.h"
 #import "CharacterEVE.h"
 #import "Fit.h"
+#import "POSFit.h"
 
 @interface AssetContentsViewController(Private)
 - (void) reloadAssets;
@@ -57,7 +59,7 @@
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	if (asset.type.group.categoryID == 6) // Ship
+	if (asset.type.group.categoryID == 6 || asset.type.groupID == eufe::CONTROL_TOWER_GROUP_ID) // Ship or Control Tower
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Open fit" style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
 	EVEAccount* account = [EVEAccount currentAccount];
 	
@@ -150,44 +152,66 @@
 }
 
 - (IBAction)onOpenFit:(id)sender {
-	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																						   bundle:nil];
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
-	__block Fit* fit = nil;
-	__block boost::shared_ptr<eufe::Character> *character = NULL;
-	
-	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	if (asset.type.group.categoryID == 6) {// Ship
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
+																							   bundle:nil];
+		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		__block Fit* fit = nil;
+		__block boost::shared_ptr<eufe::Character> *character = NULL;
 		
-		character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+		[operation addExecutionBlock:^{
+			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+			
+			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+			
+			EVEAccount* currentAccount = [EVEAccount currentAccount];
+			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
+				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
+				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+			}
+			else
+				(*character)->setCharacterName("All Skills 0");
+			fit = [[Fit alloc] initWithAsset:asset character:*character];
+			[pool release];
+		}];
 		
-		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-			(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			(*character)->setSkillLevels(*[eveCharacter skillsMap]);
-		}
-		else
-			(*character)->setCharacterName("All Skills 0");
-		fit = [[Fit alloc] initWithAsset:asset character:*character];
-		//fit = [[Fit fitWithBCString:loadoutDetails.fitting character:*character] retain];
-		//fit.fitName = loadoutDetails.title;
-		//fit.fitURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://eve.battleclinic.com/loadout/%d.html", loadoutDetails.loadoutID]];
-		[pool release];
-	}];
-	
-	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
-			fittingViewController.fittingEngine->getGang()->addPilot(*character);
-			fittingViewController.fit = fit;
-			[fittingViewController.fits addObject:fit];
-			[self.navigationController pushViewController:fittingViewController animated:YES];
-		}
-		[fittingViewController release];
-		[fit release];
-		delete character;
-	}];
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+		[operation setCompletionBlockInCurrentThread:^{
+			if (![operation isCancelled]) {
+				fittingViewController.fittingEngine->getGang()->addPilot(*character);
+				fittingViewController.fit = fit;
+				[fittingViewController.fits addObject:fit];
+				[self.navigationController pushViewController:fittingViewController animated:YES];
+			}
+			[fittingViewController release];
+			[fit release];
+			delete character;
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
+	else {
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
+																										bundle:nil];
+		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		__block POSFit* fit = nil;
+		
+		[operation addExecutionBlock:^{
+			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+			
+			fit = [[POSFit alloc] initWithAsset:asset engine:posFittingViewController.fittingEngine];
+			[pool release];
+		}];
+		
+		[operation setCompletionBlockInCurrentThread:^{
+			if (![operation isCancelled]) {
+				posFittingViewController.fit = fit;
+				[self.navigationController pushViewController:posFittingViewController animated:YES];
+			}
+			[posFittingViewController release];
+			[fit release];
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
 }
 
 #pragma mark -

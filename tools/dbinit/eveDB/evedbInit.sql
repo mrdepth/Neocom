@@ -26,6 +26,8 @@ INSERT INTO eveDB.crtCertificates SELECT * FROM crtCertificates;
 INSERT INTO eveDB.crtClasses SELECT * FROM crtClasses;
 INSERT INTO eveDB.crtRecommendations SELECT * FROM crtRecommendations;
 INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
+INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
+INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
 
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;

@@ -24,4 +24,6 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "mapRegions",
 "mapSolarSystems",
 "ramActivities",
+"ramAssemblyLineTypes",
+"ramInstallationTypeContents",
 "staStations");

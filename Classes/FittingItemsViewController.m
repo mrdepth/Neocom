@@ -96,6 +96,7 @@
 	groupsRequest = value;
 	[self.navigationController popToRootViewControllerAnimated:NO];
 	needsReload = YES;
+	self.group = nil;
 }
 
 - (void) setTypesRequest:(NSString *)value {
@@ -200,10 +201,10 @@
 	else if (!group) {
 		FittingItemsViewController *controller = [[FittingItemsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingItemsViewController-iPad" : @"FittingItemsViewController")
 																							  bundle:nil];
-		controller.group = self.searchDisplayController.searchResultsTableView == aTableView ?
-							[[[filteredSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row] :
-							[[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 		controller.groupsRequest = self.groupsRequest;
+		controller.group = self.searchDisplayController.searchResultsTableView == aTableView ?
+		[[[filteredSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row] :
+		[[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 		controller.typesRequest = self.typesRequest;
 		controller.title = controller.group.groupName;
 		controller.delegate = self;

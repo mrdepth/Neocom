@@ -14,7 +14,7 @@
 @protocol EUHTTPConnectionDelegate
 
 - (void) connectionDidClose:(EUHTTPConnection*) connection;
-- (BOOL) connection:(EUHTTPConnection*) server didReceiveKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
+- (void) connection:(EUHTTPConnection*) connection didReceiveRequest:(EUHTTPRequest*) request;
 
 @end
 

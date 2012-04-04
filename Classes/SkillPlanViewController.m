@@ -39,6 +39,7 @@
 @synthesize trainingTimeLabel;
 @synthesize skillPlanPath;
 @synthesize skillPlannerImportViewController;
+@synthesize skillPlan;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,10 +71,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = [[skillPlanPath lastPathComponent] stringByDeletingPathExtension];
+	//self.title = [[skillPlanPath lastPathComponent] stringByDeletingPathExtension];
+	self.title = skillPlan.name;
+	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:skillPlan.trainingTime]] : @"Skill plan is empty";
+
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Import" style:UIBarButtonItemStyleBordered target:self action:@selector(onImport:)] autorelease];
-	self.navigationItem.rightBarButtonItem.enabled = NO;
-	[self loadData];
+	//self.navigationItem.rightBarButtonItem.enabled = NO;
+//	[self loadData];
 }
 
 - (void)viewDidUnload
@@ -222,9 +226,10 @@
 			[pool release];
 			return;
 		}
-		skillPlanTmp = [[SkillPlan alloc] initWithAccount:account eveMonSkillPlanPath:skillPlanPath];
+		//skillPlanTmp = [[SkillPlan alloc] initWithAccount:account eveMonSkillPlanPath:skillPlanPath];
 		
-		[skillPlanTmp trainingTime];
+		//[skillPlanTmp trainingTime];
+		[skillPlan trainingTime];
 		[pool release];
 	}];
 	

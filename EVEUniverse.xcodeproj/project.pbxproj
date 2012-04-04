@@ -46,6 +46,7 @@
 		12C01D9D13FD3E4900B11DE8 /* NSBlockOperation+Completion.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C01D9C13FD3E4900B11DE8 /* NSBlockOperation+Completion.m */; };
 		12C01F6B13FD53B900B11DE8 /* EUSingleBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C01F6A13FD53B900B11DE8 /* EUSingleBlockOperation.m */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
+		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -762,6 +763,7 @@
 		12C01F6A13FD53B900B11DE8 /* EUSingleBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUSingleBlockOperation.m; sourceTree = "<group>"; };
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
+		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUniverseAppDelegate.m; sourceTree = "<group>"; };
@@ -1993,6 +1995,7 @@
 				717B183512F4B27E009DDE48 /* rssFeeds.plist */,
 				71834A0212FC342C00AEC222 /* tutorial.plist */,
 				12BF008F140D3C5400AD9450 /* index.html */,
+				12CAC4EC152AF1EC003180E6 /* evemon.html */,
 				37AE99D614E43618007F7A25 /* mailMessageTemplate.html */,
 				377CC0D814140E7C000415BE /* contractsFilter.plist */,
 				379F2D801418191B0018B2CA /* marketOrdersFilter.plist */,
@@ -4635,6 +4638,7 @@
 				3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */,
 				3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */,
 				3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */,
+				12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

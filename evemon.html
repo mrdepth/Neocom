@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>EVEUniverse</title>
+
+<style type="text/css">
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		font-family: Verdana,Arial;
+		font-size: 8pt;
+		color: white;
+		
+		background-color: black;
+	}
+	h2 {font-size: 11pt;}
+	
+	A:link{color: #ffa500;text-decoration: none}
+	A:visited{color: #ffa500;text-decoration: none}
+	A:active{color: #ffa500;text-decoration: none}
+	A:hover{color: #ffa500;text-decoration: underline}
+	
+	.form {
+		width: 400px;
+		height: 160px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -120px 0 0 -210px;
+		background-color: #2C2C38;
+		padding: 10px;
+		border: 1px solid #444444;
+	}
+	.formItem {
+		margin: 8px 0px 0px 0px;
+		padding: 4px;
+	}
+	.formSection {
+		border-top: 1px solid #444444;
+	}
+	.formItemHeader {
+		font-weight: bold;
+		margin: 0px 0px 2px 0px;
+	}
+</style>
+</head>
+
+<body>
+	<div class="form">
+		<h2>Import Skillplan</h2>
+		Export your Skillplan from <a href="http://evemon.battleclinic.com/">EVEMon</a> to an XML file.<br>
+		{error}
+		<form action="submit" method="post" enctype="multipart/form-data">
+			<div class="formSection">
+				<div class="formItem">
+					<div class="formItemHeader">
+						Skill Plan:
+					</div>
+					<input id="keyID" name="skillPlan" type="file" size=40/>
+				</div>
+				<div class="formItem" style="float: right;">
+					<button type="submit">Submit</button>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+
+</body>
+</html>

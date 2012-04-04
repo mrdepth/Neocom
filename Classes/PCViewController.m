@@ -73,12 +73,16 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+	[server shutdown];
+	[server release];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
 	[addressLabel release];
 
 	[server shutdown];

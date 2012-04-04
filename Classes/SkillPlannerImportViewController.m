@@ -11,6 +11,15 @@
 #import "CharacterCellView.h"
 #import "NibTableViewCell.h"
 #import "SkillPlanViewController.h"
+#import "UIDevice+IP.h"
+#import "SkillPlan.h"
+#import "EVEAccount.h"
+
+@interface SkillPlannerImportViewController(Private)
+
+- (void) updateAddress;
+
+@end
 
 @implementation SkillPlannerImportViewController
 @synthesize plansTableView;
@@ -34,6 +43,10 @@
 }
 
 - (void) dealloc {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
+	[server shutdown];
+	[server release];
+
 	[plansTableView release];
 	[rows release];
 	[super dealloc];
@@ -51,13 +64,21 @@
 	for (NSString* file in files)
 		if ([[file pathExtension] compare:@"xml" options:NSCaseInsensitiveSearch] == NSOrderedSame)
 			[rows addObject:file];
+	[self performSelector:@selector(updateAddress) withObject:nil afterDelay:0];
+	
+	server = [[EUHTTPServer alloc] initWithDelegate:self];
+	[server run];
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
 	self.plansTableView = nil;
 	[rows release];
 	rows = nil;
+	
+	[server shutdown];
+	[server release];
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -78,12 +99,12 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return rows.count;
+	return section == 0 ? addresses.count : rows.count;
 }
 
 // Customize the appearance of table view cells.
@@ -94,27 +115,33 @@
 	if (cell == nil) {
 		cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	cell.characterNameLabel.text = [[rows objectAtIndex:indexPath.row] stringByDeletingPathExtension];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	if (indexPath.section == 0) {
+		cell.characterNameLabel.text = [NSString stringWithFormat:@"http://%@:8080", [addresses objectAtIndex:indexPath.row]];
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+	else {
+		cell.characterNameLabel.text = [[rows objectAtIndex:indexPath.row] stringByDeletingPathExtension];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return @"Skill Plans";
+	return section == 0 ? nil : @"Skill Plans";
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
 	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
+	label.text = title;
 	label.textColor = [UIColor whiteColor];
 	label.font = [label.font fontWithSize:12];
 	label.shadowColor = [UIColor blackColor];
@@ -129,12 +156,133 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
-																					bundle:nil];
-	controller.skillPlanPath = [[Globals documentsDirectory] stringByAppendingPathComponent:[rows objectAtIndex:indexPath.row]];
-	controller.skillPlannerImportViewController = self;
-	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
+	if (indexPath.section == 1) {
+		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load"];
+		__block SkillPlan* skillPlan = nil;
+		[operation addExecutionBlock:^(void) {
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			
+			EVEAccount *account = [EVEAccount currentAccount];
+			if (!account) {
+				[pool release];
+				return;
+			}
+
+			skillPlan = [[SkillPlan skillPlanWithAccount:account
+									 eveMonSkillPlanPath:[[Globals documentsDirectory] stringByAppendingPathComponent:[rows objectAtIndex:indexPath.row]]] retain];
+			
+			[skillPlan trainingTime];
+			[pool release];
+		}];
+		
+		[operation setCompletionBlockInCurrentThread:^(void) {
+			if (![operation isCancelled]) {
+				SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
+																								bundle:nil];
+				controller.skillPlan = skillPlan;
+				controller.skillPlannerImportViewController = self;
+				[self.navigationController pushViewController:controller animated:YES];
+				[controller release];
+			}
+			[skillPlan release];
+		}];
+		
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+		
+		
+		/*SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
+																						bundle:nil];
+		controller.skillPlanPath = [[Globals documentsDirectory] stringByAppendingPathComponent:[rows objectAtIndex:indexPath.row]];
+		controller.skillPlannerImportViewController = self;
+		[self.navigationController pushViewController:controller animated:YES];
+		[controller release];*/
+	}
+}
+
+#pragma mark EUHTTPServerDelegate
+
+- (void) server:(EUHTTPServer*) server didReceiveRequest:(EUHTTPRequest*) request connection:(EUHTTPConnection*) connection {
+	BOOL canRun = YES;
+	
+	NSMutableString *page = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"evemon" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
+	NSDictionary* arguments = request.arguments;
+	
+	if (arguments.count > 0) {
+		NSDictionary* argument = [arguments valueForKey:@"skillPlan"];
+		if (!argument || ![argument isKindOfClass:[NSDictionary class]]) {
+			[page replaceOccurrencesOfString:@"{error}" withString:@"File format error" options:0 range:NSMakeRange(0, page.length)];
+		}
+		else {
+			canRun = NO;
+		}
+	}
+	else {
+		[page replaceOccurrencesOfString:@"{error}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+	}
+	CFHTTPMessageRef message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
+	connection.response.message = message;
+	CFRelease(message);
+	
+	if (canRun) {
+		CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+		[connection.response run];
+	}
+	else {
+		__block SkillPlan* skillPlan = nil;
+		NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			EVEAccount *account = [EVEAccount currentAccount];
+			if (!account) {
+				[pool release];
+				return;
+			}
+
+			skillPlan = [[SkillPlan skillPlanWithAccount:account eveMonSkillPlan:[[arguments valueForKey:@"skillPlan"] valueForKey:@"value"]] retain];
+			if (skillPlan) {
+				[page replaceOccurrencesOfString:@"{error}" withString:@"Check your device for the next step" options:0 range:NSMakeRange(0, page.length)];
+				[skillPlan trainingTime];
+			}
+			else
+				[page replaceOccurrencesOfString:@"{error}" withString:@"File format error" options:0 range:NSMakeRange(0, page.length)];
+
+			[pool release];
+		}];
+		
+		[operation setCompletionBlockInCurrentThread:^(void) {
+			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+			[connection.response run];
+			if (skillPlan) {
+				if (self.navigationController.visibleViewController == self) {
+					SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
+																									bundle:nil];
+					controller.skillPlan = skillPlan;
+					controller.skillPlannerImportViewController = self;
+					[self.navigationController pushViewController:controller animated:YES];
+					[controller release];
+				}
+				[skillPlan release];
+			}
+
+		}];
+		
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
+}
+
+@end
+
+@implementation SkillPlannerImportViewController(Private)
+
+- (void) updateAddress {
+	if (addresses)
+		[addresses release];
+	addresses = [[UIDevice localIPAddresses] retain];
+	if (addresses.count == 0) {
+		[self performSelector:@selector(updateAddress) withObject:nil afterDelay:1];
+	}
+	else {
+		[plansTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+	}
 }
 
 @end

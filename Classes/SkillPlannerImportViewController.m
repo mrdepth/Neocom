@@ -127,7 +127,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return section == 0 ? nil : @"Skill Plans";
+	return section == 0 ? @"Import via Internet Browser" : @"Skill Plans";
 }
 
 #pragma mark -
@@ -188,14 +188,6 @@
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
-		
-		
-		/*SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
-																						bundle:nil];
-		controller.skillPlanPath = [[Globals documentsDirectory] stringByAppendingPathComponent:[rows objectAtIndex:indexPath.row]];
-		controller.skillPlannerImportViewController = self;
-		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];*/
 	}
 }
 

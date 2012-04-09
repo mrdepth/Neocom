@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		12422A2D1406B3E700B7EAB5 /* TutorialViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */; };
+		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
+		126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */; };
 		1292845714029D1F00055445 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1292845514029D1F00055445 /* SplashScreenViewController.m */; };
 		129284D11402A3CE00055445 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D01402A3CE00055445 /* MainWindow-iPad.xib */; };
 		129284D31402A3D900055445 /* SplashScreenViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D21402A3D900055445 /* SplashScreenViewController-iPad.xib */; };
@@ -47,6 +49,8 @@
 		12C01F6B13FD53B900B11DE8 /* EUSingleBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C01F6A13FD53B900B11DE8 /* EUSingleBlockOperation.m */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
+		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
+		12DEFD87152EC9B10076ABC7 /* FittingExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -709,6 +713,8 @@
 
 /* Begin PBXFileReference section */
 		12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TutorialViewController-iPad.xib"; sourceTree = "<group>"; };
+		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
+		126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingExportViewController-iPad.xib"; sourceTree = "<group>"; };
 		1292845414029D1F00055445 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		1292845514029D1F00055445 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		129284D01402A3CE00055445 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
@@ -764,6 +770,9 @@
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
+		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
+		12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingExportViewController.mm; sourceTree = "<group>"; };
+		12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingExportViewController.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUniverseAppDelegate.m; sourceTree = "<group>"; };
@@ -1950,6 +1959,17 @@
 			name = PCViewController;
 			sourceTree = "<group>";
 		};
+		12DEFD81152EC92A0076ABC7 /* FittingExportViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */,
+				12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */,
+				12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */,
+				126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */,
+			);
+			name = FittingExportViewController;
+			sourceTree = "<group>";
+		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1997,6 +2017,7 @@
 				12BF008F140D3C5400AD9450 /* index.html */,
 				12CAC4EC152AF1EC003180E6 /* evemon.html */,
 				37AE99D614E43618007F7A25 /* mailMessageTemplate.html */,
+				126DC1311532EDE70005921B /* fits.html */,
 				377CC0D814140E7C000415BE /* contractsFilter.plist */,
 				379F2D801418191B0018B2CA /* marketOrdersFilter.plist */,
 				378480101418D51900450645 /* walletTransactionsFilter.plist */,
@@ -3881,6 +3902,7 @@
 				71B978C2137DDC6200301218 /* FittingServiceMenuViewController */,
 				71955A521376AFFC0068DBD7 /* FittingViewController */,
 				37BBC5A715125D4F00EDE204 /* POSFittingViewController */,
+				12DEFD81152EC92A0076ABC7 /* FittingExportViewController */,
 			);
 			name = FittingService;
 			sourceTree = "<group>";
@@ -4639,6 +4661,9 @@
 				3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */,
 				3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */,
 				12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */,
+				12DEFD87152EC9B10076ABC7 /* FittingExportViewController.xib in Resources */,
+				126DC1321532EDE70005921B /* fits.html in Resources */,
+				126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4972,6 +4997,7 @@
 				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
 				37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */,
 				12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */,
+				12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -49,6 +49,14 @@ public:
 	}
 };
 
+class ModulesSlotCompare : public std::binary_function<const boost::shared_ptr<eufe::Module>&, const boost::shared_ptr<eufe::Module>&, bool>
+{
+public:
+	bool operator() (const boost::shared_ptr<eufe::Module>& a, const boost::shared_ptr<eufe::Module>& b) {
+		return a->getSlot() > b->getSlot();
+	}
+};
+
 @implementation Fit
 @synthesize fitID;
 @synthesize fitName;
@@ -386,6 +394,100 @@ public:
 	if (!bFind)
 		[fits addObject:record];
 	[fits writeToURL:url atomically:YES];
+}
+
+- (NSString*) dna {
+	NSMutableString* dna = [NSMutableString string];
+	boost::shared_ptr<eufe::Character> aCharacter = self.character;
+	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	NSCountedSet* subsystems = [NSCountedSet set];
+	NSCountedSet* highs = [NSCountedSet set];
+	NSCountedSet* meds = [NSCountedSet set];
+	NSCountedSet* lows = [NSCountedSet set];
+	NSCountedSet* rigs = [NSCountedSet set];
+	NSCountedSet* drones = [NSCountedSet set];
+	NSCountedSet* charges = [NSCountedSet set];
+
+	const eufe::ModulesList& modulesList = ship->getModules();
+	eufe::ModulesList::const_iterator i, end = modulesList.end();
+	for(i = modulesList.begin(); i != end; i++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*i) error:nil];
+		switch((*i)->getSlot()) {
+			case eufe::Module::SLOT_SUBSYSTEM:
+				[subsystems addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_HI:
+				[highs addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_MED:
+				[meds addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_LOW:
+				[lows addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_RIG:
+				[rigs addObject:itemInfo];
+				break;
+		}
+		
+		boost::shared_ptr<eufe::Charge> charge = (*i)->getCharge();
+		if (charge) {
+			itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(charge) error:nil];
+			if (![charges containsObject:itemInfo])
+				[charges addObject:itemInfo];
+		}
+	}
+	
+	const eufe::DronesList& dronesList = ship->getDrones();
+	eufe::DronesList::const_iterator j, endj = dronesList.end();
+	for(j = dronesList.begin(); j != endj; j++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		[drones addObject:itemInfo];
+	}
+	
+	[dna appendFormat:@"%d:", ship->getTypeID()];
+	
+	NSCountedSet* slots[] = {subsystems, highs, meds, lows, rigs, drones, charges};
+	for (int i = 0; i < 7; i++) {
+		for (ItemInfo* itemInfo in slots[i]) {
+			[dna appendFormat:@"%d;%d:", itemInfo.typeID, [slots[i] countForObject:itemInfo]];
+		}
+	}
+	[dna appendString:@":"];
+	return dna;
+}
+
+- (NSString*) eveXML {
+	NSMutableString* xml = [NSMutableString string];
+	boost::shared_ptr<eufe::Character> aCharacter = self.character;
+	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	
+	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%s\"/>\n", self.fitName, ship->getTypeName()];
+
+	eufe::ModulesList modulesList = ship->getModules();
+	modulesList.sort(ModulesSlotCompare());
+	int counters[eufe::Module::SLOT_SUBSYSTEM + 1] = {0};
+	const char* slots[] = {"none", "hi slot", "med slot", "low slot", "rig slot", "subsystem slot"};
+	eufe::ModulesList::const_iterator i, end = modulesList.end();
+
+	for(i = modulesList.begin(); i != end; i++) {
+		eufe::Module::Slot slot = (*i)->getSlot();
+		[xml appendFormat:@"<hardware slot=\"%s %d\" type=\"%s\"/>\n", slots[slot], counters[slot]++, (*i)->getTypeName()];
+	}
+	
+	NSCountedSet* drones = [NSCountedSet set];
+	const eufe::DronesList& dronesList = ship->getDrones();
+	eufe::DronesList::const_iterator j, endj = dronesList.end();
+	for(j = dronesList.begin(); j != endj; j++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		[drones addObject:itemInfo];
+	}
+	
+	for (ItemInfo* itemInfo in drones) {
+		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", [drones countForObject:itemInfo], itemInfo.typeName];
+	}
+	[xml appendString:@"</fitting>\n"];
+	return xml;
 }
 
 @end

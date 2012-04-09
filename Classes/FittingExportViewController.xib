@@ -45,7 +45,7 @@
 						<int key="NSvFlags">256</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="140973135"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -66,15 +66,15 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{10, 20}, {300, 103}}</string>
 								<reference key="NSSuperview" ref="140973135"/>
-								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="611825282"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string type="base64-UTF8" key="IBUIText">Q29ubmVjdCB5b3VyIGRldmljZSB2aWEgV2ktRmkgdG8gTEFOLiBZb3VyIGRldmljZSBzaG91bGQgYmUg
-dmlzaWJsZSBpbiB0aGUgbG9jYWwgbmV0d29yayBmb3IgUEMuCk9wZW4gb25lIG9mIHRoZSBmb2xsb3dp
-bmcgbGlua3Mgb24gdGhlIFBDOg</string>
+								<string type="base64-UTF8" key="IBUIText">WW91IGNhbiBkb3dubG9hZCB0aGUgZXhwb3J0ZWRGaXRzLnhtbCBmaWxlIG9mIHlvdXIgZml0cyB2aWEg
+aVR1bmVzIEZpbGUgU2hhcmluZy4KT3IgeW91IGNhbiBkb3dubG9hZCB5b3VyIGZpdHMgdmlhIGludGVy
+bmV0IGJyb3dzZXIuIFVzZSBvbmUgb2YgdGhlIGZvbGxvd2luZyBsaW5rczo</string>
 								<object class="NSColor" key="IBUITextColor" id="531436947">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -103,7 +103,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						</object>
 						<string key="NSFrameSize">{320, 143}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="527630345"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC4zIDAuOQA</bytes>
@@ -116,7 +116,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{0, 143}, {320, 68}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="799945817"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC4xOSAwLjkAA</bytes>
@@ -143,7 +143,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<int key="NSvFlags">256</int>
 						<string key="NSFrame">{{36.5, 211}, {247, 113}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -157,7 +157,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="439704411"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -190,7 +190,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="611825282"/>
 					</object>
-					<int key="connectionID">17</int>
+					<int key="connectionID">22</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -211,8 +211,8 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="439704411"/>
 							<reference ref="140973135"/>
-							<reference ref="611825282"/>
 							<reference ref="799945817"/>
+							<reference ref="611825282"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -275,7 +275,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>PCViewController</string>
+					<string>FittingExportViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -299,14 +299,25 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">21</int>
+			<int key="maxID">22</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">PCViewController</string>
+					<string key="className">FittingExportViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">onClose:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">onClose:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">onClose:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">addressLabel</string>
 						<string key="NS.object.0">UILabel</string>
@@ -320,7 +331,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/PCViewController.h</string>
+						<string key="minorKey">./Classes/FittingExportViewController.h</string>
 					</object>
 				</object>
 			</object>

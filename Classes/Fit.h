@@ -30,6 +30,8 @@
 - (id) initWithBCString:(NSString*) string character:(boost::shared_ptr<eufe::Character>) character;
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(boost::shared_ptr<eufe::Character>) character;
 - (NSDictionary*) dictionary;
+- (NSString*) dna;
+- (NSString*) eveXML;
 
 @property (nonatomic, assign) NSInteger fitID;
 @property (nonatomic, copy) NSString* fitName;

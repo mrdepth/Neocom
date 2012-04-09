@@ -20,6 +20,7 @@
 #import "EVEAccount.h"
 #import "CharacterEVE.h"
 #import "NSArray+GroupBy.h"
+#import "FittingExportViewController.h"
 
 
 @implementation FittingServiceMenuViewController
@@ -172,7 +173,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 3 : [[fits objectAtIndex:section - 1] count];
+	return section == 0 ? 4 : [[fits objectAtIndex:section - 1] count];
 }
 
 // Customize the appearance of table view cells.
@@ -194,9 +195,13 @@
 			cell.titleLabel.text = @"New Ship Fit";
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
-		else {
+		else if (indexPath.row == 2) {
 			cell.titleLabel.text = @"New POS Fit";
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
+		}
+		else {
+			cell.titleLabel.text = @"Export";
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon94_03.png"];
 		}
 		return cell;
 	}
@@ -298,6 +303,19 @@
 				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
 				[self presentModalViewController:modalController animated:YES];
+		}
+		else {
+			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
+																													 bundle:nil];
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
+			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			[self presentModalViewController:navController animated:YES];
+			[navController release];
+			[fittingExportViewController release];
 		}
 	}
 	else {

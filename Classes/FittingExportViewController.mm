@@ -19,6 +19,8 @@
 @interface FittingExportViewController (Private)
 
 - (void) updateAddress;
+- (NSString*) eveXMLWithFit:(NSDictionary*) fit;
+- (NSString*) dnaWithFit:(NSDictionary*) fit;
 
 @end
 
@@ -50,27 +52,22 @@
 		
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 				
-		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
-		boost::shared_ptr<eufe::Character> *character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingEngine));
-
 		for (NSMutableDictionary* row in [NSArray arrayWithArray:fitsArray]) {
 			if ([[row valueForKey:@"isPOS"] boolValue]) {
 				[fitsArray removeObject:row];
 				continue;
 			}
 			
-			Fit* fit = [[Fit alloc] initWithDictionary:row character:*character];
-			ItemInfo* type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil]; 
-			
+			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil]; 
+
 			if (type) {
-				NSString* fitString = fit.eveXML;
+				NSString* fitString = [self eveXMLWithFit:row];
 				[row setValue:type forKey:@"type"];
 				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
 				[row setValue:fitString forKey:@"xml"];
-				[row setValue:fit.dna forKey:@"dna"];
+				[row setValue:[self dnaWithFit:row] forKey:@"dna"];
 				[eveXML appendString:fitString];
 			}
-			[fit release];
 		}
 		
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
@@ -98,8 +95,6 @@
 		
 		[pageTmp replaceOccurrencesOfString:@"{body}" withString:body options:0 range:NSMakeRange(0, pageTmp.length)];
 
-		delete character;
-		delete fittingEngine;
 		[pool release];
 	}];
 	
@@ -259,6 +254,82 @@
 		r.size.height += 20;
 		self.addressLabel.frame = r;
 	}
+}
+
+- (NSString*) eveXMLWithFit:(NSDictionary*) record {
+	NSMutableString* xml = [NSMutableString string];
+	NSDictionary* fit = [record valueForKey:@"fit"];
+	EVEDBInvType* ship = [EVEDBInvType invTypeWithTypeID:[[fit valueForKeyPath:@"shipID"] integerValue] error:nil];
+	
+	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%@\"/>\n", [record valueForKey:@"fitName"], ship.typeName];
+	
+
+	NSMutableArray* arrays[] = {[fit valueForKey:@"highs"], [fit valueForKey:@"meds"], [fit valueForKey:@"lows"], [fit valueForKey:@"rigs"], [fit valueForKey:@"subsystems"]};
+	int counters[5] = {0};
+	const char* slots[] = {"hi slot", "med slot", "low slot", "rig slot", "subsystem slot"};
+	
+	for (int i = 0; i < 5; i++) {
+		for (NSDictionary* record in arrays[i]) {
+			NSInteger typeID = [[record valueForKey:@"typeID"] integerValue];
+			EVEDBInvType* module = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+			[xml appendFormat:@"<hardware slot=\"%s %d\" type=\"%@\"/>\n", slots[i], counters[i]++, module.typeName];
+		}
+	}
+	
+	NSCountedSet* drones = [NSCountedSet set];
+	
+	for (NSDictionary* record in [fit valueForKey:@"drones"]) {
+		[drones addObject:[record valueForKey:@"typeID"]];
+	}
+
+	for (NSNumber* typeID in drones) {
+		EVEDBInvType* drone = [EVEDBInvType invTypeWithTypeID:[typeID integerValue] error:nil];
+		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", [drones countForObject:typeID], drone.typeName];
+	}
+	[xml appendString:@"</fitting>\n"];
+	return xml;
+}
+
+- (NSString*) dnaWithFit:(NSDictionary*) record {
+	NSMutableString* dna = [NSMutableString string];
+	NSDictionary* fit = [record valueForKey:@"fit"];
+	NSInteger shipID = [[fit valueForKeyPath:@"shipID"] integerValue];
+
+	NSCountedSet* subsystems = [NSCountedSet set];
+	NSCountedSet* highs = [NSCountedSet set];
+	NSCountedSet* meds = [NSCountedSet set];
+	NSCountedSet* lows = [NSCountedSet set];
+	NSCountedSet* rigs = [NSCountedSet set];
+	NSCountedSet* drones = [NSCountedSet set];
+	NSCountedSet* charges = [NSCountedSet set];
+	
+	NSCountedSet* slots[] = {subsystems, highs, meds, lows, rigs, drones, charges};
+	NSMutableArray* arrays[] = {[fit valueForKey:@"subsystems"], [fit valueForKey:@"highs"], [fit valueForKey:@"meds"], [fit valueForKey:@"lows"], [fit valueForKey:@"rigs"]};
+
+	for (int i = 0; i < 5; i++) {
+		for (NSDictionary* record in arrays[i]) {
+			NSNumber* typeID = [record valueForKey:@"typeID"];
+			NSNumber* chargeID = [record valueForKey:@"chargeID"];
+			if (typeID)
+				[slots[i] addObject:typeID];
+			if (chargeID && ![charges containsObject:chargeID])
+				[charges addObject:chargeID];
+		}
+	}
+
+	for (NSDictionary* record in [fit valueForKey:@"drones"]) {
+		[drones addObject:[record valueForKey:@"typeID"]];
+	}
+
+	[dna appendFormat:@"%d:", shipID];
+	
+	for (int i = 0; i < 7; i++) {
+		for (NSNumber* typeID in slots[i]) {
+			[dna appendFormat:@"%d;%d:", [typeID integerValue], [slots[i] countForObject:typeID]];
+		}
+	}
+	[dna appendString:@":"];
+	return dna;
 }
 
 @end

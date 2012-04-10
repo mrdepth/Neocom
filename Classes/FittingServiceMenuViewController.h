@@ -10,14 +10,14 @@
 #import "FittingItemsViewController.h"
 
 
-@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate> {
+@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate> {
 	UITableView *menuTableView;
 	FittingItemsViewController *fittingItemsViewController;
 	UINavigationController *modalController;
 	UIPopoverController *popoverController;
 @private
 	NSMutableArray *fits;
-	NSInteger lastID;
+	BOOL needsConvert;
 }
 @property (nonatomic, retain) IBOutlet UITableView *menuTableView;
 @property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;

@@ -21,7 +21,11 @@
 #import "CharacterEVE.h"
 #import "NSArray+GroupBy.h"
 #import "FittingExportViewController.h"
+#import "NSString+UUID.h"
 
+@interface FittingServiceMenuViewController(Private)
+- (void) convertFits;
+@end
 
 @implementation FittingServiceMenuViewController
 @synthesize menuTableView;
@@ -69,25 +73,48 @@
 	[super viewWillAppear:animated];
 	
 	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load"];
+	__block BOOL needsConvertTmp = NO;
+	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
-		lastID = [[[fitsArray lastObject] valueForKey:@"fitID"] integerValue];
 		
+		BOOL needsSave = NO;
 		for (NSMutableDictionary* row in fitsArray) {
 			EVEDBInvType* type;
+			NSObject* fitID = [row valueForKey:@"fitID"];
+			if ([fitID isKindOfClass:[NSNumber class]]) {
+				fitID = [NSString uuidString];
+				[row setValue:fitID forKey:@"fitID"];
+				needsSave = YES;
+			}
+			
 			if (![row valueForKey:@"isPOS"])
 				[row setValue:[NSNumber numberWithBool:NO] forKey:@"isPOS"];
 			if ([[row valueForKey:@"isPOS"] boolValue])
 				type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.controlTowerID"] integerValue] error:nil];
-			else
+			else {
 				type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil];
+				if ([row valueForKeyPath:@"fit.modules"])
+					needsConvertTmp = YES;
+			}
 			if (type) {
 				[row setValue:type forKey:@"type"];
 				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
 			}
 		}
+		
+		if (needsSave) {
+			NSMutableArray* allFits = [NSMutableArray array];
+			for (NSDictionary* row in fitsArray) {
+				NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
+				[dictionary setValue:nil forKey:@"type"];
+				[allFits addObject:dictionary];
+			}
+			[allFits writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
+		}
+		
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
 		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
 		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -104,6 +131,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^{
 		if (![operation isCancelled]) {
+			needsConvert = needsConvertTmp;
 			[fits release];
 			fits = [fitsTmp retain];
 			[menuTableView reloadData];
@@ -305,17 +333,28 @@
 				[self presentModalViewController:modalController animated:YES];
 		}
 		else {
-			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
-																													 bundle:nil];
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
-			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-			
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			
-			[self presentModalViewController:navController animated:YES];
-			[navController release];
-			[fittingExportViewController release];
+			if (needsConvert) {
+				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Export"
+																	message:@"To continue EVEUniverse must convert the database to the new format. It may take a few minutes."
+																   delegate:self
+														  cancelButtonTitle:@"Cancel"
+														  otherButtonTitles:@"Convert", nil];
+				[alertView show];
+				[alertView release];
+			}
+			else {
+				FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
+																														 bundle:nil];
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
+				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+				
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+					navController.modalPresentationStyle = UIModalPresentationFormSheet;
+				
+				[self presentModalViewController:navController animated:YES];
+				[navController release];
+				[fittingExportViewController release];
+			}
 		}
 	}
 	else {
@@ -406,7 +445,7 @@
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			controlTower = new boost::shared_ptr<eufe::ControlTower>(new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID));
 
-			posFit = [[POSFit posFitWithFitID:-1 fitName:type.typeName controlTower:*controlTower] retain];
+			posFit = [[POSFit posFitWithFitID:nil fitName:type.typeName controlTower:*controlTower] retain];
 			[pool release];
 		}];
 		
@@ -442,7 +481,7 @@
 			}
 			else
 				(*character)->setCharacterName("All Skills 0");
-			fit = [[Fit fitWithFitID:-1 fitName:type.typeName character:*character] retain];
+			fit = [[Fit fitWithFitID:nil fitName:type.typeName character:*character] retain];
 			[pool release];
 		}];
 		
@@ -461,5 +500,81 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 }
+
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex != alertView.cancelButtonIndex)
+		[self convertFits];
+}
 	
+@end
+
+@implementation FittingServiceMenuViewController(Private)
+
+- (void) convertFits {
+	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert"];
+	NSMutableArray* fitsTmp = [NSMutableArray array];
+	for (NSArray* group in fits)
+		[fitsTmp addObject:[NSMutableArray arrayWithArray:group]];
+	[operation addExecutionBlock:^{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
+		boost::shared_ptr<eufe::Character> *character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingEngine));
+
+		for (NSMutableArray* group in fitsTmp) {
+			int n = group.count;
+			for (int i = 0; i < n; i++) {
+				NSDictionary* row = [group objectAtIndex:i];
+				if ([[row valueForKey:@"isPOS"] boolValue])
+					break;
+				
+				Fit* fit = [[Fit alloc] initWithDictionary:row character:*character];
+				row = [fit dictionary];
+				[group replaceObjectAtIndex:i withObject:row];
+				[fit release];
+			}
+		}
+
+		delete character;
+		delete fittingEngine;
+	
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^{
+		if (![operation isCancelled]) {
+			needsConvert = NO;
+			[fits release];
+			fits = [fitsTmp retain];
+			
+			NSMutableArray* allFits = [NSMutableArray array];
+			for (NSArray* rows in fits) {
+				for (NSDictionary* row in rows) {
+					NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
+					[dictionary setValue:nil forKey:@"type"];
+					[allFits addObject:dictionary];
+				}
+			}
+			
+			[allFits writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
+
+			
+			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
+																													 bundle:nil];
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
+			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			[self presentModalViewController:navController animated:YES];
+			[navController release];
+			[fittingExportViewController release];
+		}
+	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
 @end

@@ -292,7 +292,7 @@
 		else
 			(*character)->setCharacterName("All Skills 0");
 
-		fit = [[Fit fitWithFitID:-1 fitName:type.typeName character:*character] retain];
+		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:*character] retain];
 		[pool release];
 	}];
 	

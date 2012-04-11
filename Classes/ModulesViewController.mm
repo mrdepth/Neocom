@@ -324,17 +324,21 @@
 	if (indexPath.row >= modules.count) {
 		switch ((eufe::Module::Slot)[[[sections objectAtIndex:indexPath.section] valueForKey:@"slot"] integerValue]) {
 			case eufe::Module::SLOT_HI:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (41,53,54,55,67,68,71,72,74,96,316,325,330,407,464,481,483,506,507,508,509,510,511,515,524,538,585,588,589,590,647,650,658,737,771,815,842,862,899) ORDER BY groupName;";
+				//SELECT a.groupID, a.groupName FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=12 group by a.groupID;
+				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (41,53,54,55,67,68,71,72,74,96,316,325,330,407,464,481,483,506,507,508,509,510,511,515,524,538,585,588,589,590,647,650,658,737,771,815,842,862,899) ORDER BY groupName;";
+				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=12 group by a.groupID) ORDER BY groupName;";
 				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=12 %@ %@ ORDER BY invTypes.typeName;";
 				fittingItemsViewController.title = @"Modules";
 				break;
 			case eufe::Module::SLOT_MED:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (38,39,40,43,46,47,48,49,52,61,63,65,76,77,80,82,201,202,208,209,212,213,289,290,291,295,316,338,379,538,644,646) ORDER BY groupName;";
+				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (38,39,40,43,46,47,48,49,52,61,63,65,76,77,80,82,201,202,208,209,212,213,289,290,291,295,316,338,379,538,644,646) ORDER BY groupName;";
+				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=13 group by a.groupID) ORDER BY groupName;";
 				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=13 %@ %@ ORDER BY invTypes.typeName;";
 				fittingItemsViewController.title = @"Modules";
 				break;
 			case eufe::Module::SLOT_LOW:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (57,59,60,62,78,98,203,205,210,211,285,302,315,326,328,329,339,367,514,546,762,763,764,765,766,767,768,769,770) ORDER BY groupName;";
+				//				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (57,59,60,62,78,98,203,205,210,211,285,302,315,326,328,329,339,367,514,546,762,763,764,765,766,767,768,769,770) ORDER BY groupName;";
+				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=11 group by a.groupID) ORDER BY groupName;";
 				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=11 %@ %@ ORDER BY invTypes.typeName;";
 				fittingItemsViewController.title = @"Modules";
 				break;

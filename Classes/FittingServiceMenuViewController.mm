@@ -335,7 +335,7 @@
 		else {
 			if (needsConvert) {
 				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Export"
-																	message:@"To continue EVEUniverse must convert the database to the new format. It may take a few minutes."
+																	message:@"To continue, EVEUniverse must convert the loadouts database to its new format. This may take a few minutes."
 																   delegate:self
 														  cancelButtonTitle:@"Cancel"
 														  otherButtonTitles:@"Convert", nil];

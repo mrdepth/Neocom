@@ -199,8 +199,8 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 	[connections removeObject:connection];
 }
 
-- (BOOL) connection:(EUHTTPConnection*) server didReceiveKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
-	return [self.delegate server:self didReceiveKeyID:keyID vCode:vCode error:errorPtr];
+- (void) connection:(EUHTTPConnection*) connection didReceiveRequest:(EUHTTPRequest*) request {
+	[self.delegate server:self didReceiveRequest:request connection:connection];
 }
 
 @end

@@ -52,15 +52,16 @@
 			text = [[error localizedDescription] retain];
 		else {
 			if (bodies.messages.count == 0) {
-				text = @"Can't load the message body.";
-				[text retain];
+				//text = @"Can't load the message body.";
+				//[text retain];
+				text = (id) [[NSNull null] retain];
 			}
 			else {
 				text = [[[bodies.messages objectAtIndex:0] text] retain];
 			}
 		}
 	}
-	return text;
+	return (id) text != [NSNull null] ? text : nil;
 }
 
 @end

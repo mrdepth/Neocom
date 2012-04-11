@@ -25,7 +25,7 @@ typedef enum {
 @class EUHTTPServer;
 @protocol EUHTTPServerDelegate<NSObject>
 
-- (BOOL) server:(EUHTTPServer*) server didReceiveKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
+- (void) server:(EUHTTPServer*) server didReceiveRequest:(EUHTTPRequest*) request connection:(EUHTTPConnection*) connection;
 
 @end
 

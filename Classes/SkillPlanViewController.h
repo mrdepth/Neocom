@@ -16,13 +16,15 @@
 	UILabel *trainingTimeLabel;
 	NSString* skillPlanPath;
 	SkillPlannerImportViewController* skillPlannerImportViewController;
-@private
 	SkillPlan* skillPlan;
+@private
 }
 @property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
 @property (nonatomic, retain) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, retain) NSString* skillPlanPath;
 @property (nonatomic, assign) SkillPlannerImportViewController* skillPlannerImportViewController;
+@property (nonatomic, retain) SkillPlan* skillPlan;
+
 
 - (IBAction)onImport:(id)sender;
 

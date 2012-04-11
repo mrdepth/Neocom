@@ -41,26 +41,18 @@
 	self.title = message.header.title;
 	NSMutableString* template = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mailMessageTemplate" ofType:@"html"]]
 																encoding:NSUTF8StringEncoding error:nil];
-	NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		[template replaceOccurrencesOfString:@"{subject}" withString:message.header.title ? message.header.title : @"" options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{from}" withString:message.from ? message.from : @"" options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{to}" withString:message.to ? message.to : @""options:0 range:NSMakeRange(0, template.length)];
-		[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : @"" options:0 range:NSMakeRange(0, template.length)];
-		
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
-		NSString* dateString = [dateFormatter stringFromDate:message.header.sentDate];
-		[template replaceOccurrencesOfString:@"{date}" withString:dateString ? dateString : @"" options:0 range:NSMakeRange(0, template.length)];
-		[dateFormatter release];
-
-		[pool release];
-	}];
-	[operation setCompletionBlockInCurrentThread:^{
-		[webView loadHTMLString:template baseURL:nil];
-	}];
+	[template replaceOccurrencesOfString:@"{subject}" withString:message.header.title ? message.header.title : @"" options:0 range:NSMakeRange(0, template.length)];
+	[template replaceOccurrencesOfString:@"{from}" withString:message.from ? message.from : @"" options:0 range:NSMakeRange(0, template.length)];
+	[template replaceOccurrencesOfString:@"{to}" withString:message.to ? message.to : @""options:0 range:NSMakeRange(0, template.length)];
+	[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : @"Can't load the message body." options:0 range:NSMakeRange(0, template.length)];
 	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
+	NSString* dateString = [dateFormatter stringFromDate:message.header.sentDate];
+	[template replaceOccurrencesOfString:@"{date}" withString:dateString ? dateString : @"" options:0 range:NSMakeRange(0, template.length)];
+	[dateFormatter release];
+	[webView loadHTMLString:template baseURL:nil];
+	
     // Do any additional setup after loading the view from its nib.
 }
 

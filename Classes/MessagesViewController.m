@@ -260,29 +260,42 @@
 	else
 		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
-	MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
-																				  bundle:nil];
-	controller.message = message;
+	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MessagesViewController+LoadMessage"];
+	[operation addExecutionBlock:^(void) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		[message text];
+		[pool release];
+	}];
 	
-	if (!message.read) {
-		message.read = YES;
-		[mailBox save];
-		[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
-	}
+	[operation setCompletionBlockInCurrentThread:^(void) {
+		if (![operation isCancelled]) {
+			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
+																						bundle:nil];
+			controller.message = message;
+			
+			if (!message.read && message.text) {
+				message.read = YES;
+				[mailBox save];
+				[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+				[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
+			}
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+				navController.modalPresentationStyle = UIModalPresentationFormSheet;
+				[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+				[self presentModalViewController:navController animated:YES];
+				[navController release];
+			}
+			else
+				[self.navigationController pushViewController:controller animated:YES];
+			[controller release];
+		}
+	}];
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
-		[self presentModalViewController:navController animated:YES];
-		[navController release];
-	}
-	else
-		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 

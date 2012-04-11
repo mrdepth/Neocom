@@ -12,6 +12,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+AssetsViewController.h"
+#import "NSString+UUID.h"
 
 #include <functional>
 
@@ -49,12 +50,20 @@ public:
 	}
 };
 
+class ModulesSlotCompare : public std::binary_function<const boost::shared_ptr<eufe::Module>&, const boost::shared_ptr<eufe::Module>&, bool>
+{
+public:
+	bool operator() (const boost::shared_ptr<eufe::Module>& a, const boost::shared_ptr<eufe::Module>& b) {
+		return a->getSlot() > b->getSlot();
+	}
+};
+
 @implementation Fit
 @synthesize fitID;
 @synthesize fitName;
 @synthesize fitURL;
 
-+ (id) fitWithFitID:(NSInteger) fitID fitName:(NSString*) fitName character:(boost::shared_ptr<eufe::Character>) character {
++ (id) fitWithFitID:(NSString*) fitID fitName:(NSString*) fitName character:(boost::shared_ptr<eufe::Character>) character {
 	return [[[Fit alloc] initWithFitID:fitID fitName:fitName character:character] autorelease];
 }
 
@@ -84,9 +93,9 @@ public:
 	
 }
 
-- (id) initWithFitID:(NSInteger) aFitID fitName:(NSString*) aFitName character:(boost::shared_ptr<eufe::Character>) aCharacter {
+- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(boost::shared_ptr<eufe::Character>) aCharacter {
 	if (self = [super init]) {
-		fitID = aFitID;
+		self.fitID = aFitID;
 		self.fitName = aFitName;
 		character = boost::weak_ptr<eufe::Character>(aCharacter);
 	}
@@ -94,7 +103,7 @@ public:
 }
 
 - (id) initWithDictionary:(NSDictionary*) dictionary character:(boost::shared_ptr<eufe::Character>) aCharacter {
-	NSInteger aFitID = [[dictionary valueForKey:@"fitID"] integerValue];
+	NSString* aFitID = [dictionary valueForKey:@"fitID"];
 	NSString *aFitName = [dictionary valueForKey:@"fitName"];
 	if (self = [self initWithFitID:aFitID fitName:aFitName character:aCharacter]) {
 		NSDictionary* fit = [dictionary valueForKey:@"fit"];
@@ -113,6 +122,12 @@ public:
 				[modules insertObject:record atIndex:0];
 			else
 				[modules addObject:record];
+		}
+		
+		NSMutableArray* arrays[] = {[fit valueForKey:@"subsystems"], [fit valueForKey:@"rigs"], [fit valueForKey:@"lows"], [fit valueForKey:@"meds"], [fit valueForKey:@"highs"]};
+		for (int i = 0; i < 5; i++) {
+			if (arrays[i])
+				[modules addObjectsFromArray:arrays[i]];
 		}
 		
 		std::list<boost::tuple<boost::shared_ptr<eufe::Module>, eufe::Module::State> > states;
@@ -283,6 +298,7 @@ public:
 - (void) dealloc {
 	[fitName release];
 	[fitURL release];
+	[fitID release];
 	[super dealloc];
 }
 
@@ -298,7 +314,8 @@ public:
 	if (ship == NULL)
 		return nil;
 
-	NSMutableArray* modules = [NSMutableArray array];
+	//NSMutableArray* modules = [NSMutableArray array];
+	NSMutableArray* slots[eufe::Module::SLOT_SUBSYSTEM + 1] = {nil, [NSMutableArray array], [NSMutableArray array], [NSMutableArray array], [NSMutableArray array], [NSMutableArray array]}; 
 	{
 		eufe::ModulesList modulesList = ship->getModules();
 		modulesList.sort(SubsystemsFirstCompare());
@@ -309,7 +326,8 @@ public:
 										[NSNumber numberWithInteger:(*i)->getState()], @"state", nil];
 			if ((*i)->getCharge() != NULL)
 				[row setValue:[NSNumber numberWithInteger:(*i)->getCharge()->getTypeID()] forKey:@"chargeID"];
-			[modules addObject:row];
+			//[modules addObject:row];
+			[slots[(*i)->getSlot()] addObject:row];
 		}
 	}
 	
@@ -348,12 +366,18 @@ public:
 
 	NSDictionary* fit = [NSDictionary dictionaryWithObjectsAndKeys:
 						 [NSNumber numberWithInteger:ship->getTypeID()], @"shipID",
-						 modules, @"modules",
+						 slots[eufe::Module::SLOT_HI], @"highs",
+						 slots[eufe::Module::SLOT_MED], @"meds",
+						 slots[eufe::Module::SLOT_LOW], @"lows",
+						 slots[eufe::Module::SLOT_RIG], @"rigs",
+						 slots[eufe::Module::SLOT_SUBSYSTEM], @"subsystems",
 						 drones, @"drones",
 						 implants, @"implants",
 						 boosters, @"boosters",nil];
+	if (!fitID)
+		self.fitID = [NSString uuidString];
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInteger:fitID], @"fitID",
+			fitID, @"fitID",
 			fitName, @"fitName",
 			itemInfo.typeName, @"shipName",
 			[itemInfo typeSmallImageName], @"imageName",
@@ -365,18 +389,15 @@ public:
 	NSMutableArray *fits = [NSMutableArray arrayWithContentsOfURL:url];
 	if (!fits)
 		fits = [NSMutableArray array];
-	if (fitID <= 0) {
-		if (fits.count == 0)
-			fitID = 1;
-		else
-			fitID = [[[fits lastObject] valueForKey:@"fitID"] integerValue] + 1;
+	if (!fitID) {
+		self.fitID = [NSString uuidString];
 	}
 	NSDictionary *record = [self dictionary];
 	
 	BOOL bFind = NO;
 	NSInteger i = 0;
 	for (NSDictionary *item in fits) {
-		if ([[item valueForKey:@"fitID"] integerValue] == fitID) {
+		if ([[item valueForKey:@"fitID"] isEqualToString:fitID]) {
 			[fits replaceObjectAtIndex:i withObject:record];
 			bFind = YES;
 			break;
@@ -386,6 +407,100 @@ public:
 	if (!bFind)
 		[fits addObject:record];
 	[fits writeToURL:url atomically:YES];
+}
+
+- (NSString*) dna {
+	NSMutableString* dna = [NSMutableString string];
+	boost::shared_ptr<eufe::Character> aCharacter = self.character;
+	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	NSCountedSet* subsystems = [NSCountedSet set];
+	NSCountedSet* highs = [NSCountedSet set];
+	NSCountedSet* meds = [NSCountedSet set];
+	NSCountedSet* lows = [NSCountedSet set];
+	NSCountedSet* rigs = [NSCountedSet set];
+	NSCountedSet* drones = [NSCountedSet set];
+	NSCountedSet* charges = [NSCountedSet set];
+
+	const eufe::ModulesList& modulesList = ship->getModules();
+	eufe::ModulesList::const_iterator i, end = modulesList.end();
+	for(i = modulesList.begin(); i != end; i++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*i) error:nil];
+		switch((*i)->getSlot()) {
+			case eufe::Module::SLOT_SUBSYSTEM:
+				[subsystems addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_HI:
+				[highs addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_MED:
+				[meds addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_LOW:
+				[lows addObject:itemInfo];
+				break;
+			case eufe::Module::SLOT_RIG:
+				[rigs addObject:itemInfo];
+				break;
+		}
+		
+		boost::shared_ptr<eufe::Charge> charge = (*i)->getCharge();
+		if (charge) {
+			itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(charge) error:nil];
+			if (![charges containsObject:itemInfo])
+				[charges addObject:itemInfo];
+		}
+	}
+	
+	const eufe::DronesList& dronesList = ship->getDrones();
+	eufe::DronesList::const_iterator j, endj = dronesList.end();
+	for(j = dronesList.begin(); j != endj; j++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		[drones addObject:itemInfo];
+	}
+	
+	[dna appendFormat:@"%d:", ship->getTypeID()];
+	
+	NSCountedSet* slots[] = {subsystems, highs, meds, lows, rigs, drones, charges};
+	for (int i = 0; i < 7; i++) {
+		for (ItemInfo* itemInfo in slots[i]) {
+			[dna appendFormat:@"%d;%d:", itemInfo.typeID, [slots[i] countForObject:itemInfo]];
+		}
+	}
+	[dna appendString:@":"];
+	return dna;
+}
+
+- (NSString*) eveXML {
+	NSMutableString* xml = [NSMutableString string];
+	boost::shared_ptr<eufe::Character> aCharacter = self.character;
+	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	
+	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%s\"/>\n", self.fitName, ship->getTypeName()];
+
+	eufe::ModulesList modulesList = ship->getModules();
+	modulesList.sort(ModulesSlotCompare());
+	int counters[eufe::Module::SLOT_SUBSYSTEM + 1] = {0};
+	const char* slots[] = {"none", "hi slot", "med slot", "low slot", "rig slot", "subsystem slot"};
+	eufe::ModulesList::const_iterator i, end = modulesList.end();
+
+	for(i = modulesList.begin(); i != end; i++) {
+		eufe::Module::Slot slot = (*i)->getSlot();
+		[xml appendFormat:@"<hardware slot=\"%s %d\" type=\"%s\"/>\n", slots[slot], counters[slot]++, (*i)->getTypeName()];
+	}
+	
+	NSCountedSet* drones = [NSCountedSet set];
+	const eufe::DronesList& dronesList = ship->getDrones();
+	eufe::DronesList::const_iterator j, endj = dronesList.end();
+	for(j = dronesList.begin(); j != endj; j++) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		[drones addObject:itemInfo];
+	}
+	
+	for (ItemInfo* itemInfo in drones) {
+		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", [drones countForObject:itemInfo], itemInfo.typeName];
+	}
+	[xml appendString:@"</fitting>\n"];
+	return xml;
 }
 
 @end

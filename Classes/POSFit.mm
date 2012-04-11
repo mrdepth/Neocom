@@ -12,6 +12,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+AssetsViewController.h"
+#import "NSString+UUID.h"
 
 #include <functional>
 
@@ -19,7 +20,7 @@
 @synthesize fitID;
 @synthesize fitName;
 
-+ (id) posFitWithFitID:(NSInteger) fitID fitName:(NSString*) fitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
++ (id) posFitWithFitID:(NSString*) fitID fitName:(NSString*) fitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
 	return [[[POSFit alloc] initWithFitID:fitID fitName:fitName controlTower:aControlTower] autorelease];
 }
 
@@ -32,16 +33,16 @@
 	
 }
 
-- (id) initWithFitID:(NSInteger) aFitID fitName:(NSString*) aFitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
+- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
 	if (self = [super initWithItem:aControlTower error:nil]) {
-		fitID = aFitID;
+		self.fitID = aFitID;
 		self.fitName = aFitName;
 	}
 	return self;
 }
 
 - (id) initWithDictionary:(NSDictionary*) dictionary engine:(eufe::Engine*) engine {
-	NSInteger aFitID = [[dictionary valueForKey:@"fitID"] integerValue];
+	NSString* aFitID = [dictionary valueForKey:@"fitID"];
 	NSString *aFitName = [dictionary valueForKey:@"fitName"];
 	NSDictionary* fit = [dictionary valueForKey:@"fit"];
 	NSInteger controlTowerID = [[fit valueForKey:@"controlTowerID"] integerValue];
@@ -96,6 +97,7 @@
 
 - (void) dealloc {
 	[fitName release];
+	[fitID release];
 	[super dealloc];
 }
 
@@ -127,8 +129,12 @@
 	NSDictionary* fit = [NSDictionary dictionaryWithObjectsAndKeys:
 						 [NSNumber numberWithInteger:ct->getTypeID()], @"controlTowerID",
 						 structures, @"structures", nil];
+	
+	if (!fitID)
+		self.fitID = [NSString uuidString];
+
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInteger:fitID], @"fitID",
+			fitID, @"fitID",
 			fitName, @"fitName",
 			itemInfo.typeName, @"shipName",
 			[itemInfo typeSmallImageName], @"imageName",
@@ -141,18 +147,15 @@
 	NSMutableArray *fits = [NSMutableArray arrayWithContentsOfURL:url];
 	if (!fits)
 		fits = [NSMutableArray array];
-	if (fitID <= 0) {
-		if (fits.count == 0)
-			fitID = 1;
-		else
-			fitID = [[[fits lastObject] valueForKey:@"fitID"] integerValue] + 1;
+	if (!fitID) {
+		self.fitID = [NSString uuidString];
 	}
 	NSDictionary *record = [self dictionary];
 	
 	BOOL bFind = NO;
 	NSInteger i = 0;
 	for (NSDictionary *aItem in fits) {
-		if ([[aItem valueForKey:@"fitID"] integerValue] == fitID) {
+		if ([[aItem valueForKey:@"fitID"] isEqualToString:fitID]) {
 			[fits replaceObjectAtIndex:i withObject:record];
 			bFind = YES;
 			break;

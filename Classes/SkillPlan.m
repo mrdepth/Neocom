@@ -16,6 +16,7 @@
 @synthesize characterAttributes;
 @synthesize characterSkills;
 @synthesize characterID;
+@synthesize name;
 
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount {
 	return [[[SkillPlan alloc] initWithAccount:aAccount] autorelease];
@@ -23,6 +24,10 @@
 
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath {
 	return [[[SkillPlan alloc] initWithAccount:aAccount eveMonSkillPlanPath:skillPlanPath] autorelease];
+}
+
++ (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan {
+	return [[[SkillPlan alloc] initWithAccount:aAccount eveMonSkillPlan:skillPlan] autorelease];
 }
 
 - (id) initWithAccount:(EVEAccount*) aAccount {
@@ -61,10 +66,25 @@
 	return self;
 }
 
+- (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan {
+	if (self = [self initWithAccount:aAccount]) {
+		NSXMLParser* parser = [[NSXMLParser alloc] initWithData:[skillPlan dataUsingEncoding:NSUTF8StringEncoding]];
+		parser.delegate = self;
+		if (![parser parse]) {
+			[parser release];
+			[self release];
+			return nil;
+		}
+		[parser release];
+	}
+	return self;
+}
+
 - (void) dealloc {
 	[skills release];
 	[characterAttributes retain];
 	[characterSkills retain];
+	[name release];
 	[super dealloc];
 }
 
@@ -183,6 +203,9 @@
 			skill.requiredLevel = level;
 			[self addSkill:skill];
 		}
+	}
+	else if ([elementName isEqualToString:@"plan"]) {
+		self.name = [attributeDict valueForKey:@"name"];
 	}
 }
 

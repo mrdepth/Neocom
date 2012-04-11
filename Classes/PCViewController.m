@@ -73,12 +73,16 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+	[server shutdown];
+	[server release];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
 	[addressLabel release];
 
 	[server shutdown];
@@ -88,8 +92,67 @@
 
 #pragma mark EUHTTPServerDelegate
 
-- (BOOL) server:(EUHTTPServer*) server didReceiveKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
-	return [[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:errorPtr];
+- (void) server:(EUHTTPServer*) server didReceiveRequest:(EUHTTPRequest*) request connection:(EUHTTPConnection*) connection {
+	BOOL canRun = YES;
+	
+	NSMutableString *page = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
+	NSDictionary* arguments = request.arguments;
+	
+	if (arguments.count > 0) {
+		if ([[arguments valueForKey:@"keyID"] length] == 0)
+			[page replaceOccurrencesOfString:@"{error}" withString:@"Error: Enter <b>KeyID</b>" options:0 range:NSMakeRange(0, page.length)];
+		else if ([[arguments valueForKey:@"vCode"] length] == 0)
+			[page replaceOccurrencesOfString:@"{error}" withString:@"Error: Enter <b>Verification Code</b>" options:0 range:NSMakeRange(0, page.length)];
+		else {
+			canRun = NO;
+		}
+		
+		if (canRun) {
+			[page replaceOccurrencesOfString:@"{keyID}" withString:[arguments valueForKey:@"keyID"] options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{vCode}" withString:[arguments valueForKey:@"vCode"] options:0 range:NSMakeRange(0, page.length)];
+		}
+	}
+	else {
+		[page replaceOccurrencesOfString:@"{error}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+		[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+		[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+	}
+	CFHTTPMessageRef message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
+	connection.response.message = message;
+	CFRelease(message);
+	
+	if (canRun) {
+		CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+		[connection.response run];
+	}
+	else {
+		NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			NSError *error = nil;
+			NSInteger keyID = [[arguments valueForKey:@"keyID"] integerValue];
+			NSString* vCode = [arguments valueForKey:@"vCode"];
+			
+			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+			if (error) {
+				[page replaceOccurrencesOfString:@"{error}" withString:[NSString stringWithFormat:@"Error: %@", [error localizedDescription]] options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{keyID}" withString:[arguments valueForKey:@"keyID"] options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{vCode}" withString:[arguments valueForKey:@"vCode"] options:0 range:NSMakeRange(0, page.length)];
+			}
+			else {
+				[page replaceOccurrencesOfString:@"{error}" withString:@"Key added" options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
+			}
+			[pool release];
+		}];
+		
+		[operation setCompletionBlockInCurrentThread:^(void) {
+			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+			[connection.response run];
+		}];
+		
+		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
 }
 
 @end

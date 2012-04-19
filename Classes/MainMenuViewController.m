@@ -195,7 +195,7 @@
 		else {
 			NSArray *viewControllers = [self.splitViewController viewControllers];
 			UINavigationController *navController = [viewControllers objectAtIndex:1];
-			if ([[[navController viewControllers] objectAtIndex:0] isKindOfClass:class])
+			if ([[[[navController viewControllers] objectAtIndex:0] class] isEqual:class])
 				[navController popToRootViewControllerAnimated:YES];
 			else {
 				UIViewController *controller = [[NSClassFromString(className) alloc] initWithNibName:nibName bundle:nil];

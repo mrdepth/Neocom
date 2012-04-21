@@ -62,7 +62,7 @@
 	NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:[Globals documentsDirectory]];
 	rows = [[NSMutableArray alloc] init];
 	for (NSString* file in files)
-		if ([[file pathExtension] compare:@"xml" options:NSCaseInsensitiveSearch] == NSOrderedSame)
+		if ([[file pathExtension] compare:@"xml" options:NSCaseInsensitiveSearch] == NSOrderedSame && ![file isEqualToString:@"exportedFits.xml"])
 			[rows addObject:file];
 	[self performSelector:@selector(updateAddress) withObject:nil afterDelay:0];
 	

@@ -288,6 +288,7 @@
 			NSObject* object = [unarchiver decodeObject];
 			if ([object isKindOfClass:[NSArray class]])
 				array = [NSMutableArray arrayWithArray:(NSArray*) object];
+			[unarchiver release];
 		}
 	}
 

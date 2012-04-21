@@ -793,7 +793,7 @@
 				
 				float missileVelocityMultiplier = missileVelocityMultiplierAttribute.value;
 				if (missileVelocityMultiplier == 0)
-					missileDamageMultiplier = 1;
+					missileVelocityMultiplier = 1;
 				float missileFlightTimeMultiplier = missileFlightTimeMultiplierAttribute.value;
 				if (missileFlightTimeMultiplier == 0)
 					missileFlightTimeMultiplier = 1;

@@ -86,7 +86,8 @@
 					amount = 1;
 				EVEDBInvType* type = assetItem.type;
 				if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
-					ct->addStructure(type.typeID);
+					for (int i = 0; i < amount; i++)
+						ct->addStructure(type.typeID);
 				}
 			}
 		}

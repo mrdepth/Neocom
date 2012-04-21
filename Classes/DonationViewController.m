@@ -103,6 +103,7 @@
 											   destructiveButtonTitle:nil
 													otherButtonTitles:@"Donate $1", @"Donate $5", @"Donate $10", nil];
 	[actionSheet showFromRect:[sender frame] inView:[sender superview] animated:YES];
+	[actionSheet release];
 }
 
 #pragma mark UIActionSheetDelegate

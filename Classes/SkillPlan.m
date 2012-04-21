@@ -166,6 +166,7 @@
 	}
 	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"skillPlan_%d.plist", characterID]];
 	[items writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
+	[items release];
 }
 
 - (void) load {

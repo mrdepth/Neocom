@@ -719,6 +719,7 @@
 		[tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	else
 		[tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
+	[indexes release];
 }
 
 @end

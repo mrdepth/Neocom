@@ -422,6 +422,7 @@
 		//controller.delegate = self;
 		controller.startPageURL = fit.fitURL;
 		[self presentModalViewController:controller animated:YES];
+		[controller release];
 	}
 	else if ([button isEqualToString:ActionButtonAreaEffect]) {
 		boost::shared_ptr<eufe::Item> area = fittingEngine->getArea();

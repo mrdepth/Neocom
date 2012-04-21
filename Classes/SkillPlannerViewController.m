@@ -261,6 +261,7 @@
 			actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 			
 			[actionSheet showFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView animated:YES];
+			[actionSheet release];
 		}
 		else {
 			ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")

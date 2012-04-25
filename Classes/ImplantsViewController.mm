@@ -253,11 +253,13 @@
 - (void) update {
 	NSMutableDictionary *implantsTmp = [NSMutableDictionary dictionary];
 	NSMutableDictionary *boostersTmp = [NSMutableDictionary dictionary];
+	FittingViewController* aFittingViewController = fittingViewController;
+
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = fittingViewController.fit.character;
+			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
 			const eufe::ImplantsList& implantsList = character->getImplants();
 			eufe::ImplantsList::const_iterator i, end = implantsList.end();
 			for (i = implantsList.begin(); i != end; i++)

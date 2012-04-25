@@ -367,13 +367,14 @@
 	__block int maxActiveDrones;
 	__block int activeDrones;
 	NSMutableArray *rowsTmp = [NSMutableArray array];
+	FittingViewController* aFittingViewController = fittingViewController;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"DronesViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
 			
-			boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
+			boost::shared_ptr<eufe::Ship> ship = aFittingViewController.fit.character.get()->getShip();
 			NSMutableDictionary* dronesDic = [NSMutableDictionary dictionary];
 			
 			const eufe::DronesList& drones = ship->getDrones();

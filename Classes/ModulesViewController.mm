@@ -683,12 +683,13 @@
 	__block int totalMissileHardpoints;
 	
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
+	FittingViewController* aFittingViewController = fittingViewController;
 
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
+			boost::shared_ptr<eufe::Ship> ship = aFittingViewController.fit.character.get()->getShip();
 			
 			eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
 			int n = sizeof(slots) / sizeof(eufe::Module::Slot);

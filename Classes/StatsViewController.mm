@@ -331,10 +331,12 @@
 	__block float warpSpeed;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+Update"];
+	FittingViewController* aFittingViewController = fittingViewController;
+
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = fittingViewController.fit.character;
+			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
 			boost::shared_ptr<eufe::Ship> ship = character->getShip();
 			
 			totalPG = ship->getTotalPowerGrid();
@@ -413,7 +415,7 @@
 			droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
 			warpSpeed = ship->getWarpSpeed();
 
-			damagePattern = [fittingViewController.damagePattern retain];
+			damagePattern = [aFittingViewController.damagePattern retain];
 		}
 		[pool release];
 	}];
@@ -520,6 +522,7 @@
 	__block float totalPrice;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+UpdatePrice"];
+	FittingViewController* aFittingViewController = fittingViewController;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -527,7 +530,7 @@
 		ItemInfo* shipInfo = nil;
 		
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = fittingViewController.fit.character;
+			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
 			boost::shared_ptr<eufe::Ship> ship = character->getShip();
 			
 			shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
@@ -551,8 +554,8 @@
 					[types addObject:itemInfo];
 			}
 		}
-		NSDictionary* prices = [fittingViewController.priceManager pricesWithTypes:[types allObjects]];
-		shipPrice = [fittingViewController.priceManager priceWithType:shipInfo];
+		NSDictionary* prices = [aFittingViewController.priceManager pricesWithTypes:[types allObjects]];
+		shipPrice = [aFittingViewController.priceManager priceWithType:shipInfo];
 		fittingsPrice = 0;
 		for (ItemInfo* itemInfo in types) {
 			if (itemInfo != shipInfo) {

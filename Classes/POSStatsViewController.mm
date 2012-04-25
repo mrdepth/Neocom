@@ -208,11 +208,13 @@
 	__block DamagePattern* damagePattern = nil;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+Update"];
+	POSFittingViewController* aPosFittingViewController = posFittingViewController;
+
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
 			
-			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
 			
 			totalPG = controlTower->getTotalPowerGrid();
 			usedPG = controlTower->getPowerGridUsed();
@@ -232,7 +234,7 @@
 			weaponDPS = controlTower->getWeaponDps();
 			volleyDamage = controlTower->getWeaponVolley();
 			
-			damagePattern = [posFittingViewController.damagePattern retain];
+			damagePattern = [aPosFittingViewController.damagePattern retain];
 		}
 		[pool release];
 	}];
@@ -290,6 +292,8 @@
 	__block float posCost;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice"];
+	POSFittingViewController* aPosFittingViewController = posFittingViewController;
+	
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -297,13 +301,13 @@
 		NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
 
 		@synchronized(posFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
-			fuelConsumtion = posFittingViewController.posFuelRequirements.quantity;
+			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
+			fuelConsumtion = aPosFittingViewController.posFuelRequirements.quantity;
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
 			
-			[types addObject:posFittingViewController.fit];
+			[types addObject:aPosFittingViewController.fit];
 
 			upgradesDailyCost = 0;
 			for (i = structuresList.begin(); i != end; i++) {
@@ -327,11 +331,11 @@
 				}
 			}
 		}
-		[types addObject:posFittingViewController.posFuelRequirements.resourceType];
+		[types addObject:aPosFittingViewController.posFuelRequirements.resourceType];
 			
-		NSDictionary* prices = [posFittingViewController.priceManager pricesWithTypes:[types allObjects]];
+		NSDictionary* prices = [aPosFittingViewController.priceManager pricesWithTypes:[types allObjects]];
 
-		float fuelPrice = [posFittingViewController.priceManager priceWithType:posFittingViewController.posFuelRequirements.resourceType];
+		float fuelPrice = [aPosFittingViewController.priceManager priceWithType:aPosFittingViewController.posFuelRequirements.resourceType];
 		fuelDailyCost = fuelConsumtion * fuelPrice * 24;
 		
 /*		if (upgradesDailyCost > 0) {
@@ -343,7 +347,7 @@
 		
 		posCost = 0;
 		
-		@synchronized(posFittingViewController) {
+		@synchronized(aPosFittingViewController) {
 			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
@@ -356,7 +360,7 @@
 		}
 		
 		upgradesCost = 0;
-		prices = [posFittingViewController.priceManager pricesWithTypes:[infrastructureUpgrades allValues]];
+		prices = [aPosFittingViewController.priceManager pricesWithTypes:[infrastructureUpgrades allValues]];
 		for (NSNumber* number in [prices allValues])
 			upgradesCost += [number floatValue];
 		[pool release];

@@ -305,11 +305,13 @@
 
 - (void) update {
 	NSMutableArray* pilotsTmp = [NSMutableArray array];
+	FittingViewController* aFittingViewController = fittingViewController;
+
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
+			eufe::Gang* gang = aFittingViewController.fittingEngine->getGang().get();
 			
 			eufe::Character* fleetBooster = gang->getFleetBooster().get();
 			eufe::Character* wingBooster = gang->getWingBooster().get();

@@ -500,12 +500,13 @@
 	__block float usedCPU;
 	
 	NSMutableArray *structuresTmp = [NSMutableArray array];
+	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
 			
 			NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];
 			

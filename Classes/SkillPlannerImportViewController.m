@@ -241,7 +241,11 @@
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+			NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
+			CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"text/html; charset=UTF-8");
+
 			[connection.response run];
 			if (skillPlan) {
 				if (self.navigationController.visibleViewController == self) {

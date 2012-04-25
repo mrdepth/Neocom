@@ -173,7 +173,10 @@
 		if (data) {
 			message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
 			connection.response.message = message;
+
 			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)data);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", data.length]);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"image/png");
 			CFRelease(message);
 		}
 		else {
@@ -210,7 +213,10 @@
 			CFHTTPMessageRef message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
 			connection.response.message = message;
 			CFRelease(message);
-			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[xml dataUsingEncoding:NSUTF8StringEncoding]);
+			NSData* bodyData = [xml dataUsingEncoding:NSUTF8StringEncoding];
+			CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+			
 			CFHTTPMessageSetHeaderFieldValue(connection.response.message, (CFStringRef) @"Content-Type", (CFStringRef) @"application/xml");
 			CFHTTPMessageSetHeaderFieldValue(connection.response.message,
 											 (CFStringRef) @"Content-Disposition",
@@ -227,7 +233,10 @@
 		CFHTTPMessageRef message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
 		connection.response.message = message;
 		CFRelease(message);
-		CFHTTPMessageSetBody(connection.response.message, (CFDataRef)[page dataUsingEncoding:NSUTF8StringEncoding]);
+		NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
+		CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
+		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"text/html; charset=UTF-8");
 		[connection.response run];
 	}
 }

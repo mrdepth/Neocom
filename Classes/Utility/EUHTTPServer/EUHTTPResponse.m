@@ -38,8 +38,11 @@
 	if (self.outputStream) {
 		CFDataRef data = CFHTTPMessageCopySerializedMessage(message);
 		self.outputData = [NSMutableData dataWithData:(NSData*) data];
+		
 		CFRelease(data);
 		
+		[self.outputData writeToFile:@"/Users/shimanski/response.txt" atomically:YES];
+
 		self.outputStream.delegate = self;
 		[self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 		[self.outputStream open];

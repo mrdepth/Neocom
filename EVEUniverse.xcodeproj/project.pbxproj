@@ -5012,7 +5012,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Serge Aliseenko (QP4MTT668Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5027,7 +5027,7 @@
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
 				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8DDE5B44-967E-4AFE-B832-292143A44315";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "41952D87-1940-49A7-BB0E-30083BC33D59";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -5045,6 +5045,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _DEBUG;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = /Developer/Tools/boost;
 				INFOPLIST_FILE = "EVEUniverse-Info.plist";

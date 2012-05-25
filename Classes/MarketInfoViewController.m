@@ -343,6 +343,9 @@
 			NSMutableDictionary *sellOrdersRegionsDic = [NSMutableDictionary dictionary];
 			NSMutableDictionary *buyOrdersRegionsDic = [NSMutableDictionary dictionary];
 			
+			[quickLook.sellOrders sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
+			[quickLook.buyOrders sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
+			
 			for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
 				NSString *regionID = [NSString stringWithFormat:@"%d", order.regionID];
 				NSDictionary *region = [sellOrdersRegionsDic valueForKey:regionID];

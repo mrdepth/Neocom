@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */; };
+		121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */; };
 		12422A2D1406B3E700B7EAB5 /* TutorialViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */; };
 		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
 		126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */; };
@@ -267,7 +269,6 @@
 		37AB469514F521A5007B4C33 /* EffectByteCodeInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465B14F521A4007B4C33 /* EffectByteCodeInterpreter.cpp */; };
 		37AB469614F521A5007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465D14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp */; };
 		37AB469714F521A5007B4C33 /* EffectEnergyTransferInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */; };
-		37AB469814F521A5007B4C33 /* EffecthardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466114F521A4007B4C33 /* EffecthardPointModifierEffectInterpreter.cpp */; };
 		37AB469914F521A5007B4C33 /* EffectHullRepairInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */; };
 		37AB469A14F521A5007B4C33 /* EffectLeechInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466614F521A4007B4C33 /* EffectLeechInterpreter.cpp */; };
 		37AB469B14F521A5007B4C33 /* EffectShieldBoostingInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466814F521A4007B4C33 /* EffectShieldBoostingInterpreter.cpp */; };
@@ -712,6 +713,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
+		121E07E31578C146000D1480 /* EffectHardPointModifierEffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHardPointModifierEffectInterpreter.h; sourceTree = "<group>"; };
+		121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectAdaptiveArmorHardener.cpp; sourceTree = "<group>"; };
+		121E07ED1578C3EB000D1480 /* EffectAdaptiveArmorHardener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectAdaptiveArmorHardener.h; sourceTree = "<group>"; };
 		12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TutorialViewController-iPad.xib"; sourceTree = "<group>"; };
 		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingExportViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -1142,8 +1147,8 @@
 		37AB45C114F52173007B4C33 /* NSURL+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MD5.m"; sourceTree = "<group>"; };
 		37AB464514F521A4007B4C33 /* Area.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Area.cpp; sourceTree = "<group>"; };
 		37AB464614F521A4007B4C33 /* Area.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Area.h; sourceTree = "<group>"; };
-		37AB464714F521A4007B4C33 /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attribute.cpp; sourceTree = "<group>"; };
-		37AB464814F521A4007B4C33 /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attribute.h; sourceTree = "<group>"; };
+		37AB464714F521A4007B4C33 /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attribute.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		37AB464814F521A4007B4C33 /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attribute.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		37AB464914F521A4007B4C33 /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
 		37AB464A14F521A4007B4C33 /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
 		37AB464B14F521A4007B4C33 /* CapacitorSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CapacitorSimulator.cpp; sourceTree = "<group>"; };
@@ -1158,8 +1163,8 @@
 		37AB465414F521A4007B4C33 /* DamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamagePattern.h; sourceTree = "<group>"; };
 		37AB465514F521A4007B4C33 /* Drone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drone.cpp; sourceTree = "<group>"; };
 		37AB465614F521A4007B4C33 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drone.h; sourceTree = "<group>"; };
-		37AB465714F521A4007B4C33 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; };
-		37AB465814F521A4007B4C33 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; };
+		37AB465714F521A4007B4C33 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		37AB465814F521A4007B4C33 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		37AB465914F521A4007B4C33 /* EffectArmorRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectArmorRepairInterpreter.cpp; sourceTree = "<group>"; };
 		37AB465A14F521A4007B4C33 /* EffectArmorRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectArmorRepairInterpreter.h; sourceTree = "<group>"; };
 		37AB465B14F521A4007B4C33 /* EffectByteCodeInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectByteCodeInterpreter.cpp; sourceTree = "<group>"; };
@@ -1168,8 +1173,6 @@
 		37AB465E14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyDestabilizationNewInterpreter.h; sourceTree = "<group>"; };
 		37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectEnergyTransferInterpreter.cpp; sourceTree = "<group>"; };
 		37AB466014F521A4007B4C33 /* EffectEnergyTransferInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyTransferInterpreter.h; sourceTree = "<group>"; };
-		37AB466114F521A4007B4C33 /* EffecthardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffecthardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466214F521A4007B4C33 /* EffecthardPointModifierEffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffecthardPointModifierEffectInterpreter.h; sourceTree = "<group>"; };
 		37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHullRepairInterpreter.cpp; sourceTree = "<group>"; };
 		37AB466414F521A4007B4C33 /* EffectHullRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHullRepairInterpreter.h; sourceTree = "<group>"; };
 		37AB466514F521A4007B4C33 /* EffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectInterpreter.h; sourceTree = "<group>"; };
@@ -1179,7 +1182,7 @@
 		37AB466914F521A4007B4C33 /* EffectShieldBoostingInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectShieldBoostingInterpreter.h; sourceTree = "<group>"; };
 		37AB466A14F521A4007B4C33 /* EffectSlotModifierInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectSlotModifierInterpreter.cpp; sourceTree = "<group>"; };
 		37AB466B14F521A4007B4C33 /* EffectSlotModifierInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectSlotModifierInterpreter.h; sourceTree = "<group>"; };
-		37AB466C14F521A5007B4C33 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		37AB466C14F521A5007B4C33 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		37AB466D14F521A5007B4C33 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
 		37AB466F14F521A5007B4C33 /* eufe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eufe.h; sourceTree = "<group>"; };
 		37AB467214F521A5007B4C33 /* Gang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gang.cpp; sourceTree = "<group>"; };
@@ -1193,7 +1196,7 @@
 		37AB467A14F521A5007B4C33 /* LocationRequiredSkillModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocationRequiredSkillModifier.cpp; sourceTree = "<group>"; };
 		37AB467B14F521A5007B4C33 /* LocationRequiredSkillModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationRequiredSkillModifier.h; sourceTree = "<group>"; };
 		37AB467D14F521A5007B4C33 /* Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifier.cpp; sourceTree = "<group>"; };
-		37AB467E14F521A5007B4C33 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
+		37AB467E14F521A5007B4C33 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		37AB467F14F521A5007B4C33 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Module.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		37AB468014F521A5007B4C33 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Module.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		37AB468114F521A5007B4C33 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
@@ -2763,8 +2766,8 @@
 				37AB465E14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.h */,
 				37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */,
 				37AB466014F521A4007B4C33 /* EffectEnergyTransferInterpreter.h */,
-				37AB466114F521A4007B4C33 /* EffecthardPointModifierEffectInterpreter.cpp */,
-				37AB466214F521A4007B4C33 /* EffecthardPointModifierEffectInterpreter.h */,
+				121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */,
+				121E07E31578C146000D1480 /* EffectHardPointModifierEffectInterpreter.h */,
 				37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */,
 				37AB466414F521A4007B4C33 /* EffectHullRepairInterpreter.h */,
 				37AB466514F521A4007B4C33 /* EffectInterpreter.h */,
@@ -2774,6 +2777,8 @@
 				37AB466914F521A4007B4C33 /* EffectShieldBoostingInterpreter.h */,
 				37AB466A14F521A4007B4C33 /* EffectSlotModifierInterpreter.cpp */,
 				37AB466B14F521A4007B4C33 /* EffectSlotModifierInterpreter.h */,
+				121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */,
+				121E07ED1578C3EB000D1480 /* EffectAdaptiveArmorHardener.h */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
@@ -4963,7 +4968,6 @@
 				37AB469514F521A5007B4C33 /* EffectByteCodeInterpreter.cpp in Sources */,
 				37AB469614F521A5007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */,
 				37AB469714F521A5007B4C33 /* EffectEnergyTransferInterpreter.cpp in Sources */,
-				37AB469814F521A5007B4C33 /* EffecthardPointModifierEffectInterpreter.cpp in Sources */,
 				37AB469914F521A5007B4C33 /* EffectHullRepairInterpreter.cpp in Sources */,
 				37AB469A14F521A5007B4C33 /* EffectLeechInterpreter.cpp in Sources */,
 				37AB469B14F521A5007B4C33 /* EffectShieldBoostingInterpreter.cpp in Sources */,
@@ -4998,6 +5002,8 @@
 				37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */,
 				12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */,
 				12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */,
+				121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */,
+				121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5012,7 +5018,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Serge Aliseenko (QP4MTT668Z)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5027,7 +5033,7 @@
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
 				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "41952D87-1940-49A7-BB0E-30083BC33D59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8DDE5B44-967E-4AFE-B832-292143A44315";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -5041,7 +5047,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
@@ -5054,7 +5060,7 @@
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
 				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "41952D87-1940-49A7-BB0E-30083BC33D59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FAAF2536-7BBA-43AF-88B0-9637B9FD38D5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

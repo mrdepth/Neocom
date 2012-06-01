@@ -54,8 +54,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"About";
-	databaseVersionLabel.text = @"Crucible_1.6_349998";
-	imagesVersionLabel.text = @"Crucible_1.1_imgs";
+	databaseVersionLabel.text = @"Inferno_1.0_70633";
+	imagesVersionLabel.text = @"Inferno_1.0_imgs";
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];

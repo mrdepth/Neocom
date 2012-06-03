@@ -5047,7 +5047,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
@@ -5060,7 +5060,7 @@
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
 				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FAAF2536-7BBA-43AF-88B0-9637B9FD38D5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "41952D87-1940-49A7-BB0E-30083BC33D59";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

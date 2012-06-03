@@ -17,6 +17,7 @@ int main (int argc, const char * argv[])
 		NSString* inputFolder = @"./EVETypes";
 		NSString* outputFolder = @"./Types";
 		NSArray* inputFiles = [fileManager contentsOfDirectoryAtPath:inputFolder error:nil];
+		inputFiles = [inputFiles sortedArrayUsingSelector:@selector(compare:)];
 		[fileManager removeItemAtPath:outputFolder error:nil];
 		[fileManager createDirectoryAtPath:outputFolder withIntermediateDirectories:YES attributes:nil error:nil];
 		NSMutableDictionary* types = [NSMutableDictionary dictionary];

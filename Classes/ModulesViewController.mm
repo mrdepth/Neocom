@@ -734,7 +734,7 @@
 		if (![operation isCancelled]) {
 			if (sections)
 				[sections release];
-			sections  = [sectionsTmp retain];
+			sections = [sectionsTmp retain];
 			
 			powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 			powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;

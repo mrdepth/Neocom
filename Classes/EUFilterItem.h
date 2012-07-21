@@ -16,10 +16,10 @@
 	NSString *titlePropertyKey;
 	NSMutableSet *values;
 }
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *allValue;
-@property (nonatomic, retain) NSString *valuePropertyKey;
-@property (nonatomic, retain) NSString *titlePropertyKey;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *allValue;
+@property (nonatomic, copy) NSString *valuePropertyKey;
+@property (nonatomic, copy) NSString *titlePropertyKey;
 @property (nonatomic, retain) NSMutableSet *values;
 
 + (id) filterItem;

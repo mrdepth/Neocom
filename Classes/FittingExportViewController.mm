@@ -270,7 +270,7 @@
 	NSDictionary* fit = [record valueForKey:@"fit"];
 	EVEDBInvType* ship = [EVEDBInvType invTypeWithTypeID:[[fit valueForKeyPath:@"shipID"] integerValue] error:nil];
 	
-	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%@\"/>\n", [record valueForKey:@"fitName"], ship.typeName];
+	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"Neocom fitting engine\"/>\n<shipType value=\"%@\"/>\n", [record valueForKey:@"fitName"], ship.typeName];
 	
 
 	NSMutableArray* arrays[] = {[fit valueForKey:@"highs"], [fit valueForKey:@"meds"], [fit valueForKey:@"lows"], [fit valueForKey:@"rigs"], [fit valueForKey:@"subsystems"]};

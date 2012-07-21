@@ -59,7 +59,6 @@
 
 - (IBAction) onBack: (id) sender {
 	[modalViewController dismissModalViewControllerAnimated:YES];
-	self.modalViewController = nil;
 }
 
 - (void) dealloc {

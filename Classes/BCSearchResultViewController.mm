@@ -158,7 +158,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+		if (![operation isCancelled] && fit && character) {
 			fittingViewController.fittingEngine->getGang()->addPilot(*character);
 			fittingViewController.fit = fit;
 			[fittingViewController.fits addObject:fit];

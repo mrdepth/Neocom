@@ -19,6 +19,7 @@
 
 @interface DamagePatternsViewController(Private)
 - (void) reload;
+- (void) save;
 @end
 
 @implementation DamagePatternsViewController
@@ -93,15 +94,7 @@
 		[tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 	else {
 		[tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
-		
-		NSMutableData* data = [NSMutableData data];
-		NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-		[archiver encodeObject:[sections objectAtIndex:1]];
-		[archiver finishEncoding];
-		[archiver release];
-		
-		NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"damagePatterns.plist"];
-		[data writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
+		[self save];
 	}
 }
 
@@ -187,6 +180,7 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		[[sections objectAtIndex:indexPath.section - 1] removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self save];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
 		DamagePattern* damagePattern = [[[DamagePattern alloc] init] autorelease];
@@ -293,6 +287,17 @@
 	}
 
 	[sections addObject:array ? array : [NSMutableArray array]];
+}
+
+- (void) save {
+	NSMutableData* data = [NSMutableData data];
+	NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+	[archiver encodeObject:[sections objectAtIndex:1]];
+	[archiver finishEncoding];
+	[archiver release];
+	
+	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"damagePatterns.plist"];
+	[data writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
 }
 
 @end

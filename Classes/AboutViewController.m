@@ -24,8 +24,6 @@
 @implementation AboutViewController
 @synthesize scrollView;
 @synthesize cacheView;
-@synthesize upgradeView;
-@synthesize donateView;
 @synthesize databaseView;
 @synthesize marketView;
 @synthesize versionView;
@@ -54,8 +52,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"About";
-	databaseVersionLabel.text = @"Inferno_1.0_70633";
-	imagesVersionLabel.text = @"Inferno_1.0_imgs";
+	databaseVersionLabel.text = @"Inferno_1.1_73052";
+	imagesVersionLabel.text = @"Inferno_1.1_imgs";
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
@@ -84,8 +82,6 @@
     [super viewDidUnload];
 	self.scrollView = nil;
 	self.cacheView = nil;
-	self.upgradeView = nil;
-	self.donateView = nil;
 	self.databaseView = nil;
 	self.marketView = nil;
 	self.versionView = nil;
@@ -99,11 +95,8 @@
 
 
 - (void)dealloc {
-	[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
 	[scrollView release];
 	[cacheView release];
-	[upgradeView release];
-	[donateView release];
 	[databaseView release];
 	[marketView release];
 	[versionView release];
@@ -121,28 +114,6 @@
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning!" message:@"Some features may be temporarily unavailable." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
 	[alertView show];
 	[alertView release];
-}
-
-- (IBAction) onUpgrade:(id) sender {
-	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
-	if (paymentQueue.transactions.count > 0)
-		return;
-	
-	[[Globals appDelegate] setLoading:YES];
-	[paymentQueue addTransactionObserver:self];
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
-	[paymentQueue addPayment:payment];
-}
-
-- (IBAction) onDonate:(id) sender {
-	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
-	if (paymentQueue.transactions.count > 0)
-		return;
-
-	[[Globals appDelegate] setLoading:YES];
-	[paymentQueue addTransactionObserver:self];
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.donation"];
-	[paymentQueue addPayment:payment];
 }
 
 - (IBAction) onHomepage:(id) sender {
@@ -168,29 +139,6 @@
 	}
 }
 
-#pragma mark SKPaymentTransactionObserver
-
-- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
-	for (SKPaymentTransaction *transaction in transactions)
-	{
-		switch (transaction.transactionState)
-		{
-			case SKPaymentTransactionStatePurchased:
-			case SKPaymentTransactionStateRestored:
-				[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-				[[Globals appDelegate] setLoading:NO];
-				[self performSelector:@selector(reload) withObject:nil afterDelay:0];
-				break;
-			case SKPaymentTransactionStateFailed:
-				[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-				[[Globals appDelegate] setLoading:NO];
-				break;
-			default:
-				break;
-		}
-	}
-}
-
 @end
 
 @implementation AboutViewController(Private)
@@ -210,17 +158,6 @@
 		[v removeFromSuperview];
 
 	float y = 0;
-	
-/*	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
-		[scrollView addSubview:upgradeView];
-		upgradeView.frame = CGRectMake(0, y, upgradeView.frame.size.width, upgradeView.frame.size.height);
-		y += upgradeView.frame.size.height;
-	}
-	else {
-		[scrollView addSubview:donateView];
-		donateView.frame = CGRectMake(0, y, donateView.frame.size.width, donateView.frame.size.height);
-		y += donateView.frame.size.height;
-	}*/
 	
 	[scrollView addSubview:cacheView];
 	cacheView.frame = CGRectMake(0, y, cacheView.frame.size.width, cacheView.frame.size.height);

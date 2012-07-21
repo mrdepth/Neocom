@@ -19,9 +19,10 @@
 	UIViewController *controller;
 	UIViewController *loadingViewController;
 	EVEAccount *currentAccount;
-	NSInteger loadingsCount;
 	EUOperationQueue *sharedQueue;
 	EVEAccountStorage *sharedAccountStorage;
+	BOOL inAppStatus;
+	BOOL loading;
 @private
 	//AdWhirlView *adView;
 	GADBannerView *adView;
@@ -33,7 +34,8 @@
 @property (nonatomic, retain) IBOutlet UIViewController *controller;
 @property (nonatomic, retain) IBOutlet UIViewController *loadingViewController;
 @property (nonatomic, retain) EVEAccount *currentAccount;
-@property (setter=setLoading:) BOOL isLoading;
+@property (getter=isLoading) BOOL loading;
+@property (getter=isInAppStatus) BOOL inAppStatus;
 @property (nonatomic, retain) EUOperationQueue *sharedQueue;
 @property (nonatomic, retain) EVEAccountStorage *sharedAccountStorage;
 

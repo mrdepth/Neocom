@@ -82,10 +82,9 @@
 	if (paymentQueue.transactions.count > 0)
 		return;
 	
-	[[Globals appDelegate] setLoading:YES];
+	[[Globals appDelegate] setInAppStatus:YES];
 	[paymentQueue addTransactionObserver:self];
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
-	[paymentQueue addPayment:payment];
+	[paymentQueue restoreCompletedTransactions];
 }
 
 - (IBAction) onDonate:(id) sender {
@@ -114,7 +113,7 @@
 		if (paymentQueue.transactions.count > 0)
 			return;
 		
-		[[Globals appDelegate] setLoading:YES];
+		[[Globals appDelegate] setInAppStatus:YES];
 		[paymentQueue addTransactionObserver:self];
 		SKPayment *payment = nil;
 		if (buttonIndex == 0)
@@ -137,12 +136,12 @@
 			case SKPaymentTransactionStatePurchased:
 			case SKPaymentTransactionStateRestored:
 				[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-				[[Globals appDelegate] setLoading:NO];
+				[[Globals appDelegate] setInAppStatus:NO];
 				[self performSelector:@selector(reload) withObject:nil afterDelay:0];
 				break;
 			case SKPaymentTransactionStateFailed:
 				[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-				[[Globals appDelegate] setLoading:NO];
+				[[Globals appDelegate] setInAppStatus:NO];
 				break;
 			default:
 				break;
@@ -150,7 +149,17 @@
 	}
 }
 
+- (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
+	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
+	[queue addPayment:payment];
+}
 
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+	if (queue.transactions.count == 0) {
+		SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
+		[queue addPayment:payment];
+	}
+}
 
 @end
 

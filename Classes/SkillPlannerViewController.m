@@ -120,11 +120,9 @@
 	//NSArray* clearRow = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:skillPlan.skills.count inSection:0]];
 	NSIndexSet* section = [NSIndexSet indexSetWithIndex:1];
 	if (editing)
-		//[skillsTableView insertRowsAtIndexPaths:clearRow withRowAnimation:UITableViewRowAnimationFade];
 		[skillsTableView insertSections:section withRowAnimation:UITableViewRowAnimationFade];
 	else {
 		[skillsTableView deleteSections:section withRowAnimation:UITableViewRowAnimationFade];
-		//[skillsTableView deleteRowsAtIndexPaths:clearRow withRowAnimation:UITableViewRowAnimationFade];
 		[skillPlan save];
 	}
 }
@@ -223,6 +221,7 @@
 		[skillPlan removeSkill:[skillPlan.skills objectAtIndex:indexPath.row]];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self reloadTrainingTime];
+		[skillPlan save];
 	}
 }
 

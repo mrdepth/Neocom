@@ -274,7 +274,7 @@
 			return;
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (searchString.length >= 2) {
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL;", searchString]
+			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY typeName;", searchString]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 													   [values addObject:[EVEDBInvType invTypeWithDictionary:record]];
 													   if ([operation isCancelled])

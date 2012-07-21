@@ -134,26 +134,25 @@
 			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize32 error:nil];
 			scale = 1;
 		}
-		NSInvocation *invocation = [NSInvocation invocationWithTarget:self.portraitImageView selector:@selector(setImageWithContentsOfURL:scale:) argumentPointers:&portraitURL, &scale];
-		[invocation retainArguments];
-		[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
-		
-		invocation = [NSInvocation invocationWithTarget:self.corpImageView selector:@selector(setImageWithContentsOfURL:scale:) argumentPointers:&corpURL, &scale];
-		[invocation retainArguments];
-		[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
-		
-		[self.corpLabel performSelectorOnMainThread:@selector(setText:) withObject:account.corporationName waitUntilDone:NO];
-		
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale];
+			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale];
+			self.corpLabel.text = account.corporationName;
+		});
+
 		NSInteger allianceID = 0;
 		NSString *allianceName = nil;
+		
+		NSString* wealth = nil;
 		
 		if (account.characterSheet) {
 			allianceID = account.characterSheet.allianceID;
 			allianceName = account.characterSheet.allianceName;
-			[self.wealthLabel performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:account.characterSheet.balance] numberStyle:NSNumberFormatterDecimalStyle]] waitUntilDone:NO];
+			wealth = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:account.characterSheet.balance] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 		else {
-			[self.wealthLabel performSelectorOnMainThread:@selector(setText:) withObject:@"" waitUntilDone:NO];
+			wealth = @"";
 			NSError *error = nil;
 			EVECorporationSheet *corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporationID:account.corporationID error:&error];
 			if (!error) {
@@ -161,30 +160,35 @@
 				allianceName = corporationSheet.allianceName;
 			}
 		}
-		
-		if (allianceID) {
-			NSURL *url;
-			if (RETINA_DISPLAY)
-				url = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize64 error:nil];
-			else
-				url = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize32 error:nil];
-			
-			invocation = [NSInvocation invocationWithTarget:self.allianceImageView selector:@selector(setImageWithContentsOfURL:scale:) argumentPointers:&url, &scale];
-			[invocation retainArguments];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
-			
-			[self.allianceLabel performSelectorOnMainThread:@selector(setText:) withObject:allianceName waitUntilDone:NO];
-		}
-		else {
-			[self.allianceImageView performSelectorOnMainThread:@selector(setImage:) withObject:nil waitUntilDone:NO];
-			[self.allianceLabel performSelectorOnMainThread:@selector(setText:) withObject:@"" waitUntilDone:NO];
-		}
-		
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.wealthLabel.text = wealth;
+		});
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (allianceID) {
+				NSURL *allianceUrl = nil;
+				if (RETINA_DISPLAY)
+					allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize64 error:nil];
+				else
+					allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize32 error:nil];
+				
+				[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale];
+				self.allianceLabel.text = allianceName;
+			}
+			else {
+				self.allianceImageView.image = nil;
+				self.allianceLabel.text = @"";
+			}
+		});
+
 		[self updateSkillInfoWithAccount:account];
 		[self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 	}
 	else {
-		[corpLabel performSelectorOnMainThread:@selector(setText:) withObject:@"No Character Selected" waitUntilDone:NO];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.corpLabel.text = @"No Character Selected";
+		});
 		if (self.view.frame.size.height != 24) {
 			id controller = self;
 			CGSize size = CGSizeMake(320, 24);
@@ -201,11 +205,11 @@
 	int skillpoints = 0;
 	for (EVECharacterSheetSkill *skill in account.characterSheet.skills)
 		skillpoints += skill.skillpoints;
-	
+	NSMutableString *text = nil;
 	if (account.skillQueue) {
-		NSMutableString *text = [NSMutableString stringWithFormat:@"%@ points (%d skills)\n",
-								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
-								 account.characterSheet.skills.count];
+		text = [NSMutableString stringWithFormat:@"%@ points (%d skills)\n",
+				[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
+				account.characterSheet.skills.count];
 
 		if (account.skillQueue.skillQueue.count > 0) {
 			NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
@@ -215,11 +219,11 @@
 		}
 		else
 			[text appendString:@"Training queue is inactive"];
-		[self.skillsLabel performSelectorOnMainThread:@selector(setText:) withObject:text waitUntilDone:NO];
 	}
-	else {
-		[self.skillsLabel performSelectorOnMainThread:@selector(setText:) withObject:@"" waitUntilDone:NO];
-	}
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		self.skillsLabel.text = text;
+	});
 }
 
 - (void) show {

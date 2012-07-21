@@ -89,8 +89,10 @@
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 748 - 50, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 748 - kGADAdSizeBanner.size.height)];
 		else
 			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 430, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 480 - kGADAdSizeBanner.size.height)];
 
 		adView.adUnitID = @"a14d501062a8c09";
 		adView.rootViewController = self.controller;
@@ -136,7 +138,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
 	if (application.applicationState == UIApplicationStateActive) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"EVEUniverse" message:notification.alertBody delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
 		[alert show];
 		[alert release];
 	}
@@ -216,21 +218,42 @@
 }
 
 - (BOOL) isLoading {
-	return loadingsCount > 0;
+	@synchronized(self) {
+		return loading;
+	}
 }
 
 - (void) setLoading:(BOOL)value {
 	@synchronized (self) {
-		if (value)
-			loadingsCount++;
-		else
-			loadingsCount--;
+		if (loading == value)
+			return;
 		
-		if (loadingsCount == 1 || loadingsCount == 0) {
+		loading = value;
+		
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationBeginsFromCurrentState:YES];
+		[UIView setAnimationDuration:0.5];
+		loadingViewController.view.alpha = loading || inAppStatus ? 1 : 0;
+		[UIView commitAnimations];
+	}
+}
+
+- (BOOL) isInAppStatus {
+	@synchronized(self) {
+		return inAppStatus;
+	}
+}
+
+- (void) setInAppStatus:(BOOL)value {
+	@synchronized(self) {
+		if (inAppStatus == value)
+			return;
+		inAppStatus = value;
+		if (!self.isLoading) {
 			[UIView beginAnimations:nil context:nil];
 			[UIView setAnimationBeginsFromCurrentState:YES];
 			[UIView setAnimationDuration:0.5];
-			loadingViewController.view.alpha = loadingsCount > 0 ? 1 : 0;
+			loadingViewController.view.alpha = inAppStatus ? 1 : 0;
 			[UIView commitAnimations];
 		}
 	}
@@ -353,6 +376,19 @@
 	}
 }
 
+/*- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+	if (queue.transactions.count != 0) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		[adView removeFromSuperview];
+		[adView release];
+		adView = nil;
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Your donation status has been restored" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		[alertView show];
+		[alertView autorelease];
+	}
+}*/
+
 @end
 
 @implementation EVEUniverseAppDelegate(Private)
@@ -378,6 +414,9 @@
 	[adView removeFromSuperview];
 	[adView release];
 	adView = nil;
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Your donation status has been restored" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+	[alertView show];
+	[alertView autorelease];
 }
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction

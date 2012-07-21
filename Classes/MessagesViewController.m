@@ -355,7 +355,7 @@
 			//mailBoxTmp = [[EUMailBox alloc] initWithAccount:[EVEAccount currentAccount]];
 			mailBoxTmp = [[[EVEAccount currentAccount] mailBox] retain];
 			if (!mailBoxTmp.inbox) {
-				NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"EVEUniverse" code:0 userInfo:[NSDictionary dictionaryWithObject:@"Unknown error" forKey:NSLocalizedDescriptionKey]];
+				NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"Neocom" code:0 userInfo:[NSDictionary dictionaryWithObject:@"Unknown error" forKey:NSLocalizedDescriptionKey]];
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 				[mailBoxTmp release];
 				mailBoxTmp = nil;

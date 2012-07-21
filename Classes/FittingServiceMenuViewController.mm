@@ -25,6 +25,7 @@
 
 @interface FittingServiceMenuViewController(Private)
 - (void) convertFits;
+- (void) save;
 @end
 
 @implementation FittingServiceMenuViewController
@@ -172,17 +173,6 @@
 	[super setEditing:editing animated:animated];
 	[menuTableView setEditing:editing animated:animated];
 	if (!editing) {
-		NSMutableArray* allFits = [NSMutableArray array];
-		for (NSArray* rows in fits) {
-			for (NSDictionary* row in rows) {
-				NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
-				[dictionary setValue:nil forKey:@"type"];
-				[allFits addObject:dictionary];
-			}
-		}
-		
-		[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
-		 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
 	}
 }
 
@@ -274,6 +264,7 @@
 		else {
 			[menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
+		[self save];
 	}
 }
 
@@ -335,7 +326,7 @@
 		else {
 			if (needsConvert) {
 				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Export"
-																	message:@"To continue, EVEUniverse must convert the loadouts database to its new format. This may take a few minutes."
+																	message:@"To continue, Neocom must convert the loadouts database to its new format. This may take a few minutes."
 																   delegate:self
 														  cancelButtonTitle:@"Cancel"
 														  otherButtonTitles:@"Convert", nil];
@@ -575,6 +566,20 @@
 		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) save {
+	NSMutableArray* allFits = [NSMutableArray array];
+	for (NSArray* rows in fits) {
+		for (NSDictionary* row in rows) {
+			NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
+			[dictionary setValue:nil forKey:@"type"];
+			[allFits addObject:dictionary];
+		}
+	}
+	
+	[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
+	 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
 }
 
 @end

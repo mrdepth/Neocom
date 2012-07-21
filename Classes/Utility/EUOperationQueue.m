@@ -30,12 +30,12 @@
 	NSUInteger newValue = [[change valueForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
 	if (oldValue == newValue)
 		return;
-	if (oldValue == 0 && newValue > 0) {
+	if (newValue > 0) {
 		BOOL value = YES;
 		NSInvocation *invocation = [NSInvocation invocationWithTarget:[Globals appDelegate] selector:@selector(setLoading:) argumentPointers:&value];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
 	}
-	else if (oldValue > 0 && newValue == 0) {
+	else if (newValue == 0) {
 		BOOL value = NO;
 		NSInvocation *invocation = [NSInvocation invocationWithTarget:[Globals appDelegate] selector:@selector(setLoading:) argumentPointers:&value];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];

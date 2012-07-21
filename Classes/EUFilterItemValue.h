@@ -13,8 +13,8 @@
 	NSObject *value;
 	BOOL enabled;
 }
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSObject *value;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSObject *value;
 @property (nonatomic) BOOL enabled;
 
 @end

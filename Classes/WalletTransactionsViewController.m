@@ -440,10 +440,11 @@
 		else {
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (charFilter) {
+				NSMutableArray* charWalletTransactionsLocal = charWalletTransactions;
 				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					[transactionsTmp addObjectsFromArray:[charFilter applyToValues:charWalletTransactions]];
+					[transactionsTmp addObjectsFromArray:[charFilter applyToValues:charWalletTransactionsLocal]];
 					[pool release];
 				}];
 				
@@ -532,10 +533,11 @@
 		else {
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (corpFilter) {
+				NSMutableArray *corpWalletTransactionsLocal = corpWalletTransactions;
 				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					[transactionsTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletTransactions objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
+					[transactionsTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
 					[pool release];
 				}];
 				

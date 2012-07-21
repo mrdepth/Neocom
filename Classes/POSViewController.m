@@ -45,17 +45,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = location;
-	//[[Globals appDelegate] setLoading:YES];
-	//EVECharacter *character = [EVECharacter currentCharacter];
-	//[EVEStarbaseDetail starbaseDetailWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID itemID:posID target:self action:@selector(didReceiveStarbaseDetail:object:error:) object:nil];
 	[self loadData];
-/*	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	if (![userDefaults boolForKey:SettingsTipsPosFuel]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning!" message:@"Remaining time is calculated without taking into account cpu and powergrid load." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-		[userDefaults setBool:YES forKey:SettingsTipsPosFuel];
-	}*/
 }
 
 

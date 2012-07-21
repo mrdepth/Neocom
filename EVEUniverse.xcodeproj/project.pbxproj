@@ -395,6 +395,8 @@
 		710852E5123125C800397BC7 /* MainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 710852E3123125C800397BC7 /* MainMenuViewController.xib */; };
 		710852E81231283400397BC7 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710852E71231283400397BC7 /* mainMenu.plist */; };
 		7108533B1231317400397BC7 /* SelectCharacterBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7108533A1231317400397BC7 /* SelectCharacterBarButtonItem.m */; };
+		710B522A15BAE908007D03CB /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 710B522815BAE908007D03CB /* libGoogleAdMobAds.a */; };
+		710B522B15BAE908007D03CB /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 710B522915BAE908007D03CB /* README.txt */; };
 		71196C9714B1E77B00614711 /* TargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71196C9514B1E77B00614711 /* TargetsViewController.mm */; };
 		71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71196C9614B1E77B00614711 /* TargetsViewController.xib */; };
 		716AE97E140EC842004A5285 /* EVEAccountStorageAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */; };
@@ -690,7 +692,6 @@
 		71A93E1112ECCCF6007A4285 /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71A93E1012ECCCF6007A4285 /* skillRequirementsMap.plist */; };
 		71A93E4612ECD2E0007A4285 /* ItemInfoSkillCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A93E4512ECD2E0007A4285 /* ItemInfoSkillCellView.m */; };
 		71A93E4812ECD2E6007A4285 /* ItemInfoSkillCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71A93E4712ECD2E6007A4285 /* ItemInfoSkillCellView.xib */; };
-		71AC55731406E65300C44DE9 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AC55721406E65300C44DE9 /* libGoogleAdMobAds.a */; };
 		71AC55F91406F05500C44DE9 /* ItemInfoViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71AC55F81406F05500C44DE9 /* ItemInfoViewController-iPad.xib */; };
 		71AC55FB1406F05E00C44DE9 /* MarketInfoViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71AC55FA1406F05E00C44DE9 /* MarketInfoViewController-iPad.xib */; };
 		71AC561B1406F26400C44DE9 /* ImplantsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71AC561A1406F26400C44DE9 /* ImplantsViewController-iPad.xib */; };
@@ -781,7 +782,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUniverseAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* EVEUniverse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EVEUniverse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
@@ -1367,6 +1368,14 @@
 		710852E71231283400397BC7 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
 		710853391231317400397BC7 /* SelectCharacterBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCharacterBarButtonItem.h; sourceTree = "<group>"; };
 		7108533A1231317400397BC7 /* SelectCharacterBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCharacterBarButtonItem.m; sourceTree = "<group>"; };
+		710B522215BAE908007D03CB /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		710B522315BAE908007D03CB /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		710B522415BAE908007D03CB /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		710B522515BAE908007D03CB /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		710B522615BAE908007D03CB /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		710B522715BAE908007D03CB /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		710B522815BAE908007D03CB /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
+		710B522915BAE908007D03CB /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		71196C9414B1E77B00614711 /* TargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetsViewController.h; sourceTree = "<group>"; };
 		71196C9514B1E77B00614711 /* TargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetsViewController.mm; sourceTree = "<group>"; };
 		71196C9614B1E77B00614711 /* TargetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TargetsViewController.xib; sourceTree = "<group>"; };
@@ -1741,13 +1750,6 @@
 		71A93E4412ECD2E0007A4285 /* ItemInfoSkillCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemInfoSkillCellView.h; sourceTree = "<group>"; };
 		71A93E4512ECD2E0007A4285 /* ItemInfoSkillCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemInfoSkillCellView.m; sourceTree = "<group>"; };
 		71A93E4712ECD2E6007A4285 /* ItemInfoSkillCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoSkillCellView.xib; sourceTree = "<group>"; };
-		71AC556C1406E65300C44DE9 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
-		71AC556D1406E65300C44DE9 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
-		71AC556E1406E65300C44DE9 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
-		71AC556F1406E65300C44DE9 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
-		71AC55701406E65300C44DE9 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
-		71AC55711406E65300C44DE9 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
-		71AC55721406E65300C44DE9 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		71AC55F81406F05500C44DE9 /* ItemInfoViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "ItemInfoViewController-iPad.xib"; sourceTree = "<group>"; };
 		71AC55FA1406F05E00C44DE9 /* MarketInfoViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MarketInfoViewController-iPad.xib"; sourceTree = "<group>"; };
 		71AC561A1406F26400C44DE9 /* ImplantsViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "ImplantsViewController-iPad.xib"; sourceTree = "<group>"; };
@@ -1801,8 +1803,8 @@
 				718C694F1300916C00C2A5A2 /* iAd.framework in Frameworks */,
 				718C69511300916C00C2A5A2 /* SystemConfiguration.framework in Frameworks */,
 				718C695B1300918700C2A5A2 /* CoreLocation.framework in Frameworks */,
-				71AC55731406E65300C44DE9 /* libGoogleAdMobAds.a in Frameworks */,
 				12BF018F140D3DCA00AD9450 /* CFNetwork.framework in Frameworks */,
+				710B522A15BAE908007D03CB /* libGoogleAdMobAds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1976,7 +1978,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* EVEUniverse.app */,
+				1D6058910D05DD3D006BFB54 /* Neocom.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3808,13 +3810,14 @@
 		718C6962130091C400C2A5A2 /* admob_iphone_sdk */ = {
 			isa = PBXGroup;
 			children = (
-				71AC556C1406E65300C44DE9 /* GADBannerView.h */,
-				71AC556D1406E65300C44DE9 /* GADBannerViewDelegate.h */,
-				71AC556E1406E65300C44DE9 /* GADInterstitial.h */,
-				71AC556F1406E65300C44DE9 /* GADInterstitialDelegate.h */,
-				71AC55701406E65300C44DE9 /* GADRequest.h */,
-				71AC55711406E65300C44DE9 /* GADRequestError.h */,
-				71AC55721406E65300C44DE9 /* libGoogleAdMobAds.a */,
+				710B522215BAE908007D03CB /* GADBannerView.h */,
+				710B522315BAE908007D03CB /* GADBannerViewDelegate.h */,
+				710B522415BAE908007D03CB /* GADInterstitial.h */,
+				710B522515BAE908007D03CB /* GADInterstitialDelegate.h */,
+				710B522615BAE908007D03CB /* GADRequest.h */,
+				710B522715BAE908007D03CB /* GADRequestError.h */,
+				710B522815BAE908007D03CB /* libGoogleAdMobAds.a */,
+				710B522915BAE908007D03CB /* README.txt */,
 			);
 			path = admob_iphone_sdk;
 			sourceTree = "<group>";
@@ -4275,7 +4278,7 @@
 			);
 			name = EVEUniverse;
 			productName = EVEUniverse;
-			productReference = 1D6058910D05DD3D006BFB54 /* EVEUniverse.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Neocom.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4669,6 +4672,7 @@
 				12DEFD87152EC9B10076ABC7 /* FittingExportViewController.xib in Resources */,
 				126DC1321532EDE70005921B /* fits.html in Resources */,
 				126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */,
+				710B522B15BAE908007D03CB /* README.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5018,7 +5022,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Serge Aliseenko (QP4MTT668Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5031,9 +5035,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
+					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta2/Library\"",
 				);
-				PRODUCT_NAME = EVEUniverse;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8DDE5B44-967E-4AFE-B832-292143A44315";
+				PRODUCT_NAME = Neocom;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FAAF2536-7BBA-43AF-88B0-9637B9FD38D5";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -5058,8 +5063,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
+					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta2/Library\"",
 				);
-				PRODUCT_NAME = EVEUniverse;
+				PRODUCT_NAME = Neocom;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "41952D87-1940-49A7-BB0E-30083BC33D59";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

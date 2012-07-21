@@ -16,7 +16,17 @@ int main (int argc, const char * argv[])
 	    NSFileManager* fileManager = [NSFileManager defaultManager];
 		NSString* inputFolder = @"./EVETypes";
 		NSString* outputFolder = @"./Types";
+		NSString* oldTypes = @"./OldTypes";
 		NSArray* inputFiles = [fileManager contentsOfDirectoryAtPath:inputFolder error:nil];
+		NSArray* oldFiles = [fileManager contentsOfDirectoryAtPath:oldTypes error:nil];
+		NSMutableArray* oldTypeIDs = [NSMutableArray array];
+		
+		for (NSString* fileName in oldFiles)
+			if ([[fileName pathExtension] compare:@"png"] == NSOrderedSame) {
+				[oldTypeIDs addObject:[fileName stringByDeletingPathExtension]];
+			}
+		
+		
 		inputFiles = [inputFiles sortedArrayUsingSelector:@selector(compare:)];
 		[fileManager removeItemAtPath:outputFolder error:nil];
 		[fileManager createDirectoryAtPath:outputFolder withIntermediateDirectories:YES attributes:nil error:nil];
@@ -59,22 +69,51 @@ int main (int argc, const char * argv[])
 				[image setSize:NSMakeSize(64, 64)];
 				NSArray* representations = [image representations];
 				representations = representations;
-				//NSData* data = [image representationUsingType:NSPNGFileType properties:nil];
-				//[data writeToFile:outputFile atomically:YES];
 			}
 			else
 				data = [[NSData alloc] initWithContentsOfFile:inputPath];
 			NSString* md5 = [data md5];
 			
-			NSString* imageName = [md5s valueForKey:md5];
+			/*NSString* imageName = [md5s valueForKey:md5];
 			if (!imageName) {
 				imageName = typeID;
 				[md5s setValue:imageName forKey:md5];
 				[data writeToFile:outputPath atomically:YES];
 			}
 			[sqlRows appendFormat:@"UPDATE eveDB.invTypes SET imageName=\"%@\" WHERE typeID = %@;\n", imageName, typeID];
+			[data release];*/
+			
+			NSMutableDictionary* record = [md5s valueForKey:md5];
+			if (!record) {
+				record = [NSMutableDictionary dictionary];
+				[record setValue:typeID forKey:@"imageName"];
+				[record setValue:[NSMutableArray arrayWithObject:typeID] forKey:@"typeIDs"];
+				[md5s setValue:record forKey:md5];
+				[data writeToFile:outputPath atomically:YES];
+			}
+			else
+				[[record valueForKey:@"typeIDs"] addObject:typeID];
 			[data release];
 		}
+		
+		for (NSDictionary* record in [md5s allValues]) {
+			NSString* oldImageName = [record valueForKey:@"imageName"];
+			for (NSString* typeID in [record valueForKey:@"typeIDs"]) {
+				if ([oldTypeIDs containsObject:typeID]) {
+					[record setValue:typeID forKey:@"imageName"];
+					break;
+				}
+			}
+			NSString* imageName = [record valueForKey:@"imageName"];
+			if ([imageName compare:oldImageName] != NSOrderedSame)
+				[[NSFileManager defaultManager] moveItemAtPath:[NSString stringWithFormat:@"%@/%@.png", outputFolder, oldImageName]
+														toPath:[NSString stringWithFormat:@"%@/%@.png", outputFolder, imageName]
+														 error:nil];
+			for (NSString* typeID in [record valueForKey:@"typeIDs"]) {
+				[sqlRows appendFormat:@"UPDATE eveDB.invTypes SET imageName=\"%@\" WHERE typeID = %@;\n", imageName, typeID];
+			}
+		}
+		
 		[sqlRows appendString:@"COMMIT TRANSACTION;"];
 		[sqlRows writeToFile:@"typesMap.sql" atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	    // insert code here...

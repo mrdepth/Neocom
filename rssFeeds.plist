@@ -81,6 +81,12 @@
 				<key>url</key>
 				<string>http://www.notalotofnews.com/feed</string>
 			</dict>
+			<dict>
+				<key>title</key>
+				<string>reddit.com/r/eve</string>
+				<key>url</key>
+				<string>http://www.reddit.com/r/eve/.rss</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>

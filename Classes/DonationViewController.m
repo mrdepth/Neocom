@@ -84,18 +84,11 @@
 	
 	[[Globals appDelegate] setInAppStatus:YES];
 	[paymentQueue addTransactionObserver:self];
-	[paymentQueue restoreCompletedTransactions];
+	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
+	[paymentQueue addPayment:payment];
 }
 
 - (IBAction) onDonate:(id) sender {
-/*	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
-	if (paymentQueue.transactions.count > 0)
-		return;
-	
-	[[Globals appDelegate] setLoading:YES];
-	[paymentQueue addTransactionObserver:self];
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.donation"];
-	[paymentQueue addPayment:payment];*/
 	UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Donate"
 															 delegate:self
 													cancelButtonTitle:@"Cancel"
@@ -103,6 +96,16 @@
 													otherButtonTitles:@"Donate $1", @"Donate $5", @"Donate $10", nil];
 	[actionSheet showFromRect:[sender frame] inView:[sender superview] animated:YES];
 	[actionSheet release];
+}
+
+- (IBAction) onRestore:(id)sender {
+	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
+	if (paymentQueue.transactions.count > 0)
+		return;
+	
+	[[Globals appDelegate] setInAppStatus:YES];
+	[paymentQueue addTransactionObserver:self];
+	[paymentQueue restoreCompletedTransactions];
 }
 
 #pragma mark UIActionSheetDelegate
@@ -150,14 +153,24 @@
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
-	[queue addPayment:payment];
+	[[Globals appDelegate] setInAppStatus:NO];
+	UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
+														 message:@"Sorry, but we haven't found your purchases."
+														delegate:nil
+											   cancelButtonTitle:@"Close"
+											   otherButtonTitles:nil] autorelease];
+	[alertView show];
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
 	if (queue.transactions.count == 0) {
-		SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
-		[queue addPayment:payment];
+		[[Globals appDelegate] setInAppStatus:NO];
+		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
+															 message:@"Sorry, but we haven't found your purchases."
+															delegate:nil
+												   cancelButtonTitle:@"Close"
+												   otherButtonTitles:nil] autorelease];
+		[alertView show];
 	}
 }
 

@@ -17,6 +17,7 @@
 
 - (IBAction) onUpgrade:(id) sender;
 - (IBAction) onDonate:(id) sender;
+- (IBAction) onRestore:(id)sender;
 
 @end
 

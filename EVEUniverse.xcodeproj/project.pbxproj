@@ -51,6 +51,39 @@
 		12C01F6B13FD53B900B11DE8 /* EUSingleBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C01F6A13FD53B900B11DE8 /* EUSingleBlockOperation.m */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
+		12D81BDE15D8F72C006AA4B2 /* EVEDBCrtCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9B15D8F72C006AA4B2 /* EVEDBCrtCategory.m */; };
+		12D81BDF15D8F72C006AA4B2 /* EVEDBCrtCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9D15D8F72C006AA4B2 /* EVEDBCrtCertificate.m */; };
+		12D81BE015D8F72C006AA4B2 /* EVEDBCrtClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9F15D8F72C006AA4B2 /* EVEDBCrtClass.m */; };
+		12D81BE115D8F72C006AA4B2 /* EVEDBCrtRecommendation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BA115D8F72C006AA4B2 /* EVEDBCrtRecommendation.m */; };
+		12D81BE215D8F72C006AA4B2 /* EVEDBCrtRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BA315D8F72C006AA4B2 /* EVEDBCrtRelationship.m */; };
+		12D81BE315D8F72C006AA4B2 /* EVEDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BA515D8F72C006AA4B2 /* EVEDBDatabase.m */; };
+		12D81BE415D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BA715D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.m */; };
+		12D81BE515D8F72C006AA4B2 /* EVEDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BA915D8F72C006AA4B2 /* EVEDBDgmAttributeType.m */; };
+		12D81BE615D8F72C006AA4B2 /* EVEDBDgmEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BAB15D8F72C006AA4B2 /* EVEDBDgmEffect.m */; };
+		12D81BE715D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BAD15D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.m */; };
+		12D81BE815D8F72C006AA4B2 /* EVEDBDgmTypeEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BAF15D8F72C006AA4B2 /* EVEDBDgmTypeEffect.m */; };
+		12D81BE915D8F72C006AA4B2 /* EVEDBEveIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BB115D8F72C006AA4B2 /* EVEDBEveIcon.m */; };
+		12D81BEA15D8F72C006AA4B2 /* EVEDBEveUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BB315D8F72C006AA4B2 /* EVEDBEveUnit.m */; };
+		12D81BEB15D8F72C006AA4B2 /* EVEDBInvBlueprintType.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BB515D8F72C006AA4B2 /* EVEDBInvBlueprintType.m */; };
+		12D81BEC15D8F72C006AA4B2 /* EVEDBInvCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BB715D8F72C006AA4B2 /* EVEDBInvCategory.m */; };
+		12D81BED15D8F72C006AA4B2 /* EVEDBInvControlTowerResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BB915D8F72C006AA4B2 /* EVEDBInvControlTowerResource.m */; };
+		12D81BEE15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BBB15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.m */; };
+		12D81BEF15D8F72C006AA4B2 /* EVEDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BBD15D8F72C006AA4B2 /* EVEDBInvGroup.m */; };
+		12D81BF015D8F72C006AA4B2 /* EVEDBInvMarketGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BBF15D8F72C006AA4B2 /* EVEDBInvMarketGroup.m */; };
+		12D81BF115D8F72C006AA4B2 /* EVEDBInvType+ControlTower.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BC115D8F72C006AA4B2 /* EVEDBInvType+ControlTower.m */; };
+		12D81BF215D8F72C006AA4B2 /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BC315D8F72C006AA4B2 /* EVEDBInvType+Installation.m */; };
+		12D81BF315D8F72C006AA4B2 /* EVEDBInvType+Skill.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BC515D8F72C006AA4B2 /* EVEDBInvType+Skill.m */; };
+		12D81BF415D8F72C006AA4B2 /* EVEDBInvType.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BC715D8F72C006AA4B2 /* EVEDBInvType.m */; };
+		12D81BF515D8F72C006AA4B2 /* EVEDBInvTypeMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BC915D8F72C006AA4B2 /* EVEDBInvTypeMaterial.m */; };
+		12D81BF615D8F72C006AA4B2 /* EVEDBMapConstellation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BCB15D8F72C006AA4B2 /* EVEDBMapConstellation.m */; };
+		12D81BF715D8F72C006AA4B2 /* EVEDBMapDenormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BCD15D8F72C006AA4B2 /* EVEDBMapDenormalize.m */; };
+		12D81BF815D8F72C006AA4B2 /* EVEDBMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BCF15D8F72C006AA4B2 /* EVEDBMapRegion.m */; };
+		12D81BF915D8F72C006AA4B2 /* EVEDBMapSolarSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD115D8F72C006AA4B2 /* EVEDBMapSolarSystem.m */; };
+		12D81BFA15D8F72C006AA4B2 /* EVEDBRamActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD315D8F72C006AA4B2 /* EVEDBRamActivity.m */; };
+		12D81BFB15D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD515D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.m */; };
+		12D81BFC15D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD715D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m */; };
+		12D81BFD15D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD915D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m */; };
+		12D81BFE15D8F72C006AA4B2 /* EVEDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */; };
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
 		12DEFD87152EC9B10076ABC7 /* FittingExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */; };
@@ -77,9 +110,6 @@
 		3724FE2B15208D7700823332 /* StructuresViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */; };
 		3724FE2D15208DB700823332 /* POSStatsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */; };
 		3724FE2F15208FB500823332 /* AssemblyLinesViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */; };
-		37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */; };
-		37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */; };
-		37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */; };
 		3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */; };
 		3741051D151A30C200BCED1B /* AssemblyLinesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */; };
 		3750A44314E00E8400F06FA0 /* RequiredSkillsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */; };
@@ -139,33 +169,6 @@
 		37AB45C614F52173007B4C33 /* EVECentralMarketStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44A914F52173007B4C33 /* EVECentralMarketStat.m */; };
 		37AB45C714F52173007B4C33 /* EVECentralQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44AB14F52173007B4C33 /* EVECentralQuickLook.m */; };
 		37AB45C814F52173007B4C33 /* EVECentralRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44AF14F52173007B4C33 /* EVECentralRequest.m */; };
-		37AB45C914F52173007B4C33 /* EVEDBCrtCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44B314F52173007B4C33 /* EVEDBCrtCategory.m */; };
-		37AB45CA14F52173007B4C33 /* EVEDBCrtCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44B514F52173007B4C33 /* EVEDBCrtCertificate.m */; };
-		37AB45CB14F52173007B4C33 /* EVEDBCrtClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44B714F52173007B4C33 /* EVEDBCrtClass.m */; };
-		37AB45CC14F52173007B4C33 /* EVEDBCrtRecommendation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44B914F52173007B4C33 /* EVEDBCrtRecommendation.m */; };
-		37AB45CD14F52173007B4C33 /* EVEDBCrtRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44BB14F52173007B4C33 /* EVEDBCrtRelationship.m */; };
-		37AB45CE14F52173007B4C33 /* EVEDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44BD14F52173007B4C33 /* EVEDBDatabase.m */; };
-		37AB45CF14F52173007B4C33 /* EVEDBDgmAttributeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44BF14F52173007B4C33 /* EVEDBDgmAttributeCategory.m */; };
-		37AB45D014F52173007B4C33 /* EVEDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44C114F52173007B4C33 /* EVEDBDgmAttributeType.m */; };
-		37AB45D114F52173007B4C33 /* EVEDBDgmEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44C314F52173007B4C33 /* EVEDBDgmEffect.m */; };
-		37AB45D214F52173007B4C33 /* EVEDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44C514F52173007B4C33 /* EVEDBDgmTypeAttribute.m */; };
-		37AB45D314F52173007B4C33 /* EVEDBDgmTypeEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44C714F52173007B4C33 /* EVEDBDgmTypeEffect.m */; };
-		37AB45D414F52173007B4C33 /* EVEDBEveIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44C914F52173007B4C33 /* EVEDBEveIcon.m */; };
-		37AB45D514F52173007B4C33 /* EVEDBEveUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44CB14F52173007B4C33 /* EVEDBEveUnit.m */; };
-		37AB45D614F52173007B4C33 /* EVEDBInvCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44CD14F52173007B4C33 /* EVEDBInvCategory.m */; };
-		37AB45D714F52173007B4C33 /* EVEDBInvControlTowerResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44CF14F52173007B4C33 /* EVEDBInvControlTowerResource.m */; };
-		37AB45D814F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44D114F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.m */; };
-		37AB45D914F52173007B4C33 /* EVEDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44D314F52173007B4C33 /* EVEDBInvGroup.m */; };
-		37AB45DA14F52173007B4C33 /* EVEDBInvMarketGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44D514F52173007B4C33 /* EVEDBInvMarketGroup.m */; };
-		37AB45DB14F52173007B4C33 /* EVEDBInvType+ControlTower.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44D714F52173007B4C33 /* EVEDBInvType+ControlTower.m */; };
-		37AB45DD14F52173007B4C33 /* EVEDBInvType+Skill.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44DB14F52173007B4C33 /* EVEDBInvType+Skill.m */; };
-		37AB45DE14F52173007B4C33 /* EVEDBInvType.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44DD14F52173007B4C33 /* EVEDBInvType.m */; };
-		37AB45DF14F52173007B4C33 /* EVEDBMapConstellation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44DF14F52173007B4C33 /* EVEDBMapConstellation.m */; };
-		37AB45E014F52173007B4C33 /* EVEDBMapDenormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44E114F52173007B4C33 /* EVEDBMapDenormalize.m */; };
-		37AB45E114F52173007B4C33 /* EVEDBMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44E314F52173007B4C33 /* EVEDBMapRegion.m */; };
-		37AB45E214F52173007B4C33 /* EVEDBMapSolarSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44E514F52173007B4C33 /* EVEDBMapSolarSystem.m */; };
-		37AB45E314F52173007B4C33 /* EVEDBRamActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44E714F52173007B4C33 /* EVEDBRamActivity.m */; };
-		37AB45E414F52173007B4C33 /* EVEDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44E914F52173007B4C33 /* EVEDBStaStation.m */; };
 		37AB45EA14F52173007B4C33 /* EVEAccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44FD14F52173007B4C33 /* EVEAccountStatus.m */; };
 		37AB45EB14F52173007B4C33 /* EVEAPIKeyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB44FF14F52173007B4C33 /* EVEAPIKeyInfo.m */; };
 		37AB45EC14F52173007B4C33 /* EVECharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AB450114F52173007B4C33 /* EVECharacters.m */; };
@@ -776,6 +779,74 @@
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
+		12D81B9915D8F72C006AA4B2 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
+		12D81B9A15D8F72C006AA4B2 /* EVEDBCrtCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCategory.h; sourceTree = "<group>"; };
+		12D81B9B15D8F72C006AA4B2 /* EVEDBCrtCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCategory.m; sourceTree = "<group>"; };
+		12D81B9C15D8F72C006AA4B2 /* EVEDBCrtCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCertificate.h; sourceTree = "<group>"; };
+		12D81B9D15D8F72C006AA4B2 /* EVEDBCrtCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCertificate.m; sourceTree = "<group>"; };
+		12D81B9E15D8F72C006AA4B2 /* EVEDBCrtClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtClass.h; sourceTree = "<group>"; };
+		12D81B9F15D8F72C006AA4B2 /* EVEDBCrtClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtClass.m; sourceTree = "<group>"; };
+		12D81BA015D8F72C006AA4B2 /* EVEDBCrtRecommendation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRecommendation.h; sourceTree = "<group>"; };
+		12D81BA115D8F72C006AA4B2 /* EVEDBCrtRecommendation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRecommendation.m; sourceTree = "<group>"; };
+		12D81BA215D8F72C006AA4B2 /* EVEDBCrtRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRelationship.h; sourceTree = "<group>"; };
+		12D81BA315D8F72C006AA4B2 /* EVEDBCrtRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRelationship.m; sourceTree = "<group>"; };
+		12D81BA415D8F72C006AA4B2 /* EVEDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDatabase.h; sourceTree = "<group>"; };
+		12D81BA515D8F72C006AA4B2 /* EVEDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDatabase.m; sourceTree = "<group>"; };
+		12D81BA615D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeCategory.h; sourceTree = "<group>"; };
+		12D81BA715D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeCategory.m; sourceTree = "<group>"; };
+		12D81BA815D8F72C006AA4B2 /* EVEDBDgmAttributeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeType.h; sourceTree = "<group>"; };
+		12D81BA915D8F72C006AA4B2 /* EVEDBDgmAttributeType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeType.m; sourceTree = "<group>"; };
+		12D81BAA15D8F72C006AA4B2 /* EVEDBDgmEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmEffect.h; sourceTree = "<group>"; };
+		12D81BAB15D8F72C006AA4B2 /* EVEDBDgmEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmEffect.m; sourceTree = "<group>"; };
+		12D81BAC15D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeAttribute.h; sourceTree = "<group>"; };
+		12D81BAD15D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeAttribute.m; sourceTree = "<group>"; };
+		12D81BAE15D8F72C006AA4B2 /* EVEDBDgmTypeEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeEffect.h; sourceTree = "<group>"; };
+		12D81BAF15D8F72C006AA4B2 /* EVEDBDgmTypeEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeEffect.m; sourceTree = "<group>"; };
+		12D81BB015D8F72C006AA4B2 /* EVEDBEveIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveIcon.h; sourceTree = "<group>"; };
+		12D81BB115D8F72C006AA4B2 /* EVEDBEveIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveIcon.m; sourceTree = "<group>"; };
+		12D81BB215D8F72C006AA4B2 /* EVEDBEveUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveUnit.h; sourceTree = "<group>"; };
+		12D81BB315D8F72C006AA4B2 /* EVEDBEveUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveUnit.m; sourceTree = "<group>"; };
+		12D81BB415D8F72C006AA4B2 /* EVEDBInvBlueprintType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvBlueprintType.h; sourceTree = "<group>"; };
+		12D81BB515D8F72C006AA4B2 /* EVEDBInvBlueprintType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvBlueprintType.m; sourceTree = "<group>"; };
+		12D81BB615D8F72C006AA4B2 /* EVEDBInvCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvCategory.h; sourceTree = "<group>"; };
+		12D81BB715D8F72C006AA4B2 /* EVEDBInvCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvCategory.m; sourceTree = "<group>"; };
+		12D81BB815D8F72C006AA4B2 /* EVEDBInvControlTowerResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResource.h; sourceTree = "<group>"; };
+		12D81BB915D8F72C006AA4B2 /* EVEDBInvControlTowerResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResource.m; sourceTree = "<group>"; };
+		12D81BBA15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResourcePurpose.h; sourceTree = "<group>"; };
+		12D81BBB15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResourcePurpose.m; sourceTree = "<group>"; };
+		12D81BBC15D8F72C006AA4B2 /* EVEDBInvGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvGroup.h; sourceTree = "<group>"; };
+		12D81BBD15D8F72C006AA4B2 /* EVEDBInvGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvGroup.m; sourceTree = "<group>"; };
+		12D81BBE15D8F72C006AA4B2 /* EVEDBInvMarketGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvMarketGroup.h; sourceTree = "<group>"; };
+		12D81BBF15D8F72C006AA4B2 /* EVEDBInvMarketGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvMarketGroup.m; sourceTree = "<group>"; };
+		12D81BC015D8F72C006AA4B2 /* EVEDBInvType+ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+ControlTower.h"; sourceTree = "<group>"; };
+		12D81BC115D8F72C006AA4B2 /* EVEDBInvType+ControlTower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+ControlTower.m"; sourceTree = "<group>"; };
+		12D81BC215D8F72C006AA4B2 /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
+		12D81BC315D8F72C006AA4B2 /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
+		12D81BC415D8F72C006AA4B2 /* EVEDBInvType+Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Skill.h"; sourceTree = "<group>"; };
+		12D81BC515D8F72C006AA4B2 /* EVEDBInvType+Skill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Skill.m"; sourceTree = "<group>"; };
+		12D81BC615D8F72C006AA4B2 /* EVEDBInvType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvType.h; sourceTree = "<group>"; };
+		12D81BC715D8F72C006AA4B2 /* EVEDBInvType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvType.m; sourceTree = "<group>"; };
+		12D81BC815D8F72C006AA4B2 /* EVEDBInvTypeMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvTypeMaterial.h; sourceTree = "<group>"; };
+		12D81BC915D8F72C006AA4B2 /* EVEDBInvTypeMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvTypeMaterial.m; sourceTree = "<group>"; };
+		12D81BCA15D8F72C006AA4B2 /* EVEDBMapConstellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapConstellation.h; sourceTree = "<group>"; };
+		12D81BCB15D8F72C006AA4B2 /* EVEDBMapConstellation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapConstellation.m; sourceTree = "<group>"; };
+		12D81BCC15D8F72C006AA4B2 /* EVEDBMapDenormalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapDenormalize.h; sourceTree = "<group>"; };
+		12D81BCD15D8F72C006AA4B2 /* EVEDBMapDenormalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapDenormalize.m; sourceTree = "<group>"; };
+		12D81BCE15D8F72C006AA4B2 /* EVEDBMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapRegion.h; sourceTree = "<group>"; };
+		12D81BCF15D8F72C006AA4B2 /* EVEDBMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapRegion.m; sourceTree = "<group>"; };
+		12D81BD015D8F72C006AA4B2 /* EVEDBMapSolarSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapSolarSystem.h; sourceTree = "<group>"; };
+		12D81BD115D8F72C006AA4B2 /* EVEDBMapSolarSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapSolarSystem.m; sourceTree = "<group>"; };
+		12D81BD215D8F72C006AA4B2 /* EVEDBRamActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamActivity.h; sourceTree = "<group>"; };
+		12D81BD315D8F72C006AA4B2 /* EVEDBRamActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamActivity.m; sourceTree = "<group>"; };
+		12D81BD415D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
+		12D81BD515D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamAssemblyLineType.m; sourceTree = "<group>"; };
+		12D81BD615D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
+		12D81BD715D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
+		12D81BD815D8F72C006AA4B2 /* EVEDBRamTypeRequirement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamTypeRequirement.h; sourceTree = "<group>"; };
+		12D81BD915D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamTypeRequirement.m; sourceTree = "<group>"; };
+		12D81BDA15D8F72C006AA4B2 /* EVEDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBStaStation.h; sourceTree = "<group>"; };
+		12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBStaStation.m; sourceTree = "<group>"; };
+		12D81BDD15D8F72C006AA4B2 /* EVEDBGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBGlobals.h; sourceTree = "<group>"; };
 		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
 		12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingExportViewController.mm; sourceTree = "<group>"; };
 		12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingExportViewController.xib; sourceTree = "<group>"; };
@@ -812,12 +883,6 @@
 		3724FE2A15208D7700823332 /* StructuresViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "StructuresViewController-iPad.xib"; sourceTree = "<group>"; };
 		3724FE2C15208DB700823332 /* POSStatsViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "POSStatsViewController-iPad.xib"; sourceTree = "<group>"; };
 		3724FE2E15208FB500823332 /* AssemblyLinesViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "AssemblyLinesViewController-iPad.xib"; sourceTree = "<group>"; };
-		37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
-		37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
-		37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
-		37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamAssemblyLineType.m; sourceTree = "<group>"; };
-		37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
-		37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
 		37410519151A309E00BCED1B /* AssemblyLinesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssemblyLinesViewController.h; sourceTree = "<group>"; };
 		3741051A151A309E00BCED1B /* AssemblyLinesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssemblyLinesViewController.mm; sourceTree = "<group>"; };
 		3741051C151A30C200BCED1B /* AssemblyLinesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssemblyLinesViewController.xib; sourceTree = "<group>"; };
@@ -909,62 +974,6 @@
 		37AB44AD14F52173007B4C33 /* EVECentralGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralGlobals.h; sourceTree = "<group>"; };
 		37AB44AE14F52173007B4C33 /* EVECentralRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralRequest.h; sourceTree = "<group>"; };
 		37AB44AF14F52173007B4C33 /* EVECentralRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralRequest.m; sourceTree = "<group>"; };
-		37AB44B114F52173007B4C33 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
-		37AB44B214F52173007B4C33 /* EVEDBCrtCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCategory.h; sourceTree = "<group>"; };
-		37AB44B314F52173007B4C33 /* EVEDBCrtCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCategory.m; sourceTree = "<group>"; };
-		37AB44B414F52173007B4C33 /* EVEDBCrtCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCertificate.h; sourceTree = "<group>"; };
-		37AB44B514F52173007B4C33 /* EVEDBCrtCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCertificate.m; sourceTree = "<group>"; };
-		37AB44B614F52173007B4C33 /* EVEDBCrtClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtClass.h; sourceTree = "<group>"; };
-		37AB44B714F52173007B4C33 /* EVEDBCrtClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtClass.m; sourceTree = "<group>"; };
-		37AB44B814F52173007B4C33 /* EVEDBCrtRecommendation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRecommendation.h; sourceTree = "<group>"; };
-		37AB44B914F52173007B4C33 /* EVEDBCrtRecommendation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRecommendation.m; sourceTree = "<group>"; };
-		37AB44BA14F52173007B4C33 /* EVEDBCrtRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRelationship.h; sourceTree = "<group>"; };
-		37AB44BB14F52173007B4C33 /* EVEDBCrtRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRelationship.m; sourceTree = "<group>"; };
-		37AB44BC14F52173007B4C33 /* EVEDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDatabase.h; sourceTree = "<group>"; };
-		37AB44BD14F52173007B4C33 /* EVEDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDatabase.m; sourceTree = "<group>"; };
-		37AB44BE14F52173007B4C33 /* EVEDBDgmAttributeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeCategory.h; sourceTree = "<group>"; };
-		37AB44BF14F52173007B4C33 /* EVEDBDgmAttributeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeCategory.m; sourceTree = "<group>"; };
-		37AB44C014F52173007B4C33 /* EVEDBDgmAttributeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeType.h; sourceTree = "<group>"; };
-		37AB44C114F52173007B4C33 /* EVEDBDgmAttributeType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeType.m; sourceTree = "<group>"; };
-		37AB44C214F52173007B4C33 /* EVEDBDgmEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmEffect.h; sourceTree = "<group>"; };
-		37AB44C314F52173007B4C33 /* EVEDBDgmEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmEffect.m; sourceTree = "<group>"; };
-		37AB44C414F52173007B4C33 /* EVEDBDgmTypeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeAttribute.h; sourceTree = "<group>"; };
-		37AB44C514F52173007B4C33 /* EVEDBDgmTypeAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeAttribute.m; sourceTree = "<group>"; };
-		37AB44C614F52173007B4C33 /* EVEDBDgmTypeEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeEffect.h; sourceTree = "<group>"; };
-		37AB44C714F52173007B4C33 /* EVEDBDgmTypeEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeEffect.m; sourceTree = "<group>"; };
-		37AB44C814F52173007B4C33 /* EVEDBEveIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveIcon.h; sourceTree = "<group>"; };
-		37AB44C914F52173007B4C33 /* EVEDBEveIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveIcon.m; sourceTree = "<group>"; };
-		37AB44CA14F52173007B4C33 /* EVEDBEveUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveUnit.h; sourceTree = "<group>"; };
-		37AB44CB14F52173007B4C33 /* EVEDBEveUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveUnit.m; sourceTree = "<group>"; };
-		37AB44CC14F52173007B4C33 /* EVEDBInvCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvCategory.h; sourceTree = "<group>"; };
-		37AB44CD14F52173007B4C33 /* EVEDBInvCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvCategory.m; sourceTree = "<group>"; };
-		37AB44CE14F52173007B4C33 /* EVEDBInvControlTowerResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResource.h; sourceTree = "<group>"; };
-		37AB44CF14F52173007B4C33 /* EVEDBInvControlTowerResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResource.m; sourceTree = "<group>"; };
-		37AB44D014F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResourcePurpose.h; sourceTree = "<group>"; };
-		37AB44D114F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResourcePurpose.m; sourceTree = "<group>"; };
-		37AB44D214F52173007B4C33 /* EVEDBInvGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvGroup.h; sourceTree = "<group>"; };
-		37AB44D314F52173007B4C33 /* EVEDBInvGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvGroup.m; sourceTree = "<group>"; };
-		37AB44D414F52173007B4C33 /* EVEDBInvMarketGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvMarketGroup.h; sourceTree = "<group>"; };
-		37AB44D514F52173007B4C33 /* EVEDBInvMarketGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvMarketGroup.m; sourceTree = "<group>"; };
-		37AB44D614F52173007B4C33 /* EVEDBInvType+ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+ControlTower.h"; sourceTree = "<group>"; };
-		37AB44D714F52173007B4C33 /* EVEDBInvType+ControlTower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+ControlTower.m"; sourceTree = "<group>"; };
-		37AB44DA14F52173007B4C33 /* EVEDBInvType+Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Skill.h"; sourceTree = "<group>"; };
-		37AB44DB14F52173007B4C33 /* EVEDBInvType+Skill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Skill.m"; sourceTree = "<group>"; };
-		37AB44DC14F52173007B4C33 /* EVEDBInvType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvType.h; sourceTree = "<group>"; };
-		37AB44DD14F52173007B4C33 /* EVEDBInvType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvType.m; sourceTree = "<group>"; };
-		37AB44DE14F52173007B4C33 /* EVEDBMapConstellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapConstellation.h; sourceTree = "<group>"; };
-		37AB44DF14F52173007B4C33 /* EVEDBMapConstellation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapConstellation.m; sourceTree = "<group>"; };
-		37AB44E014F52173007B4C33 /* EVEDBMapDenormalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapDenormalize.h; sourceTree = "<group>"; };
-		37AB44E114F52173007B4C33 /* EVEDBMapDenormalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapDenormalize.m; sourceTree = "<group>"; };
-		37AB44E214F52173007B4C33 /* EVEDBMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapRegion.h; sourceTree = "<group>"; };
-		37AB44E314F52173007B4C33 /* EVEDBMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapRegion.m; sourceTree = "<group>"; };
-		37AB44E414F52173007B4C33 /* EVEDBMapSolarSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapSolarSystem.h; sourceTree = "<group>"; };
-		37AB44E514F52173007B4C33 /* EVEDBMapSolarSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapSolarSystem.m; sourceTree = "<group>"; };
-		37AB44E614F52173007B4C33 /* EVEDBRamActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamActivity.h; sourceTree = "<group>"; };
-		37AB44E714F52173007B4C33 /* EVEDBRamActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamActivity.m; sourceTree = "<group>"; };
-		37AB44E814F52173007B4C33 /* EVEDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBStaStation.h; sourceTree = "<group>"; };
-		37AB44E914F52173007B4C33 /* EVEDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBStaStation.m; sourceTree = "<group>"; };
-		37AB44EB14F52173007B4C33 /* EVEDBGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBGlobals.h; sourceTree = "<group>"; };
 		37AB44FC14F52173007B4C33 /* EVEAccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStatus.h; sourceTree = "<group>"; };
 		37AB44FD14F52173007B4C33 /* EVEAccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStatus.m; sourceTree = "<group>"; };
 		37AB44FE14F52173007B4C33 /* EVEAPIKeyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAPIKeyInfo.h; sourceTree = "<group>"; };
@@ -1964,6 +1973,89 @@
 			name = PCViewController;
 			sourceTree = "<group>";
 		};
+		12D81B9815D8F72C006AA4B2 /* EVEDBAPI */ = {
+			isa = PBXGroup;
+			children = (
+				12D81B9915D8F72C006AA4B2 /* EVEDBAPI.h */,
+				12D81B9A15D8F72C006AA4B2 /* EVEDBCrtCategory.h */,
+				12D81B9B15D8F72C006AA4B2 /* EVEDBCrtCategory.m */,
+				12D81B9C15D8F72C006AA4B2 /* EVEDBCrtCertificate.h */,
+				12D81B9D15D8F72C006AA4B2 /* EVEDBCrtCertificate.m */,
+				12D81B9E15D8F72C006AA4B2 /* EVEDBCrtClass.h */,
+				12D81B9F15D8F72C006AA4B2 /* EVEDBCrtClass.m */,
+				12D81BA015D8F72C006AA4B2 /* EVEDBCrtRecommendation.h */,
+				12D81BA115D8F72C006AA4B2 /* EVEDBCrtRecommendation.m */,
+				12D81BA215D8F72C006AA4B2 /* EVEDBCrtRelationship.h */,
+				12D81BA315D8F72C006AA4B2 /* EVEDBCrtRelationship.m */,
+				12D81BA415D8F72C006AA4B2 /* EVEDBDatabase.h */,
+				12D81BA515D8F72C006AA4B2 /* EVEDBDatabase.m */,
+				12D81BA615D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.h */,
+				12D81BA715D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.m */,
+				12D81BA815D8F72C006AA4B2 /* EVEDBDgmAttributeType.h */,
+				12D81BA915D8F72C006AA4B2 /* EVEDBDgmAttributeType.m */,
+				12D81BAA15D8F72C006AA4B2 /* EVEDBDgmEffect.h */,
+				12D81BAB15D8F72C006AA4B2 /* EVEDBDgmEffect.m */,
+				12D81BAC15D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.h */,
+				12D81BAD15D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.m */,
+				12D81BAE15D8F72C006AA4B2 /* EVEDBDgmTypeEffect.h */,
+				12D81BAF15D8F72C006AA4B2 /* EVEDBDgmTypeEffect.m */,
+				12D81BB015D8F72C006AA4B2 /* EVEDBEveIcon.h */,
+				12D81BB115D8F72C006AA4B2 /* EVEDBEveIcon.m */,
+				12D81BB215D8F72C006AA4B2 /* EVEDBEveUnit.h */,
+				12D81BB315D8F72C006AA4B2 /* EVEDBEveUnit.m */,
+				12D81BB415D8F72C006AA4B2 /* EVEDBInvBlueprintType.h */,
+				12D81BB515D8F72C006AA4B2 /* EVEDBInvBlueprintType.m */,
+				12D81BB615D8F72C006AA4B2 /* EVEDBInvCategory.h */,
+				12D81BB715D8F72C006AA4B2 /* EVEDBInvCategory.m */,
+				12D81BB815D8F72C006AA4B2 /* EVEDBInvControlTowerResource.h */,
+				12D81BB915D8F72C006AA4B2 /* EVEDBInvControlTowerResource.m */,
+				12D81BBA15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.h */,
+				12D81BBB15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.m */,
+				12D81BBC15D8F72C006AA4B2 /* EVEDBInvGroup.h */,
+				12D81BBD15D8F72C006AA4B2 /* EVEDBInvGroup.m */,
+				12D81BBE15D8F72C006AA4B2 /* EVEDBInvMarketGroup.h */,
+				12D81BBF15D8F72C006AA4B2 /* EVEDBInvMarketGroup.m */,
+				12D81BC015D8F72C006AA4B2 /* EVEDBInvType+ControlTower.h */,
+				12D81BC115D8F72C006AA4B2 /* EVEDBInvType+ControlTower.m */,
+				12D81BC215D8F72C006AA4B2 /* EVEDBInvType+Installation.h */,
+				12D81BC315D8F72C006AA4B2 /* EVEDBInvType+Installation.m */,
+				12D81BC415D8F72C006AA4B2 /* EVEDBInvType+Skill.h */,
+				12D81BC515D8F72C006AA4B2 /* EVEDBInvType+Skill.m */,
+				12D81BC615D8F72C006AA4B2 /* EVEDBInvType.h */,
+				12D81BC715D8F72C006AA4B2 /* EVEDBInvType.m */,
+				12D81BC815D8F72C006AA4B2 /* EVEDBInvTypeMaterial.h */,
+				12D81BC915D8F72C006AA4B2 /* EVEDBInvTypeMaterial.m */,
+				12D81BCA15D8F72C006AA4B2 /* EVEDBMapConstellation.h */,
+				12D81BCB15D8F72C006AA4B2 /* EVEDBMapConstellation.m */,
+				12D81BCC15D8F72C006AA4B2 /* EVEDBMapDenormalize.h */,
+				12D81BCD15D8F72C006AA4B2 /* EVEDBMapDenormalize.m */,
+				12D81BCE15D8F72C006AA4B2 /* EVEDBMapRegion.h */,
+				12D81BCF15D8F72C006AA4B2 /* EVEDBMapRegion.m */,
+				12D81BD015D8F72C006AA4B2 /* EVEDBMapSolarSystem.h */,
+				12D81BD115D8F72C006AA4B2 /* EVEDBMapSolarSystem.m */,
+				12D81BD215D8F72C006AA4B2 /* EVEDBRamActivity.h */,
+				12D81BD315D8F72C006AA4B2 /* EVEDBRamActivity.m */,
+				12D81BD415D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.h */,
+				12D81BD515D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.m */,
+				12D81BD615D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.h */,
+				12D81BD715D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m */,
+				12D81BD815D8F72C006AA4B2 /* EVEDBRamTypeRequirement.h */,
+				12D81BD915D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m */,
+				12D81BDA15D8F72C006AA4B2 /* EVEDBStaStation.h */,
+				12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */,
+				12D81BDC15D8F72C006AA4B2 /* Utility */,
+			);
+			path = EVEDBAPI;
+			sourceTree = "<group>";
+		};
+		12D81BDC15D8F72C006AA4B2 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				12D81BDD15D8F72C006AA4B2 /* EVEDBGlobals.h */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		12DEFD81152EC92A0076ABC7 /* FittingExportViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2271,8 +2363,8 @@
 			children = (
 				37AB449A14F52173007B4C33 /* BattleClinicAPI */,
 				37AB44A614F52173007B4C33 /* EVECentralAPI */,
-				37AB44B014F52173007B4C33 /* EVEDBAPI */,
 				37AB44FA14F52173007B4C33 /* EVEOnlineAPI */,
+				12D81B9815D8F72C006AA4B2 /* EVEDBAPI */,
 				37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */,
 				37AB458A14F52173007B4C33 /* RSS */,
 				37AB45A314F52173007B4C33 /* Utility */,
@@ -2325,83 +2417,6 @@
 				37AB44AD14F52173007B4C33 /* EVECentralGlobals.h */,
 				37AB44AE14F52173007B4C33 /* EVECentralRequest.h */,
 				37AB44AF14F52173007B4C33 /* EVECentralRequest.m */,
-			);
-			path = Utility;
-			sourceTree = "<group>";
-		};
-		37AB44B014F52173007B4C33 /* EVEDBAPI */ = {
-			isa = PBXGroup;
-			children = (
-				37AB44B114F52173007B4C33 /* EVEDBAPI.h */,
-				37AB44B214F52173007B4C33 /* EVEDBCrtCategory.h */,
-				37AB44B314F52173007B4C33 /* EVEDBCrtCategory.m */,
-				37AB44B414F52173007B4C33 /* EVEDBCrtCertificate.h */,
-				37AB44B514F52173007B4C33 /* EVEDBCrtCertificate.m */,
-				37AB44B614F52173007B4C33 /* EVEDBCrtClass.h */,
-				37AB44B714F52173007B4C33 /* EVEDBCrtClass.m */,
-				37AB44B814F52173007B4C33 /* EVEDBCrtRecommendation.h */,
-				37AB44B914F52173007B4C33 /* EVEDBCrtRecommendation.m */,
-				37AB44BA14F52173007B4C33 /* EVEDBCrtRelationship.h */,
-				37AB44BB14F52173007B4C33 /* EVEDBCrtRelationship.m */,
-				37AB44BC14F52173007B4C33 /* EVEDBDatabase.h */,
-				37AB44BD14F52173007B4C33 /* EVEDBDatabase.m */,
-				37AB44BE14F52173007B4C33 /* EVEDBDgmAttributeCategory.h */,
-				37AB44BF14F52173007B4C33 /* EVEDBDgmAttributeCategory.m */,
-				37AB44C014F52173007B4C33 /* EVEDBDgmAttributeType.h */,
-				37AB44C114F52173007B4C33 /* EVEDBDgmAttributeType.m */,
-				37AB44C214F52173007B4C33 /* EVEDBDgmEffect.h */,
-				37AB44C314F52173007B4C33 /* EVEDBDgmEffect.m */,
-				37AB44C414F52173007B4C33 /* EVEDBDgmTypeAttribute.h */,
-				37AB44C514F52173007B4C33 /* EVEDBDgmTypeAttribute.m */,
-				37AB44C614F52173007B4C33 /* EVEDBDgmTypeEffect.h */,
-				37AB44C714F52173007B4C33 /* EVEDBDgmTypeEffect.m */,
-				37AB44C814F52173007B4C33 /* EVEDBEveIcon.h */,
-				37AB44C914F52173007B4C33 /* EVEDBEveIcon.m */,
-				37AB44CA14F52173007B4C33 /* EVEDBEveUnit.h */,
-				37AB44CB14F52173007B4C33 /* EVEDBEveUnit.m */,
-				37AB44CC14F52173007B4C33 /* EVEDBInvCategory.h */,
-				37AB44CD14F52173007B4C33 /* EVEDBInvCategory.m */,
-				37AB44CE14F52173007B4C33 /* EVEDBInvControlTowerResource.h */,
-				37AB44CF14F52173007B4C33 /* EVEDBInvControlTowerResource.m */,
-				37AB44D014F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.h */,
-				37AB44D114F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.m */,
-				37AB44D214F52173007B4C33 /* EVEDBInvGroup.h */,
-				37AB44D314F52173007B4C33 /* EVEDBInvGroup.m */,
-				37AB44D414F52173007B4C33 /* EVEDBInvMarketGroup.h */,
-				37AB44D514F52173007B4C33 /* EVEDBInvMarketGroup.m */,
-				37AB44D614F52173007B4C33 /* EVEDBInvType+ControlTower.h */,
-				37AB44D714F52173007B4C33 /* EVEDBInvType+ControlTower.m */,
-				37410510151A277D00BCED1B /* EVEDBInvType+Installation.h */,
-				37410511151A277D00BCED1B /* EVEDBInvType+Installation.m */,
-				37AB44DA14F52173007B4C33 /* EVEDBInvType+Skill.h */,
-				37AB44DB14F52173007B4C33 /* EVEDBInvType+Skill.m */,
-				37AB44DC14F52173007B4C33 /* EVEDBInvType.h */,
-				37AB44DD14F52173007B4C33 /* EVEDBInvType.m */,
-				37AB44DE14F52173007B4C33 /* EVEDBMapConstellation.h */,
-				37AB44DF14F52173007B4C33 /* EVEDBMapConstellation.m */,
-				37AB44E014F52173007B4C33 /* EVEDBMapDenormalize.h */,
-				37AB44E114F52173007B4C33 /* EVEDBMapDenormalize.m */,
-				37AB44E214F52173007B4C33 /* EVEDBMapRegion.h */,
-				37AB44E314F52173007B4C33 /* EVEDBMapRegion.m */,
-				37AB44E414F52173007B4C33 /* EVEDBMapSolarSystem.h */,
-				37AB44E514F52173007B4C33 /* EVEDBMapSolarSystem.m */,
-				37AB44E614F52173007B4C33 /* EVEDBRamActivity.h */,
-				37AB44E714F52173007B4C33 /* EVEDBRamActivity.m */,
-				37410512151A277D00BCED1B /* EVEDBRamAssemblyLineType.h */,
-				37410513151A277D00BCED1B /* EVEDBRamAssemblyLineType.m */,
-				37410514151A277D00BCED1B /* EVEDBRamInstallationTypeContent.h */,
-				37410515151A277D00BCED1B /* EVEDBRamInstallationTypeContent.m */,
-				37AB44E814F52173007B4C33 /* EVEDBStaStation.h */,
-				37AB44E914F52173007B4C33 /* EVEDBStaStation.m */,
-				37AB44EA14F52173007B4C33 /* Utility */,
-			);
-			path = EVEDBAPI;
-			sourceTree = "<group>";
-		};
-		37AB44EA14F52173007B4C33 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				37AB44EB14F52173007B4C33 /* EVEDBGlobals.h */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -4842,33 +4857,6 @@
 				37AB45C614F52173007B4C33 /* EVECentralMarketStat.m in Sources */,
 				37AB45C714F52173007B4C33 /* EVECentralQuickLook.m in Sources */,
 				37AB45C814F52173007B4C33 /* EVECentralRequest.m in Sources */,
-				37AB45C914F52173007B4C33 /* EVEDBCrtCategory.m in Sources */,
-				37AB45CA14F52173007B4C33 /* EVEDBCrtCertificate.m in Sources */,
-				37AB45CB14F52173007B4C33 /* EVEDBCrtClass.m in Sources */,
-				37AB45CC14F52173007B4C33 /* EVEDBCrtRecommendation.m in Sources */,
-				37AB45CD14F52173007B4C33 /* EVEDBCrtRelationship.m in Sources */,
-				37AB45CE14F52173007B4C33 /* EVEDBDatabase.m in Sources */,
-				37AB45CF14F52173007B4C33 /* EVEDBDgmAttributeCategory.m in Sources */,
-				37AB45D014F52173007B4C33 /* EVEDBDgmAttributeType.m in Sources */,
-				37AB45D114F52173007B4C33 /* EVEDBDgmEffect.m in Sources */,
-				37AB45D214F52173007B4C33 /* EVEDBDgmTypeAttribute.m in Sources */,
-				37AB45D314F52173007B4C33 /* EVEDBDgmTypeEffect.m in Sources */,
-				37AB45D414F52173007B4C33 /* EVEDBEveIcon.m in Sources */,
-				37AB45D514F52173007B4C33 /* EVEDBEveUnit.m in Sources */,
-				37AB45D614F52173007B4C33 /* EVEDBInvCategory.m in Sources */,
-				37AB45D714F52173007B4C33 /* EVEDBInvControlTowerResource.m in Sources */,
-				37AB45D814F52173007B4C33 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
-				37AB45D914F52173007B4C33 /* EVEDBInvGroup.m in Sources */,
-				37AB45DA14F52173007B4C33 /* EVEDBInvMarketGroup.m in Sources */,
-				37AB45DB14F52173007B4C33 /* EVEDBInvType+ControlTower.m in Sources */,
-				37AB45DD14F52173007B4C33 /* EVEDBInvType+Skill.m in Sources */,
-				37AB45DE14F52173007B4C33 /* EVEDBInvType.m in Sources */,
-				37AB45DF14F52173007B4C33 /* EVEDBMapConstellation.m in Sources */,
-				37AB45E014F52173007B4C33 /* EVEDBMapDenormalize.m in Sources */,
-				37AB45E114F52173007B4C33 /* EVEDBMapRegion.m in Sources */,
-				37AB45E214F52173007B4C33 /* EVEDBMapSolarSystem.m in Sources */,
-				37AB45E314F52173007B4C33 /* EVEDBRamActivity.m in Sources */,
-				37AB45E414F52173007B4C33 /* EVEDBStaStation.m in Sources */,
 				37AB45EA14F52173007B4C33 /* EVEAccountStatus.m in Sources */,
 				37AB45EB14F52173007B4C33 /* EVEAPIKeyInfo.m in Sources */,
 				37AB45EC14F52173007B4C33 /* EVECharacters.m in Sources */,
@@ -4998,9 +4986,6 @@
 				37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */,
 				37CE795015134D8B00621D52 /* POSFit.mm in Sources */,
 				37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */,
-				37410516151A277E00BCED1B /* EVEDBInvType+Installation.m in Sources */,
-				37410517151A277E00BCED1B /* EVEDBRamAssemblyLineType.m in Sources */,
-				37410518151A277E00BCED1B /* EVEDBRamInstallationTypeContent.m in Sources */,
 				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
 				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
 				37DF48EF151CE47B00BC87A5 /* EVEC0rporationFaction.m in Sources */,
@@ -5008,6 +4993,39 @@
 				12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */,
 				121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */,
 				121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */,
+				12D81BDE15D8F72C006AA4B2 /* EVEDBCrtCategory.m in Sources */,
+				12D81BDF15D8F72C006AA4B2 /* EVEDBCrtCertificate.m in Sources */,
+				12D81BE015D8F72C006AA4B2 /* EVEDBCrtClass.m in Sources */,
+				12D81BE115D8F72C006AA4B2 /* EVEDBCrtRecommendation.m in Sources */,
+				12D81BE215D8F72C006AA4B2 /* EVEDBCrtRelationship.m in Sources */,
+				12D81BE315D8F72C006AA4B2 /* EVEDBDatabase.m in Sources */,
+				12D81BE415D8F72C006AA4B2 /* EVEDBDgmAttributeCategory.m in Sources */,
+				12D81BE515D8F72C006AA4B2 /* EVEDBDgmAttributeType.m in Sources */,
+				12D81BE615D8F72C006AA4B2 /* EVEDBDgmEffect.m in Sources */,
+				12D81BE715D8F72C006AA4B2 /* EVEDBDgmTypeAttribute.m in Sources */,
+				12D81BE815D8F72C006AA4B2 /* EVEDBDgmTypeEffect.m in Sources */,
+				12D81BE915D8F72C006AA4B2 /* EVEDBEveIcon.m in Sources */,
+				12D81BEA15D8F72C006AA4B2 /* EVEDBEveUnit.m in Sources */,
+				12D81BEB15D8F72C006AA4B2 /* EVEDBInvBlueprintType.m in Sources */,
+				12D81BEC15D8F72C006AA4B2 /* EVEDBInvCategory.m in Sources */,
+				12D81BED15D8F72C006AA4B2 /* EVEDBInvControlTowerResource.m in Sources */,
+				12D81BEE15D8F72C006AA4B2 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
+				12D81BEF15D8F72C006AA4B2 /* EVEDBInvGroup.m in Sources */,
+				12D81BF015D8F72C006AA4B2 /* EVEDBInvMarketGroup.m in Sources */,
+				12D81BF115D8F72C006AA4B2 /* EVEDBInvType+ControlTower.m in Sources */,
+				12D81BF215D8F72C006AA4B2 /* EVEDBInvType+Installation.m in Sources */,
+				12D81BF315D8F72C006AA4B2 /* EVEDBInvType+Skill.m in Sources */,
+				12D81BF415D8F72C006AA4B2 /* EVEDBInvType.m in Sources */,
+				12D81BF515D8F72C006AA4B2 /* EVEDBInvTypeMaterial.m in Sources */,
+				12D81BF615D8F72C006AA4B2 /* EVEDBMapConstellation.m in Sources */,
+				12D81BF715D8F72C006AA4B2 /* EVEDBMapDenormalize.m in Sources */,
+				12D81BF815D8F72C006AA4B2 /* EVEDBMapRegion.m in Sources */,
+				12D81BF915D8F72C006AA4B2 /* EVEDBMapSolarSystem.m in Sources */,
+				12D81BFA15D8F72C006AA4B2 /* EVEDBRamActivity.m in Sources */,
+				12D81BFB15D8F72C006AA4B2 /* EVEDBRamAssemblyLineType.m in Sources */,
+				12D81BFC15D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m in Sources */,
+				12D81BFD15D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m in Sources */,
+				12D81BFE15D8F72C006AA4B2 /* EVEDBStaStation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

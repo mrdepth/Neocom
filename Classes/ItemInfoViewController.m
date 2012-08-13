@@ -29,6 +29,7 @@
 @interface ItemInfoViewController(Private)
 - (void) loadAttributes;
 - (void) loadNPCAttributes;
+- (void) loadBlueprintAttributes;
 @end
 
 
@@ -93,6 +94,8 @@
 	sections = [[NSMutableArray alloc] init];
 	if (type.group.categoryID == 11)
 		[self loadNPCAttributes];
+	else if (type.group.categoryID == 9)
+		[self loadBlueprintAttributes];
 	else
 		[self loadAttributes];
 	
@@ -388,6 +391,21 @@
 			}
 			if (rows.count > 0)
 				[sections addObject:section];
+		}
+		
+		if (type.blueprint) {
+			NSMutableDictionary *section = [NSMutableDictionary dictionary];
+			NSMutableArray *rows = [NSMutableArray array];
+			[section setValue:@"Manufacturing" forKey:@"name"];
+			[section setValue:rows forKey:@"rows"];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+							 [NSNumber numberWithInteger:5], @"cellType",
+							 @"Blueprint", @"title",
+							 [self.type.blueprint typeName], @"value",
+							 [self.type.blueprint typeSmallImageName], @"icon",
+							 self.type.blueprint, @"type",
+							 nil]];
+			[sections addObject:section];
 		}
 		
 		for (EVEDBInvTypeAttributeCategory *category in type.attributeCategories) {
@@ -1614,6 +1632,277 @@
 								 nil]];
 			}
 			
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		[pool release];
+	}];
+}
+
+- (void) loadBlueprintAttributes {
+	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
+		EVEAccount *account = [EVEAccount currentAccount];
+		[account updateSkillpoints];
+		
+		TrainingQueue* requiredSkillsQueue = nil;
+		TrainingQueue* certificateRecommendationsQueue = nil;
+		
+		/*if (account && account.skillPlan && (type.requiredSkills.count > 0 || type.certificateRecommendations.count > 0 || type.group.categoryID == 16)) {
+			NSMutableDictionary *section = [NSMutableDictionary dictionary];
+			[section setValue:@"Skill Plan" forKey:@"name"];
+			NSMutableArray* rows = [NSMutableArray array];
+			[section setValue:rows forKey:@"rows"];
+			
+			requiredSkillsQueue = [[[TrainingQueue alloc] initWithType:type] autorelease];
+			certificateRecommendationsQueue = [[[TrainingQueue alloc] init] autorelease];
+			
+			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
+				for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
+					[certificateRecommendationsQueue addSkill:skill];
+			}
+			
+			if (type.group.categoryID == 16) {
+				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", type.typeID]];
+				NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
+				for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
+					TrainingQueue* trainingQueue = [[[TrainingQueue alloc] init] autorelease];
+					[trainingQueue.skills addObjectsFromArray:requiredSkillsQueue.skills];
+					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:type];
+					skill.requiredLevel = level;
+					skill.currentLevel = characterSkill.level;
+					[trainingQueue addSkill:skill];
+					
+					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithInteger:4], @"cellType",
+												[NSString stringWithFormat:@"Train to level %@", romanNumbers[level]], @"title",
+												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:trainingQueue.trainingTime]], @"value",
+												trainingQueue, @"trainingQueue",
+												@"Icons/icon50_13.png", @"icon",
+												nil];
+					[rows addObject:row];
+				}
+			}
+			else {
+				if (requiredSkillsQueue.skills.count) {
+					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithInteger:4], @"cellType",
+												@"Add required skills to training plan", @"title",
+												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]], @"value",
+												requiredSkillsQueue, @"trainingQueue",
+												@"Icons/icon50_13.png", @"icon",
+												nil];
+					[rows addObject:row];
+				}
+				if (certificateRecommendationsQueue.skills.count) {
+					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithInteger:4], @"cellType",
+												@"Add recommended certificates to training plan", @"title",
+												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:certificateRecommendationsQueue.trainingTime]], @"value",
+												certificateRecommendationsQueue, @"trainingQueue",
+												@"Icons/icon79_06.png", @"icon",
+												nil];
+					[rows addObject:row];
+				}
+			}
+			if (rows.count > 0)
+				[sections addObject:section];
+		}*/
+		
+		NSMutableArray *rows = [NSMutableArray array];
+		NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blueprint", @"name", rows, @"rows", nil];
+		EVEDBInvType* productType = self.type.blueprintType.productType;
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:5], @"cellType",
+						 @"Product", @"title",
+						 [productType typeName], @"value",
+						 [productType typeSmallImageName], @"icon",
+						 productType, @"type",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Waste Factor", @"title",
+						 [NSString stringWithFormat:@"%d %%", self.type.blueprintType.wasteFactor], @"value",
+						 productType, @"type",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Production Limit", @"title",
+						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.maxProductionLimit] numberStyle:NSNumberFormatterDecimalStyle], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Productivity Modifier", @"title",
+						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.productivityModifier] numberStyle:NSNumberFormatterDecimalStyle], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Material Modifier", @"title",
+						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.materialModifier] numberStyle:NSNumberFormatterDecimalStyle], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Manufacturing Time", @"title",
+						 [NSString stringWithTimeLeft:self.type.blueprintType.productionTime], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Research Manufacturing Time", @"title",
+						 [NSString stringWithTimeLeft:self.type.blueprintType.researchProductivityTime], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Research Material Time", @"title",
+						 [NSString stringWithTimeLeft:self.type.blueprintType.researchMaterialTime], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Research Copy Time", @"title",
+						 [NSString stringWithTimeLeft:self.type.blueprintType.researchCopyTime], @"value",
+						 nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 [NSNumber numberWithInteger:0], @"cellType",
+						 @"Research Tech Time", @"title",
+						 [NSString stringWithTimeLeft:self.type.blueprintType.researchTechTime], @"value",
+						 nil]];
+		[sections addObject:section];
+
+
+		
+		for (EVEDBInvTypeAttributeCategory *category in type.attributeCategories) {
+			NSMutableDictionary *section = [NSMutableDictionary dictionary];
+			NSMutableArray *rows = [NSMutableArray array];
+			
+			if (category.categoryID == 8 && trainingTime > 0) {
+				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingTime]];
+				[section setValue:name forKey:@"name"];
+			}
+			else
+				[section setValue:category.categoryID == 9 ? @"Other" : category.categoryName
+						   forKey:@"name"];
+			
+			[section setValue:rows forKey:@"rows"];
+			
+			for (EVEDBDgmTypeAttribute *attribute in category.publishedAttributes) {
+				
+				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+											[NSNumber numberWithInteger:0], @"cellType",
+											attribute.attribute.displayName, @"title",
+											nil];
+				NSNumber *value = [NSNumber numberWithFloat:attribute.value];
+				NSString *unit = attribute.attribute.unit.displayName;
+				[row setValue:[NSString stringWithFormat:@"%@ %@",
+							   [NSNumberFormatter localizedStringFromNumber:value numberStyle:NSNumberFormatterDecimalStyle],
+							   unit ? unit : @""]
+					   forKey:@"value"];
+				if (attribute.attribute.icon.iconImageName)
+					[row setValue:attribute.attribute.icon.iconImageName forKey:@"icon"];
+				[rows addObject:row];
+			}
+			if (rows.count > 0)
+				[sections addObject:section];
+		}
+		
+		NSArray* activities = [[self.type.blueprintType activities] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
+		for (EVEDBRamActivity* activity in activities) {
+			NSArray* requiredSkills = [self.type.blueprintType requiredSkillsForActivity:activity.activityID];
+			TrainingQueue* requiredSkillsQueue = [TrainingQueue trainingQueueWithRequiredSkills:requiredSkills];
+			NSTimeInterval queueTrainingTime = [requiredSkillsQueue trainingTime];
+			
+			NSMutableArray *rows = [NSMutableArray array];
+			NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObjectsAndKeys:rows, @"rows", nil];
+			
+			if (queueTrainingTime > 0) {
+				NSString *name = [NSString stringWithFormat:@"%@ - Skills (%@)", activity.activityName, [NSString stringWithTimeLeft:queueTrainingTime]];
+				[section setValue:name forKey:@"name"];
+			}
+			else {
+				NSString *name = [NSString stringWithFormat:@"%@ - Skills", activity.activityName];
+				[section setValue:name forKey:@"name"];
+			}
+
+												   
+			if (requiredSkillsQueue.skills.count) {
+				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+											[NSNumber numberWithInteger:4], @"cellType",
+											@"Add required skills to training plan", @"title",
+											[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]], @"value",
+											requiredSkillsQueue, @"trainingQueue",
+											@"Icons/icon50_13.png", @"icon",
+											nil];
+				[rows addObject:row];
+			}
+
+
+			for (EVEDBInvTypeRequiredSkill* skill in requiredSkills) {
+				SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:skill.requiredLevel];
+				for (SkillTreeItem *skill in skillTree.skills) {
+					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												[NSNumber numberWithInteger:1], @"cellType",
+												[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
+												skill, @"type",
+												nil];
+					switch (skill.skillAvailability) {
+						case SkillTreeItemAvailabilityLearned:
+							[row setValue:@"Icons/icon38_193.png" forKey:@"icon"];
+							break;
+						case SkillTreeItemAvailabilityNotLearned:
+							[row setValue:@"Icons/icon38_194.png" forKey:@"icon"];
+							break;
+						case SkillTreeItemAvailabilityLowLevel:
+							[row setValue:@"Icons/icon38_195.png" forKey:@"icon"];
+							break;
+						default:
+							break;
+					}
+					[rows addObject:row];
+				}
+			}
+			if (rows.count > 0)
+				[sections addObject:section];
+
+			rows = [NSMutableArray array];
+			section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+					   [NSString stringWithFormat:@"%@ - Material / Mineral", activity.activityName], @"name", rows, @"rows", nil];
+
+			for (id requirement in [self.type.blueprintType requiredMaterialsForActivity:activity.activityID]) {
+				if ([requirement isKindOfClass:[EVEDBRamTypeRequirement class]]) {
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+									 [NSNumber numberWithInteger:5], @"cellType",
+									 [requirement requiredType].typeName, @"title",
+									 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:[requirement quantity]] numberStyle:NSNumberFormatterDecimalStyle], @"value",
+									 [[requirement requiredType] typeSmallImageName], @"icon",
+									 [requirement requiredType], @"type",
+									 nil]];
+				}
+				else {
+					EVEDBInvTypeMaterial* material = requirement;
+					float waste = self.type.blueprintType.wasteFactor / 100.0;
+					NSInteger quantity = material.quantity * (1.0 + waste);
+					NSInteger perfect = material.quantity;
+					
+					NSInteger materialLevel  = quantity * 2.0 * (waste / (1.0 + waste)) - 1;
+					NSString* value;
+					if (materialLevel > 0)
+						value = [NSString stringWithFormat:@"%@ (%@ at ME: %@)",
+								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle],
+								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:perfect] numberStyle:NSNumberFormatterDecimalStyle],
+								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:materialLevel] numberStyle:NSNumberFormatterDecimalStyle]];
+					else
+						value = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle];
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+									 [NSNumber numberWithInteger:5], @"cellType",
+									 material.materialType.typeName, @"title",
+									 value, @"value",
+									 [material.materialType typeSmallImageName], @"icon",
+									 material.materialType, @"type",
+									 nil]];
+				}
+			}
+
 			if (rows.count > 0)
 				[sections addObject:section];
 		}

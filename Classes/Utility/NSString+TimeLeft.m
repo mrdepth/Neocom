@@ -69,7 +69,7 @@
 		componentsLimit--;
 	}
 	
-	if (componentsLimit) {
+	if ((sec || text.length == 0) && componentsLimit) {
 		[text appendFormat:@"%ds", sec];
 	}
 	return text;

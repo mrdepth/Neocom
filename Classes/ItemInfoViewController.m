@@ -608,7 +608,7 @@
 											[NSString stringWithFormat:@"%@ - %@", recommendation.certificate.certificateClass.className, recommendation.certificate.gradeText], @"title",
 											recommendation.certificate.iconImageName, @"icon", nil];
 				if (recommendation.certificate.trainingQueue.trainingTime > 0)
-					[row setValue:[NSString stringWithFormat:@"%Training time: %@",
+					[row setValue:[NSString stringWithFormat:@"Training time: %@",
 								   [NSString stringWithTimeLeft:recommendation.certificate.trainingQueue.trainingTime]]
 						   forKey:@"value"];
 				[row setValue:recommendation.certificate.stateIconImageName forKey:@"stateIcon"];
@@ -1098,7 +1098,7 @@
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
 								 @"Attack Range", @"title",
-								 [NSString stringWithFormat:@"%.0@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) attackRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) attackRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
 								 attackRangeAttribute.attribute.icon.iconImageName, @"icon",
 								 nil]];
 			}
@@ -1108,7 +1108,7 @@
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
 								 signatureRadiusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) signatureRadiusAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
+								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) signatureRadiusAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
 								 signatureRadiusAttribute.attribute.icon.iconImageName, @"icon",
 								 nil]];
 			}
@@ -1644,73 +1644,8 @@
 - (void) loadBlueprintAttributes {
 	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
-		
-		TrainingQueue* requiredSkillsQueue = nil;
-		TrainingQueue* certificateRecommendationsQueue = nil;
-		
-		/*if (account && account.skillPlan && (type.requiredSkills.count > 0 || type.certificateRecommendations.count > 0 || type.group.categoryID == 16)) {
-			NSMutableDictionary *section = [NSMutableDictionary dictionary];
-			[section setValue:@"Skill Plan" forKey:@"name"];
-			NSMutableArray* rows = [NSMutableArray array];
-			[section setValue:rows forKey:@"rows"];
-			
-			requiredSkillsQueue = [[[TrainingQueue alloc] initWithType:type] autorelease];
-			certificateRecommendationsQueue = [[[TrainingQueue alloc] init] autorelease];
-			
-			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
-				for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
-					[certificateRecommendationsQueue addSkill:skill];
-			}
-			
-			if (type.group.categoryID == 16) {
-				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", type.typeID]];
-				NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
-				for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
-					TrainingQueue* trainingQueue = [[[TrainingQueue alloc] init] autorelease];
-					[trainingQueue.skills addObjectsFromArray:requiredSkillsQueue.skills];
-					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:type];
-					skill.requiredLevel = level;
-					skill.currentLevel = characterSkill.level;
-					[trainingQueue addSkill:skill];
-					
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType",
-												[NSString stringWithFormat:@"Train to level %@", romanNumbers[level]], @"title",
-												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:trainingQueue.trainingTime]], @"value",
-												trainingQueue, @"trainingQueue",
-												@"Icons/icon50_13.png", @"icon",
-												nil];
-					[rows addObject:row];
-				}
-			}
-			else {
-				if (requiredSkillsQueue.skills.count) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType",
-												@"Add required skills to training plan", @"title",
-												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]], @"value",
-												requiredSkillsQueue, @"trainingQueue",
-												@"Icons/icon50_13.png", @"icon",
-												nil];
-					[rows addObject:row];
-				}
-				if (certificateRecommendationsQueue.skills.count) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType",
-												@"Add recommended certificates to training plan", @"title",
-												[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:certificateRecommendationsQueue.trainingTime]], @"value",
-												certificateRecommendationsQueue, @"trainingQueue",
-												@"Icons/icon79_06.png", @"icon",
-												nil];
-					[rows addObject:row];
-				}
-			}
-			if (rows.count > 0)
-				[sections addObject:section];
-		}*/
 		
 		NSMutableArray *rows = [NSMutableArray array];
 		NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"Blueprint", @"name", rows, @"rows", nil];

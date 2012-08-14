@@ -1760,7 +1760,7 @@
 			}
 
 												   
-			if (requiredSkillsQueue.skills.count) {
+			if (requiredSkillsQueue.skills.count && account && account.skillPlan) {
 				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 											[NSNumber numberWithInteger:4], @"cellType",
 											@"Add required skills to training plan", @"title",

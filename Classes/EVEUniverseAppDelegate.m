@@ -184,7 +184,8 @@
 			for (EUNotification* notification in  mailBox.notifications) {
 				if (!notification.read && (notification.header.typeID == 5 || notification.header.typeID == 27)) {
 					NSString* declaredByID = [notification.details.properties valueForKey:@"declaredByID"];
-					if (declaredByID)
+					NSInteger iDeclaredByID = [declaredByID integerValue];
+					if (declaredByID && currentAccount.characterSheet.corporationID != iDeclaredByID && currentAccount.characterSheet.allianceID != iDeclaredByID)
 						[ids addObject:declaredByID];
 				}
 			}

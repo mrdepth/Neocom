@@ -1,8 +1,10 @@
 --BEGIN TRANSACTION;
 
+INSERT INTO eveDB.invBlueprintTypes SELECT * FROM invBlueprintTypes;
 INSERT INTO eveDB.invCategories SELECT * FROM invCategories WHERE categoryID in (2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46);
 INSERT INTO eveDB.invGroups SELECT invGroups.* FROM invGroups,eveDB.invCategories WHERE invGroups.categoryID=eveDB.invCategories.categoryID;
 INSERT INTO eveDB.invTypes SELECT invTypes.* FROM invTypes,eveDB.invGroups WHERE invTypes.groupID=eveDB.invGroups.groupID;
+INSERT INTO eveDB.invTypeMaterials SELECT * FROM invTypeMaterials;
 INSERT INTO eveDB.dgmAttributeCategories SELECT * FROM dgmAttributeCategories;
 INSERT INTO eveDB.dgmEffects SELECT * FROM dgmEffects;
 INSERT INTO eveDB.dgmAttributeTypes SELECT * FROM dgmAttributeTypes;
@@ -28,6 +30,7 @@ INSERT INTO eveDB.crtRecommendations SELECT * FROM crtRecommendations;
 INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
 INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
 INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
+INSERT INTO eveDB.ramTypeRequirements SELECT * FROM ramTypeRequirements;
 
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;

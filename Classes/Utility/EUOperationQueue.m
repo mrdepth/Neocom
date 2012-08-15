@@ -26,10 +26,10 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	NSUInteger oldValue = [[change valueForKey:NSKeyValueChangeOldKey] unsignedIntegerValue];
+	//NSUInteger oldValue = [[change valueForKey:NSKeyValueChangeOldKey] unsignedIntegerValue];
 	NSUInteger newValue = [[change valueForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
-	if (oldValue == newValue)
-		return;
+//	if (oldValue == newValue)
+//		return;
 	if (newValue > 0) {
 		BOOL value = YES;
 		NSInvocation *invocation = [NSInvocation invocationWithTarget:[Globals appDelegate] selector:@selector(setLoading:) argumentPointers:&value];
@@ -48,7 +48,7 @@
 			if ([item isKindOfClass:[EUSingleBlockOperation class]]) {
 				EUSingleBlockOperation *a = (EUSingleBlockOperation*) operation;
 				EUSingleBlockOperation *b = (EUSingleBlockOperation*) item;
-				if ([a.identifier isEqualToString:b.identifier]) {
+				if ([a.identifier isEqualToString:b.identifier] && (![b isCancelled] && ![b isFinished])) {
 					[a addDependency:b];
 					[b cancel];
 				}

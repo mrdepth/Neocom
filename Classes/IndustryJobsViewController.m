@@ -353,7 +353,7 @@
 					NSString *remains;
 					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:job.outputTypeID error:nil];
 					NSString *location = nil;
-					NSString *charID = [NSString stringWithFormat:@"%d", job.installerID];
+					NSString *charID = [NSString stringWithFormat:@"%lld", job.installerID];
 					UIColor *remainsColor;
 					
 					if (job.installedItemLocationID == INT_MAX) {
@@ -382,7 +382,7 @@
 							location = @"Unknown";
 					}
 					else if (60014861 < job.installedItemLocationID && job.installedItemLocationID < 60014928) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -401,7 +401,7 @@
 							location = @"Unknown";
 					}
 					else if (61000000 <= job.installedItemLocationID) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [[conquerableStations self] valueForKey:[NSString stringWithFormat:@"%d", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = [[conquerableStations self] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -472,7 +472,7 @@
 							status = @"Destroyed";
 						}
 						else {
-							remains = [NSString stringWithString:@"Unknown"];
+							remains = @"Unknown";
 							remainsColor = [UIColor redColor];
 							status = @"Unknown";
 						}

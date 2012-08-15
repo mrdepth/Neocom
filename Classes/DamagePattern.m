@@ -52,7 +52,6 @@
 		float kineticDamageTurret = 0;
 		float thermalDamageTurret = 0;
 		float intervalTurret = 0;
-		float totalDamageTurret = 0;
 		
 		if ([type.effectsDictionary valueForKey:@"10"] || [type.effectsDictionary valueForKey:@"1086"]) {
 			float damageMultiplier = [damageMultiplierAttribute value];
@@ -64,7 +63,6 @@
 			kineticDamageTurret = [kineticDamageAttribute value] * damageMultiplier;
 			thermalDamageTurret = [thermalDamageAttribute value] * damageMultiplier;
 			intervalTurret = [turretFireSpeedAttribute value] / 1000.0;
-			totalDamageTurret = emDamageTurret + explosiveDamageTurret + kineticDamageTurret + thermalDamageTurret;
 		}
 		
 		//Missiles damage
@@ -73,7 +71,6 @@
 		float kineticDamageMissile = 0;
 		float thermalDamageMissile = 0;
 		float intervalMissile = 0;
-		float totalDamageMissile = 0;
 		
 		if ([type.effectsDictionary valueForKey:@"569"]) {
 			EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
@@ -92,7 +89,6 @@
 				kineticDamageMissile = [kineticDamageAttribute value] * missileDamageMultiplier;
 				thermalDamageMissile = [thermalDamageAttribute value] * missileDamageMultiplier;
 				intervalMissile = [missileLaunchDurationAttribute value] / 1000.0;
-				totalDamageMissile = emDamageMissile + explosiveDamageMissile + kineticDamageMissile + thermalDamageMissile;
 				
 			}
 		}

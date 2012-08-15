@@ -184,17 +184,13 @@
 	if (donateView.superview)
 		[upgradeView removeFromSuperview];
 	
-	float y = 0;
-	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
 		[self.view addSubview:upgradeView];
-		upgradeView.frame = CGRectMake(0, y, upgradeView.frame.size.width, upgradeView.frame.size.height);
-		y += upgradeView.frame.size.height;
+		upgradeView.frame = CGRectMake(0, 0, upgradeView.frame.size.width, upgradeView.frame.size.height);
 	}
 	else {
 		[self.view addSubview:donateView];
-		donateView.frame = CGRectMake(0, y, donateView.frame.size.width, donateView.frame.size.height);
-		y += donateView.frame.size.height;
+		donateView.frame = CGRectMake(0, 0, donateView.frame.size.width, donateView.frame.size.height);
 	}
 }
 

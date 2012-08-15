@@ -35,8 +35,10 @@
 
 + (id) trainingQueueWithType: (EVEDBInvType*) type;
 + (id) trainingQueueWithCertificate: (EVEDBCrtCertificate*) certificate;
++ (id) trainingQueueWithRequiredSkills: (NSArray*) requiredSkills;
 - (id) initWithType: (EVEDBInvType*) type;
 - (id) initWithCertificate: (EVEDBCrtCertificate*) certificate;
+- (id) initWithRequiredSkills: (NSArray*) requiredSkills;
 //- (void) addSkillID:(NSInteger) typeID level:(NSInteger) level;
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill;
 

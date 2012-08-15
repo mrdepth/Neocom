@@ -374,14 +374,6 @@
 			[buyOrdersRegionsTmp addObjectsFromArray:[[buyOrdersRegionsDic allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"region" ascending:YES]]]];
 			
 			
-			int sellCount = quickLook.sellOrders.count;
-			int buyCount = quickLook.buyOrders.count;
-			
-			if (sellCount > 30)
-				sellCount = 30;
-			if (buyCount > 30)
-				buyCount = 30;
-			
 			[sellSummaryTmp addObjectsFromArray:quickLook.sellOrders];
 			[buySummaryTmp addObjectsFromArray:quickLook.buyOrders];
 		}

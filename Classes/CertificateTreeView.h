@@ -25,6 +25,6 @@
 @property (retain, nonatomic, readonly) CertificateView* certificateView;
 @property (assign, nonatomic) IBOutlet id<CertificateTreeViewDelegate> delegate;
 
-- (void)onAddToTrainingPlan;
+- (IBAction)onAddToTrainingPlan;
 
 @end

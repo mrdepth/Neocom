@@ -51,6 +51,10 @@
 	return [[[TrainingQueue alloc] initWithCertificate:certificate] autorelease];
 }
 
++ (id) trainingQueueWithRequiredSkills: (NSArray*) requiredSkills {
+	return [[[TrainingQueue alloc] initWithRequiredSkills:requiredSkills] autorelease];
+}
+
 - (id) init {
 	if (self = [super init]) {
 		account = [[EVEAccount currentAccount] retain];
@@ -71,10 +75,7 @@
 }
 
 - (id) initWithType: (EVEDBInvType*) type {
-	if (self = [self init]) {
-		for (EVEDBInvTypeRequiredSkill* skill in type.requiredSkills) {
-			[self addSkill:skill];
-		}
+	if (self = [self initWithRequiredSkills:type.requiredSkills]) {
 	}
 	return self;
 }
@@ -91,6 +92,15 @@
 			}
 		}
 		trainingTime = -1;
+	}
+	return self;
+}
+
+- (id) initWithRequiredSkills: (NSArray*) requiredSkills {
+	if (self = [self init]) {
+		for (EVEDBInvTypeRequiredSkill* skill in requiredSkills) {
+			[self addSkill:skill];
+		}
 	}
 	return self;
 }

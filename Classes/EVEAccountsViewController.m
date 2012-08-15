@@ -449,7 +449,7 @@
 			else if (character1 && !character2)
 				return NSOrderedAscending;
 			else
-				return [character1.characterName compare:character2.characterName];
+				return [character1.characterName compare:character2.characterName ? character2.characterName : @""];
 		}];
 		[queue release];
 		[pool release];

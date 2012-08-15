@@ -441,6 +441,8 @@ public:
 			case eufe::Module::SLOT_RIG:
 				[rigs addObject:itemInfo];
 				break;
+			default:
+				break;
 		}
 		
 		boost::shared_ptr<eufe::Charge> charge = (*i)->getCharge();

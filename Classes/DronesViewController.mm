@@ -139,7 +139,7 @@
 		//EVEFittingDrone *drone = [rows objectAtIndex:indexPath.row];
 		NSArray* array = [rows objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		
 		int optimal = (int) drone->getMaxRange();
 		int falloff = (int) drone->getFalloff();
@@ -211,7 +211,7 @@
 		//EVEFittingDrone *drone = [rows objectAtIndex:indexPath.row];
 		NSArray* array = [rows objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 																 delegate:self
@@ -247,12 +247,12 @@
 #pragma mark FittingItemsViewControllerDelegate
 
 - (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-	boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
-	eufe::Drone* drone = ship->addDrone(type.typeID).get();
+	eufe::Ship* ship = fittingViewController.fit.character->getShip();
+	eufe::Drone* drone = ship->addDrone(type.typeID);
 	
 	int dronesLeft = ship->getMaxActiveDrones() - 1;
 	for (;dronesLeft > 0; dronesLeft--)
-		ship->addDrone(boost::shared_ptr<eufe::Drone>(new eufe::Drone(*drone)));
+		ship->addDrone(new eufe::Drone(*drone));
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[popoverController dismissPopoverAnimated:YES];
@@ -264,20 +264,20 @@
 #pragma mark DronesAmountViewControllerDelegate
 
 - (void) dronesAmountViewController:(DronesAmountViewController*) aController didSelectAmount:(NSInteger) amount {
-	boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
+	eufe::Ship* ship = fittingViewController.fit.character->getShip();
 	NSMutableArray* drones = [rows objectAtIndex:modifiedIndexPath.row];
 	int left = drones.count - amount;
 	if (left < 0) {
 		ItemInfo* itemInfo = [drones objectAtIndex:0];
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		for (;left < 0; left++)
-			ship->addDrone(boost::shared_ptr<eufe::Drone>(new eufe::Drone(*drone)))->setTarget(drone->getTarget());
+			ship->addDrone(new eufe::Drone(*drone))->setTarget(drone->getTarget());
 	}
 	else if (left > 0) {
 		int i = 0;
 		for (; left > 0; left--) {
 			ItemInfo* itemInfo = [drones objectAtIndex:i++];
-			boost::shared_ptr<eufe::Drone> drone = boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item);
+			eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 			ship->removeDrone(drone);
 		}
 	}
@@ -291,21 +291,21 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSArray* array = [rows objectAtIndex:modifiedIndexPath.row];
-	boost::shared_ptr<eufe::Ship> ship = fittingViewController.fit.character.get()->getShip();
+	eufe::Ship* ship = fittingViewController.fit.character->getShip();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonDelete]) {
 		for (ItemInfo* itemInfo in array)
-			ship->removeDrone(boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item));
+			ship->removeDrone(dynamic_cast<eufe::Drone*>(itemInfo.item));
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonActivate]) {
 		for (ItemInfo* itemInfo in array)
-			boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item)->setActive(true);
+			dynamic_cast<eufe::Drone*>(itemInfo.item)->setActive(true);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonDeactivate]) {
 		for (ItemInfo* itemInfo in array)
-			boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item)->setActive(false);
+			dynamic_cast<eufe::Drone*>(itemInfo.item)->setActive(false);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
@@ -323,7 +323,7 @@
 	}
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item.get());
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		targetsViewController.modifiedItem = itemInfo;
 		targetsViewController.currentTarget = drone->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -333,7 +333,7 @@
 	}
 	else if ([button isEqualToString:ActionButtonClearTarget]) {
 		for (ItemInfo* itemInfo in array)
-			boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item)->clearTarget();
+			dynamic_cast<eufe::Drone*>(itemInfo.item)->clearTarget();
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowInfo]) {
@@ -374,7 +374,7 @@
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
 			
-			boost::shared_ptr<eufe::Ship> ship = aFittingViewController.fit.character.get()->getShip();
+			eufe::Ship* ship = aFittingViewController.fit.character->getShip();
 			NSMutableDictionary* dronesDic = [NSMutableDictionary dictionary];
 			
 			const eufe::DronesList& drones = ship->getDrones();

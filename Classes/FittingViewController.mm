@@ -286,7 +286,7 @@
 	[fitNameTextField resignFirstResponder];
 	fit.fitName = fitNameTextField.text;
 	
-	boost::shared_ptr<eufe::Character> character = fit.character;
+	eufe::Character* character = fit.character;
 	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
 	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, fit.fitName ? fit.fitName : itemInfo.typeName];
 	
@@ -368,7 +368,7 @@
 	[value retain];
 	[fit release];
 	fit = value;
-	boost::shared_ptr<eufe::Character> character = fit.character;
+	eufe::Character* character = fit.character;
 	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
 	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, fit.fitName ? fit.fitName : itemInfo.typeName];
 	self.fitNameTextField.text = fit.fitName;
@@ -384,7 +384,7 @@
 	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
 	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
 	for (Fit* item in fits) {
-		boost::shared_ptr<eufe::Character> character = item.character;
+		eufe::Character* character = item.character;
 		character->getShip()->setDamagePattern(eufeDamagePattern);
 	}
 }
@@ -425,7 +425,7 @@
 		[controller release];
 	}
 	else if ([button isEqualToString:ActionButtonAreaEffect]) {
-		boost::shared_ptr<eufe::Item> area = fittingEngine->getArea();
+		eufe::Item* area = fittingEngine->getArea();
 		areaEffectsViewController.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[areaEffectsPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -498,7 +498,7 @@
 #pragma mark CharactersViewControllerDelegate
 
 - (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
-	eufe::Character* eufeCharacter = aController.modifiedFit.character.get();
+	eufe::Character* eufeCharacter = aController.modifiedFit.character;
 	eufeCharacter->setSkillLevels(*[character skillsMap]);
 	eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
 	[self update];
@@ -519,13 +519,13 @@
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[aController dismissModalViewControllerAnimated:YES];
 	
-	boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+	eufe::Ship* ship = fit.character->getShip();
 
 	if (type.group.categoryID == 8) {// Charge
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController dismissPopoverAnimated:YES];
 		if (aController.modifiedItem) {
-			eufe::Module* module = dynamic_cast<eufe::Module*>(aController.modifiedItem.item.get());
+			eufe::Module* module = dynamic_cast<eufe::Module*>(aController.modifiedItem.item);
 			module->setCharge(type.typeID);
 		}
 		else {
@@ -537,25 +537,25 @@
 	}
 	else if (type.group.categoryID == 18) {// Drone
 		eufe::TypeID typeID = type.typeID;
-		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+		eufe::Ship* ship = fit.character->getShip();
 		
 		const eufe::DronesList& drones = ship->getDrones();
 		eufe::Drone* sameDrone = NULL;
 		eufe::DronesList::const_iterator i, end = drones.end();
 		for (i = drones.begin(); i != end; i++) {
 			if ((*i)->getTypeID() == typeID) {
-				sameDrone = i->get();
+				sameDrone = *i;
 				break;
 			}
 		}
-		eufe::Drone* drone = ship->addDrone(type.typeID).get();
+		eufe::Drone* drone = ship->addDrone(type.typeID);
 		
 		if (sameDrone)
 			drone->setTarget(sameDrone->getTarget());
 		else {
 			int dronesLeft = ship->getMaxActiveDrones() - 1;
 			for (;dronesLeft > 0; dronesLeft--)
-				ship->addDrone(boost::shared_ptr<eufe::Drone>(new eufe::Drone(*drone)));
+				ship->addDrone(new eufe::Drone(*drone));
 		}
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -563,16 +563,16 @@
 	}
 	else if (type.group.categoryID == 20) {// Implant
 		if ([type.attributesDictionary valueForKey:@"331"]) {
-			fit.character.get()->addImplant(type.typeID);
+			fit.character->addImplant(type.typeID);
 		}
 		else {
-			fit.character.get()->addBooster(type.typeID);
+			fit.character->addBooster(type.typeID);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				[popoverController dismissPopoverAnimated:YES];
 		}
 	}
 	else { //Module
-		fit.character.get()->getShip()->addModule(type.typeID);
+		fit.character->getShip()->addModule(type.typeID);
 	}
 	[self update];
 }
@@ -580,7 +580,7 @@
 #pragma mark FitsViewControllerDelegate
 
 - (void) fitsViewController:(FitsViewController*) aController didSelectFit:(Fit*) aFit {
-	boost::shared_ptr<eufe::Character> character = aFit.character;
+	eufe::Character* character = aFit.character;
 	fittingEngine->getGang()->addPilot(character);
 	[fits addObject:aFit];
 	
@@ -599,9 +599,9 @@
 - (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
 	ItemInfo* itemInfo = controller.modifiedItem;
 	if (itemInfo.group.categoryID == 18) { // Drone
-		boost::shared_ptr<eufe::Drone> drone = boost::dynamic_pointer_cast<eufe::Drone>(itemInfo.item);
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		eufe::TypeID typeID = drone->getTypeID();
-		boost::shared_ptr<eufe::Ship> ship = fit.character.get()->getShip();
+		eufe::Ship* ship = fit.character->getShip();
 		
 		const eufe::DronesList& drones = ship->getDrones();
 		eufe::DronesList::const_iterator i, end = drones.end();
@@ -611,7 +611,7 @@
 		}
 	}
 	else {
-		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
+		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
 		module->setTarget(target);
 	}
 	[self update];

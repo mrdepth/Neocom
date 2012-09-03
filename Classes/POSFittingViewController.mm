@@ -310,7 +310,7 @@
 	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
 	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
 	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
-	fit.controlTower.get()->setDamagePattern(eufeDamagePattern);
+	fit.controlTower->setDamagePattern(eufeDamagePattern);
 }
 
 - (EVEDBInvControlTowerResource*) posFuelRequirements {
@@ -351,7 +351,7 @@
 		[fit save];
 	}
 	else if ([button isEqualToString:ActionButtonAreaEffect]) {
-		boost::shared_ptr<eufe::Item> area = fittingEngine->getArea();
+		eufe::Item* area = fittingEngine->getArea();
 		areaEffectsViewController.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[areaEffectsPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -415,13 +415,13 @@
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[aController dismissModalViewControllerAnimated:YES];
 	
-	boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
+	eufe::ControlTower* controlTower = fit.controlTower;
 	
 	if (type.group.categoryID == 8) {// Charge
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController dismissPopoverAnimated:YES];
 		if (aController.modifiedItem) {
-			eufe::Structure* structure = dynamic_cast<eufe::Structure*>(aController.modifiedItem.item.get());
+			eufe::Structure* structure = dynamic_cast<eufe::Structure*>(aController.modifiedItem.item);
 			structure->setCharge(type.typeID);
 		}
 		else {

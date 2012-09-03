@@ -157,35 +157,38 @@
 																							   bundle:nil];
 		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
 		__block Fit* fit = nil;
-		__block boost::shared_ptr<eufe::Character> *character = NULL;
+		__block eufe::Character* character = NULL;
 		
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			
-			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+			character = new eufe::Character(fittingViewController.fittingEngine);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				character->setSkillLevels(*[eveCharacter skillsMap]);
 			}
 			else
-				(*character)->setCharacterName("All Skills 0");
-			fit = [[Fit alloc] initWithAsset:asset character:*character];
+				character->setCharacterName("All Skills 0");
+			fit = [[Fit alloc] initWithAsset:asset character:character];
 			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled]) {
-				fittingViewController.fittingEngine->getGang()->addPilot(*character);
+				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
 				[fittingViewController.fits addObject:fit];
 				[self.navigationController pushViewController:fittingViewController animated:YES];
 			}
+			else {
+				if (character)
+					delete character;
+			}
 			[fittingViewController release];
 			[fit release];
-			delete character;
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}

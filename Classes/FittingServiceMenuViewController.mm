@@ -376,34 +376,37 @@
 																								   bundle:nil];
 			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 			__block Fit* fit = nil;
-			__block boost::shared_ptr<eufe::Character> *character = NULL;
+			__block eufe::Character* character = NULL;
 			[operation addExecutionBlock:^{
 				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-				character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
+				character = new eufe::Character(fittingViewController.fittingEngine);
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
 				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 					CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-					(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-					(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+					character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setSkillLevels(*[eveCharacter skillsMap]);
 				}
 				else
-					(*character)->setCharacterName("All Skills 0");
+					character->setCharacterName("All Skills 0");
 				
-				fit = [[Fit fitWithDictionary:row character:*character] retain];
+				fit = [[Fit fitWithDictionary:row character:character] retain];
 				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^{
 				if (![operation isCancelled]) {
-					fittingViewController.fittingEngine->getGang()->addPilot(*character);
+					fittingViewController.fittingEngine->getGang()->addPilot(character);
 					fittingViewController.fit = fit;
 					[fittingViewController.fits addObject:fit];
 					[self.navigationController pushViewController:fittingViewController animated:YES];
 				}
+				else {
+					if (character)
+						delete character;
+				}
 				[fittingViewController release];
 				[fit release];
-				delete character;
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
@@ -431,25 +434,28 @@
 																										bundle:nil];
 		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 		__block POSFit* posFit = nil;
-		__block boost::shared_ptr<eufe::ControlTower> *controlTower = NULL;
+		__block eufe::ControlTower* controlTower = NULL;
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			controlTower = new boost::shared_ptr<eufe::ControlTower>(new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID));
+			controlTower = new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID);
 
-			posFit = [[POSFit posFitWithFitID:nil fitName:type.typeName controlTower:*controlTower] retain];
+			posFit = [[POSFit posFitWithFitID:nil fitName:type.typeName controlTower:controlTower] retain];
 			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled]) {
 				[posFit save];
-				posFittingViewController.fittingEngine->setControlTower(*controlTower);
+				posFittingViewController.fittingEngine->setControlTower(controlTower);
 				posFittingViewController.fit = posFit;
 				[self.navigationController pushViewController:posFittingViewController animated:YES];
 			}
+			else {
+				if (controlTower)
+					delete controlTower;
+			}
 			[posFittingViewController release];
 			[posFit release];
-			delete controlTower;
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
@@ -458,35 +464,38 @@
 																							   bundle:nil];
 		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 		__block Fit* fit = nil;
-		__block boost::shared_ptr<eufe::Character> *character = NULL;
+		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingViewController.fittingEngine));
-			(*character)->setShip(type.typeID);
+			character = new eufe::Character(fittingViewController.fittingEngine);
+			character->setShip(type.typeID);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				character->setSkillLevels(*[eveCharacter skillsMap]);
 			}
 			else
-				(*character)->setCharacterName("All Skills 0");
-			fit = [[Fit fitWithFitID:nil fitName:type.typeName character:*character] retain];
+				character->setCharacterName("All Skills 0");
+			fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
 			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled]) {
 				[fit save];
-				fittingViewController.fittingEngine->getGang()->addPilot(*character);
+				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
 				[fittingViewController.fits addObject:fit];
 				[self.navigationController pushViewController:fittingViewController animated:YES];
 			}
+			else {
+				if (character)
+					delete character;
+			}
 			[fittingViewController release];
 			[fit release];
-			delete character;
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
@@ -512,7 +521,7 @@
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
 		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
-		boost::shared_ptr<eufe::Character> *character = new boost::shared_ptr<eufe::Character>(new eufe::Character(fittingEngine));
+		eufe::Character* character = new eufe::Character(fittingEngine);
 
 		for (NSMutableArray* group in fitsTmp) {
 			int n = group.count;
@@ -521,7 +530,7 @@
 				if ([[row valueForKey:@"isPOS"] boolValue])
 					break;
 				
-				Fit* fit = [[Fit alloc] initWithDictionary:row character:*character];
+				Fit* fit = [[Fit alloc] initWithDictionary:row character:character];
 				row = [fit dictionary];
 				[group replaceObjectAtIndex:i withObject:row];
 				[fit release];

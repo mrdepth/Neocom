@@ -215,7 +215,7 @@
 			skillPlanTmp.characterAttributes = account.characterAttributes;
 		}
 		
-		boost::shared_ptr<eufe::Character> character = fit.character;
+		eufe::Character* character = fit.character;
 
 		[skillPlanTmp addType:[ItemInfo itemInfoWithItem:character->getShip() error:nil]];
 		

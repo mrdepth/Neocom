@@ -10,12 +10,12 @@
 #include "eufe.h"
 
 @interface ItemInfo: EVEDBInvType {
-	boost::weak_ptr<eufe::Item> item;
+	eufe::Item* item;
 }
-@property (nonatomic, readonly) boost::shared_ptr<eufe::Item> item;
+@property (nonatomic, readonly) eufe::Item* item;
 
-+ (id) itemInfoWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr;
-- (id) initWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr;
++ (id) itemInfoWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr;
+- (id) initWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr;
 - (void) updateAttributes;
 
 @end

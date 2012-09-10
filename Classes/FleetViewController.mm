@@ -162,21 +162,21 @@
 		}
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			eufe::Character* character = fit.character.get();
-			eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
+			eufe::Character* character = fit.character;
+			eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 			
 			bool isBooster = false;
-			if (gang->getFleetBooster().get() != character)
+			if (gang->getFleetBooster() != character)
 				[actionSheet addButtonWithTitle:ActionButtonSetFleetBooster];
 			else
 				isBooster = true;
 			
-			if (gang->getWingBooster().get() != character)
+			if (gang->getWingBooster() != character)
 				[actionSheet addButtonWithTitle:ActionButtonSetWingBooster];
 			else
 				isBooster = true;
 			
-			if (gang->getSquadBooster().get() != character)
+			if (gang->getSquadBooster() != character)
 				[actionSheet addButtonWithTitle:ActionButtonSetSquadBooster];
 			else
 				isBooster = true;
@@ -223,21 +223,21 @@
 	else if ([button isEqualToString:ActionButtonBooster]) {
 		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
 		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		eufe::Character* character = fit.character.get();
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
+		eufe::Character* character = fit.character;
+		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 		
 		bool isBooster = false;
-		if (gang->getFleetBooster().get() != character)
+		if (gang->getFleetBooster() != character)
 			[actionSheet addButtonWithTitle:ActionButtonSetFleetBooster];
 		else
 			isBooster = true;
 
-		if (gang->getWingBooster().get() != character)
+		if (gang->getWingBooster() != character)
 			[actionSheet addButtonWithTitle:ActionButtonSetWingBooster];
 		else
 			isBooster = true;
 
-		if (gang->getSquadBooster().get() != character)
+		if (gang->getSquadBooster() != character)
 			[actionSheet addButtonWithTitle:ActionButtonSetSquadBooster];
 		else
 			isBooster = true;
@@ -254,29 +254,29 @@
 	}
 	else if ([button isEqualToString:ActionButtonSetFleetBooster]) {
 		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang().get()->setFleetBooster(fit.character);
+		fittingViewController.fittingEngine->getGang()->setFleetBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetWingBooster]) {
 		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang().get()->setWingBooster(fit.character);
+		fittingViewController.fittingEngine->getGang()->setWingBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetSquadBooster]) {
 		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang().get()->setSquadBooster(fit.character);
+		fittingViewController.fittingEngine->getGang()->setSquadBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonRemoveBooster]) {
 		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		eufe::Character* character = fit.character.get();
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
+		eufe::Character* character = fit.character;
+		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 		
-		if (gang->getFleetBooster().get() == character)
+		if (gang->getFleetBooster() == character)
 			gang->removeFleetBooster();
-		else if (gang->getWingBooster().get() == character)
+		else if (gang->getWingBooster() == character)
 			gang->removeWingBooster();
-		else if (gang->getSquadBooster().get() == character)
+		else if (gang->getSquadBooster() == character)
 			gang->removeSquadBooster();
 		
 		[fittingViewController update];
@@ -311,15 +311,15 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			eufe::Gang* gang = aFittingViewController.fittingEngine->getGang().get();
+			eufe::Gang* gang = aFittingViewController.fittingEngine->getGang();
 			
-			eufe::Character* fleetBooster = gang->getFleetBooster().get();
-			eufe::Character* wingBooster = gang->getWingBooster().get();
-			eufe::Character* squadBooster = gang->getSquadBooster().get();
+			eufe::Character* fleetBooster = gang->getFleetBooster();
+			eufe::Character* wingBooster = gang->getWingBooster();
+			eufe::Character* squadBooster = gang->getSquadBooster();
 			
 			//for (i = characters.begin(); i != end; i++) {
 			for (Fit* fit in fittingViewController.fits) {
-				eufe::Character* character = fit.character.get();
+				eufe::Character* character = fit.character;
 				ItemInfo* ship = [ItemInfo itemInfoWithItem:character->getShip() error:NULL];
 				NSString *booster = nil;
 				

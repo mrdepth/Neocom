@@ -195,8 +195,8 @@
 	}
 	else {
 		ItemInfo* itemInfo = [modules objectAtIndex:indexPath.row];
-		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
-		boost::shared_ptr<eufe::Charge> charge = module->getCharge();
+		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+		eufe::Charge* charge = module->getCharge();
 		
 		
 		bool useCharge = charge != NULL;
@@ -236,7 +236,7 @@
 		cell.titleLabel.text = itemInfo.typeName;
 		if (charge != NULL)
 		{
-			ItemInfo* chargeInfo = [ItemInfo itemInfoWithItem: boost::static_pointer_cast<eufe::Item>(charge) error:nil];
+			ItemInfo* chargeInfo = [ItemInfo itemInfoWithItem: charge error:nil];
 			cell.row1Label.text = chargeInfo.typeName;
 		}
 		
@@ -320,8 +320,8 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	NSArray *modules = [[sections objectAtIndex:indexPath.section] valueForKey:@"modules"];
-	eufe::Character* character = fittingViewController.fit.character.get();
-	eufe::Ship* ship = character->getShip().get();
+	eufe::Character* character = fittingViewController.fit.character;
+	eufe::Ship* ship = character->getShip();
 	if (indexPath.row >= modules.count) {
 		switch ((eufe::Module::Slot)[[[sections objectAtIndex:indexPath.section] valueForKey:@"slot"] integerValue]) {
 			case eufe::Module::SLOT_HI:
@@ -372,8 +372,8 @@
 		modifiedIndexPath = [indexPath retain];
 
 		ItemInfo* itemInfo = [modules objectAtIndex:indexPath.row];
-		boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
-		const std::list<eufe::TypeID>& chargeGroups = module->getChargeGroups();
+		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = module->getChargeSize();
 		if (chargeGroups.size() > 0)
@@ -387,8 +387,8 @@
 					int chargeSize2 = (*i)->getChargeSize();
 					if (chargeSize == chargeSize2)
 					{
-						const std::list<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::list<eufe::TypeID> intersection;
+						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
+						std::vector<eufe::TypeID> intersection;
 						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
 						if (intersection.size() > 0)
 						{
@@ -461,19 +461,19 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSArray* modules = [[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"modules"];
 	ItemInfo* itemInfo = [modules objectAtIndex:modifiedIndexPath.row];
-	boost::shared_ptr<eufe::Module> module = boost::dynamic_pointer_cast<eufe::Module>(itemInfo.item);
+	eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
 	int chargeSize = module->getChargeSize();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-	eufe::Character* character = fittingViewController.fit.character.get();
-	eufe::Ship* ship = character->getShip().get();
+	eufe::Character* character = fittingViewController.fit.character;
+	eufe::Ship* ship = character->getShip();
 
 	if ([button isEqualToString:ActionButtonDelete]) {
-		fittingViewController.fit.character.get()->getShip()->removeModule(module);
+		fittingViewController.fit.character->getShip()->removeModule(module);
 		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmmo]) {
-		const std::list<eufe::TypeID>& chargeGroups = module->getChargeGroups();
+		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = module->getChargeSize();
 		if (chargeGroups.size() > 0)
@@ -487,8 +487,8 @@
 					int chargeSize2 = (*i)->getChargeSize();
 					if (chargeSize == chargeSize2)
 					{
-						const std::list<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::list<eufe::TypeID> intersection;
+						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
+						std::vector<eufe::TypeID> intersection;
 						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
 						if (intersection.size() > 0)
 						{
@@ -518,8 +518,8 @@
 		[actionSheet autorelease];
 	}
 	else if ([button isEqualToString:ActionButtonAmmoCurrentModule] || [button isEqualToString:ActionButtonAmmoAllModules]) {
-		const std::list<eufe::TypeID>& chargeGroups = module->getChargeGroups();
-		std::list<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
+		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
+		std::vector<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
 
 		NSMutableString *groups = [NSMutableString string];
 		bool isFirst = true;
@@ -653,7 +653,7 @@
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																					  bundle:nil];
-		ItemInfo* ammo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(module->getCharge()) error:nil];
+		ItemInfo* ammo = [ItemInfo itemInfoWithItem:module->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -690,7 +690,7 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Ship> ship = aFittingViewController.fit.character.get()->getShip();
+			eufe::Ship* ship = aFittingViewController.fit.character->getShip();
 			
 			eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
 			int n = sizeof(slots) / sizeof(eufe::Module::Slot);

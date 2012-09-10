@@ -20,7 +20,7 @@
 @synthesize fitID;
 @synthesize fitName;
 
-+ (id) posFitWithFitID:(NSString*) fitID fitName:(NSString*) fitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
++ (id) posFitWithFitID:(NSString*) fitID fitName:(NSString*) fitName controlTower:(eufe::ControlTower*) aControlTower {
 	return [[[POSFit alloc] initWithFitID:fitID fitName:fitName controlTower:aControlTower] autorelease];
 }
 
@@ -33,7 +33,7 @@
 	
 }
 
-- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName controlTower:(boost::shared_ptr<eufe::ControlTower>) aControlTower {
+- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName controlTower:(eufe::ControlTower*) aControlTower {
 	if (self = [super initWithItem:aControlTower error:nil]) {
 		self.fitID = aFitID;
 		self.fitName = aFitName;
@@ -46,7 +46,7 @@
 	NSString *aFitName = [dictionary valueForKey:@"fitName"];
 	NSDictionary* fit = [dictionary valueForKey:@"fit"];
 	NSInteger controlTowerID = [[fit valueForKey:@"controlTowerID"] integerValue];
-	boost::shared_ptr<eufe::ControlTower> ct = engine->setControlTower(controlTowerID);
+	eufe::ControlTower* ct = engine->setControlTower(controlTowerID);
 
 	if (self = [self initWithFitID:aFitID fitName:aFitName controlTower:ct]) {
 		if (ct == NULL) {
@@ -58,7 +58,7 @@
 			NSInteger chargeID = [[record valueForKey:@"chargeID"] integerValue];
 			if (aTypeID != 0) {
 				eufe::Module::State state = static_cast<eufe::Module::State>([[record valueForKey:@"state"] integerValue]);
-				boost::shared_ptr<eufe::Structure> structure = ct->addStructure(aTypeID);
+				eufe::Structure* structure = ct->addStructure(aTypeID);
 				if (structure != NULL) {
 					if (chargeID != 0)
 						structure->setCharge(chargeID);
@@ -72,7 +72,7 @@
 }
 
 - (id) initWithAsset:(EVEAssetListItem*) asset engine:(eufe::Engine*) engine {
-	boost::shared_ptr<eufe::ControlTower> ct = engine->setControlTower(asset.typeID);
+	eufe::ControlTower* ct = engine->setControlTower(asset.typeID);
 	if (self = [self initWithItem:ct error:nil]) {
 		self.fitName = asset.location.itemName ? asset.location.itemName : asset.type.typeName;
 		if (ct == NULL) {
@@ -103,12 +103,12 @@
 }
 
 
-- (boost::shared_ptr<eufe::ControlTower>) controlTower {
-	return boost::dynamic_pointer_cast<eufe::ControlTower>(self.item);
+- (eufe::ControlTower*) controlTower {
+	return dynamic_cast<eufe::ControlTower*>(self.item);
 }
 
 - (NSDictionary*) dictionary {
-	boost::shared_ptr<eufe::ControlTower> ct = self.controlTower;
+	eufe::ControlTower* ct = self.controlTower;
 	if (ct == NULL)
 		return nil;
 	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:ct error:NULL];

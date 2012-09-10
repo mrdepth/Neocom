@@ -239,21 +239,21 @@
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 		__block Fit* fit = nil;
-		__block boost::shared_ptr<eufe::Character> *character = NULL;
+		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			character = new boost::shared_ptr<eufe::Character>(new eufe::Character(engine));
+			character = new eufe::Character(engine);
 
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				character->setSkillLevels(*[eveCharacter skillsMap]);
 			}
 			else
-				(*character)->setCharacterName("All Skills 0");
+				character->setCharacterName("All Skills 0");
 
-			fit = [[Fit fitWithDictionary:row character:*character] retain];
+			fit = [[Fit fitWithDictionary:row character:character] retain];
 			[pool release];
 		}];
 		
@@ -262,7 +262,10 @@
 				[fit save];
 				[delegate fitsViewController:self didSelectFit:[fit autorelease]];
 			}
-			delete character;
+			else {
+				if (character)
+					delete character;
+			}
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
@@ -277,22 +280,22 @@
 	
 	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
 	__block Fit* fit = nil;
-	__block boost::shared_ptr<eufe::Character> *character = NULL;
+	__block eufe::Character* character = NULL;
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		character = new boost::shared_ptr<eufe::Character>(new eufe::Character(engine));
-		(*character)->setShip(type.typeID);
+		character = new eufe::Character(engine);
+		character->setShip(type.typeID);
 
 		EVEAccount* currentAccount = [EVEAccount currentAccount];
 		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-			(*character)->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			(*character)->setSkillLevels(*[eveCharacter skillsMap]);
+			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setSkillLevels(*[eveCharacter skillsMap]);
 		}
 		else
-			(*character)->setCharacterName("All Skills 0");
+			character->setCharacterName("All Skills 0");
 
-		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:*character] retain];
+		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
 		[pool release];
 	}];
 	
@@ -301,7 +304,10 @@
 			[fit save];
 			[delegate fitsViewController:self didSelectFit:[fit autorelease]];
 		}
-		delete character;
+		else {
+			if (!character)
+				delete character;
+		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

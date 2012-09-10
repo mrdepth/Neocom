@@ -213,11 +213,11 @@
 	if ([button isEqualToString:ActionButtonDelete]) {
 		if (modifiedIndexPath.section == 0) {
 			ItemInfo* itemInfo = [implants valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
-			fittingViewController.fit.character.get()->removeImplant(boost::dynamic_pointer_cast<eufe::Implant>(itemInfo.item));
+			fittingViewController.fit.character->removeImplant(dynamic_cast<eufe::Implant*>(itemInfo.item));
 		}
 		else {
 			ItemInfo* itemInfo = [boosters valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
-			fittingViewController.fit.character.get()->removeBooster(boost::dynamic_pointer_cast<eufe::Booster>(itemInfo.item));
+			fittingViewController.fit.character->removeBooster(dynamic_cast<eufe::Booster*>(itemInfo.item));
 		}
 		[fittingViewController update];
 	}
@@ -259,7 +259,7 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
+			eufe::Character* character = aFittingViewController.fit.character;
 			const eufe::ImplantsList& implantsList = character->getImplants();
 			eufe::ImplantsList::const_iterator i, end = implantsList.end();
 			for (i = implantsList.begin(); i != end; i++)

@@ -8,7 +8,6 @@
 
 #import "AboutViewController.h"
 #import "EVERequestsCache.h"
-#import "URLImageViewManager.h"
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
@@ -133,7 +132,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
 		[[EVERequestsCache sharedRequestsCache] clear];
-		[[URLImageViewManager sharedManager] clear];
+		[[NSURLCache sharedURLCache] removeAllCachedResponses];
 		[self reload];
 		[EVEAccount reload];
 	}
@@ -186,8 +185,6 @@
 	
 	NSString *path = [EVERequestsCache cacheDirectory];
 	apiCacheSizeLabel.text = [NSString stringWithFormat:@"%@ bytes", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
-	path = [[URLImageViewManager sharedManager] cacheDirectory];
-	imagesCacheSizeLabel.text = [NSString stringWithFormat:@"%@ bytes", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

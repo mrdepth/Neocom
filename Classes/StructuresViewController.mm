@@ -502,7 +502,7 @@
 	NSMutableArray *structuresTmp = [NSMutableArray array];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:@"Updating POS Structures"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
@@ -512,7 +512,10 @@
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			float n = structuresList.size();
+			float j = 0;
 			for (i = structuresList.begin(); i != end; i++) {
+				operation.progress = j++ / n;
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [structuresDic valueForKey:key];
 				if (!array) {

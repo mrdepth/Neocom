@@ -38,7 +38,8 @@
     [super viewDidLoad];
 	self.title = @"Add API Key";
 	
-	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:@"Loading Accounts"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[[EVEAccountStorage sharedAccountStorage] reload];
 		[pool release];
@@ -130,7 +131,8 @@
 		[connection.response run];
 	}
 	else {
-		NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+Request" name:@"Checking API Key"];
+		[operation addExecutionBlock:^{
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 			NSInteger keyID = [[arguments valueForKey:@"keyID"] integerValue];

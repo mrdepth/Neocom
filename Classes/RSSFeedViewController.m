@@ -140,7 +140,7 @@
 
 - (void) loadData {
 	NSMutableArray *values = [NSMutableArray array];
-	__block NSBlockOperation *operation = [[[NSBlockOperation alloc] init] autorelease];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:@"Loading RSS Feed"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -151,7 +151,10 @@
 		else {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"MMMM dd, yyyy hh:mm a"];
+			float n = rss.feed.items.count;
+			float i = 0;
 			for (RSSItem *item in rss.feed.items) {
+				operation.progress = i++ / n;
 				NSMutableString *description = [NSMutableString stringWithString:item.description ? item.description : @""];
 				[description removeHTMLTags];
 				[description replaceHTMLEscapes];

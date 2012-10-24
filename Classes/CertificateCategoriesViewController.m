@@ -47,7 +47,7 @@
 	self.title = @"Certificates";
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Categories"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		

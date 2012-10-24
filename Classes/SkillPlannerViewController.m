@@ -369,7 +369,7 @@
 @implementation SkillPlannerViewController(Private)
 
 - (void) loadData {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlannerViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:@"Loading Skill Plan"];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -383,7 +383,9 @@
 		
 		NSError *error = nil;
 		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error];
+		operation.progress = 0.5;
 		[skillPlanTmp trainingTime];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	

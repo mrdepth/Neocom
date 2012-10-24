@@ -381,7 +381,7 @@
 			charWalletJournal = [[NSMutableArray alloc] init];
 			NSMutableArray *charWalletJournalTmp = [NSMutableArray array];
 			EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletJournalFilter" ofType:@"plist"]]];
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+CharacterWallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CharacterWallet" name:@"Loading Character Journal"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSError *error = nil;
@@ -392,6 +392,7 @@
 				}
 				
 				EVECharWalletJournal *journal = [EVECharWalletJournal charWalletJournalWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID fromID:0 rowCount:JOURNAL_ROWS_COUNT error:&error];
+				operation.progress = 0.5;
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 				}
@@ -399,7 +400,10 @@
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 					[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 					
+					float n = journal.charWalletJournal.count;
+					float i = 0;
 					for (EVECharWalletJournalItem *transaction in journal.charWalletJournal) {
+						operation.progress = 0.5 + i++ / n / 2;
 						NSString* name = nil;
 						if (transaction.ownerName2.length > 0)
 							name = [NSString stringWithFormat:@"%@ -> %@", transaction.ownerName1, transaction.ownerName2];
@@ -456,7 +460,7 @@
 		else {
 			NSMutableArray *journalTmp = [NSMutableArray array];
 			if (charFilter) {
-				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:@"Applying Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[journalTmp addObjectsFromArray:[charFilter applyToValues:charWalletJournal]];
@@ -502,27 +506,31 @@
 			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:corpWalletJournal];
 			EUFilter *filter = corpFilter ? [[corpFilter copy] autorelease] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletJournalFilter" ofType:@"plist"]]];
 			
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+CorpWallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpWallet" name:@"Loading Corp Journal"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 				NSMutableArray *account0 = [NSMutableArray arrayWithArray:[corpWalletTransactionsTmp objectAtIndex:0]];
-				
+
+				float n = accountsToLoad.count;
+				__block float i = 0;
 				[accountsToLoad enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 					NSMutableArray *account = [NSMutableArray array];
-					NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+					EUOperation *loadingOperation = [EUOperation operationWithIdentifier:nil name:@"Loading Journal Details"];
+					[loadingOperation addExecutionBlock:^{
 						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 						[account addObjectsFromArray:[self downloadWalletJournalWithAccountIndex:idx]];
 						[pool release];
 					}];
 					
-					[operation setCompletionBlockInCurrentThread:^(void) {
+					[loadingOperation setCompletionBlockInCurrentThread:^(void) {
+						operation.progress = i++ / n;
 						[filter updateWithValues:account];
 						[corpWalletTransactionsTmp replaceObjectAtIndex:idx withObject:account];
 						[account0 addObjectsFromArray:account];
 					}];
 					
-					[queue addOperation:operation];
+					[queue addOperation:loadingOperation];
 				}];
 				
 				[queue waitUntilAllOperationsAreFinished];
@@ -548,7 +556,7 @@
 		else {
 			NSMutableArray *journalTmp = [NSMutableArray array];
 			if (corpFilter) {
-				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:@"Applying Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[journalTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletJournal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
@@ -636,7 +644,7 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance" name:@"Loading Account Balance"];
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -652,7 +660,6 @@
 				[corpAccountsTmp addObject:[NSNumber numberWithFloat:account.balance]];
 			}
 			[corpAccountsTmp replaceObjectAtIndex:0 withObject:[NSNumber numberWithFloat:summary]];
-			[walletJournalTableView reloadData];
 		}
 		
 		[pool release];
@@ -727,7 +734,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletJournalViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Search" name:@"Searching"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *transcation in walletJournal) {

@@ -345,7 +345,7 @@
 	NSMutableArray *skillQueueTmp = [NSMutableArray array];
 	NSMutableArray *skillGroupsTmp = [NSMutableArray array];
 	__block NSString *skillQueueTitleTmp = nil;
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillsViewController+Load" name:@"Loading Skills"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -358,6 +358,7 @@
 		NSError *error = nil;
 		//character.skillQueue = [EVESkillQueue skillQueueWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID error:&error];
 		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error];
+		operation.progress = 0.3;
 		//[character updateSkillpoints];
 		
 		if (error) {
@@ -394,7 +395,7 @@
 				[skill release];
 				i++;
 			}
-			
+			operation.progress = 0.3;
 			if (account.characterSheet.skills) {
 				NSMutableDictionary *groups = [NSMutableDictionary dictionary];
 				for (EVECharacterSheetSkill *item in account.characterSheet.skills) {
@@ -457,7 +458,7 @@
 					[group setValue:[NSString stringWithFormat:@"%@ (%@ skillpoints)", [group valueForKey:@"groupName"], [NSNumberFormatter localizedStringFromNumber:[group valueForKey:@"skillPoints"] numberStyle:NSNumberFormatterDecimalStyle]] forKey:@"groupName"];
 				}
 			}
-			
+			operation.progress = 0.6;
 			if (skillQueueTitle) {
 				[skillQueueTitle release];
 				skillQueueTitle = nil;
@@ -475,6 +476,7 @@
 				else
 					skillQueueTitleTmp = [[NSString alloc] initWithString:@"Training queue is inactive"];
 			}
+			operation.progress = 1.0;
 		}
 		[pool release];
 	}];

@@ -135,7 +135,7 @@
 	scrollView.maximumZoomScale = 1;
 	scrollView.minimumZoomScale = MIN(scaleX, scaleY);
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CertificateViewController+load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateViewController+load" name:@"Loading Certificates"];
 	NSMutableArray* rowsTmp = [NSMutableArray array];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{

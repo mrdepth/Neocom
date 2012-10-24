@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "URLImageView.h"
 #import "EVEAccountStorage.h"
 
 @interface EVEAccountsCharacterCellView : UITableViewCell {
-	URLImageView *portraitImageView;
-	URLImageView *corpImageView;
+	UIImageView *portraitImageView;
+	UIImageView *corpImageView;
 	UILabel *userNameLabel;
 	UILabel *corpLabel;
 	UILabel *trainingTimeLabel;
@@ -20,8 +19,8 @@
 	UISwitch *enableSwitch;
 	EVEAccountStorageCharacter *character;
 }
-@property (nonatomic, retain) IBOutlet URLImageView *portraitImageView;
-@property (nonatomic, retain) IBOutlet URLImageView *corpImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *portraitImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *corpImageView;
 @property (nonatomic, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *corpLabel;
 @property (nonatomic, retain) IBOutlet UILabel *trainingTimeLabel;

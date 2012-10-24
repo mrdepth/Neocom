@@ -69,7 +69,7 @@
 	}
 	else {
 		self.title = asset.name;
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:@"Loading Locations"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVELocations* locations = nil;
@@ -155,7 +155,7 @@
 	if (asset.type.group.categoryID == 6) {// Ship
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
 																							   bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		
@@ -165,6 +165,7 @@
 			character = new eufe::Character(fittingViewController.fittingEngine);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
+			operation.progress = 0.3;
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
 				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -172,7 +173,9 @@
 			}
 			else
 				character->setCharacterName("All Skills 0");
+			operation.progress = 0.6;
 			fit = [[Fit alloc] initWithAsset:asset character:character];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -195,7 +198,7 @@
 	else {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
 																										bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading POS Fit"];
 		__block POSFit* fit = nil;
 		
 		[operation addExecutionBlock:^{
@@ -464,7 +467,7 @@
 	if (!assets) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"assetsFilter" ofType:@"plist"]]];
 		NSMutableArray* assetsTmp = [NSMutableArray array];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Load"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Load" name:@"Loading Assets"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (asset.type.group.categoryID == 6) { // Ship
@@ -587,7 +590,10 @@
 					process(subItem);
 			};
 			
+			float n = asset.contents.count;
+			float i = 0;
 			for (EVEAssetListItem* item in asset.contents) {
+				operation.progress = i++ / n;
 				process(item);
 			}
 			
@@ -610,7 +616,7 @@
 	else {
 		NSMutableArray* sectionsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -620,8 +626,12 @@
 					for (EVEAssetListItem* item in contents)
 						search(item.contents, location);
 				};
+				
 				NSMutableArray* filteredAssets = [NSMutableArray array];
+				float n = assets.count;
+				float i = 0;
 				for (NSDictionary* section in assets) {
+					operation.progress = i++ / n;
 					search([section valueForKey:@"assets"], filteredAssets);
 				}
 
@@ -678,7 +688,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);
@@ -698,7 +708,10 @@
 		
 		
 		NSMutableArray* values = [[NSMutableArray alloc] init];
+		float n = sections.count;
+		float i = 0;
 		for (NSDictionary* section in sections) {
+			operation.progress = i++ / n / 2;
 			search([section valueForKey:@"assets"], values);
 		}
 		NSMutableArray* values2 =[NSMutableArray arrayWithArray:[filter applyToValues:values]];
@@ -714,7 +727,11 @@
 				return [asset1.type.group.category.categoryName compare:asset2.type.group.category.categoryName];
 			}];
 			
+			n = groups.count;
+			i = 0;
 			for (NSArray* group in groups) {
+				operation.progress = 0.5 + i++ / n / 2;
+
 				EVEAssetListItem* item = [group objectAtIndex:0];
 				NSString* title = item.type.group.category.categoryName;
 				group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];

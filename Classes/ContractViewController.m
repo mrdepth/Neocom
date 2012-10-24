@@ -266,7 +266,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ContractViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractViewController+Load" name:@"Loading Contract Details"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -338,6 +338,8 @@
 		else
 			contractItems = [EVEContractItems contractItemsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID contractID:contract.contractID corporate:corporate error:&error];
 
+		operation.progress = 0.5;
+		
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -360,6 +362,8 @@
 			}
 			[sectionsTmp addObject:sell];
 			[sectionsTmp addObject:buy];
+			
+			operation.progress = 0.75;
 
 			EVEContractBids *contractBids;
 			if (corporate)
@@ -405,6 +409,7 @@
 				
 				[sectionsTmp addObject:rows];
 			}
+			operation.progress = 1.0;
 		}
 		[dateFormatter release];
 		[pool release];

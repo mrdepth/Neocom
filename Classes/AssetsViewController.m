@@ -361,7 +361,7 @@
 		}
 		
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:@"Loading Assets"];
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -441,8 +441,11 @@
 					for (EVEAssetListItem* item in asset.contents)
 						process(item);
 				};
-				
+				operation.progress = 0.5;
+				float n = assetsList.assets.count;
+				float i = 0;
 				for (EVEAssetListItem* asset in assetsList.assets) {
+					operation.progress = 0.5 + i++ / n / 4;
 					process(asset);
 				}
 				
@@ -532,6 +535,7 @@
 										  topLevelAssets, @"assets", nil]];
 				}
 				[assetsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+				operation.progress = 1.0;
 			}
 			[pool release];
 		}];
@@ -558,7 +562,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -568,6 +572,8 @@
 					for (EVEAssetListItem* item in contents)
 						search(item.contents, location);
 				};
+				float n = currentAssets.count;
+				float i = 0;
 				for (NSDictionary* section in currentAssets) {
 					NSMutableArray* location = [NSMutableArray array];
 					
@@ -579,6 +585,7 @@
 											  [NSNumber numberWithBool:YES], @"expanded",
 											  location, @"assets", nil]];
 					}
+					operation.progress = i++ / n;
 				}
 				[pool release];
 			}];
@@ -647,7 +654,7 @@
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
 	EUFilter *filter = corporate ? corpFilter : charFilter;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Search" name:@"Searching"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);
@@ -665,7 +672,8 @@
 			}
 		};
 
-		
+		float n = assets.count;
+		float i = 0;
 		for (NSDictionary* section in assets) {
 			NSMutableArray* values = [[NSMutableArray alloc] init];
 			search([section valueForKey:@"assets"], values);
@@ -680,6 +688,7 @@
 									  [NSNumber numberWithBool:YES], @"expanded",
 									  values2, @"assets", nil]];
 			}
+			operation.progress = i++ / n;
 		}
 		[pool release];
 	}];

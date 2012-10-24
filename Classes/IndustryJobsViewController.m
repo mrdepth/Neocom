@@ -320,7 +320,7 @@
 		}
 		
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"IndustryJobsViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"IndustryJobsViewController+Load%d", corporate] name:@"Loading Industry Jobs"];
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -349,7 +349,10 @@
 				
 				NSDate *currentTime = [industryJobs serverTimeWithLocalTime:[NSDate date]];
 				
+				float n = industryJobs.jobs.count;
+				float i = 0;
 				for (EVEIndustryJobsItem *job in industryJobs.jobs) {
+					operation.progress = i++ / n / 2;
 					NSString *remains;
 					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:job.outputTypeID error:nil];
 					NSString *location = nil;
@@ -499,7 +502,7 @@
 				[dateFormatter release];
 				
 				[jobsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:NO]]];
-				
+				operation.progress = 0.75;
 				if (charIDs.count > 0) {
 					NSError *error = nil;
 					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
@@ -513,6 +516,7 @@
 						}
 					}
 				}
+				operation.progress = 1.0;
 				[filterTmp updateWithValues:jobsTmp];
 			}
 			[pool release];
@@ -540,7 +544,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"IndustryJobsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[jobsTmp addObjectsFromArray:[filter applyToValues:currentJobs]];
@@ -623,7 +627,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"IndustryJobsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *job in jobs) {

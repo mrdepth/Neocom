@@ -38,7 +38,8 @@
 	__block NSArray *sectionsTmp = nil;
 	NSMutableDictionary *groupsTmp = [NSMutableDictionary dictionary];
 	
-	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AccessMaskViewController+viewDidLoad" name:@"Loading Access Mask"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
 		EVECalllist *calllist = [EVECalllist calllistWithError:&error];

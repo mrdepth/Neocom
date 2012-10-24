@@ -369,7 +369,7 @@
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"DronesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"DronesViewController+Update" name:@"Updating Drones"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -379,7 +379,12 @@
 			
 			const eufe::DronesList& drones = ship->getDrones();
 			eufe::DronesList::const_iterator i, end = drones.end();
+			
+			float n = drones.size();
+			float j = 0;
 			for (i = drones.begin(); i != end; i++) {
+				operation.progress = j++ / n;
+
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [dronesDic valueForKey:key];
 				if (!array) {

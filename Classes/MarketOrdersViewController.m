@@ -327,7 +327,7 @@
 		
 		EVEAccount *account = [EVEAccount currentAccount];
 		
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:@"Loading Market Orders"];
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 
 		[operation addExecutionBlock:^(void) {
@@ -344,6 +344,7 @@
 				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
 			else
 				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+			operation.progress = 0.5;
 			
 			NSDate *currentTime = [marketOrders serverTimeWithLocalTime:[NSDate date]];
 			
@@ -448,7 +449,7 @@
 										  ]];
 				}
 				[dateFormatter release];
-				
+				operation.progress = 0.75;
 				[ordersTmp sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"issued" ascending:NO], nil]];
 				
 				if (charIDs.count > 0) {
@@ -465,6 +466,7 @@
 					}
 				}
 				[filterTmp updateWithValues:ordersTmp];
+				operation.progress = 1.0;
 			}
 			[pool release];
 		}];
@@ -491,7 +493,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketOrdersViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
@@ -571,7 +573,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketOrdersViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *order in orders) {

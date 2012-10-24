@@ -116,7 +116,7 @@
 }
 
 - (IBAction) onSave:(id) sender {
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AddEVEAccountViewController+Save"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:@"Checking API Key"];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -189,11 +189,14 @@
 	if (apiKeys.count == 0)
 		return;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:@"Checking API Keys"];
 	NSMutableArray *errors = [NSMutableArray array];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		float n = apiKeys.count;
+		float i = 0;
 		for (NSDictionary *apiKey in apiKeys) {
+			operation.progress = i++ / n;
 			NSError *error = nil;
 			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[apiKey valueForKey:@"keyID"] integerValue] vCode:[apiKey valueForKey:@"vCode"] error:&error];
 			if (error)

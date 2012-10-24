@@ -191,7 +191,7 @@
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading Area Effects"];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

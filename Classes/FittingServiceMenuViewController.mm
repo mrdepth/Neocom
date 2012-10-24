@@ -73,7 +73,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:@"Loading Fits"];
 	__block BOOL needsConvertTmp = NO;
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -82,7 +82,10 @@
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 		
 		BOOL needsSave = NO;
+		float n = fitsArray.count;
+		float i = 0;
 		for (NSMutableDictionary* row in fitsArray) {
+			operation.progress = i++ / n / 2;
 			EVEDBInvType* type;
 			NSObject* fitID = [row valueForKey:@"fitID"];
 			if ([fitID isKindOfClass:[NSNumber class]]) {
@@ -117,6 +120,8 @@
 		}
 		
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
+		operation.progress = 0.75;
+		
 		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
 		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			NSDictionary* a = [obj1 objectAtIndex:0];
@@ -127,6 +132,7 @@
 			else
 				return result;
 		}];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	
@@ -353,7 +359,7 @@
 		if ([[row valueForKey:@"isPOS"] boolValue]) {
 			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
 																											bundle:nil];
-			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading POS Fit"];
 			__block POSFit* fit = nil;
 			[operation addExecutionBlock:^{
 				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -374,7 +380,7 @@
 		else {
 			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
 																								   bundle:nil];
-			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
 			__block Fit* fit = nil;
 			__block eufe::Character* character = NULL;
 			[operation addExecutionBlock:^{
@@ -390,7 +396,9 @@
 				else
 					character->setCharacterName("All Skills 0");
 				
+				operation.progress = 0.5;
 				fit = [[Fit fitWithDictionary:row character:character] retain];
+				operation.progress = 1.0;
 				[pool release];
 			}];
 			
@@ -432,14 +440,16 @@
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
 																										bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block POSFit* posFit = nil;
 		__block eufe::ControlTower* controlTower = NULL;
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			controlTower = new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID);
 
+			operation.progress = 0.5;
 			posFit = [[POSFit posFitWithFitID:nil fitName:type.typeName controlTower:controlTower] retain];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -462,7 +472,7 @@
 	else {
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
 																							   bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
@@ -478,7 +488,10 @@
 			}
 			else
 				character->setCharacterName("All Skills 0");
+
+			operation.progress = 0.5;
 			fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -513,7 +526,7 @@
 @implementation FittingServiceMenuViewController(Private)
 
 - (void) convertFits {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert" name:@"Converting Fits"];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	for (NSArray* group in fits)
 		[fitsTmp addObject:[NSMutableArray arrayWithArray:group]];
@@ -523,7 +536,10 @@
 		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
 		eufe::Character* character = new eufe::Character(fittingEngine);
 
+		float count = fitsTmp.count;
+		float j = 0;
 		for (NSMutableArray* group in fitsTmp) {
+			operation.progress = j++ / count;
 			int n = group.count;
 			for (int i = 0; i < n; i++) {
 				NSDictionary* row = [group objectAtIndex:i];

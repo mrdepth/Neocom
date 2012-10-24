@@ -170,7 +170,7 @@
 
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Certificates"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray* certificates = [NSMutableArray array];
@@ -181,6 +181,7 @@
 												   if ([operation isCancelled])
 													   *needsMore = NO;
 											   }];
+		operation.progress = 0.5;
 		[certificates sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"certificateClass.className" ascending:YES]]];
 		
 		if (![operation isCancelled]) {

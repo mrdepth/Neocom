@@ -268,7 +268,7 @@
 - (void) loadMail {
 	EVEAccount* currentAccount = [EVEAccount currentAccount];
 	if (currentAccount) {
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MainMenuViewController+CheckMail"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:@"Checking Mail"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];

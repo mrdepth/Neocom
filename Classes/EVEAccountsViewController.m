@@ -16,8 +16,8 @@
 #import "NibTableViewCell.h"
 #import "EVEUniverseAppDelegate.h"
 #import "NSString+TimeLeft.h"
-#import "NSInvocation+Variadic.h"
 #import "AccessMaskViewController.h"
+#import "UIImageView+URL.h"
 
 @interface EVEAccountsViewController(Private)
 - (void) loadSection:(NSMutableDictionary*) section;
@@ -167,12 +167,12 @@
 		}
 		
 		if (RETINA_DISPLAY) {
-			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize128 error:nil] scale:2.0];
-			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize64 error:nil] scale:2.0];
+			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize128 error:nil] scale:2.0 completion:nil failureBlock:nil];
+			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize64 error:nil] scale:2.0 completion:nil failureBlock:nil];
 		}
 		else {
-			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize64 error:nil] scale:1.0];
-			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize32 error:nil] scale:1.0];
+			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize64 error:nil] scale:1.0 completion:nil failureBlock:nil];
+			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize32 error:nil] scale:1.0 completion:nil failureBlock:nil];
 		}
 		cell.userNameLabel.text = character.characterName;
 		cell.corpLabel.text = character.corporationName;
@@ -393,7 +393,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	NSMutableArray *emptyKeysTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"EVEAccountsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:@"Loading Accounts"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if ([operation isCancelled]) {
@@ -405,6 +405,7 @@
 		
 		EVEAccountStorage *accountStorage = [EVEAccountStorage sharedAccountStorage];
 		[accountStorage reload];
+		operation.progress = 0.3;
 		
 		NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 		
@@ -424,6 +425,8 @@
 				[pool release];
 			}];
 		}
+
+		operation.progress = 0.6;
 		
 		for (EVEAccountStorageAPIKey *apiKey in [accountStorage.apiKeys allValues])
 			if (apiKey.assignedCharacters.count == 0)
@@ -441,6 +444,7 @@
 		
 		
 		[queue waitUntilAllOperationsAreFinished];
+		operation.progress = 0.9;
 		[sectionsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			EVEAccountStorageCharacter *character1 = [obj1 valueForKey:@"character"];
 			EVEAccountStorageCharacter *character2 = [obj2 valueForKey:@"character"];
@@ -452,6 +456,7 @@
 				return [character1.characterName compare:character2.characterName ? character2.characterName : @""];
 		}];
 		[queue release];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	

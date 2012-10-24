@@ -11,8 +11,8 @@
 #import "EVEAccount.h"
 #import "Globals.h"
 #import "EUOperationQueue.h"
-#import "NSInvocation+Variadic.h"
 #import "NSString+TimeLeft.h"
+#import "UIImageView+URL.h"
 
 @interface CharacterInfoViewController(Private)
 - (void) update;
@@ -109,7 +109,7 @@
 	EVEAccount *account = [EVEAccount currentAccount];
 	[self checkServerStatus];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self]];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self] name:@"Loading Character Info"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[self updateCharacterInfo:account];
@@ -136,8 +136,10 @@
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale];
-			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale];
+			//[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale];
+			//[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale];
+			[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale completion:nil failureBlock:nil];
+			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
 			self.corpLabel.text = account.corporationName;
 		});
 
@@ -173,7 +175,8 @@
 				else
 					allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize32 error:nil];
 				
-				[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale];
+				//[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale];
+				[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale completion:nil failureBlock:nil];
 				self.allianceLabel.text = allianceName;
 			}
 			else {
@@ -190,13 +193,9 @@
 			self.corpLabel.text = @"No Character Selected";
 		});
 		if (self.view.frame.size.height != 24) {
-			id controller = self;
-			CGSize size = CGSizeMake(320, 24);
-			BOOL animated = YES;
-			NSInvocation *invocation = [NSInvocation invocationWithTarget:delegate
-																 selector:@selector(characterInfoViewController:willChangeContentSize:animated:)
-														 argumentPointers:&controller, &size, &animated];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:YES];
+			});
 		}
 	}
 }
@@ -236,7 +235,7 @@
 }
 
 - (void) checkServerStatus {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CharacterInfoViewController+checkServerStatus"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterInfoViewController+checkServerStatus" name:@"Checking Server Status"];
 	__block EVEServerStatus *serverStatus = nil;
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^{

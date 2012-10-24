@@ -251,7 +251,7 @@
 
 - (void) reload {
 	NSMutableArray *values = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ItemsDBViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:@"Loading..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (category == nil)
@@ -298,7 +298,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *values = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ItemsDBViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

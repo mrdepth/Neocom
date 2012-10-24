@@ -223,7 +223,7 @@
 - (void) reload {
 	NSMutableArray *subGroupValues = [NSMutableArray array];
 	NSMutableArray *itemValues = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -268,7 +268,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *values = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

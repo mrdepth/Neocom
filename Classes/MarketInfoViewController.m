@@ -331,11 +331,12 @@
 	NSMutableArray *sellSummaryTmp = [NSMutableArray array];
 	NSMutableArray *buySummaryTmp = [NSMutableArray array];
 	
-	__block NSBlockOperation *operation = [[[NSBlockOperation alloc] init] autorelease];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+loadData" name:@"Loading Market Info"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
 		EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:type.typeID regionIDs:nil systemID:0 hours:0 minQ:0 error:&error];
+		operation.progress = 0.5;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -358,6 +359,8 @@
 				[orders addObject:order];
 			}
 			
+			operation.progress = 0.75;
+			
 			for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
 				NSString *regionID = [NSString stringWithFormat:@"%d", order.regionID];
 				NSDictionary *region = [buyOrdersRegionsDic valueForKey:regionID];
@@ -377,6 +380,7 @@
 			[sellSummaryTmp addObjectsFromArray:quickLook.sellOrders];
 			[buySummaryTmp addObjectsFromArray:quickLook.buyOrders];
 		}
+		operation.progress = 1;
 		[pool release];
 	}];
 	
@@ -399,7 +403,7 @@
 	NSMutableArray *filteredSellSummaryTmp = [NSMutableArray array];
 	NSMutableArray *filteredBuySummaryTmp = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketInfoViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
@@ -421,6 +425,7 @@
 			if (orders.count > 0)
 				[filteredSellOrdersRegionsTmp addObject:region];
 		}
+		operation.progress = 0.25;
 		
 		for (NSDictionary *item in buyOrdersRegions) {
 			NSString *regionName = [item valueForKey:@"region"];
@@ -439,20 +444,21 @@
 			if (orders.count > 0)
 				[filteredBuyOrdersRegionsTmp addObject:region];
 		}
-		
+		operation.progress = 0.5;
 		for (EVECentralQuickLookOrder *order in sellSummary) {
 			if ([order.stationName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 				(order.region && [order.region.regionName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound)) {
 				[filteredSellSummaryTmp addObject:order];
 			}
 		}
-		
+		operation.progress = 0.75;
 		for (EVECentralQuickLookOrder *order in buySummary) {
 			if ([order.stationName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 				(order.region && [order.region.regionName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound)) {
 				[filteredBuySummaryTmp addObject:order];
 			}
 		}
+		operation.progress = 1;
 		[pool release];
 	}];
 	

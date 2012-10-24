@@ -255,7 +255,7 @@
 	NSMutableDictionary *boostersTmp = [NSMutableDictionary dictionary];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:@"Updating Implants"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {

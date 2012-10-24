@@ -383,7 +383,7 @@
 			charWalletTransactions = [[NSMutableArray alloc] init];
 			NSMutableArray *charWalletTransactionsTmp = [NSMutableArray array];
 			EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+CharacterWallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CharacterWallet" name:@"Loading Character Wallet"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSError *error = nil;
@@ -400,9 +400,10 @@
 				else {
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 					[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
-					
+					float n = transactions.transactions.count;
+					float i = 0;
 					for (EVECharWalletTransactionsItem *transaction in transactions.transactions) {
-						
+						operation.progress = 0.5 + i++ / n;
 						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:transaction.typeID error:nil];
 						BOOL sell = [transaction.transactionType isEqualToString:@"sell"];
 						[charWalletTransactionsTmp addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -441,7 +442,7 @@
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (charFilter) {
 				NSMutableArray* charWalletTransactionsLocal = charWalletTransactions;
-				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:@"Applying Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[transactionsTmp addObjectsFromArray:[charFilter applyToValues:charWalletTransactionsLocal]];
@@ -487,27 +488,31 @@
 			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:corpWalletTransactions];
 			EUFilter *filter = corpFilter ? [[corpFilter copy] autorelease] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
 			
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:@"Loading Character Wallet"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 				NSMutableArray *account0 = [NSMutableArray arrayWithArray:[corpWalletTransactionsTmp objectAtIndex:0]];
-				
+
+				float n = accountsToLoad.count;
+				__block float i = 0;
 				[accountsToLoad enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 					NSMutableArray *account = [NSMutableArray array];
-					NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+					EUOperation *loadingOperation = [EUOperation operation];
+					[loadingOperation addExecutionBlock:^{
 						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 						[account addObjectsFromArray:[self downloadWalletTransactionsWithAccountIndex:idx]];
 						[pool release];
 					}];
 					
-					[operation setCompletionBlockInCurrentThread:^(void) {
+					[loadingOperation setCompletionBlockInCurrentThread:^(void) {
+						operation.progress = i++ / n;
 						[filter updateWithValues:account];
 						[corpWalletTransactionsTmp replaceObjectAtIndex:idx withObject:account];
 						[account0 addObjectsFromArray:account];
 					}];
 					
-					[queue addOperation:operation];
+					[queue addOperation:loadingOperation];
 				}];
 				
 				[queue waitUntilAllOperationsAreFinished];
@@ -534,7 +539,7 @@
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (corpFilter) {
 				NSMutableArray *corpWalletTransactionsLocal = corpWalletTransactions;
-				__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:@"Applying Filter"];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[transactionsTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
@@ -609,7 +614,7 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:@"Loading Corp Balance"];
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -701,7 +706,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"WalletTransactionsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *transcation in walletTransactions) {

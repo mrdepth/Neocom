@@ -157,7 +157,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 1) {
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load" name:@"Importing Skill Plan"];
 		__block SkillPlan* skillPlan = nil;
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -170,8 +170,9 @@
 
 			skillPlan = [[SkillPlan skillPlanWithAccount:account
 									 eveMonSkillPlanPath:[[Globals documentsDirectory] stringByAppendingPathComponent:[rows objectAtIndex:indexPath.row]]] retain];
-			
+			operation.progress = 0.5;
 			[skillPlan trainingTime];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -221,15 +222,18 @@
 	}
 	else {
 		__block SkillPlan* skillPlan = nil;
-		NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+didReceiveRequest" name:@"Processing Request"];
+		[operation addExecutionBlock:^{
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVEAccount *account = [EVEAccount currentAccount];
 			if (!account) {
 				[pool release];
 				return;
 			}
-
+			
 			skillPlan = [[SkillPlan skillPlanWithAccount:account eveMonSkillPlan:[[arguments valueForKey:@"skillPlan"] valueForKey:@"value"]] retain];
+			operation.progress = 0.5;
+			
 			if (skillPlan) {
 				[page replaceOccurrencesOfString:@"{error}" withString:@"Check your device for the next step" options:0 range:NSMakeRange(0, page.length)];
 				[skillPlan trainingTime];
@@ -237,6 +241,7 @@
 			else
 				[page replaceOccurrencesOfString:@"{error}" withString:@"File format error" options:0 range:NSMakeRange(0, page.length)];
 
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		

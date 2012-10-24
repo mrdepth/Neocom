@@ -206,7 +206,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSViewController+Load" name:@"Loading POS Details"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -221,7 +221,10 @@
 			float hours = [[starbaseDetail serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:starbaseDetail.currentTime] / 3600.0;
 			if (hours < 0)
 				hours = 0;
+			float n = [[controlTowerType resources] count];
+			float i = 0;
 			for (EVEDBInvControlTowerResource *resource in [controlTowerType resources]) {
+				operation.progress = i++ / n;
 				if ((resource.minSecurityLevel > 0 && solarSystem.security < resource.minSecurityLevel) ||
 					(resource.factionID > 0 && solarSystem.region.factionID != resource.factionID))
 					continue;

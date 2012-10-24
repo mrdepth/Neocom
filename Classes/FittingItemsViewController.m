@@ -290,7 +290,7 @@
 	NSMutableArray *groups = [NSMutableArray array];
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
@@ -326,6 +326,7 @@
 													   if ([operation isCancelled])
 														   *needsMore = NO;
 												   }];
+		operation.progress = 0.75;
 		[sectionsTmp addObjectsFromArray:[[sectionsDic allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"metaGroupID" ascending:YES]]]];
 		[pool release];
 	}];
@@ -349,7 +350,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValues = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled] || searchString.length < 2)
 			return;

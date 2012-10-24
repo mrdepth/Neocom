@@ -10,7 +10,6 @@
 #import "EUMailBox.h"
 #import "EVEOnlineAPI.h"
 #import "EUOperationQueue.h"
-#import "NSInvocation+Variadic.h"
 
 @implementation MessageViewController
 @synthesize webView;

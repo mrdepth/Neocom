@@ -16,7 +16,7 @@
 	NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
 	
 	for (NSObject *object in self) {
-		NSObject *key = [object valueForKeyPath:keyPath];
+		NSObject<NSCopying> *key = [object valueForKeyPath:keyPath];
 		if (!key)
 			[unknown addObject:object];
 		else {

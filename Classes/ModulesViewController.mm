@@ -686,7 +686,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:@"Updating Modules"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -697,6 +697,7 @@
 			
 			for (int i = 0; i < n; i++)
 			{
+				operation.progress = (float) i / (float) n;
 				int numberOfSlots = ship->getNumberOfSlots(slots[i]);
 				if (numberOfSlots > 0)
 				{

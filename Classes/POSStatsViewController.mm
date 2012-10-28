@@ -214,7 +214,7 @@
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
 			
-			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
+			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			
 			totalPG = controlTower->getTotalPowerGrid();
 			usedPG = controlTower->getPowerGridUsed();
@@ -301,7 +301,7 @@
 		NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
 
 		@synchronized(posFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
+			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			fuelConsumtion = aPosFittingViewController.posFuelRequirements.quantity;
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
@@ -348,7 +348,7 @@
 		posCost = 0;
 		
 		@synchronized(aPosFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+			eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
 			for (i = structuresList.begin(); i != end; i++) {

@@ -336,8 +336,8 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
-			boost::shared_ptr<eufe::Ship> ship = character->getShip();
+			eufe::Character* character = aFittingViewController.fit.character;
+			eufe::Ship* ship = character->getShip();
 			
 			totalPG = ship->getTotalPowerGrid();
 			usedPG = ship->getPowerGridUsed();
@@ -530,8 +530,8 @@
 		ItemInfo* shipInfo = nil;
 		
 		@synchronized(fittingViewController) {
-			boost::shared_ptr<eufe::Character> character = aFittingViewController.fit.character;
-			boost::shared_ptr<eufe::Ship> ship = character->getShip();
+			eufe::Character* character = aFittingViewController.fit.character;
+			eufe::Ship* ship = character->getShip();
 			
 			shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
 			[types addObject:shipInfo];

@@ -64,18 +64,18 @@
 	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"TargetsViewController+Update"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang().get();
+		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 		
-		eufe::Character* fleetBooster = gang->getFleetBooster().get();
-		eufe::Character* wingBooster = gang->getWingBooster().get();
-		eufe::Character* squadBooster = gang->getSquadBooster().get();
+		eufe::Character* fleetBooster = gang->getFleetBooster();
+		eufe::Character* wingBooster = gang->getWingBooster();
+		eufe::Character* squadBooster = gang->getSquadBooster();
 		
 		//for (i = characters.begin(); i != end; i++) {
 		for (Fit* fit in fittingViewController.fits) {
 			if (fit == fittingViewController.fit)
 				continue;
 			
-			eufe::Character* character = fit.character.get();
+			eufe::Character* character = fit.character;
 			ItemInfo* ship = [ItemInfo itemInfoWithItem:character->getShip() error:NULL];
 			NSString *booster = nil;
 			
@@ -154,7 +154,7 @@
 	cell.titleLabel.text = [row valueForKey:@"title"];
 	cell.fitNameLabel.text = [row valueForKey:@"fitName"];
 	cell.iconView.image = [UIImage imageNamed:[ship typeSmallImageName]];
-	if (currentTarget == fit.character.get()->getShip().get())
+	if (currentTarget == fit.character->getShip())
 		cell.stateView.image = [UIImage imageNamed:@"Icons/icon04_12.png"];
 	else
 		cell.stateView.image = nil;
@@ -172,7 +172,7 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	Fit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
-	[delegate targetsViewController:self didSelectTarget:fit.character.get()->getShip().get()];
+	[delegate targetsViewController:self didSelectTarget:fit.character->getShip()];
 }
 
 #pragma mark UIPopoverControllerDelegate

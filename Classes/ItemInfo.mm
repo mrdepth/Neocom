@@ -25,39 +25,36 @@ public:
 		[itemInfo_ release];
 	}
 	
-	ItemInfo* getItemInfo() {return itemInfo_;}
+	ItemInfo* getItemInfo() const {return itemInfo_;}
 private:
 	ItemInfo* itemInfo_;
 };
 
 @implementation ItemInfo
+@synthesize item;
 
-+ (id) itemInfoWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr {
-	boost::shared_ptr<eufe::Item::Context> context = aItem->getContext();
++ (id) itemInfoWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr {
+	const eufe::Item::Context* context = aItem->getContext();
 	if (context == NULL)
 	{
 		ItemInfo* itemInfo = [[[ItemInfo alloc] initWithItem:aItem error:errorPtr] autorelease];
 		ItemInfoContext* context = new ItemInfoContext(itemInfo);
-		aItem->setContext(boost::shared_ptr<eufe::Item::Context>(context));
+		aItem->setContext(context);
 		return itemInfo;
 	}
 	else
-		return dynamic_cast<ItemInfoContext*>(context.get())->getItemInfo();
+		return dynamic_cast<const ItemInfoContext*>(context)->getItemInfo();
 }
 
-- (id) initWithItem:(boost::shared_ptr<eufe::Item>) aItem error:(NSError **)errorPtr {
+- (id) initWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr {
 	if (self = [super initWithTypeID:aItem->getTypeID() error:errorPtr]) {
-		item = boost::weak_ptr<eufe::Item>(aItem);
+		item = aItem;
 	}
 	return self;
 }
 
-- (boost::shared_ptr<eufe::Item>) item {
-	return item.lock();
-}
-
 - (void) updateAttributes {
-	const eufe::AttributesMap &attributesMap = item.lock()->getAttributes();
+	const eufe::AttributesMap &attributesMap = item->getAttributes();
 	NSMutableDictionary* attributes = self.attributesDictionary;
 	eufe::AttributesMap::const_iterator i, end = attributesMap.end();
 	for (i = attributesMap.begin(); i != end; i++) {
@@ -73,7 +70,7 @@ private:
 @implementation ItemInfo(Private)
 
 - (void) clear {
-	item.reset();
+	item = NULL;
 }
 
 @end

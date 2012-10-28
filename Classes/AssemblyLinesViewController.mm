@@ -148,7 +148,7 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
+			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();

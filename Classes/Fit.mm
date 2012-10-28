@@ -33,15 +33,15 @@ public:
 		[fit_ release];
 	}
 	
-	Fit* getFit() {return fit_;}
+	Fit* getFit() const {return fit_;}
 private:
 	Fit* fit_;
 };
 
-class SubsystemsFirstCompare : public std::binary_function<const boost::shared_ptr<eufe::Module>&, const boost::shared_ptr<eufe::Module>&, bool>
+class SubsystemsFirstCompare : public std::binary_function<eufe::Module*, eufe::Module*, bool>
 {
 public:
-	bool operator() (const boost::shared_ptr<eufe::Module>& a, const boost::shared_ptr<eufe::Module>& b) {
+	bool operator() (eufe::Module* a, eufe::Module* b) {
 		eufe::Module::Slot slotA = a->getSlot();
 		if (slotA == eufe::Module::SLOT_SUBSYSTEM)
 			return true;
@@ -50,10 +50,10 @@ public:
 	}
 };
 
-class ModulesSlotCompare : public std::binary_function<const boost::shared_ptr<eufe::Module>&, const boost::shared_ptr<eufe::Module>&, bool>
+class ModulesSlotCompare : public std::binary_function<eufe::Module*, eufe::Module*&, bool>
 {
 public:
-	bool operator() (const boost::shared_ptr<eufe::Module>& a, const boost::shared_ptr<eufe::Module>& b) {
+	bool operator() (eufe::Module* a, eufe::Module*& b) {
 		return a->getSlot() > b->getSlot();
 	}
 };
@@ -62,53 +62,54 @@ public:
 @synthesize fitID;
 @synthesize fitName;
 @synthesize fitURL;
+@synthesize character;
 
-+ (id) fitWithFitID:(NSString*) fitID fitName:(NSString*) fitName character:(boost::shared_ptr<eufe::Character>) character {
++ (id) fitWithFitID:(NSString*) fitID fitName:(NSString*) fitName character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithFitID:fitID fitName:fitName character:character] autorelease];
 }
 
-+ (id) fitWithDictionary:(NSDictionary*) dictionary character:(boost::shared_ptr<eufe::Character>) character {
++ (id) fitWithDictionary:(NSDictionary*) dictionary character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithDictionary:dictionary character:character] autorelease];
 }
 
-+ (id) fitWithCharacter:(boost::shared_ptr<eufe::Character>) character error:(NSError **)errorPtr {
-	boost::shared_ptr<eufe::Item::Context> context = character->getContext();
++ (id) fitWithCharacter:(eufe::Character*) character error:(NSError **)errorPtr {
+	const eufe::Item::Context* context = character->getContext();
 	if (context == NULL)
 	{
 		Fit* fit = [[[Fit alloc] initWithCharacter:character error:errorPtr] autorelease];
 		FitContext* context = new FitContext(fit);
-		character->setContext(boost::shared_ptr<eufe::Item::Context>(context));
+		character->setContext(context);
 		return fit;
 	}
 	else
-		return dynamic_cast<FitContext*>(context.get())->getFit();
+		return dynamic_cast<const FitContext*>(context)->getFit();
 }
 
-+ (id) fitWithBCString:(NSString*) string character:(boost::shared_ptr<eufe::Character>) character {
++ (id) fitWithBCString:(NSString*) string character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithBCString:string character:character] autorelease];
 }
 
-+ (id) fitWithAsset:(EVEAssetListItem*) asset character:(boost::shared_ptr<eufe::Character>) character {
++ (id) fitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithAsset:asset character:character] autorelease];
 	
 }
 
-- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(boost::shared_ptr<eufe::Character>) aCharacter {
+- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(eufe::Character*) aCharacter {
 	if (self = [super init]) {
 		self.fitID = aFitID;
 		self.fitName = aFitName;
-		character = boost::weak_ptr<eufe::Character>(aCharacter);
+		character = aCharacter;
 	}
 	return self;
 }
 
-- (id) initWithDictionary:(NSDictionary*) dictionary character:(boost::shared_ptr<eufe::Character>) aCharacter {
+- (id) initWithDictionary:(NSDictionary*) dictionary character:(eufe::Character*) aCharacter {
 	NSString* aFitID = [dictionary valueForKey:@"fitID"];
 	NSString *aFitName = [dictionary valueForKey:@"fitName"];
 	if (self = [self initWithFitID:aFitID fitName:aFitName character:aCharacter]) {
 		NSDictionary* fit = [dictionary valueForKey:@"fit"];
 		NSInteger shipID = [[fit valueForKey:@"shipID"] integerValue];
-		eufe::Ship* ship = aCharacter->setShip(shipID).get();
+		eufe::Ship* ship = aCharacter->setShip(shipID);
 		if (!ship) {
 			[self release];
 			return nil;
@@ -130,33 +131,33 @@ public:
 				[modules addObjectsFromArray:arrays[i]];
 		}
 		
-		std::list<boost::tuple<boost::shared_ptr<eufe::Module>, eufe::Module::State> > states;
+		std::list<boost::tuple<eufe::Module*, eufe::Module::State> > states;
 
 		for (NSDictionary* record in modules) {
 			NSInteger typeID = [[record valueForKey:@"typeID"] integerValue];
 			NSInteger chargeID = [[record valueForKey:@"chargeID"] integerValue];
 			if (typeID != 0) {
 				eufe::Module::State state = static_cast<eufe::Module::State>([[record valueForKey:@"state"] integerValue]);
-				boost::shared_ptr<eufe::Module> module = ship->addModule(typeID);
+				eufe::Module* module = ship->addModule(typeID);
 				if (module != NULL) {
 					if (chargeID != 0)
 						module->setCharge(chargeID);
 					if (module->canHaveState(state))
 						module->setState(state);
 					else
-						states.push_back(boost::tuple<boost::shared_ptr<eufe::Module>, eufe::Module::State>(module, state));
+						states.push_back(boost::tuple<eufe::Module*, eufe::Module::State>(module, state));
 				}
 			}
 		}
 		
-		std::list<boost::tuple<boost::shared_ptr<eufe::Module>, eufe::Module::State> >::iterator i, end = states.end();
+		std::list<boost::tuple<eufe::Module*, eufe::Module::State> >::iterator i, end = states.end();
 		for (i = states.begin(); i != end; i++)
 			i->get<0>()->setState(i->get<1>());
 
 		for (NSDictionary* record in [fit valueForKey:@"drones"]) {
 			NSInteger typeID = [[record valueForKey:@"typeID"] integerValue];
 			if (typeID != 0) {
-				boost::shared_ptr<eufe::Drone> drone = ship->addDrone(typeID);
+				eufe::Drone* drone = ship->addDrone(typeID);
 				if (drone != NULL && [record valueForKey:@"active"] != nil) {
 					BOOL active = [[record valueForKey:@"active"] boolValue];
 					drone->setActive(active);
@@ -179,19 +180,19 @@ public:
 	return self;
 }
 
-- (id) initWithCharacter:(boost::shared_ptr<eufe::Character>) aCharacter error:(NSError **)errorPtr {
+- (id) initWithCharacter:(eufe::Character*) aCharacter error:(NSError **)errorPtr {
 	if (self = [super init]) {
-		character = boost::weak_ptr<eufe::Character>(aCharacter);
+		character = aCharacter;
 	}
 	return self;
 }
 
-- (id) initWithBCString:(NSString*) string character:(boost::shared_ptr<eufe::Character>) aCharacter {
+- (id) initWithBCString:(NSString*) string character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter error:nil]) {
 		NSMutableArray *components = [NSMutableArray arrayWithArray:[string componentsSeparatedByString:@":"]];
 		[components removeObjectAtIndex:0];
 		NSInteger shipID = [[components objectAtIndex:0] integerValue];
-		eufe::Ship* ship = aCharacter->setShip(shipID).get();
+		eufe::Ship* ship = aCharacter->setShip(shipID);
 		
 		if (!ship) {
 			[self release];
@@ -232,22 +233,23 @@ public:
 			}
 			
 			for (EVEDBInvType *type in charges) {
-				boost::shared_ptr<eufe::Charge> charge (new eufe::Charge(ship->getEngine(), type.typeID, NULL));
+				eufe::Charge* charge (new eufe::Charge(ship->getEngine(), type.typeID, NULL));
 				eufe::ModulesList::const_iterator i, end = ship->getModules().end();
 				for (i = ship->getModules().begin(); i != end; i++) {
 					if ((*i)->canFit(charge))
-						(*i)->setCharge(boost::shared_ptr<eufe::Charge>(new eufe::Charge(*charge)));
+						(*i)->setCharge(new eufe::Charge(*charge));
 				}
+				delete charge;
 			}
 		}
 	}
 	return self;
 }
 
-- (id) initWithAsset:(EVEAssetListItem*) asset character:(boost::shared_ptr<eufe::Character>) aCharacter {
+- (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter error:nil]) {
 		self.fitName = asset.location.itemName ? asset.location.itemName : asset.type.typeName;
-		eufe::Ship* ship = aCharacter->setShip(asset.type.typeID).get();
+		eufe::Ship* ship = aCharacter->setShip(asset.type.typeID);
 		
 		if (!ship) {
 			[self release];
@@ -282,12 +284,13 @@ public:
 			}
 			
 			for (EVEDBInvType *type in charges) {
-				boost::shared_ptr<eufe::Charge> charge (new eufe::Charge(ship->getEngine(), type.typeID, NULL));
+				eufe::Charge* charge = new eufe::Charge(ship->getEngine(), type.typeID, NULL);
 				eufe::ModulesList::const_iterator i, end = ship->getModules().end();
 				for (i = ship->getModules().begin(); i != end; i++) {
 					if ((*i)->canFit(charge))
-						(*i)->setCharge(boost::shared_ptr<eufe::Charge>(new eufe::Charge(*charge)));
+						(*i)->setCharge(new eufe::Charge(*charge));
 				}
+				delete charge;
 			}
 		}
 	}
@@ -303,13 +306,9 @@ public:
 }
 
 
-- (boost::shared_ptr<eufe::Character>) character {
-	return character.lock();
-}
-
 - (NSDictionary*) dictionary {
-	boost::shared_ptr<eufe::Character> aCharacter = self.character;
-	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	eufe::Character* aCharacter = self.character;
+	eufe::Ship* ship = aCharacter->getShip();
 	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:ship error:NULL];
 	if (ship == NULL)
 		return nil;
@@ -411,8 +410,8 @@ public:
 
 - (NSString*) dna {
 	NSMutableString* dna = [NSMutableString string];
-	boost::shared_ptr<eufe::Character> aCharacter = self.character;
-	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	eufe::Character* aCharacter = self.character;
+	eufe::Ship* ship = aCharacter->getShip();
 	NSCountedSet* subsystems = [NSCountedSet set];
 	NSCountedSet* highs = [NSCountedSet set];
 	NSCountedSet* meds = [NSCountedSet set];
@@ -424,7 +423,7 @@ public:
 	const eufe::ModulesList& modulesList = ship->getModules();
 	eufe::ModulesList::const_iterator i, end = modulesList.end();
 	for(i = modulesList.begin(); i != end; i++) {
-		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*i) error:nil];
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:dynamic_cast<eufe::Item*>(*i) error:nil];
 		switch((*i)->getSlot()) {
 			case eufe::Module::SLOT_SUBSYSTEM:
 				[subsystems addObject:itemInfo];
@@ -445,9 +444,9 @@ public:
 				break;
 		}
 		
-		boost::shared_ptr<eufe::Charge> charge = (*i)->getCharge();
+		eufe::Charge* charge = (*i)->getCharge();
 		if (charge) {
-			itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(charge) error:nil];
+			itemInfo = [ItemInfo itemInfoWithItem:dynamic_cast<eufe::Item*>(charge) error:nil];
 			if (![charges containsObject:itemInfo])
 				[charges addObject:itemInfo];
 		}
@@ -456,7 +455,7 @@ public:
 	const eufe::DronesList& dronesList = ship->getDrones();
 	eufe::DronesList::const_iterator j, endj = dronesList.end();
 	for(j = dronesList.begin(); j != endj; j++) {
-		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:dynamic_cast<eufe::Item*>(*j) error:nil];
 		[drones addObject:itemInfo];
 	}
 	
@@ -474,8 +473,8 @@ public:
 
 - (NSString*) eveXML {
 	NSMutableString* xml = [NSMutableString string];
-	boost::shared_ptr<eufe::Character> aCharacter = self.character;
-	boost::shared_ptr<eufe::Ship> ship = aCharacter->getShip();
+	eufe::Character* aCharacter = self.character;
+	eufe::Ship* ship = aCharacter->getShip();
 	
 	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%s\"/>\n", self.fitName, ship->getTypeName()];
 
@@ -494,7 +493,7 @@ public:
 	const eufe::DronesList& dronesList = ship->getDrones();
 	eufe::DronesList::const_iterator j, endj = dronesList.end();
 	for(j = dronesList.begin(); j != endj; j++) {
-		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(*j) error:nil];
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:dynamic_cast<eufe::Item*>(*j) error:nil];
 		[drones addObject:itemInfo];
 	}
 	
@@ -510,7 +509,7 @@ public:
 @implementation Fit(Private)
 
 - (void) clear {
-	character.reset();
+	character = NULL;
 }
 
 @end

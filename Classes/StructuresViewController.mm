@@ -136,8 +136,8 @@
 	else {
 		NSArray* array = [structures objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		boost::shared_ptr<eufe::Structure> structure = boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item);
-		boost::shared_ptr<eufe::Charge> charge = structure->getCharge();
+		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
+		eufe::Charge* charge = structure->getCharge();
 		
 		
 		bool useCharge = charge != NULL;
@@ -173,7 +173,7 @@
 		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", itemInfo.typeName, array.count];
 		if (charge != NULL)
 		{
-			ItemInfo* chargeInfo = [ItemInfo itemInfoWithItem: boost::static_pointer_cast<eufe::Item>(charge) error:nil];
+			ItemInfo* chargeInfo = [ItemInfo itemInfoWithItem:charge error:nil];
 			cell.row1Label.text = chargeInfo.typeName;
 		}
 		
@@ -216,7 +216,7 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower.get();
+	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
 	if (indexPath.row >= structures.count) {
 		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) %@ %@ ORDER BY invTypes.typeName;";
@@ -234,8 +234,8 @@
 		
 		NSArray* array = [structures objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		boost::shared_ptr<eufe::Structure> structure = boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item);
-		const std::list<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
+		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
+		const std::vector<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = structure->getChargeSize();
 		eufe::TypeID typeID = structure->getTypeID();
@@ -250,8 +250,8 @@
 					int chargeSize2 = (*i)->getChargeSize();
 					if (chargeSize == chargeSize2)
 					{
-						const std::list<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::list<eufe::TypeID> intersection;
+						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
+						std::vector<eufe::TypeID> intersection;
 						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
 						if (intersection.size() > 0)
 						{
@@ -303,19 +303,19 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSArray* array = [structures objectAtIndex:modifiedIndexPath.row];
 	ItemInfo* itemInfo = [array objectAtIndex:0];
-	boost::shared_ptr<eufe::Structure> structure = boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item);
+	eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 	int chargeSize = structure->getChargeSize();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	
-	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower.get();
+	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
 	
 	if ([button isEqualToString:ActionButtonDelete]) {
 		for (ItemInfo* itemInfo in array)
-			controlTower->removeStructure(boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item));
+			controlTower->removeStructure(dynamic_cast<eufe::Structure*>(itemInfo.item));
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmmo]) {
-		const std::list<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
+		const std::vector<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = structure->getChargeSize();
 		eufe::TypeID typeID = structure->getTypeID();
@@ -330,8 +330,8 @@
 					int chargeSize2 = (*i)->getChargeSize();
 					if (chargeSize == chargeSize2)
 					{
-						const std::list<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::list<eufe::TypeID> intersection;
+						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
+						std::vector<eufe::TypeID> intersection;
 						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
 						if (intersection.size() > 0)
 						{
@@ -361,8 +361,8 @@
 		[actionSheet autorelease];
 	}
 	else if ([button isEqualToString:ActionButtonAmmoCurrentModule] || [button isEqualToString:ActionButtonAmmoAllModules]) {
-		const std::list<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
-		std::list<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
+		const std::vector<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
+		std::vector<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
 		
 		NSMutableString *groups = [NSMutableString string];
 		bool isFirst = true;
@@ -406,12 +406,12 @@
 	}
 	else if ([button isEqualToString:ActionButtonOffline]) {
 		for (ItemInfo* itemInfo in array)
-			boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item)->setState(eufe::Module::STATE_OFFLINE);
+			dynamic_cast<eufe::Structure*>(itemInfo.item)->setState(eufe::Module::STATE_OFFLINE);
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonOnline]) {
 		for (ItemInfo* itemInfo in array)
-			boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item)->setState(eufe::Module::STATE_ACTIVE);
+			dynamic_cast<eufe::Structure*>(itemInfo.item)->setState(eufe::Module::STATE_ACTIVE);
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonUnloadAmmo]) {
@@ -449,7 +449,7 @@
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
 																					  bundle:nil];
-		ItemInfo* ammo = [ItemInfo itemInfoWithItem:boost::dynamic_pointer_cast<eufe::Item>(structure->getCharge()) error:nil];
+		ItemInfo* ammo = [ItemInfo itemInfoWithItem:structure->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -468,20 +468,20 @@
 #pragma mark DronesAmountViewControllerDelegate
 
 - (void) dronesAmountViewController:(DronesAmountViewController*) aController didSelectAmount:(NSInteger) amount {
-	boost::shared_ptr<eufe::ControlTower> controlTower = posFittingViewController.fit.controlTower;
+	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
 	NSMutableArray* array = [structures objectAtIndex:modifiedIndexPath.row];
 	int left = array.count - amount;
 	if (left < 0) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];
-		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item.get());
+		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 		for (;left < 0; left++)
-			controlTower->addStructure(boost::shared_ptr<eufe::Structure>(new eufe::Structure(*structure)))->setCharge(structure->getCharge());
+			controlTower->addStructure(new eufe::Structure(*structure))->setCharge(structure->getCharge());
 	}
 	else if (left > 0) {
 		int i = 0;
 		for (; left > 0; left--) {
 			ItemInfo* itemInfo = [array objectAtIndex:i++];
-			boost::shared_ptr<eufe::Structure> structure = boost::dynamic_pointer_cast<eufe::Structure>(itemInfo.item);
+			eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 			controlTower->removeStructure(structure);
 		}
 	}
@@ -506,7 +506,7 @@
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
-			boost::shared_ptr<eufe::ControlTower> controlTower = aPosFittingViewController.fit.controlTower;
+			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			
 			NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];
 			

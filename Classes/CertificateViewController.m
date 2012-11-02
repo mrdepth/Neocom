@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "ItemViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
 

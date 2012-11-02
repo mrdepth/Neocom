@@ -8,7 +8,7 @@
 
 #import "SkillLevelsViewController.h"
 #import "TagCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 
 @implementation SkillLevelsViewController
 @synthesize skillLevelsTableView;

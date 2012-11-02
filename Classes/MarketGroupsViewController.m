@@ -10,7 +10,7 @@
 #import "ItemInfoViewController.h"
 #import "ItemViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 
 @interface MarketGroupsViewController(Private)

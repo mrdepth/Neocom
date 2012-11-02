@@ -13,7 +13,7 @@
 #import "EVEAccountStorage.h"
 #import "EUOperationQueue.h"
 #import "CharacterCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "CharacterSkillsEditorViewController.h"
 
 @implementation CharactersViewController

@@ -10,7 +10,7 @@
 #import "UIAlertView+Error.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "AccessMaskCellView.h"
 
 @implementation AccessMaskViewController

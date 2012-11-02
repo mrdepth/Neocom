@@ -12,7 +12,7 @@
 #import "EVEDBAPI.h"
 #import "UIAlertView+Error.h"
 #import "SkillCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "UIImageView+GIF.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "Globals.h"

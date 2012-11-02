@@ -9,7 +9,7 @@
 #import "ModulesViewController.h"
 #import "FittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"

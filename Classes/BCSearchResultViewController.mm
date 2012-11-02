@@ -9,7 +9,7 @@
 #import "BCSearchResultViewController.h"
 #import "EVEDBAPI.h"
 #import "LoadoutCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "BattleClinicAPI.h"
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"

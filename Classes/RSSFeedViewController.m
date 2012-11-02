@@ -9,7 +9,7 @@
 #import "RSSFeedViewController.h"
 #import "RSS.h"
 #import "RSSFeedCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "UIAlertView+Error.h"
 #import "NSMutableString+HTML.h"
 #import "EVEUniverseAppDelegate.h"

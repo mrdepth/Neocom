@@ -13,7 +13,7 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAccountsAPIKeyCellView.h"
 #import "EVEAccountsCharacterCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEUniverseAppDelegate.h"
 #import "NSString+TimeLeft.h"
 #import "AccessMaskViewController.h"

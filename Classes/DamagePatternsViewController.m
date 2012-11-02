@@ -9,7 +9,7 @@
 #import "DamagePatternsViewController.h"
 #import "EVEDBAPI.h"
 #import "DamagePatternCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 #import "CharacterCellView.h"

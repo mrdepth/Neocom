@@ -12,7 +12,7 @@
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "MarketOrderCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"

@@ -9,7 +9,7 @@
 #import "AreaEffectsViewController.h"
 #import "EVEDBAPI.h"
 #import "AreaEffectCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 

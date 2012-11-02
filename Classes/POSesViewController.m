@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "POSCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "UIAlertView+Error.h"
 #import "Globals.h"
 #import "EVEAccount.h"

@@ -10,7 +10,7 @@
 #import "ItemInfoViewController.h"
 #import "Globals.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "ItemViewController.h"
 
 @interface ItemsDBViewController(Private)

@@ -10,7 +10,7 @@
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "MarketInfoCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEUniverseAppDelegate.h"
 #import "UIAlertView+Error.h"
 

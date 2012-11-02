@@ -9,7 +9,7 @@
 #import "CharacterSkillsEditorViewController.h"
 #import "EUOperationQueue.h"
 #import "SkillEditingCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Character.h"
 #import "CharacterEqualSkills.h"
 #import "CharacterEVE.h"

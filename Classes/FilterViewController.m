@@ -8,7 +8,7 @@
 
 #import "FilterViewController.h"
 #import "TagCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 
 @implementation FilterViewController
 @synthesize tableView;

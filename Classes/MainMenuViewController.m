@@ -17,7 +17,7 @@
 #import "SBTableView.h"
 #import "RSSFeedsViewController.h"
 #import "MainMenuCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "AboutViewController.h"
 #import "WalletTransactionsViewController.h"

@@ -9,7 +9,7 @@
 #import "RSSFeedsViewController.h"
 #import "RSSFeedViewController.h"
 #import "RSSCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 
 
 @implementation RSSFeedsViewController

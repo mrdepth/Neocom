@@ -9,7 +9,7 @@
 #import "SkillPlannerImportViewController.h"
 #import "Globals.h"
 #import "CharacterCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "SkillPlanViewController.h"
 #import "UIDevice+IP.h"
 #import "SkillPlan.h"

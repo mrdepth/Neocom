@@ -9,7 +9,7 @@
 #import "FittingItemsViewController.h"
 #import "EVEDBAPI.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 

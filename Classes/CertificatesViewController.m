@@ -8,7 +8,7 @@
 
 #import "CertificatesViewController.h"
 #import "CertificateCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEDBAPI.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"

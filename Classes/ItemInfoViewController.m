@@ -11,7 +11,7 @@
 #import "ItemInfoSkillCellView.h"
 #import "ItemsDBViewController.h"
 #import "ItemViewController.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "SkillTree.h"

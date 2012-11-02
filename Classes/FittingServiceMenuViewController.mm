@@ -9,7 +9,7 @@
 #import "FittingServiceMenuViewController.h"
 #import "MainMenuCellView.h"
 #import "FitCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "FittingViewController.h"
 #import "POSFittingViewController.h"

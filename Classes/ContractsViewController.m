@@ -9,7 +9,7 @@
 #import "ContractsViewController.h"
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"

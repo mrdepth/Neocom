@@ -9,7 +9,7 @@
 #import "TargetsViewController.h"
 #import "FittingViewController.h"
 #import "FleetMemberCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "Fit.h"
 #import "ItemInfo.h"

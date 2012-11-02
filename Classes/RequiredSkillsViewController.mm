@@ -8,7 +8,7 @@
 
 #import "RequiredSkillsViewController.h"
 #import "SkillCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"

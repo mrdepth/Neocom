@@ -8,7 +8,7 @@
 
 #import "BCSearchViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "TagCellView.h"

@@ -4,3 +4,6 @@
 [submodule "eufe"]
 	path = eufe
 	url = git@github.com:mrdepth/eufe.git
+[submodule "tools"]
+	path = tools
+	url = https://github.com/mrdepth/tools.git

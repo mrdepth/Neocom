@@ -11,7 +11,7 @@
 #import "EVEDBAPI.h"
 #import "ModuleCellView.h"
 #import "FleetMemberCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"

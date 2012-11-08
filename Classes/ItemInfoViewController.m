@@ -323,7 +323,8 @@
 @implementation ItemInfoViewController(Private)
 
 - (void) loadAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
 		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
@@ -628,10 +629,13 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void) loadNPCAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
@@ -1639,10 +1643,12 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void) loadBlueprintAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
@@ -1845,6 +1851,7 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end

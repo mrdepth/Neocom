@@ -7,29 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120B46A0164B9995000C33CE /* CollapsableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B466F164B9995000C33CE /* CollapsableTableView.m */; };
+		120B46A1164B9995000C33CE /* EUActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4672164B9995000C33CE /* EUActivityView.m */; };
+		120B46A2164B9995000C33CE /* EUOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4674164B9995000C33CE /* EUOperation.m */; };
+		120B46A3164B9995000C33CE /* EUOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4676164B9995000C33CE /* EUOperationQueue.m */; };
+		120B46A7164B9995000C33CE /* UITableViewCell+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4680164B9995000C33CE /* UITableViewCell+Nib.m */; };
+		120B46A8164B9995000C33CE /* UIView+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4682164B9995000C33CE /* UIView+Nib.m */; };
+		120B46A9164B9995000C33CE /* NSBlockOperation+Completion.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4685164B9995000C33CE /* NSBlockOperation+Completion.m */; };
+		120B46AA164B9995000C33CE /* NSDate+DaysAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4688164B9995000C33CE /* NSDate+DaysAgo.m */; };
+		120B46AD164B9995000C33CE /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B468F164B9995000C33CE /* NSString+UUID.m */; };
+		120B46AF164B9995000C33CE /* UIActionSheet+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4693164B9995000C33CE /* UIActionSheet+Block.m */; };
+		120B46B0164B9995000C33CE /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4696164B9995000C33CE /* UIAlertView+Block.m */; };
+		120B46B1164B9995000C33CE /* UIAlertView+Error.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4698164B9995000C33CE /* UIAlertView+Error.m */; };
+		120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469B164B9995000C33CE /* UIColor+NSNumber.m */; };
+		120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469E164B9995000C33CE /* UIImageView+URL.m */; };
 		121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121D8D2C15F498DA0003CAA5 /* Mutex.cpp */; };
 		121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */; };
 		121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */; };
+		1224EBDE1647E698004401C5 /* CollapsableTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */; };
+		1224EBE01647E6B4004401C5 /* CollapsableTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */; };
+		1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBE91648E786004401C5 /* KillboardCellView.xib */; };
+		1224EBED1648E79B004401C5 /* KillboardCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBEC1648E79B004401C5 /* KillboardCellView.m */; };
+		1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBF216491D5D004401C5 /* killboardApiFilter.plist */; };
 		12422A2D1406B3E700B7EAB5 /* TutorialViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */; };
 		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
 		126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */; };
-		1273637D1643A7B600FB0EE2 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 1273634D1643A7B500FB0EE2 /* .gitignore */; };
-		1273637E1643A7B600FB0EE2 /* CollapsableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363501643A7B500FB0EE2 /* CollapsableTableView.m */; };
-		1273637F1643A7B600FB0EE2 /* EUActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363531643A7B500FB0EE2 /* EUActivityView.m */; };
-		127363801643A7B600FB0EE2 /* EUOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363551643A7B500FB0EE2 /* EUOperation.m */; };
-		127363811643A7B600FB0EE2 /* EUOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363571643A7B500FB0EE2 /* EUOperationQueue.m */; };
-		127363851643A7B600FB0EE2 /* UITableViewCell+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363611643A7B500FB0EE2 /* UITableViewCell+Nib.m */; };
-		127363861643A7B600FB0EE2 /* UIView+Nib.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363631643A7B500FB0EE2 /* UIView+Nib.m */; };
-		127363871643A7B600FB0EE2 /* NSBlockOperation+Completion.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363661643A7B500FB0EE2 /* NSBlockOperation+Completion.m */; };
-		127363881643A7B600FB0EE2 /* NSString+Email.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363691643A7B500FB0EE2 /* NSString+Email.m */; };
-		127363891643A7B600FB0EE2 /* NSString+UTI.m in Sources */ = {isa = PBXBuildFile; fileRef = 1273636B1643A7B500FB0EE2 /* NSString+UTI.m */; };
-		1273638A1643A7B600FB0EE2 /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 1273636D1643A7B500FB0EE2 /* NSString+UUID.m */; };
-		1273638B1643A7B600FB0EE2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1273636E1643A7B600FB0EE2 /* README.md */; };
-		1273638C1643A7B600FB0EE2 /* UIActionSheet+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363711643A7B600FB0EE2 /* UIActionSheet+Block.m */; };
-		1273638D1643A7B600FB0EE2 /* UIAlertView+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363741643A7B600FB0EE2 /* UIAlertView+Block.m */; };
-		1273638E1643A7B600FB0EE2 /* UIAlertView+Error.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363761643A7B600FB0EE2 /* UIAlertView+Error.m */; };
-		1273638F1643A7B600FB0EE2 /* UIColor+NSNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363791643A7B600FB0EE2 /* UIColor+NSNumber.m */; };
-		127363901643A7B600FB0EE2 /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 1273637C1643A7B600FB0EE2 /* UIImageView+URL.m */; };
+		127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */; };
+		127363A31643AD3900FB0EE2 /* KillboardApiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */; };
 		1292845714029D1F00055445 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1292845514029D1F00055445 /* SplashScreenViewController.m */; };
 		129284D11402A3CE00055445 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D01402A3CE00055445 /* MainWindow-iPad.xib */; };
 		129284D31402A3D900055445 /* SplashScreenViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D21402A3D900055445 /* SplashScreenViewController-iPad.xib */; };
@@ -111,7 +115,6 @@
 		370814DF14A0EAF700919C0B /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 370814DE14A0EAF500919C0B /* Fit.mm */; };
 		370CCEAA14ED467100605A42 /* AssetContentsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 370CCEA814ED467100605A42 /* AssetContentsViewController.mm */; };
 		370CCEAD14ED469900605A42 /* AssetContentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */; };
-		370CCEB114ED642500605A42 /* ExpandedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 370CCEB014ED642500605A42 /* ExpandedTableView.m */; };
 		370CCEB414ED7B9000605A42 /* assetsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEB314ED7B8F00605A42 /* assetsFilter.plist */; };
 		37158250141794DA00A20C92 /* FilterViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3715824F141794DA00A20C92 /* FilterViewController-iPad.xib */; };
 		3715826D1417968800A20C92 /* ContractsViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3715826C1417968800A20C92 /* ContractsViewController-iPad.xib */; };
@@ -722,47 +725,53 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		120B466E164B9995000C33CE /* CollapsableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableView.h; sourceTree = "<group>"; };
+		120B466F164B9995000C33CE /* CollapsableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableView.m; sourceTree = "<group>"; };
+		120B4671164B9995000C33CE /* EUActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUActivityView.h; sourceTree = "<group>"; };
+		120B4672164B9995000C33CE /* EUActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUActivityView.m; sourceTree = "<group>"; };
+		120B4673164B9995000C33CE /* EUOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUOperation.h; sourceTree = "<group>"; };
+		120B4674164B9995000C33CE /* EUOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUOperation.m; sourceTree = "<group>"; };
+		120B4675164B9995000C33CE /* EUOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUOperationQueue.h; sourceTree = "<group>"; };
+		120B4676164B9995000C33CE /* EUOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUOperationQueue.m; sourceTree = "<group>"; };
+		120B467F164B9995000C33CE /* UITableViewCell+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Nib.h"; sourceTree = "<group>"; };
+		120B4680164B9995000C33CE /* UITableViewCell+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Nib.m"; sourceTree = "<group>"; };
+		120B4681164B9995000C33CE /* UIView+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Nib.h"; sourceTree = "<group>"; };
+		120B4682164B9995000C33CE /* UIView+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Nib.m"; sourceTree = "<group>"; };
+		120B4684164B9995000C33CE /* NSBlockOperation+Completion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBlockOperation+Completion.h"; sourceTree = "<group>"; };
+		120B4685164B9995000C33CE /* NSBlockOperation+Completion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBlockOperation+Completion.m"; sourceTree = "<group>"; };
+		120B4687164B9995000C33CE /* NSDate+DaysAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+DaysAgo.h"; sourceTree = "<group>"; };
+		120B4688164B9995000C33CE /* NSDate+DaysAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DaysAgo.m"; sourceTree = "<group>"; };
+		120B468E164B9995000C33CE /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
+		120B468F164B9995000C33CE /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
+		120B4692164B9995000C33CE /* UIActionSheet+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Block.h"; sourceTree = "<group>"; };
+		120B4693164B9995000C33CE /* UIActionSheet+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Block.m"; sourceTree = "<group>"; };
+		120B4695164B9995000C33CE /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
+		120B4696164B9995000C33CE /* UIAlertView+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Block.m"; sourceTree = "<group>"; };
+		120B4697164B9995000C33CE /* UIAlertView+Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Error.h"; sourceTree = "<group>"; };
+		120B4698164B9995000C33CE /* UIAlertView+Error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Error.m"; sourceTree = "<group>"; };
+		120B469A164B9995000C33CE /* UIColor+NSNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSNumber.h"; sourceTree = "<group>"; };
+		120B469B164B9995000C33CE /* UIColor+NSNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSNumber.m"; sourceTree = "<group>"; };
+		120B469D164B9995000C33CE /* UIImageView+URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+URL.h"; sourceTree = "<group>"; };
+		120B469E164B9995000C33CE /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
 		121D8D2C15F498DA0003CAA5 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
 		121D8D2D15F498DA0003CAA5 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
 		121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
 		121E07E31578C146000D1480 /* EffectHardPointModifierEffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHardPointModifierEffectInterpreter.h; sourceTree = "<group>"; };
 		121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectAdaptiveArmorHardener.cpp; sourceTree = "<group>"; };
 		121E07ED1578C3EB000D1480 /* EffectAdaptiveArmorHardener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectAdaptiveArmorHardener.h; sourceTree = "<group>"; };
+		1224EBDC1647E698004401C5 /* CollapsableTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableHeaderView.h; sourceTree = "<group>"; };
+		1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableHeaderView.m; sourceTree = "<group>"; };
+		1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapsableTableHeaderView.xib; sourceTree = "<group>"; };
+		1224EBE91648E786004401C5 /* KillboardCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardCellView.xib; sourceTree = "<group>"; };
+		1224EBEB1648E79B004401C5 /* KillboardCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardCellView.h; sourceTree = "<group>"; };
+		1224EBEC1648E79B004401C5 /* KillboardCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardCellView.m; sourceTree = "<group>"; };
+		1224EBF216491D5D004401C5 /* killboardApiFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = killboardApiFilter.plist; sourceTree = "<group>"; };
 		12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TutorialViewController-iPad.xib"; sourceTree = "<group>"; };
 		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingExportViewController-iPad.xib"; sourceTree = "<group>"; };
-		1273634D1643A7B500FB0EE2 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		1273634F1643A7B500FB0EE2 /* CollapsableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableView.h; sourceTree = "<group>"; };
-		127363501643A7B500FB0EE2 /* CollapsableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableView.m; sourceTree = "<group>"; };
-		127363521643A7B500FB0EE2 /* EUActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUActivityView.h; sourceTree = "<group>"; };
-		127363531643A7B500FB0EE2 /* EUActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUActivityView.m; sourceTree = "<group>"; };
-		127363541643A7B500FB0EE2 /* EUOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUOperation.h; sourceTree = "<group>"; };
-		127363551643A7B500FB0EE2 /* EUOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUOperation.m; sourceTree = "<group>"; };
-		127363561643A7B500FB0EE2 /* EUOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUOperationQueue.h; sourceTree = "<group>"; };
-		127363571643A7B500FB0EE2 /* EUOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUOperationQueue.m; sourceTree = "<group>"; };
-		127363601643A7B500FB0EE2 /* UITableViewCell+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Nib.h"; sourceTree = "<group>"; };
-		127363611643A7B500FB0EE2 /* UITableViewCell+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Nib.m"; sourceTree = "<group>"; };
-		127363621643A7B500FB0EE2 /* UIView+Nib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Nib.h"; sourceTree = "<group>"; };
-		127363631643A7B500FB0EE2 /* UIView+Nib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Nib.m"; sourceTree = "<group>"; };
-		127363651643A7B500FB0EE2 /* NSBlockOperation+Completion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBlockOperation+Completion.h"; sourceTree = "<group>"; };
-		127363661643A7B500FB0EE2 /* NSBlockOperation+Completion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBlockOperation+Completion.m"; sourceTree = "<group>"; };
-		127363681643A7B500FB0EE2 /* NSString+Email.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Email.h"; sourceTree = "<group>"; };
-		127363691643A7B500FB0EE2 /* NSString+Email.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Email.m"; sourceTree = "<group>"; };
-		1273636A1643A7B500FB0EE2 /* NSString+UTI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UTI.h"; sourceTree = "<group>"; };
-		1273636B1643A7B500FB0EE2 /* NSString+UTI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTI.m"; sourceTree = "<group>"; };
-		1273636C1643A7B500FB0EE2 /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
-		1273636D1643A7B500FB0EE2 /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
-		1273636E1643A7B600FB0EE2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		127363701643A7B600FB0EE2 /* UIActionSheet+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Block.h"; sourceTree = "<group>"; };
-		127363711643A7B600FB0EE2 /* UIActionSheet+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Block.m"; sourceTree = "<group>"; };
-		127363731643A7B600FB0EE2 /* UIAlertView+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Block.h"; sourceTree = "<group>"; };
-		127363741643A7B600FB0EE2 /* UIAlertView+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Block.m"; sourceTree = "<group>"; };
-		127363751643A7B600FB0EE2 /* UIAlertView+Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Error.h"; sourceTree = "<group>"; };
-		127363761643A7B600FB0EE2 /* UIAlertView+Error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Error.m"; sourceTree = "<group>"; };
-		127363781643A7B600FB0EE2 /* UIColor+NSNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+NSNumber.h"; sourceTree = "<group>"; };
-		127363791643A7B600FB0EE2 /* UIColor+NSNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSNumber.m"; sourceTree = "<group>"; };
-		1273637B1643A7B600FB0EE2 /* UIImageView+URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+URL.h"; sourceTree = "<group>"; };
-		1273637C1643A7B600FB0EE2 /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
+		1273639F1643AD3900FB0EE2 /* KillboardApiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardApiViewController.h; sourceTree = "<group>"; };
+		127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardApiViewController.m; sourceTree = "<group>"; };
+		127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardApiViewController.xib; sourceTree = "<group>"; };
 		1292845414029D1F00055445 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		1292845514029D1F00055445 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		129284D01402A3CE00055445 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
@@ -1840,7 +1849,7 @@
 				7185DDA612EB51730091CB0F /* Utility */,
 				37AB449914F52173007B4C33 /* EVEOnlineAPI */,
 				37AB464414F521A4007B4C33 /* eufe */,
-				1273634C1643A7B500FB0EE2 /* tools */,
+				120B466B164B9995000C33CE /* tools */,
 				718B88BA122FCF3D00622C04 /* Globals */,
 				12BEA849140EA0D600D85E88 /* EVEAccountStorage */,
 				718B8825122FC10900622C04 /* EVEAccount */,
@@ -1878,122 +1887,174 @@
 				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 				379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */,
+				127363921643AB4200FB0EE2 /* Killboard */,
+				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		1273634C1643A7B500FB0EE2 /* tools */ = {
+		120B4669164B96A3000C33CE /* KillMailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1273634D1643A7B500FB0EE2 /* .gitignore */,
-				1273634E1643A7B500FB0EE2 /* CollapsableTableView */,
-				127363511643A7B500FB0EE2 /* EUOperationQueue */,
-				1273635F1643A7B500FB0EE2 /* Nib */,
-				127363641643A7B500FB0EE2 /* NSBlockOperation+Completion */,
-				127363671643A7B500FB0EE2 /* NSString */,
-				1273636E1643A7B600FB0EE2 /* README.md */,
-				1273636F1643A7B600FB0EE2 /* UIActionSheet */,
-				127363721643A7B600FB0EE2 /* UIAlertView */,
-				127363771643A7B600FB0EE2 /* UIColor+NSNumber */,
-				1273637A1643A7B600FB0EE2 /* UIImageView+URL */,
 			);
-			name = tools;
-			path = ../../tools;
+			name = KillMailViewController;
 			sourceTree = "<group>";
 		};
-		1273634E1643A7B500FB0EE2 /* CollapsableTableView */ = {
+		120B466B164B9995000C33CE /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				1273634F1643A7B500FB0EE2 /* CollapsableTableView.h */,
-				127363501643A7B500FB0EE2 /* CollapsableTableView.m */,
+				120B466D164B9995000C33CE /* CollapsableTableView */,
+				120B4670164B9995000C33CE /* EUOperationQueue */,
+				120B467E164B9995000C33CE /* Nib */,
+				120B4683164B9995000C33CE /* NSBlockOperation+Completion */,
+				120B4686164B9995000C33CE /* NSDate */,
+				120B4689164B9995000C33CE /* NSString */,
+				120B4691164B9995000C33CE /* UIActionSheet */,
+				120B4694164B9995000C33CE /* UIAlertView */,
+				120B4699164B9995000C33CE /* UIColor+NSNumber */,
+				120B469C164B9995000C33CE /* UIImageView+URL */,
+			);
+			path = tools;
+			sourceTree = SOURCE_ROOT;
+		};
+		120B466D164B9995000C33CE /* CollapsableTableView */ = {
+			isa = PBXGroup;
+			children = (
+				120B466E164B9995000C33CE /* CollapsableTableView.h */,
+				120B466F164B9995000C33CE /* CollapsableTableView.m */,
 			);
 			path = CollapsableTableView;
 			sourceTree = "<group>";
 		};
-		127363511643A7B500FB0EE2 /* EUOperationQueue */ = {
+		120B4670164B9995000C33CE /* EUOperationQueue */ = {
 			isa = PBXGroup;
 			children = (
-				127363521643A7B500FB0EE2 /* EUActivityView.h */,
-				127363531643A7B500FB0EE2 /* EUActivityView.m */,
-				127363541643A7B500FB0EE2 /* EUOperation.h */,
-				127363551643A7B500FB0EE2 /* EUOperation.m */,
-				127363561643A7B500FB0EE2 /* EUOperationQueue.h */,
-				127363571643A7B500FB0EE2 /* EUOperationQueue.m */,
+				120B4671164B9995000C33CE /* EUActivityView.h */,
+				120B4672164B9995000C33CE /* EUActivityView.m */,
+				120B4673164B9995000C33CE /* EUOperation.h */,
+				120B4674164B9995000C33CE /* EUOperation.m */,
+				120B4675164B9995000C33CE /* EUOperationQueue.h */,
+				120B4676164B9995000C33CE /* EUOperationQueue.m */,
 			);
 			path = EUOperationQueue;
 			sourceTree = "<group>";
 		};
-		1273635F1643A7B500FB0EE2 /* Nib */ = {
+		120B467E164B9995000C33CE /* Nib */ = {
 			isa = PBXGroup;
 			children = (
-				127363601643A7B500FB0EE2 /* UITableViewCell+Nib.h */,
-				127363611643A7B500FB0EE2 /* UITableViewCell+Nib.m */,
-				127363621643A7B500FB0EE2 /* UIView+Nib.h */,
-				127363631643A7B500FB0EE2 /* UIView+Nib.m */,
+				120B467F164B9995000C33CE /* UITableViewCell+Nib.h */,
+				120B4680164B9995000C33CE /* UITableViewCell+Nib.m */,
+				120B4681164B9995000C33CE /* UIView+Nib.h */,
+				120B4682164B9995000C33CE /* UIView+Nib.m */,
 			);
 			path = Nib;
 			sourceTree = "<group>";
 		};
-		127363641643A7B500FB0EE2 /* NSBlockOperation+Completion */ = {
+		120B4683164B9995000C33CE /* NSBlockOperation+Completion */ = {
 			isa = PBXGroup;
 			children = (
-				127363651643A7B500FB0EE2 /* NSBlockOperation+Completion.h */,
-				127363661643A7B500FB0EE2 /* NSBlockOperation+Completion.m */,
+				120B4684164B9995000C33CE /* NSBlockOperation+Completion.h */,
+				120B4685164B9995000C33CE /* NSBlockOperation+Completion.m */,
 			);
 			path = "NSBlockOperation+Completion";
 			sourceTree = "<group>";
 		};
-		127363671643A7B500FB0EE2 /* NSString */ = {
+		120B4686164B9995000C33CE /* NSDate */ = {
 			isa = PBXGroup;
 			children = (
-				127363681643A7B500FB0EE2 /* NSString+Email.h */,
-				127363691643A7B500FB0EE2 /* NSString+Email.m */,
-				1273636A1643A7B500FB0EE2 /* NSString+UTI.h */,
-				1273636B1643A7B500FB0EE2 /* NSString+UTI.m */,
-				1273636C1643A7B500FB0EE2 /* NSString+UUID.h */,
-				1273636D1643A7B500FB0EE2 /* NSString+UUID.m */,
+				120B4687164B9995000C33CE /* NSDate+DaysAgo.h */,
+				120B4688164B9995000C33CE /* NSDate+DaysAgo.m */,
+			);
+			path = NSDate;
+			sourceTree = "<group>";
+		};
+		120B4689164B9995000C33CE /* NSString */ = {
+			isa = PBXGroup;
+			children = (
+				120B468E164B9995000C33CE /* NSString+UUID.h */,
+				120B468F164B9995000C33CE /* NSString+UUID.m */,
 			);
 			path = NSString;
 			sourceTree = "<group>";
 		};
-		1273636F1643A7B600FB0EE2 /* UIActionSheet */ = {
+		120B4691164B9995000C33CE /* UIActionSheet */ = {
 			isa = PBXGroup;
 			children = (
-				127363701643A7B600FB0EE2 /* UIActionSheet+Block.h */,
-				127363711643A7B600FB0EE2 /* UIActionSheet+Block.m */,
+				120B4692164B9995000C33CE /* UIActionSheet+Block.h */,
+				120B4693164B9995000C33CE /* UIActionSheet+Block.m */,
 			);
 			path = UIActionSheet;
 			sourceTree = "<group>";
 		};
-		127363721643A7B600FB0EE2 /* UIAlertView */ = {
+		120B4694164B9995000C33CE /* UIAlertView */ = {
 			isa = PBXGroup;
 			children = (
-				127363731643A7B600FB0EE2 /* UIAlertView+Block.h */,
-				127363741643A7B600FB0EE2 /* UIAlertView+Block.m */,
-				127363751643A7B600FB0EE2 /* UIAlertView+Error.h */,
-				127363761643A7B600FB0EE2 /* UIAlertView+Error.m */,
+				120B4695164B9995000C33CE /* UIAlertView+Block.h */,
+				120B4696164B9995000C33CE /* UIAlertView+Block.m */,
+				120B4697164B9995000C33CE /* UIAlertView+Error.h */,
+				120B4698164B9995000C33CE /* UIAlertView+Error.m */,
 			);
 			path = UIAlertView;
 			sourceTree = "<group>";
 		};
-		127363771643A7B600FB0EE2 /* UIColor+NSNumber */ = {
+		120B4699164B9995000C33CE /* UIColor+NSNumber */ = {
 			isa = PBXGroup;
 			children = (
-				127363781643A7B600FB0EE2 /* UIColor+NSNumber.h */,
-				127363791643A7B600FB0EE2 /* UIColor+NSNumber.m */,
+				120B469A164B9995000C33CE /* UIColor+NSNumber.h */,
+				120B469B164B9995000C33CE /* UIColor+NSNumber.m */,
 			);
 			path = "UIColor+NSNumber";
 			sourceTree = "<group>";
 		};
-		1273637A1643A7B600FB0EE2 /* UIImageView+URL */ = {
+		120B469C164B9995000C33CE /* UIImageView+URL */ = {
 			isa = PBXGroup;
 			children = (
-				1273637B1643A7B600FB0EE2 /* UIImageView+URL.h */,
-				1273637C1643A7B600FB0EE2 /* UIImageView+URL.m */,
+				120B469D164B9995000C33CE /* UIImageView+URL.h */,
+				120B469E164B9995000C33CE /* UIImageView+URL.m */,
 			);
 			path = "UIImageView+URL";
+			sourceTree = "<group>";
+		};
+		1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				1224EBDC1647E698004401C5 /* CollapsableTableHeaderView.h */,
+				1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */,
+				1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */,
+			);
+			name = CollapsableTableHeaderView;
+			sourceTree = "<group>";
+		};
+		1224EBE81648E768004401C5 /* KillboardCellView */ = {
+			isa = PBXGroup;
+			children = (
+				1224EBEB1648E79B004401C5 /* KillboardCellView.h */,
+				1224EBEC1648E79B004401C5 /* KillboardCellView.m */,
+				1224EBE91648E786004401C5 /* KillboardCellView.xib */,
+			);
+			name = KillboardCellView;
+			sourceTree = "<group>";
+		};
+		127363921643AB4200FB0EE2 /* Killboard */ = {
+			isa = PBXGroup;
+			children = (
+				1224EBE81648E768004401C5 /* KillboardCellView */,
+				1273639E1643AD1300FB0EE2 /* KillboardApiViewController */,
+				120B4669164B96A3000C33CE /* KillMailViewController */,
+			);
+			name = Killboard;
+			sourceTree = "<group>";
+		};
+		1273639E1643AD1300FB0EE2 /* KillboardApiViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1273639F1643AD3900FB0EE2 /* KillboardApiViewController.h */,
+				127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */,
+				127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */,
+			);
+			name = KillboardApiViewController;
 			sourceTree = "<group>";
 		};
 		1292845314029CBC00055445 /* SplashScreenViewController */ = {
@@ -2248,6 +2309,7 @@
 				378481271418E3D500450645 /* industryJobsFilter.plist */,
 				37AE99D414E4319F007F7A25 /* mailMessagesFilter.plist */,
 				370CCEB314ED7B8F00605A42 /* assetsFilter.plist */,
+				1224EBF216491D5D004401C5 /* killboardApiFilter.plist */,
 				37B967C314D9C478003F3900 /* damagePatterns.plist */,
 			);
 			name = Resources;
@@ -4782,8 +4844,10 @@
 				126DC1321532EDE70005921B /* fits.html in Resources */,
 				126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */,
 				710B522B15BAE908007D03CB /* README.txt in Resources */,
-				1273637D1643A7B600FB0EE2 /* .gitignore in Resources */,
-				1273638B1643A7B600FB0EE2 /* README.md in Resources */,
+				127363A31643AD3900FB0EE2 /* KillboardApiViewController.xib in Resources */,
+				1224EBE01647E6B4004401C5 /* CollapsableTableHeaderView.xib in Resources */,
+				1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */,
+				1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4931,7 +4995,6 @@
 				37C355B414EBE0330009B590 /* AssetsViewController.m in Sources */,
 				37C355BA14EBEA2D0009B590 /* EVEAssetListItem+AssetsViewController.m in Sources */,
 				370CCEAA14ED467100605A42 /* AssetContentsViewController.mm in Sources */,
-				370CCEB114ED642500605A42 /* ExpandedTableView.m in Sources */,
 				37B063E814EEC2500040D9FC /* DonationViewController.m in Sources */,
 				37AB45C214F52173007B4C33 /* BCEveLoadout.m in Sources */,
 				37AB45C314F52173007B4C33 /* BCEveLoadoutsList.m in Sources */,
@@ -5110,21 +5173,23 @@
 				12D81BFD15D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m in Sources */,
 				12D81BFE15D8F72C006AA4B2 /* EVEDBStaStation.m in Sources */,
 				121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */,
-				1273637E1643A7B600FB0EE2 /* CollapsableTableView.m in Sources */,
-				1273637F1643A7B600FB0EE2 /* EUActivityView.m in Sources */,
-				127363801643A7B600FB0EE2 /* EUOperation.m in Sources */,
-				127363811643A7B600FB0EE2 /* EUOperationQueue.m in Sources */,
-				127363851643A7B600FB0EE2 /* UITableViewCell+Nib.m in Sources */,
-				127363861643A7B600FB0EE2 /* UIView+Nib.m in Sources */,
-				127363871643A7B600FB0EE2 /* NSBlockOperation+Completion.m in Sources */,
-				127363881643A7B600FB0EE2 /* NSString+Email.m in Sources */,
-				127363891643A7B600FB0EE2 /* NSString+UTI.m in Sources */,
-				1273638A1643A7B600FB0EE2 /* NSString+UUID.m in Sources */,
-				1273638C1643A7B600FB0EE2 /* UIActionSheet+Block.m in Sources */,
-				1273638D1643A7B600FB0EE2 /* UIAlertView+Block.m in Sources */,
-				1273638E1643A7B600FB0EE2 /* UIAlertView+Error.m in Sources */,
-				1273638F1643A7B600FB0EE2 /* UIColor+NSNumber.m in Sources */,
-				127363901643A7B600FB0EE2 /* UIImageView+URL.m in Sources */,
+				127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */,
+				1224EBDE1647E698004401C5 /* CollapsableTableHeaderView.m in Sources */,
+				1224EBED1648E79B004401C5 /* KillboardCellView.m in Sources */,
+				120B46A0164B9995000C33CE /* CollapsableTableView.m in Sources */,
+				120B46A1164B9995000C33CE /* EUActivityView.m in Sources */,
+				120B46A2164B9995000C33CE /* EUOperation.m in Sources */,
+				120B46A3164B9995000C33CE /* EUOperationQueue.m in Sources */,
+				120B46A7164B9995000C33CE /* UITableViewCell+Nib.m in Sources */,
+				120B46A8164B9995000C33CE /* UIView+Nib.m in Sources */,
+				120B46A9164B9995000C33CE /* NSBlockOperation+Completion.m in Sources */,
+				120B46AA164B9995000C33CE /* NSDate+DaysAgo.m in Sources */,
+				120B46AD164B9995000C33CE /* NSString+UUID.m in Sources */,
+				120B46AF164B9995000C33CE /* UIActionSheet+Block.m in Sources */,
+				120B46B0164B9995000C33CE /* UIAlertView+Block.m in Sources */,
+				120B46B1164B9995000C33CE /* UIAlertView+Error.m in Sources */,
+				120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */,
+				120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

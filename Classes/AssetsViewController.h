@@ -10,9 +10,9 @@
 #import "FilterViewController.h"
 #import "EUFilter.h"
 #import "EVEAssetListItem+AssetsViewController.h"
-#import "ExpandedTableView.h"
+#import "CollapsableTableView.h"
 
-@interface AssetsViewController : UIViewController<UITableViewDataSource, ExpandedTableViewDelegate> {
+@interface AssetsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate> {
 	UITableView *assetsTableView;
 	UISegmentedControl *ownerSegmentControl;
 	UISearchBar *searchBar;

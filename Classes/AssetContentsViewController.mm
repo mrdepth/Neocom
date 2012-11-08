@@ -23,6 +23,8 @@
 #import "CharacterEVE.h"
 #import "Fit.h"
 #import "POSFit.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface AssetContentsViewController(Private)
 - (void) reloadAssets;
@@ -308,20 +310,19 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsed = NO;
+		view.titleLabel.text = title;
+		if (tableView == self.searchDisplayController.searchResultsTableView)
+			view.collapesImageView.hidden = YES;
+		else
+			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+		return view;
+	}
+	else
+		return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -397,25 +398,23 @@
 	[controller release];*/
 }
 
-#pragma mark ExpandedTableViewDelegate
+#pragma mark - CollapsableTableViewDelegate
 
-- (void) tableView:(UITableView*) tableView didExpandSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[sections objectAtIndex:section] setValue:[NSNumber numberWithBool:YES] forKey:@"expanded"];
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	return [[[sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
 }
 
-- (void) tableView:(UITableView*) tableView didCollapseSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[sections objectAtIndex:section] setValue:[NSNumber numberWithBool:NO] forKey:@"expanded"];
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
 }
 
-- (BOOL) tableView:(UITableView*) tableView isExpandedSection:(NSInteger) section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return YES;
-	else
-		return [[[sections objectAtIndex:section] valueForKey:@"expanded"] boolValue];
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	[[sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
 }
 
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	[[sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+}
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods

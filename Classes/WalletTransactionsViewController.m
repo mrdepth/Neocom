@@ -357,7 +357,6 @@
 }
 
 #pragma mark FilterViewControllerDelegate
-#pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[self dismissModalViewControllerAnimated:YES];

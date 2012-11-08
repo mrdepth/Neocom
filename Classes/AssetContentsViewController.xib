@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">10K549</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">1929</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
-			<string>IBUISearchDisplayController</string>
 			<string>IBUIImageView</string>
-			<string>IBUINavigationController</string>
-			<string>IBUIViewController</string>
-			<string>IBUISearchBar</string>
 			<string>IBUINavigationBar</string>
-			<string>IBUITableView</string>
+			<string>IBUINavigationController</string>
 			<string>IBUINavigationItem</string>
+			<string>IBUISearchBar</string>
+			<string>IBUISearchDisplayController</string>
+			<string>IBUITableView</string>
 			<string>IBUIView</string>
+			<string>IBUIViewController</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -267,19 +267,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">expandedTableViewdDataSource</string>
+						<string key="label">delegate</string>
 						<reference key="source" ref="856812761"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">37</int>
+					<int key="connectionID">39</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">expandedTableViewdDelegate</string>
+						<string key="label">dataSource</string>
 						<reference key="source" ref="856812761"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">38</int>
+					<int key="connectionID">40</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -398,7 +398,7 @@
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="7.CustomClassName">ExpandedTableView</string>
+				<string key="7.CustomClassName">CollapsableTableView</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
@@ -406,7 +406,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">38</int>
+			<int key="maxID">40</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -414,13 +414,13 @@
 					<string key="className">AssetContentsViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">onClose:</string>
+						<string key="NS.key.0">onOpenFit:</string>
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">onClose:</string>
+						<string key="NS.key.0">onOpenFit:</string>
 						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">onClose:</string>
+							<string key="name">onOpenFit:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</object>
@@ -454,25 +454,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">ExpandedTableView</string>
+					<string key="className">CollapsableTableView</string>
 					<string key="superclassName">UITableView</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="expandedTableViewdDataSource">id</string>
-						<string key="expandedTableViewdDelegate">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="expandedTableViewdDataSource">
-							<string key="name">expandedTableViewdDataSource</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="expandedTableViewdDelegate">
-							<string key="name">expandedTableViewdDelegate</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ExpandedTableView.h</string>
+						<string key="minorKey">./Classes/CollapsableTableView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -521,6 +507,6 @@
 			<string key="NS.key.0">background1.png</string>
 			<string key="NS.object.0">{320, 460}</string>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">1929</string>
 	</data>
 </archive>

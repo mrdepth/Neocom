@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FilterViewControllerDelegate.h"
 #import "EUFilter.h"
+#import "CollapsableTableView.h"
 
-@interface FilterViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate> {
+@interface FilterViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, UIPopoverControllerDelegate> {
 	UITableView *tableView;
 	id<FilterViewControllerDelegate> delegate;
 	EUFilter *filter;

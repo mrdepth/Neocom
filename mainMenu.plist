@@ -116,6 +116,20 @@
 	</dict>
 	<dict>
 		<key>className</key>
+		<string>KillboardApiViewController</string>
+		<key>nibName</key>
+		<string>KillboardApiViewController</string>
+		<key>title</key>
+		<string>Killboard</string>
+		<key>image</key>
+		<string>Icons/icon17_04.png</string>
+		<key>charAccessMask</key>
+		<integer>0</integer>
+		<key>corpAccessMask</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>className</key>
 		<string>MarketGroupsViewController</string>
 		<key>nibName</key>
 		<string>MarketGroupsViewController</string>

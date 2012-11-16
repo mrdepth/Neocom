@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1203985816537336008F047B /* KillNetFilterDBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203985616537336008F047B /* KillNetFilterDBViewController.m */; };
+		1203985916537336008F047B /* KillNetFilterDBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1203985716537336008F047B /* KillNetFilterDBViewController.xib */; };
+		1203985E1653C5AE008F047B /* EVEKillNetLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203985D1653C5AE008F047B /* EVEKillNetLog.m */; };
+		120398631653CE5D008F047B /* KillNetFilterDateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120398611653CE5D008F047B /* KillNetFilterDateViewController.m */; };
+		120398641653CE5D008F047B /* KillNetFilterDateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120398621653CE5D008F047B /* KillNetFilterDateViewController.xib */; };
 		120B46A0164B9995000C33CE /* CollapsableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B466F164B9995000C33CE /* CollapsableTableView.m */; };
 		120B46A1164B9995000C33CE /* EUActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4672164B9995000C33CE /* EUActivityView.m */; };
 		120B46A2164B9995000C33CE /* EUOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4674164B9995000C33CE /* EUOperation.m */; };
@@ -30,10 +35,15 @@
 		1224EBED1648E79B004401C5 /* KillboardCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBEC1648E79B004401C5 /* KillboardCellView.m */; };
 		1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBF216491D5D004401C5 /* killboardApiFilter.plist */; };
 		12422A2D1406B3E700B7EAB5 /* TutorialViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */; };
+		125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125147DC165223D70008AC6B /* KillboardKillNetViewController.m */; };
+		125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125147E0165224300008AC6B /* KillboardKillNetViewController.xib */; };
 		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
 		126DC13515330CBA0005921B /* FittingExportViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */; };
 		127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */; };
 		127363A31643AD3900FB0EE2 /* KillboardApiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */; };
+		12880E0E164CDC4C0072FA13 /* KillMailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */; };
+		12880E0F164CDC4C0072FA13 /* KillMailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12880E0D164CDC4C0072FA13 /* KillMailViewController.xib */; };
+		12880E14164CDE350072FA13 /* KillMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 12880E13164CDE350072FA13 /* KillMail.m */; };
 		1292845714029D1F00055445 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1292845514029D1F00055445 /* SplashScreenViewController.m */; };
 		129284D11402A3CE00055445 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D01402A3CE00055445 /* MainWindow-iPad.xib */; };
 		129284D31402A3D900055445 /* SplashScreenViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129284D21402A3D900055445 /* SplashScreenViewController-iPad.xib */; };
@@ -71,6 +81,20 @@
 		12BF01A5140D418B00AD9450 /* PCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12BF01A3140D418B00AD9450 /* PCViewController.xib */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
+		12CB26CF16563B34002E58F9 /* KillNetFilterShipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26CE16563B34002E58F9 /* KillNetFilterShipsViewController.m */; };
+		12CB26D316563D16002E58F9 /* KillNetFilterShipClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */; };
+		12CB26D716563D85002E58F9 /* KillNetFilterRegionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D616563D85002E58F9 /* KillNetFilterRegionsViewController.m */; };
+		12CB26DB16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26DA16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m */; };
+		12CE330216524685009C2E1A /* KillboardKillNetFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE330116524685009C2E1A /* KillboardKillNetFilterViewController.m */; };
+		12CE330416524699009C2E1A /* KillboardKillNetFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE330316524699009C2E1A /* KillboardKillNetFilterViewController.xib */; };
+		12CE330816524A0D009C2E1A /* KillNetFilterTextCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE330716524A0D009C2E1A /* KillNetFilterTextCellView.m */; };
+		12CE330A16524A76009C2E1A /* KillNetFilterTextCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE330916524A76009C2E1A /* KillNetFilterTextCellView.xib */; };
+		12CE330E16525115009C2E1A /* KillNetFiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE330D16525115009C2E1A /* KillNetFiltersViewController.m */; };
+		12CE331016525129009C2E1A /* KillNetFiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE330F16525129009C2E1A /* KillNetFiltersViewController.xib */; };
+		12CE3314165251E3009C2E1A /* TitleCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE3313165251E3009C2E1A /* TitleCellView.m */; };
+		12CE3316165251F2009C2E1A /* TitleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE3315165251F2009C2E1A /* TitleCellView.xib */; };
+		12CE331916527467009C2E1A /* KillNetFilterValueCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */; };
+		12CE331C165274A1009C2E1A /* KillNetFilterValueCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE331B165274A1009C2E1A /* KillNetFilterValueCellView.m */; };
 		12D81BDE15D8F72C006AA4B2 /* EVEDBCrtCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9B15D8F72C006AA4B2 /* EVEDBCrtCategory.m */; };
 		12D81BDF15D8F72C006AA4B2 /* EVEDBCrtCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9D15D8F72C006AA4B2 /* EVEDBCrtCertificate.m */; };
 		12D81BE015D8F72C006AA4B2 /* EVEDBCrtClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81B9F15D8F72C006AA4B2 /* EVEDBCrtClass.m */; };
@@ -106,6 +130,12 @@
 		12D81BFE15D8F72C006AA4B2 /* EVEDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */; };
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
 		12DEFD87152EC9B10076ABC7 /* FittingExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */; };
+		12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31221651047C00C69C5D /* KillMailItemCellView.m */; };
+		12EB31251651049A00C69C5D /* KillMailItemCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31241651049A00C69C5D /* KillMailItemCellView.xib */; };
+		12EB31281651065D00C69C5D /* cellBackgroundDropped.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31261651065C00C69C5D /* cellBackgroundDropped.png */; };
+		12EB31291651065D00C69C5D /* cellBackgroundDropped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31271651065C00C69C5D /* cellBackgroundDropped@2x.png */; };
+		12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31321651274800C69C5D /* KillMailAttackerCellView.m */; };
+		12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -725,6 +755,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1203985516537336008F047B /* KillNetFilterDBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterDBViewController.h; sourceTree = "<group>"; };
+		1203985616537336008F047B /* KillNetFilterDBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterDBViewController.m; sourceTree = "<group>"; };
+		1203985716537336008F047B /* KillNetFilterDBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterDBViewController.xib; sourceTree = "<group>"; };
+		1203985B1653C5AE008F047B /* EVEKillNetAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillNetAPI.h; sourceTree = "<group>"; };
+		1203985C1653C5AE008F047B /* EVEKillNetLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillNetLog.h; sourceTree = "<group>"; };
+		1203985D1653C5AE008F047B /* EVEKillNetLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEKillNetLog.m; sourceTree = "<group>"; };
+		120398601653CE5C008F047B /* KillNetFilterDateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterDateViewController.h; sourceTree = "<group>"; };
+		120398611653CE5D008F047B /* KillNetFilterDateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterDateViewController.m; sourceTree = "<group>"; };
+		120398621653CE5D008F047B /* KillNetFilterDateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterDateViewController.xib; sourceTree = "<group>"; };
 		120B466E164B9995000C33CE /* CollapsableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableView.h; sourceTree = "<group>"; };
 		120B466F164B9995000C33CE /* CollapsableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableView.m; sourceTree = "<group>"; };
 		120B4671164B9995000C33CE /* EUActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUActivityView.h; sourceTree = "<group>"; };
@@ -767,11 +806,19 @@
 		1224EBEC1648E79B004401C5 /* KillboardCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardCellView.m; sourceTree = "<group>"; };
 		1224EBF216491D5D004401C5 /* killboardApiFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = killboardApiFilter.plist; sourceTree = "<group>"; };
 		12422A2C1406B3E700B7EAB5 /* TutorialViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "TutorialViewController-iPad.xib"; sourceTree = "<group>"; };
+		125147DB165223D70008AC6B /* KillboardKillNetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetViewController.h; sourceTree = "<group>"; };
+		125147DC165223D70008AC6B /* KillboardKillNetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetViewController.m; sourceTree = "<group>"; };
+		125147E0165224300008AC6B /* KillboardKillNetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetViewController.xib; sourceTree = "<group>"; };
 		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingExportViewController-iPad.xib"; sourceTree = "<group>"; };
 		1273639F1643AD3900FB0EE2 /* KillboardApiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardApiViewController.h; sourceTree = "<group>"; };
 		127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardApiViewController.m; sourceTree = "<group>"; };
 		127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardApiViewController.xib; sourceTree = "<group>"; };
+		12880E0B164CDC4C0072FA13 /* KillMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailViewController.h; sourceTree = "<group>"; };
+		12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KillMailViewController.mm; sourceTree = "<group>"; };
+		12880E0D164CDC4C0072FA13 /* KillMailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailViewController.xib; sourceTree = "<group>"; };
+		12880E12164CDE350072FA13 /* KillMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMail.h; sourceTree = "<group>"; };
+		12880E13164CDE350072FA13 /* KillMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMail.m; sourceTree = "<group>"; };
 		1292845414029D1F00055445 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		1292845514029D1F00055445 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		129284D01402A3CE00055445 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
@@ -823,6 +870,29 @@
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
+		12CB26CD16563B34002E58F9 /* KillNetFilterShipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterShipsViewController.h; sourceTree = "<group>"; };
+		12CB26CE16563B34002E58F9 /* KillNetFilterShipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterShipsViewController.m; sourceTree = "<group>"; };
+		12CB26D116563D16002E58F9 /* KillNetFilterShipClassesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterShipClassesViewController.h; sourceTree = "<group>"; };
+		12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterShipClassesViewController.m; sourceTree = "<group>"; };
+		12CB26D516563D85002E58F9 /* KillNetFilterRegionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterRegionsViewController.h; sourceTree = "<group>"; };
+		12CB26D616563D85002E58F9 /* KillNetFilterRegionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterRegionsViewController.m; sourceTree = "<group>"; };
+		12CB26D916563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterSolarSystemsViewController.h; sourceTree = "<group>"; };
+		12CB26DA16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterSolarSystemsViewController.m; sourceTree = "<group>"; };
+		12CE330016524685009C2E1A /* KillboardKillNetFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetFilterViewController.h; sourceTree = "<group>"; };
+		12CE330116524685009C2E1A /* KillboardKillNetFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetFilterViewController.m; sourceTree = "<group>"; };
+		12CE330316524699009C2E1A /* KillboardKillNetFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetFilterViewController.xib; sourceTree = "<group>"; };
+		12CE330616524A0D009C2E1A /* KillNetFilterTextCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterTextCellView.h; sourceTree = "<group>"; };
+		12CE330716524A0D009C2E1A /* KillNetFilterTextCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterTextCellView.m; sourceTree = "<group>"; };
+		12CE330916524A76009C2E1A /* KillNetFilterTextCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterTextCellView.xib; sourceTree = "<group>"; };
+		12CE330C16525115009C2E1A /* KillNetFiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFiltersViewController.h; sourceTree = "<group>"; };
+		12CE330D16525115009C2E1A /* KillNetFiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFiltersViewController.m; sourceTree = "<group>"; };
+		12CE330F16525129009C2E1A /* KillNetFiltersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFiltersViewController.xib; sourceTree = "<group>"; };
+		12CE3312165251E3009C2E1A /* TitleCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleCellView.h; sourceTree = "<group>"; };
+		12CE3313165251E3009C2E1A /* TitleCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleCellView.m; sourceTree = "<group>"; };
+		12CE3315165251F2009C2E1A /* TitleCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TitleCellView.xib; sourceTree = "<group>"; };
+		12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterValueCellView.xib; sourceTree = "<group>"; };
+		12CE331A165274A1009C2E1A /* KillNetFilterValueCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterValueCellView.h; sourceTree = "<group>"; };
+		12CE331B165274A1009C2E1A /* KillNetFilterValueCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterValueCellView.m; sourceTree = "<group>"; };
 		12D81B9915D8F72C006AA4B2 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
 		12D81B9A15D8F72C006AA4B2 /* EVEDBCrtCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCategory.h; sourceTree = "<group>"; };
 		12D81B9B15D8F72C006AA4B2 /* EVEDBCrtCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCategory.m; sourceTree = "<group>"; };
@@ -894,6 +964,14 @@
 		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
 		12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingExportViewController.mm; sourceTree = "<group>"; };
 		12DEFD86152EC9B10076ABC7 /* FittingExportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingExportViewController.xib; sourceTree = "<group>"; };
+		12EB31211651047C00C69C5D /* KillMailItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailItemCellView.h; sourceTree = "<group>"; };
+		12EB31221651047C00C69C5D /* KillMailItemCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailItemCellView.m; sourceTree = "<group>"; };
+		12EB31241651049A00C69C5D /* KillMailItemCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailItemCellView.xib; sourceTree = "<group>"; };
+		12EB31261651065C00C69C5D /* cellBackgroundDropped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackgroundDropped.png; sourceTree = "<group>"; };
+		12EB31271651065C00C69C5D /* cellBackgroundDropped@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellBackgroundDropped@2x.png"; sourceTree = "<group>"; };
+		12EB31311651274800C69C5D /* KillMailAttackerCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailAttackerCellView.h; sourceTree = "<group>"; };
+		12EB31321651274800C69C5D /* KillMailAttackerCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailAttackerCellView.m; sourceTree = "<group>"; };
+		12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailAttackerCellView.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUniverseAppDelegate.m; sourceTree = "<group>"; };
@@ -1895,9 +1973,45 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		1203985316537305008F047B /* KillNetFilterDBViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1203985516537336008F047B /* KillNetFilterDBViewController.h */,
+				1203985616537336008F047B /* KillNetFilterDBViewController.m */,
+				1203985716537336008F047B /* KillNetFilterDBViewController.xib */,
+			);
+			name = KillNetFilterDBViewController;
+			sourceTree = "<group>";
+		};
+		1203985A1653C5AE008F047B /* EVEKillNetAPI */ = {
+			isa = PBXGroup;
+			children = (
+				1203985B1653C5AE008F047B /* EVEKillNetAPI.h */,
+				1203985C1653C5AE008F047B /* EVEKillNetLog.h */,
+				1203985D1653C5AE008F047B /* EVEKillNetLog.m */,
+			);
+			path = EVEKillNetAPI;
+			sourceTree = "<group>";
+		};
+		1203985F1653CE3C008F047B /* KillNetFilterDateViewController */ = {
+			isa = PBXGroup;
+			children = (
+				120398601653CE5C008F047B /* KillNetFilterDateViewController.h */,
+				120398611653CE5D008F047B /* KillNetFilterDateViewController.m */,
+				120398621653CE5D008F047B /* KillNetFilterDateViewController.xib */,
+			);
+			name = KillNetFilterDateViewController;
+			sourceTree = "<group>";
+		};
 		120B4669164B96A3000C33CE /* KillMailViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12EB311F1651045F00C69C5D /* KillMailItemCellView */,
+				12EB31301651272A00C69C5D /* KillMailAttackerCellView */,
+				12880E11164CDE210072FA13 /* KillMail */,
+				12880E0B164CDC4C0072FA13 /* KillMailViewController.h */,
+				12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */,
+				12880E0D164CDC4C0072FA13 /* KillMailViewController.xib */,
 			);
 			name = KillMailViewController;
 			sourceTree = "<group>";
@@ -2037,9 +2151,21 @@
 			name = KillboardCellView;
 			sourceTree = "<group>";
 		};
+		125147D9165223B40008AC6B /* KillboardKillNetViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CE32FE16522BC6009C2E1A /* KillboardKillNetFilterViewController */,
+				125147DB165223D70008AC6B /* KillboardKillNetViewController.h */,
+				125147DC165223D70008AC6B /* KillboardKillNetViewController.m */,
+				125147E0165224300008AC6B /* KillboardKillNetViewController.xib */,
+			);
+			name = KillboardKillNetViewController;
+			sourceTree = "<group>";
+		};
 		127363921643AB4200FB0EE2 /* Killboard */ = {
 			isa = PBXGroup;
 			children = (
+				125147D9165223B40008AC6B /* KillboardKillNetViewController */,
 				1224EBE81648E768004401C5 /* KillboardCellView */,
 				1273639E1643AD1300FB0EE2 /* KillboardApiViewController */,
 				120B4669164B96A3000C33CE /* KillMailViewController */,
@@ -2055,6 +2181,15 @@
 				127363A11643AD3900FB0EE2 /* KillboardApiViewController.xib */,
 			);
 			name = KillboardApiViewController;
+			sourceTree = "<group>";
+		};
+		12880E11164CDE210072FA13 /* KillMail */ = {
+			isa = PBXGroup;
+			children = (
+				12880E12164CDE350072FA13 /* KillMail.h */,
+				12880E13164CDE350072FA13 /* KillMail.m */,
+			);
+			name = KillMail;
 			sourceTree = "<group>";
 		};
 		1292845314029CBC00055445 /* SplashScreenViewController */ = {
@@ -2160,6 +2295,110 @@
 			name = PCViewController;
 			sourceTree = "<group>";
 		};
+		12CB26CB16563AF9002E58F9 /* KillNetFilterShipsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CB26CD16563B34002E58F9 /* KillNetFilterShipsViewController.h */,
+				12CB26CE16563B34002E58F9 /* KillNetFilterShipsViewController.m */,
+			);
+			name = KillNetFilterShipsViewController;
+			sourceTree = "<group>";
+		};
+		12CB26D016563CF8002E58F9 /* KillNetFilterShipClassesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CB26D116563D16002E58F9 /* KillNetFilterShipClassesViewController.h */,
+				12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */,
+			);
+			name = KillNetFilterShipClassesViewController;
+			sourceTree = "<group>";
+		};
+		12CB26D416563D70002E58F9 /* KillNetFilterRegionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CB26D516563D85002E58F9 /* KillNetFilterRegionsViewController.h */,
+				12CB26D616563D85002E58F9 /* KillNetFilterRegionsViewController.m */,
+			);
+			name = KillNetFilterRegionsViewController;
+			sourceTree = "<group>";
+		};
+		12CB26D816563D89002E58F9 /* KillNetFilterSolarSystemsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CB26D916563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.h */,
+				12CB26DA16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m */,
+			);
+			name = KillNetFilterSolarSystemsViewController;
+			sourceTree = "<group>";
+		};
+		12CB26DC16563E30002E58F9 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				12CE3311165251C6009C2E1A /* TitleCellView */,
+				12CE3305165249E3009C2E1A /* KillNetFilterTextCellView */,
+				12CE331716527447009C2E1A /* KillNetFilterValueCellView */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		12CE32FE16522BC6009C2E1A /* KillboardKillNetFilterViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CB26DC16563E30002E58F9 /* Cells */,
+				12CE330B165250F7009C2E1A /* KillNetFiltersViewController */,
+				1203985316537305008F047B /* KillNetFilterDBViewController */,
+				1203985F1653CE3C008F047B /* KillNetFilterDateViewController */,
+				12CB26CB16563AF9002E58F9 /* KillNetFilterShipsViewController */,
+				12CB26D016563CF8002E58F9 /* KillNetFilterShipClassesViewController */,
+				12CB26D416563D70002E58F9 /* KillNetFilterRegionsViewController */,
+				12CB26D816563D89002E58F9 /* KillNetFilterSolarSystemsViewController */,
+				12CE330016524685009C2E1A /* KillboardKillNetFilterViewController.h */,
+				12CE330116524685009C2E1A /* KillboardKillNetFilterViewController.m */,
+				12CE330316524699009C2E1A /* KillboardKillNetFilterViewController.xib */,
+			);
+			name = KillboardKillNetFilterViewController;
+			sourceTree = "<group>";
+		};
+		12CE3305165249E3009C2E1A /* KillNetFilterTextCellView */ = {
+			isa = PBXGroup;
+			children = (
+				12CE330616524A0D009C2E1A /* KillNetFilterTextCellView.h */,
+				12CE330716524A0D009C2E1A /* KillNetFilterTextCellView.m */,
+				12CE330916524A76009C2E1A /* KillNetFilterTextCellView.xib */,
+			);
+			name = KillNetFilterTextCellView;
+			sourceTree = "<group>";
+		};
+		12CE330B165250F7009C2E1A /* KillNetFiltersViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12CE330C16525115009C2E1A /* KillNetFiltersViewController.h */,
+				12CE330D16525115009C2E1A /* KillNetFiltersViewController.m */,
+				12CE330F16525129009C2E1A /* KillNetFiltersViewController.xib */,
+			);
+			name = KillNetFiltersViewController;
+			sourceTree = "<group>";
+		};
+		12CE3311165251C6009C2E1A /* TitleCellView */ = {
+			isa = PBXGroup;
+			children = (
+				12CE3312165251E3009C2E1A /* TitleCellView.h */,
+				12CE3313165251E3009C2E1A /* TitleCellView.m */,
+				12CE3315165251F2009C2E1A /* TitleCellView.xib */,
+			);
+			name = TitleCellView;
+			sourceTree = "<group>";
+		};
+		12CE331716527447009C2E1A /* KillNetFilterValueCellView */ = {
+			isa = PBXGroup;
+			children = (
+				12CE331A165274A1009C2E1A /* KillNetFilterValueCellView.h */,
+				12CE331B165274A1009C2E1A /* KillNetFilterValueCellView.m */,
+				12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */,
+			);
+			name = KillNetFilterValueCellView;
+			sourceTree = "<group>";
+		};
 		12D81B9815D8F72C006AA4B2 /* EVEDBAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2252,6 +2491,26 @@
 				126DC13415330CB90005921B /* FittingExportViewController-iPad.xib */,
 			);
 			name = FittingExportViewController;
+			sourceTree = "<group>";
+		};
+		12EB311F1651045F00C69C5D /* KillMailItemCellView */ = {
+			isa = PBXGroup;
+			children = (
+				12EB31211651047C00C69C5D /* KillMailItemCellView.h */,
+				12EB31221651047C00C69C5D /* KillMailItemCellView.m */,
+				12EB31241651049A00C69C5D /* KillMailItemCellView.xib */,
+			);
+			name = KillMailItemCellView;
+			sourceTree = "<group>";
+		};
+		12EB31301651272A00C69C5D /* KillMailAttackerCellView */ = {
+			isa = PBXGroup;
+			children = (
+				12EB31311651274800C69C5D /* KillMailAttackerCellView.h */,
+				12EB31321651274800C69C5D /* KillMailAttackerCellView.m */,
+				12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */,
+			);
+			name = KillMailAttackerCellView;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -2554,6 +2813,7 @@
 				37AB44FA14F52173007B4C33 /* EVEOnlineAPI */,
 				12D81B9815D8F72C006AA4B2 /* EVEDBAPI */,
 				37DF48EB151CE47B00BC87A5 /* EVEC0rporationAPI */,
+				1203985A1653C5AE008F047B /* EVEKillNetAPI */,
 				37AB458A14F52173007B4C33 /* RSS */,
 				37AB45A314F52173007B4C33 /* Utility */,
 			);
@@ -3996,6 +4256,8 @@
 		718CBFB812F5E6BB00CAC006 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				12EB31261651065C00C69C5D /* cellBackgroundDropped.png */,
+				12EB31271651065C00C69C5D /* cellBackgroundDropped@2x.png */,
 				37CFDEFC14B5CF3D00BF148F /* cellBackground2@2x.png */,
 				37CFDEFD14B5CF3E00BF148F /* cellBackground2Selected@2x.png */,
 				37CFDEF614B5CBC900BF148F /* cellBackground2.png */,
@@ -4848,6 +5110,19 @@
 				1224EBE01647E6B4004401C5 /* CollapsableTableHeaderView.xib in Resources */,
 				1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */,
 				1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */,
+				12880E0F164CDC4C0072FA13 /* KillMailViewController.xib in Resources */,
+				12EB31251651049A00C69C5D /* KillMailItemCellView.xib in Resources */,
+				12EB31281651065D00C69C5D /* cellBackgroundDropped.png in Resources */,
+				12EB31291651065D00C69C5D /* cellBackgroundDropped@2x.png in Resources */,
+				12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */,
+				125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */,
+				12CE330416524699009C2E1A /* KillboardKillNetFilterViewController.xib in Resources */,
+				12CE330A16524A76009C2E1A /* KillNetFilterTextCellView.xib in Resources */,
+				12CE331016525129009C2E1A /* KillNetFiltersViewController.xib in Resources */,
+				12CE3316165251F2009C2E1A /* TitleCellView.xib in Resources */,
+				12CE331916527467009C2E1A /* KillNetFilterValueCellView.xib in Resources */,
+				1203985916537336008F047B /* KillNetFilterDBViewController.xib in Resources */,
+				120398641653CE5D008F047B /* KillNetFilterDateViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5190,6 +5465,23 @@
 				120B46B1164B9995000C33CE /* UIAlertView+Error.m in Sources */,
 				120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */,
 				120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */,
+				12880E0E164CDC4C0072FA13 /* KillMailViewController.mm in Sources */,
+				12880E14164CDE350072FA13 /* KillMail.m in Sources */,
+				12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */,
+				12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */,
+				125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */,
+				12CE330216524685009C2E1A /* KillboardKillNetFilterViewController.m in Sources */,
+				12CE330816524A0D009C2E1A /* KillNetFilterTextCellView.m in Sources */,
+				12CE330E16525115009C2E1A /* KillNetFiltersViewController.m in Sources */,
+				12CE3314165251E3009C2E1A /* TitleCellView.m in Sources */,
+				12CE331C165274A1009C2E1A /* KillNetFilterValueCellView.m in Sources */,
+				1203985816537336008F047B /* KillNetFilterDBViewController.m in Sources */,
+				1203985E1653C5AE008F047B /* EVEKillNetLog.m in Sources */,
+				120398631653CE5D008F047B /* KillNetFilterDateViewController.m in Sources */,
+				12CB26CF16563B34002E58F9 /* KillNetFilterShipsViewController.m in Sources */,
+				12CB26D316563D16002E58F9 /* KillNetFilterShipClassesViewController.m in Sources */,
+				12CB26D716563D85002E58F9 /* KillNetFilterRegionsViewController.m in Sources */,
+				12CB26DB16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,7 @@
 #import "KillboardCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "UIView+Nib.h"
+#import "KillMailViewController.h"
 
 @interface KillboardApiViewController ()
 @property (nonatomic, retain) NSMutableDictionary *charFilter;
@@ -148,8 +149,14 @@
 	cell.shipImageView.image = [UIImage imageNamed:ship.typeSmallImageName];
 	cell.shipLabel.text = ship.typeName;
 	cell.characterNameLabel.text = kill.victim.characterName;
-	cell.corporationNameLabel.text = kill.victim.corporationName;
-	cell.allianceNameLabel.text = kill.victim.allianceName;
+	if (kill.victim.allianceID > 0) {
+		cell.corporationNameLabel.text = kill.victim.corporationName;
+		cell.allianceNameLabel.text = kill.victim.allianceName;
+	}
+	else {
+		cell.corporationNameLabel.text = @"";
+		cell.allianceNameLabel.text = kill.victim.corporationName;
+	}
 	
 	if (solarSystem)
 		cell.systemNameLabel.text = [NSString stringWithFormat:@"%@ (%.1f)", solarSystem.solarSystemName, solarSystem.security];
@@ -176,6 +183,32 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary* record;
+	if (self.searchDisplayController.searchResultsTableView == tableView)
+		record = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	else
+		record = [[[self.killLog objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	EVEKillLogKill* kill = [record valueForKey:@"kill"];
+
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:@"Loading..."];
+	__block KillMail* killMail = nil;
+	[operation addExecutionBlock:^(void) {
+		@autoreleasepool {
+			killMail = [[KillMail alloc] initWithKillLogKill:kill];
+		}
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^(void) {
+		if (![operation isCancelled]) {
+			KillMailViewController* controller = [[KillMailViewController alloc] initWithNibName:@"KillMailViewController" bundle:nil];
+			controller.killMail = killMail;
+			[self.navigationController pushViewController:controller animated:YES];
+			[controller release];
+		}
+		[killMail release];
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -185,7 +218,7 @@
 		view.collapsed = NO;
 		view.titleLabel.text = title;
 		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapesImageView.hidden = YES;
+			view.collapsImageView.hidden = YES;
 		else
 			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;

@@ -162,7 +162,7 @@
 		view.collapsed = NO;
 		view.titleLabel.text = title;
 		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapesImageView.hidden = YES;
+			view.collapsImageView.hidden = YES;
 		else
 			view.collapsed = [self tableView:aTableView sectionIsCollapsed:section];
 		return view;

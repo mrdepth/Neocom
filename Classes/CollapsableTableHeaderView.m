@@ -30,12 +30,12 @@
 
 - (void) setCollapsed:(BOOL)value {
 	_collapsed = value;
-	self.collapesImageView.image = [UIImage imageNamed:value ? @"Icons/icon105_04.png" : @"Icons/icon105_05.png"];
+	self.collapsImageView.image = [UIImage imageNamed:value ? @"Icons/icon105_04.png" : @"Icons/icon105_05.png"];
 }
 
 - (void)dealloc {
     [_titleLabel release];
-    [_collapesImageView release];
+    [_collapsImageView release];
     [super dealloc];
 }
 

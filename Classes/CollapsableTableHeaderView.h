@@ -10,7 +10,7 @@
 
 @interface CollapsableTableHeaderView : UIView
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *collapesImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *collapsImageView;
 @property (nonatomic, assign) BOOL collapsed;
 
 @end

@@ -147,6 +147,7 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 		
 		if (!self.netService && ipv4socket) {
 			self.netService = [[[NSNetService alloc] initWithDomain:@"local" type:@"_http._tcp" name:@"Neocom" port:chosenPort] autorelease];
+			//self.netService = [[[NSNetService alloc] initWithDomain:@"local" type:@"_ftp._tcp" name:@"Neocom" port:chosenPort] autorelease];
 			[self.netService setDelegate:self];
 		}
 		

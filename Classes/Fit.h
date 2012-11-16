@@ -11,6 +11,7 @@
 #include "eufe.h"
 
 @class EVEAssetListItem;
+@class KillMail;
 @interface Fit : NSObject {
 	NSString* fitID;
 	NSString* fitName;
@@ -23,12 +24,14 @@
 + (id) fitWithCharacter:(eufe::Character*) character error:(NSError **)errorPtr;
 + (id) fitWithBCString:(NSString*) string character:(eufe::Character*) character;
 + (id) fitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
++ (id) fitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
 
 - (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(eufe::Character*) aCharacter;
 - (id) initWithDictionary:(NSDictionary*) dictionary character:(eufe::Character*) aCharacter;
 - (id) initWithCharacter:(eufe::Character*) character error:(NSError **)errorPtr;
 - (id) initWithBCString:(NSString*) string character:(eufe::Character*) character;
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
+- (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
 - (NSDictionary*) dictionary;
 - (NSString*) dna;
 - (NSString*) eveXML;

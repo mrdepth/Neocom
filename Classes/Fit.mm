@@ -13,6 +13,7 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+AssetsViewController.h"
 #import "NSString+UUID.h"
+#import "KillMail.h"
 
 #include <functional>
 
@@ -92,6 +93,10 @@ public:
 + (id) fitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithAsset:asset character:character] autorelease];
 	
+}
+
++ (id) fitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character {
+	return [[[Fit alloc] initWithKillMail:killMail character:character] autorelease];
 }
 
 - (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(eufe::Character*) aCharacter {
@@ -297,6 +302,56 @@ public:
 	return self;
 }
 	
+- (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) aCharacter {
+	if (self = [self initWithCharacter:aCharacter error:nil]) {
+		self.fitName = killMail.victim.shipType.typeName;
+		eufe::Ship* ship = aCharacter->setShip(killMail.victim.shipType.typeID);
+		
+		if (!ship) {
+			[self release];
+			return nil;
+		}
+		else {
+			NSMutableArray *charges = [NSMutableArray array];
+			NSMutableArray* items = [NSMutableArray arrayWithArray:killMail.subsystemSlots];
+			[items addObjectsFromArray:killMail.rigSlots];
+			[items addObjectsFromArray:killMail.lowSlots];
+			[items addObjectsFromArray:killMail.medSlots];
+			[items addObjectsFromArray:killMail.hiSlots];
+			
+			for (KillMailItem* item in items) {
+				int amount = item.qty;
+				if (amount < 1)
+					amount = 1;
+				for (int i = 0; i < amount; i++)
+					ship->addModule(item.type.typeID);
+			}
+			for (KillMailItem* item in killMail.cargo) {
+				if ([item.type.group.category.categoryName isEqualToString:@"Charge"]) {
+					[charges addObject:item.type];
+				}
+			}
+			for (KillMailItem* item in killMail.droneBay) {
+				int amount = item.qty;
+				if (amount < 1)
+					amount = 1;
+				for (int i = 0; i < amount; i++)
+					ship->addDrone(item.type.typeID);
+			}
+		
+			for (EVEDBInvType *type in charges) {
+				eufe::Charge* charge = new eufe::Charge(ship->getEngine(), type.typeID, NULL);
+				eufe::ModulesList::const_iterator i, end = ship->getModules().end();
+				for (i = ship->getModules().begin(); i != end; i++) {
+					if ((*i)->canFit(charge))
+						(*i)->setCharge(new eufe::Charge(*charge));
+				}
+				delete charge;
+			}
+		}
+	}
+	return self;
+}
 
 - (void) dealloc {
 	[fitName release];

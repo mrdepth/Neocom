@@ -116,9 +116,9 @@
 	</dict>
 	<dict>
 		<key>className</key>
-		<string>KillboardApiViewController</string>
+		<string>KillboardKillNetFilterViewController</string>
 		<key>nibName</key>
-		<string>KillboardApiViewController</string>
+		<string>KillboardKillNetFilterViewController</string>
 		<key>title</key>
 		<string>Killboard</string>
 		<key>image</key>

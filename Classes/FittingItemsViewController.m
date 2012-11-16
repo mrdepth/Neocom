@@ -73,6 +73,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	if (needsReload)
 		[self reload];
 }

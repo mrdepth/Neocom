@@ -185,8 +185,7 @@
 }
 
 - (void) certificateTreeView:(CertificateTreeView*) aCertificateTreeView didSelectType:(EVEDBInvType*) type {
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];
@@ -251,8 +250,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];

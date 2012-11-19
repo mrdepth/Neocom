@@ -636,8 +636,7 @@
 		[actionSheet autorelease];
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -652,8 +651,7 @@
 		[itemViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		ItemInfo* ammo = [ItemInfo itemInfoWithItem:module->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;

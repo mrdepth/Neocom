@@ -104,8 +104,7 @@
 }
 
 - (IBAction) onAddAccount: (id) sender {
-	AddEVEAccountViewController *controller = [[AddEVEAccountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AddEVEAccountViewController-iPad" : @"AddEVEAccountViewController")
-																							bundle:nil];
+	AddEVEAccountViewController *controller = [[AddEVEAccountViewController alloc] initWithNibName:@"AddEVEAccountViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
@@ -278,8 +277,7 @@
 	else {
 		EVEAccountStorageAPIKey *apiKey = [[section valueForKey:@"apiKeys"] objectAtIndex:indexPath.row - (character ? 1 : 0)];
 		if (apiKey && !apiKey.error) {
-			AccessMaskViewController *controller = [[AccessMaskViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AccessMaskViewController-iPad" : @"AccessMaskViewController")
-																							  bundle:nil];
+			AccessMaskViewController *controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
 			controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
 			controller.corporate = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
 			[self.navigationController pushViewController:controller animated:YES];

@@ -38,8 +38,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Open fit" style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+	
 	self.title = self.killMail.victim.characterName;
+
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		self.navigationItem.titleView = self.sectionSegmentedControler;
+
+	if (self.killMail.victim.shipType.group.categoryID == 6)
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Open fit" style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+
 	[self.sectionSegmentedControler setTitle:[NSString stringWithFormat:@"Involved Parties (%d)", self.killMail.attackers.count] forSegmentAtIndex:1];
 	
 	
@@ -324,8 +331,7 @@
 #pragma mark - Private
 
 - (IBAction)onOpenFit:(id)sender {
-	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																						   bundle:nil];
+	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;

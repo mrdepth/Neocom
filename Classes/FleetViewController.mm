@@ -283,8 +283,7 @@
 	}
 	else if ([button isEqualToString:ActionButtonShowShipInfo]) {
 		ItemInfo* itemInfo = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"ship"];
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;

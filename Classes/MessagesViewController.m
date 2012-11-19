@@ -269,8 +269,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
-			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
-																						bundle:nil];
+			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:@"MessageViewController" bundle:nil];
 			controller.message = message;
 			
 			if (!message.read && message.text) {

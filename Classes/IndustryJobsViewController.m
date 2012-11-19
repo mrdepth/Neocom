@@ -234,8 +234,7 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		controller.type = [[filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];

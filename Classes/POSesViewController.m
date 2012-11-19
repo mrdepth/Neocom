@@ -215,8 +215,7 @@
 		pos = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	}
 
-	POSViewController *controller = [[POSViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSViewController-iPad" : @"POSViewController")
-																		bundle:nil];
+	POSViewController *controller = [[POSViewController alloc] initWithNibName:@"POSViewController" bundle:nil];
 	
 	controller.posID = [[pos valueForKey:@"posID"] longLongValue];
 	controller.controlTowerType = [pos valueForKey:@"controlTower"];

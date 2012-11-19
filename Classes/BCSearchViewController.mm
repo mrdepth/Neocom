@@ -154,8 +154,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (loadouts.count > 0 && ![operation isCancelled]) {
-			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"BCSearchResultViewController-iPad" : @"BCSearchResultViewController")
-																									  bundle:nil];
+			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:@"BCSearchResultViewController" bundle:nil];
 			controller.loadouts = loadouts;
 			controller.ship = ship;
 			[self.navigationController pushViewController:controller animated:YES];

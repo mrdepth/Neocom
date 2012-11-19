@@ -331,8 +331,7 @@
 }
 
 - (void) addFleetMember {
-	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitsViewController-iPad" : @"FitsViewController")
-																				  bundle:nil];
+	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
 	fitsViewController.delegate = self;
 	fitsViewController.engine = fittingEngine;
 	
@@ -348,8 +347,7 @@
 }
 
 - (void) selectCharacterForFit:(Fit*) aFit {
-	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
-																									bundle:nil];
+	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
 	charactersViewController.delegate = self;
 	charactersViewController.modifiedFit = aFit;
 	
@@ -437,8 +435,7 @@
 		[self update];
 	}
 	else if ([button isEqualToString:ActionButtonSetDamagePattern]) {
-		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternsViewController-iPad" : @"DamagePatternsViewController")
-																													bundle:nil];
+		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:@"DamagePatternsViewController" bundle:nil];
 		damagePatternsViewController.delegate = self;
 		damagePatternsViewController.currentDamagePattern = self.damagePattern;
 		
@@ -453,8 +450,7 @@
 		[damagePatternsViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonRequiredSkills]) {
-		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RequiredSkillsViewController-iPad" : @"RequiredSkillsViewController")
-																													bundle:nil];
+		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
 		requiredSkillsViewController.fit = self.fit;
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;

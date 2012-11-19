@@ -167,8 +167,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 
 		controller.type = [filteredValues objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -197,8 +196,7 @@
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = [rows objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 

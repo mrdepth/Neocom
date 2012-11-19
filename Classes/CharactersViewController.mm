@@ -206,8 +206,7 @@
 		[[sections objectAtIndex:1] addObject:character];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
-		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharacterSkillsEditorViewController-iPad" : @"CharacterSkillsEditorViewController")
-																												bundle:nil];
+		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
 		controller.character = character;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -267,8 +266,7 @@
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled]) {
 				if (self.editing) {
-					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharacterSkillsEditorViewController-iPad" : @"CharacterSkillsEditorViewController")
-																															bundle:nil];
+					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
 					controller.character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 					[self.navigationController pushViewController:controller animated:YES];
 					[controller release];

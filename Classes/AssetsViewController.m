@@ -204,8 +204,7 @@
 	else
 		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = asset.type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -234,16 +233,14 @@
 		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (asset.contents.count > 0) {
-		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AssetContentsViewController-iPad" : @"AssetContentsViewController")
-																								bundle:nil];
+		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = asset;
 		controller.corporate = ownerSegmentControl.selectedSegmentIndex == 1;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = asset.type;
 		[controller setActivePage:ItemViewControllerActivePageInfo];

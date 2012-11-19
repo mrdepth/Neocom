@@ -126,8 +126,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	CertificatesViewController *controller = [[CertificatesViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificatesViewController-iPad" : @"CertificatesViewController")
-																		bundle:nil];
+	CertificatesViewController *controller = [[CertificatesViewController alloc] initWithNibName:@"CertificatesViewController" bundle:nil];
 	controller.category = [rows objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];

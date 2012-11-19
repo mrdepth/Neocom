@@ -86,8 +86,7 @@
 	else {
 		type = [rows objectAtIndex:indexPath.row];
 	}
-	FittingNPCItemViewController *controller = [[FittingNPCItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																							  bundle:nil];
+	FittingNPCItemViewController *controller = [[FittingNPCItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.damagePatternsViewController = self.damagePatternsViewController;
 	controller.type = type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];

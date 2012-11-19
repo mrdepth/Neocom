@@ -13,12 +13,10 @@
 - (void) killNetFilterDateViewController:(KillNetFilterDateViewController*) controller didSelectDate:(NSDate*) date;
 @end
 
-@interface KillNetFilterDateViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface KillNetFilterDateViewController : UIViewController
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *valueLabel;
-@property (retain, nonatomic) IBOutlet UITableViewCell *cell;
 @property (retain, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) NSDate* minimumDate;
 @property (retain, nonatomic) NSDate* maximumDate;
 @property (retain, nonatomic) NSDate* date;

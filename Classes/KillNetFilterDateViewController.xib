@@ -57,7 +57,7 @@
 					</object>
 					<object class="IBUITableViewCell" id="485848907">
 						<reference key="NSNextResponder" ref="344062582"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">268</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIView" id="355334319">
 								<reference key="NSNextResponder" ref="485848907"/>
@@ -169,7 +169,7 @@
 					</object>
 					<object class="IBUIDatePicker" id="296490728">
 						<reference key="NSNextResponder" ref="344062582"/>
-						<int key="NSvFlags">290</int>
+						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 200}, {320, 216}}</string>
 						<reference key="NSSuperview" ref="344062582"/>
 						<reference key="NSWindow"/>
@@ -299,14 +299,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="destination" ref="1043063679"/>
 					</object>
 					<int key="connectionID">35</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">cell</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="485848907"/>
-					</object>
-					<int key="connectionID">37</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -476,24 +468,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="cell">UITableViewCell</string>
 						<string key="datePicker">UIDatePicker</string>
-						<string key="tableView">UITableView</string>
 						<string key="titleLabel">UILabel</string>
 						<string key="valueLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="cell">
-							<string key="name">cell</string>
-							<string key="candidateClassName">UITableViewCell</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="datePicker">
 							<string key="name">datePicker</string>
 							<string key="candidateClassName">UIDatePicker</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="titleLabel">
 							<string key="name">titleLabel</string>

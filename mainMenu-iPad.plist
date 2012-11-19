@@ -6,7 +6,7 @@
 		<key>className</key>
 		<string>SkillsViewController</string>
 		<key>nibName</key>
-		<string>SkillsViewController-iPad</string>
+		<string>SkillsViewController</string>
 		<key>title</key>
 		<string>Skills</string>
 		<key>image</key>
@@ -20,7 +20,7 @@
 		<key>className</key>
 		<string>SkillPlannerViewController</string>
 		<key>nibName</key>
-		<string>SkillPlannerViewController-iPad</string>
+		<string>SkillPlannerViewController</string>
 		<key>title</key>
 		<string>Skill Planner</string>
 		<key>image</key>
@@ -34,7 +34,7 @@
 		<key>className</key>
 		<string>MessagesViewController</string>
 		<key>nibName</key>
-		<string>MessagesViewController-iPad</string>
+		<string>MessagesViewController</string>
 		<key>title</key>
 		<string>EVE Mail</string>
 		<key>image</key>
@@ -48,7 +48,7 @@
 		<key>className</key>
 		<string>AssetsViewController</string>
 		<key>nibName</key>
-		<string>AssetsViewController-iPad</string>
+		<string>AssetsViewController</string>
 		<key>title</key>
 		<string>Assets</string>
 		<key>image</key>
@@ -62,7 +62,7 @@
 		<key>className</key>
 		<string>CertificateCategoriesViewController</string>
 		<key>nibName</key>
-		<string>CertificateCategoriesViewController-iPad</string>
+		<string>CertificateCategoriesViewController</string>
 		<key>title</key>
 		<string>Certificates</string>
 		<key>image</key>
@@ -76,7 +76,7 @@
 		<key>className</key>
 		<string>ItemsDBViewController</string>
 		<key>nibName</key>
-		<string>ItemsDBViewController-iPad</string>
+		<string>ItemsDBViewController</string>
 		<key>title</key>
 		<string>Database</string>
 		<key>image</key>
@@ -90,7 +90,7 @@
 		<key>className</key>
 		<string>NPCGroupsViewController</string>
 		<key>nibName</key>
-		<string>NPCGroupsViewController-iPad</string>
+		<string>NPCGroupsViewController</string>
 		<key>title</key>
 		<string>NPC</string>
 		<key>image</key>
@@ -104,7 +104,7 @@
 		<key>className</key>
 		<string>FittingServiceMenuViewController</string>
 		<key>nibName</key>
-		<string>FittingServiceMenuViewController-iPad</string>
+		<string>FittingServiceMenuViewController</string>
 		<key>title</key>
 		<string>Fitting</string>
 		<key>image</key>
@@ -116,9 +116,37 @@
 	</dict>
 	<dict>
 		<key>className</key>
+		<string>KillboardApiViewController</string>
+		<key>nibName</key>
+		<string>KillboardApiViewController</string>
+		<key>title</key>
+		<string>Kill Reports</string>
+		<key>image</key>
+		<string>Icons/icon50_15.png</string>
+		<key>charAccessMask</key>
+		<integer>256</integer>
+		<key>corpAccessMask</key>
+		<integer>256</integer>
+	</dict>
+	<dict>
+		<key>className</key>
+		<string>KillboardKillNetFilterViewController</string>
+		<key>nibName</key>
+		<string>KillboardKillNetFilterViewController</string>
+		<key>title</key>
+		<string>EVE-Kill Reports</string>
+		<key>image</key>
+		<string>Icons/icon61_03.png</string>
+		<key>charAccessMask</key>
+		<integer>0</integer>
+		<key>corpAccessMask</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>className</key>
 		<string>MarketGroupsViewController</string>
 		<key>nibName</key>
-		<string>MarketGroupsViewController-iPad</string>
+		<string>MarketGroupsViewController</string>
 		<key>title</key>
 		<string>Market</string>
 		<key>image</key>
@@ -132,7 +160,7 @@
 		<key>className</key>
 		<string>MarketOrdersViewController</string>
 		<key>nibName</key>
-		<string>MarketOrdersViewController-iPad</string>
+		<string>MarketOrdersViewController</string>
 		<key>title</key>
 		<string>Market Orders</string>
 		<key>image</key>
@@ -146,7 +174,7 @@
 		<key>className</key>
 		<string>ContractsViewController</string>
 		<key>nibName</key>
-		<string>ContractsViewController-iPad</string>
+		<string>ContractsViewController</string>
 		<key>title</key>
 		<string>Contracts</string>
 		<key>image</key>
@@ -160,7 +188,7 @@
 		<key>className</key>
 		<string>WalletTransactionsViewController</string>
 		<key>nibName</key>
-		<string>WalletTransactionsViewController-iPad</string>
+		<string>WalletTransactionsViewController</string>
 		<key>title</key>
 		<string>Wallet Transactions</string>
 		<key>image</key>
@@ -174,7 +202,7 @@
 		<key>className</key>
 		<string>WalletJournalViewController</string>
 		<key>nibName</key>
-		<string>WalletJournalViewController-iPad</string>
+		<string>WalletJournalViewController</string>
 		<key>title</key>
 		<string>Wallet Journal</string>
 		<key>image</key>
@@ -188,7 +216,7 @@
 		<key>className</key>
 		<string>IndustryJobsViewController</string>
 		<key>nibName</key>
-		<string>IndustryJobsViewController-iPad</string>
+		<string>IndustryJobsViewController</string>
 		<key>title</key>
 		<string>Industry Jobs</string>
 		<key>image</key>
@@ -202,7 +230,7 @@
 		<key>className</key>
 		<string>POSesViewController</string>
 		<key>nibName</key>
-		<string>POSesViewController-iPad</string>
+		<string>POSesViewController</string>
 		<key>title</key>
 		<string>POS&apos;es</string>
 		<key>image</key>
@@ -216,7 +244,7 @@
 		<key>className</key>
 		<string>RSSFeedsViewController</string>
 		<key>nibName</key>
-		<string>RSSFeedsViewController-iPad</string>
+		<string>RSSFeedsViewController</string>
 		<key>title</key>
 		<string>News</string>
 		<key>image</key>
@@ -230,7 +258,7 @@
 		<key>className</key>
 		<string>AboutViewController</string>
 		<key>nibName</key>
-		<string>AboutViewController-iPad</string>
+		<string>AboutViewController</string>
 		<key>title</key>
 		<string>About</string>
 		<key>image</key>
@@ -246,7 +274,7 @@
 		<key>className</key>
 		<string>DonationViewController</string>
 		<key>nibName</key>
-		<string>DonationViewController-iPad</string>
+		<string>DonationViewController</string>
 		<key>title</key>
 		<string>Donate</string>
 		<key>image</key>

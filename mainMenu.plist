@@ -116,13 +116,27 @@
 	</dict>
 	<dict>
 		<key>className</key>
+		<string>KillboardApiViewController</string>
+		<key>nibName</key>
+		<string>KillboardApiViewController</string>
+		<key>title</key>
+		<string>Kill Reports</string>
+		<key>image</key>
+		<string>Icons/icon50_15.png</string>
+		<key>charAccessMask</key>
+		<integer>256</integer>
+		<key>corpAccessMask</key>
+		<integer>256</integer>
+	</dict>
+	<dict>
+		<key>className</key>
 		<string>KillboardKillNetFilterViewController</string>
 		<key>nibName</key>
 		<string>KillboardKillNetFilterViewController</string>
 		<key>title</key>
-		<string>Killboard</string>
+		<string>EVE-Kill Reports</string>
 		<key>image</key>
-		<string>Icons/icon17_04.png</string>
+		<string>Icons/icon61_03.png</string>
 		<key>charAccessMask</key>
 		<integer>0</integer>
 		<key>corpAccessMask</key>

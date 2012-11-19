@@ -149,8 +149,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	CertificateViewController *controller = [[CertificateViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificateViewController-iPad" : @"CertificateViewController")
-																		  bundle:nil];
+	CertificateViewController *controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
 	controller.certificate = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

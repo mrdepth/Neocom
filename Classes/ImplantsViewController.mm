@@ -231,8 +231,7 @@
 			type = [boosters valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
 		}
 		
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		[type updateAttributes];
 		itemViewController.type = type;

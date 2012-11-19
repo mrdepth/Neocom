@@ -123,8 +123,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RSSViewController-iPad" : @"RSSViewController")
-																		bundle:nil];
+	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:@"RSSViewController" bundle:nil];
 	controller.rss = [[rows objectAtIndex:indexPath.row] valueForKey:@"item"];
 	
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

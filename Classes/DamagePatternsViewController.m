@@ -187,8 +187,7 @@
 		[[sections objectAtIndex:indexPath.section - 1] addObject:damagePattern];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
-																										bundle:nil];
+		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
 		controller.damagePattern = damagePattern;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -230,7 +229,8 @@
 - (void)tableView:(UITableView*) aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
-		FittingNPCGroupsViewController* controller = [[FittingNPCGroupsViewController alloc] initWithNibName:@"NPCGroupsViewControllerModal-iPad" bundle:nil];
+		FittingNPCGroupsViewController *controller = [[FittingNPCGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"NPCGroupsViewControllerModal" : @"NPCGroupsViewController")
+																					bundle:nil];
 		controller.modalMode = YES;
 		controller.damagePatternsViewController = self;
 		[self.navigationController pushViewController:controller animated:YES];
@@ -242,8 +242,7 @@
 	else {
 		if (self.editing) {
 			if (indexPath.section == 2) {
-				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
-																												bundle:nil];
+				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
 				controller.damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 				[self.navigationController pushViewController:controller animated:YES];
 				[controller release];

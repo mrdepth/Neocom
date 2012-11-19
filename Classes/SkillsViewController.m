@@ -305,8 +305,7 @@
 			skill = [skillQueue objectAtIndex:indexPath.row];
 	}
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = [EVEDBInvType invTypeWithTypeID:skill.typeID error:nil];
 	[controller setActivePage:ItemViewControllerActivePageInfo];

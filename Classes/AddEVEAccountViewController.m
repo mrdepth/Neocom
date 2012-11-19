@@ -109,8 +109,7 @@
 }
 
 - (IBAction) onPC: (id) sender {
-	PCViewController *controller = [[PCViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"PCViewController-iPad" : @"PCViewController")
-																	  bundle:nil];
+	PCViewController *controller = [[PCViewController alloc] initWithNibName:@"PCViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
@@ -140,8 +139,7 @@
 }
 
 - (IBAction) onToutorial: (id) sender {
-	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"TutorialViewController-iPad" : @"TutorialViewController")
-																				  bundle:nil];
+	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
@@ -264,8 +262,7 @@
 				}
 				else if (apiKeys.count > 1 && [self.navigationController visibleViewController] == self) {
 					[pb setValue:@"" forPasteboardType:type];
-					APIKeysViewController *controller = [[APIKeysViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"APIKeysViewController-iPad" : @"APIKeysViewController")
-																								bundle:nil];
+					APIKeysViewController *controller = [[APIKeysViewController alloc] initWithNibName:@"APIKeysViewController" bundle:nil];
 					controller.apiKeys = apiKeys;
 					controller.delegate = self;
 					[self.navigationController pushViewController:controller animated:YES];

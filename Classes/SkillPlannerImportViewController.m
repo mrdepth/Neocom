@@ -178,8 +178,7 @@
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
 			if (![operation isCancelled]) {
-				SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
-																								bundle:nil];
+				SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:@"SkillPlanViewController" bundle:nil];
 				controller.skillPlan = skillPlan;
 				controller.skillPlannerImportViewController = self;
 				[self.navigationController pushViewController:controller animated:YES];
@@ -254,8 +253,7 @@
 			[connection.response run];
 			if (skillPlan) {
 				if (self.navigationController.visibleViewController == self) {
-					SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlanViewController-iPad" : @"SkillPlanViewController")
-																									bundle:nil];
+					SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:@"SkillPlanViewController" bundle:nil];
 					controller.skillPlan = skillPlan;
 					controller.skillPlannerImportViewController = self;
 					[self.navigationController pushViewController:controller animated:YES];

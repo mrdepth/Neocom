@@ -420,8 +420,7 @@
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
-		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DronesAmountViewController-iPad" : @"DronesAmountViewController")
-																											  bundle:nil];
+		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
 		dronesAmountViewController.amount = array.count;
 		dronesAmountViewController.maxAmount = 50;
 		dronesAmountViewController.delegate = self;
@@ -432,8 +431,7 @@
 		[dronesAmountViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -448,8 +446,7 @@
 		[itemViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		ItemInfo* ammo = [ItemInfo itemInfoWithItem:structure->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;

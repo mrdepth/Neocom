@@ -240,8 +240,7 @@
 		NSDictionary *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		EVEDBInvType *resourceType = [row valueForKey:@"type"];
 		
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = resourceType;
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		

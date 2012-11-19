@@ -305,8 +305,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
-			BCSearchViewController *controller = [[BCSearchViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"BCSearchViewController-iPad" : @"BCSearchViewController")
-																						  bundle:nil];
+			BCSearchViewController *controller = [[BCSearchViewController alloc] initWithNibName:@"BCSearchViewController" bundle:nil];
 			[self.navigationController pushViewController:controller animated:YES];
 			[controller release];
 		}
@@ -340,8 +339,7 @@
 				[alertView release];
 			}
 			else {
-				FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
-																														 bundle:nil];
+				FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
 				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 				
@@ -357,8 +355,7 @@
 	else {
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		if ([[row valueForKey:@"isPOS"] boolValue]) {
-			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																											bundle:nil];
+			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading POS Fit"];
 			__block POSFit* fit = nil;
 			[operation addExecutionBlock:^{
@@ -378,8 +375,7 @@
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
-			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																								   bundle:nil];
+			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
 			__block Fit* fit = nil;
 			__block eufe::Character* character = NULL;
@@ -438,8 +434,7 @@
 		[self dismissModalViewControllerAnimated:YES];
 
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
-		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																										bundle:nil];
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block POSFit* posFit = nil;
 		__block eufe::ControlTower* controlTower = NULL;
@@ -470,8 +465,7 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																							   bundle:nil];
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
@@ -577,8 +571,7 @@
 			[allFits writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
 
 			
-			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
-																													 bundle:nil];
+			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
 			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 			

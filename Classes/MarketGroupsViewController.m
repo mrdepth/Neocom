@@ -151,8 +151,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = [filteredValues objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
@@ -168,15 +167,13 @@
 		[controller release];
 	}
 	else if (indexPath.section == 0) {
-		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MarketGroupsViewController-iPad" : @"MarketGroupsViewController")
-																							  bundle:nil];
+		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:@"MarketGroupsViewController" bundle:nil];
 		controller.parentGroup = [subGroups objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = [groupItems objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
 

@@ -239,8 +239,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ContractViewController-iPad" : @"ContractViewController")
-																			bundle:nil];
+	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:@"ContractViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		controller.contract = [[filteredValues objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];

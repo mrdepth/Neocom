@@ -200,8 +200,7 @@
 		[delegate fittingItemsViewController:self didSelectType:row];
 	}
 	else if (!group) {
-		FittingItemsViewController *controller = [[FittingItemsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingItemsViewController-iPad" : @"FittingItemsViewController")
-																							  bundle:nil];
+		FittingItemsViewController *controller = [[FittingItemsViewController alloc] initWithNibName:@"FittingItemsViewController" bundle:nil];
 		controller.groupsRequest = self.groupsRequest;
 		controller.group = self.searchDisplayController.searchResultsTableView == aTableView ?
 		[[[filteredSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row] :
@@ -226,8 +225,7 @@
 	else
 		row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = row;
 	[controller setActivePage:ItemViewControllerActivePageInfo];

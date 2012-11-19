@@ -310,8 +310,7 @@
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
-		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DronesAmountViewController-iPad" : @"DronesAmountViewController")
-																											  bundle:nil];
+		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
 		dronesAmountViewController.amount = array.count;
 		int maxActiveDrones = ship->getMaxActiveDrones();
 		dronesAmountViewController.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
@@ -338,8 +337,7 @@
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		//itemViewController.type = drone.item;
 		ItemInfo* itemInfo = [array objectAtIndex:0];

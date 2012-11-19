@@ -49,6 +49,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
+		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController] autorelease];
+		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
+	}
 	self.title = @"Killboard";
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl] autorelease];
 	//[self loadKillLogBeforeKillID:0 corporate:self.ownerSegmentControl.selectedSegmentIndex == 1];
@@ -294,6 +299,7 @@
 		[self.filterPopoverController presentPopoverFromRect:self.searchDisplayController.searchBar.frame inView:[self.searchDisplayController.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
 		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+	
 }
 
 #pragma mark - FilterViewControllerDelegate

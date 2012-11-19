@@ -155,8 +155,7 @@
 
 - (IBAction)onOpenFit:(id)sender {
 	if (asset.type.group.categoryID == 6) {// Ship
-		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																							   bundle:nil];
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
@@ -198,8 +197,7 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																										bundle:nil];
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading POS Fit"];
 		__block POSFit* fit = nil;
 		
@@ -291,8 +289,7 @@
 	else
 		item = [[[sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = item.type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -339,16 +336,14 @@
 		item = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (item.contents.count > 0) {
-		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AssetContentsViewController-iPad" : @"AssetContentsViewController")
-																								bundle:nil];
+		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = item;
 		controller.corporate = self.corporate;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = item.type;
 		[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -363,39 +358,6 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
-
-	
-/*	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	EUMailMessage* message = nil;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		message = [[filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	else
-		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	
-	MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
-																				bundle:nil];
-	controller.message = message;
-	
-	if (!message.read) {
-		message.read = YES;
-		[mailBox save];
-		[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
-	}
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
-		[self presentModalViewController:navController animated:YES];
-		[navController release];
-	}
-	else
-		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];*/
 }
 
 #pragma mark - CollapsableTableViewDelegate

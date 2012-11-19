@@ -258,15 +258,14 @@
 	
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
 	if (cellType == 1 || cellType == 5) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = [row valueForKey:@"type"];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else if (cellType == 2) {
-		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal-iPad" : @"ItemsDBViewController")
+		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal" : @"ItemsDBViewController")
 																					bundle:nil];
 		controller.modalMode = YES;
 		controller.group = [row valueForKey:@"group"];
@@ -275,8 +274,7 @@
 		[controller release];
 	}
 	else if (cellType == 3) {
-		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificateViewController-iPad" : @"CertificateViewController")
-																							bundle:nil];
+		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
 		controller.certificate = [row valueForKey:@"certificate"];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
 		[controller release];

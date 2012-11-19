@@ -263,8 +263,7 @@
 			[actionSheet release];
 		}
 		else {
-			ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																				  bundle:nil];
+			ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 			
 			controller.type = skill;
 			[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -291,8 +290,7 @@
 			[alertView autorelease];
 		}
 		else if (indexPath.row == 1) {
-			SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlannerImportViewController-iPad" : @"SkillPlannerImportViewController")
-																											  bundle:nil];
+			SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
 			controller.delegate = self;
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;

@@ -363,8 +363,7 @@
 		[self update];
 	}
 	else if ([button isEqualToString:ActionButtonSetDamagePattern]) {
-		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternsViewController-iPad" : @"DamagePatternsViewController")
-																													bundle:nil];
+		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:@"DamagePatternsViewController" bundle:nil];
 		damagePatternsViewController.delegate = self;
 		damagePatternsViewController.currentDamagePattern = self.damagePattern;
 		

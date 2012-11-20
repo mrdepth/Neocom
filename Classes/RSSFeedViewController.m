@@ -107,9 +107,7 @@
     
     RSSFeedCellView *cell = (RSSFeedCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil)
-        cell = [RSSFeedCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RSSFeedCellView-iPad" : @"RSSFeedCellView")
-										 bundle:nil
-								reuseIdentifier:cellIdentifier];
+        cell = [RSSFeedCellView cellWithNibName:@"RSSFeedCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	NSDictionary *row = [rows objectAtIndex:indexPath.row];
 	cell.titleLabel.text = [row valueForKey:@"title"];
 	cell.dateLabel.text = [row valueForKey:@"date"];

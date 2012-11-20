@@ -11,8 +11,9 @@
 #import "EUFilter.h"
 #import "EVEAssetListItem+AssetsViewController.h"
 #import "CollapsableTableView.h"
+#import "AccountsSelectionViewController.h"
 
-@interface AssetsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate> {
+@interface AssetsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, AccountsSelectionViewControllerDelegate> {
 	UITableView *assetsTableView;
 	UISegmentedControl *ownerSegmentControl;
 	UISearchBar *searchBar;
@@ -20,12 +21,6 @@
 	UINavigationController *filterNavigationViewController;
 	UIPopoverController *filterPopoverController;
 @private
-	NSMutableArray *filteredValues;
-	NSMutableArray *assets;
-	NSMutableArray *charAssets;
-	NSMutableArray *corpAssets;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
 }
 @property (nonatomic, retain) IBOutlet UITableView *assetsTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;

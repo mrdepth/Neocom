@@ -219,7 +219,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == walletTransactionsTableView ? @"WalletTransactionCellView-iPad" : @"WalletTransactionCellView";
+			nibName = tableView == walletTransactionsTableView ? @"WalletTransactionCellView" : @"WalletTransactionCellViewCompact";
 		else
 			nibName = @"WalletTransactionCellView";
 		

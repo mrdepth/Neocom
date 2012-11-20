@@ -156,7 +156,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == marketOrdersTableView ? @"MarketOrderCellView-iPad" : @"MarketOrderCellView";
+			nibName = tableView == marketOrdersTableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
 		else
 			nibName = @"MarketOrderCellView";
 		

@@ -141,7 +141,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == posesTableView ? @"POSCellView-iPad" : @"POSCellView";
+			nibName = tableView == posesTableView ? @"POSCellView" : @"POSCellViewCompact";
 		else
 			nibName = @"POSCellView";
 

@@ -162,9 +162,7 @@
 		
 		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [MainMenuCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MainMenuCellView-iPad" : @"MainMenuCellView")
-											  bundle:nil
-									 reuseIdentifier:cellIdentifier];
+			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.titleLabel.text = @"New Ship Fit";
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
@@ -175,9 +173,7 @@
 		
 		FitCellView *cell = (FitCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [FitCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitCellView-iPad" : @"FitCellView")
-										 bundle:nil
-								reuseIdentifier:cellIdentifier];
+			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];

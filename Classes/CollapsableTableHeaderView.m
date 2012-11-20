@@ -28,9 +28,19 @@
 }
 */
 
+- (void) setFrame:(CGRect)frame {
+	[super setFrame:frame];
+}
+
 - (void) setCollapsed:(BOOL)value {
 	_collapsed = value;
 	self.collapsImageView.image = [UIImage imageNamed:value ? @"Icons/icon105_04.png" : @"Icons/icon105_05.png"];
+}
+
+- (void) layoutSubviews {
+	[super layoutSubviews];
+	self.titleLabel.frame = CGRectMake(10, 0, self.frame.size.width - 40, self.frame.size.height);
+	self.collapsImageView.frame = CGRectMake(self.frame.size.width - 26, 0, 22, 22);
 }
 
 - (void)dealloc {

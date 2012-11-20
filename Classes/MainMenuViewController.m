@@ -57,10 +57,7 @@
     [super viewDidLoad];
 	self.title = @"Home";
 	[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu-iPad" ofType:@"plist"]]];
-	else
-		self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
+	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	menuTableView.visibleTopPartHeight = 24;
 	[characterInfoView addSubview:characterInfoViewController.view];
 	characterInfoViewController.view.frame = characterInfoView.bounds;

@@ -18,6 +18,7 @@
 #import "CharacterEVE.h"
 #import "Fit.h"
 #import "EVEAccount.h"
+#import "ItemViewController.h"
 
 @interface KillMailViewController ()
 @property (nonatomic, retain) NSMutableArray* itemsSections;
@@ -87,7 +88,7 @@
 	self.killTimeLabel.text = [formatter stringFromDate:self.killMail.killTime];
 	[formatter release];
 	
-	self.shipNameLabel.text = self.killMail.victim.shipType.typeName;
+	self.shipNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", self.killMail.victim.shipType.typeName, self.killMail.victim.shipType.group.groupName];
 	self.shipImageView.image = [UIImage imageNamed:self.killMail.victim.shipType.typeSmallImageName];
 	
 	self.damageTakenLabel.text = [NSString stringWithFormat:@"%@ Total Damage Taken", [NSNumberFormatter localizedStringFromNumber:@(self.killMail.victim.damageTaken) numberStyle:NSNumberFormatterDecimalStyle]];
@@ -286,6 +287,39 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	EVEDBInvType* type = nil;
+	if (self.sectionSegmentedControler.selectedSegmentIndex == 0) {
+		KillMailItem* item = [[[self.itemsSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+		type = item.type;
+	}
+	else {
+		KillMailAttacker* attacker = nil;
+		if (indexPath.section == 0) {
+			for (attacker in self.killMail.attackers)
+				if (attacker.finalBlow)
+					break;
+		}
+		else if (indexPath.section == 1)
+			attacker = [self.killMail.attackers objectAtIndex:0];
+		else
+			attacker = [self.killMail.attackers objectAtIndex:indexPath.row + 1];
+		type = attacker.shipType;
+	}
+	
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+	
+	controller.type = type;
+	[controller setActivePage:ItemViewControllerActivePageInfo];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentModalViewController:navController animated:YES];
+		[navController release];
+	}
+	else
+		[self.navigationController pushViewController:controller animated:YES];
+	[controller release];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

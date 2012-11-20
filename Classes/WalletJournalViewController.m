@@ -235,7 +235,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == walletJournalTableView ? @"WalletJournalCellView-iPad" : @"WalletJournalCellView";
+			nibName = tableView == walletJournalTableView ? @"WalletJournalCellView" : @"WalletJournalCellViewCompact";
 		else
 			nibName = @"WalletJournalCellView";
 		

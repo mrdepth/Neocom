@@ -160,9 +160,7 @@
 		
 		EVEAccountsCharacterCellView *cell = (EVEAccountsCharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [EVEAccountsCharacterCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"EVEAccountsCharacterCellView-iPad" : @"EVEAccountsCharacterCellView")
-														  bundle:nil
-												 reuseIdentifier:cellIdentifier];
+			cell = [EVEAccountsCharacterCellView cellWithNibName:@"EVEAccountsCharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		
 		if (RETINA_DISPLAY) {
@@ -200,9 +198,7 @@
 		
 		EVEAccountsAPIKeyCellView *cell = (EVEAccountsAPIKeyCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [EVEAccountsAPIKeyCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"EVEAccountsAPIKeyCellView-iPad" : @"EVEAccountsAPIKeyCellView")
-														bundle:nil
-											   reuseIdentifier:cellIdentifier];
+			cell = [EVEAccountsAPIKeyCellView cellWithNibName:@"EVEAccountsAPIKeyCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.accessMaskLabel.text = [NSString stringWithFormat:@"%d", apiKey.apiKeyInfo.key.accessMask];
 		cell.keyIDLabel.text = [NSString stringWithFormat:@"%d", apiKey.keyID];

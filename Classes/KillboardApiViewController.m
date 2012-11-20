@@ -18,6 +18,7 @@
 #import "UITableViewCell+Nib.h"
 #import "UIView+Nib.h"
 #import "KillMailViewController.h"
+#import "Globals.h"
 
 @interface KillboardApiViewController ()
 @property (nonatomic, retain) NSMutableDictionary *charFilter;
@@ -32,7 +33,7 @@
 
 - (void) reload;
 - (void) searchWithSearchString:(NSString*) aSearchString;
-
+- (void) didSelectAccount:(NSNotification*) notification;
 @end
 
 @implementation KillboardApiViewController
@@ -54,10 +55,11 @@
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	self.title = @"Killboard";
+	self.title = @"Kill Reports";
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl] autorelease];
 	//[self loadKillLogBeforeKillID:0 corporate:self.ownerSegmentControl.selectedSegmentIndex == 1];
 	[self reload];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -68,6 +70,7 @@
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
 	[_tableView release];
 	[_ownerSegmentControl release];
 	[_killboardTypeSegmentControl release];
@@ -84,6 +87,7 @@
 }
 
 - (void)viewDidUnload {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
 	[self setTableView:nil];
 	[self setOwnerSegmentControl:nil];
 	[self setKillboardTypeSegmentControl:nil];
@@ -496,6 +500,23 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) didSelectAccount:(NSNotification*) notification {
+	EVEAccount *account = [EVEAccount currentAccount];
+	self.charFilter = nil;
+	self.corpFilter = nil;
+	self.charKillLog = nil;
+	self.corpFilter = nil;
+	self.killLog = nil;
+	self.filteredValues = nil;
+
+	if (!account && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		[self.navigationController popToRootViewControllerAnimated:YES];
+	}
+	else {
+		[self reload];
+	}
 }
 
 /*- (void) loadKillLogBeforeKillID:(NSInteger) beforeKillID corporate:(BOOL) corporate {

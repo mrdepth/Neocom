@@ -154,7 +154,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == jobsTableView ? @"IndustryJobCellView-iPad" : @"IndustryJobCellView";
+			nibName = tableView == jobsTableView ? @"IndustryJobCellView" : @"IndustryJobCellViewCompact";
 		else
 			nibName = @"IndustryJobCellView";
 

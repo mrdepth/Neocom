@@ -148,9 +148,7 @@
 		static NSString *cellIdentifier = @"DamagePatternCellView";
 		DamagePatternCellView *cell = (DamagePatternCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [DamagePatternCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternCellView-iPad" : @"DamagePatternCellView")
-												   bundle:nil
-										  reuseIdentifier:cellIdentifier];
+			cell = [DamagePatternCellView cellWithNibName:@"DamagePatternCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		DamagePattern* damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.titleLabel.text = damagePattern.patternName;

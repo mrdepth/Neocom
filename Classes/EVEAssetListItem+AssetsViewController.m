@@ -29,18 +29,34 @@
 	objc_setAssociatedObject(self, @"location", location, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (NSString*) characterName {
+	NSString* characterName = objc_getAssociatedObject(self, @"characterName");
+	return characterName;
+}
+
+- (void) setCharacterName:(NSString *)characterName {
+	objc_setAssociatedObject(self, @"characterName", characterName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (NSString*) name {
 	NSString* name = objc_getAssociatedObject(self, @"name");
 	if (!name)
 		name = self.type.typeName;
+	NSString* characterName = objc_getAssociatedObject(self, @"characterName");
+	
+	NSMutableString* string;
 	if (quantity > 1)
-		return [NSString stringWithFormat:@"%@ (x%d)", name, quantity];
+		string = [NSMutableString stringWithFormat:@"%@ (x%d)", name, quantity];
 	else if (contents.count == 1)
-		return [NSString stringWithFormat:@"%@ (1 item)", name];
+		string = [NSMutableString stringWithFormat:@"%@ (1 item)", name];
 	else if (contents.count > 1)
-		return [NSString stringWithFormat:@"%@ (%d items)", name, contents.count];
+		string = [NSMutableString stringWithFormat:@"%@ (%d items)", name, contents.count];
 	else
-		return name;
+		string = [NSMutableString stringWithString:name];
+	
+	if (characterName)
+		[string appendFormat:@" (%@)", characterName];
+	return string;
 }
 
 - (void) setName:(NSString *)name {

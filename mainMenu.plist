@@ -134,7 +134,7 @@
 		<key>nibName</key>
 		<string>KillboardKillNetFilterViewController</string>
 		<key>title</key>
-		<string>EVE-Kill Reports</string>
+		<string>EVE-Kill.net Reports</string>
 		<key>image</key>
 		<string>Icons/icon61_03.png</string>
 		<key>charAccessMask</key>

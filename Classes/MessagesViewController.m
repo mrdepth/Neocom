@@ -149,7 +149,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == messagesTableView ? @"MessageCellView-iPad" : @"MessageCellView";
+			nibName = tableView == messagesTableView ? @"MessageCellView" : @"MessageCellViewCompact";
 		else
 			nibName = @"MessageCellView";
 		

@@ -52,7 +52,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">2010.01.01 10:45:36</string>
-								<object class="NSColor" key="IBUITextColor" id="27257823">
+								<object class="NSColor" key="IBUITextColor" id="506181897">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEgMC42AA</bytes>
 									<string key="IBUIColorCocoaTouchKeyPath">lightTextColor</string>
@@ -171,6 +171,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{75, 54}, {225, 18}}</string>
 								<reference key="NSSuperview" ref="880445694"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -263,7 +264,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">2010.01.01 10:45:36</string>
-								<reference key="IBUITextColor" ref="27257823"/>
+								<reference key="IBUITextColor" ref="506181897"/>
 								<reference key="IBUIHighlightedColor" ref="458891196"/>
 								<reference key="IBUIShadowColor" ref="840438109"/>
 								<string key="IBUIShadowOffset">{1, 1}</string>

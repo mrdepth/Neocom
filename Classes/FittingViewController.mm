@@ -16,6 +16,7 @@
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
 #import "PriceManager.h"
+#import "UIActionSheet+Block.h"
 
 #include "eufe.h"
 
@@ -28,6 +29,7 @@
 #define ActionButtonClearAreaEffect @"Clear Area Effect"
 #define ActionButtonSetDamagePattern @"Set Damage Pattern"
 #define ActionButtonRequiredSkills @"Required Skills"
+#define ActionButtonExport @"Export"
 #define ActionButtonCancel @"Cancel"
 
 @interface FittingViewController(Private)
@@ -275,6 +277,7 @@
 	
 	[actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
 	[actionSheet addButtonWithTitle:ActionButtonRequiredSkills];
+	[actionSheet addButtonWithTitle:ActionButtonExport];
 	[actionSheet addButtonWithTitle:ActionButtonCancel];
 	
 	actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
@@ -462,6 +465,51 @@
 		[navController release];
 		[requiredSkillsViewController release];
 	}
+	else if ([button isEqualToString:ActionButtonExport]) {
+		NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Clipboard EVE XML", @"Clipboard DNA", nil];
+		if ([MFMailComposeViewController canSendMail])
+			[buttons addObject:@"Email"];
+		[[UIActionSheet actionSheetWithTitle:@"Export"
+						   cancelButtonTitle:@"Cancel"
+					  destructiveButtonTitle:nil
+						   otherButtonTitles:buttons
+							 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
+								 if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
+									 return;
+
+								 NSString* name;
+								 
+								 if (self.fit.fitName.length > 0)
+									 name = self.fit.fitName;
+								 else {
+									 eufe::Character* character = self.fit.character;
+									 eufe::Ship* ship = character->getShip();
+									 name = [[ItemInfo itemInfoWithItem:ship error:nil] typeName];
+								 }
+								 
+								 NSString* xml = [self.fit eveXML];
+								 NSString* dna = [self.fit dna];
+								 NSString* link = [NSString stringWithFormat:@"<a href=\"javascript:CCPEVE.showFitting('%@');\">%@</a>", dna, name];
+								 
+								 if (selectedButtonIndex == 0) {
+									 [[UIPasteboard generalPasteboard] setString:xml];
+								 }
+								 else if (selectedButtonIndex == 1) {
+									 [[UIPasteboard generalPasteboard] setString:link];
+								 }
+								 else if (selectedButtonIndex == 2) {
+									 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+									 controller.mailComposeDelegate = self;
+									 [controller setMessageBody:link isHTML:YES];
+									 [controller setSubject:name];
+									 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
+									 [self presentModalViewController:controller animated:YES];
+									 [controller release];
+									 
+								 }
+							 }
+								 cancelBlock:nil] showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	}
 	[actionSheet release];
 	actionSheet = nil;
 }
@@ -616,6 +664,12 @@
 		[self.targetsPopoverController dismissPopoverAnimated:YES];
 	else
 		[self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

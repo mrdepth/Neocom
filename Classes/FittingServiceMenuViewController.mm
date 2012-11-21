@@ -22,10 +22,12 @@
 #import "NSArray+GroupBy.h"
 #import "FittingExportViewController.h"
 #import "NSString+UUID.h"
+#import "UIActionSheet+Block.h"
 
 @interface FittingServiceMenuViewController(Private)
 - (void) convertFits;
 - (void) save;
+- (void) exportFits;
 @end
 
 @implementation FittingServiceMenuViewController
@@ -335,16 +337,7 @@
 				[alertView release];
 			}
 			else {
-				FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
-				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-				
-				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-					navController.modalPresentationStyle = UIModalPresentationFormSheet;
-				
-				[self presentModalViewController:navController animated:YES];
-				[navController release];
-				[fittingExportViewController release];
+				[self exportFits];
 			}
 		}
 	}
@@ -510,6 +503,12 @@
 	if (buttonIndex != alertView.cancelButtonIndex)
 		[self convertFits];
 }
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	[self dismissModalViewControllerAnimated:YES];
+}
 	
 @end
 
@@ -594,6 +593,49 @@
 	
 	[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
 	 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
+}
+
+- (void) exportFits {
+	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Browser", @"Clipboard", nil];
+	if ([MFMailComposeViewController canSendMail])
+		[buttons addObject:@"Email"];
+	[[UIActionSheet actionSheetWithTitle:@"Export"
+					   cancelButtonTitle:@"Cancel"
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:buttons
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
+								 return;
+							 
+							 if (selectedButtonIndex == 0) {
+								 FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
+								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
+								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+								 
+								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
+								 
+								 [self presentModalViewController:navController animated:YES];
+								 [navController release];
+								 [fittingExportViewController release];
+							 }
+							 else if (selectedButtonIndex == 1) {
+								 NSString* xml = [Fit allFitsEveXML];
+								 [[UIPasteboard generalPasteboard] setString:xml];
+							 }
+							 else if (selectedButtonIndex == 2) {
+								 NSString* xml = [Fit allFitsEveXML];
+								 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+								 controller.mailComposeDelegate = self;
+								 [controller setSubject:@"Neocom fits"];
+								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
+								 [self presentModalViewController:controller animated:YES];
+								 [controller release];
+								 
+							 }
+						 }
+							 cancelBlock:nil] showFromRect:[self.menuTableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.menuTableView animated:YES];
+	
 }
 
 @end

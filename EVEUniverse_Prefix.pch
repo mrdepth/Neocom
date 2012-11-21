@@ -10,4 +10,5 @@
 	#import <StoreKit/StoreKit.h>
 	#import <iAd/iAd.h>
 	#import <QuartzCore/QuartzCore.h>
+	#import <MessageUI/MessageUI.h>
 #endif

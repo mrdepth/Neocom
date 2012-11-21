@@ -91,7 +91,7 @@
 			NSInteger fitID = 0;
 			for (NSDictionary* fit in group) {
 				EVEDBInvType* type = [fit valueForKey:@"type"];
-				[body appendFormat:@"<tr><td class=\"icon\"><image src=\"%@\" width=32 height=32 /></td><td width=\"20%%\">%@</td><td>%@</td><td width=\"30%%\">Download <a href=\"%d_%d.xml\">EVE XML file</a> or <a href=\"javascript:CCPEVE.showFitting('%@');\"'>Show Fitting</a> ingame</td></tr>\n",
+				[body appendFormat:@"<tr><td class=\"icon\"><image src=\"%@\" width=32 height=32 /></td><td width=\"20%%\">%@</td><td>%@</td><td width=\"30%%\">Download <a href=\"%d_%d.xml\">EVE XML file</a> or <a href=\"javascript:CCPEVE.showFitting('%@');\">Show Fitting</a> ingame</td></tr>\n",
 				 type.typeSmallImageName, type.typeName, [fit valueForKey:@"fitName"], groupID, fitID, [fit valueForKey:@"dna"]];
 				fitID++;
 			}

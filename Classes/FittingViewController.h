@@ -33,7 +33,8 @@
 													CharactersViewControllerDelegate,
 													DamagePatternsViewControllerDelegate,
 													FitsViewControllerDelegate,
-													TargetsViewControllerDelegate> {
+													TargetsViewControllerDelegate,
+													MFMailComposeViewControllerDelegate> {
 	UIView *sectionsView;
 	UISegmentedControl *sectionSegmentControl;
 	UINavigationController *modalController;

@@ -68,6 +68,37 @@
 		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
 		[userDefaults setInteger:5 forKey:@"version"];
 	}
+	if (version < 6) {
+		NSString* documentsDirectory = [Globals documentsDirectory];
+		NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:documentsDirectory];
+		for (NSString* file in files) {
+			if ([file hasPrefix:@"skillPlan_"] && [[file pathExtension] isEqualToString:@"plist"]) {
+				NSString* filePath = [documentsDirectory stringByAppendingPathComponent:file];
+				NSMutableArray* skills = [NSMutableArray arrayWithContentsOfFile:filePath];
+				NSMutableArray* output = [NSMutableArray array];
+				for (NSDictionary* targetSkill in skills) {
+					NSInteger typeID = [[targetSkill valueForKey:@"typeID"] integerValue];
+					NSInteger requiredLevel = [[targetSkill valueForKey:@"level"] integerValue];
+					for (NSInteger level = 1; level <= requiredLevel; level++) {
+						BOOL found = NO;
+						for (NSDictionary* skill in output) {
+							if ([[skill valueForKey:@"typeID"] integerValue] == typeID && [[skill valueForKey:@"level"] integerValue] == level) {
+								found = YES;
+								break;
+							}
+						}
+						if (!found) {
+							NSDictionary* outputSkill = @{@"typeID" : @(typeID), @"level" : @(level)};
+							[output addObject:outputSkill];
+						}
+					}
+				}
+				[output writeToFile:filePath atomically:YES];
+			}
+		}
+		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+		[userDefaults setInteger:6 forKey:@"version"];
+	}
 
 	
 	

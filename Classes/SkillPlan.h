@@ -12,6 +12,7 @@
 
 #define NotificationSkillPlanDidChangeSkill @"NotificationSkillPlanDidChangeSkill"
 #define NotificationSkillPlanDidAddSkill @"NotificationSkillPlanDidAddSkill"
+#define NotificationSkillPlanDidRemoveSkill @"NotificationSkillPlanDidRemoveSkill"
 
 @class EVEAccount;
 @class CharacterAttributes;
@@ -38,6 +39,7 @@
 - (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan;
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill;
+- (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill afterSkill:(EVEDBInvTypeRequiredSkill*) skill;
 - (void) addType:(EVEDBInvType*) type;
 - (void) addCertificate:(EVEDBCrtCertificate*) certificate;
 - (void) removeSkill:(EVEDBInvTypeRequiredSkill*) skill;

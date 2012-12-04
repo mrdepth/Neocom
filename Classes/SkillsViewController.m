@@ -18,6 +18,8 @@
 #import "Globals.h"
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface Skill : NSObject {
 	NSString *skillName;
@@ -91,7 +93,6 @@
 
 @synthesize segmentedControl;
 @synthesize characterInfoViewController;
-@synthesize characterInfoView;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -110,9 +111,6 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-		skillsTableView.visibleTopPartHeight = 24;
-		[characterInfoView addSubview:characterInfoViewController.view];
-		characterInfoViewController.view.frame = characterInfoView.bounds;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
@@ -152,7 +150,6 @@
 	self.skillsQueueTableView = nil;
 	self.segmentedControl = nil;
 	self.characterInfoViewController = nil;
-	self.characterInfoView = nil;
 	
 	[skillGroups release];
 	[skillQueue release];
@@ -170,7 +167,6 @@
 	[skillsQueueTableView release];
 	[segmentedControl release];
 	[characterInfoViewController release];
-	[characterInfoView release];
 	
 	[skillGroups release];
 	[skillQueue release];
@@ -272,20 +268,28 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsed = NO;
+		view.titleLabel.text = title;
+
+		BOOL canCollaps = NO;
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			if (tableView == skillsTableView)
+				canCollaps = YES;
+		}
+		else if (segmentedControl.selectedSegmentIndex == 1)
+				canCollaps = YES;
+
+		if (canCollaps)
+			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+		else
+			view.collapsImageView.hidden = YES;
+		return view;
+	}
+	else
+		return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -321,19 +325,61 @@
 	[controller release];
 }
 
-#pragma mark CharacterInfoViewControllerDelegate
+#pragma mark - CollapsableTableViewDelegate
 
-- (void) characterInfoViewController:(CharacterInfoViewController*) controller willChangeContentSize:(CGSize) size animated:(BOOL) animated{
-	if (animated) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.5];
-		[UIView setAnimationBeginsFromCurrentState:YES];
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	NSMutableDictionary* dic = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (tableView == skillsTableView)
+			dic = [skillGroups objectAtIndex:section];
 	}
-	//characterInfoViewController.view.frame = CGRectMake(0, 0, size.width, size.height);
-	characterInfoView.frame = CGRectMake(0, 0, size.width, size.height);
-	skillsTableView.frame = CGRectMake(0, size.height, skillsTableView.frame.size.width, skillsTableView.superview.frame.size.height - skillsTableView.visibleTopPartHeight);
-	if (animated)
-		[UIView commitAnimations];
+	else {
+		if (segmentedControl.selectedSegmentIndex == 1)
+			dic = [skillGroups objectAtIndex:section];
+	}
+
+	return [[dic valueForKey:@"collapsed"] boolValue];
+}
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	NSMutableDictionary* dic = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (tableView == skillsTableView)
+			dic = [skillGroups objectAtIndex:section];
+	}
+	else {
+		if (segmentedControl.selectedSegmentIndex == 1)
+			dic = [skillGroups objectAtIndex:section];
+	}
+	return dic != nil;
+}
+
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	NSMutableDictionary* dic = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (tableView == skillsTableView)
+			dic = [skillGroups objectAtIndex:section];
+	}
+	else {
+		if (segmentedControl.selectedSegmentIndex == 1)
+			dic = [skillGroups objectAtIndex:section];
+	}
+
+	[dic setValue:@(YES) forKey:@"collapsed"];
+}
+
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	NSMutableDictionary* dic = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (tableView == skillsTableView)
+			dic = [skillGroups objectAtIndex:section];
+	}
+	else {
+		if (segmentedControl.selectedSegmentIndex == 1)
+			dic = [skillGroups objectAtIndex:section];
+	}
+	
+	[dic setValue:@(NO) forKey:@"collapsed"];
 }
 
 @end

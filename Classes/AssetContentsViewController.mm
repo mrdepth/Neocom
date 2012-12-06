@@ -394,7 +394,12 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

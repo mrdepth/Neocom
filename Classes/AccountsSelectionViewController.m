@@ -46,8 +46,10 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
-	else
+	else {
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	
 	NSMutableArray* accountsTmp = [NSMutableArray array];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AccountsSelectionViewController+Load" name:@"Loading..."];

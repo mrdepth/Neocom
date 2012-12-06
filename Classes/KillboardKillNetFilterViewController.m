@@ -49,8 +49,10 @@
 	self.title = @"EVE-Kill";
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
-	else
+	else {
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	
 	self.filters = [NSMutableArray array];
 	[self.tableView setEditing:YES];

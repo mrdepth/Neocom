@@ -11,7 +11,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "dgmTypeEffects",
 "eveIcons",
 "eveUnits",
-"invBlueprintTypes"
+"invBlueprintTypes",
 "invCategories",
 "invControlTowerResourcePurposes",
 "invControlTowerResources",
@@ -20,7 +20,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "invMetaGroups",
 "invMetaTypes",
 "invTypes",
-"invTypeMaterials"
+"invTypeMaterials",
 "mapConstellations",
 "mapDenormalize",
 "mapRegions",

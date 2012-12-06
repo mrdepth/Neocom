@@ -47,8 +47,10 @@
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
-	else
+	else {
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	[self reload];
 }
 
@@ -177,8 +179,10 @@
 		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
 		aTableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else
+	else {
 		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		aTableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

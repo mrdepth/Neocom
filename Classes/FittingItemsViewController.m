@@ -256,8 +256,10 @@
 		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
 		aTableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else
-		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	else {
+		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		aTableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

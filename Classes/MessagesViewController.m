@@ -314,8 +314,14 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
+	}
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {

@@ -123,6 +123,10 @@
 	[self update];
 }
 
+- (void) viewDidLayoutSubviews {
+	currentSection.view.frame = self.sectionsView.bounds;
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {

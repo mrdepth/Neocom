@@ -120,8 +120,10 @@
 	[window addSubview:controller.view];
     [window makeKeyAndVisible];
 	
-	EUActivityView* activityView = [[[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds] autorelease];
-	[self.window addSubview:activityView];
+	if (![[NSFileManager defaultManager] fileExistsAtPath:[[Globals documentsDirectory] stringByAppendingPathComponent:@"disableActivityIndicator"]]) {
+		EUActivityView* activityView = [[[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds] autorelease];
+		[self.window addSubview:activityView];
+	}
 
 	
 	loadingViewController.view.alpha = 0;
@@ -132,8 +134,12 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 748 - 50, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
 			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 748 - kGADAdSizeBanner.size.height)];
-		else
-			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 430, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+		else {
+			CGRect frame = [[UIScreen mainScreen] bounds];
+			frame.origin.y = frame.size.height - GAD_SIZE_320x50.height;
+			frame.size.height = GAD_SIZE_320x50.height;
+			adView = [[GADBannerView alloc] initWithFrame:frame];
+		}
 			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 480 - kGADAdSizeBanner.size.height)];
 
 		adView.adUnitID = @"a14d501062a8c09";
@@ -295,6 +301,13 @@
 		}
 		return sharedAccountStorage;
 	}
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
+	else
+		return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark -

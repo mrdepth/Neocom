@@ -8,7 +8,7 @@
 
 #import "APIKeysViewController.h"
 #import "APIKeysKeyCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 
 @implementation APIKeysViewController
 @synthesize keysTableView;

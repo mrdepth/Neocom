@@ -8,7 +8,6 @@
 
 #import "DonationViewController.h"
 #import "EVERequestsCache.h"
-#import "URLImageViewManager.h"
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
@@ -84,7 +83,9 @@
 	
 	[[Globals appDelegate] setInAppStatus:YES];
 	[paymentQueue addTransactionObserver:self];
-	SKPayment *payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.full"];
+	SKMutablePayment *payment = [[[SKMutablePayment alloc] init] autorelease];
+	payment.productIdentifier = @"com.shimanski.eveuniverse.full";
+	payment.quantity = 1;
 	[paymentQueue addPayment:payment];
 }
 
@@ -118,13 +119,14 @@
 		
 		[[Globals appDelegate] setInAppStatus:YES];
 		[paymentQueue addTransactionObserver:self];
-		SKPayment *payment = nil;
+		SKMutablePayment *payment = [[[SKMutablePayment alloc] init] autorelease];
 		if (buttonIndex == 0)
-			payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.donation"];
+			payment.productIdentifier = @"com.shimanski.eveuniverse.donation";
 		else if (buttonIndex == 1)
-			payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.donation5"];
+			payment.productIdentifier = @"com.shimanski.eveuniverse.donation5";
 		else if (buttonIndex == 2)
-			payment = [SKPayment paymentWithProductIdentifier:@"com.shimanski.eveuniverse.donation10"];
+			payment.productIdentifier = @"com.shimanski.eveuniverse.donation10";
+		payment.quantity = 1;
 		[paymentQueue addPayment:payment];
 	}
 }

@@ -8,7 +8,7 @@
 
 #import "CertificatesViewController.h"
 #import "CertificateCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEDBAPI.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
@@ -149,8 +149,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	CertificateViewController *controller = [[CertificateViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificateViewController-iPad" : @"CertificateViewController")
-																		  bundle:nil];
+	CertificateViewController *controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
 	controller.certificate = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -170,7 +169,7 @@
 
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Certificates"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray* certificates = [NSMutableArray array];
@@ -181,6 +180,7 @@
 												   if ([operation isCancelled])
 													   *needsMore = NO;
 											   }];
+		operation.progress = 0.5;
 		[certificates sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"certificateClass.className" ascending:YES]]];
 		
 		if (![operation isCancelled]) {

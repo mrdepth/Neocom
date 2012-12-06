@@ -9,7 +9,7 @@
 #import "ContractsViewController.h"
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"
@@ -156,7 +156,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == contractsTableView ? @"ContractCellView-iPad" : @"ContractCellView";
+			nibName = tableView == contractsTableView ? @"ContractCellView" : @"ContractCellViewCompact";
 		else
 			nibName = @"ContractCellView";
 		
@@ -239,8 +239,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ContractViewController-iPad" : @"ContractViewController")
-																			bundle:nil];
+	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:@"ContractViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		controller.contract = [[filteredValues objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
@@ -278,7 +277,12 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -326,7 +330,7 @@
 			currentContracts = charContracts;
 		}
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:@"Loading Contracts"];
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -343,7 +347,7 @@
 				eveContracts = [EVEContracts contractsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
 			else
 				eveContracts = [EVEContracts contractsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
-			
+			operation.progress = 0.5;
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
@@ -354,8 +358,10 @@
 				NSMutableSet* charIDs = [NSMutableSet set];
 				
 				NSDate *currentTime = [eveContracts serverTimeWithLocalTime:[NSDate date]];
-				
+				float n = eveContracts.contractList.count;
+				float i = 0;
 				for (EVEContractsItem *contract in eveContracts.contractList) {
+					operation.progress = 0.5 + i++ / n / 2;
 					NSString *remains;
 					UIColor *remainsColor;
 					NSString *stationName = nil;
@@ -463,7 +469,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ContractsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[contractsTmp addObjectsFromArray:[filter applyToValues:currentContracts]];
@@ -544,7 +550,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ContractsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Search" name:@"Searcing..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *contract in contracts) {

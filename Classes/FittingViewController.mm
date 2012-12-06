@@ -16,6 +16,7 @@
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
 #import "PriceManager.h"
+#import "UIActionSheet+Block.h"
 
 #include "eufe.h"
 
@@ -28,6 +29,7 @@
 #define ActionButtonClearAreaEffect @"Clear Area Effect"
 #define ActionButtonSetDamagePattern @"Set Damage Pattern"
 #define ActionButtonRequiredSkills @"Required Skills"
+#define ActionButtonExport @"Export"
 #define ActionButtonCancel @"Cancel"
 
 @interface FittingViewController(Private)
@@ -119,6 +121,10 @@
 	priceManager = [[PriceManager alloc] init];
 	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
 	[self update];
+}
+
+- (void) viewDidLayoutSubviews {
+	currentSection.view.frame = self.sectionsView.bounds;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -275,6 +281,7 @@
 	
 	[actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
 	[actionSheet addButtonWithTitle:ActionButtonRequiredSkills];
+	[actionSheet addButtonWithTitle:ActionButtonExport];
 	[actionSheet addButtonWithTitle:ActionButtonCancel];
 	
 	actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
@@ -331,8 +338,7 @@
 }
 
 - (void) addFleetMember {
-	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitsViewController-iPad" : @"FitsViewController")
-																				  bundle:nil];
+	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
 	fitsViewController.delegate = self;
 	fitsViewController.engine = fittingEngine;
 	
@@ -348,8 +354,7 @@
 }
 
 - (void) selectCharacterForFit:(Fit*) aFit {
-	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharactersViewController-iPad" : @"CharactersViewController")
-																									bundle:nil];
+	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
 	charactersViewController.delegate = self;
 	charactersViewController.modifiedFit = aFit;
 	
@@ -437,8 +442,7 @@
 		[self update];
 	}
 	else if ([button isEqualToString:ActionButtonSetDamagePattern]) {
-		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternsViewController-iPad" : @"DamagePatternsViewController")
-																													bundle:nil];
+		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:@"DamagePatternsViewController" bundle:nil];
 		damagePatternsViewController.delegate = self;
 		damagePatternsViewController.currentDamagePattern = self.damagePattern;
 		
@@ -453,8 +457,7 @@
 		[damagePatternsViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonRequiredSkills]) {
-		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RequiredSkillsViewController-iPad" : @"RequiredSkillsViewController")
-																													bundle:nil];
+		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
 		requiredSkillsViewController.fit = self.fit;
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -465,6 +468,51 @@
 		[self presentModalViewController:navController animated:YES];
 		[navController release];
 		[requiredSkillsViewController release];
+	}
+	else if ([button isEqualToString:ActionButtonExport]) {
+		NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Clipboard EVE XML", @"Clipboard DNA", nil];
+		if ([MFMailComposeViewController canSendMail])
+			[buttons addObject:@"Email"];
+		[[UIActionSheet actionSheetWithTitle:@"Export"
+						   cancelButtonTitle:@"Cancel"
+					  destructiveButtonTitle:nil
+						   otherButtonTitles:buttons
+							 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
+								 if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
+									 return;
+
+								 NSString* name;
+								 
+								 if (self.fit.fitName.length > 0)
+									 name = self.fit.fitName;
+								 else {
+									 eufe::Character* character = self.fit.character;
+									 eufe::Ship* ship = character->getShip();
+									 name = [[ItemInfo itemInfoWithItem:ship error:nil] typeName];
+								 }
+								 
+								 NSString* xml = [self.fit eveXML];
+								 NSString* dna = [self.fit dna];
+								 NSString* link = [NSString stringWithFormat:@"<a href=\"javascript:CCPEVE.showFitting('%@');\">%@</a>", dna, name];
+								 
+								 if (selectedButtonIndex == 0) {
+									 [[UIPasteboard generalPasteboard] setString:xml];
+								 }
+								 else if (selectedButtonIndex == 1) {
+									 [[UIPasteboard generalPasteboard] setString:link];
+								 }
+								 else if (selectedButtonIndex == 2) {
+									 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+									 controller.mailComposeDelegate = self;
+									 [controller setMessageBody:link isHTML:YES];
+									 [controller setSubject:name];
+									 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
+									 [self presentModalViewController:controller animated:YES];
+									 [controller release];
+									 
+								 }
+							 }
+								 cancelBlock:nil] showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 	}
 	[actionSheet release];
 	actionSheet = nil;
@@ -620,6 +668,12 @@
 		[self.targetsPopoverController dismissPopoverAnimated:YES];
 	else
 		[self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

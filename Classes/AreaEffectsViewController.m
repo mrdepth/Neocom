@@ -9,7 +9,7 @@
 #import "AreaEffectsViewController.h"
 #import "EVEDBAPI.h"
 #import "AreaEffectCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 
@@ -161,8 +161,7 @@
 - (void)tableView:(UITableView *)aTableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	EVEDBInvType *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = row;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -191,7 +190,7 @@
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading Area Effects"];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

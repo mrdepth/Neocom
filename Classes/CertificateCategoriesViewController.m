@@ -8,7 +8,7 @@
 
 #import "CertificateCategoriesViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEDBAPI.h"
 #import "EUOperationQueue.h"
 #import "CertificatesViewController.h"
@@ -47,7 +47,7 @@
 	self.title = @"Certificates";
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Categories"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -126,8 +126,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	CertificatesViewController *controller = [[CertificatesViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificatesViewController-iPad" : @"CertificatesViewController")
-																		bundle:nil];
+	CertificatesViewController *controller = [[CertificatesViewController alloc] initWithNibName:@"CertificatesViewController" bundle:nil];
 	controller.category = [rows objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];

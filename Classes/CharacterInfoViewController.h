@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "URLImageView.h"
 
 @class CharacterInfoViewController;
 @protocol CharacterInfoViewControllerDelegate
@@ -18,9 +17,9 @@
 
 @class EVECharacterSheet;
 @interface CharacterInfoViewController : UIViewController {
-	URLImageView *portraitImageView;
-	URLImageView *corpImageView;
-	URLImageView *allianceImageView;
+	UIImageView *portraitImageView;
+	UIImageView *corpImageView;
+	UIImageView *allianceImageView;
 	UILabel *corpLabel;
 	UILabel *allianceLabel;
 	UILabel *skillsLabel;
@@ -29,9 +28,9 @@
 	UILabel *onlineLabel;
 	id<CharacterInfoViewControllerDelegate> delegate;
 }
-@property (nonatomic, retain) IBOutlet URLImageView *portraitImageView;
-@property (nonatomic, retain) IBOutlet URLImageView *corpImageView;
-@property (nonatomic, retain) IBOutlet URLImageView *allianceImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *portraitImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *corpImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *allianceImageView;
 @property (nonatomic, retain) IBOutlet UILabel *corpLabel;
 @property (nonatomic, retain) IBOutlet UILabel *allianceLabel;
 @property (nonatomic, retain) IBOutlet UILabel *skillsLabel;

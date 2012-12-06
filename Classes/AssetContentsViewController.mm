@@ -9,7 +9,7 @@
 #import "AssetContentsViewController.h"
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"
@@ -23,6 +23,8 @@
 #import "CharacterEVE.h"
 #import "Fit.h"
 #import "POSFit.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface AssetContentsViewController(Private)
 - (void) reloadAssets;
@@ -69,7 +71,7 @@
 	}
 	else {
 		self.title = asset.name;
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:@"Loading Locations"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVELocations* locations = nil;
@@ -153,9 +155,8 @@
 
 - (IBAction)onOpenFit:(id)sender {
 	if (asset.type.group.categoryID == 6) {// Ship
-		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																							   bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		
@@ -165,6 +166,7 @@
 			character = new eufe::Character(fittingViewController.fittingEngine);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
+			operation.progress = 0.3;
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
 				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -172,7 +174,9 @@
 			}
 			else
 				character->setCharacterName("All Skills 0");
+			operation.progress = 0.6;
 			fit = [[Fit alloc] initWithAsset:asset character:character];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -193,9 +197,8 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																										bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit"];
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading POS Fit"];
 		__block POSFit* fit = nil;
 		
 		[operation addExecutionBlock:^{
@@ -286,8 +289,7 @@
 	else
 		item = [[[sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = item.type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -305,20 +307,19 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsed = NO;
+		view.titleLabel.text = title;
+		if (tableView == self.searchDisplayController.searchResultsTableView)
+			view.collapsImageView.hidden = YES;
+		else
+			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+		return view;
+	}
+	else
+		return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -335,16 +336,14 @@
 		item = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (item.contents.count > 0) {
-		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AssetContentsViewController-iPad" : @"AssetContentsViewController")
-																								bundle:nil];
+		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = item;
 		controller.corporate = self.corporate;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = item.type;
 		[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -359,60 +358,25 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
-
-	
-/*	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	EUMailMessage* message = nil;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		message = [[filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	else
-		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	
-	MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
-																				bundle:nil];
-	controller.message = message;
-	
-	if (!message.read) {
-		message.read = YES;
-		[mailBox save];
-		[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
-	}
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
-		[self presentModalViewController:navController animated:YES];
-		[navController release];
-	}
-	else
-		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];*/
 }
 
-#pragma mark ExpandedTableViewDelegate
+#pragma mark - CollapsableTableViewDelegate
 
-- (void) tableView:(UITableView*) tableView didExpandSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[sections objectAtIndex:section] setValue:[NSNumber numberWithBool:YES] forKey:@"expanded"];
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	return [[[sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
 }
 
-- (void) tableView:(UITableView*) tableView didCollapseSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[sections objectAtIndex:section] setValue:[NSNumber numberWithBool:NO] forKey:@"expanded"];
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
 }
 
-- (BOOL) tableView:(UITableView*) tableView isExpandedSection:(NSInteger) section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return YES;
-	else
-		return [[[sections objectAtIndex:section] valueForKey:@"expanded"] boolValue];
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	[[sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
 }
 
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	[[sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+}
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
@@ -430,7 +394,12 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -464,7 +433,7 @@
 	if (!assets) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"assetsFilter" ofType:@"plist"]]];
 		NSMutableArray* assetsTmp = [NSMutableArray array];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Load"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Load" name:@"Loading Assets"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (asset.type.group.categoryID == 6) { // Ship
@@ -587,7 +556,10 @@
 					process(subItem);
 			};
 			
+			float n = asset.contents.count;
+			float i = 0;
 			for (EVEAssetListItem* item in asset.contents) {
+				operation.progress = i++ / n;
 				process(item);
 			}
 			
@@ -610,7 +582,7 @@
 	else {
 		NSMutableArray* sectionsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -620,8 +592,12 @@
 					for (EVEAssetListItem* item in contents)
 						search(item.contents, location);
 				};
+				
 				NSMutableArray* filteredAssets = [NSMutableArray array];
+				float n = assets.count;
+				float i = 0;
 				for (NSDictionary* section in assets) {
+					operation.progress = i++ / n;
 					search([section valueForKey:@"assets"], filteredAssets);
 				}
 
@@ -678,7 +654,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetContentsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);
@@ -698,7 +674,10 @@
 		
 		
 		NSMutableArray* values = [[NSMutableArray alloc] init];
+		float n = sections.count;
+		float i = 0;
 		for (NSDictionary* section in sections) {
+			operation.progress = i++ / n / 2;
 			search([section valueForKey:@"assets"], values);
 		}
 		NSMutableArray* values2 =[NSMutableArray arrayWithArray:[filter applyToValues:values]];
@@ -714,7 +693,11 @@
 				return [asset1.type.group.category.categoryName compare:asset2.type.group.category.categoryName];
 			}];
 			
+			n = groups.count;
+			i = 0;
 			for (NSArray* group in groups) {
+				operation.progress = 0.5 + i++ / n / 2;
+
 				EVEAssetListItem* item = [group objectAtIndex:0];
 				NSString* title = item.type.group.category.categoryName;
 				group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];

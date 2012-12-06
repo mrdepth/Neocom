@@ -13,7 +13,7 @@
 #import "EVEAccountStorage.h"
 #import "EUOperationQueue.h"
 #import "CharacterCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "CharacterSkillsEditorViewController.h"
 
 @implementation CharactersViewController
@@ -59,14 +59,14 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
-	EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CharactersViewController+load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+load" name:@"Loading Characters"];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
 		NSMutableArray* staticCharacters = [NSMutableArray array];
 		for (int i = 0; i <= 5; i++)
 			[staticCharacters addObject:[CharacterEqualSkills characterWithSkillsLevel:i]];
-		
+		operation.progress = 0.3;
 		NSMutableDictionary* eveCharactersDic = [NSMutableDictionary dictionary];
 		NSMutableArray* customCharacters = [NSMutableArray array];
 		NSString* path = [Character charactersDirectory];
@@ -79,6 +79,7 @@
 			else if ([character isKindOfClass:[CharacterCustom class]])
 				[customCharacters addObject:character];
 		}
+		operation.progress = 0.6;
 		[[EVEAccountStorage sharedAccountStorage] reload];
 		for (EVEAccountStorageCharacter* accountCharacter in [[[EVEAccountStorage sharedAccountStorage] characters] allValues]) {
 			if (accountCharacter.enabled) {
@@ -86,6 +87,7 @@
 				[eveCharactersDic setValue:character forKey:[NSString stringWithFormat:@"%d", character.characterID]];
 			}
 		}
+		operation.progress = 0.9;
 		NSArray* sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
 		[customCharacters sortUsingDescriptors:sortDescriptors];
 		NSMutableArray* eveCharacters = [NSMutableArray arrayWithArray:[eveCharactersDic allValues]];
@@ -94,6 +96,7 @@
 		[sectionsTmp addObject:eveCharacters];
 		[sectionsTmp addObject:customCharacters];
 		[sectionsTmp addObject:staticCharacters];
+		operation.progress = 1.0;
 		
 		[pool release];
 	}];
@@ -203,8 +206,7 @@
 		[[sections objectAtIndex:1] addObject:character];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
-		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharacterSkillsEditorViewController-iPad" : @"CharacterSkillsEditorViewController")
-																												bundle:nil];
+		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
 		controller.character = character;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -251,7 +253,7 @@
 	else {
 		Character* character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CharactersViewController+LoadSkills"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+LoadSkills" name:@"Loading Skills"];
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (character.skills && [character isKindOfClass:[CharacterEVE class]]) {
@@ -264,8 +266,7 @@
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled]) {
 				if (self.editing) {
-					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CharacterSkillsEditorViewController-iPad" : @"CharacterSkillsEditorViewController")
-																															bundle:nil];
+					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
 					controller.character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 					[self.navigationController pushViewController:controller animated:YES];
 					[controller release];

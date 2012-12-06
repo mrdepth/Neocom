@@ -9,7 +9,7 @@
 #import "MessagesViewController.h"
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"
@@ -149,7 +149,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == messagesTableView ? @"MessageCellView-iPad" : @"MessageCellView";
+			nibName = tableView == messagesTableView ? @"MessageCellView" : @"MessageCellViewCompact";
 		else
 			nibName = @"MessageCellView";
 		
@@ -260,7 +260,7 @@
 	else
 		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MessagesViewController+LoadMessage"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+LoadMessage" name:@"Loading Message Body"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[message text];
@@ -269,8 +269,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
-			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MessageViewController-iPad" : @"MessageViewController")
-																						bundle:nil];
+			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:@"MessageViewController" bundle:nil];
 			controller.message = message;
 			
 			if (!message.read && message.text) {
@@ -315,8 +314,14 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
+	}
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
@@ -349,7 +354,7 @@
 	if (!mailBox) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mailMessagesFilter" ofType:@"plist"]]];
 		__block EUMailBox* mailBoxTmp = nil;
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MessagesViewController+Load"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Load" name:@"Loading Messages"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			//mailBoxTmp = [[EUMailBox alloc] initWithAccount:[EVEAccount currentAccount]];
@@ -386,7 +391,7 @@
 	else {
 		NSMutableArray* messagesTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MessagesViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[messagesTmp addObject:[filter applyToValues:mailBox.inbox]];
@@ -450,7 +455,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MessagesViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSArray* section in messages) {

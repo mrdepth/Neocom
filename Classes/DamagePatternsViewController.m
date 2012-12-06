@@ -9,7 +9,7 @@
 #import "DamagePatternsViewController.h"
 #import "EVEDBAPI.h"
 #import "DamagePatternCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 #import "CharacterCellView.h"
@@ -148,9 +148,7 @@
 		static NSString *cellIdentifier = @"DamagePatternCellView";
 		DamagePatternCellView *cell = (DamagePatternCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [DamagePatternCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternCellView-iPad" : @"DamagePatternCellView")
-												   bundle:nil
-										  reuseIdentifier:cellIdentifier];
+			cell = [DamagePatternCellView cellWithNibName:@"DamagePatternCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		DamagePattern* damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.titleLabel.text = damagePattern.patternName;
@@ -187,8 +185,7 @@
 		[[sections objectAtIndex:indexPath.section - 1] addObject:damagePattern];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
-																										bundle:nil];
+		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
 		controller.damagePattern = damagePattern;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -230,7 +227,8 @@
 - (void)tableView:(UITableView*) aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
-		FittingNPCGroupsViewController* controller = [[FittingNPCGroupsViewController alloc] initWithNibName:@"NPCGroupsViewControllerModal-iPad" bundle:nil];
+		FittingNPCGroupsViewController *controller = [[FittingNPCGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"NPCGroupsViewControllerModal" : @"NPCGroupsViewController")
+																					bundle:nil];
 		controller.modalMode = YES;
 		controller.damagePatternsViewController = self;
 		[self.navigationController pushViewController:controller animated:YES];
@@ -242,8 +240,7 @@
 	else {
 		if (self.editing) {
 			if (indexPath.section == 2) {
-				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DamagePatternEditViewController-iPad" : @"DamagePatternEditViewController")
-																												bundle:nil];
+				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
 				controller.damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 				[self.navigationController pushViewController:controller animated:YES];
 				[controller release];

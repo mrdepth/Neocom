@@ -13,11 +13,11 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAccountsAPIKeyCellView.h"
 #import "EVEAccountsCharacterCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EVEUniverseAppDelegate.h"
 #import "NSString+TimeLeft.h"
-#import "NSInvocation+Variadic.h"
 #import "AccessMaskViewController.h"
+#import "UIImageView+URL.h"
 
 @interface EVEAccountsViewController(Private)
 - (void) loadSection:(NSMutableDictionary*) section;
@@ -104,8 +104,7 @@
 }
 
 - (IBAction) onAddAccount: (id) sender {
-	AddEVEAccountViewController *controller = [[AddEVEAccountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AddEVEAccountViewController-iPad" : @"AddEVEAccountViewController")
-																							bundle:nil];
+	AddEVEAccountViewController *controller = [[AddEVEAccountViewController alloc] initWithNibName:@"AddEVEAccountViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
@@ -161,18 +160,16 @@
 		
 		EVEAccountsCharacterCellView *cell = (EVEAccountsCharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [EVEAccountsCharacterCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"EVEAccountsCharacterCellView-iPad" : @"EVEAccountsCharacterCellView")
-														  bundle:nil
-												 reuseIdentifier:cellIdentifier];
+			cell = [EVEAccountsCharacterCellView cellWithNibName:@"EVEAccountsCharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		
 		if (RETINA_DISPLAY) {
-			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize128 error:nil] scale:2.0];
-			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize64 error:nil] scale:2.0];
+			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize128 error:nil] scale:2.0 completion:nil failureBlock:nil];
+			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize64 error:nil] scale:2.0 completion:nil failureBlock:nil];
 		}
 		else {
-			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize64 error:nil] scale:1.0];
-			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize32 error:nil] scale:1.0];
+			[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:character.characterID size:EVEImageSize64 error:nil] scale:1.0 completion:nil failureBlock:nil];
+			[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:character.corporationID size:EVEImageSize32 error:nil] scale:1.0 completion:nil failureBlock:nil];
 		}
 		cell.userNameLabel.text = character.characterName;
 		cell.corpLabel.text = character.corporationName;
@@ -201,9 +198,7 @@
 		
 		EVEAccountsAPIKeyCellView *cell = (EVEAccountsAPIKeyCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [EVEAccountsAPIKeyCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"EVEAccountsAPIKeyCellView-iPad" : @"EVEAccountsAPIKeyCellView")
-														bundle:nil
-											   reuseIdentifier:cellIdentifier];
+			cell = [EVEAccountsAPIKeyCellView cellWithNibName:@"EVEAccountsAPIKeyCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.accessMaskLabel.text = [NSString stringWithFormat:@"%d", apiKey.apiKeyInfo.key.accessMask];
 		cell.keyIDLabel.text = [NSString stringWithFormat:@"%d", apiKey.keyID];
@@ -278,8 +273,7 @@
 	else {
 		EVEAccountStorageAPIKey *apiKey = [[section valueForKey:@"apiKeys"] objectAtIndex:indexPath.row - (character ? 1 : 0)];
 		if (apiKey && !apiKey.error) {
-			AccessMaskViewController *controller = [[AccessMaskViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AccessMaskViewController-iPad" : @"AccessMaskViewController")
-																							  bundle:nil];
+			AccessMaskViewController *controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
 			controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
 			controller.corporate = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
 			[self.navigationController pushViewController:controller animated:YES];
@@ -393,7 +387,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	NSMutableArray *emptyKeysTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"EVEAccountsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:@"Loading Accounts"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if ([operation isCancelled]) {
@@ -405,6 +399,7 @@
 		
 		EVEAccountStorage *accountStorage = [EVEAccountStorage sharedAccountStorage];
 		[accountStorage reload];
+		operation.progress = 0.3;
 		
 		NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 		
@@ -424,6 +419,8 @@
 				[pool release];
 			}];
 		}
+
+		operation.progress = 0.6;
 		
 		for (EVEAccountStorageAPIKey *apiKey in [accountStorage.apiKeys allValues])
 			if (apiKey.assignedCharacters.count == 0)
@@ -441,6 +438,7 @@
 		
 		
 		[queue waitUntilAllOperationsAreFinished];
+		operation.progress = 0.9;
 		[sectionsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			EVEAccountStorageCharacter *character1 = [obj1 valueForKey:@"character"];
 			EVEAccountStorageCharacter *character2 = [obj2 valueForKey:@"character"];
@@ -452,6 +450,7 @@
 				return [character1.characterName compare:character2.characterName ? character2.characterName : @""];
 		}];
 		[queue release];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	

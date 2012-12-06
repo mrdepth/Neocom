@@ -12,5 +12,6 @@
 @interface EVEAssetListItem (AssetsViewController)
 @property (nonatomic, retain) EVEDBInvType* type;
 @property (nonatomic, retain) EVELocationsItem* location;
+@property (nonatomic, retain) NSString* characterName;
 @property (nonatomic, copy) NSString* name;
 @end

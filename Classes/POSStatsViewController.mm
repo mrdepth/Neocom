@@ -141,6 +141,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -207,7 +208,7 @@
 	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+Update" name:@"Updating Stats"];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 
 	[operation addExecutionBlock:^(void) {
@@ -291,7 +292,7 @@
 	__block float upgradesDailyCost;
 	__block float posCost;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice" name:@"Updating Price"];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
 	[operation addExecutionBlock:^(void) {
@@ -337,15 +338,7 @@
 
 		float fuelPrice = [aPosFittingViewController.priceManager priceWithType:aPosFittingViewController.posFuelRequirements.resourceType];
 		fuelDailyCost = fuelConsumtion * fuelPrice * 24;
-		
-/*		if (upgradesDailyCost > 0) {
-			EVEDBInvType* claim = [EVEDBInvType invTypeWithTypeID:32226 error:nil];
-			EVEDBDgmTypeAttribute* attribute = [claim.attributesDictionary valueForKey:@"1603"];//sovBillSystemCost
-			upgradesDailyCost += attribute.value;
-			//upgradesCost += [posFittingViewController.priceManager priceWithType:claim];
-		}*/
-		
-		posCost = 0;
+		operation.progress = 0.5;
 		
 		@synchronized(aPosFittingViewController) {
 			eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
@@ -363,6 +356,8 @@
 		prices = [aPosFittingViewController.priceManager pricesWithTypes:[infrastructureUpgrades allValues]];
 		for (NSNumber* number in [prices allValues])
 			upgradesCost += [number floatValue];
+		operation.progress = 1.0;
+
 		[pool release];
 	}];
 	

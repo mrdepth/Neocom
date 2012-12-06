@@ -243,19 +243,25 @@
 }
 
 - (void) loadCertificate {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CertificateTreeView+loadCertificate"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadCertificate" name:@"Loading Certificate"];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		[certificate state];
 		[certificate certificateClass];
+		float n = certificate.prerequisites.count;
+		float i = 0;
 		for (EVEDBCrtRelationship* relationship in certificate.prerequisites) {
+			operation.progress = i++ / n / 2;
 			if (relationship.parent) {
 				[relationship.parent state];
 				[relationship.parent certificateClass];
 			}
 		}
 		
+		n = certificate.derivations.count;
+		i = 0;
 		for (EVEDBCrtRelationship* relationship in certificate.derivations) {
+			operation.progress = 0.5 + i++ / n / 2;
 			if (relationship.child) {
 				[relationship.child state];
 				[relationship.child certificateClass];
@@ -359,7 +365,7 @@
 }
 
 - (void) loadTrainingTimes {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CertificateTreeView+loadTrainingTimes"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadTrainingTimes" name:@"Calculating Training Time"];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
@@ -369,7 +375,10 @@
 				certificateView.descriptionLabel.text = [NSString stringWithFormat:@"Training time: %@\n\n%@", [NSString stringWithTimeLeft:trainingTime], certificate.description];
 			}];
 		
+		float n = prerequisites.count + derivations.count;
+		float i = 0;
 		for (CertificateRelationshipView* relationshipView in [prerequisites arrayByAddingObjectsFromArray:derivations]) {
+			operation.progress = i++ / n;
 			if ([operation isCancelled])
 				break;
 			NSString* text = nil;

@@ -11,7 +11,7 @@
 #import "EVEDBAPI.h"
 #import "ModuleCellView.h"
 #import "FleetMemberCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
@@ -283,8 +283,7 @@
 	}
 	else if ([button isEqualToString:ActionButtonShowShipInfo]) {
 		ItemInfo* itemInfo = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"ship"];
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
@@ -307,7 +306,7 @@
 	NSMutableArray* pilotsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:@"Updating Fleet"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -318,7 +317,10 @@
 			eufe::Character* squadBooster = gang->getSquadBooster();
 			
 			//for (i = characters.begin(); i != end; i++) {
+			float n = fittingViewController.fits.count;
+			float i = 0;
 			for (Fit* fit in fittingViewController.fits) {
+				operation.progress = i++ / n;
 				eufe::Character* character = fit.character;
 				ItemInfo* ship = [ItemInfo itemInfoWithItem:character->getShip() error:NULL];
 				NSString *booster = nil;

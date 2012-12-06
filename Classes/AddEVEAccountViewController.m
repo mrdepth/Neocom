@@ -109,14 +109,13 @@
 }
 
 - (IBAction) onPC: (id) sender {
-	PCViewController *controller = [[PCViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"PCViewController-iPad" : @"PCViewController")
-																	  bundle:nil];
+	PCViewController *controller = [[PCViewController alloc] initWithNibName:@"PCViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
 
 - (IBAction) onSave:(id) sender {
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AddEVEAccountViewController+Save"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:@"Checking API Key"];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -140,8 +139,7 @@
 }
 
 - (IBAction) onToutorial: (id) sender {
-	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"TutorialViewController-iPad" : @"TutorialViewController")
-																				  bundle:nil];
+	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
@@ -189,11 +187,14 @@
 	if (apiKeys.count == 0)
 		return;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:@"Checking API Keys"];
 	NSMutableArray *errors = [NSMutableArray array];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		float n = apiKeys.count;
+		float i = 0;
 		for (NSDictionary *apiKey in apiKeys) {
+			operation.progress = i++ / n;
 			NSError *error = nil;
 			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[apiKey valueForKey:@"keyID"] integerValue] vCode:[apiKey valueForKey:@"vCode"] error:&error];
 			if (error)
@@ -261,8 +262,7 @@
 				}
 				else if (apiKeys.count > 1 && [self.navigationController visibleViewController] == self) {
 					[pb setValue:@"" forPasteboardType:type];
-					APIKeysViewController *controller = [[APIKeysViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"APIKeysViewController-iPad" : @"APIKeysViewController")
-																								bundle:nil];
+					APIKeysViewController *controller = [[APIKeysViewController alloc] initWithNibName:@"APIKeysViewController" bundle:nil];
 					controller.apiKeys = apiKeys;
 					controller.delegate = self;
 					[self.navigationController pushViewController:controller animated:YES];

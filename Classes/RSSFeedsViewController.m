@@ -9,7 +9,7 @@
 #import "RSSFeedsViewController.h"
 #import "RSSFeedViewController.h"
 #import "RSSCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 
 
 @implementation RSSFeedsViewController
@@ -113,8 +113,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	RSSFeedViewController *controller = [[RSSFeedViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RSSFeedViewController-iPad" : @"RSSFeedViewController")
-																				bundle:nil];
+	RSSFeedViewController *controller = [[RSSFeedViewController alloc] initWithNibName:@"RSSFeedViewController" bundle:nil];
 	NSDictionary *rss = [[[sections objectAtIndex:indexPath.section] valueForKey:@"feeds"] objectAtIndex:indexPath.row];
 	controller.url = [NSURL URLWithString:[rss valueForKey:@"url"]];
 	controller.title = [rss valueForKey:@"title"];

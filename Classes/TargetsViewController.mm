@@ -9,7 +9,7 @@
 #import "TargetsViewController.h"
 #import "FittingViewController.h"
 #import "FleetMemberCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "Fit.h"
 #import "ItemInfo.h"
@@ -61,7 +61,7 @@
 	[super viewWillAppear:animated];
 	
 	NSMutableArray* targetsTmp = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"TargetsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:@"Loading Targets"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
@@ -71,7 +71,10 @@
 		eufe::Character* squadBooster = gang->getSquadBooster();
 		
 		//for (i = characters.begin(); i != end; i++) {
+		float n = fittingViewController.fits.count;
+		float i = 0;
 		for (Fit* fit in fittingViewController.fits) {
+			operation.progress = i++ / n;
 			if (fit == fittingViewController.fit)
 				continue;
 			

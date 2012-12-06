@@ -8,7 +8,7 @@
 
 #import "RequiredSkillsViewController.h"
 #import "SkillCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"
@@ -167,8 +167,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	EVEDBInvTypeRequiredSkill* skill = [skillPlan.skills objectAtIndex:indexPath.row];
 	controller.type = skill;
@@ -203,7 +202,7 @@
 @implementation RequiredSkillsViewController(Private)
 
 - (void) loadData {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"RequiredSkillsViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"RequiredSkillsViewController+Load" name:@"Loading Requirements"];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -218,7 +217,7 @@
 		eufe::Character* character = fit.character;
 
 		[skillPlanTmp addType:[ItemInfo itemInfoWithItem:character->getShip() error:nil]];
-		
+		operation.progress = 0.25;
 		{
 			const eufe::ModulesList& modules = character->getShip()->getModules();
 			eufe::ModulesList::const_iterator i, end = modules.end();
@@ -228,6 +227,8 @@
 					[skillPlanTmp addType:[ItemInfo itemInfoWithItem:(*i)->getCharge() error:nil]];
 			}
 		}
+		operation.progress = 0.5;
+
 		{
 			const eufe::DronesList& drones = character->getShip()->getDrones();
 			eufe::DronesList::const_iterator i, end = drones.end();
@@ -235,6 +236,7 @@
 				[skillPlanTmp addType:[ItemInfo itemInfoWithItem:*i error:nil]];
 			}
 		}
+
 		{
 			const eufe::ImplantsList& implants = character->getImplants();
 			eufe::ImplantsList::const_iterator i, end = implants.end();
@@ -242,6 +244,8 @@
 				[skillPlanTmp addType:[ItemInfo itemInfoWithItem:*i error:nil]];
 			}
 		}
+		operation.progress = 0.75;
+
 		{
 			const eufe::BoostersList& boosters = character->getBoosters();
 			eufe::BoostersList::const_iterator i, end = boosters.end();
@@ -249,8 +253,9 @@
 				[skillPlanTmp addType:[ItemInfo itemInfoWithItem:*i error:nil]];
 			}
 		}
-		
+	
 		[skillPlanTmp trainingTime];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	

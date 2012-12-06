@@ -13,6 +13,7 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+AssetsViewController.h"
 #import "NSString+UUID.h"
+#import "KillMail.h"
 
 #include <functional>
 
@@ -92,6 +93,61 @@ public:
 + (id) fitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character {
 	return [[[Fit alloc] initWithAsset:asset character:character] autorelease];
 	
+}
+
++ (id) fitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character {
+	return [[[Fit alloc] initWithKillMail:killMail character:character] autorelease];
+}
+
++ (NSString*) allFitsEveXML {
+	NSArray *fitsArray = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
+	NSMutableString* eveXML = [NSMutableString string];
+	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
+
+	for (NSDictionary* row in fitsArray) {
+		if ([[row valueForKey:@"isPOS"] boolValue]) {
+			continue;
+		}
+		
+		EVEDBInvType* ship = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil];
+		
+		if (ship) {
+			NSMutableString* xml = [NSMutableString string];
+			NSDictionary* fit = [row valueForKey:@"fit"];
+			EVEDBInvType* ship = [EVEDBInvType invTypeWithTypeID:[[fit valueForKeyPath:@"shipID"] integerValue] error:nil];
+			
+			[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"Neocom fitting engine\"/>\n<shipType value=\"%@\"/>\n", [row valueForKey:@"fitName"], ship.typeName];
+			
+			
+			NSMutableArray* arrays[] = {[fit valueForKey:@"highs"], [fit valueForKey:@"meds"], [fit valueForKey:@"lows"], [fit valueForKey:@"rigs"], [fit valueForKey:@"subsystems"]};
+			int counters[5] = {0};
+			const char* slots[] = {"hi slot", "med slot", "low slot", "rig slot", "subsystem slot"};
+			
+			for (int i = 0; i < 5; i++) {
+				for (NSDictionary* record in arrays[i]) {
+					NSInteger typeID = [[record valueForKey:@"typeID"] integerValue];
+					EVEDBInvType* module = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+					[xml appendFormat:@"<hardware slot=\"%s %d\" type=\"%@\"/>\n", slots[i], counters[i]++, module.typeName];
+				}
+			}
+			
+			NSCountedSet* drones = [NSCountedSet set];
+			
+			for (NSDictionary* record in [fit valueForKey:@"drones"]) {
+				[drones addObject:[record valueForKey:@"typeID"]];
+			}
+			
+			for (NSNumber* typeID in drones) {
+				EVEDBInvType* drone = [EVEDBInvType invTypeWithTypeID:[typeID integerValue] error:nil];
+				[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", [drones countForObject:typeID], drone.typeName];
+			}
+			[xml appendString:@"</fitting>\n"];
+
+			[eveXML appendString:xml];
+		}
+	}
+	[eveXML appendString:@"</fittings>"];
+	return eveXML;
 }
 
 - (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName character:(eufe::Character*) aCharacter {
@@ -297,6 +353,56 @@ public:
 	return self;
 }
 	
+- (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) aCharacter {
+	if (self = [self initWithCharacter:aCharacter error:nil]) {
+		self.fitName = killMail.victim.shipType.typeName;
+		eufe::Ship* ship = aCharacter->setShip(killMail.victim.shipType.typeID);
+		
+		if (!ship) {
+			[self release];
+			return nil;
+		}
+		else {
+			NSMutableArray *charges = [NSMutableArray array];
+			NSMutableArray* items = [NSMutableArray arrayWithArray:killMail.subsystemSlots];
+			[items addObjectsFromArray:killMail.rigSlots];
+			[items addObjectsFromArray:killMail.lowSlots];
+			[items addObjectsFromArray:killMail.medSlots];
+			[items addObjectsFromArray:killMail.hiSlots];
+			
+			for (KillMailItem* item in items) {
+				int amount = item.qty;
+				if (amount < 1)
+					amount = 1;
+				for (int i = 0; i < amount; i++)
+					ship->addModule(item.type.typeID);
+			}
+			for (KillMailItem* item in killMail.cargo) {
+				if ([item.type.group.category.categoryName isEqualToString:@"Charge"]) {
+					[charges addObject:item.type];
+				}
+			}
+			for (KillMailItem* item in killMail.droneBay) {
+				int amount = item.qty;
+				if (amount < 1)
+					amount = 1;
+				for (int i = 0; i < amount; i++)
+					ship->addDrone(item.type.typeID);
+			}
+		
+			for (EVEDBInvType *type in charges) {
+				eufe::Charge* charge = new eufe::Charge(ship->getEngine(), type.typeID, NULL);
+				eufe::ModulesList::const_iterator i, end = ship->getModules().end();
+				for (i = ship->getModules().begin(); i != end; i++) {
+					if ((*i)->canFit(charge))
+						(*i)->setCharge(new eufe::Charge(*charge));
+				}
+				delete charge;
+			}
+		}
+	}
+	return self;
+}
 
 - (void) dealloc {
 	[fitName release];
@@ -476,6 +582,7 @@ public:
 	eufe::Character* aCharacter = self.character;
 	eufe::Ship* ship = aCharacter->getShip();
 	
+	[xml appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
 	[xml appendFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%s\"/>\n", self.fitName, ship->getTypeName()];
 
 	eufe::ModulesList modulesList = ship->getModules();
@@ -501,6 +608,7 @@ public:
 		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", [drones countForObject:itemInfo], itemInfo.typeName];
 	}
 	[xml appendString:@"</fitting>\n"];
+	[xml appendString:@"</fittings>"];
 	return xml;
 }
 

@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "ItemViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
 
@@ -135,7 +135,7 @@
 	scrollView.maximumZoomScale = 1;
 	scrollView.minimumZoomScale = MIN(scaleX, scaleY);
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CertificateViewController+load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateViewController+load" name:@"Loading Certificates"];
 	NSMutableArray* rowsTmp = [NSMutableArray array];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
@@ -185,8 +185,7 @@
 }
 
 - (void) certificateTreeView:(CertificateTreeView*) aCertificateTreeView didSelectType:(EVEDBInvType*) type {
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];
@@ -251,8 +250,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];

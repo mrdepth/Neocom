@@ -9,7 +9,7 @@
 #import "FittingServiceMenuViewController.h"
 #import "MainMenuCellView.h"
 #import "FitCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "FittingViewController.h"
 #import "POSFittingViewController.h"
@@ -22,10 +22,12 @@
 #import "NSArray+GroupBy.h"
 #import "FittingExportViewController.h"
 #import "NSString+UUID.h"
+#import "UIActionSheet+Block.h"
 
 @interface FittingServiceMenuViewController(Private)
 - (void) convertFits;
 - (void) save;
+- (void) exportFits;
 @end
 
 @implementation FittingServiceMenuViewController
@@ -73,7 +75,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:@"Loading Fits"];
 	__block BOOL needsConvertTmp = NO;
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -82,7 +84,10 @@
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 		
 		BOOL needsSave = NO;
+		float n = fitsArray.count;
+		float i = 0;
 		for (NSMutableDictionary* row in fitsArray) {
+			operation.progress = i++ / n / 2;
 			EVEDBInvType* type;
 			NSObject* fitID = [row valueForKey:@"fitID"];
 			if ([fitID isKindOfClass:[NSNumber class]]) {
@@ -117,6 +122,8 @@
 		}
 		
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
+		operation.progress = 0.75;
+		
 		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
 		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			NSDictionary* a = [obj1 objectAtIndex:0];
@@ -127,6 +134,7 @@
 			else
 				return result;
 		}];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	
@@ -201,9 +209,7 @@
 		
 		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [MainMenuCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MainMenuCellView-iPad" : @"MainMenuCellView")
-											  bundle:nil
-									 reuseIdentifier:cellIdentifier];
+			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		if (indexPath.row == 0) {
 			cell.titleLabel.text = @"Browse Fits on BattleClinic";
@@ -228,9 +234,7 @@
 		
 		FitCellView *cell = (FitCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [FitCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitCellView-iPad" : @"FitCellView")
-										 bundle:nil
-								reuseIdentifier:cellIdentifier];
+			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];
@@ -299,8 +303,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
-			BCSearchViewController *controller = [[BCSearchViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"BCSearchViewController-iPad" : @"BCSearchViewController")
-																						  bundle:nil];
+			BCSearchViewController *controller = [[BCSearchViewController alloc] initWithNibName:@"BCSearchViewController" bundle:nil];
 			[self.navigationController pushViewController:controller animated:YES];
 			[controller release];
 		}
@@ -334,26 +337,15 @@
 				[alertView release];
 			}
 			else {
-				FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
-																														 bundle:nil];
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
-				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-				
-				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-					navController.modalPresentationStyle = UIModalPresentationFormSheet;
-				
-				[self presentModalViewController:navController animated:YES];
-				[navController release];
-				[fittingExportViewController release];
+				[self exportFits];
 			}
 		}
 	}
 	else {
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		if ([[row valueForKey:@"isPOS"] boolValue]) {
-			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																											bundle:nil];
-			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading POS Fit"];
 			__block POSFit* fit = nil;
 			[operation addExecutionBlock:^{
 				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -372,9 +364,8 @@
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
-			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																								   bundle:nil];
-			__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
 			__block Fit* fit = nil;
 			__block eufe::Character* character = NULL;
 			[operation addExecutionBlock:^{
@@ -390,7 +381,9 @@
 				else
 					character->setCharacterName("All Skills 0");
 				
+				operation.progress = 0.5;
 				fit = [[Fit fitWithDictionary:row character:character] retain];
+				operation.progress = 1.0;
 				[pool release];
 			}];
 			
@@ -430,16 +423,17 @@
 		[self dismissModalViewControllerAnimated:YES];
 
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
-		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSFittingViewController-iPad" : @"POSFittingViewController")
-																										bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block POSFit* posFit = nil;
 		__block eufe::ControlTower* controlTower = NULL;
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			controlTower = new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID);
 
+			operation.progress = 0.5;
 			posFit = [[POSFit posFitWithFitID:nil fitName:type.typeName controlTower:controlTower] retain];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -460,9 +454,8 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																							   bundle:nil];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
@@ -478,7 +471,10 @@
 			}
 			else
 				character->setCharacterName("All Skills 0");
+
+			operation.progress = 0.5;
 			fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -507,13 +503,19 @@
 	if (buttonIndex != alertView.cancelButtonIndex)
 		[self convertFits];
 }
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	[self dismissModalViewControllerAnimated:YES];
+}
 	
 @end
 
 @implementation FittingServiceMenuViewController(Private)
 
 - (void) convertFits {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert" name:@"Converting Fits"];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	for (NSArray* group in fits)
 		[fitsTmp addObject:[NSMutableArray arrayWithArray:group]];
@@ -523,7 +525,10 @@
 		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
 		eufe::Character* character = new eufe::Character(fittingEngine);
 
+		float count = fitsTmp.count;
+		float j = 0;
 		for (NSMutableArray* group in fitsTmp) {
+			operation.progress = j++ / count;
 			int n = group.count;
 			for (int i = 0; i < n; i++) {
 				NSDictionary* row = [group objectAtIndex:i];
@@ -561,8 +566,7 @@
 			[allFits writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
 
 			
-			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingExportViewController-iPad" : @"FittingExportViewController")
-																													 bundle:nil];
+			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
 			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 			
@@ -589,6 +593,49 @@
 	
 	[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
 	 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
+}
+
+- (void) exportFits {
+	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Browser", @"Clipboard", nil];
+	if ([MFMailComposeViewController canSendMail])
+		[buttons addObject:@"Email"];
+	[[UIActionSheet actionSheetWithTitle:@"Export"
+					   cancelButtonTitle:@"Cancel"
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:buttons
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
+								 return;
+							 
+							 if (selectedButtonIndex == 0) {
+								 FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
+								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
+								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+								 
+								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
+								 
+								 [self presentModalViewController:navController animated:YES];
+								 [navController release];
+								 [fittingExportViewController release];
+							 }
+							 else if (selectedButtonIndex == 1) {
+								 NSString* xml = [Fit allFitsEveXML];
+								 [[UIPasteboard generalPasteboard] setString:xml];
+							 }
+							 else if (selectedButtonIndex == 2) {
+								 NSString* xml = [Fit allFitsEveXML];
+								 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+								 controller.mailComposeDelegate = self;
+								 [controller setSubject:@"Neocom fits"];
+								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
+								 [self presentModalViewController:controller animated:YES];
+								 [controller release];
+								 
+							 }
+						 }
+							 cancelBlock:nil] showFromRect:[self.menuTableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.menuTableView animated:YES];
+	
 }
 
 @end

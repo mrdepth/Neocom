@@ -9,7 +9,7 @@
 #import "AssemblyLinesViewController.h"
 #import "POSFittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "POSFit.h"
 #import "EVEDBAPI.h"
@@ -61,6 +61,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -144,7 +145,7 @@
 	NSMutableArray *assemblyLinesTmp = [NSMutableArray array];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssemblyLinesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssemblyLinesViewController+Update" name:@"Updating Assembly Lines"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
@@ -153,7 +154,11 @@
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
 			NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary dictionary];
+
+			float n = structuresList.size();
+			float j = 0;
 			for (i = structuresList.begin(); i != end; i++) {
+				operation.progress = j++ / n;
 				if ((*i)->getState() >= eufe::Module::STATE_ACTIVE) {
 					ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
 					if (itemInfo) {

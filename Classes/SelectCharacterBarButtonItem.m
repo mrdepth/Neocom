@@ -38,9 +38,7 @@
 }
 
 - (IBAction) onSelect: (id) sender {
-//	EVEAccountsViewController *controller = [[EVEAccountsViewController alloc] initWithNibName:@"EVEAccountsViewController" bundle:nil];
-	EVEAccountsViewController *controller = [[EVEAccountsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"EVEAccountsViewController-iPad" : @"EVEAccountsViewController")
-																				bundle:nil];
+	EVEAccountsViewController *controller = [[EVEAccountsViewController alloc] initWithNibName:@"EVEAccountsViewController" bundle:nil];
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;

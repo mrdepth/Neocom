@@ -9,7 +9,7 @@
 #import "StructuresViewController.h"
 #import "POSFittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
@@ -87,6 +87,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -419,8 +420,7 @@
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
-		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DronesAmountViewController-iPad" : @"DronesAmountViewController")
-																											  bundle:nil];
+		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
 		dronesAmountViewController.amount = array.count;
 		dronesAmountViewController.maxAmount = 50;
 		dronesAmountViewController.delegate = self;
@@ -431,8 +431,7 @@
 		[dronesAmountViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -447,8 +446,7 @@
 		[itemViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		ItemInfo* ammo = [ItemInfo itemInfoWithItem:structure->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;
@@ -502,7 +500,7 @@
 	NSMutableArray *structuresTmp = [NSMutableArray array];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:@"Updating POS Structures"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {
@@ -512,7 +510,10 @@
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
+			float n = structuresList.size();
+			float j = 0;
 			for (i = structuresList.begin(); i != end; i++) {
+				operation.progress = j++ / n;
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [structuresDic valueForKey:key];
 				if (!array) {

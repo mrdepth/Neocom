@@ -11,7 +11,7 @@
 #import "ItemInfoSkillCellView.h"
 #import "ItemsDBViewController.h"
 #import "ItemViewController.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "SkillTree.h"
@@ -258,15 +258,14 @@
 	
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
 	if (cellType == 1 || cellType == 5) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = [row valueForKey:@"type"];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else if (cellType == 2) {
-		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal-iPad" : @"ItemsDBViewController")
+		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal" : @"ItemsDBViewController")
 																					bundle:nil];
 		controller.modalMode = YES;
 		controller.group = [row valueForKey:@"group"];
@@ -275,8 +274,7 @@
 		[controller release];
 	}
 	else if (cellType == 3) {
-		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"CertificateViewController-iPad" : @"CertificateViewController")
-																							bundle:nil];
+		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
 		controller.certificate = [row valueForKey:@"certificate"];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
 		[controller release];
@@ -323,7 +321,8 @@
 @implementation ItemInfoViewController(Private)
 
 - (void) loadAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
 		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
@@ -628,10 +627,13 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void) loadNPCAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
@@ -1639,10 +1641,12 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (void) loadBlueprintAttributes {
-	[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
@@ -1845,6 +1849,7 @@
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 		[pool release];
 	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end

@@ -201,6 +201,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -330,7 +331,7 @@
 	__block float droneRange;
 	__block float warpSpeed;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+Update" name:@"Updating Stats"];
 	FittingViewController* aFittingViewController = fittingViewController;
 
 	[operation addExecutionBlock:^(void) {
@@ -348,6 +349,8 @@
 			totalCalibration = ship->getTotalCalibration();
 			usedCalibration = ship->getCalibrationUsed();
 			
+			operation.progress = 0.25;
+			
 			maxActiveDrones = ship->getMaxActiveDrones();
 			activeDrones = ship->getActiveDrones();
 			
@@ -364,6 +367,8 @@
 			totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 			
 			resistances = ship->getResistances();
+
+			operation.progress = 0.5;
 			
 			hp = ship->getHitPoints();
 			eufe::HitPoints effectiveHitPoints = ship->getEffectiveHitPoints();
@@ -384,6 +389,8 @@
 			droneDPS = ship->getDroneDps();
 			volleyDamage = ship->getWeaponVolley() + ship->getDroneVolley();
 			dps = weaponDPS + droneDPS;
+
+			operation.progress = 0.75;
 			
 			targets = ship->getMaxTargets();
 			targetRange = ship->getMaxTargetRange() / 1000.0;
@@ -416,6 +423,8 @@
 			warpSpeed = ship->getWarpSpeed();
 
 			damagePattern = [aFittingViewController.damagePattern retain];
+			operation.progress = 1.0;
+
 		}
 		[pool release];
 	}];
@@ -521,7 +530,7 @@
 	__block float fittingsPrice;
 	__block float totalPrice;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"StatsViewController+UpdatePrice"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+UpdatePrice" name:@"Updating Price"];
 	FittingViewController* aFittingViewController = fittingViewController;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "FittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
@@ -59,6 +59,7 @@
 */
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -309,8 +310,7 @@
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
-		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"DronesAmountViewController-iPad" : @"DronesAmountViewController")
-																											  bundle:nil];
+		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
 		dronesAmountViewController.amount = array.count;
 		int maxActiveDrones = ship->getMaxActiveDrones();
 		dronesAmountViewController.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
@@ -337,8 +337,7 @@
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		//itemViewController.type = drone.item;
 		ItemInfo* itemInfo = [array objectAtIndex:0];
@@ -369,7 +368,7 @@
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"DronesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"DronesViewController+Update" name:@"Updating Drones"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -379,7 +378,12 @@
 			
 			const eufe::DronesList& drones = ship->getDrones();
 			eufe::DronesList::const_iterator i, end = drones.end();
+			
+			float n = drones.size();
+			float j = 0;
 			for (i = drones.begin(); i != end; i++) {
+				operation.progress = j++ / n;
+
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [dronesDic valueForKey:key];
 				if (!array) {

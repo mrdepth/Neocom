@@ -9,7 +9,7 @@
 #import "ImplantsViewController.h"
 #import "FittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
@@ -49,6 +49,7 @@
  */
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -230,8 +231,7 @@
 			type = [boosters valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
 		}
 		
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		[type updateAttributes];
 		itemViewController.type = type;
@@ -255,7 +255,7 @@
 	NSMutableDictionary *boostersTmp = [NSMutableDictionary dictionary];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ImplantsViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:@"Updating Implants"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {

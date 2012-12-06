@@ -9,7 +9,7 @@
 #import "RSSFeedViewController.h"
 #import "RSS.h"
 #import "RSSFeedCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "UIAlertView+Error.h"
 #import "NSMutableString+HTML.h"
 #import "EVEUniverseAppDelegate.h"
@@ -107,9 +107,7 @@
     
     RSSFeedCellView *cell = (RSSFeedCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil)
-        cell = [RSSFeedCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RSSFeedCellView-iPad" : @"RSSFeedCellView")
-										 bundle:nil
-								reuseIdentifier:cellIdentifier];
+        cell = [RSSFeedCellView cellWithNibName:@"RSSFeedCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	NSDictionary *row = [rows objectAtIndex:indexPath.row];
 	cell.titleLabel.text = [row valueForKey:@"title"];
 	cell.dateLabel.text = [row valueForKey:@"date"];
@@ -123,8 +121,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"RSSViewController-iPad" : @"RSSViewController")
-																		bundle:nil];
+	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:@"RSSViewController" bundle:nil];
 	controller.rss = [[rows objectAtIndex:indexPath.row] valueForKey:@"item"];
 	
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -140,7 +137,7 @@
 
 - (void) loadData {
 	NSMutableArray *values = [NSMutableArray array];
-	__block NSBlockOperation *operation = [[[NSBlockOperation alloc] init] autorelease];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:@"Loading RSS Feed"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -151,7 +148,10 @@
 		else {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"MMMM dd, yyyy hh:mm a"];
+			float n = rss.feed.items.count;
+			float i = 0;
 			for (RSSItem *item in rss.feed.items) {
+				operation.progress = i++ / n;
 				NSMutableString *description = [NSMutableString stringWithString:item.description ? item.description : @""];
 				[description removeHTMLTags];
 				[description replaceHTMLEscapes];

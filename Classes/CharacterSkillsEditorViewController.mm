@@ -9,7 +9,7 @@
 #import "CharacterSkillsEditorViewController.h"
 #import "EUOperationQueue.h"
 #import "SkillEditingCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Character.h"
 #import "CharacterEqualSkills.h"
 #import "CharacterEVE.h"
@@ -70,7 +70,7 @@
 	
 	__block NSArray* sectionsTmp = nil;
 	groups = [[NSMutableDictionary alloc] init];
-	EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"CharacterSkillsEditorViewController+load"];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterSkillsEditorViewController+load" name:@"Loading Skills"];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
@@ -78,12 +78,17 @@
 			NSError *error = [database execWithSQLRequest:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invTypes.groupID=invGroups.groupID and invGroups.categoryID=16 AND invTypes.published=1;"
 												   target:self
 												   action:@selector(didReceiveRecord:)];
+			operation.progress = 0.5;
 			if (!error) {
 				sectionsTmp = [[[groups allValues] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					return [[[[obj1 objectAtIndex:0] group] groupName] compare:[[[obj2 objectAtIndex:0] group] groupName]];
 				}] retain];
-				for (NSMutableArray* array in sectionsTmp)
+				float n = sectionsTmp.count;
+				float i = 0;
+				for (NSMutableArray* array in sectionsTmp) {
 					[array sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+					operation.progress = 0.5 + i++ / n / 2;
+				}
 			}
 		}
 		[pool release];
@@ -260,8 +265,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																				  bundle:nil];
+	ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	itemViewController.type = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	[itemViewController setActivePage:ItemViewControllerActivePageInfo];

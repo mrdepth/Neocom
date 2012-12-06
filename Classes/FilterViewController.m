@@ -8,13 +8,21 @@
 
 #import "FilterViewController.h"
 #import "TagCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+
+@interface FilterViewController()
+@property (nonatomic, retain) NSMutableIndexSet* collapsedSections;
+
+@end
 
 @implementation FilterViewController
 @synthesize tableView;
 @synthesize delegate;
 @synthesize filter;
 @synthesize values;
+@synthesize collapsedSections;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +59,7 @@
     [super viewDidUnload];
 	self.tableView = nil;
 	self.values = nil;
+	self.collapsedSections = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -77,6 +86,7 @@
 	[tableView release];
 	[filter release];
 	[values release];
+	[collapsedSections release];
 	[super dealloc];
 }
 
@@ -94,6 +104,7 @@
 	if (value != oldValue && self.navigationController.visibleViewController != self)
 		[self.navigationController popViewControllerAnimated:NO];
 	[oldValue release];
+	self.collapsedSections = [NSMutableIndexSet indexSet];
 }
 
 #pragma mark -
@@ -145,20 +156,19 @@
 }
 
 - (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:aTableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:aTableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsed = NO;
+		view.titleLabel.text = title;
+		if (tableView == self.searchDisplayController.searchResultsTableView)
+			view.collapsImageView.hidden = YES;
+		else
+			view.collapsed = [self tableView:aTableView sectionIsCollapsed:section];
+		return view;
+	}
+	else
+		return nil;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -189,6 +199,24 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[delegate filterViewController:self didApplyFilter:filter];
 	return;
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	return [self.collapsedSections containsIndex:section];
+}
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
+}
+
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	[self.collapsedSections addIndex:section];
+}
+
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	[self.collapsedSections removeIndex:section];
 }
 
 #pragma mark UIPopoverControllerDelegate

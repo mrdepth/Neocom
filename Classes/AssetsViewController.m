@@ -9,7 +9,7 @@
 #import "AssetsViewController.h"
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"
@@ -17,12 +17,26 @@
 #import "ItemCellView.h"
 #import "ItemViewController.h"
 #import "AssetContentsViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
-@interface AssetsViewController(Private)
+@interface AssetsViewController() {
+	NSMutableArray *filteredValues;
+	NSMutableArray *assets;
+	NSMutableArray *charAssets;
+	NSMutableArray *corpAssets;
+	EUFilter *charFilter;
+	EUFilter *corpFilter;
+}
+@property (nonatomic, retain) NSArray* accounts;
+@property (nonatomic, retain) UIPopoverController* popover;
+
+
 - (void) reloadAssets;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (void) didTapSection:(UITapGestureRecognizer*) recognizer;
+- (IBAction)onCombined:(id)sender;
 @end
 
 @implementation AssetsViewController
@@ -50,13 +64,20 @@
     [super viewDidLoad];
 	self.title = @"Assets";
 	
+	if (!self.accounts) {
+		EVEAccount* account = [EVEAccount currentAccount];
+		if (account)
+			self.accounts = [NSArray arrayWithObject:account];
+	}
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+//	else
+//		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Combined" style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)] autorelease];
 	
 	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
@@ -90,6 +111,7 @@
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
+	self.popover = nil;
 	[assets release];
 	[charAssets release];
 	[corpAssets release];
@@ -115,6 +137,8 @@
 	[filterPopoverController release];
 	[charFilter release];
 	[corpFilter release];
+	[_accounts release];
+	[_popover release];
     [super dealloc];
 }
 
@@ -202,8 +226,7 @@
 	else
 		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = asset.type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -232,16 +255,14 @@
 		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (asset.contents.count > 0) {
-		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"AssetContentsViewController-iPad" : @"AssetContentsViewController")
-																								bundle:nil];
+		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = asset;
 		controller.corporate = ownerSegmentControl.selectedSegmentIndex == 1;
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = asset.type;
 		[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -258,46 +279,42 @@
 	}
 }
 
-#pragma mark ExpandedTableViewDelegate
-
-- (void) tableView:(UITableView*) tableView didExpandSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[assets objectAtIndex:section] setValue:[NSNumber numberWithBool:YES] forKey:@"expanded"];
-}
-
-- (void) tableView:(UITableView*) tableView didCollapseSection:(NSInteger) section {
-	if (tableView != self.searchDisplayController.searchResultsTableView)
-		return [[assets objectAtIndex:section] setValue:[NSNumber numberWithBool:NO] forKey:@"expanded"];
-}
-
-- (BOOL) tableView:(UITableView*) tableView isExpandedSection:(NSInteger) section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return YES;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsed = NO;
+		view.titleLabel.text = title;
+		if (tableView == self.searchDisplayController.searchResultsTableView)
+			view.collapsImageView.hidden = YES;
+		else
+			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+		return view;
+	}
 	else
-		return [[[assets objectAtIndex:section] valueForKey:@"expanded"] boolValue];
+		return nil;
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	return [[[assets objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
+}
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
+}
+
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	[[assets objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
+}
+
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	[[assets objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
 }
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView* header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 22)] autorelease];
-	
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 40, 22)] autorelease];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	label.lineBreakMode = UILineBreakModeMiddleTruncation;
-	[header addSubview:label];
-	return header;
-}
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -313,7 +330,12 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -339,9 +361,24 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
+#pragma mark - AccountsSelectionViewControllerDelegate
 
-@implementation AssetsViewController(Private)
+- (void) accountsSelectionViewController:(AccountsSelectionViewController*) controller didSelectAccounts:(NSArray*) accounts {
+	self.accounts = accounts;
+	[assets release];
+	[charAssets release];
+	[corpAssets release];
+	assets = charAssets = corpAssets = nil;
+	[filteredValues release];
+	filteredValues = nil;
+	[charFilter release];
+	[corpFilter release];
+	charFilter = corpFilter = nil;
+	[self reloadAssets];
+}
+
+
+#pragma mark - Private
 
 - (void) reloadAssets {
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
@@ -360,178 +397,188 @@
 			currentAssets = charAssets;
 		}
 		
-		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:@"Loading Assets"];
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
-			
-			if (!account) {
-				[pool release];
-				return;
-			}
-			
-			EVEAssetList *assetsList;
-			if (corporate)
-				assetsList = [EVEAssetList assetListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
-			else
-				assetsList = [EVEAssetList assetListWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
-			
-			if (error) {
-				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-			}
-			else {
-				NSMutableSet *locationIDs = [NSMutableSet set];
-				NSMutableSet *itemIDs = [NSMutableSet set];
-				NSMutableDictionary* types = [NSMutableDictionary dictionary];
-				NSMutableDictionary* groups = [NSMutableDictionary dictionary];
-				NSMutableDictionary* categories = [NSMutableDictionary dictionary];
+			NSMutableSet* usedIDs = [NSMutableSet set];
+			float n = self.accounts.count;
+			float i = 0;
+			for (EVEAccount* account in self.accounts) {
+				NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
+				operation.progress = i / n;
 				
-				NSMutableArray* controlTowers = [NSMutableArray array];
-				NSMutableArray* structures = [NSMutableArray array];
-				NSMutableArray* topLevelAssets = [NSMutableArray arrayWithArray:assetsList.assets];
+				if ([usedIDs containsObject:currentID]) {
+					i++;
+					continue;
+				}
+				[usedIDs addObject:currentID];
 				
-				__block void (^process)(EVEAssetListItem*);
-				process = ^(EVEAssetListItem* asset) {
-					NSString* typeID = [NSString stringWithFormat:@"%d", asset.typeID];
-					EVEDBInvType* type = [types valueForKey:typeID];
-					if (!type) {
-						type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
-						if (type) {
-							NSString* groupID = [NSString stringWithFormat:@"%d", type.groupID];
-							EVEDBInvGroup* group = [groups valueForKey:groupID];
-							if (!group) {
-								group = [EVEDBInvGroup invGroupWithGroupID:type.groupID error:nil];
-								if (group) {
-									NSString* categoryID = [NSString stringWithFormat:@"%d", group.categoryID];
-									EVEDBInvCategory* category = [categories valueForKey:categoryID];
-									if (!category) {
-										category = [EVEDBInvCategory invCategoryWithCategoryID:group.categoryID error:nil];
-										if (category)
-											[categories setValue:category forKey:categoryID];
+				EVEAssetList *assetsList;
+				if (corporate)
+					assetsList = [EVEAssetList assetListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+				else
+					assetsList = [EVEAssetList assetListWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+				
+				if (error) {
+					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				}
+				else {
+					NSMutableSet *locationIDs = [NSMutableSet set];
+					NSMutableSet *itemIDs = [NSMutableSet set];
+					NSMutableDictionary* types = [NSMutableDictionary dictionary];
+					NSMutableDictionary* groups = [NSMutableDictionary dictionary];
+					NSMutableDictionary* categories = [NSMutableDictionary dictionary];
+					
+					NSMutableArray* controlTowers = [NSMutableArray array];
+					NSMutableArray* structures = [NSMutableArray array];
+					NSMutableArray* topLevelAssets = [NSMutableArray arrayWithArray:assetsList.assets];
+					
+					__block void (^process)(EVEAssetListItem*);
+					process = ^(EVEAssetListItem* asset) {
+						NSString* typeID = [NSString stringWithFormat:@"%d", asset.typeID];
+						EVEDBInvType* type = [types valueForKey:typeID];
+						if (!type) {
+							type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+							if (type) {
+								NSString* groupID = [NSString stringWithFormat:@"%d", type.groupID];
+								EVEDBInvGroup* group = [groups valueForKey:groupID];
+								if (!group) {
+									group = [EVEDBInvGroup invGroupWithGroupID:type.groupID error:nil];
+									if (group) {
+										NSString* categoryID = [NSString stringWithFormat:@"%d", group.categoryID];
+										EVEDBInvCategory* category = [categories valueForKey:categoryID];
+										if (!category) {
+											category = [EVEDBInvCategory invCategoryWithCategoryID:group.categoryID error:nil];
+											if (category)
+												[categories setValue:category forKey:categoryID];
+										}
+										group.category = category;
+										[groups setValue:group forKey:groupID];
 									}
-									group.category = category;
-									[groups setValue:group forKey:groupID];
+								}
+								type.group = group;
+								[types setValue:type forKey:typeID];
+							}
+						}
+						asset.type = type;
+						if (self.accounts.count > 1)
+							asset.characterName = account.characterName;
+						[filterTmp updateWithValue:asset];
+						
+						if (asset.locationID > 0) {
+							[locationIDs addObject:[NSString stringWithFormat:@"%qi", asset.locationID]];
+							if (type.groupID == 365) { // ControlTower
+								[controlTowers addObject:asset];
+								[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
+							}
+							else if (type.group.categoryID == 23) { //Structure
+								[structures addObject:asset];
+								[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
+							}
+						}
+						
+						for (EVEAssetListItem* item in asset.contents)
+							process(item);
+					};
+					operation.progress = (i + 0.5) / n;
+					float n1 = assetsList.assets.count;
+					float i1 = 0;
+					for (EVEAssetListItem* asset in assetsList.assets) {
+						operation.progress = (i + 0.5 + i1++ / n1 * 0.5) / n;
+						process(asset);
+					}
+					
+					if (corporate && account.corpAccessMask & 16777216 && itemIDs.count > 0) {
+						EVELocations* eveLocations = nil;
+						NSMutableDictionary* locations = [NSMutableDictionary dictionary];
+						NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];
+						
+						NSInteger first = 0;
+						NSInteger left = itemIDs.count;
+						while (left > 0) {
+							int length = left > 100 ? 100 : left;
+							NSArray* subArray = [allIDs subarrayWithRange:NSMakeRange(first, length)];
+							first += length;
+							left -= length;
+							if (corporate)
+								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
+							else
+								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
+							for (EVELocationsItem* location in eveLocations.locations)
+								[locations setValue:location forKey:[NSString stringWithFormat:@"%qi", location.itemID]];
+						}
+						
+						
+						for (NSArray* array in [NSArray arrayWithObjects:controlTowers, structures, nil]) {
+							for (EVEAssetListItem* asset in array) {
+								EVELocationsItem* location = [locations valueForKey:[NSString stringWithFormat:@"%qi", asset.itemID]];
+								if (location) {
+									asset.location = location;
+									asset.name = location.itemName;
 								}
 							}
-							type.group = group;
-							[types setValue:type forKey:typeID];
 						}
-						else {
-							NSLog(@"11");
-						}
-					}
-					asset.type = type;
-					[filterTmp updateWithValue:asset];
-					
-					if (asset.locationID > 0) {
-						[locationIDs addObject:[NSString stringWithFormat:@"%qi", asset.locationID]];
-						if (type.groupID == 365) { // ControlTower
-							[controlTowers addObject:asset];
-							[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
-						}
-						else if (type.group.categoryID == 23) { //Structure
-							[structures addObject:asset];
-							[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
-						}
-					}
-
-					for (EVEAssetListItem* item in asset.contents)
-						process(item);
-				};
-				
-				for (EVEAssetListItem* asset in assetsList.assets) {
-					process(asset);
-				}
-				
-				if (corporate && account.corpAccessMask & 16777216 && itemIDs.count > 0) {
-					EVELocations* eveLocations = nil;
-					NSMutableDictionary* locations = [NSMutableDictionary dictionary];
-					NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];
-
-					NSInteger first = 0;
-					NSInteger left = itemIDs.count;
-					while (left > 0) {
-						int length = left > 100 ? 100 : left;
-						NSArray* subArray = [allIDs subarrayWithRange:NSMakeRange(first, length)];
-						first += length;
-						left -= length;
-						if (corporate)
-							eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
-						else
-							eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
-						for (EVELocationsItem* location in eveLocations.locations)
-							[locations setValue:location forKey:[NSString stringWithFormat:@"%qi", location.itemID]];
-					}
-					
-					
-					for (NSArray* array in [NSArray arrayWithObjects:controlTowers, structures, nil]) {
-						for (EVEAssetListItem* asset in array) {
-							EVELocationsItem* location = [locations valueForKey:[NSString stringWithFormat:@"%qi", asset.itemID]];
-							if (location) {
-								asset.location = location;
-								asset.name = location.itemName;
+						
+						for (EVEAssetListItem* controlTower in controlTowers) {
+							EVELocationsItem* controlTowerLocation = controlTower.location;
+							if (controlTower.location){
+								float x0 = controlTowerLocation.x;
+								float y0 = controlTowerLocation.y;
+								float z0 = controlTowerLocation.z;
+								for (EVEAssetListItem* asset in [NSArray arrayWithArray:structures]) {
+									EVELocationsItem* assetLocation = asset.location;
+									if (assetLocation && asset.locationID == controlTower.locationID) {
+										float x1 = assetLocation.x;
+										float y1 = assetLocation.y;
+										float z1 = assetLocation.z;
+										float dx = fabsf(x0 - x1);
+										float dy = fabsf(y0 - y1);
+										float dz = fabsf(z0 - z1);
+										if (dx < 100000 && dy < 100000 && dz < 100000) {
+											[controlTower.contents addObject:asset];
+											asset.parent = controlTower;
+											asset.locationID = 0;
+											[structures removeObject:asset];
+											[topLevelAssets removeObject:asset];
+										}
+									}
+								}
 							}
 						}
 					}
 					
-					for (EVEAssetListItem* controlTower in controlTowers) {
-						EVELocationsItem* controlTowerLocation = controlTower.location;
-						if (controlTower.location){
-							float x0 = controlTowerLocation.x; 
-							float y0 = controlTowerLocation.y;
-							float z0 = controlTowerLocation.z;
-							for (EVEAssetListItem* asset in [NSArray arrayWithArray:structures]) {
-								EVELocationsItem* assetLocation = asset.location;
-								if (assetLocation && asset.locationID == controlTower.locationID) {
-									float x1 = assetLocation.x; 
-									float y1 = assetLocation.y;
-									float z1 = assetLocation.z;
-									float dx = fabsf(x0 - x1);
-									float dy = fabsf(y0 - y1);
-									float dz = fabsf(z0 - z1);
-									if (dx < 100000 && dy < 100000 && dz < 100000) {
-										[controlTower.contents addObject:asset];
-										asset.parent = controlTower;
-										asset.locationID = 0;
-										[structures removeObject:asset];
+					if (locationIDs.count > 0) {
+						EVECharacterName* locationNames = [EVECharacterName characterNameWithIDs:[locationIDs allObjects] error:nil];
+						if (locationNames) {
+							for (NSString* key in [locationNames.characters allKeys]) {
+								NSMutableArray* locationAssets = [NSMutableArray array];
+								long long locationID = [key longLongValue];
+								for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
+									if (asset.locationID == locationID) {
+										[locationAssets addObject:asset];
 										[topLevelAssets removeObject:asset];
 									}
 								}
+								[locationAssets sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+								[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+													  [locationNames.characters valueForKey:key], @"title",
+													  [NSNumber numberWithBool:YES], @"expanded",
+													  locationAssets, @"assets", nil]];
 							}
 						}
 					}
-				}
-				
-				if (locationIDs.count > 0) {
-					EVECharacterName* locationNames = [EVECharacterName characterNameWithIDs:[locationIDs allObjects] error:nil];
-					if (locationNames) {
-						for (NSString* key in [locationNames.characters allKeys]) {
-							NSMutableArray* locationAssets = [NSMutableArray array];
-							long long locationID = [key longLongValue];
-							for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
-								if (asset.locationID == locationID) {
-									[locationAssets addObject:asset];
-									[topLevelAssets removeObject:asset];
-								}
-							}
-							[locationAssets sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-							[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-												  [locationNames.characters valueForKey:key], @"title",
-												  [NSNumber numberWithBool:YES], @"expanded",
-												  locationAssets, @"assets", nil]];
-						}
+					if (topLevelAssets.count > 0) {
+						[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+											  @"Unknown location", @"title",
+											  [NSNumber numberWithBool:YES], @"expanded",
+											  topLevelAssets, @"assets", nil]];
 					}
+					[assetsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+					i++;
 				}
-				if (topLevelAssets.count > 0) {
-					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-										  @"Unknown location", @"title",
-										  [NSNumber numberWithBool:YES], @"expanded",
-										  topLevelAssets, @"assets", nil]];
-				}
-				[assetsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 			}
 			[pool release];
 		}];
@@ -558,7 +605,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetsViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -568,6 +615,8 @@
 					for (EVEAssetListItem* item in contents)
 						search(item.contents, location);
 				};
+				float n = currentAssets.count;
+				float i = 0;
 				for (NSDictionary* section in currentAssets) {
 					NSMutableArray* location = [NSMutableArray array];
 					
@@ -579,6 +628,7 @@
 											  [NSNumber numberWithBool:YES], @"expanded",
 											  location, @"assets", nil]];
 					}
+					operation.progress = i++ / n;
 				}
 				[pool release];
 			}];
@@ -608,6 +658,7 @@
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account) {
+		self.accounts = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			[assets release];
 			[charAssets release];
@@ -624,6 +675,8 @@
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
+		self.accounts = [NSArray arrayWithObject:account];
+
 		[assets release];
 		[charAssets release];
 		[corpAssets release];
@@ -647,7 +700,7 @@
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
 	EUFilter *filter = corporate ? corpFilter : charFilter;
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"AssetsViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Search" name:@"Searching"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);
@@ -665,7 +718,8 @@
 			}
 		};
 
-		
+		float n = assets.count;
+		float i = 0;
 		for (NSDictionary* section in assets) {
 			NSMutableArray* values = [[NSMutableArray alloc] init];
 			search([section valueForKey:@"assets"], values);
@@ -680,6 +734,7 @@
 									  [NSNumber numberWithBool:YES], @"expanded",
 									  values2, @"assets", nil]];
 			}
+			operation.progress = i++ / n;
 		}
 		[pool release];
 	}];
@@ -720,6 +775,19 @@
 	else
 		[tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	[indexes release];
+}
+
+- (IBAction)onCombined:(id)sender {
+	AccountsSelectionViewController* controller = [[AccountsSelectionViewController alloc] initWithNibName:@"AccountsSelectionViewController" bundle:nil];
+	controller.selectedAccounts = self.accounts;
+	controller.delegate = self;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+		[self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+	else
+		[self.navigationController pushViewController:controller animated:YES];
+	[controller release];
 }
 
 @end

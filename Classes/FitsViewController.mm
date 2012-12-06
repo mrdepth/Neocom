@@ -9,7 +9,7 @@
 #import "FitsViewController.h"
 #import "MainMenuCellView.h"
 #import "FitCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"
@@ -68,19 +68,22 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FitsViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Load" name:@"Loading Fits"];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 		[fitsArray filterUsingPredicate:[NSPredicate predicateWithFormat:@"isPOS != 1"]];
 		
+		float n = fitsArray.count;
+		float i = 0;
 		for (NSMutableDictionary* row in fitsArray) {
 			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil];
 			if (type) {
 				[row setValue:type forKey:@"type"];
 				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
 			}
+			operation.progress = i++ / n;
 		}
 
 		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
@@ -159,9 +162,7 @@
 		
 		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [MainMenuCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MainMenuCellView-iPad" : @"MainMenuCellView")
-											  bundle:nil
-									 reuseIdentifier:cellIdentifier];
+			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.titleLabel.text = @"New Ship Fit";
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
@@ -172,9 +173,7 @@
 		
 		FitCellView *cell = (FitCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [FitCellView cellWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FitCellView-iPad" : @"FitCellView")
-										 bundle:nil
-								reuseIdentifier:cellIdentifier];
+			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];
@@ -237,7 +236,7 @@
 	}
 	else {
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
@@ -253,7 +252,9 @@
 			else
 				character->setCharacterName("All Skills 0");
 
+			operation.progress = 0.5;
 			fit = [[Fit fitWithDictionary:row character:character] retain];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -278,7 +279,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[popoverController dismissPopoverAnimated:YES];
 	
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Ship Fit"];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;
 	[operation addExecutionBlock:^{
@@ -295,7 +296,9 @@
 		else
 			character->setCharacterName("All Skills 0");
 
+		operation.progress = 0.5;
 		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	

@@ -10,7 +10,7 @@
 #import "ItemInfoViewController.h"
 #import "ItemViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 
 @interface MarketGroupsViewController(Private)
@@ -151,8 +151,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		controller.type = [filteredValues objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
@@ -168,15 +167,13 @@
 		[controller release];
 	}
 	else if (indexPath.section == 0) {
-		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"MarketGroupsViewController-iPad" : @"MarketGroupsViewController")
-																							  bundle:nil];
+		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:@"MarketGroupsViewController" bundle:nil];
 		controller.parentGroup = [subGroups objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
 	else {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																			  bundle:nil];
+		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		controller.type = [groupItems objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
 
@@ -212,8 +209,10 @@
 		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];	
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 @end
@@ -223,7 +222,7 @@
 - (void) reload {
 	NSMutableArray *subGroupValues = [NSMutableArray array];
 	NSMutableArray *itemValues = [NSMutableArray array];
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -268,7 +267,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *values = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketGroupsViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

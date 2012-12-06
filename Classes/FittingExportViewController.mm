@@ -47,12 +47,16 @@
 	NSMutableString *pageTmp = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"fits" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
 	
 	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
-	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:@"Exporting Fits"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
-				
+		
+		float n = fitsArray.count;
+		float i = 0;
 		for (NSMutableDictionary* row in [NSArray arrayWithArray:fitsArray]) {
+			operation.progress = i++ / n / 2;
 			if ([[row valueForKey:@"isPOS"] boolValue]) {
 				[fitsArray removeObject:row];
 				continue;
@@ -77,6 +81,7 @@
 			NSDictionary* b = [obj2 objectAtIndex:0];
 			return [[a valueForKeyPath:@"type.group.groupName"] compare:[b valueForKeyPath:@"type.group.groupName"]];
 		}];
+		operation.progress = 0.75;
 		
 		NSMutableString* body = [NSMutableString string];
 		NSInteger groupID = 0;
@@ -86,7 +91,7 @@
 			NSInteger fitID = 0;
 			for (NSDictionary* fit in group) {
 				EVEDBInvType* type = [fit valueForKey:@"type"];
-				[body appendFormat:@"<tr><td class=\"icon\"><image src=\"%@\" width=32 height=32 /></td><td width=\"20%%\">%@</td><td>%@</td><td width=\"30%%\">Download <a href=\"%d_%d.xml\">EVE XML file</a> or <a href=\"javascript:CCPEVE.showFitting('%@');\"'>Show Fitting</a> ingame</td></tr>\n",
+				[body appendFormat:@"<tr><td class=\"icon\"><image src=\"%@\" width=32 height=32 /></td><td width=\"20%%\">%@</td><td>%@</td><td width=\"30%%\">Download <a href=\"%d_%d.xml\">EVE XML file</a> or <a href=\"javascript:CCPEVE.showFitting('%@');\">Show Fitting</a> ingame</td></tr>\n",
 				 type.typeSmallImageName, type.typeName, [fit valueForKey:@"fitName"], groupID, fitID, [fit valueForKey:@"dna"]];
 				fitID++;
 			}
@@ -94,6 +99,7 @@
 		}
 		
 		[pageTmp replaceOccurrencesOfString:@"{body}" withString:body options:0 range:NSMakeRange(0, pageTmp.length)];
+		operation.progress = 1.0;
 
 		[pool release];
 	}];

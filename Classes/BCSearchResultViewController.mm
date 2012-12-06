@@ -9,7 +9,7 @@
 #import "BCSearchResultViewController.h"
 #import "EVEDBAPI.h"
 #import "LoadoutCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "BattleClinicAPI.h"
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"
@@ -116,9 +116,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingViewController-iPad" : @"FittingViewController")
-																						   bundle:nil];
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select"];
+	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Loadout"];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;
 
@@ -127,7 +126,9 @@
 		
 		NSError *error = nil;
 		BCEveLoadoutsListItem *loadout = [loadouts objectAtIndex:indexPath.row];
+		operation.progress = 0.2;
 		BCEveLoadout *loadoutDetails = [BCEveLoadout eveLoadoutsWithAPIKey:BattleClinicAPIKey loadoutID:loadout.loadoutID error:&error];
+		operation.progress = 0.4;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -138,6 +139,7 @@
 			}
 			else {
 				character = new eufe::Character(fittingViewController.fittingEngine);
+				operation.progress = 0.6;
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
 				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
@@ -147,10 +149,12 @@
 				}
 				else
 					character->setCharacterName("All Skills 0");
+				operation.progress = 0.8;
 				
 				fit = [[Fit fitWithBCString:loadoutDetails.fitting character:character] retain];
 				fit.fitName = loadoutDetails.title;
 				fit.fitURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://eve.battleclinic.com/loadout/%d.html", loadoutDetails.loadoutID]];
+				operation.progress = 1;
 			}
 		}
 		

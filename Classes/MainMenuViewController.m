@@ -17,7 +17,7 @@
 #import "SBTableView.h"
 #import "RSSFeedsViewController.h"
 #import "MainMenuCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "AboutViewController.h"
 #import "WalletTransactionsViewController.h"
@@ -57,10 +57,7 @@
     [super viewDidLoad];
 	self.title = @"Home";
 	[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu-iPad" ofType:@"plist"]]];
-	else
-		self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
+	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	menuTableView.visibleTopPartHeight = 24;
 	[characterInfoView addSubview:characterInfoViewController.view];
 	characterInfoViewController.view.frame = characterInfoView.bounds;
@@ -79,6 +76,13 @@
 		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 	else
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
+	else
+		return UIInterfaceOrientationMaskPortrait;
 }
 
 
@@ -268,7 +272,7 @@
 - (void) loadMail {
 	EVEAccount* currentAccount = [EVEAccount currentAccount];
 	if (currentAccount) {
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MainMenuViewController+CheckMail"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:@"Checking Mail"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];

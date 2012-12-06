@@ -9,7 +9,7 @@
 #import "ModulesViewController.h"
 #import "FittingViewController.h"
 #import "ModuleCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "FittingItemsViewController.h"
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
@@ -113,6 +113,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	[self update];
 }
 
@@ -635,8 +636,7 @@
 		[actionSheet autorelease];
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
 		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
@@ -651,8 +651,7 @@
 		[itemViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																					  bundle:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		ItemInfo* ammo = [ItemInfo itemInfoWithItem:module->getCharge() error:nil];
 		[ammo updateAttributes];
 		itemViewController.type = ammo;
@@ -686,7 +685,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"ModulesViewController+Update"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:@"Updating Modules"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -697,6 +696,7 @@
 			
 			for (int i = 0; i < n; i++)
 			{
+				operation.progress = (float) i / (float) n;
 				int numberOfSlots = ship->getNumberOfSlots(slots[i]);
 				if (numberOfSlots > 0)
 				{

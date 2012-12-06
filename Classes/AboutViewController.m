@@ -8,7 +8,6 @@
 
 #import "AboutViewController.h"
 #import "EVERequestsCache.h"
-#import "URLImageViewManager.h"
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
@@ -52,8 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"About";
-	databaseVersionLabel.text = @"Inferno_1.1_73052";
-	imagesVersionLabel.text = @"Inferno_1.1_imgs";
+	databaseVersionLabel.text = @"Retribution_1.0_82596";
+	imagesVersionLabel.text = @"Retribution_1.0_imgs";
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
@@ -133,7 +132,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
 		[[EVERequestsCache sharedRequestsCache] clear];
-		[[URLImageViewManager sharedManager] clear];
+		[[NSURLCache sharedURLCache] removeAllCachedResponses];
 		[self reload];
 		[EVEAccount reload];
 	}
@@ -186,8 +185,6 @@
 	
 	NSString *path = [EVERequestsCache cacheDirectory];
 	apiCacheSizeLabel.text = [NSString stringWithFormat:@"%@ bytes", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
-	path = [[URLImageViewManager sharedManager] cacheDirectory];
-	imagesCacheSizeLabel.text = [NSString stringWithFormat:@"%@ bytes", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

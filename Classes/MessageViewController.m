@@ -10,7 +10,6 @@
 #import "EUMailBox.h"
 #import "EVEOnlineAPI.h"
 #import "EUOperationQueue.h"
-#import "NSInvocation+Variadic.h"
 
 @implementation MessageViewController
 @synthesize webView;
@@ -82,10 +81,11 @@
 #pragma mark UIWebViewDelegate
 
 - (void) webViewDidFinishLoad:(UIWebView *)aWebView {
-	BOOL no = NO;
-	NSInvocation* invocation = [NSInvocation invocationWithTarget:webView selector:@selector(setHidden:) argumentPointers:&no];
-	[invocation performSelector:@selector(invoke) withObject:0 afterDelay:0.1];
-	//webView.hidden = NO;
+	float delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		webView.hidden = NO;
+	});
 }
 
 @end

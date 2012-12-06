@@ -14,6 +14,7 @@
 #import "UIImageView+GIF.h"
 #import "EVERequestsCache.h"
 #import "EUMailBox.h"
+#import "EUActivityView.h"
 
 @interface EVEUniverseAppDelegate(Private)
 
@@ -61,6 +62,43 @@
 			[userDefaults setBool:YES forKey:SettingsNoAds];
 		[userDefaults setInteger:4 forKey:@"version"];
 	}
+	if (version < 5) {
+		NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"URLImageViewCache"];
+		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+		[userDefaults setInteger:5 forKey:@"version"];
+	}
+	if (version < 6) {
+		NSString* documentsDirectory = [Globals documentsDirectory];
+		NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:documentsDirectory];
+		for (NSString* file in files) {
+			if ([file hasPrefix:@"skillPlan_"] && [[file pathExtension] isEqualToString:@"plist"]) {
+				NSString* filePath = [documentsDirectory stringByAppendingPathComponent:file];
+				NSMutableArray* skills = [NSMutableArray arrayWithContentsOfFile:filePath];
+				NSMutableArray* output = [NSMutableArray array];
+				for (NSDictionary* targetSkill in skills) {
+					NSInteger typeID = [[targetSkill valueForKey:@"typeID"] integerValue];
+					NSInteger requiredLevel = [[targetSkill valueForKey:@"level"] integerValue];
+					for (NSInteger level = 1; level <= requiredLevel; level++) {
+						BOOL found = NO;
+						for (NSDictionary* skill in output) {
+							if ([[skill valueForKey:@"typeID"] integerValue] == typeID && [[skill valueForKey:@"level"] integerValue] == level) {
+								found = YES;
+								break;
+							}
+						}
+						if (!found) {
+							NSDictionary* outputSkill = @{@"typeID" : @(typeID), @"level" : @(level)};
+							[output addObject:outputSkill];
+						}
+					}
+				}
+				[output writeToFile:filePath atomically:YES];
+			}
+		}
+		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+		[userDefaults setInteger:6 forKey:@"version"];
+	}
 
 	
 	
@@ -82,6 +120,12 @@
 	[window addSubview:controller.view];
     [window makeKeyAndVisible];
 	
+	if (![[NSFileManager defaultManager] fileExistsAtPath:[[Globals documentsDirectory] stringByAppendingPathComponent:@"disableActivityIndicator"]]) {
+		EUActivityView* activityView = [[[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds] autorelease];
+		[self.window addSubview:activityView];
+	}
+
+	
 	loadingViewController.view.alpha = 0;
 	[window addSubview:loadingViewController.view];
 	loadingViewController.view.center = CGPointMake(self.window.frame.size.width / 2, self.window.frame.size.height / 2);
@@ -90,8 +134,12 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 748 - 50, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
 			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 748 - kGADAdSizeBanner.size.height)];
-		else
-			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 430, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+		else {
+			CGRect frame = [[UIScreen mainScreen] bounds];
+			frame.origin.y = frame.size.height - GAD_SIZE_320x50.height;
+			frame.size.height = GAD_SIZE_320x50.height;
+			adView = [[GADBannerView alloc] initWithFrame:frame];
+		}
 			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 480 - kGADAdSizeBanner.size.height)];
 
 		adView.adUnitID = @"a14d501062a8c09";
@@ -176,12 +224,15 @@
 	if (currentAccount && ((currentAccount.charAccessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
 		NSMutableArray* wars = [NSMutableArray array];
 		
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:@"Checking War Declarations"];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EUMailBox* mailBox = [currentAccount mailBox];
 			NSMutableSet* ids = [NSMutableSet set];
+			float n = mailBox.notifications.count + 1;
+			float i = 0;
 			for (EUNotification* notification in  mailBox.notifications) {
+				operation.progress = i++ / n;
 				if (!notification.read && (notification.header.typeID == 5 || notification.header.typeID == 27)) {
 					NSString* declaredByID = [notification.details.properties valueForKey:@"declaredByID"];
 					NSInteger iDeclaredByID = [declaredByID integerValue];
@@ -196,6 +247,7 @@
 					[wars addObject:war];
 				}
 			}
+			operation.progress = 1;
 			[mailBox save];
 			[pool release];
 		}];
@@ -218,27 +270,6 @@
 	}
 }
 
-- (BOOL) isLoading {
-	@synchronized(self) {
-		return loading;
-	}
-}
-
-- (void) setLoading:(BOOL)value {
-	@synchronized (self) {
-//		if (loading == value)
-//			return;
-		
-		loading = value;
-		
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationBeginsFromCurrentState:YES];
-		[UIView setAnimationDuration:0.5];
-		loadingViewController.view.alpha = loading || inAppStatus ? 1 : 0;
-		[UIView commitAnimations];
-	}
-}
-
 - (BOOL) isInAppStatus {
 	@synchronized(self) {
 		return inAppStatus;
@@ -247,16 +278,12 @@
 
 - (void) setInAppStatus:(BOOL)value {
 	@synchronized(self) {
-//		if (inAppStatus == value)
-//			return;
 		inAppStatus = value;
-		if (!self.isLoading) {
-			[UIView beginAnimations:nil context:nil];
-			[UIView setAnimationBeginsFromCurrentState:YES];
-			[UIView setAnimationDuration:0.5];
-			loadingViewController.view.alpha = inAppStatus ? 1 : 0;
-			[UIView commitAnimations];
-		}
+		[UIView beginAnimations:nil context:nil];
+		[UIView setAnimationBeginsFromCurrentState:YES];
+		[UIView setAnimationDuration:0.5];
+		loadingViewController.view.alpha = inAppStatus ? 1 : 0;
+		[UIView commitAnimations];
 	}
 }
 
@@ -274,6 +301,13 @@
 		}
 		return sharedAccountStorage;
 	}
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
+	else
+		return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark -
@@ -431,14 +465,16 @@
 - (void) updateNotifications {
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-	__block NSBlockOperation *operation = [[[NSBlockOperation alloc] init] autorelease];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:@"Updating Notifications"];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		EVEAccountStorage *storage = [EVEAccountStorage sharedAccountStorage];
-		
+		float n = storage.characters.count;
+		float i = 0;
 		for (EVEAccountStorageCharacter *item in [storage.characters allValues]) {
+			operation.progress = i++ / n;
 			if (item.enabled) {
 				EVEAccountStorageAPIKey *apiKey = item.anyCharAPIKey;
 				if (apiKey) {
@@ -491,7 +527,7 @@
 			}
 		}
 	}
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:@"Adding API Key"];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

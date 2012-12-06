@@ -8,7 +8,7 @@
 
 #import "BCSearchViewController.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "TagCellView.h"
@@ -58,7 +58,8 @@
 	if (!selectedTags)
 		selectedTags = [[NSMutableArray alloc] init];
 	
-	NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"BCSearchViewController+viewDidLoad" name:@"Loading Tags"];
+	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
 		BCEveLoadoutsTags *loadoutsTags = [BCEveLoadoutsTags eveLoadoutsTagsWithAPIKey:BattleClinicAPIKey error:&error];
@@ -131,7 +132,7 @@
 - (IBAction) onSearch:(id) sender {
 	NSMutableArray *loadouts = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"BCSearchViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"BCSearchViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -153,8 +154,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (loadouts.count > 0 && ![operation isCancelled]) {
-			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"BCSearchResultViewController-iPad" : @"BCSearchResultViewController")
-																									  bundle:nil];
+			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:@"BCSearchResultViewController" bundle:nil];
 			controller.loadouts = loadouts;
 			controller.ship = ship;
 			[self.navigationController pushViewController:controller animated:YES];

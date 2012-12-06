@@ -10,7 +10,7 @@
 #import "FittingItemsViewController.h"
 
 
-@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate> {
+@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate> {
 	UITableView *menuTableView;
 	FittingItemsViewController *fittingItemsViewController;
 	UINavigationController *modalController;

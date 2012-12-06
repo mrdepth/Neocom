@@ -9,7 +9,7 @@
 #import "FittingItemsViewController.h"
 #import "EVEDBAPI.h"
 #import "ItemCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
 
@@ -73,6 +73,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	if (needsReload)
 		[self reload];
 }
@@ -199,8 +200,7 @@
 		[delegate fittingItemsViewController:self didSelectType:row];
 	}
 	else if (!group) {
-		FittingItemsViewController *controller = [[FittingItemsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"FittingItemsViewController-iPad" : @"FittingItemsViewController")
-																							  bundle:nil];
+		FittingItemsViewController *controller = [[FittingItemsViewController alloc] initWithNibName:@"FittingItemsViewController" bundle:nil];
 		controller.groupsRequest = self.groupsRequest;
 		controller.group = self.searchDisplayController.searchResultsTableView == aTableView ?
 		[[[filteredSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row] :
@@ -225,8 +225,7 @@
 	else
 		row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = row;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -257,8 +256,10 @@
 		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
 		aTableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else
-		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	else {
+		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		aTableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
 	aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -290,7 +291,7 @@
 	NSMutableArray *groups = [NSMutableArray array];
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
@@ -326,6 +327,7 @@
 													   if ([operation isCancelled])
 														   *needsMore = NO;
 												   }];
+		operation.progress = 0.75;
 		[sectionsTmp addObjectsFromArray:[[sectionsDic allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"metaGroupID" ascending:YES]]]];
 		[pool release];
 	}];
@@ -349,7 +351,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValues = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"FittingItemsViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled] || searchString.length < 2)
 			return;

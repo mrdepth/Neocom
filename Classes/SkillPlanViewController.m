@@ -8,7 +8,7 @@
 
 #import "SkillPlanViewController.h"
 #import "SkillCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"
@@ -160,8 +160,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	EVEDBInvType* skill = [skillPlan.skills objectAtIndex:indexPath.row];
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = skill;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -177,7 +176,7 @@
 		[self dismissModalViewControllerAnimated:YES];
 	}
 	else if (buttonIndex == 2) {
-		__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlanViewController+Merge"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Merge" name:@"Merging Skill Plans"];
 		__block SkillPlan* skillPlanTmp = nil;
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -190,11 +189,14 @@
 			skillPlanTmp = [[SkillPlan skillPlanWithAccount:account] retain];
 			for (EVEDBInvTypeRequiredSkill* skill in account.skillPlan.skills)
 				[skillPlanTmp addSkill:skill];
+			operation.progress = 0.3;
 			
 			for (EVEDBInvTypeRequiredSkill* skill in skillPlan.skills)
 				[skillPlanTmp addSkill:skill];
+			operation.progress = 0.6;
 			
 			[skillPlanTmp trainingTime];
+			operation.progress = 1.0;
 			[pool release];
 		}];
 		
@@ -216,7 +218,7 @@
 @implementation SkillPlanViewController(Private)
 
 - (void) loadData {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlanViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Load" name:@"Updating Training Time"];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

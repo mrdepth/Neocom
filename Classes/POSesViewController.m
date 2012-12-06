@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "POSCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "UIAlertView+Error.h"
 #import "Globals.h"
 #import "EVEAccount.h"
@@ -141,7 +141,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == posesTableView ? @"POSCellView-iPad" : @"POSCellView";
+			nibName = tableView == posesTableView ? @"POSCellView" : @"POSCellViewCompact";
 		else
 			nibName = @"POSCellView";
 
@@ -215,8 +215,7 @@
 		pos = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	}
 
-	POSViewController *controller = [[POSViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"POSViewController-iPad" : @"POSViewController")
-																		bundle:nil];
+	POSViewController *controller = [[POSViewController alloc] initWithNibName:@"POSViewController" bundle:nil];
 	
 	controller.posID = [[pos valueForKey:@"posID"] longLongValue];
 	controller.controlTowerType = [pos valueForKey:@"controlTower"];
@@ -253,7 +252,14 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
+	}
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -268,23 +274,26 @@
 
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSesViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Load" name:@"Loading POS'es"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
 		EVEStarbaseList *starbaseList = [EVEStarbaseList starbaseListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID error:&error];
+		operation.progress = 0.25;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			[self sovereigntySolarSystems];
+			operation.progress = 0.5;
 			EVEAccount *account = [EVEAccount currentAccount];
 			
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 			
 			NSDate *currentTime = [starbaseList serverTimeWithLocalTime:[NSDate date]];
-			
+			float n = starbaseList.starbases.count;
+			float i = 0;
 			for (EVEStarbaseListItem *starbase in starbaseList.starbases) {
 				if ([operation isCancelled])
 					break;
@@ -370,13 +379,15 @@
 											[NSNumber numberWithLongLong:starbase.itemID], @"posID",
 											nil];
 				[posesTmp addObject:row];
-				NSBlockOperation *loadDetailsOperation = [NSBlockOperation blockOperationWithBlock:^(void) {
+				EUOperation *loadDetailsOperation = [EUOperation operationWithIdentifier:nil name:@"Loading POS Details"];
+				[loadDetailsOperation addExecutionBlock:^{
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[self loadStarbaseDetailForStarbase:row account:account];
 					[pool release];
 				}];
 				[loadDetailsOperation addDependency:operation];
 				[[EUOperationQueue sharedQueue] addOperation:loadDetailsOperation];
+				operation.progress = 0.5 + i++ / n / 2.0;
 				
 			}
 			[dateFormatter release];
@@ -549,7 +560,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSesViewController+Filter"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Filter" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *pos in poses) {

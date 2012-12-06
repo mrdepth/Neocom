@@ -8,7 +8,7 @@
 
 #import "SkillPlannerViewController.h"
 #import "SkillCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"
@@ -34,6 +34,7 @@
 - (void) loadData;
 - (void) didAddSkill:(NSNotification*) notification;
 - (void) didChangeSkill:(NSNotification*) notification;
+- (void) didRemoveSkill:(NSNotification*) notification;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) reloadTrainingTime;
 
@@ -63,6 +64,7 @@
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
 	[skillsTableView release];
 	[skillPlan release];
@@ -81,6 +83,7 @@
     // Do any additional setup after loading the view from its nib.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddSkill:) name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeSkill:) name:NotificationSkillPlanDidChangeSkill object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveSkill:) name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 }
 
@@ -93,6 +96,7 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
 	[self setTrainingTimeLabel:nil];
     [super viewDidUnload];
@@ -218,8 +222,10 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		[tableView beginUpdates];
 		[skillPlan removeSkill:[skillPlan.skills objectAtIndex:indexPath.row]];
-		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[tableView endUpdates];
+		//[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self reloadTrainingTime];
 		[skillPlan save];
 	}
@@ -263,8 +269,7 @@
 			[actionSheet release];
 		}
 		else {
-			ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																				  bundle:nil];
+			ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 			
 			controller.type = skill;
 			[controller setActivePage:ItemViewControllerActivePageInfo];
@@ -291,8 +296,7 @@
 			[alertView autorelease];
 		}
 		else if (indexPath.row == 1) {
-			SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"SkillPlannerImportViewController-iPad" : @"SkillPlannerImportViewController")
-																											  bundle:nil];
+			SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
 			controller.delegate = self;
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -321,29 +325,66 @@
 
 - (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
-	EVEDBInvTypeRequiredSkill* skill = [skillPlan.skills objectAtIndex:modifiedIndexPath.row];
-	if ([button isEqualToString:ActionButtonCancel]) {
+	if ([button isEqualToString:ActionButtonCancel])
 		return;
-	}
-	else if ([button isEqualToString:ActionButtonLevel1]) {
-		skill.requiredLevel = 1;
-	}
-	else if ([button isEqualToString:ActionButtonLevel2]) {
-		skill.requiredLevel = 2;
-	}
-	else if ([button isEqualToString:ActionButtonLevel3]) {
-		skill.requiredLevel = 3;
-	}
-	else if ([button isEqualToString:ActionButtonLevel4]) {
-		skill.requiredLevel = 4;
-	}
-	else if ([button isEqualToString:ActionButtonLevel5]) {
-		skill.requiredLevel = 5;
-	}
-	[skillPlan resetTrainingTime];
-	[self reloadTrainingTime];
 	
-	[skillsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:modifiedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+	NSInteger requiredLevel = 0;
+	if ([button isEqualToString:ActionButtonLevel1])
+		requiredLevel = 1;
+	else if ([button isEqualToString:ActionButtonLevel2])
+		requiredLevel = 2;
+	else if ([button isEqualToString:ActionButtonLevel3])
+		requiredLevel = 3;
+	else if ([button isEqualToString:ActionButtonLevel4])
+		requiredLevel = 4;
+	else if ([button isEqualToString:ActionButtonLevel5])
+		requiredLevel = 5;
+	
+	EVEDBInvTypeRequiredSkill* skill = [skillPlan.skills objectAtIndex:modifiedIndexPath.row];
+	
+	EVEDBInvTypeRequiredSkill* skillToDelete = nil;
+	EVEDBInvTypeRequiredSkill* skillToInsert = nil;
+	
+	for (EVEDBInvTypeRequiredSkill* requiredSkill in skillPlan.skills) {
+		if (requiredSkill.typeID == skill.typeID) {
+			if (requiredSkill.requiredLevel > requiredLevel) {
+				if (!skillToDelete)
+					skillToDelete = requiredSkill;
+				else if (skillToDelete.requiredLevel > requiredSkill.requiredLevel)
+					skillToDelete = requiredSkill;
+			}
+			else if (requiredSkill.requiredLevel < requiredLevel) {
+				if (!skillToInsert)
+					skillToInsert = requiredSkill;
+				else if (skillToInsert.requiredLevel < requiredSkill.requiredLevel)
+					skillToInsert = requiredSkill;
+			}
+		}
+	}
+	
+	if (skillToDelete) {
+		[skillPlan removeSkill:skillToDelete];
+	}
+	else if (skillToInsert) {
+		NSInteger index = [skillPlan.skills indexOfObject:skillToInsert];
+		[skillsTableView beginUpdates];
+		EVECharacterSheetSkill *characterSkill = [skillPlan.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+		for (NSInteger level = skillToInsert.requiredLevel + 1; level <= requiredLevel; level++) {
+			if (characterSkill.level >= skill.requiredLevel)
+				return;
+
+			EVEDBInvTypeRequiredSkill* requiredSkill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:skill.typeID error:nil];
+			requiredSkill.requiredLevel = level;
+			requiredSkill.currentLevel = characterSkill.level;
+			float sp = [requiredSkill skillpointsAtLevel:level - 1];
+			requiredSkill.currentSP = MAX(sp, characterSkill.skillpoints);
+			[skillPlan.skills insertObject:requiredSkill atIndex:++index];
+			[skillsTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		[skillPlan resetTrainingTime];
+		[skillsTableView endUpdates];
+		[self reloadTrainingTime];
+	}
 }
 
 #pragma mark UIAlertViewDelegate
@@ -369,7 +410,7 @@
 @implementation SkillPlannerViewController(Private)
 
 - (void) loadData {
-	__block EUSingleBlockOperation* operation = [EUSingleBlockOperation operationWithIdentifier:@"SkillPlannerViewController+Load"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:@"Loading Skill Plan"];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -383,7 +424,9 @@
 		
 		NSError *error = nil;
 		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error];
+		operation.progress = 0.5;
 		[skillPlanTmp trainingTime];
+		operation.progress = 1.0;
 		[pool release];
 	}];
 	
@@ -406,7 +449,9 @@
 
 - (void) didAddSkill:(NSNotification*) notification {
 	if (notification.object == skillPlan) {
-		[self reloadTrainingTime];
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadTrainingTime) object:nil];
+		[self performSelector:@selector(reloadTrainingTime) withObject:nil afterDelay:0];
+//		[self reloadTrainingTime];
 		[skillsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:skillPlan.skills.count - 1 inSection:0]]
 							   withRowAnimation:UITableViewRowAnimationFade];
 	}
@@ -418,6 +463,18 @@
 		EVEDBInvTypeRequiredSkill* skill = [notification.userInfo valueForKey:@"skill"];
 		[skillsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[skillPlan.skills indexOfObject:skill] inSection:0]]
 							   withRowAnimation:UITableViewRowAnimationFade];
+	}
+}
+
+- (void) didRemoveSkill:(NSNotification*) notification {
+	if (notification.object == skillPlan) {
+		[self reloadTrainingTime];
+		NSIndexSet* indexesSet = [notification.userInfo valueForKey:@"indexes"];
+		NSMutableArray* indexes = [NSMutableArray array];
+		[indexesSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+			[indexes addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+		}];
+		[skillsTableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 

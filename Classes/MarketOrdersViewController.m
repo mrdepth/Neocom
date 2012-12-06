@@ -12,7 +12,7 @@
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "MarketOrderCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
@@ -156,7 +156,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == marketOrdersTableView ? @"MarketOrderCellView-iPad" : @"MarketOrderCellView";
+			nibName = tableView == marketOrdersTableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
 		else
 			nibName = @"MarketOrderCellView";
 		
@@ -236,8 +236,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		controller.type = [[filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
@@ -277,8 +276,11 @@
 		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];	
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];	
+	else {
+		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+		
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -327,7 +329,7 @@
 		
 		EVEAccount *account = [EVEAccount currentAccount];
 		
-		__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate]];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:@"Loading Market Orders"];
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 
 		[operation addExecutionBlock:^(void) {
@@ -344,6 +346,7 @@
 				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
 			else
 				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+			operation.progress = 0.5;
 			
 			NSDate *currentTime = [marketOrders serverTimeWithLocalTime:[NSDate date]];
 			
@@ -448,7 +451,7 @@
 										  ]];
 				}
 				[dateFormatter release];
-				
+				operation.progress = 0.75;
 				[ordersTmp sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"issued" ascending:NO], nil]];
 				
 				if (charIDs.count > 0) {
@@ -465,6 +468,7 @@
 					}
 				}
 				[filterTmp updateWithValues:ordersTmp];
+				operation.progress = 1.0;
 			}
 			[pool release];
 		}];
@@ -491,7 +495,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketOrdersViewController+Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:@"Applying Filter"];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
@@ -571,7 +575,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"MarketOrdersViewController+Search"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:@"Searching..."];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *order in orders) {

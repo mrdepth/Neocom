@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "POSFuelCellView.h"
-#import "NibTableViewCell.h"
+#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"
@@ -189,8 +189,7 @@
 	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	EVEDBInvType *resourceType = [row valueForKey:@"type"];
 
-	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemViewController-iPad" : @"ItemViewController")
-																		  bundle:nil];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = resourceType;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];
@@ -206,7 +205,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
-	__block EUSingleBlockOperation *operation = [EUSingleBlockOperation operationWithIdentifier:@"POSViewController+Load"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSViewController+Load" name:@"Loading POS Details"];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -221,7 +220,10 @@
 			float hours = [[starbaseDetail serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:starbaseDetail.currentTime] / 3600.0;
 			if (hours < 0)
 				hours = 0;
+			float n = [[controlTowerType resources] count];
+			float i = 0;
 			for (EVEDBInvControlTowerResource *resource in [controlTowerType resources]) {
+				operation.progress = i++ / n;
 				if ((resource.minSecurityLevel > 0 && solarSystem.security < resource.minSecurityLevel) ||
 					(resource.factionID > 0 && solarSystem.region.factionID != resource.factionID))
 					continue;

@@ -782,7 +782,7 @@
 	controller.selectedAccounts = self.accounts;
 	controller.delegate = self;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+		self.popover = [[[UIPopoverController alloc] initWithContentViewController:controller] autorelease];
 		[self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 	else

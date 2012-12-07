@@ -333,7 +333,7 @@
 				fittingItemsViewController.title = @"Modules";
 				break;
 			case eufe::Module::SLOT_MED:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (38,39,40,43,46,47,48,49,52,61,63,65,76,77,80,82,201,202,208,209,212,213,289,290,291,295,308,316,338,341,353,379,472,538,644,646,1154,1156) ORDER BY groupName;";
+				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (38,39,40,43,46,47,48,49,52,61,63,65,76,77,80,82,201,202,208,209,212,213,289,290,291,295,308,316,338,341,353,379,472,538,644,646,1154,1156,1189) ORDER BY groupName;";
 				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=13 and b.published = 1 group by a.groupID) ORDER BY groupName;";
 				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=13 %@ %@ ORDER BY invTypes.typeName;";
 				fittingItemsViewController.title = @"Modules";

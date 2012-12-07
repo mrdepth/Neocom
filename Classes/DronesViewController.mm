@@ -198,8 +198,8 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.row >= rows.count) {
-		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023) ORDER BY groupName;";
-		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023) %@ %@ ORDER BY invTypes.typeName;";
+		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,1159) ORDER BY groupName;";
+		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,97,100,101,299,470,544,545,549,639,640,641,1023,1159) %@ %@ ORDER BY invTypes.typeName;";
 		fittingItemsViewController.modifiedItem = nil;
 		fittingItemsViewController.title = @"Drones";
 		fittingItemsViewController.group = nil;

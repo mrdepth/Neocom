@@ -43,8 +43,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Damage Patterns";
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	self.title = NSLocalizedString(@"Damage Patterns", nil);
+	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	[self reload];
 }
@@ -130,7 +130,7 @@
 		if (cell == nil) {
 			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		cell.titleLabel.text = @"Select NPC Type";
+		cell.titleLabel.text = NSLocalizedString(@"Select NPC Type", nil);
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon04_07.png"];
 		return cell;
 	}
@@ -141,7 +141,7 @@
 		if (cell == nil) {
 			cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		cell.characterNameLabel.text = @"Add Damage Pattern";
+		cell.characterNameLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
 		return cell;
 	}
 	else {
@@ -169,9 +169,9 @@
 	if (section == 0)
 		return nil;
 	else if (section == 1)
-		return @"Predefined";
+		return NSLocalizedString(@"Predefined", nil);
 	else
-		return @"Custom";
+		return NSLocalizedString(@"Custom", nil);
 }
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {

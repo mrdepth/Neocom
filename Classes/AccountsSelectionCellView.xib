@@ -45,7 +45,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{5, 5}, {64, 64}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="17219365"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -55,14 +54,13 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{77, 5}, {223, 16}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="961108154"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">User Name</string>
+								<string key="IBUIText"/>
 								<object class="NSColor" key="IBUITextColor" id="533813071">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -91,14 +89,13 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{118, 35}, {182, 17}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Corporation Name</string>
+								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="533813071"/>
 								<reference key="IBUIHighlightedColor" ref="533813071"/>
 								<reference key="IBUIShadowColor" ref="896469424"/>
@@ -122,7 +119,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 28}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="362385329"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -130,7 +126,6 @@
 						</array>
 						<string key="NSFrameSize">{320, 74}</string>
 						<reference key="NSSuperview" ref="358188677"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="327542408"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1041285230">
 							<int key="NSColorSpace">3</int>
@@ -145,7 +140,6 @@
 				</array>
 				<string key="NSFrameSize">{320, 75}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="776241419"/>
 				<reference key="IBUIBackgroundColor" ref="1041285230"/>
 				<bool key="IBUIOpaque">NO</bool>
@@ -161,7 +155,6 @@
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -178,7 +171,6 @@
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -327,42 +319,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">57</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AccountsSelectionCellView</string>
-					<string key="superclassName">UITableViewCell</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="characterNameLabel">UILabel</string>
-						<string key="corpImageView">UIImageView</string>
-						<string key="corpNameLabel">UILabel</string>
-						<string key="portraitImageView">UIImageView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="characterNameLabel">
-							<string key="name">characterNameLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="corpImageView">
-							<string key="name">corpImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="corpNameLabel">
-							<string key="name">corpNameLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="portraitImageView">
-							<string key="name">portraitImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AccountsSelectionCellView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

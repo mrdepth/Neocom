@@ -50,7 +50,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"About";
+	self.title = NSLocalizedString(@"About", nil);
 	databaseVersionLabel.text = @"Retribution_1.0_82596";
 	imagesVersionLabel.text = @"Retribution_1.0_imgs";
 	
@@ -110,7 +110,7 @@
 }
 
 - (IBAction) onClearCache:(id) sender {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning!" message:@"Some features may be temporarily unavailable." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Some features may be temporarily unavailable.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
 	[alertView show];
 	[alertView release];
 }
@@ -184,7 +184,7 @@
 	scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, y);
 	
 	NSString *path = [EVERequestsCache cacheDirectory];
-	apiCacheSizeLabel.text = [NSString stringWithFormat:@"%@ bytes", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
+	apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

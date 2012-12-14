@@ -61,7 +61,7 @@
 	[super viewWillAppear:animated];
 	
 	NSMutableArray* targetsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:@"Loading Targets"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:NSLocalizedString(@"Loading Targets", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
@@ -83,11 +83,11 @@
 			NSString *booster = nil;
 			
 			if (character == fleetBooster)
-				booster = @" (fleet booster)";
+				booster = NSLocalizedString(@" (Fleet Booster)", nil);
 			else if (character == wingBooster)
-				booster = @" (wing booster)";
+				booster = NSLocalizedString(@" (Wing Booster)", nil);
 			else if (character == squadBooster)
-				booster = @" (squad booster)";
+				booster = NSLocalizedString(@" (Squad Booster)", nil);
 			else
 				booster = @"";
 			

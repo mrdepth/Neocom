@@ -28,7 +28,7 @@
 }
 
 - (id) initWithParentViewController: (UIViewController*) controller {
-	if (self = [super initWithTitle:@"Select Character" style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
+	if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 		EVEAccount *account = [EVEAccount currentAccount];
 		[self setCharacterName:account.characterName];
 		parentViewController = controller;
@@ -42,7 +42,7 @@
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
-	[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close"
+	[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
 																					  style:UIBarButtonItemStyleBordered
 																					 target:self
 																					 action:@selector(onBack:)] autorelease]];
@@ -73,7 +73,7 @@
 			self.title = name;
 	}
 	else
-		self.title = @"Select character";
+		self.title = NSLocalizedString(@"Select Character", nil);
 }
 
 @end

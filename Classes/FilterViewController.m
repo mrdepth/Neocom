@@ -46,9 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Filter";
+	self.title = NSLocalizedString(@"Filter", nil);
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancel:)] autorelease]];
+		[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCancel:)] autorelease]];
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)] autorelease]];
 	}
     // Do any additional setup after loading the view from its nib.

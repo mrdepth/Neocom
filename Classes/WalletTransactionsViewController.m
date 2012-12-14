@@ -52,7 +52,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Wallet Transactions";
+	self.title = NSLocalizedString(@"Wallet Transactions", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
@@ -266,7 +266,7 @@
 	}
 	
 	if (balance)
-		return [NSString stringWithFormat:@"Balance: %@ ISK", [NSNumberFormatter localizedStringFromNumber:balance numberStyle:NSNumberFormatterDecimalStyle]];
+		return [NSString stringWithFormat:NSLocalizedString(@"Balance: %@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:balance numberStyle:NSNumberFormatterDecimalStyle]];
 	else
 		return @"";
 }
@@ -383,7 +383,7 @@
 			charWalletTransactions = [[NSMutableArray alloc] init];
 			NSMutableArray *charWalletTransactionsTmp = [NSMutableArray array];
 			EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CharacterWallet" name:@"Loading Character Wallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CharacterWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSError *error = nil;
@@ -408,10 +408,10 @@
 						BOOL sell = [transaction.transactionType isEqualToString:@"sell"];
 						[charWalletTransactionsTmp addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 															  [dateFormatter stringFromDate:transaction.transactionDateTime], @"date",
-															  [NSString stringWithFormat:@"%s%@ ISK", sell ? "" : "-", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price * transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"transactionAmmount",
+															  [NSString stringWithFormat:NSLocalizedString(@"%s%@ ISK", nil), sell ? "" : "-", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price * transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"transactionAmmount",
 															  [NSString stringWithFormat:@"%@ (x%@)", transaction.typeName, [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"typeName",
 															  transaction.stationName, @"stationName",
-															  [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
+															  [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
 															  account.characterName, @"characterName",
 															  [type typeSmallImageName], @"imageName",
 															  type, @"type",
@@ -442,7 +442,7 @@
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (charFilter) {
 				NSMutableArray* charWalletTransactionsLocal = charWalletTransactions;
-				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:@"Applying Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[transactionsTmp addObjectsFromArray:[charFilter applyToValues:charWalletTransactionsLocal]];
@@ -488,7 +488,7 @@
 			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:corpWalletTransactions];
 			EUFilter *filter = corpFilter ? [[corpFilter copy] autorelease] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
 			
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:@"Loading Character Wallet"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -539,7 +539,7 @@
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
 			if (corpFilter) {
 				NSMutableArray *corpWalletTransactionsLocal = corpWalletTransactions;
-				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:@"Applying Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[transactionsTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
@@ -593,10 +593,10 @@
 			BOOL sell = [transaction.transactionType isEqualToString:@"sell"];
 			[currentAccount addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 									   [dateFormatter stringFromDate:transaction.transactionDateTime], @"date",
-									   [NSString stringWithFormat:@"%s%@ ISK", sell ? "" : "-", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price * transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"transactionAmmount",
+									   [NSString stringWithFormat:NSLocalizedString(@"%s%@ ISK", nil), sell ? "" : "-", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price * transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"transactionAmmount",
 									   [NSString stringWithFormat:@"%@ (x%@)", transaction.typeName, [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"typeName",
 									   transaction.stationName, @"stationName",
-									   [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
+									   [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
 									   [type typeSmallImageName], @"imageName",
 									   type, @"type",
 									   [NSNumber numberWithBool:sell], @"sell",
@@ -614,7 +614,7 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:@"Loading Corp Balance"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Corp Balance", nil)];
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -706,7 +706,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *transcation in walletTransactions) {

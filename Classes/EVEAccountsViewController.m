@@ -43,7 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Accounts";
+	self.title = NSLocalizedString(@"Accounts", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	self.logoffButton.hidden = [EVEAccount currentAccount] == nil;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
@@ -207,7 +207,7 @@
 			cell.errorLabel.text = [apiKey.error localizedDescription];
 		}
 		else {
-			cell.keyTypeLabel.text = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation ? @"Corporation" : @"Character";
+			cell.keyTypeLabel.text = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation ? NSLocalizedString(@"Corporation", nil) : NSLocalizedString(@"Character", nil);
 			if (apiKey.apiKeyInfo.key.expires) {
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 				[dateFormatter setDateFormat:@"yyyy.MM.dd"];
@@ -342,7 +342,7 @@
 					color = [UIColor redColor];
 				else
 					color = [UIColor yellowColor];
-				[section setValue:[NSString stringWithFormat:@"%@ (%d days remaining)", [dateFormatter stringFromDate:accountStatus.paidUntil], days]
+				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"%@ (%d days remaining)", nil), [dateFormatter stringFromDate:accountStatus.paidUntil], days]
 						   forKey:@"paidUntil"];
 				[section setValue:color forKey:@"paidUntilColor"];
 				[dateFormatter release];
@@ -363,10 +363,10 @@
 						color = [UIColor greenColor];
 					else
 						color = [UIColor yellowColor];
-					text = [NSString stringWithFormat:@"%@ (%d skills in queue)", [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+					text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
 				}
 				else {
-					text = @"Training queue is inactive";
+					text = NSLocalizedString(@"Training queue is inactive", nil);
 					color = [UIColor redColor];
 				}
 				[section setValue:text forKeyPath:@"trainingTime"];
@@ -387,7 +387,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	NSMutableArray *emptyKeysTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:@"Loading Accounts"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:NSLocalizedString(@"Loading Accounts", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if ([operation isCancelled]) {

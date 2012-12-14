@@ -33,12 +33,12 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Access Mask";
+	self.title = NSLocalizedString(@"Access Mask", nil);
 	
 	__block NSArray *sectionsTmp = nil;
 	NSMutableDictionary *groupsTmp = [NSMutableDictionary dictionary];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AccessMaskViewController+viewDidLoad" name:@"Loading Access Mask"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AccessMaskViewController+viewDidLoad" name:NSLocalizedString(@"Loading Access Mask", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;

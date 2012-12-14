@@ -331,7 +331,7 @@
 	__block float droneRange;
 	__block float warpSpeed;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+Update" name:@"Updating Stats"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+Update" name:NSLocalizedString(@"Updating Stats", nil)];
 	FittingViewController* aFittingViewController = fittingViewController;
 
 	[operation addExecutionBlock:^(void) {
@@ -476,7 +476,7 @@
 			armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
 			hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
 			
-			ehpLabel.text = [NSString stringWithFormat:@"EHP: %@", [NSString stringWithResource:ehp unit:nil]];
+			ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
 			
 			shieldReinforcedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.shieldRepair, ertank.shieldRepair];
 			shieldSustainedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.shieldRepair, estank.shieldRepair];
@@ -486,16 +486,16 @@
 			hullSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.hullRepair, estank.hullRepair];
 			shieldSustainedRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.passiveShield, estank.passiveShield];
 			
-			capacitorCapacityLabel.text = [NSString stringWithFormat:@"Total: %@", [NSString stringWithResource:capCapacity unit:@"GJ"]];
+			capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString stringWithResource:capCapacity unit:@"GJ"]];
 			if (capStable)
-				capacitorStateLabel.text = [NSString stringWithFormat:@"Stable: %.1f%%", capState];
+				capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), capState];
 			else
-				capacitorStateLabel.text = [NSString stringWithFormat:@"Lasts %@", [NSString stringWithTimeLeft:capState]];
-			capacitorRechargeTimeLabel.text = [NSString stringWithFormat:@"Recharge Time: %@", [NSString stringWithTimeLeft:capacitorRechargeTime]];
-			capacitorDeltaLabel.text = [NSString stringWithFormat:@"Delta: %@%.2f GJ/s", delta >= 0.0 ? @"+" : @"", delta];
+				capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts %@", nil), [NSString stringWithTimeLeft:capState]];
+			capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:capacitorRechargeTime]];
+			capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), delta >= 0.0 ? @"+" : @"", delta];
 			
-			weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f DPS",weaponDPS];
-			droneDPSLabel.text = [NSString stringWithFormat:@"%.0f DPS",droneDPS];
+			weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),weaponDPS];
+			droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),droneDPS];
 			volleyDamageLabel.text = [NSString stringWithFormat:@"%.0f",volleyDamage];
 			dpsLabel.text = [NSString stringWithFormat:@"%.0f",dps];
 			
@@ -530,7 +530,7 @@
 	__block float fittingsPrice;
 	__block float totalPrice;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+UpdatePrice" name:@"Updating Price"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+UpdatePrice" name:NSLocalizedString(@"Updating Price", nil)];
 	FittingViewController* aFittingViewController = fittingViewController;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -580,9 +580,9 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
-			shipPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:shipPrice unit:nil]];
-			fittingsPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:fittingsPrice unit:nil]];
-			totalPriceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSString stringWithResource:totalPrice unit:nil]];
+			shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:shipPrice unit:nil]];
+			fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:fittingsPrice unit:nil]];
+			totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:totalPrice unit:nil]];
 		}
 	}];
 	

@@ -20,17 +20,17 @@
 
 #include "eufe.h"
 
-#define ActionButtonBack @"Back"
-#define ActionButtonSetName @"Set Fit Name"
-#define ActionButtonSave @"Save Fit"
-#define ActionButtonCharacter @"Switch Character"
-#define ActionButtonViewInBrowser @"View in Browser"
-#define ActionButtonAreaEffect @"Select Area Effect"
-#define ActionButtonClearAreaEffect @"Clear Area Effect"
-#define ActionButtonSetDamagePattern @"Set Damage Pattern"
-#define ActionButtonRequiredSkills @"Required Skills"
-#define ActionButtonExport @"Export"
-#define ActionButtonCancel @"Cancel"
+#define ActionButtonBack NSLocalizedString(@"Back", nil)
+#define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
+#define ActionButtonSave NSLocalizedString(@"Save Fit", nil)
+#define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)
+#define ActionButtonViewInBrowser NSLocalizedString(@"View in Browser", nil)
+#define ActionButtonAreaEffect NSLocalizedString(@"Select Area Effect", nil)
+#define ActionButtonClearAreaEffect NSLocalizedString(@"Clear Area Effect", nil)
+#define ActionButtonSetDamagePattern NSLocalizedString(@"Set Damage Pattern", nil)
+#define ActionButtonRequiredSkills NSLocalizedString(@"Required Skills", nil)
+#define ActionButtonExport NSLocalizedString(@"Export", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface FittingViewController(Private)
 
@@ -80,7 +80,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)] autorelease];
 	
 	self.fitNameTextField.text = fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
@@ -119,7 +119,7 @@
 		implantsViewController.popoverController = self.popoverController;
 	}
 	priceManager = [[PriceManager alloc] init];
-	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
+	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
 	[self update];
 }
 
@@ -470,11 +470,11 @@
 		[requiredSkillsViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonExport]) {
-		NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Clipboard EVE XML", @"Clipboard DNA", nil];
+		NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Clipboard EVE XML", nil), NSLocalizedString(@"Clipboard DNA", nil), nil];
 		if ([MFMailComposeViewController canSendMail])
-			[buttons addObject:@"Email"];
-		[[UIActionSheet actionSheetWithTitle:@"Export"
-						   cancelButtonTitle:@"Cancel"
+			[buttons addObject:NSLocalizedString(@"Email", nil)];
+		[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 					  destructiveButtonTitle:nil
 						   otherButtonTitles:buttons
 							 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {

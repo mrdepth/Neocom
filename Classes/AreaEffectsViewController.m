@@ -39,7 +39,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Area Effects";
+	self.title = NSLocalizedString(@"Area Effects", nil);
 	[self reload];
 }
 
@@ -89,21 +89,21 @@
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
 	switch (section) {
 		case 0:
-			return @"Black Hole";
+			return NSLocalizedString(@"Black Hole", nil);
 		case 1:
-			return @"Cataclysmic Variable";
+			return NSLocalizedString(@"Cataclysmic Variable", nil);
 		case 2:
-			return @"Magnetar";
+			return NSLocalizedString(@"Magnetar", nil);
 		case 3:
-			return @"Pulsar";
+			return NSLocalizedString(@"Pulsar", nil);
 		case 4:
-			return @"Red Giant";
+			return NSLocalizedString(@"Red Giant", nil);
 		case 5:
-			return @"Wolf Rayet ";
+			return NSLocalizedString(@"Wolf Rayet", nil);
 		case 6:
-			return @"Incursion";
+			return NSLocalizedString(@"Incursion", nil);
 		default:
-			return @"Other";
+			return NSLocalizedString(@"Other", nil);
 	}
 }
 
@@ -190,7 +190,7 @@
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading Area Effects"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:NSLocalizedString(@"Loading Area Effects", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

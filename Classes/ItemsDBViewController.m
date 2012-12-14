@@ -40,7 +40,7 @@
 	else if (category)
 		self.title = category.categoryName;
 	else
-		self.title = @"Database";
+		self.title = NSLocalizedString(@"Database", nil);
 
 	publishedFilterSegment.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
 	self.searchDisplayController.searchBar.selectedScopeButtonIndex = publishedFilterSegment.selectedSegmentIndex;
@@ -251,7 +251,7 @@
 
 - (void) reload {
 	NSMutableArray *values = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (category == nil)
@@ -298,7 +298,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *values = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

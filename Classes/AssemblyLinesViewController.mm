@@ -145,7 +145,7 @@
 	NSMutableArray *assemblyLinesTmp = [NSMutableArray array];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssemblyLinesViewController+Update" name:@"Updating Assembly Lines"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssemblyLinesViewController+Update" name:NSLocalizedString(@"Updating Assembly Lines", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {

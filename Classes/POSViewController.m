@@ -205,7 +205,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSViewController+Load" name:@"Loading POS Details"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSViewController+Load" name:NSLocalizedString(@"Loading POS Details", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -269,9 +269,9 @@
 				
 				NSString *consumption;
 				if (resource.purposeID == 2 || resource.purposeID == 3)
-					consumption = @"n/a";
+					consumption = NSLocalizedString(@"n/a", nil);
 				else
-					consumption = [NSString stringWithFormat:@"%@/h", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:round(resource.quantity * sovereigntyBonus)] numberStyle:NSNumberFormatterDecimalStyle]];
+					consumption = [NSString stringWithFormat:NSLocalizedString(@"%@/h", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:round(resource.quantity * sovereigntyBonus)] numberStyle:NSNumberFormatterDecimalStyle]];
 				
 				NSDictionary *row = [NSDictionary dictionaryWithObjectsAndKeys:
 									 resource.resourceType, @"type",

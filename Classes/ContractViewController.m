@@ -46,7 +46,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Contract";
+	self.title = NSLocalizedString(@"Contract", nil);
 	[self loadData];
 }
 
@@ -104,16 +104,16 @@
 
 	switch (section) {
 		case 0:
-			return @"Contract Details";
+			return NSLocalizedString(@"Contract Details", nil);
 			break;
 		case 1:
-			return @"Buyer will get";
+			return NSLocalizedString(@"Buyer will get", nil);
 			break;
 		case 2:
-			return @"Buyer will pay";
+			return NSLocalizedString(@"Buyer will pay", nil);
 			break;
 		case 3:
-			return @"Bids";
+			return NSLocalizedString(@"Bids", nil);
 			break;
 		default:
 			break;
@@ -265,7 +265,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractViewController+Load" name:@"Loading Contract Details"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractViewController+Load" name:NSLocalizedString(@"Loading Contract Details", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -276,22 +276,22 @@
 		NSMutableArray *rows = [NSMutableArray array];
 
 		if (contract.title.length > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Title:", @"title", contract.title, @"value", nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Status:", @"title", [contract localizedStatusString], @"value", nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Type:", @"title", [contract localizedTypeString], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Title:", nil), @"title", contract.title, @"value", nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Status:", nil), @"title", [contract localizedStatusString], @"value", nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Type:", nil), @"title", [contract localizedTypeString], @"value", nil]];
 
 		if (contract.startStationID)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Start Station:", @"title", [self stationNameWithID:contract.startStationID], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Start Station:", nil), @"title", [self stationNameWithID:contract.startStationID], @"value", nil]];
 		if (contract.endStationID)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"End Station:", @"title", [self stationNameWithID:contract.endStationID], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"End Station:", nil), @"title", [self stationNameWithID:contract.endStationID], @"value", nil]];
 		if (contract.dateIssued)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Issued: ", @"title", [dateFormatter stringFromDate:contract.dateIssued], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued:", nil), @"title", [dateFormatter stringFromDate:contract.dateIssued], @"value", nil]];
 		if (contract.dateAccepted)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Accepted: ", @"title", [dateFormatter stringFromDate:contract.dateAccepted], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted:", nil), @"title", [dateFormatter stringFromDate:contract.dateAccepted], @"value", nil]];
 		if (contract.dateCompleted)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Completed: ", @"title", [dateFormatter stringFromDate:contract.dateCompleted], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Completed:", nil), @"title", [dateFormatter stringFromDate:contract.dateCompleted], @"value", nil]];
 		if (contract.dateExpired)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Expired: ", @"title", [dateFormatter stringFromDate:contract.dateExpired], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Expired:", nil), @"title", [dateFormatter stringFromDate:contract.dateExpired], @"value", nil]];
 		
 		NSMutableSet *charIDs = [NSMutableSet set];
 		if (contract.issuerID) {
@@ -312,22 +312,22 @@
 			EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
 			if (!error) {
 				if (contract.issuerID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Issued By: ", @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.issuerID]], @"value", nil]];
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.issuerID]], @"value", nil]];
 				if (contract.acceptorID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Accepted By: ", @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.acceptorID]], @"value", nil]];
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.acceptorID]], @"value", nil]];
 				if (contract.assigneeID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Assigned To: ", @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.assigneeID]], @"value", nil]];
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Assigned To:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.assigneeID]], @"value", nil]];
 			}
 		}
 			
 		if (contract.price > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Price: ", @"title", [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.price] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Price:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.price] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
 		if (contract.reward > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Reward: ", @"title", [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Reward:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
 		if (contract.buyout > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Buyout: ", @"title", [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Buyout:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
 		if (contract.volume > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Volume: ", @"title", [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.volume] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Volume:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ m3", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.volume] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
 
 		[sectionsTmp addObject:rows];
 		
@@ -385,7 +385,7 @@
 					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 												bidderID, @"bidderID",
 												@"", @"bidderName",
-												[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:item.amount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
+												[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:item.amount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
 												[dateFormatter stringFromDate:item.dateBid], @"date",
 												nil];
 					[rows addObject:row];
@@ -437,7 +437,7 @@
 				stationName = conquerableStation.stationName;
 		}
 		else
-			stationName = @"Unknown";
+			stationName = NSLocalizedString(@"Unknown", nil);
 	}
 	else
 		stationName = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];

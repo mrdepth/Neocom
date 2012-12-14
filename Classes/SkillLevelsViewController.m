@@ -87,7 +87,7 @@
 	if (cell == nil) {
 		cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	cell.titleLabel.text = [NSString stringWithFormat:@"Level %d", indexPath.row];;
+	cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), indexPath.row];;
 	cell.checkmarkImageView.image = currentLevel == indexPath.row ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	return cell;
 }

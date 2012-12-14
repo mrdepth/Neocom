@@ -30,7 +30,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Add API Key";
+	self.title = NSLocalizedString(@"Add API Key", nil);
 	[webView loadRequest:[NSURLRequest requestWithURL:startPageURL]];
 }
 
@@ -93,10 +93,10 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	[activityIndicatorView stopAnimating];
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Error"
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
 													 message:[error localizedDescription]
 													delegate:nil
-										   cancelButtonTitle:@"Ok"
+										   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 										   otherButtonTitles:nil] autorelease];
 	[alert show];
 }

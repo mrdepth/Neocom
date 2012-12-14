@@ -110,15 +110,15 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	switch (section) {
 		case 0:
-			return @"Basic";
+			return NSLocalizedString(@"Basic", nil);
 		case 1:
-			return @"Standard";
+			return NSLocalizedString(@"Standard", nil);
 		case 2:
-			return @"Improved";
+			return NSLocalizedString(@"Improved", nil);
 		case 3:
-			return @"Elite";
+			return NSLocalizedString(@"Elite", nil);
 		default:
-			return @"Unknown";
+			return NSLocalizedString(@"Unknown", nil);
 	}
 }
 
@@ -169,7 +169,7 @@
 
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Certificates"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Certificates", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray* certificates = [NSMutableArray array];

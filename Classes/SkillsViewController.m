@@ -107,7 +107,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Skills";
+	self.title = NSLocalizedString(@"Skills", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
@@ -390,7 +390,7 @@
 	NSMutableArray *skillQueueTmp = [NSMutableArray array];
 	NSMutableArray *skillGroupsTmp = [NSMutableArray array];
 	__block NSString *skillQueueTitleTmp = nil;
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillsViewController+Load" name:@"Loading Skills"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillsViewController+Load" name:NSLocalizedString(@"Loading Skills", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -419,7 +419,7 @@
 				EVEDBDgmTypeAttribute *attribute = [[type attributesDictionary] valueForKey:@"275"];
 				skill.skillName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) attribute.value];
 				skill.skillPoints = @"";
-				skill.level = [NSString stringWithFormat:@"Level %d", item.level];
+				skill.level = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), item.level];
 				skill.targetLevel = item.level;
 				skill.typeID = item.typeID;
 				skill.startSkillPoints = [type skillpointsAtLevel:item.level - 1];
@@ -456,8 +456,8 @@
 					Skill *skill = [[Skill alloc] init];
 					EVEDBDgmTypeAttribute *attribute = [[type attributesDictionary] valueForKey:@"275"];
 					skill.skillName = [NSString stringWithFormat:@"%@ (x%d)", type.typeName, (int) attribute.value];
-					skill.skillPoints = [NSString stringWithFormat:@"SP: %@", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:item.skillpoints] numberStyle:NSNumberFormatterDecimalStyle]];
-					skill.level = [NSString stringWithFormat:@"Level %d", item.level];
+					skill.skillPoints = [NSString stringWithFormat:NSLocalizedString(@"SP: %@", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:item.skillpoints] numberStyle:NSNumberFormatterDecimalStyle]];
+					skill.level = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), item.level];
 					skill.typeID = item.typeID;
 					
 					NSInteger targetLevel = 0;
@@ -500,7 +500,7 @@
 				[skillGroupsTmp addObjectsFromArray:[[groups allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]]]];
 				for (NSDictionary *group in skillGroupsTmp) {
 					[[group valueForKey:@"skills"] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"skillName" ascending:YES]]];
-					[group setValue:[NSString stringWithFormat:@"%@ (%@ skillpoints)", [group valueForKey:@"groupName"], [NSNumberFormatter localizedStringFromNumber:[group valueForKey:@"skillPoints"] numberStyle:NSNumberFormatterDecimalStyle]] forKey:@"groupName"];
+					[group setValue:[NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil), [group valueForKey:@"groupName"], [NSNumberFormatter localizedStringFromNumber:[group valueForKey:@"skillPoints"] numberStyle:NSNumberFormatterDecimalStyle]] forKey:@"groupName"];
 				}
 			}
 			operation.progress = 0.6;
@@ -509,17 +509,17 @@
 				skillQueueTitle = nil;
 			}
 			if (account.skillQueue.skillQueue.count == 0)
-				skillQueueTitle = [[NSString alloc] initWithFormat:@"Training queue inactive."];
+				skillQueueTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"Training queue inactive.", nil)];
 			else {
 				EVESkillQueueItem *lastSkill = [account.skillQueue.skillQueue lastObject];
 				if (lastSkill.endTime) {
 					NSTimeInterval remainingTime = [lastSkill.endTime timeIntervalSinceDate:currentTime];
-					skillQueueTitleTmp = [[NSString alloc] initWithFormat:@"Finishes %@ (%@)",
+					skillQueueTitleTmp = [[NSString alloc] initWithFormat:NSLocalizedString(@"Finishes %@ (%@)", nil),
 										  [[NSDateFormatter eveDateFormatter] stringFromDate:lastSkill.endTime],
 										  [NSString stringWithTimeLeft:remainingTime]];
 				}
 				else
-					skillQueueTitleTmp = [[NSString alloc] initWithString:@"Training queue is inactive"];
+					skillQueueTitleTmp = [[NSString alloc] initWithString:NSLocalizedString(@"Training queue is inactive", nil)];
 			}
 			operation.progress = 1.0;
 		}

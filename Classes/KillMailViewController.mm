@@ -46,9 +46,9 @@
 		self.navigationItem.titleView = self.sectionSegmentedControler;
 
 	if (self.killMail.victim.shipType.group.categoryID == 6)
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Open fit" style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
 
-	[self.sectionSegmentedControler setTitle:[NSString stringWithFormat:@"Involved Parties (%d)", self.killMail.attackers.count] forSegmentAtIndex:1];
+	[self.sectionSegmentedControler setTitle:[NSString stringWithFormat:NSLocalizedString(@"Involved Parties (%d)", nil), self.killMail.attackers.count] forSegmentAtIndex:1];
 	
 	
 	EVEImageSize portraitImageSize;
@@ -91,7 +91,7 @@
 	self.shipNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", self.killMail.victim.shipType.typeName, self.killMail.victim.shipType.group.groupName];
 	self.shipImageView.image = [UIImage imageNamed:self.killMail.victim.shipType.typeSmallImageName];
 	
-	self.damageTakenLabel.text = [NSString stringWithFormat:@"%@ Total Damage Taken", [NSNumberFormatter localizedStringFromNumber:@(self.killMail.victim.damageTaken) numberStyle:NSNumberFormatterDecimalStyle]];
+	self.damageTakenLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Total Damage Taken", nil), [NSNumberFormatter localizedStringFromNumber:@(self.killMail.victim.damageTaken) numberStyle:NSNumberFormatterDecimalStyle]];
 	
 	self.solarSystemNameLabel.text = self.killMail.solarSystem.solarSystemName;
 	self.securityStatusLabel.text = [NSString stringWithFormat:@"%.1f", self.killMail.solarSystem.security];
@@ -119,19 +119,19 @@
 	self.itemsSections = [NSMutableArray array];
 	
 	if (self.killMail.hiSlots.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"High power slots", @"title", self.killMail.hiSlots, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"High power slots", nil), @"title", self.killMail.hiSlots, @"rows", nil]];
 	if (self.killMail.medSlots.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Medium power slots", @"title", self.killMail.medSlots, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Medium power slots", nil), @"title", self.killMail.medSlots, @"rows", nil]];
 	if (self.killMail.lowSlots.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Low power slots", @"title", self.killMail.lowSlots, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Low power slots", nil), @"title", self.killMail.lowSlots, @"rows", nil]];
 	if (self.killMail.rigSlots.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Rig power slots", @"title", self.killMail.rigSlots, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Rig power slots", nil), @"title", self.killMail.rigSlots, @"rows", nil]];
 	if (self.killMail.subsystemSlots.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Sub system slots", @"title", self.killMail.subsystemSlots, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Sub system slots", nil), @"title", self.killMail.subsystemSlots, @"rows", nil]];
 	if (self.killMail.droneBay.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Drone bay", @"title", self.killMail.droneBay, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Drone bay", nil), @"title", self.killMail.droneBay, @"rows", nil]];
 	if (self.killMail.cargo.count > 0)
-		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Cargo", @"title", self.killMail.cargo, @"rows", nil]];
+		[self.itemsSections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Cargo", nil), @"title", self.killMail.cargo, @"rows", nil]];
 
 }
 
@@ -268,9 +268,9 @@
 		return [[self.itemsSections objectAtIndex:section] valueForKey:@"title"];
 	else {
 		if (section == 0)
-			return @"Final blow";
+			return NSLocalizedString(@"Final blow", nil);
 		else if (section == 1)
-			return @"Top damage";
+			return NSLocalizedString(@"Top damage", nil);
 		else
 			return @"";
 	}
@@ -366,7 +366,7 @@
 
 - (IBAction)onOpenFit:(id)sender {
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;
 	
@@ -383,7 +383,7 @@
 			character->setSkillLevels(*[eveCharacter skillsMap]);
 		}
 		else
-			character->setCharacterName("All Skills 0");
+			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
 		operation.progress = 0.6;
 		fit = [[Fit alloc] initWithKillMail:self.killMail character:character];
 		operation.progress = 1.0;

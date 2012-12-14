@@ -47,7 +47,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"POS'es";
+	self.title = NSLocalizedString(@"POS'es", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
@@ -227,7 +227,7 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 		[self presentModalViewController:navController animated:YES];
 		[navController release];
 	}
@@ -274,7 +274,7 @@
 
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Load" name:@"Loading POS'es"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Load" name:NSLocalizedString(@"Loading POS'es", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -312,11 +312,11 @@
 				
 				switch (starbase.state) {
 					case EVEPOSStateUnanchored:
-						state = @"Unanchored";
+						state = NSLocalizedString(@"Unanchored", nil);
 						stateColor = [UIColor yellowColor];
 						break;
 					case EVEPOSStateAnchoredOffline:
-						state = @"Anchored / Offline";
+						state = NSLocalizedString(@"Anchored / Offline", nil);
 						stateColor = [UIColor redColor];
 						break;
 					case EVEPOSStateOnlining: {
@@ -337,7 +337,7 @@
 						if (sec)
 							[remains appendFormat:@"%ds", sec];
 						
-						state = [NSString stringWithFormat:@"Onlining: %@ remains", remains];
+						state = [NSString stringWithFormat:NSLocalizedString(@"Onlining: %@ remains", nil), remains];
 						stateColor = [UIColor yellowColor];
 						break;
 					}
@@ -359,12 +359,12 @@
 						if (sec)
 							[remains appendFormat:@"%ds", sec];
 						
-						state = [NSString stringWithFormat:@"Reinforced: %@ remains", remains];
+						state = [NSString stringWithFormat:NSLocalizedString(@"Reinforced: %@ remains", nil), remains];
 						stateColor = [UIColor redColor];
 						break;
 					}
 					case EVEPOSStateOnline:
-						state = [NSString stringWithFormat:@"Online: since %@", [dateFormatter stringFromDate:starbase.onlineTimestamp]];
+						state = [NSString stringWithFormat:NSLocalizedString(@"Online: since %@", nil), [dateFormatter stringFromDate:starbase.onlineTimestamp]];
 						stateColor = [UIColor greenColor];
 						break;
 					default:
@@ -379,7 +379,7 @@
 											[NSNumber numberWithLongLong:starbase.itemID], @"posID",
 											nil];
 				[posesTmp addObject:row];
-				EUOperation *loadDetailsOperation = [EUOperation operationWithIdentifier:nil name:@"Loading POS Details"];
+				EUOperation *loadDetailsOperation = [EUOperation operationWithIdentifier:nil name:NSLocalizedString(@"Loading POS Details", nil)];
 				[loadDetailsOperation addExecutionBlock:^{
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[self loadStarbaseDetailForStarbase:row account:account];
@@ -560,7 +560,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Filter" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *pos in poses) {

@@ -52,7 +52,7 @@
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (![userDefaults boolForKey:SettingsTipsMarketInfo]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning!" message:@"Market section does not provide market statistics in the realtime. Statistics is collected by the users during several days and may be not accurate. This information is cached on your device for 1 hour." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Market section does not provide market statistics in the realtime. Statistics is collected by the users during several days and may be not accurate. This information is cached on your device for 1 hour.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alertView show];
 		[alertView release];
 		[userDefaults setBool:YES forKey:SettingsTipsMarketInfo];
@@ -176,9 +176,9 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0) {
 			if (section == 0)
-				return @"Sell orders";
+				return NSLocalizedString(@"Sell Orders", nil);
 			else
-				return @"Buy orders";
+				return NSLocalizedString(@"Buy Orders", nil);
 		}
 		else {
 			if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 1)
@@ -190,9 +190,9 @@
 	else {
 		if (reportTypeSegment.selectedSegmentIndex == 0) {
 			if (section == 0)
-				return @"Sell orders";
+				return NSLocalizedString(@"Sell Orders", nil);
 			else
-				return @"Buy orders";
+				return NSLocalizedString(@"Buy Orders", nil);
 		}
 		else {
 			if (reportTypeSegment.selectedSegmentIndex == 1)
@@ -247,14 +247,14 @@
 	int reported = [[NSDate date] timeIntervalSinceDate:order.reportedTime] / (3600 * 24);
 	if (reported < 0)
 		reported = 0;
-	cell.reportedLabel.text = [NSString stringWithFormat:@"Reported: %dd ago", reported];
+	cell.reportedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Reported: %dd ago", nil), reported];
 	if (order.security >= 0.5)
 		cell.securityLabel.textColor = [UIColor greenColor];
 	else if (order.security > 0)
 		cell.securityLabel.textColor = [UIColor orangeColor];
 	else
 		cell.securityLabel.textColor = [UIColor redColor];
-	cell.priceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]];
 	cell.qtyLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.volRemain] numberStyle:NSNumberFormatterDecimalStyle];
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", order.price];
     // Configure the cell...
@@ -338,7 +338,7 @@
 	NSMutableArray *sellSummaryTmp = [NSMutableArray array];
 	NSMutableArray *buySummaryTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+loadData" name:@"Loading Market Info"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+loadData" name:NSLocalizedString(@"Loading Market Info", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
@@ -410,7 +410,7 @@
 	NSMutableArray *filteredSellSummaryTmp = [NSMutableArray array];
 	NSMutableArray *filteredBuySummaryTmp = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+Filter" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

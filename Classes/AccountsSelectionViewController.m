@@ -41,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Select Characters";
+	self.title = NSLocalizedString(@"Select Characters", nil);
 	self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -52,7 +52,7 @@
 	}
 	
 	NSMutableArray* accountsTmp = [NSMutableArray array];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AccountsSelectionViewController+Load" name:@"Loading..."];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AccountsSelectionViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 
 	[operation addExecutionBlock:^{
 		@autoreleasepool {

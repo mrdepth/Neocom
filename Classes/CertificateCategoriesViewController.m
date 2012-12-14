@@ -44,10 +44,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Certificates";
+	self.title = NSLocalizedString(@"Certificates", nil);
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading Categories"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Categories", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		

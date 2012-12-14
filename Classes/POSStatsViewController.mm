@@ -208,7 +208,7 @@
 	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+Update" name:@"Updating Stats"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+Update" name:NSLocalizedString(@"Updating Stats", nil)];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 
 	[operation addExecutionBlock:^(void) {
@@ -267,7 +267,7 @@
 			armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
 			hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
 			
-			ehpLabel.text = [NSString stringWithFormat:@"EHP: %@", [NSString stringWithResource:ehp unit:nil]];
+			ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
 			
 			shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.passiveShield, ertank.passiveShield];
 			
@@ -292,7 +292,7 @@
 	__block float upgradesDailyCost;
 	__block float posCost;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice" name:@"Updating Price"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice" name:NSLocalizedString(@"Updating Price", nil)];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
 	[operation addExecutionBlock:^(void) {
@@ -363,14 +363,14 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
-			fuelCostLabel.text = [NSString stringWithFormat:@"%d/h (%@ ISK/day)",
+			fuelCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
 								  fuelConsumtion,
 								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 			
-			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:@"%@ ISK (%@ ISK/day)",
+			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
 													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
 													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
-			posCostLabel.text = [NSString stringWithFormat:@"%@ ISK",
+			posCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
 								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:posCost] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 	}];

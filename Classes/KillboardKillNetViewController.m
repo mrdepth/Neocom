@@ -38,7 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"EVE-Kill";
+	self.title = NSLocalizedString(@"EVE-Kill", nil);
 	[self reload];
     // Do any additional setup after loading the view from its nib.
 }
@@ -103,7 +103,7 @@
 	
 	if (solarSystem)
 		cell.systemNameLabel.text = [NSString stringWithFormat:@"%@ (%.1f)", solarSystem, solarSystemSecurity];
-	cell.piratesLabel.text = [NSString stringWithFormat:@"Inv.: %d", kill.involvedPartyCount];
+	cell.piratesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Inv.: %d", nil), kill.involvedPartyCount];
 	
 	
     return cell;
@@ -123,7 +123,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* record = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+KillLoading" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+KillLoading" name:NSLocalizedString(@"Loading...", nil)];
 	__block KillMail* killMail = nil;
 	__block NSError* error = nil;
 	[operation addExecutionBlock:^(void) {
@@ -134,7 +134,7 @@
 			if (killDetails.killLog.count > 0)
 				killMail = [[KillMail alloc] initWithKillNetLogEntry:[killDetails.killLog objectAtIndex:0]];
 			else
-				error = [[NSError alloc] initWithDomain:@"EVE-Kill" code:0 userInfo:@{NSLocalizedDescriptionKey : @"Kill details not found"}];
+				error = [[NSError alloc] initWithDomain:@"EVE-Kill" code:0 userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"Kill details not found", nil)}];
 		}
 	}];
 	
@@ -194,7 +194,7 @@
 
 - (void) reload {
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+Loading" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+Loading" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			

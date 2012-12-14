@@ -35,7 +35,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Browser";
+	self.title = NSLocalizedString(@"Browser", nil);
 	NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<a href=\"%@\">%@</a><br>%@<br>", [rss.link absoluteString], rss.title, rss.description];
 	if (rss.enclosure && rss.enclosure.url) {
 		//NSString *url = [rss.enclosure valueForKey:@"url"];

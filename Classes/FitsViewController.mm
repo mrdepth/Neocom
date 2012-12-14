@@ -45,8 +45,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Fitting";
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	self.title = NSLocalizedString(@"Fitting", nil);
+	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
@@ -68,7 +68,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Load" name:@"Loading Fits"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -164,7 +164,7 @@
 		if (cell == nil) {
 			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		cell.titleLabel.text = @"New Ship Fit";
+		cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		return cell;
 	}
@@ -185,7 +185,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return @"Menu";
+		return NSLocalizedString(@"Menu", nil);
 	else {
 		NSArray* rows = [fits objectAtIndex:section - 1];
 		if (rows.count > 0)
@@ -228,7 +228,7 @@
 		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) ORDER BY groupName;";
 		//fittingItemsViewController.typesRequest = @"SELECT * FROM invTypes WHERE published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName";
-		fittingItemsViewController.title = @"Ships";
+		fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
@@ -236,7 +236,7 @@
 	}
 	else {
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
@@ -250,7 +250,7 @@
 				character->setSkillLevels(*[eveCharacter skillsMap]);
 			}
 			else
-				character->setCharacterName("All Skills 0");
+				character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
 
 			operation.progress = 0.5;
 			fit = [[Fit fitWithDictionary:row character:character] retain];
@@ -279,7 +279,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[popoverController dismissPopoverAnimated:YES];
 	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Ship Fit"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;
 	[operation addExecutionBlock:^{
@@ -294,7 +294,7 @@
 			character->setSkillLevels(*[eveCharacter skillsMap]);
 		}
 		else
-			character->setCharacterName("All Skills 0");
+			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
 
 		operation.progress = 0.5;
 		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];

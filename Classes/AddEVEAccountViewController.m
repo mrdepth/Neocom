@@ -43,11 +43,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[self.navigationItem setRightBarButtonItem:saveButton];
-	self.title = @"Add API Key";
+	self.title = NSLocalizedString(@"Add API Key", nil);
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (![userDefaults boolForKey:SettingsTipsAddAccount]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tip" message:@"To gain access to corporate information, you should add Corp API Key." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Tip", nil) message:NSLocalizedString(@"To gain access to corporate information, you should add Corp API Key.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alertView show];
 		[alertView release];
 		[userDefaults setBool:YES forKey:SettingsTipsAddAccount];
@@ -115,7 +115,7 @@
 }
 
 - (IBAction) onSave:(id) sender {
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:@"Checking API Key"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:NSLocalizedString(@"Checking API Key", nil)];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -187,7 +187,7 @@
 	if (apiKeys.count == 0)
 		return;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:@"Checking API Keys"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:NSLocalizedString(@"Checking API Keys", nil)];
 	NSMutableArray *errors = [NSMutableArray array];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -206,10 +206,10 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
 			if (errors.count > 0) {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-																	message:[NSString stringWithFormat:@"Unable to import keys: %@.", [errors componentsJoinedByString:@","]]
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+																	message:[NSString stringWithFormat:NSLocalizedString(@"Unable to import keys: %@.", nil), [errors componentsJoinedByString:@","]]
 																   delegate:nil
-														  cancelButtonTitle:@"Ok"
+														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 														  otherButtonTitles:nil];
 				[alertView show];
 				[alertView release];

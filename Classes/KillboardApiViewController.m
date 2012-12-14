@@ -55,7 +55,7 @@
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	self.title = @"Kill Reports";
+	self.title = NSLocalizedString(@"Kill Reports", nil);
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl] autorelease];
 	//[self loadKillLogBeforeKillID:0 corporate:self.ownerSegmentControl.selectedSegmentIndex == 1];
 	[self reload];
@@ -169,7 +169,7 @@
 	
 	if (solarSystem)
 		cell.systemNameLabel.text = [NSString stringWithFormat:@"%@ (%.1f)", solarSystem.solarSystemName, solarSystem.security];
-	cell.piratesLabel.text = [NSString stringWithFormat:@"Inv.: %d", kill.attackers.count];
+	cell.piratesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Inv.: %d", nil), kill.attackers.count];
 	
 	
     return cell;
@@ -199,7 +199,7 @@
 		record = [[[self.killLog objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	EVEKillLogKill* kill = [record valueForKey:@"kill"];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:NSLocalizedString(@"Loading...", nil)];
 	__block KillMail* killMail = nil;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
@@ -348,7 +348,7 @@
 		EVEAccount *account = [EVEAccount currentAccount];
 		NSMutableDictionary *currentKillLogTmp = [NSMutableDictionary dictionary];
 		
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+reload" name:@"Loading Kill Log"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+reload" name:NSLocalizedString(@"Loading Kill Log", nil)];
 		
 		[operation addExecutionBlock:^{
 			@autoreleasepool {
@@ -433,7 +433,7 @@
 		EUFilter* filter = [filters valueForKey:killboardType];
 		NSMutableArray* sections = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				for (NSDictionary* record in [currentKillLog valueForKey:killboardType]) {
@@ -469,7 +469,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			NSArray* keyPaths = @[@"kill.victim.characterName", @"kill.victim.corporationName", @"kill.victim.allianceName", @"ship.typeName"];

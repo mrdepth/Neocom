@@ -19,17 +19,17 @@
 
 #import "ItemInfo.h"
 
-#define ActionButtonCharacter @"Switch Character"
-#define ActionButtonDelete @"Delete"
-#define ActionButtonSelect @"Set Active Ship"
-#define ActionButtonShowShipInfo @"Ship Info"
-#define ActionButtonAddShip @"Add Ship"
-#define ActionButtonCancel @"Cancel"
-#define ActionButtonBooster @"Booster"
-#define ActionButtonSetFleetBooster @"Set Fleet Booster"
-#define ActionButtonSetWingBooster @"Set Wing Booster"
-#define ActionButtonSetSquadBooster @"Set Squad Booster"
-#define ActionButtonRemoveBooster @"Remove Booster"
+#define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonSelect NSLocalizedString(@"Set Active Ship", nil)
+#define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
+#define ActionButtonAddShip NSLocalizedString(@"Add Ship", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonBooster NSLocalizedString(@"Booster", nil)
+#define ActionButtonSetFleetBooster NSLocalizedString(@"Set Fleet Booster", nil)
+#define ActionButtonSetWingBooster NSLocalizedString(@"Set Wing Booster", nil)
+#define ActionButtonSetSquadBooster NSLocalizedString(@"Set Squad Booster", nil)
+#define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
 @implementation FleetViewController
 @synthesize fittingViewController;
@@ -114,7 +114,7 @@
 			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
-		cell.titleLabel.text = @"Add Fleet Member";
+		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
 		cell.stateView.image = nil;
 		return cell;
 	}
@@ -306,7 +306,7 @@
 	NSMutableArray* pilotsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:@"Updating Fleet"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:NSLocalizedString(@"Updating Fleet", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {
@@ -326,11 +326,11 @@
 				NSString *booster = nil;
 				
 				if (character == fleetBooster)
-					booster = @" (Fleet Booster)";
+					booster = NSLocalizedString(@" (Fleet Booster)", nil);
 				else if (character == wingBooster)
-					booster = @" (Wing Booster)";
+					booster = NSLocalizedString(@" (Wing Booster)", nil);
 				else if (character == squadBooster)
-					booster = @" (Squad Booster)";
+					booster = NSLocalizedString(@" (Squad Booster)", nil);
 				else
 					booster = @"";
 				

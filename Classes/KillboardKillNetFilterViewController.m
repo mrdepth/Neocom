@@ -46,7 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"EVE-Kill";
+	self.title = NSLocalizedString(@"EVE-Kill", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
 	else {
@@ -101,7 +101,7 @@
 		TitleCellView* cell = (TitleCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (!cell)
 			cell = [TitleCellView cellWithNibName:@"TitleCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		cell.titleLabel.text = @"Add Search Criteria";
+		cell.titleLabel.text = NSLocalizedString(@"Add Search Criteria", nil);
 		return cell;
 	}
 	else
@@ -142,7 +142,7 @@
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 				}
 				
 				[navigationController release];
@@ -165,7 +165,7 @@
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 				}
 				
 				[navigationController release];
@@ -189,7 +189,7 @@
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 				}
 				
 				[navigationController release];
@@ -213,7 +213,7 @@
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 				}
 
 				[navigationController release];
@@ -238,7 +238,7 @@
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 					[self presentModalViewController:navigationController animated:YES];
 				}
 
@@ -267,7 +267,7 @@
 			[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 		else {
-			controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+			controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
 			[self presentModalViewController:navigationController animated:YES];
 		}
 
@@ -483,7 +483,7 @@
 - (void) reload {
 	NSDictionary* logFilter = [self logFilter];
 	if (logFilter.count > 0) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Preload" name:@"Loading..."];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Preload" name:NSLocalizedString(@"Loading...", nil)];
 
 		__block NSInteger count = 0;
 		[operation addExecutionBlock:^{
@@ -495,19 +495,19 @@
 		
 		[operation setCompletionBlockInCurrentThread:^{
 			if (![operation isCancelled])
-				self.searchResultsCountLabel.text = [NSString stringWithFormat:@"%d Search Results", count];
+				self.searchResultsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d Search Results", nil), count];
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else
-		self.searchResultsCountLabel.text = @"0 Search Results";
+		self.searchResultsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d Search Results", nil), 0];
 }
 
 - (IBAction)onSearch:(id)sender {
 	NSDictionary* logFilter = [self logFilter];
 	if (logFilter.count > 0) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Search" name:@"Searching..."];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 		__block NSError* error = nil;
 		__block EVEKillNetLog* killNetLog = nil;
 		
@@ -536,7 +536,7 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else
-		self.searchResultsCountLabel.text = @"0 Search Results";
+		self.searchResultsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d Search Results", nil), 0];
 }
 
 - (NSDictionary*) logFilter {

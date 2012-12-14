@@ -21,12 +21,12 @@
 #import "Globals.h"
 #import "SkillPlannerImportViewController.h"
 
-#define ActionButtonLevel1 @"Train to Level 1"
-#define ActionButtonLevel2 @"Train to Level 2"
-#define ActionButtonLevel3 @"Train to Level 3"
-#define ActionButtonLevel4 @"Train to Level 4"
-#define ActionButtonLevel5 @"Train to Level 5"
-#define ActionButtonCancel @"Cancel"
+#define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
+#define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
+#define ActionButtonLevel3 NSLocalizedString(@"Train to Level 3", nil)
+#define ActionButtonLevel4 NSLocalizedString(@"Train to Level 4", nil)
+#define ActionButtonLevel5 NSLocalizedString(@"Train to Level 5", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface SkillPlanViewController(Private)
 
@@ -73,9 +73,9 @@
     [super viewDidLoad];
 	//self.title = [[skillPlanPath lastPathComponent] stringByDeletingPathExtension];
 	self.title = skillPlan.name;
-	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:skillPlan.trainingTime]] : @"Skill plan is empty";
+	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Import" style:UIBarButtonItemStyleBordered target:self action:@selector(onImport:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Import", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onImport:)] autorelease];
 	//self.navigationItem.rightBarButtonItem.enabled = NO;
 //	[self loadData];
 }
@@ -99,11 +99,11 @@
 }
 
 - (IBAction)onImport:(id)sender {
-	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Import"
-														message:@"Do you wish to replace or merge the existing skill plan with imported skill plan?"
+	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import", nil)
+														message:NSLocalizedString(@"Do you wish to replace or merge the existing skill plan with imported skill plan?", nil)
 													   delegate:self
-											  cancelButtonTitle:@"Cancel"
-											  otherButtonTitles:@"Replace", @"Merge", nil];
+											  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											  otherButtonTitles:NSLocalizedString(@"Replace", nil), NSLocalizedString(@"Merge", nil), nil];
 	[alertView show];
 	[alertView autorelease];
 }
@@ -146,8 +146,8 @@
 	
 	EVEDBDgmTypeAttribute *attribute = [[skill attributesDictionary] valueForKey:@"275"];
 	cell.skillLabel.text = [NSString stringWithFormat:@"%@ (x%d)", skill.typeName, (int) attribute.value];
-	cell.skillPointsLabel.text = [NSString stringWithFormat:@"SP: %@", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skill.requiredSP] numberStyle:NSNumberFormatterDecimalStyle]];
-	cell.levelLabel.text = [NSString stringWithFormat:@"Level %d", skill.requiredLevel];
+	cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skill.requiredSP] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), skill.requiredLevel];
 	NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
 	cell.remainingLabel.text = [NSString stringWithTimeLeft:trainingTime];
 	return cell;
@@ -176,7 +176,7 @@
 		[self dismissModalViewControllerAnimated:YES];
 	}
 	else if (buttonIndex == 2) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Merge" name:@"Merging Skill Plans"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Merge" name:NSLocalizedString(@"Merging Skill Plans", nil)];
 		__block SkillPlan* skillPlanTmp = nil;
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -218,7 +218,7 @@
 @implementation SkillPlanViewController(Private)
 
 - (void) loadData {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Load" name:@"Updating Training Time"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Load" name:NSLocalizedString(@"Updating Training Time", nil)];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -239,7 +239,7 @@
 		[skillPlan release];
 		if (![operation isCancelled]) {
 			skillPlan = skillPlanTmp;
-			trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:skillPlan.trainingTime]] : @"Skill plan is empty";
+			trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 			
 			[skillsTableView reloadData];
 			self.navigationItem.rightBarButtonItem.enabled = YES;

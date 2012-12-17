@@ -291,7 +291,7 @@
 	NSMutableArray *groups = [NSMutableArray array];
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
@@ -351,7 +351,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValues = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Filter" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled] || searchString.length < 2)
 			return;

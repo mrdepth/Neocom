@@ -11,9 +11,9 @@
 
 #define EUHTTPServerErrorDomain @"EUHTTPServerErrorDomain"
 
-#define EUHTTPServerErrorNoSocketsAvailable @"No sockets available"
-#define EUHTTPServerErrorCouldNotBindToIPv4Address @"Could not bind to IPv4 address"
-#define EUHTTPServerErrorCouldNotBindOrEstablishNetService @"Could not bind or establish Net Service"
+#define EUHTTPServerErrorNoSocketsAvailable NSLocalizedString(@"No sockets available", nil)
+#define EUHTTPServerErrorCouldNotBindToIPv4Address NSLocalizedString(@"Could not bind to IPv4 address", nil)
+#define EUHTTPServerErrorCouldNotBindOrEstablishNetService NSLocalizedString(@"Could not bind or establish Net Service", nil)
 
 typedef enum {
 	EUHTTPServerErrorCodeNoSocketsAvailable = 1,

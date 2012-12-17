@@ -186,7 +186,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
 	if (application.applicationState == UIApplicationStateActive) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alert show];
 		[alert release];
 	}
@@ -224,7 +224,7 @@
 	if (currentAccount && ((currentAccount.charAccessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
 		NSMutableArray* wars = [NSMutableArray array];
 		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:@"Checking War Declarations"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:NSLocalizedString(@"Checking War Declarations", nil)];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EUMailBox* mailBox = [currentAccount mailBox];
@@ -256,10 +256,16 @@
 			if (wars.count > 0) {
 				NSString* s = [wars componentsJoinedByString:@", "];
 				BOOL multiple = wars.count > 1;
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:multiple ? @"Declarations of war!" : @"Declaration of war!"
-																	message:[NSString stringWithFormat:@"%@ %@ declared war against you! Fly safe.", s, multiple ? @"have" : @"has"]
+				NSString* message;
+				if (multiple)
+					message = [NSString stringWithFormat:NSLocalizedString(@"%@ have declared war against you! Fly safe.", nil), s];
+				else
+					message = [NSString stringWithFormat:NSLocalizedString(@"%@ has declared war against you! Fly safe.", nil), s];
+				
+				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:multiple ? NSLocalizedString(@"Declarations of war!", nil) : NSLocalizedString(@"Declaration of war!", nil)
+																	message:message
 																   delegate:nil
-														  cancelButtonTitle:@"Ok"
+														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 														  otherButtonTitles:nil];
 				[alertView show];
 				[alertView release];
@@ -436,7 +442,7 @@
 	[adView removeFromSuperview];
 	[adView release];
 	adView = nil;
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Thanks for the donation" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
 	[alertView autorelease];
 }
@@ -449,7 +455,7 @@
 	[adView removeFromSuperview];
 	[adView release];
 	adView = nil;
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Your donation status has been restored" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
 	[alertView autorelease];
 }
@@ -465,7 +471,7 @@
 - (void) updateNotifications {
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:@"Updating Notifications"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:NSLocalizedString(@"Updating Notifications", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;
@@ -487,7 +493,7 @@
 							NSTimeInterval dif = [endTime timeIntervalSinceNow];
 							if (dif > 3600 * 24) {
 								UILocalNotification *notification = [[UILocalNotification alloc] init];
-								notification.alertBody = [NSString stringWithFormat:@"%@ has less than 24 hours training left.", item.characterName];
+								notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), item.characterName];
 								notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
 								EVEAccount *account = [EVEAccount accountWithCharacter:item];
 								notification.userInfo = [account dictionary];
@@ -527,7 +533,7 @@
 			}
 		}
 	}
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:@"Adding API Key"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:NSLocalizedString(@"Adding API Key", nil)];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -541,7 +547,7 @@
 			[[UIAlertView alertViewWithError:error] show];
 		}
 		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"API Key added" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"API Key added", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 			[alertView show];
 			[alertView release];
 			[[NSNotificationCenter defaultCenter] postNotificationName:NotificationAccountStoargeDidChange object:nil];

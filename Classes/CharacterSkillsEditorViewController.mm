@@ -18,10 +18,10 @@
 #import "UIImageView+GIF.h"
 #import "ItemViewController.h"
 
-#define ActionButtonDuplicate @"Duplicate"
-#define ActionButtonRename @"Rename"
-#define ActionButtonDelete @"Delete"
-#define ActionButtonCancel @"Cancel"
+#define ActionButtonDuplicate NSLocalizedString(@"Duplicate", nil)
+#define ActionButtonRename NSLocalizedString(@"Rename", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 
 @interface CharacterSkillsEditorViewController(Private)
@@ -62,7 +62,7 @@
 {
     [super viewDidLoad];
 	self.title = character.name;
-	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onOptions:)] autorelease]];
+	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOptions:)] autorelease]];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
@@ -70,7 +70,7 @@
 	
 	__block NSArray* sectionsTmp = nil;
 	groups = [[NSMutableDictionary alloc] init];
-	EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterSkillsEditorViewController+load" name:@"Loading Skills"];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterSkillsEditorViewController+load" name:NSLocalizedString(@"Loading Skills", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
@@ -280,7 +280,7 @@
 	
 	if ([button isEqualToString:ActionButtonDuplicate]) {
 		self.character = [CharacterCustom characterWithCharacter:character];
-		self.character.name = [self.character.name stringByAppendingString:@" Copy"];
+		self.character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
 		self.title = self.character.name;
 		[character save];
 	}
@@ -300,7 +300,7 @@
 - (void) skillLevelsViewController:(SkillLevelsViewController*) controller didSelectLevel:(NSInteger) level {
 	if ([character isKindOfClass:[CharacterEVE class]]) {
 		self.character = [CharacterCustom characterWithCharacter:character];
-		self.character.name = [self.character.name stringByAppendingString:@" Copy"];
+		self.character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
 		self.title = self.character.name;
 	}
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

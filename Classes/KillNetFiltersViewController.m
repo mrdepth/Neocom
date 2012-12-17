@@ -22,25 +22,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Search Criteria";
+	self.title = NSLocalizedString(@"Search Criteria", nil);
 	self.filters = [NSMutableArray arrayWithObjects:
-					@{@"title" : @"Start Date", @"filterType" : @(KillNetFilterTypeStartDate), @"key" : EVEKillNetLogFilterStartDate},
-					@{@"title" : @"End Date", @"filterType" : @(KillNetFilterTypeEndDate), @"key" : EVEKillNetLogFilterEndDate},
-					@{@"title" : @"Solar System", @"filterType" : @(KillNetFilterTypeSolarSystem), @"key" : EVEKillNetLogFilterSystem},
-					@{@"title" : @"Region", @"filterType" : @(KillNetFilterTypeRegion), @"key" : EVEKillNetLogFilterRegion},
-					@{@"title" : @"Victim Pilot", @"filterType" : @(KillNetFilterTypeVictimPilot), @"key" : EVEKillNetLogFilterVictimPilot},
-					@{@"title" : @"Victim Corp", @"filterType" : @(KillNetFilterTypeVictimCorp), @"key" : EVEKillNetLogFilterVictimCorp},
-					@{@"title" : @"Victim Alliance", @"filterType" : @(KillNetFilterTypeVictimAlliance), @"key" : EVEKillNetLogFilterVictimAlliance},
-					@{@"title" : @"Victim Ship", @"filterType" : @(KillNetFilterTypeVictimShip), @"key" : EVEKillNetLogFilterVictimShip},
-					@{@"title" : @"Victim Ship Class", @"filterType" : @(KillNetFilterTypeVictimShipClass), @"key" : EVEKillNetLogFilterVictimShipClass},
-					@{@"title" : @"Attacker Pilot", @"filterType" : @(KillNetFilterTypeAttackerPilot), @"key" : EVEKillNetLogFilterInvolvedPilot},
-					@{@"title" : @"Attacker Corp", @"filterType" : @(KillNetFilterTypeAttackerCorp), @"key" : EVEKillNetLogFilterInvolvedCorp},
-					@{@"title" : @"Attacker Alliance", @"filterType" : @(KillNetFilterTypeAttackerAlliance), @"key" : EVEKillNetLogFilterInvolvedAlliance},
-					@{@"title" : @"Attacker Ship", @"filterType" : @(KillNetFilterTypeAttackerShip), @"key" : EVEKillNetLogFilterInvolvedShip},
-					@{@"title" : @"Attacker Ship Class", @"filterType" : @(KillNetFilterTypeAttackerShipClass), @"key" : EVEKillNetLogFilterInvolvedShipClass},
-					@{@"title" : @"Combined Pilot", @"filterType" : @(KillNetFilterTypeCombinedPilot), @"key" : EVEKillNetLogFilterCombinedPilot},
-					@{@"title" : @"Combined Corp", @"filterType" : @(KillNetFilterTypeCombinedCorp), @"key" : EVEKillNetLogFilterCombinedCorp},
-					@{@"title" : @"Combined Alliance", @"filterType" : @(KillNetFilterTypeCombinedAlliance), @"key" : EVEKillNetLogFilterCombinedAlliance},
+					@{@"title" : NSLocalizedString(@"Start Date", nil), @"filterType" : @(KillNetFilterTypeStartDate), @"key" : EVEKillNetLogFilterStartDate},
+					@{@"title" : NSLocalizedString(@"End Date", nil), @"filterType" : @(KillNetFilterTypeEndDate), @"key" : EVEKillNetLogFilterEndDate},
+					@{@"title" : NSLocalizedString(@"Solar System", nil), @"filterType" : @(KillNetFilterTypeSolarSystem), @"key" : EVEKillNetLogFilterSystem},
+					@{@"title" : NSLocalizedString(@"Region", nil), @"filterType" : @(KillNetFilterTypeRegion), @"key" : EVEKillNetLogFilterRegion},
+					@{@"title" : NSLocalizedString(@"Victim Pilot", nil), @"filterType" : @(KillNetFilterTypeVictimPilot), @"key" : EVEKillNetLogFilterVictimPilot},
+					@{@"title" : NSLocalizedString(@"Victim Corp", nil), @"filterType" : @(KillNetFilterTypeVictimCorp), @"key" : EVEKillNetLogFilterVictimCorp},
+					@{@"title" : NSLocalizedString(@"Victim Alliance", nil), @"filterType" : @(KillNetFilterTypeVictimAlliance), @"key" : EVEKillNetLogFilterVictimAlliance},
+					@{@"title" : NSLocalizedString(@"Victim Ship", nil), @"filterType" : @(KillNetFilterTypeVictimShip), @"key" : EVEKillNetLogFilterVictimShip},
+					@{@"title" : NSLocalizedString(@"Victim Ship Class", nil), @"filterType" : @(KillNetFilterTypeVictimShipClass), @"key" : EVEKillNetLogFilterVictimShipClass},
+					@{@"title" : NSLocalizedString(@"Attacker Pilot", nil), @"filterType" : @(KillNetFilterTypeAttackerPilot), @"key" : EVEKillNetLogFilterInvolvedPilot},
+					@{@"title" : NSLocalizedString(@"Attacker Corp", nil), @"filterType" : @(KillNetFilterTypeAttackerCorp), @"key" : EVEKillNetLogFilterInvolvedCorp},
+					@{@"title" : NSLocalizedString(@"Attacker Alliance", nil), @"filterType" : @(KillNetFilterTypeAttackerAlliance), @"key" : EVEKillNetLogFilterInvolvedAlliance},
+					@{@"title" : NSLocalizedString(@"Attacker Ship", nil), @"filterType" : @(KillNetFilterTypeAttackerShip), @"key" : EVEKillNetLogFilterInvolvedShip},
+					@{@"title" : NSLocalizedString(@"Attacker Ship Class", nil), @"filterType" : @(KillNetFilterTypeAttackerShipClass), @"key" : EVEKillNetLogFilterInvolvedShipClass},
+					@{@"title" : NSLocalizedString(@"Combined Pilot", nil), @"filterType" : @(KillNetFilterTypeCombinedPilot), @"key" : EVEKillNetLogFilterCombinedPilot},
+					@{@"title" : NSLocalizedString(@"Combined Corp", nil), @"filterType" : @(KillNetFilterTypeCombinedCorp), @"key" : EVEKillNetLogFilterCombinedCorp},
+					@{@"title" : NSLocalizedString(@"Combined Alliance", nil), @"filterType" : @(KillNetFilterTypeCombinedAlliance), @"key" : EVEKillNetLogFilterCombinedAlliance},
 					nil];
 
 	for (NSDictionary* usedFilter in self.usedFilters) {

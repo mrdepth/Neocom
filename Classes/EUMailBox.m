@@ -172,9 +172,9 @@
 			}
 			
 			if ([item.sentDate laterDate:today] == item.sentDate)
-				message.date = [NSString stringWithFormat:@"Today at %@", [dateFormatterTime stringFromDate:item.sentDate]];
+				message.date = [NSString stringWithFormat:NSLocalizedString(@"Today at %@", nil), [dateFormatterTime stringFromDate:item.sentDate]];
 			else if ([item.sentDate laterDate:yesterday] == item.sentDate)
-				message.date = [NSString stringWithFormat:@"Yesterday at %@", [dateFormatterTime stringFromDate:item.sentDate]];
+				message.date = [NSString stringWithFormat:NSLocalizedString(@"Yesterday at %@", nil), [dateFormatterTime stringFromDate:item.sentDate]];
 			else
 				message.date = [dateFormatterFull stringFromDate:item.sentDate];
 		}
@@ -230,23 +230,23 @@
 				if (lists.count > 0)
 					message.to = [lists componentsJoinedByString:@", "];
 				else
-					message.to = @"Unknown mailing list";
+					message.to = NSLocalizedString(@"Unknown mailing list", nil);
 			}
 			else if (message.header.toCorpOrAllianceID) {
 				NSString* to = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", message.header.toCorpOrAllianceID]];
 				if (to)
 					message.to = to;
 				else
-					message.to = @"Unknown corporation or alliance";
+					message.to = NSLocalizedString(@"Unknown corporation or alliance", nil);
 			}
 			if (!message.to)
-				message.to = @"Unknown recipient";
+				message.to = NSLocalizedString(@"Unknown recipient", nil);
 			
 			NSString* from = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", message.header.senderID]];
 			if (from)
 				message.from = from;
 			else
-				message.from = @"Unknown sender";
+				message.from = NSLocalizedString(@"Unknown sender", nil);
 		}
 		[inbox sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
 		[sent sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
@@ -256,7 +256,7 @@
 			if (sender)
 				notification.sender = sender;
 			else
-				notification.sender = @"Unknown sender";
+				notification.sender = NSLocalizedString(@"Unknown sender", nil);
 			if (!readNotifications)
 				notification.read = notification.header.read;
 			else

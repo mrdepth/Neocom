@@ -62,7 +62,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Assets";
+	self.title = NSLocalizedString(@"Assets", nil);
 	
 	if (!self.accounts) {
 		EVEAccount* account = [EVEAccount currentAccount];
@@ -77,7 +77,7 @@
 	}
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Combined" style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Combined", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)] autorelease];
 	
 	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
@@ -189,7 +189,7 @@
 
 	if (asset.parent) {
 		cell.titleLabel.numberOfLines = 2;
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@\nIn: %@", asset.name, asset.parent.name];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), asset.name, asset.parent.name];
 	}
 	else {
 		cell.titleLabel.numberOfLines = 1;
@@ -207,8 +207,8 @@
 		dic = [assets objectAtIndex:section];
 	NSInteger count = [[dic valueForKey:@"assets"] count];
 	return count == 1 ?
-			[NSString stringWithFormat:@"%@ (1 item)", [dic valueForKey:@"title"]] :
-			[NSString stringWithFormat:@"%@ (%d items)", [dic valueForKey:@"title"], count];
+			[NSString stringWithFormat:NSLocalizedString(@"%@ (1 item)", nil), [dic valueForKey:@"title"]] :
+			[NSString stringWithFormat:NSLocalizedString(@"%@ (%d items)", nil), [dic valueForKey:@"title"], count];
 }
 
 #pragma mark -
@@ -397,7 +397,7 @@
 			currentAssets = charAssets;
 		}
 		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:@"Loading Assets"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Assets", nil)];
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -407,7 +407,11 @@
 			float n = self.accounts.count;
 			float i = 0;
 			for (EVEAccount* account in self.accounts) {
-				NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
+				NSInteger characterID = account.characterID;
+				if (corporate)
+					characterID = -characterID;
+				//NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
+				NSNumber* currentID = @(characterID);
 				operation.progress = i / n;
 				
 				if ([usedIDs containsObject:currentID]) {
@@ -572,7 +576,7 @@
 					}
 					if (topLevelAssets.count > 0) {
 						[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-											  @"Unknown location", @"title",
+											  NSLocalizedString(@"Unknown location", nil), @"title",
 											  [NSNumber numberWithBool:YES], @"expanded",
 											  topLevelAssets, @"assets", nil]];
 					}
@@ -605,7 +609,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -700,7 +704,7 @@
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
 	EUFilter *filter = corporate ? corpFilter : charFilter;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Search" name:@"Searching"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);

@@ -55,7 +55,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Home";
+	self.title = NSLocalizedString(@"Home", nil);
 	[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	menuTableView.visibleTopPartHeight = 24;
@@ -272,7 +272,7 @@
 - (void) loadMail {
 	EVEAccount* currentAccount = [EVEAccount currentAccount];
 	if (currentAccount) {
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:@"Checking Mail"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:NSLocalizedString(@"Checking Mail", nil)];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];

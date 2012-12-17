@@ -139,11 +139,11 @@
 }
 
 - (IBAction)onAddToTrainingPlan {
-	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Add to skill plan?"
-														message:[NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:certificate.trainingQueue.trainingTime]]
+	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+														message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:certificate.trainingQueue.trainingTime]]
 													   delegate:self
-											  cancelButtonTitle:@"No"
-											  otherButtonTitles:@"Yes", nil];
+											  cancelButtonTitle:NSLocalizedString(@"No", nil)
+											  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
 	[alertView show];
 	[alertView release];
 }
@@ -165,10 +165,10 @@
 		for (EVEDBInvTypeRequiredSkill* skill in certificate.trainingQueue.skills)
 			[skillPlan addSkill:skill];
 		[skillPlan save];
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Skill plan updated"
-															message:[NSString stringWithFormat:@"Total training time: %@", [NSString stringWithTimeLeft:skillPlan.trainingTime]]
+		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Skill plan updated", nil)
+															message:[NSString stringWithFormat:NSLocalizedString(@"Total training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]]
 														   delegate:nil
-												  cancelButtonTitle:@"Ok"
+												  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 												  otherButtonTitles:nil];
 		[alertView show];
 		[alertView autorelease];
@@ -237,13 +237,13 @@
 	relationshipView.statusView.image = [self imageForState:state];
 	relationshipView.color = [self colorForState:state];
 	[skill.trainingQueue addSkill:skill];
-	relationshipView.titleLabel.text = [NSString stringWithFormat:@"%@\nLevel %d", skill.typeName, skill.requiredLevel];
+	relationshipView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nLevel %d", nil), skill.typeName, skill.requiredLevel];
 
 	return relationshipView;
 }
 
 - (void) loadCertificate {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadCertificate" name:@"Loading Certificate"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadCertificate" name:NSLocalizedString(@"Loading Certificate", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		[certificate state];
@@ -282,7 +282,7 @@
 		}
 		else {
 			if ([[EVEAccount currentAccount] skillPlan]) {
-				certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@ (Tap to add to training plan)", certificate.certificateClass.className, certificate.gradeText];
+				certificateView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@ (Tap to add to training plan)", nil), certificate.certificateClass.className, certificate.gradeText];
 				UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAddToTrainingPlan)];
 				[certificateView addGestureRecognizer:tapGestureRecognizer];
 				[tapGestureRecognizer release];
@@ -290,7 +290,7 @@
 			else
 				certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", certificate.certificateClass.className, certificate.gradeText];
 
-			certificateView.descriptionLabel.text = [NSString stringWithFormat:@"Training time: \n\n%@", certificate.description];
+			certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: \n\n%@", nil), certificate.description];
 		}
 		
 		[certificateView sizeToFit];
@@ -365,14 +365,14 @@
 }
 
 - (void) loadTrainingTimes {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadTrainingTimes" name:@"Calculating Training Time"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadTrainingTimes" name:NSLocalizedString(@"Calculating Training Time", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
 		NSTimeInterval trainingTime = certificate.trainingQueue.trainingTime;
 		if (trainingTime > 0)
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-				certificateView.descriptionLabel.text = [NSString stringWithFormat:@"Training time: %@\n\n%@", [NSString stringWithTimeLeft:trainingTime], certificate.description];
+				certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@\n\n%@", nil), [NSString stringWithTimeLeft:trainingTime], certificate.description];
 			}];
 		
 		float n = prerequisites.count + derivations.count;
@@ -385,12 +385,12 @@
 			if (relationshipView.certificate) {
 				NSTimeInterval trainingTime = relationshipView.certificate.trainingQueue.trainingTime;
 				if (trainingTime > 0)
-					text = [NSString stringWithFormat:@"%@\n%@ (Training time: %@)", relationshipView.certificate.certificateClass.className, relationshipView.certificate.gradeText, [NSString stringWithTimeLeft:trainingTime]];
+					text = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@ (Training time: %@)", nil), relationshipView.certificate.certificateClass.className, relationshipView.certificate.gradeText, [NSString stringWithTimeLeft:trainingTime]];
 			}
 			else if (relationshipView.type) {
 				NSTimeInterval trainingTime = relationshipView.type.trainingQueue.trainingTime;
 				if (trainingTime > 0)
-					text = [NSString stringWithFormat:@"%@\nLevel %d (Training time: %@)", relationshipView.type.typeName, relationshipView.type.requiredLevel, [NSString stringWithTimeLeft:trainingTime]];
+					text = [NSString stringWithFormat:NSLocalizedString(@"%@\nLevel %d (Training time: %@)", nil), relationshipView.type.typeName, relationshipView.type.requiredLevel, [NSString stringWithTimeLeft:trainingTime]];
 			}
 			if (text)
 				[relationshipView.titleLabel performSelectorOnMainThread:@selector(setText:) withObject:text waitUntilDone:NO];

@@ -47,7 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(onSave:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSave:)] autorelease];
 	self.title = damagePattern.patternName;
 	titleTextField.text = damagePattern.patternName;
 	
@@ -61,7 +61,7 @@
 	explosiveTextField.text = [NSString stringWithFormat:@"%d", (int) (damagePattern.explosiveAmount * 100)];
 	
 	totalDamageLabel.progress = damagePattern.emAmount + damagePattern.thermalAmount + damagePattern.kineticAmount + damagePattern.explosiveAmount;
-	totalDamageLabel.text = [NSString stringWithFormat:@"Total: %d%%", (int)(totalDamageLabel.progress * 100)];
+	totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(totalDamageLabel.progress * 100)];
 
 	
     // Do any additional setup after loading the view from its nib.
@@ -177,7 +177,7 @@
 	float explosive = [explosiveTextField.text floatValue] / 100.0;
 	float total = em + thermal + kinetic + explosive;
 	totalDamageLabel.progress = total;
-	totalDamageLabel.text = [NSString stringWithFormat:@"Total: %d%%", (int)(total * 100)];
+	totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(total * 100)];
 	emTextField.progress = em;
 	thermalTextField.progress = thermal;
 	kineticTextField.progress = kinetic;

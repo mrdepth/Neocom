@@ -18,9 +18,9 @@
 #import "ItemInfo.h"
 #import "Fit.h"
 
-#define ActionButtonCancel @"Cancel"
-#define ActionButtonDelete @"Delete"
-#define ActionButtonShowInfo @"Show Info"
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
 
 @implementation ImplantsViewController
 @synthesize fittingViewController;
@@ -118,7 +118,7 @@
 			cell = [ModuleCellView cellWithNibName:@"ModuleCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.iconView.image = [UIImage imageNamed:indexPath.section == 0 ? @"implant.png" : @"booster.png"];
-		cell.titleLabel.text = [NSString stringWithFormat:@"Slot %d", indexPath.row + 1];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), indexPath.row + 1];
 		cell.stateView.image = nil;
 		return cell;
 	}
@@ -171,7 +171,7 @@
 			fittingItemsViewController.groupsRequest = [NSString stringWithFormat:@"SELECT * FROM invGroups WHERE groupID IN (%@) ORDER BY groupName;", groups];
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   groups];
-			fittingItemsViewController.title = @"Implants";
+			fittingItemsViewController.title = NSLocalizedString(@"Implants", nil);
 			fittingItemsViewController.group = nil;
 		}
 		else {
@@ -180,7 +180,7 @@
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=%d AND dgmTypeAttributes.value=%d int (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   attributeID, indexPath.row + 1, groups];
 			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:303 error:nil];
-			fittingItemsViewController.title = @"Boosters";
+			fittingItemsViewController.title = NSLocalizedString(@"Boosters", nil);
 		}
 		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -255,7 +255,7 @@
 	NSMutableDictionary *boostersTmp = [NSMutableDictionary dictionary];
 	FittingViewController* aFittingViewController = fittingViewController;
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:@"Updating Implants"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:NSLocalizedString(@"Updating Implants", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {

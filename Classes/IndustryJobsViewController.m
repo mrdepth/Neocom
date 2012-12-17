@@ -48,7 +48,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Industry Jobs";
+	self.title = NSLocalizedString(@"Industry Jobs", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
@@ -324,7 +324,7 @@
 		}
 		
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"IndustryJobsViewController+Load%d", corporate] name:@"Loading Industry Jobs"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"IndustryJobsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Industry Jobs", nil)];
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -373,7 +373,7 @@
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					else if (66014934 < job.installedItemLocationID && job.installedItemLocationID < 67999999) { //staStations
 						int locationID = job.installedItemLocationID - 6000000;
@@ -386,7 +386,7 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					else if (60014861 < job.installedItemLocationID && job.installedItemLocationID < 60014928) { //ConqStations
 						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
@@ -398,14 +398,14 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					else if (60000000 < job.installedItemLocationID && job.installedItemLocationID < 61000000) { //staStations
 						EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:job.installedItemLocationID error:nil];
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					else if (61000000 <= job.installedItemLocationID) { //ConqStations
 						EVEConquerableStationListItem *conquerableStation = [[conquerableStations self] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
@@ -417,7 +417,7 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					else { //mapDenormalize
 						EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:job.installedItemLocationID error:nil];
@@ -428,7 +428,7 @@
 								location = denormalize.itemName;
 						}
 						else
-							location = @"Unknown";
+							location = NSLocalizedString(@"Unknown", nil);
 					}
 					
 					NSString *status;
@@ -437,51 +437,51 @@
 						if (remainsTime > 0) {
 							NSTimeInterval productionTime = [job.endProductionTime timeIntervalSinceDate:job.beginProductionTime];
 							NSTimeInterval progressTime = [currentTime timeIntervalSinceDate:job.beginProductionTime];
-							remains = [NSString stringWithFormat:@"Remaining: %@ (%d%%)", [NSString stringWithTimeLeft:remainsTime], (int) (progressTime * 100 / productionTime)];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Remaining: %@ (%d%%)", nil), [NSString stringWithTimeLeft:remainsTime], (int) (progressTime * 100 / productionTime)];
 							remainsColor = [UIColor yellowColor];
-							status = @"In Progress";
+							status = NSLocalizedString(@"In Progress", nil);
 						}
 						else {
-							remains = [NSString stringWithFormat:@"Completed: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor greenColor];
-							status = @"Completed";
+							status = NSLocalizedString(@"Completed", nil);
 						}
 					}
 					else {
 						if (job.completedStatus == 0) {
-							remains = [NSString stringWithFormat:@"Failed: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Failed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor redColor];
-							status = @"Failed";
+							status = NSLocalizedString(@"Failed", nil);
 						}
 						else if (job.completedStatus == 1) {
-							remains = [NSString stringWithFormat:@"Delivered: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Delivered: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor greenColor];
-							status = @"Delivered";
+							status = NSLocalizedString(@"Delivered", nil);
 						}
 						else if (job.completedStatus == 2) {
-							remains = [NSString stringWithFormat:@"Aborted: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Aborted: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor redColor];
-							status = @"Aborted";
+							status = NSLocalizedString(@"Aborted", nil);
 						}
 						else if (job.completedStatus == 3) {
-							remains = [NSString stringWithFormat:@"GM aborted: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"GM aborted: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor redColor];
-							status = @"GM aborted";
+							status = NSLocalizedString(@"GM aborted", nil);
 						}
 						else if (job.completedStatus == 4) {
-							remains = [NSString stringWithFormat:@"Inflight unanchored: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Inflight unanchored: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor redColor];
-							status = @"Inflight unanchored";
+							status = NSLocalizedString(@"Inflight unanchored", nil);
 						}
 						else if (job.completedStatus == 5) {
-							remains = [NSString stringWithFormat:@"Destroyed: %@", [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Destroyed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
 							remainsColor = [UIColor redColor];
-							status = @"Destroyed";
+							status = NSLocalizedString(@"Destroyed", nil);
 						}
 						else {
-							remains = @"Unknown";
+							remains = NSLocalizedString(@"Unknown", nil);
 							remainsColor = [UIColor redColor];
-							status = @"Unknown";
+							status = NSLocalizedString(@"Unknown", nil);
 						}
 					}
 					[charIDs addObject:charID];
@@ -491,7 +491,7 @@
 					[jobsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										remains, @"remains",
 										remainsColor, @"remainsColor",
-										[NSString stringWithFormat:@"%@ (%d runs)", type.typeName, job.runs], @"typeName",
+										[NSString stringWithFormat:NSLocalizedString(@"%@ (%d runs)", nil), type.typeName, job.runs], @"typeName",
 										[type typeSmallImageName], @"imageName",
 										location, @"location",
 										charID, @"charID",
@@ -548,7 +548,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[jobsTmp addObjectsFromArray:[filter applyToValues:currentJobs]];
@@ -631,7 +631,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *job in jobs) {

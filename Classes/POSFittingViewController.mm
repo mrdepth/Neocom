@@ -20,13 +20,13 @@
 
 #include "eufe.h"
 
-#define ActionButtonBack @"Back"
-#define ActionButtonSetName @"Set Fit Name"
-#define ActionButtonSave @"Save Fit"
-#define ActionButtonAreaEffect @"Select Area Effect"
-#define ActionButtonClearAreaEffect @"Clear Area Effect"
-#define ActionButtonSetDamagePattern @"Set Damage Pattern"
-#define ActionButtonCancel @"Cancel"
+#define ActionButtonBack NSLocalizedString(@"Back", nil)
+#define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
+#define ActionButtonSave NSLocalizedString(@"Save Fit", nil)
+#define ActionButtonAreaEffect NSLocalizedString(@"Select Area Effect", nil)
+#define ActionButtonClearAreaEffect NSLocalizedString(@"Clear Area Effect", nil)
+#define ActionButtonSetDamagePattern NSLocalizedString(@"Set Damage Pattern", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface POSFittingViewController(Private)
 
@@ -73,7 +73,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)] autorelease];
 	
 	self.fitNameTextField.text = fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
@@ -105,7 +105,7 @@
 	
 	priceManager = [[PriceManager alloc] init];
 	
-	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
+	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
 	[self update];
 }
 

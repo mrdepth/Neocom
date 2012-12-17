@@ -28,7 +28,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Tutorial";
+	self.title = NSLocalizedString(@"Tutorial", nil);
 	NSArray *images = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tutorial" ofType:@"plist"]]];
 	int x = 20;
 	for (NSString *imageName in images) {

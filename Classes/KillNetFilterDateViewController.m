@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
 	self.contentSizeForViewInPopover = self.view.frame.size;
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(onDone:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStyleDone target:self action:@selector(onDone:)] autorelease];
 	self.titleLabel.text = self.title;
 
 	self.datePicker.minimumDate = self.minimumDate;

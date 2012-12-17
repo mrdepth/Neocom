@@ -47,16 +47,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Mail";
+	self.title = NSLocalizedString(@"Mail", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
-		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Mark as read" style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
 	}
 	else
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Mark as read" style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
@@ -260,7 +260,7 @@
 	else
 		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+LoadMessage" name:@"Loading Message Body"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+LoadMessage" name:NSLocalizedString(@"Loading Message Body", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[message text];
@@ -284,7 +284,7 @@
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 				navController.modalPresentationStyle = UIModalPresentationFormSheet;
-				[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+				[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 				[self presentModalViewController:navController animated:YES];
 				[navController release];
 			}
@@ -354,13 +354,13 @@
 	if (!mailBox) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mailMessagesFilter" ofType:@"plist"]]];
 		__block EUMailBox* mailBoxTmp = nil;
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Load" name:@"Loading Messages"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Load" name:NSLocalizedString(@"Loading Messages", nil)];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			//mailBoxTmp = [[EUMailBox alloc] initWithAccount:[EVEAccount currentAccount]];
 			mailBoxTmp = [[[EVEAccount currentAccount] mailBox] retain];
 			if (!mailBoxTmp.inbox) {
-				NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"Neocom" code:0 userInfo:[NSDictionary dictionaryWithObject:@"Unknown error" forKey:NSLocalizedDescriptionKey]];
+				NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"Neocom" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown error", nil) forKey:NSLocalizedDescriptionKey]];
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 				[mailBoxTmp release];
 				mailBoxTmp = nil;
@@ -391,7 +391,7 @@
 	else {
 		NSMutableArray* messagesTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[messagesTmp addObject:[filter applyToValues:mailBox.inbox]];
@@ -455,7 +455,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSArray* section in messages) {

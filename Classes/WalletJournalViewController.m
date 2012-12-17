@@ -55,7 +55,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Wallet Journal";
+	self.title = NSLocalizedString(@"Wallet Journal", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
@@ -268,7 +268,7 @@
 	}
 	
 	if (balance)
-		return [NSString stringWithFormat:@"Balance: %@ ISK", [NSNumberFormatter localizedStringFromNumber:balance numberStyle:NSNumberFormatterDecimalStyle]];
+		return [NSString stringWithFormat:NSLocalizedString(@"Balance: %@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:balance numberStyle:NSNumberFormatterDecimalStyle]];
 	else
 		return @"";
 }
@@ -383,7 +383,7 @@
 			charWalletJournal = [[NSMutableArray alloc] init];
 			NSMutableArray *charWalletJournalTmp = [NSMutableArray array];
 			EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletJournalFilter" ofType:@"plist"]]];
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CharacterWallet" name:@"Loading Character Journal"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CharacterWallet" name:NSLocalizedString(@"Loading Character Journal", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSError *error = nil;
@@ -413,9 +413,9 @@
 							name = transaction.ownerName1;
 						NSMutableDictionary* row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 													[dateFormatter stringFromDate:transaction.date], @"date",
-													[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.amount + transaction.taxAmount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
-													[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.balance] numberStyle:NSNumberFormatterDecimalStyle]], @"balance",
-													transaction.amount < 0 ? @"Outgo" : @"Income", @"direction",
+													[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.amount + transaction.taxAmount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
+													[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.balance] numberStyle:NSNumberFormatterDecimalStyle]], @"balance",
+													transaction.amount < 0 ? NSLocalizedString(@"Outgo", nil) : NSLocalizedString(@"Income", nil), @"direction",
 													[NSNumber numberWithBool:transaction.amount < 0], @"outgo",
 													nil];
 						if (name)
@@ -425,10 +425,10 @@
 						if (refType)
 							[row setValue:refType.refTypeName forKey:@"title"];
 						else
-							[row setValue:[NSString stringWithFormat:@"Unknown refTypeID %d", transaction.refTypeID]  forKey:@"title"];
+							[row setValue:[NSString stringWithFormat:NSLocalizedString(@"Unknown refTypeID %d", nil), transaction.refTypeID]  forKey:@"title"];
 						
 						if (transaction.taxAmount > 0) {
-							NSMutableString *tax = [NSMutableString stringWithFormat:@"-%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:transaction.taxAmount] numberStyle:NSNumberFormatterDecimalStyle]];
+							NSMutableString *tax = [NSMutableString stringWithFormat:NSLocalizedString(@"-%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:transaction.taxAmount] numberStyle:NSNumberFormatterDecimalStyle]];
 							if (transaction.amount > 0)
 								[tax appendFormat:@" (%d%%)", (int)(transaction.taxAmount / (transaction.amount + transaction.taxAmount) * 100)];
 							[row setValue:tax forKey:@"tax"];
@@ -462,7 +462,7 @@
 		else {
 			NSMutableArray *journalTmp = [NSMutableArray array];
 			if (charFilter) {
-				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:@"Applying Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[journalTmp addObjectsFromArray:[charFilter applyToValues:charWalletJournal]];
@@ -508,7 +508,7 @@
 			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:corpWalletJournal];
 			EUFilter *filter = corpFilter ? [[corpFilter copy] autorelease] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletJournalFilter" ofType:@"plist"]]];
 			
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpWallet" name:@"Loading Corp Journal"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpWallet" name:NSLocalizedString(@"Loading Corp Journal", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -518,7 +518,7 @@
 				__block float i = 0;
 				[accountsToLoad enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 					NSMutableArray *account = [NSMutableArray array];
-					EUOperation *loadingOperation = [EUOperation operationWithIdentifier:nil name:@"Loading Journal Details"];
+					EUOperation *loadingOperation = [EUOperation operationWithIdentifier:nil name:NSLocalizedString(@"Loading Journal Details", nil)];
 					[loadingOperation addExecutionBlock:^{
 						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 						[account addObjectsFromArray:[self downloadWalletJournalWithAccountIndex:idx]];
@@ -558,7 +558,7 @@
 		else {
 			NSMutableArray *journalTmp = [NSMutableArray array];
 			if (corpFilter) {
-				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:@"Applying Filter"];
+				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 				[operation addExecutionBlock:^(void) {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[journalTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletJournal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
@@ -616,9 +616,9 @@
 			
 			NSMutableDictionary* row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 										[dateFormatter stringFromDate:transaction.date], @"date",
-										[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.amount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
-										[NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.balance] numberStyle:NSNumberFormatterDecimalStyle]], @"balance",
-										transaction.amount < 0 ? @"Outgo" : @"Income", @"direction",
+										[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.amount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
+										[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.balance] numberStyle:NSNumberFormatterDecimalStyle]], @"balance",
+										transaction.amount < 0 ? NSLocalizedString(@"Outgo", nil) : NSLocalizedString(@"Income", nil), @"direction",
 										[NSNumber numberWithBool:transaction.amount < 0], @"outgo",
 										nil];
 			if (name)
@@ -628,7 +628,7 @@
 			if (refType)
 				[row setValue:refType.refTypeName forKey:@"title"];
 			else
-				[row setValue:[NSString stringWithFormat:@"Unknown refTypeID %d", transaction.refTypeID] forKey:@"title"];
+				[row setValue:[NSString stringWithFormat:NSLocalizedString(@"Unknown refTypeID %d", nil), transaction.refTypeID] forKey:@"title"];
 
 			if (transaction.ownerName1.length > 0)
 				[row setValue:transaction.ownerName1 forKey:@"ownerName1"];
@@ -646,7 +646,7 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance" name:@"Loading Account Balance"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Account Balance", nil)];
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -736,7 +736,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Search" name:@"Searching"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *transcation in walletJournal) {

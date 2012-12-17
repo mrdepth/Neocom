@@ -22,12 +22,12 @@
 #import "SkillPlannerImportViewController.h"
 #import "BrowserViewController.h"
 
-#define ActionButtonLevel1 @"Train to Level 1"
-#define ActionButtonLevel2 @"Train to Level 2"
-#define ActionButtonLevel3 @"Train to Level 3"
-#define ActionButtonLevel4 @"Train to Level 4"
-#define ActionButtonLevel5 @"Train to Level 5"
-#define ActionButtonCancel @"Cancel"
+#define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
+#define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
+#define ActionButtonLevel3 NSLocalizedString(@"Train to Level 3", nil)
+#define ActionButtonLevel4 NSLocalizedString(@"Train to Level 4", nil)
+#define ActionButtonLevel5 NSLocalizedString(@"Train to Level 5", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface SkillPlannerViewController(Private)
 
@@ -78,7 +78,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Skill Planner";
+	self.title = NSLocalizedString(@"Skill Planner", nil);
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
     // Do any additional setup after loading the view from its nib.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddSkill:) name:NotificationSkillPlanDidAddSkill object:nil];
@@ -155,15 +155,15 @@
 		}
 		
 		if (indexPath.row == 0) {
-			cell.titleLabel.text = @"Clear skill plan";
+			cell.titleLabel.text = NSLocalizedString(@"Clear skill plan", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon77_12.png"];
 		}
 		else if (indexPath.row == 1) {
-			cell.titleLabel.text = @"Import skill plan from EVEMon";
+			cell.titleLabel.text = NSLocalizedString(@"Import skill plan from EVEMon", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"EVEMonLogoBlue.png"];
 		}
 		else {
-			cell.titleLabel.text = @"Importing tutorial";
+			cell.titleLabel.text = NSLocalizedString(@"Importing tutorial", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
 		}
 		return cell;
@@ -193,8 +193,8 @@
 		
 		EVEDBDgmTypeAttribute *attribute = [[skill attributesDictionary] valueForKey:@"275"];
 		cell.skillLabel.text = [NSString stringWithFormat:@"%@ (x%d)", skill.typeName, (int) attribute.value];
-		cell.skillPointsLabel.text = [NSString stringWithFormat:@"SP: %@", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skill.requiredSP] numberStyle:NSNumberFormatterDecimalStyle]];
-		cell.levelLabel.text = [NSString stringWithFormat:@"Level %d", skill.requiredLevel];
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skill.requiredSP] numberStyle:NSNumberFormatterDecimalStyle]];
+		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), skill.requiredLevel];
 		NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
 		cell.remainingLabel.text = [NSString stringWithTimeLeft:trainingTime];
 		return cell;
@@ -287,11 +287,11 @@
 	}
 	else {
 		if (indexPath.row == 0) {
-			UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Clear skill plan?"
+			UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Clear skill plan?", nil)
 																message:@""
 															   delegate:self
-													  cancelButtonTitle:@"No"
-													  otherButtonTitles:@"Yes", nil];
+													  cancelButtonTitle:NSLocalizedString(@"No", nil)
+													  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
 			[alertView show];
 			[alertView autorelease];
 		}
@@ -311,7 +311,7 @@
 		else {
 			BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
 			NSString* path = [[NSBundle mainBundle] pathForResource:@"ImportingTutorial/index" ofType:@"html"];
-			controller.title = @"Importing tutorial";
+			controller.title = NSLocalizedString(@"Importing tutorial", nil);
 			controller.startPageURL = [NSURL fileURLWithPath:path];
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				controller.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -410,7 +410,7 @@
 @implementation SkillPlannerViewController(Private)
 
 - (void) loadData {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:@"Loading Skill Plan"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:NSLocalizedString(@"Loading Skill Plan", nil)];
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -490,7 +490,7 @@
 }
 
 - (void) reloadTrainingTime {
-	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:@"Training time: %@", [NSString stringWithTimeLeft:skillPlan.trainingTime]] : @"Skill plan is empty";
+	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 }
 
 @end

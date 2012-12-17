@@ -56,8 +56,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Import";
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	self.title = NSLocalizedString(@"Import", nil);
+	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 
 	NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:[Globals documentsDirectory]];
 	rows = [[NSMutableArray alloc] init];
@@ -127,7 +127,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return section == 0 ? @"Import via Internet Browser" : @"Skill Plans";
+	return section == 0 ? NSLocalizedString(@"Import via Internet Browser", nil) : NSLocalizedString(@"Skill Plans", nil);
 }
 
 #pragma mark -
@@ -157,7 +157,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 1) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load" name:@"Importing Skill Plan"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load" name:NSLocalizedString(@"Importing Skill Plan", nil)];
 		__block SkillPlan* skillPlan = nil;
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -202,7 +202,7 @@
 	if (arguments.count > 0) {
 		NSDictionary* argument = [arguments valueForKey:@"skillPlan"];
 		if (!argument || ![argument isKindOfClass:[NSDictionary class]]) {
-			[page replaceOccurrencesOfString:@"{error}" withString:@"File format error" options:0 range:NSMakeRange(0, page.length)];
+			[page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"File format error", nil) options:0 range:NSMakeRange(0, page.length)];
 		}
 		else {
 			canRun = NO;
@@ -221,7 +221,7 @@
 	}
 	else {
 		__block SkillPlan* skillPlan = nil;
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+didReceiveRequest" name:@"Processing Request"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+didReceiveRequest" name:NSLocalizedString(@"Processing Request", nil)];
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVEAccount *account = [EVEAccount currentAccount];
@@ -234,11 +234,11 @@
 			operation.progress = 0.5;
 			
 			if (skillPlan) {
-				[page replaceOccurrencesOfString:@"{error}" withString:@"Check your device for the next step" options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"Check your device for the next step", nil) options:0 range:NSMakeRange(0, page.length)];
 				[skillPlan trainingTime];
 			}
 			else
-				[page replaceOccurrencesOfString:@"{error}" withString:@"File format error" options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"File format error", nil) options:0 range:NSMakeRange(0, page.length)];
 
 			operation.progress = 1.0;
 			[pool release];

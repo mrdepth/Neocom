@@ -47,7 +47,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		if ([[self.navigationController viewControllers] objectAtIndex:0] == self)
-			[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)] autorelease]];
+			[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)] autorelease]];
 	}
 
 	self.title = self.certificate.certificateClass.className;
@@ -135,7 +135,7 @@
 	scrollView.maximumZoomScale = 1;
 	scrollView.minimumZoomScale = MIN(scaleX, scaleY);
 	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateViewController+load" name:@"Loading Certificates"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateViewController+load" name:NSLocalizedString(@"Loading Certificates", nil)];
 	NSMutableArray* rowsTmp = [NSMutableArray array];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{

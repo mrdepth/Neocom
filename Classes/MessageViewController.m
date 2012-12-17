@@ -43,7 +43,7 @@
 	[template replaceOccurrencesOfString:@"{subject}" withString:message.header.title ? message.header.title : @"" options:0 range:NSMakeRange(0, template.length)];
 	[template replaceOccurrencesOfString:@"{from}" withString:message.from ? message.from : @"" options:0 range:NSMakeRange(0, template.length)];
 	[template replaceOccurrencesOfString:@"{to}" withString:message.to ? message.to : @""options:0 range:NSMakeRange(0, template.length)];
-	[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : @"Can't load the message body." options:0 range:NSMakeRange(0, template.length)];
+	[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : NSLocalizedString(@"Can't load the message body.", nil) options:0 range:NSMakeRange(0, template.length)];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];

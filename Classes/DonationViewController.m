@@ -40,7 +40,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Donation";
+	self.title = NSLocalizedString(@"Donation", nil);
 	[self reload];
 }
 
@@ -90,11 +90,11 @@
 }
 
 - (IBAction) onDonate:(id) sender {
-	UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Donate"
+	UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Donate", nil)
 															 delegate:self
-													cancelButtonTitle:@"Cancel"
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											   destructiveButtonTitle:nil
-													otherButtonTitles:@"Donate $1", @"Donate $5", @"Donate $10", nil];
+													otherButtonTitles:NSLocalizedString(@"Donate $1", nil), NSLocalizedString(@"Donate $5", nil), NSLocalizedString(@"Donate $10", nil), nil];
 	[actionSheet showFromRect:[sender frame] inView:[sender superview] animated:YES];
 	[actionSheet release];
 }
@@ -156,10 +156,10 @@
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
 	[[Globals appDelegate] setInAppStatus:NO];
-	UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
-														 message:@"Sorry, but we haven't found your purchases."
+	UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+														 message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
 														delegate:nil
-											   cancelButtonTitle:@"Close"
+											   cancelButtonTitle:NSLocalizedString(@"Close", nil)
 											   otherButtonTitles:nil] autorelease];
 	[alertView show];
 }
@@ -167,10 +167,10 @@
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
 	if (queue.transactions.count == 0) {
 		[[Globals appDelegate] setInAppStatus:NO];
-		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
-															 message:@"Sorry, but we haven't found your purchases."
+		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+															 message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
 															delegate:nil
-												   cancelButtonTitle:@"Close"
+												   cancelButtonTitle:NSLocalizedString(@"Close", nil)
 												   otherButtonTitles:nil] autorelease];
 		[alertView show];
 	}

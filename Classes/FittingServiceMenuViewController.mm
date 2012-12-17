@@ -52,7 +52,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Fitting";
+	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
@@ -75,7 +75,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:@"Loading Fits"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
 	__block BOOL needsConvertTmp = NO;
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -212,19 +212,19 @@
 			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		if (indexPath.row == 0) {
-			cell.titleLabel.text = @"Browse Fits on BattleClinic";
+			cell.titleLabel.text = NSLocalizedString(@"Browse Fits on BattleClinic", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
 		else if (indexPath.row == 1) {
-			cell.titleLabel.text = @"New Ship Fit";
+			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
 		else if (indexPath.row == 2) {
-			cell.titleLabel.text = @"New POS Fit";
+			cell.titleLabel.text = NSLocalizedString(@"New POS Fit", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
 		}
 		else {
-			cell.titleLabel.text = @"Export";
+			cell.titleLabel.text = NSLocalizedString(@"Export", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon94_03.png"];
 		}
 		return cell;
@@ -246,7 +246,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return @"Menu";
+		return NSLocalizedString(@"Menu", nil);
 	else {
 		NSArray* rows = [fits objectAtIndex:section - 1];
 		if (rows.count > 0)
@@ -310,7 +310,7 @@
 		else if (indexPath.row == 1) {
 			fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE categoryID = 6 ORDER BY groupName;";
 			fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, invGroups LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.groupID = invGroups.groupID and invGroups.categoryID = 6 %@ %@ ORDER BY invTypes.typeName";
-			fittingItemsViewController.title = @"Ships";
+			fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
@@ -320,7 +320,7 @@
 			fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID = 365 ORDER BY groupName;";
 			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:365 error:nil];
 			fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID = 365 %@ %@ ORDER BY invTypes.typeName";
-			fittingItemsViewController.title = @"Ships";
+			fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
@@ -328,11 +328,11 @@
 		}
 		else {
 			if (needsConvert) {
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Export"
-																	message:@"To continue, Neocom must convert the loadouts database to its new format. This may take a few minutes."
+				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Export", nil)
+																	message:NSLocalizedString(@"To continue, Neocom must convert the loadouts database to its new format. This may take a few minutes.", nil)
 																   delegate:self
-														  cancelButtonTitle:@"Cancel"
-														  otherButtonTitles:@"Convert", nil];
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+														  otherButtonTitles:NSLocalizedString(@"Convert", nil), nil];
 				[alertView show];
 				[alertView release];
 			}
@@ -345,7 +345,7 @@
 		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		if ([[row valueForKey:@"isPOS"] boolValue]) {
 			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
-			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading POS Fit"];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading POS Fit", nil)];
 			__block POSFit* fit = nil;
 			[operation addExecutionBlock:^{
 				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -365,7 +365,7 @@
 		}
 		else {
 			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Ship Fit"];
+			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 			__block Fit* fit = nil;
 			__block eufe::Character* character = NULL;
 			[operation addExecutionBlock:^{
@@ -424,7 +424,7 @@
 
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Pos Fit", nil)];
 		__block POSFit* posFit = nil;
 		__block eufe::ControlTower* controlTower = NULL;
 		[operation addExecutionBlock:^{
@@ -455,7 +455,7 @@
 	}
 	else {
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Creating Pos Fit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Pos Fit", nil)];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
@@ -515,7 +515,7 @@
 @implementation FittingServiceMenuViewController(Private)
 
 - (void) convertFits {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert" name:@"Converting Fits"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert" name:NSLocalizedString(@"Converting Fits", nil)];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	for (NSArray* group in fits)
 		[fitsTmp addObject:[NSMutableArray arrayWithArray:group]];
@@ -596,11 +596,11 @@
 }
 
 - (void) exportFits {
-	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:@"Browser", @"Clipboard", nil];
+	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Browser", nil), NSLocalizedString(@"Clipboard", nil), nil];
 	if ([MFMailComposeViewController canSendMail])
-		[buttons addObject:@"Email"];
-	[[UIActionSheet actionSheetWithTitle:@"Export"
-					   cancelButtonTitle:@"Cancel"
+		[buttons addObject:NSLocalizedString(@"Email", nil)];
+	[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:nil
 					   otherButtonTitles:buttons
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
@@ -627,7 +627,7 @@
 								 NSString* xml = [Fit allFitsEveXML];
 								 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
 								 controller.mailComposeDelegate = self;
-								 [controller setSubject:@"Neocom fits"];
+								 [controller setSubject:NSLocalizedString(@"Neocom fits", nil)];
 								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
 								 [self presentModalViewController:controller animated:YES];
 								 [controller release];

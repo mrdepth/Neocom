@@ -40,7 +40,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Search Results";
+	self.title = NSLocalizedString(@"Search Results", nil);
 	shipImage = [[UIImage imageNamed:[ship typeSmallImageName]] retain];
 }
 
@@ -117,7 +117,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:@"Loading Loadout"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Loadout", nil)];
 	__block Fit* fit = nil;
 	__block eufe::Character* character = NULL;
 
@@ -134,7 +134,7 @@
 		}
 		else {
 			if (!loadoutDetails.fitting) {
-				UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"" message:@"Unknown error" delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil] autorelease];
+				UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Unknown error", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil] autorelease];
 				[alertView performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
 			else {

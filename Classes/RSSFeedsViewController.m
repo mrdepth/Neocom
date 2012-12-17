@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	sections = [[NSArray alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"rssFeeds" ofType:@"plist"]]];
-	self.title = @"News";
+	self.title = NSLocalizedString(@"News", nil);
 }
 
 

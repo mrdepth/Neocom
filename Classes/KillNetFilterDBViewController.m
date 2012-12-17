@@ -192,7 +192,7 @@
 - (void) reload {
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Load" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			if ([operation isCancelled])
@@ -229,7 +229,7 @@
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			if ([operation isCancelled])

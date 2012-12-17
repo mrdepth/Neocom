@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
 		<string key="IBDocument.SystemVersion">11G63</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1929</string>
+			<string key="NS.object.0">1930</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -45,13 +45,14 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{10, 2}, {258, 16}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="99626194"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Pattern Name</string>
+								<string key="IBUIText"/>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -88,6 +89,8 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{175, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="407721241"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
 									<bytes key="NSRGB">MC44MDc4NDMyMDgzIDAuNjAwMDAwMDIzOCAwLjIxNTY4NjI5MTUAA</bytes>
@@ -131,6 +134,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{120, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="178653405"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -161,6 +165,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{65, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="869893449"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -191,6 +196,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="718588117"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -221,7 +227,8 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{286, 6}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSNextKeyView" ref="1042385943"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">1</int>
@@ -231,7 +238,8 @@
 						</array>
 						<string key="NSFrameSize">{320, 43}</string>
 						<reference key="NSSuperview" ref="456304476"/>
-						<reference key="NSNextKeyView" ref="407721241"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="1042385943"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -245,6 +253,7 @@
 				</array>
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="506135338"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -451,7 +460,60 @@
 			<nil key="sourceID"/>
 			<int key="maxID">23</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">DamagePatternCellView</string>
+					<string key="superclassName">UITableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="checkmarkImageView">UIImageView</string>
+						<string key="emLabel">ProgressLabel</string>
+						<string key="explosiveLabel">ProgressLabel</string>
+						<string key="kineticLabel">ProgressLabel</string>
+						<string key="thermalLabel">ProgressLabel</string>
+						<string key="titleLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="checkmarkImageView">
+							<string key="name">checkmarkImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emLabel">
+							<string key="name">emLabel</string>
+							<string key="candidateClassName">ProgressLabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="explosiveLabel">
+							<string key="name">explosiveLabel</string>
+							<string key="candidateClassName">ProgressLabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="kineticLabel">
+							<string key="name">kineticLabel</string>
+							<string key="candidateClassName">ProgressLabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="thermalLabel">
+							<string key="name">thermalLabel</string>
+							<string key="candidateClassName">ProgressLabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="titleLabel">
+							<string key="name">titleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DamagePatternCellView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ProgressLabel</string>
+					<string key="superclassName">UILabel</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ProgressLabel.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
@@ -460,6 +522,6 @@
 			<string key="cellBackground.png">{2, 4}</string>
 			<string key="cellBackgroundSelected.png">{2, 4}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1929</string>
+		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>
 </archive>

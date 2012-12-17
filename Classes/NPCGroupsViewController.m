@@ -43,7 +43,7 @@
 	if (!self.category) {
 		self.category = [EVEDBInvCategory invCategoryWithCategoryID:11 error:nil];
 		[super viewDidLoad];
-		self.title = @"NPC";
+		self.title = NSLocalizedString(@"NPC", nil);
 	}
 	else
 		[super viewDidLoad];

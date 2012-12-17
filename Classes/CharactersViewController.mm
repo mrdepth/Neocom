@@ -43,9 +43,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = @"Characters";
+	self.title = NSLocalizedString(@"Characters", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 }
 
 - (void)viewDidUnload
@@ -59,7 +59,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+load" name:@"Loading Characters"];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+load" name:NSLocalizedString(@"Loading Characters", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		
@@ -164,11 +164,11 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return @"EVE Charaters";
+		return NSLocalizedString(@"EVE Charaters", nil);
 	else if (section == 1)
-		return @"Custom Characters";
+		return NSLocalizedString(@"Custom Characters", nil);
 	else
-		return @"Static Characters";
+		return NSLocalizedString(@"Static Characters", nil);
 }
 
 // Customize the appearance of table view cells.
@@ -180,7 +180,7 @@
         cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
 	if (indexPath.row == [[sections objectAtIndex:indexPath.section] count])
-		cell.characterNameLabel.text = @"Add Character";
+		cell.characterNameLabel.text = NSLocalizedString(@"Add Character", nil);
 	else
 		cell.characterNameLabel.text = [[[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
     return cell;
@@ -201,7 +201,7 @@
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
 		CharacterCustom* character = [[[CharacterCustom alloc] init] autorelease];
-		character.name = @"Custom Character";
+		character.name = NSLocalizedString(@"Custom Character", nil);
 		[character save];
 		[[sections objectAtIndex:1] addObject:character];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -253,7 +253,7 @@
 	else {
 		Character* character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+LoadSkills" name:@"Loading Skills"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+LoadSkills" name:NSLocalizedString(@"Loading Skills", nil)];
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (character.skills && [character isKindOfClass:[CharacterEVE class]]) {

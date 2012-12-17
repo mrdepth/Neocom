@@ -20,14 +20,14 @@
 
 #include "eufe.h"
 
-#define ActionButtonActivate @"Activate"
-#define ActionButtonDeactivate @"Deactivate"
-#define ActionButtonAmount @"Set Amount"
-#define ActionButtonCancel @"Cancel"
-#define ActionButtonDelete @"Delete"
-#define ActionButtonShowInfo @"Show Info"
-#define ActionButtonSetTarget @"Set Target"
-#define ActionButtonClearTarget @"Clear Target"
+#define ActionButtonActivate NSLocalizedString(@"Activate", nil)
+#define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
+#define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
+#define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
+#define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 
 
 @implementation DronesViewController
@@ -132,7 +132,7 @@
 		}
 		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
 		cell.stateView.image = nil;
-		cell.titleLabel.text = @"Add Drone";
+		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
 		cell.targetView.image = nil;
 		return cell;
 	}
@@ -201,7 +201,7 @@
 		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,1159) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,97,100,101,299,470,544,545,549,639,640,641,1023,1159) %@ %@ ORDER BY invTypes.typeName;";
 		fittingItemsViewController.modifiedItem = nil;
-		fittingItemsViewController.title = @"Drones";
+		fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
 		fittingItemsViewController.group = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
@@ -368,7 +368,7 @@
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	FittingViewController* aFittingViewController = fittingViewController;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"DronesViewController+Update" name:@"Updating Drones"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"DronesViewController+Update" name:NSLocalizedString(@"Updating Drones", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(fittingViewController) {

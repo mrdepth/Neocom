@@ -141,9 +141,10 @@
 				<reference key="IBUITableFooterView" ref="552521831"/>
 			</object>
 			<object class="IBUISegmentedControl" id="1017379958">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{120, 30}</string>
+				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBSegmentControlStyle">2</int>

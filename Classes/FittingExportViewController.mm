@@ -39,15 +39,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
-	self.title = @"Export";
+	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	self.title = NSLocalizedString(@"Export", nil);
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	NSMutableString* eveXML = [NSMutableString string];
 	NSMutableString *pageTmp = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"fits" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
 	
 	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
-	EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:@"Exporting Fits"];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:NSLocalizedString(@"Exporting Fits", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -255,7 +255,7 @@
 	NSArray *addresses = [UIDevice localIPAddresses];
 	if (addresses.count == 0) {
 		[self performSelector:@selector(updateAddress) withObject:nil afterDelay:1];
-		self.addressLabel.text = @"Unknown IP Address";
+		self.addressLabel.text = NSLocalizedString(@"Unknown IP Address", nil);
 	}
 	else {
 		NSMutableString *text = [NSMutableString string];

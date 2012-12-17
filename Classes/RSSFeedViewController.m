@@ -137,7 +137,7 @@
 
 - (void) loadData {
 	NSMutableArray *values = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:@"Loading RSS Feed"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:NSLocalizedString(@"Loading RSS Feed", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;

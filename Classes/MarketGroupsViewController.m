@@ -36,7 +36,7 @@
 	self.groupItems = [NSMutableArray array];
 	self.filteredValues = [NSMutableArray array];
 	if (!parentGroup)
-		self.title = @"Market";
+		self.title = NSLocalizedString(@"Market", nil);
 	else
 		self.title = parentGroup.marketGroupName;
 	[self reload];
@@ -222,7 +222,7 @@
 - (void) reload {
 	NSMutableArray *subGroupValues = [NSMutableArray array];
 	NSMutableArray *itemValues = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:@"Loading..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
@@ -267,7 +267,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *values = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		if ([operation isCancelled])
 			return;

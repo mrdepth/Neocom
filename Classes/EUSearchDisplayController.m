@@ -67,7 +67,7 @@
 			[tableViewController.navigationItem setTitleView:scopeSegmentControler];
 		}
 		else
-			tableViewController.title = @"Results";
+			tableViewController.title = NSLocalizedString(@"Results", nil);
 		
 		self.noResultsLabel.frame = tableViewController.tableView.bounds;
 		[tableViewController.tableView addSubview:self.noResultsLabel];
@@ -97,7 +97,7 @@
 	if (!noResultsLabel) {
 		noResultsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		noResultsLabel.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-		noResultsLabel.text = @"No Results";
+		noResultsLabel.text = NSLocalizedString(@"No Results", nil);
 		noResultsLabel.textColor = [UIColor colorWithWhite:0.48 alpha:1];
 		noResultsLabel.backgroundColor = [UIColor clearColor];
 		noResultsLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];

@@ -62,7 +62,7 @@
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	if (asset.type.group.categoryID == 6 || asset.type.groupID == eufe::CONTROL_TOWER_GROUP_ID) // Ship or Control Tower
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Open fit" style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
 	EVEAccount* account = [EVEAccount currentAccount];
 	
 	
@@ -71,7 +71,7 @@
 	}
 	else {
 		self.title = asset.name;
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:@"Loading Locations"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:NSLocalizedString(@"Loading Locations", nil)];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVELocations* locations = nil;
@@ -156,7 +156,7 @@
 - (IBAction)onOpenFit:(id)sender {
 	if (asset.type.group.categoryID == 6) {// Ship
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading Ship Fit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 		__block Fit* fit = nil;
 		__block eufe::Character* character = NULL;
 		
@@ -198,7 +198,7 @@
 	}
 	else {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:@"Loading POS Fit"];
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading POS Fit", nil)];
 		__block POSFit* fit = nil;
 		
 		[operation addExecutionBlock:^{
@@ -260,7 +260,7 @@
 	
 	if (item.parent && item.parent != asset) {
 		cell.titleLabel.numberOfLines = 2;
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@\nIn: %@", item.name, item.parent.name];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), item.name, item.parent.name];
 	}
 	else {
 		cell.titleLabel.numberOfLines = 1;
@@ -433,7 +433,7 @@
 	if (!assets) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"assetsFilter" ofType:@"plist"]]];
 		NSMutableArray* assetsTmp = [NSMutableArray array];
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Load" name:@"Loading Assets"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Load" name:NSLocalizedString(@"Loading Assets", nil)];
 		[operation addExecutionBlock:^(void) {
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (asset.type.group.categoryID == 6) { // Ship
@@ -462,14 +462,21 @@
 						[cargo addObject:item];
 				}
 				
-				NSString* titles[] = {@"High power slots", @"Medium power slots", @"Low power slots", @"Rig power slots", @"Sub system slots", @"Drone bay", @"Cargo"};
+				NSString* titles[] = {
+					NSLocalizedString(@"High power slots", nil),
+					NSLocalizedString(@"Medium power slots", nil),
+					NSLocalizedString(@"Low power slots", nil),
+					NSLocalizedString(@"Rig power slots", nil),
+					NSLocalizedString(@"Sub system slots", nil),
+					NSLocalizedString(@"Drone bay", nil),
+					NSLocalizedString(@"Cargo", nil)};
 				NSArray* arrays[] = {hiSlots, medSlots, lowSlots, rigSlots, subsystemSlots, droneBay, cargo};
 				for (int i = 0; i < 7; i++) {
 					NSArray* array = arrays[i];
 					if (array.count > 0)
 						[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 											  titles[i], @"title",
-											  [NSNumber numberWithBool:YES], @"expanded",
+											  [NSNumber numberWithBool:NO], @"collapsed",
 											  arrays[i], @"assets", nil]];
 				}
 				
@@ -492,21 +499,21 @@
 					NSString* title;
 					EVEInventoryFlag flag = [[group objectAtIndex:0] flag];
 					if (flag == EVEInventoryFlagHangar)
-						title = @"Hangar 1";
+						title = NSLocalizedString(@"Hangar 1", nil);
 					else if (flag >= EVEInventoryFlagCorpSAG2 && flag <= EVEInventoryFlagCorpSAG7) {
 						int i = flag - EVEInventoryFlagCorpSAG2 + 2;
-						title = [NSString stringWithFormat:@"Hangar %d", i];
+						title = [NSString stringWithFormat:NSLocalizedString(@"Hangar %d", nil), i];
 					}
 					else
-						title = @"Unknown hangar";
+						title = NSLocalizedString(@"Unknown hangar", nil);
 					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 					if (group.count == 1)
-						title = [title stringByAppendingString:@" (1 item)"];
+						title = [title stringByAppendingString:NSLocalizedString(@" (1 item)", nil)];
 					else
-						title = [title stringByAppendingFormat:@" (%d items)", group.count];
+						title = [title stringByAppendingFormat:NSLocalizedString(@" (%d items)", nil), group.count];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
-										  [NSNumber numberWithBool:YES], @"expanded",
+										  [NSNumber numberWithBool:NO], @"collapsed",
 										  group, @"assets", nil]];
 				}
 			}
@@ -525,7 +532,7 @@
 					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
-										  [NSNumber numberWithBool:YES], @"expanded",
+										  [NSNumber numberWithBool:NO], @"collapsed",
 										  group, @"assets", nil]];
 				}
 			}
@@ -544,7 +551,7 @@
 					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
-										  [NSNumber numberWithBool:YES], @"expanded",
+										  [NSNumber numberWithBool:NO], @"collapsed",
 										  group, @"assets", nil]];
 				}
 			}
@@ -582,7 +589,7 @@
 	else {
 		NSMutableArray* sectionsTmp = [NSMutableArray array];
 		if (filter.predicate) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -616,7 +623,7 @@
 						group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 						[sectionsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 												title, @"title",
-												[NSNumber numberWithBool:YES], @"expanded",
+												[NSNumber numberWithBool:NO], @"collapsed",
 												group, @"assets", nil]];
 					}
 				}
@@ -654,7 +661,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		__block void (^search)(NSArray*, NSMutableArray*);
@@ -703,7 +710,7 @@
 				group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 				[filteredValuesTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 											  title, @"title",
-											  [NSNumber numberWithBool:YES], @"expanded",
+											  [NSNumber numberWithBool:NO], @"collapsed",
 											  group, @"assets", nil]];
 			}
 		}

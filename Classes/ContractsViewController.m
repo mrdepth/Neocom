@@ -49,7 +49,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Contracts";
+	self.title = NSLocalizedString(@"Contracts", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
@@ -178,9 +178,9 @@
 	cell.locationLabel.text = [contractDic valueForKey:@"location"];
 	cell.characterLabel.text = [contractDic valueForKey:@"issuerName"];
 	cell.startTimeLabel.text = [contractDic valueForKey:@"dateIssued"];
-	cell.priceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward > 0 ? contract.reward : contract.price] numberStyle:NSNumberFormatterDecimalStyle]];
-	cell.priceTitleLabel.text = contract.reward > 0 ? @"Reward:" : @"Price:";
-	cell.buyoutLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward > 0 ? contract.reward : contract.price] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.priceTitleLabel.text = contract.reward > 0 ? NSLocalizedString(@"Reward:", nil) : NSLocalizedString(@"Price:", nil);
+	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]];
 	
     return cell;
 }
@@ -251,7 +251,7 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
 		[self presentModalViewController:navController animated:YES];
 		[navController release];
 	}
@@ -330,7 +330,7 @@
 			currentContracts = charContracts;
 		}
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:@"Loading Contracts"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Contracts", nil)];
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
@@ -378,14 +378,14 @@
 								stationName = conquerableStation.stationName;
 						}
 						else
-							stationName = @"Unknown";
+							stationName = NSLocalizedString(@"Unknown", nil);
 					}
 					else
 						stationName = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 					
 					NSString *statusString = [contract localizedStatusString];
 					if (contract.status <= EVEContractStatusCompletedByContractor) {
-						remains = [NSString stringWithFormat:@"Completed: %@", [dateFormatter stringFromDate:contract.dateCompleted]];
+						remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [dateFormatter stringFromDate:contract.dateCompleted]];
 						remainsColor = [UIColor greenColor];
 					}
 					else if (contract.status >= EVEContractStatusCancelled) {
@@ -469,7 +469,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[contractsTmp addObjectsFromArray:[filter applyToValues:currentContracts]];
@@ -550,7 +550,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Search" name:@"Searcing..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *contract in contracts) {

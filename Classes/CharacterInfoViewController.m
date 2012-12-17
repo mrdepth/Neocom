@@ -109,7 +109,7 @@
 	EVEAccount *account = [EVEAccount currentAccount];
 	[self checkServerStatus];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self] name:@"Loading Character Info"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self] name:NSLocalizedString(@"Loading Character Info", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[self updateCharacterInfo:account];
@@ -151,7 +151,7 @@
 		if (account.characterSheet) {
 			allianceID = account.characterSheet.allianceID;
 			allianceName = account.characterSheet.allianceName;
-			wealth = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:account.characterSheet.balance] numberStyle:NSNumberFormatterDecimalStyle]];
+			wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:account.characterSheet.balance] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 		else {
 			wealth = @"";
@@ -190,7 +190,7 @@
 	}
 	else {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			self.corpLabel.text = @"No Character Selected";
+			self.corpLabel.text = NSLocalizedString(@"No Character Selected", nil);
 		});
 		if (self.view.frame.size.height != 24) {
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -206,18 +206,18 @@
 		skillpoints += skill.skillpoints;
 	NSMutableString *text = nil;
 	if (account.skillQueue) {
-		text = [NSMutableString stringWithFormat:@"%@ points (%d skills)\n",
+		text = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ points (%d skills)\n", nil),
 				[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
 				account.characterSheet.skills.count];
 
 		if (account.skillQueue.skillQueue.count > 0) {
 			NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
 			NSTimeInterval timeLeft = [endTime timeIntervalSinceDate:[account.skillQueue serverTimeWithLocalTime:[NSDate date]]];
-			[text appendFormat:@"%@ (%d skills in queue)", [NSString stringWithTimeLeft:timeLeft], account.skillQueue.skillQueue.count];
+			[text appendFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], account.skillQueue.skillQueue.count];
 			
 		}
 		else
-			[text appendString:@"Training queue is inactive"];
+			[text appendString:NSLocalizedString(@"Training queue is inactive", nil)];
 	}
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -235,41 +235,32 @@
 }
 
 - (void) checkServerStatus {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterInfoViewController+checkServerStatus" name:@"Checking Server Status"];
-	__block EVEServerStatus *serverStatus = nil;
-	__block NSError *error = nil;
-	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
-		serverStatus = [[EVEServerStatus serverStatusWithError:&error] retain];
-		[error retain];
-		[pool release];
-	}];
+	NSOperationQueue* queue = [[[NSOperationQueue alloc] init] autorelease];
 	
-	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+	[queue addOperationWithBlock:^{
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
+		NSError* error = nil;
+		EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error];
+		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error) {
-				self.serverStatusLabel.text = @"Error";
+				self.serverStatusLabel.text = NSLocalizedString(@"Error", nil);
 				self.onlineLabel.text = @"";
 			}
-			else {		
-				self.serverStatusLabel.text = serverStatus.serverOpen ? @"Online" : @"Offline";
+			else {
+				self.serverStatusLabel.text = serverStatus.serverOpen ? NSLocalizedString(@"Online", nil) : NSLocalizedString(@"Offline", nil);
 				self.onlineLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle];
-
+				
 				NSDate* cachedUntil = [serverStatus localTimeWithServerTime:serverStatus.cachedUntil];
 				NSTimeInterval timeInterval = [cachedUntil timeIntervalSinceNow];
-				if (timeInterval < 0 || timeInterval > 30 * 60)
+				if (timeInterval < 30 * 60)
 					timeInterval = 30 * 60;
 				
 				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkServerStatus) object:nil];
 				[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:timeInterval];
 			}
-			
-		}
-		[serverStatus release];
-		[error release];
+		});
+		[pool release];
 	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end

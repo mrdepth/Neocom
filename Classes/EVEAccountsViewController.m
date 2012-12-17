@@ -43,7 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Accounts";
+	self.title = NSLocalizedString(@"Accounts", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	self.logoffButton.hidden = [EVEAccount currentAccount] == nil;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
@@ -187,6 +187,16 @@
 		if (color)
 			cell.paidUntilLabel.textColor = color;
 
+		NSString* location = [section valueForKey:@"location"];
+		NSString* wealth = [section valueForKey:@"wealth"];
+		if (wealth) {
+			cell.wealthLabel.text = wealth;
+			cell.locationLabel.text = location;
+		}
+		else {
+			cell.wealthLabel.text = location;
+			cell.locationLabel.text = nil;
+		}
 		
 		return cell;
 	}
@@ -207,7 +217,7 @@
 			cell.errorLabel.text = [apiKey.error localizedDescription];
 		}
 		else {
-			cell.keyTypeLabel.text = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation ? @"Corporation" : @"Character";
+			cell.keyTypeLabel.text = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation ? NSLocalizedString(@"Corporation", nil) : NSLocalizedString(@"Character", nil);
 			if (apiKey.apiKeyInfo.key.expires) {
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 				[dateFormatter setDateFormat:@"yyyy.MM.dd"];
@@ -258,7 +268,7 @@
 	NSDictionary *sectionDic = [sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character && indexPath.row == 0)
-		return 112;
+		return 128;
 	else
 		return 40;
 }
@@ -342,7 +352,7 @@
 					color = [UIColor redColor];
 				else
 					color = [UIColor yellowColor];
-				[section setValue:[NSString stringWithFormat:@"%@ (%d days remaining)", [dateFormatter stringFromDate:accountStatus.paidUntil], days]
+				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"%@ (%d days remaining)", nil), [dateFormatter stringFromDate:accountStatus.paidUntil], days]
 						   forKey:@"paidUntil"];
 				[section setValue:color forKey:@"paidUntilColor"];
 				[dateFormatter release];
@@ -363,14 +373,26 @@
 						color = [UIColor greenColor];
 					else
 						color = [UIColor yellowColor];
-					text = [NSString stringWithFormat:@"%@ (%d skills in queue)", [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+					text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
 				}
 				else {
-					text = @"Training queue is inactive";
+					text = NSLocalizedString(@"Training queue is inactive", nil);
 					color = [UIColor redColor];
 				}
 				[section setValue:text forKeyPath:@"trainingTime"];
 				[section setValue:color forKeyPath:@"trainingTimeColor"];
+			}
+			
+			EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error];
+			if (characterInfo) {
+				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Location: %@", nil), characterInfo.lastKnownLocation]
+						   forKey:@"location"];
+			}
+			EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID corporate:NO error:&error];
+			if (accountBalance && accountBalance.accounts.count > 0) {
+				float balance = [[accountBalance.accounts objectAtIndex:0] balance];
+				NSString* wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:@(balance) numberStyle:NSNumberFormatterDecimalStyle]];
+				[section setValue:wealth forKey:@"wealth"];
 			}
 		}
 	}
@@ -387,7 +409,7 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	NSMutableArray *emptyKeysTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:@"Loading Accounts"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:NSLocalizedString(@"Loading Accounts", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if ([operation isCancelled]) {

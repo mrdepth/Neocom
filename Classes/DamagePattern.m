@@ -20,7 +20,7 @@
 
 + (id) uniformDamagePattern {
 	DamagePattern* damagePattern = [[[DamagePattern alloc] init] autorelease];
-	damagePattern.patternName = @"Uniform";
+	damagePattern.patternName = NSLocalizedString(@"Uniform", nil);
 	damagePattern.uuid = @"uniform";
 	return damagePattern;
 }
@@ -133,7 +133,7 @@
 - (id) init {
 	if (self = [super init]) {
 		emAmount = thermalAmount = kineticAmount = explosiveAmount = 0.25;
-		self.patternName = @"Pattern Name";
+		self.patternName = NSLocalizedString(@"Pattern Name", nil);
 		self.uuid = [NSString uuidString];
 	}
 	return self;

@@ -43,6 +43,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="344062582"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="485848907"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -67,6 +68,7 @@
 										<int key="NSvFlags">276</int>
 										<string key="NSFrame">{{113, 0}, {1, 31}}</string>
 										<reference key="NSSuperview" ref="355334319"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="196703149"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor">
@@ -81,13 +83,14 @@
 										<int key="NSvFlags">276</int>
 										<string key="NSFrame">{{5, 0}, {105, 31}}</string>
 										<reference key="NSSuperview" ref="355334319"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="265304253"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Title</string>
+										<string key="IBUIText"/>
 										<object class="NSColor" key="IBUITextColor" id="776229766">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MQA</bytes>
@@ -119,13 +122,14 @@
 										<int key="NSvFlags">274</int>
 										<string key="NSFrame">{{122, 0}, {190, 31}}</string>
 										<reference key="NSSuperview" ref="355334319"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="296490728"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Value</string>
+										<string key="IBUIText"/>
 										<reference key="IBUITextColor" ref="776229766"/>
 										<reference key="IBUIHighlightedColor" ref="776229766"/>
 										<reference key="IBUIShadowColor" ref="200717377"/>
@@ -138,6 +142,7 @@
 								</array>
 								<string key="NSFrameSize">{320, 31}</string>
 								<reference key="NSSuperview" ref="485848907"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1043063679"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="434851408">
 									<int key="NSColorSpace">3</int>
@@ -152,6 +157,7 @@
 						</array>
 						<string key="NSFrame">{{0, 168}, {320, 32}}</string>
 						<reference key="NSSuperview" ref="344062582"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="355334319"/>
 						<reference key="IBUIBackgroundColor" ref="434851408"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -166,6 +172,8 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 200}, {320, 216}}</string>
 						<reference key="NSSuperview" ref="344062582"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -201,6 +209,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="21645021"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
@@ -238,6 +247,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -253,6 +264,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -438,7 +451,73 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 			<nil key="sourceID"/>
 			<int key="maxID">43</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">KillNetFilterDateViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onChangeDate:">id</string>
+						<string key="onDone:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onChangeDate:">
+							<string key="name">onChangeDate:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onDone:">
+							<string key="name">onDone:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="datePicker">UIDatePicker</string>
+						<string key="titleLabel">UILabel</string>
+						<string key="valueLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="datePicker">
+							<string key="name">datePicker</string>
+							<string key="candidateClassName">UIDatePicker</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="titleLabel">
+							<string key="name">titleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="valueLabel">
+							<string key="name">valueLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/KillNetFilterDateViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">KillNetFilterValueCellView</string>
+					<string key="superclassName">UITableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="titleLabel">UILabel</string>
+						<string key="valueLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="titleLabel">
+							<string key="name">titleLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="valueLabel">
+							<string key="name">valueLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/KillNetFilterValueCellView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

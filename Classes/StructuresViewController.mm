@@ -22,20 +22,20 @@
 
 #include <algorithm>
 
-#define ActionButtonOffline @"Put Offline"
-#define ActionButtonOnline @"Put Online"
-#define ActionButtonActivate @"Activate"
-#define ActionButtonDeactivate @"Deactivate"
-#define ActionButtonAmmoCurrentModule @"Ammo (Current Module)"
-#define ActionButtonAmmoAllModules @"Ammo (All Modules)"
-#define ActionButtonAmmo @"Ammo"
-#define ActionButtonCancel @"Cancel"
-#define ActionButtonDelete @"Delete"
-#define ActionButtonChangeState @"Change State"
-#define ActionButtonUnloadAmmo @"Unload Ammo"
-#define ActionButtonShowModuleInfo @"Show Module Info"
-#define ActionButtonShowAmmoInfo @"Show Ammo Info"
-#define ActionButtonAmount @"Set Amount"
+#define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)
+#define ActionButtonOnline NSLocalizedString(@"Put Online", nil)
+#define ActionButtonActivate NSLocalizedString(@"Activate", nil)
+#define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
+#define ActionButtonAmmoCurrentModule NSLocalizedString(@"Ammo (Current Module)", nil)
+#define ActionButtonAmmoAllModules NSLocalizedString(@"Ammo (All Modules)", nil)
+#define ActionButtonAmmo NSLocalizedString(@"Ammo", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonChangeState NSLocalizedString(@"Change State", nil)
+#define ActionButtonUnloadAmmo NSLocalizedString(@"Unload Ammo", nil)
+#define ActionButtonShowModuleInfo NSLocalizedString(@"Show Module Info", nil)
+#define ActionButtonShowAmmoInfo NSLocalizedString(@"Show Ammo Info", nil)
+#define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
 
 @implementation StructuresViewController
 @synthesize posFittingViewController;
@@ -131,7 +131,7 @@
 		cell.stateView.image = nil;
 		cell.targetView.image = nil;
 		cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
-		cell.titleLabel.text = @"Add Structure";
+		cell.titleLabel.text = NSLocalizedString(@"Add Structure", nil);
 		return cell;
 	}
 	else {
@@ -221,7 +221,7 @@
 	if (indexPath.row >= structures.count) {
 		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) %@ %@ ORDER BY invTypes.typeName;";
-		fittingItemsViewController.title = @"Structures";
+		fittingItemsViewController.title = NSLocalizedString(@"Structures", nil);
 		fittingItemsViewController.group = nil;
 		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -387,7 +387,7 @@
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f %%@ %%@ ORDER BY invTypes.typeName;",
 													   groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
 		}
-		fittingItemsViewController.title = @"Ammo";
+		fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
 		if ([button isEqualToString:ActionButtonAmmoAllModules])
 			fittingItemsViewController.modifiedItem = nil;
 		else
@@ -500,7 +500,7 @@
 	NSMutableArray *structuresTmp = [NSMutableArray array];
 	POSFittingViewController* aPosFittingViewController = posFittingViewController;
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:@"Updating POS Structures"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:NSLocalizedString(@"Updating POS Structures", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		@synchronized(posFittingViewController) {

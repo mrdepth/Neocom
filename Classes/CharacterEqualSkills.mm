@@ -22,7 +22,7 @@
 - (id) initWithSkillsLevel:(NSInteger) level {
 	if (self = [super init]) {
 		characterID = level;
-		name = [[NSString alloc] initWithFormat:@"All Skills %d", level];
+		name = [[NSString alloc] initWithFormat:NSLocalizedString(@"All Skills %d", nil), level];
 	}
 	return self;
 }

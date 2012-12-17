@@ -36,9 +36,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Add API Key";
+	self.title = NSLocalizedString(@"Add API Key", nil);
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:@"Loading Accounts"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:NSLocalizedString(@"Loading Accounts", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[[EVEAccountStorage sharedAccountStorage] reload];
@@ -131,7 +131,7 @@
 		[connection.response run];
 	}
 	else {
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+Request" name:@"Checking API Key"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+Request" name:NSLocalizedString(@"Checking API Key", nil)];
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
@@ -145,7 +145,7 @@
 				[page replaceOccurrencesOfString:@"{vCode}" withString:[arguments valueForKey:@"vCode"] options:0 range:NSMakeRange(0, page.length)];
 			}
 			else {
-				[page replaceOccurrencesOfString:@"{error}" withString:@"Key added" options:0 range:NSMakeRange(0, page.length)];
+				[page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"Key added", nil) options:0 range:NSMakeRange(0, page.length)];
 				[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
 				[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
 			}
@@ -173,7 +173,7 @@
 	NSArray *addresses = [UIDevice localIPAddresses];
 	if (addresses.count == 0) {
 		[self performSelector:@selector(updateAddress) withObject:nil afterDelay:1];
-		self.addressLabel.text = @"Unknown IP Address";
+		self.addressLabel.text = NSLocalizedString(@"Unknown IP Address", nil);
 	}
 	else {
 		NSMutableString *text = [NSMutableString string];

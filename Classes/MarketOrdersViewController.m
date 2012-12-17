@@ -46,7 +46,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = @"Market Orders";
+	self.title = NSLocalizedString(@"Market Orders", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
 		[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
@@ -172,7 +172,7 @@
 	
 	cell.expireInLabel.text = [order valueForKey:@"expireIn"];
 
-	cell.stateLabel.text = [NSString stringWithFormat:@"%@ order: %@", [order valueForKey:@"orderType"], [order valueForKey:@"state"]];
+	cell.stateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ order: %@", nil), [order valueForKey:@"orderType"], [order valueForKey:@"state"]];
 	cell.typeNameLabel.text = [order valueForKey:@"typeName"];
 	cell.locationLabel.text = [order valueForKey:@"stationName"];
 	cell.priceLabel.text = [order valueForKey:@"price"];
@@ -329,7 +329,7 @@
 		
 		EVEAccount *account = [EVEAccount currentAccount];
 		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:@"Loading Market Orders"];
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Market Orders", nil)];
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 
 		[operation addExecutionBlock:^(void) {
@@ -379,40 +379,40 @@
 								stationName = conquerableStation.stationName;
 						}
 						else
-							stationName = @"Unknown";
+							stationName = NSLocalizedString(@"Unknown", nil);
 					}
 					else
 						stationName = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 					
 					switch (order.orderState) {
 						case EVEOrderStateOpen:
-							state = @"Open";
+							state = NSLocalizedString(@"Open", nil);
 							stateColor = [UIColor greenColor];
 							break;
 						case EVEOrderStateCancelled:
-							state = @"Cancelled";
+							state = NSLocalizedString(@"Cancelled", nil);
 							stateColor = [UIColor redColor];
 							break;
 						case EVEOrderStateCharacterDeleted:
-							state = @"Deleted";
+							state = NSLocalizedString(@"Deleted", nil);
 							stateColor = [UIColor redColor];
 							break;
 						case EVEOrderStateClosed:
-							state = @"Closed";
+							state = NSLocalizedString(@"Closed", nil);
 							stateColor = [UIColor redColor];
 							break;
 						case EVEOrderStateExpired:
 							if (order.duration > 1) {
-								state = @"Expired";
+								state = NSLocalizedString(@"Expired", nil);
 								stateColor = [UIColor redColor];
 							}
 							else {
-								state = @"Fulfilled";
+								state = NSLocalizedString(@"Fulfilled", nil);
 								stateColor = [UIColor greenColor];
 							}
 							break;
 						case EVEOrderStatePending:
-							state = @"Pending";
+							state = NSLocalizedString(@"Pending", nil);
 							stateColor = [UIColor yellowColor];
 							break;
 						default:
@@ -425,11 +425,11 @@
 					if (expireInTime > 0)
 						expireIn = [NSString stringWithTimeLeft:expireInTime componentsLimit:2];
 					else
-						expireIn = @"Expired";
+						expireIn = NSLocalizedString(@"Expired", nil);
 					
 					[charIDs addObject:charID];
 					
-					NSString *orderType = order.bid ? @"Buy" : @"Sell";
+					NSString *orderType = order.bid ? NSLocalizedString(@"Buy", nil) : NSLocalizedString(@"Sell", nil);
 					
 					[ordersTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  expireIn, @"expireIn",
@@ -437,7 +437,7 @@
 										  state, @"state",
 										  stateColor, @"stateColor",
 										  stationName, @"stationName",
-										  [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
+										  [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
 										  [NSString stringWithFormat:@"%@ / %@", volRemaining, volEntered], @"qty",
 										  [dateFormatter stringFromDate:order.issued], @"issued",
 										  [type typeSmallImageName], @"imageName",
@@ -495,7 +495,7 @@
 		EUFilter *filter = corporate ? corpFilter : charFilter;
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:@"Applying Filter"];
+			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			[operation addExecutionBlock:^(void) {
 				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
@@ -575,7 +575,7 @@
 	NSString *searchString = [[aSearchString copy] autorelease];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:@"Searching..."];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		for (NSDictionary *order in orders) {

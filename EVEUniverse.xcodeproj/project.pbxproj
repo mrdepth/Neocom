@@ -214,6 +214,7 @@
 		12EB31291651065D00C69C5D /* cellBackgroundDropped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31271651065C00C69C5D /* cellBackgroundDropped@2x.png */; };
 		12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31321651274800C69C5D /* KillMailAttackerCellView.m */; };
 		12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */; };
+		12EBB72D167EF806002CDAB6 /* EVECharacterInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EBB72C167EF806002CDAB6 /* EVECharacterInfo.m */; };
 		12F17D45167066CB0070B97C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F17D43167066CB0070B97C /* Default-568h@2x.png */; };
 		12F17D46167066CB0070B97C /* icon72x72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F17D44167066CB0070B97C /* icon72x72@2x.png */; };
 		12F17D7216707BCC0070B97C /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F17D6D16707BCB0070B97C /* libGoogleAdMobAds.a */; };
@@ -1072,6 +1073,8 @@
 		12EB31311651274800C69C5D /* KillMailAttackerCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailAttackerCellView.h; sourceTree = "<group>"; };
 		12EB31321651274800C69C5D /* KillMailAttackerCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailAttackerCellView.m; sourceTree = "<group>"; };
 		12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailAttackerCellView.xib; sourceTree = "<group>"; };
+		12EBB72B167EF806002CDAB6 /* EVECharacterInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterInfo.h; sourceTree = "<group>"; };
+		12EBB72C167EF806002CDAB6 /* EVECharacterInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterInfo.m; sourceTree = "<group>"; };
 		12F17D43167066CB0070B97C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		12F17D44167066CB0070B97C /* icon72x72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon72x72@2x.png"; sourceTree = "<group>"; };
 		12F17D6416707BCB0070B97C /* GADAdMobExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADAdMobExtras.h; sourceTree = "<group>"; };
@@ -3112,6 +3115,8 @@
 				37AB456314F52173007B4C33 /* EVECertificateTree.m */,
 				37AB456414F52173007B4C33 /* EVECharacterID.h */,
 				37AB456514F52173007B4C33 /* EVECharacterID.m */,
+				12EBB72B167EF806002CDAB6 /* EVECharacterInfo.h */,
+				12EBB72C167EF806002CDAB6 /* EVECharacterInfo.m */,
 				37AB456614F52173007B4C33 /* EVECharacterName.h */,
 				37AB456714F52173007B4C33 /* EVECharacterName.m */,
 				37AB456814F52173007B4C33 /* EVEConquerableStationList.h */,
@@ -5588,6 +5593,7 @@
 				12CB26DB16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m in Sources */,
 				12320D54165B765500333AE7 /* AccountsSelectionViewController.m in Sources */,
 				12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */,
+				12EBB72D167EF806002CDAB6 /* EVECharacterInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

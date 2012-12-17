@@ -407,7 +407,11 @@
 			float n = self.accounts.count;
 			float i = 0;
 			for (EVEAccount* account in self.accounts) {
-				NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
+				NSInteger characterID = account.characterID;
+				if (corporate)
+					characterID = -characterID;
+				//NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
+				NSNumber* currentID = @(characterID);
 				operation.progress = i / n;
 				
 				if ([usedIDs containsObject:currentID]) {

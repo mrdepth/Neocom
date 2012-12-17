@@ -14,14 +14,6 @@
 
 
 @implementation EVEAccountsCharacterCellView
-@synthesize portraitImageView;
-@synthesize corpImageView;
-@synthesize userNameLabel;
-@synthesize corpLabel;
-@synthesize trainingTimeLabel;
-@synthesize paidUntilLabel;
-@synthesize enableSwitch;
-@synthesize character;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
@@ -45,31 +37,33 @@
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[UIView setAnimationDuration:0.3];
-	enableSwitch.alpha = editing ? 1.0 : 0;
+	self.enableSwitch.alpha = editing ? 1.0 : 0;
 	[UIView commitAnimations];
 }
 
 - (void)dealloc {
-	[portraitImageView release];
-	[corpImageView release];
-	[userNameLabel release];
-	[corpLabel release];
-	[trainingTimeLabel release];
-	[paidUntilLabel release];
-	[enableSwitch release];
-	[character release];
+	[_portraitImageView release];
+	[_corpImageView release];
+	[_userNameLabel release];
+	[_corpLabel release];
+	[_trainingTimeLabel release];
+	[_paidUntilLabel release];
+	[_enableSwitch release];
+	[_character release];
+	[_wealthLabel release];
+	[_locationLabel release];
     [super dealloc];
 }
 
 - (IBAction) onChangeEnableValue:(id) sender {
-	character.enabled = enableSwitch.on;
+	self.character.enabled = self.enableSwitch.on;
 }
 
 - (void) setCharacter:(EVEAccountStorageCharacter *)value {
 	[value retain];
-	[character release];
-	character = value;
-	enableSwitch.on = character.enabled;
+	[_character release];
+	_character = value;
+	self.enableSwitch.on = self.character.enabled;
 }
 
 @end

@@ -751,7 +751,7 @@
 
 			float tmpInterval = intervalTurret > 0 ? intervalTurret : 1;
 			
-			NSString* titles[] = {NSLocalizedString(@"Em damage", nil), NSLocalizedString(@"Explosive damage", nil), NSLocalizedString(@"Kinetic damage", nil), NSLocalizedString(@"Thermal damage", nil), NSLocalizedString(@"Total damage", nil), NSLocalizedString(@"Rate of fire", nil), NSLocalizedString(@"Optimal Range", nil), NSLocalizedString(@"Falloff", nil), NSLocalizedString(@"Tracking speed", nil)};
+			NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil), NSLocalizedString(@"Rate of Fire", nil), NSLocalizedString(@"Optimal Range", nil), NSLocalizedString(@"Falloff", nil), NSLocalizedString(@"Tracking Speed", nil)};
 			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"turrets.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png", @"Icons/icon22_23.png", @"Icons/icon22_22.png"};
 			NSString* values[] = {
 				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret, emDamageTurret / tmpInterval, totalDamageTurret > 0 ? emDamageTurret / totalDamageTurret * 100 : 0.0],
@@ -830,7 +830,7 @@
 				
 				float tmpInterval = intervalMissile > 0 ? intervalMissile : 1;
 
-				NSString* titles[] = {NSLocalizedString(@"Em damage", nil), NSLocalizedString(@"Explosive damage", nil), NSLocalizedString(@"Kinetic damage", nil), NSLocalizedString(@"Thermal damage", nil), NSLocalizedString(@"Total damage", nil), NSLocalizedString(@"Rate of fire", nil), NSLocalizedString(@"Optimal Range", nil)};
+				NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil), NSLocalizedString(@"Rate of Fire", nil), NSLocalizedString(@"Optimal Range", nil)};
 				NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"launchers.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png"};
 				NSString* values[] = {
 					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageMissile, emDamageMissile / tmpInterval, totalDamageMissile > 0 ? emDamageMissile / totalDamageMissile * 100 : 0.0],
@@ -891,7 +891,7 @@
 			float totalDPS = totalDPSTurret + totalDPSMissile;
 			
 			
-			NSString* titles[] = {NSLocalizedString(@"Em damage", nil), NSLocalizedString(@"Explosive damage", nil), NSLocalizedString(@"Kinetic damage", nil), NSLocalizedString(@"Thermal damage", nil), NSLocalizedString(@"Total damage", nil)};
+			NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil)};
 			NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"dps.png"};
 			NSString* values[] = {
 				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret + emDamageMissile, emDPS, emDPS / totalDPS * 100],

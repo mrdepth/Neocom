@@ -187,6 +187,16 @@
 		if (color)
 			cell.paidUntilLabel.textColor = color;
 
+		NSString* location = [section valueForKey:@"location"];
+		NSString* wealth = [section valueForKey:@"wealth"];
+		if (wealth) {
+			cell.wealthLabel.text = wealth;
+			cell.locationLabel.text = location;
+		}
+		else {
+			cell.wealthLabel.text = location;
+			cell.locationLabel.text = nil;
+		}
 		
 		return cell;
 	}
@@ -258,7 +268,7 @@
 	NSDictionary *sectionDic = [sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character && indexPath.row == 0)
-		return 112;
+		return 128;
 	else
 		return 40;
 }
@@ -371,6 +381,18 @@
 				}
 				[section setValue:text forKeyPath:@"trainingTime"];
 				[section setValue:color forKeyPath:@"trainingTimeColor"];
+			}
+			
+			EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error];
+			if (characterInfo) {
+				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Location: %@", nil), characterInfo.lastKnownLocation]
+						   forKey:@"location"];
+			}
+			EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID corporate:NO error:&error];
+			if (accountBalance && accountBalance.accounts.count > 0) {
+				float balance = [[accountBalance.accounts objectAtIndex:0] balance];
+				NSString* wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:@(balance) numberStyle:NSNumberFormatterDecimalStyle]];
+				[section setValue:wealth forKey:@"wealth"];
 			}
 		}
 	}

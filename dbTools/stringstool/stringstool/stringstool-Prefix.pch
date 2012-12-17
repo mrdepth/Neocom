@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'stringstool' target in the 'stringstool' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+#endif

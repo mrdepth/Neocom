@@ -235,41 +235,32 @@
 }
 
 - (void) checkServerStatus {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharacterInfoViewController+checkServerStatus" name:NSLocalizedString(@"Checking Server Status", nil)];
-	__block EVEServerStatus *serverStatus = nil;
-	__block NSError *error = nil;
-	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
-		serverStatus = [[EVEServerStatus serverStatusWithError:&error] retain];
-		[error retain];
-		[pool release];
-	}];
+	NSOperationQueue* queue = [[[NSOperationQueue alloc] init] autorelease];
 	
-	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+	[queue addOperationWithBlock:^{
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
+		NSError* error = nil;
+		EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error];
+		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error) {
 				self.serverStatusLabel.text = NSLocalizedString(@"Error", nil);
 				self.onlineLabel.text = @"";
 			}
-			else {		
+			else {
 				self.serverStatusLabel.text = serverStatus.serverOpen ? NSLocalizedString(@"Online", nil) : NSLocalizedString(@"Offline", nil);
 				self.onlineLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle];
-
+				
 				NSDate* cachedUntil = [serverStatus localTimeWithServerTime:serverStatus.cachedUntil];
 				NSTimeInterval timeInterval = [cachedUntil timeIntervalSinceNow];
-				if (timeInterval < 0 || timeInterval > 30 * 60)
+				if (timeInterval < 30 * 60)
 					timeInterval = 30 * 60;
 				
 				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkServerStatus) object:nil];
 				[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:timeInterval];
 			}
-			
-		}
-		[serverStatus release];
-		[error release];
+		});
+		[pool release];
 	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end

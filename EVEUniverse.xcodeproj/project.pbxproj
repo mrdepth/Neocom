@@ -696,7 +696,6 @@
 		719405FC1405895F009E05FF /* RSSFeedCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 719405FB1405895F009E05FF /* RSSFeedCellView~ipad.xib */; };
 		7194064514058E4A009E05FF /* FittingServiceMenuViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194064414058E4A009E05FF /* FittingServiceMenuViewController~ipad.xib */; };
 		7194066114059261009E05FF /* FittingItemsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194066014059261009E05FF /* FittingItemsViewController~ipad.xib */; };
-		7194067514059443009E05FF /* MainMenuCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194067414059443009E05FF /* MainMenuCellView~ipad.xib */; };
 		7194067F140594E7009E05FF /* FitCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194067E140594E7009E05FF /* FitCellView~ipad.xib */; };
 		7194073A14059E97009E05FF /* BCSearchViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194073914059E97009E05FF /* BCSearchViewController~ipad.xib */; };
 		7194076B1405A463009E05FF /* BCSearchResultViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194076A1405A463009E05FF /* BCSearchResultViewController~ipad.xib */; };
@@ -1829,7 +1828,6 @@
 		719405FB1405895F009E05FF /* RSSFeedCellView~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RSSFeedCellView~ipad.xib"; sourceTree = "<group>"; };
 		7194064414058E4A009E05FF /* FittingServiceMenuViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "FittingServiceMenuViewController~ipad.xib"; sourceTree = "<group>"; };
 		7194066014059261009E05FF /* FittingItemsViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "FittingItemsViewController~ipad.xib"; sourceTree = "<group>"; };
-		7194067414059443009E05FF /* MainMenuCellView~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainMenuCellView~ipad.xib"; sourceTree = "<group>"; };
 		7194067E140594E7009E05FF /* FitCellView~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "FitCellView~ipad.xib"; sourceTree = "<group>"; };
 		7194073914059E97009E05FF /* BCSearchViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BCSearchViewController~ipad.xib"; sourceTree = "<group>"; };
 		7194076A1405A463009E05FF /* BCSearchResultViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "BCSearchResultViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -4377,7 +4375,6 @@
 				718CBFBE12F5E6DC00CAC006 /* MainMenuCellView.h */,
 				718CBFBF12F5E6DC00CAC006 /* MainMenuCellView.m */,
 				718CBFC112F5E71100CAC006 /* MainMenuCellView.xib */,
-				7194067414059443009E05FF /* MainMenuCellView~ipad.xib */,
 			);
 			name = MainMenuCellView;
 			sourceTree = "<group>";
@@ -5049,7 +5046,6 @@
 				1259B4F51679C85E00EA49B5 /* RSSViewController~ipad.xib in Resources */,
 				7194064514058E4A009E05FF /* FittingServiceMenuViewController~ipad.xib in Resources */,
 				7194066114059261009E05FF /* FittingItemsViewController~ipad.xib in Resources */,
-				7194067514059443009E05FF /* MainMenuCellView~ipad.xib in Resources */,
 				7194067F140594E7009E05FF /* FitCellView~ipad.xib in Resources */,
 				7194073A14059E97009E05FF /* BCSearchViewController~ipad.xib in Resources */,
 				7194076B1405A463009E05FF /* BCSearchResultViewController~ipad.xib in Resources */,
@@ -6328,7 +6324,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aliaksei Shlovikau (AKC9H535F6)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6348,7 +6344,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D725928E-998C-46C6-9B3B-A1A6067DBFFF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2522DCC5-7E9D-403A-A737-7E0572BF4A88";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s";

@@ -227,6 +227,7 @@
 								<string key="NSFrame">{{213, 20}, {67, 16}}</string>
 								<reference key="NSSuperview" ref="234428232"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -301,7 +302,7 @@
 				</object>
 			</object>
 			<object class="IBUITableViewCell" id="839238598">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -315,6 +316,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 4}, {61, 16}}</string>
 								<reference key="NSSuperview" ref="304000494"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="217108635"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -337,13 +339,14 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 4}, {67, 16}}</string>
 								<reference key="NSSuperview" ref="304000494"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="72175603"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">132165546</string>
+								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="757586227"/>
 								<reference key="IBUIHighlightedColor" ref="757586227"/>
 								<reference key="IBUIShadowColor" ref="372167811"/>
@@ -359,6 +362,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 20}, {61, 16}}</string>
 								<reference key="NSSuperview" ref="304000494"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="588053842"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -381,12 +385,14 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 20}, {203, 16}}</string>
 								<reference key="NSSuperview" ref="304000494"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Account</string>
+								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="757586227"/>
 								<reference key="IBUIHighlightedColor" ref="757586227"/>
 								<reference key="IBUIShadowColor" ref="372167811"/>
@@ -400,6 +406,7 @@
 						</object>
 						<string key="NSFrameSize">{320, 39}</string>
 						<reference key="NSSuperview" ref="839238598"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1032106902"/>
 						<reference key="IBUIBackgroundColor" ref="782223735"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -410,6 +417,8 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="304000494"/>
 				<reference key="IBUIBackgroundColor" ref="469377120"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -810,7 +819,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<int key="IBDocument.defaultPropertyAccessControl">2</int>
+		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">

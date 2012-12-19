@@ -302,7 +302,7 @@
 				</object>
 			</object>
 			<object class="IBUITableViewCell" id="949367990">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -316,6 +316,8 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 4}, {61, 16}}</string>
 								<reference key="NSSuperview" ref="241129203"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="690154949"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -337,12 +339,14 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 4}, {67, 16}}</string>
 								<reference key="NSSuperview" ref="241129203"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="147823357"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">132165546</string>
+								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="757586227"/>
 								<reference key="IBUIHighlightedColor" ref="757586227"/>
 								<reference key="IBUIShadowColor" ref="372167811"/>
@@ -358,6 +362,8 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 20}, {61, 16}}</string>
 								<reference key="NSSuperview" ref="241129203"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="540893883"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -379,12 +385,14 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 20}, {423, 16}}</string>
 								<reference key="NSSuperview" ref="241129203"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">Account</string>
+								<string key="IBUIText"/>
 								<reference key="IBUITextColor" ref="757586227"/>
 								<reference key="IBUIHighlightedColor" ref="757586227"/>
 								<reference key="IBUIShadowColor" ref="372167811"/>
@@ -398,6 +406,8 @@
 						</object>
 						<string key="NSFrameSize">{540, 39}</string>
 						<reference key="NSSuperview" ref="949367990"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="112797390"/>
 						<reference key="IBUIBackgroundColor" ref="782223735"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -407,6 +417,9 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{540, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="241129203"/>
 				<reference key="IBUIBackgroundColor" ref="469377120"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<reference key="IBUIContentView" ref="241129203"/>
@@ -741,6 +754,7 @@
 							<string>expiredLabel</string>
 							<string>keyIDLabel</string>
 							<string>keyTypeLabel</string>
+							<string>topSeparator</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -749,6 +763,7 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -760,6 +775,7 @@
 							<string>expiredLabel</string>
 							<string>keyIDLabel</string>
 							<string>keyTypeLabel</string>
+							<string>topSeparator</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -783,6 +799,10 @@
 								<string key="name">keyTypeLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topSeparator</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -799,7 +819,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<int key="IBDocument.defaultPropertyAccessControl">2</int>
+		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">

@@ -567,8 +567,9 @@
 									}
 								}
 								[locationAssets sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+								NSString* title = [locationNames.characters valueForKey:key];
 								[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-													  [locationNames.characters valueForKey:key], @"title",
+													  title ? title : NSLocalizedString(@"Unknown location", nil), @"title",
 													  [NSNumber numberWithBool:YES], @"expanded",
 													  locationAssets, @"assets", nil]];
 							}

@@ -42,17 +42,22 @@
 	NSString* name = objc_getAssociatedObject(self, @"name");
 	if (!name)
 		name = self.type.typeName;
+	if (!name)
+		name = NSLocalizedString(@"Unknown", nil);
 	NSString* characterName = objc_getAssociatedObject(self, @"characterName");
 	
 	NSMutableString* string;
 	if (quantity > 1)
 		string = [NSMutableString stringWithFormat:@"%@ (x%d)", name, quantity];
 	else if (contents.count == 1)
-		string = [NSMutableString stringWithFormat:@"%@ (1 item)", name];
+		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (1 item)", nil), name];
 	else if (contents.count > 1)
-		string = [NSMutableString stringWithFormat:@"%@ (%d items)", name, contents.count];
-	else
+		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (%d items)", nil), name, contents.count];
+	else {
+		if (!name)
+			NSLog(@"%@", name);
 		string = [NSMutableString stringWithString:name];
+	}
 	
 	if (characterName)
 		[string appendFormat:@" (%@)", characterName];

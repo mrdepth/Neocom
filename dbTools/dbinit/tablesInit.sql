@@ -75,15 +75,6 @@ CREATE TABLE "invControlTowerResourcePurposes" (
   "purposeText" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("purpose")
 );
-CREATE TABLE "invMarketGroups" (
-  "marketGroupID" integer NOT NULL,
-  "parentGroupID" integer DEFAULT NULL,
-  "marketGroupName" varchar(100) DEFAULT NULL,
-  "description" varchar(3000) DEFAULT NULL,
-  "iconID" integer DEFAULT NULL,
-  "hasTypes" integer DEFAULT NULL,
-  PRIMARY KEY ("marketGroupID")
-);
 CREATE TABLE "invMetaGroups" (
   "metaGroupID" integer NOT NULL,
   "metaGroupName" varchar(100) DEFAULT NULL,
@@ -394,3 +385,16 @@ CREATE TABLE invControlTowerResources (
   PRIMARY KEY  ("controlTowerTypeID","resourceTypeID")
 );
 
+CREATE TABLE invMarketGroups (
+ marketGroupID  INTEGER NOT NULL,
+ parentGroupID  INTEGER DEFAULT NULL,
+ marketGroupName  TEXT(100),
+ description  TEXT(3000),
+ graphicID  INTEGER,
+ hasTypes  INTEGER,
+ iconID  INTEGER,
+ dataID  INTEGER,
+ marketGroupNameID INTEGER,
+ descriptionID INTEGER,
+ PRIMARY KEY  (marketGroupID)
+);

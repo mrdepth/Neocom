@@ -8,3 +8,4 @@
 .read ./dump/invGroups.sql
 .read ./dump/invTypes.sql
 .read ./dump/invControlTowerResources.sql
+.read ./dump/invMarketGroups.sql

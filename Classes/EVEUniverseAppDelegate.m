@@ -131,22 +131,25 @@
 	loadingViewController.view.center = CGPointMake(self.window.frame.size.width / 2, self.window.frame.size.height / 2);
 	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, 748 - 50, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
-			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 748 - kGADAdSizeBanner.size.height)];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UISplitViewController* splitViewController = (UISplitViewController*) self.controller;
+			CGRect frame = [[[splitViewController.viewControllers objectAtIndex:0] view] frame];
+			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, frame.size.height - GAD_SIZE_320x50.height, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+			adView.rootViewController = self.controller;
+			adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+			[[[splitViewController.viewControllers objectAtIndex:0] view] addSubview:adView];
+		}
 		else {
 			CGRect frame = [[UIScreen mainScreen] bounds];
 			frame.origin.y = frame.size.height - GAD_SIZE_320x50.height;
 			frame.size.height = GAD_SIZE_320x50.height;
 			adView = [[GADBannerView alloc] initWithFrame:frame];
+			adView.rootViewController = self.controller;
+			[controller.view addSubview:adView];
 		}
-			//adView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 480 - kGADAdSizeBanner.size.height)];
 
 		adView.adUnitID = @"a14d501062a8c09";
-		adView.rootViewController = self.controller;
-		[controller.view addSubview:adView];
 		GADRequest *request = [GADRequest request];
-		//request.testDevices = [NSArray arrayWithObject:[[UIDevice currentDevice] uniqueIdentifier]];
 		[adView loadRequest:request];
 		
 	}
@@ -309,12 +312,6 @@
 	}
 }
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
-	else
-		return UIInterfaceOrientationMaskPortrait;
-}
 
 #pragma mark -
 #pragma mark Memory management
@@ -417,18 +414,6 @@
 	}
 }
 
-/*- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
-	if (queue.transactions.count != 0) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		[adView removeFromSuperview];
-		[adView release];
-		adView = nil;
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Your donation status has been restored" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-		[alertView show];
-		[alertView autorelease];
-	}
-}*/
 
 @end
 

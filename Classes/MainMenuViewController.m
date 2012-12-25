@@ -25,7 +25,8 @@
 #import "IndustryJobsViewController.h"
 #import "SplashScreenViewController.h"
 
-@interface MainMenuViewController(Private)
+@interface MainMenuViewController()
+@property (nonatomic, retain) UIPopoverController* masterPopover;
 
 - (void) didSelectAccount:(NSNotification*) notification;
 - (IBAction) dismissModalViewController;
@@ -56,7 +57,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Home", nil);
-	[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+	[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self.splitViewController]];
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	menuTableView.visibleTopPartHeight = 24;
 	[characterInfoView addSubview:characterInfoViewController.view];
@@ -67,24 +68,6 @@
 	numberOfUnreadMessages = 0;
 	[self loadMail];
 }
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-//	return YES;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
-	else
-		return UIInterfaceOrientationMaskPortrait;
-}
-
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -102,6 +85,7 @@
 	self.characterInfoViewController = nil;
 	self.menuItems = nil;
 	self.characterInfoView = nil;
+	self.masterPopover = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -115,6 +99,7 @@
 	[characterInfoViewController release];
 	[menuItems release];
 	[characterInfoView release];
+	[_masterPopover release];
     [super dealloc];
 }
 
@@ -192,7 +177,7 @@
 			[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController)] autorelease]];
-			[self presentModalViewController:navController animated:YES];
+			[self.splitViewController presentModalViewController:navController animated:YES];
 			[navController release];
 			[controller release];
 		}
@@ -205,6 +190,11 @@
 				UIViewController *controller = [[NSClassFromString(className) alloc] initWithNibName:nibName bundle:nil];
 				navController = [[UINavigationController alloc] initWithRootViewController:controller];
 				[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+				if (self.masterPopover) {
+					UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
+					controller.navigationItem.leftBarButtonItem = [[[[navigationController viewControllers] objectAtIndex:0] navigationItem] leftBarButtonItem];
+					[self.masterPopover dismissPopoverAnimated:YES];
+				}
 				[self.splitViewController setViewControllers:[NSArray arrayWithObjects:[viewControllers objectAtIndex:0], navController, nil]];
 				[navController release];
 				[controller release];
@@ -250,10 +240,22 @@
 - (void)bannerViewActionDidFinish:(ADBannerView *)banner {
 }
 
-@end
+#pragma mark - UISplitViewControllerDelegate
 
+- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
+	barButtonItem.title = NSLocalizedString(@"Menu", nil);
+	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
+	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
+	self.masterPopover = pc;
+}
 
-@implementation MainMenuViewController(Private)
+- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
+	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:nil animated:YES];
+	self.masterPopover = nil;
+}
+
+#pragma mark - Private
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	numberOfUnreadMessages = 0;
@@ -262,7 +264,7 @@
 }
 
 - (IBAction) dismissModalViewController {
-	[self dismissModalViewControllerAnimated:YES];
+	[self.splitViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void) didReadMail:(NSNotification*) notification {

@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -116,7 +116,7 @@
 							</object>
 							<object class="IBUILabel" id="40734403">
 								<reference key="NSNextResponder" ref="124518054"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{424, 0}, {240, 18}}</string>
 								<reference key="NSSuperview" ref="124518054"/>
 								<reference key="NSWindow"/>
@@ -138,7 +138,7 @@
 							</object>
 							<object class="IBUILabel" id="63829292">
 								<reference key="NSNextResponder" ref="124518054"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{424, 18}, {36, 18}}</string>
 								<reference key="NSSuperview" ref="124518054"/>
 								<reference key="NSWindow"/>
@@ -160,11 +160,10 @@
 							</object>
 							<object class="IBUILabel" id="778137871">
 								<reference key="NSNextResponder" ref="124518054"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{460, 18}, {204, 18}}</string>
 								<reference key="NSSuperview" ref="124518054"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -182,7 +181,7 @@
 							</object>
 							<object class="IBUIImageView" id="41031860">
 								<reference key="NSNextResponder" ref="124518054"/>
-								<int key="NSvFlags">256</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 2}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="124518054"/>
 								<reference key="NSWindow"/>
@@ -195,7 +194,7 @@
 							</object>
 							<object class="IBUIImageView" id="969030761">
 								<reference key="NSNextResponder" ref="124518054"/>
-								<int key="NSvFlags">256</int>
+								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{384, 2}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="124518054"/>
 								<reference key="NSWindow"/>

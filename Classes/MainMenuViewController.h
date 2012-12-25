@@ -10,7 +10,7 @@
 #import "CharacterInfoViewController.h"
 
 @class SBTableView;
-@interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate> {
+@interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate> {
 	SBTableView *menuTableView;
 	NSArray *menuItems;
 	CharacterInfoViewController *characterInfoViewController;

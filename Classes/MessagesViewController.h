@@ -28,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *filterNavigationViewController;
 @property (nonatomic, retain) UIPopoverController *filterPopoverController;
+@property (retain, nonatomic) IBOutlet UIToolbar *toolbar;
 
 - (IBAction)markAsRead:(id)sender;
 

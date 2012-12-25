@@ -69,15 +69,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)dealloc {
     [certificateTreeView release];
     [scrollView release];

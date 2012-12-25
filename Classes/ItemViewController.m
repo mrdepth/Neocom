@@ -61,15 +61,6 @@
 	}
 }
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Overriden to allow any orientation.
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];

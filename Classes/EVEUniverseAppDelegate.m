@@ -312,13 +312,6 @@
 	}
 }
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		//return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
-		return UIInterfaceOrientationMaskAll;
-	else
-		return UIInterfaceOrientationMaskPortrait;
-}
 
 #pragma mark -
 #pragma mark Memory management
@@ -419,19 +412,6 @@
 				break;
 		}
 	}
-}
-
-#pragma mark - UISplitViewControllerDelegate
-
-- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
-	barButtonItem.title = NSLocalizedString(@"Menu", nil);
-	UINavigationController* navigationController = [[(UISplitViewController*) self.controller viewControllers] objectAtIndex:1];
-	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
-}
-
-- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UINavigationController* navigationController = [[(UISplitViewController*) self.controller viewControllers] objectAtIndex:1];
-	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:nil animated:YES];
 }
 
 

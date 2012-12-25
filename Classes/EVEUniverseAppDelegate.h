@@ -14,7 +14,7 @@
 
 @class EVEAccount;
 @class EVESkillTree;
-@interface EVEUniverseAppDelegate : NSObject <UIApplicationDelegate, SKPaymentTransactionObserver, GADBannerViewDelegate, UISplitViewControllerDelegate> {
+@interface EVEUniverseAppDelegate : NSObject <UIApplicationDelegate, SKPaymentTransactionObserver, GADBannerViewDelegate> {
     UIWindow *window;
 	UIViewController *controller;
 	UIViewController *loadingViewController;

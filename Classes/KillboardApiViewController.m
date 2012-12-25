@@ -51,7 +51,8 @@
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
+		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
+		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController] autorelease];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
@@ -61,15 +62,6 @@
 	[self reload];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
     // Do any additional setup after loading the view from its nib.
-}
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)didReceiveMemoryWarning

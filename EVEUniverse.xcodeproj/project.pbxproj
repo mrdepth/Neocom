@@ -519,6 +519,8 @@
 		71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71196C9614B1E77B00614711 /* TargetsViewController.xib */; };
 		716AE97E140EC842004A5285 /* EVEAccountStorageAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */; };
 		716AE991140ECD89004A5285 /* EVEAccountStorageCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 716AE990140ECD89004A5285 /* EVEAccountStorageCharacter.m */; };
+		716ED4051688E38500E07C6B /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 716ED4041688E38500E07C6B /* Default-Portrait~ipad.png */; };
+		716ED4081688E83800E07C6B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 716ED4071688E83800E07C6B /* logo.png */; };
 		717B183012F4B1A4009DDE48 /* RSSFeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717B182E12F4B1A4009DDE48 /* RSSFeedsViewController.m */; };
 		717B183112F4B1A4009DDE48 /* RSSFeedsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717B182F12F4B1A4009DDE48 /* RSSFeedsViewController.xib */; };
 		717B183612F4B27E009DDE48 /* rssFeeds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 717B183512F4B27E009DDE48 /* rssFeeds.plist */; };
@@ -1605,6 +1607,8 @@
 		716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorageAPIKey.m; sourceTree = "<group>"; };
 		716AE98F140ECD89004A5285 /* EVEAccountStorageCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStorageCharacter.h; sourceTree = "<group>"; };
 		716AE990140ECD89004A5285 /* EVEAccountStorageCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorageCharacter.m; sourceTree = "<group>"; };
+		716ED4041688E38500E07C6B /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		716ED4071688E83800E07C6B /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		717B182D12F4B1A4009DDE48 /* RSSFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSFeedsViewController.h; sourceTree = "<group>"; };
 		717B182E12F4B1A4009DDE48 /* RSSFeedsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSFeedsViewController.m; sourceTree = "<group>"; };
 		717B182F12F4B1A4009DDE48 /* RSSFeedsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RSSFeedsViewController.xib; sourceTree = "<group>"; };
@@ -3953,6 +3957,7 @@
 				718C684A13007FD000C2A5A2 /* Default@2x.png */,
 				12F17D43167066CB0070B97C /* Default-568h@2x.png */,
 				71A14ECB1402E57B0090CDCA /* Default-Landscape~ipad.png */,
+				716ED4041688E38500E07C6B /* Default-Portrait~ipad.png */,
 				718C4A70130062A600C2A5A2 /* icon.png */,
 				718C4A71130062A600C2A5A2 /* icon@2x.png */,
 				37809239141D80CC00F32F1A /* icon72x72.png */,
@@ -3979,6 +3984,7 @@
 				37EBCE1314D31F8A0085D1CB /* linesButton@2x.png */,
 				37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */,
 				37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */,
+				716ED4071688E83800E07C6B /* logo.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -5228,6 +5234,8 @@
 				12F17D46167066CB0070B97C /* icon72x72@2x.png in Resources */,
 				12F17D7316707BCC0070B97C /* README.txt in Resources */,
 				1259B4A91679C60C00EA49B5 /* LoadingViewController.xib in Resources */,
+				716ED4051688E38500E07C6B /* Default-Portrait~ipad.png in Resources */,
+				716ED4081688E83800E07C6B /* logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -109,15 +109,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
 	[skillsTableView setEditing:editing animated:animated];

@@ -89,15 +89,6 @@
 	skillPlan = nil;
 }
 
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 - (IBAction)onImport:(id)sender {
 	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import", nil)
 														message:NSLocalizedString(@"Do you wish to replace or merge the existing skill plan with imported skill plan?", nil)

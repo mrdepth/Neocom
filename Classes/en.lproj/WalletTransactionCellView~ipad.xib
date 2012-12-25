@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -89,7 +89,7 @@
 							</object>
 							<object class="IBUILabel" id="145596748">
 								<reference key="NSNextResponder" ref="37875323"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">294</int>
 								<string key="NSFrame">{{105, 17}, {429, 18}}</string>
 								<reference key="NSSuperview" ref="37875323"/>
 								<reference key="NSWindow"/>
@@ -111,11 +111,10 @@
 							</object>
 							<object class="IBUILabel" id="926995831">
 								<reference key="NSNextResponder" ref="37875323"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">294</int>
 								<string key="NSFrame">{{105, 34}, {429, 18}}</string>
 								<reference key="NSSuperview" ref="37875323"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>

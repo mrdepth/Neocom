@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -50,7 +50,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{40, 0}, {114, 18}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="759118612"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -88,8 +87,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{98, 18}, {182, 18}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -119,7 +116,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 18}, {55, 18}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="758658377"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -141,7 +137,6 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{162, 0}, {76, 18}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="657712497"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -163,7 +158,6 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{240, 0}, {40, 18}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="275184058"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -182,10 +176,9 @@
 							</object>
 							<object class="IBUIImageView" id="496832781">
 								<reference key="NSNextResponder" ref="91815743"/>
-								<int key="NSvFlags">256</int>
+								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 2}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="91815743"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="964510068"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -196,7 +189,6 @@
 						</object>
 						<string key="NSFrameSize">{300, 35}</string>
 						<reference key="NSSuperview" ref="858144862"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="496832781"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -211,7 +203,6 @@
 				</object>
 				<string key="NSFrameSize">{320, 36}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="91815743"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -430,65 +421,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">23</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSFuelCellView</string>
-					<string key="superclassName">UITableViewCell</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>consumptionLabel</string>
-							<string>iconImageView</string>
-							<string>remainsLabel</string>
-							<string>typeNameLabel</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UILabel</string>
-							<string>UIImageView</string>
-							<string>UILabel</string>
-							<string>UILabel</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>consumptionLabel</string>
-							<string>iconImageView</string>
-							<string>remainsLabel</string>
-							<string>typeNameLabel</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">consumptionLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">iconImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">remainsLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">typeNameLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSFuelCellView.h</string>
-					</object>
-				</object>
-			</object>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">

@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -51,14 +51,14 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIImageView" id="179387455">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">256</int>
+						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{703, 704}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1001216694"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">4</int>
+						<int key="IBUIContentMode">5</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -160,7 +160,6 @@
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="408005221">
-								<bool key="IBUIEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<reference key="IBUICustomView" ref="769788988"/>
 								<reference key="IBUIToolbar" ref="665188039"/>
@@ -258,9 +257,12 @@
 				</object>
 			</object>
 			<object class="IBUISegmentedControl" id="901506574">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<string key="NSFrameSize">{203, 30}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<int key="IBSegmentControlStyle">2</int>
@@ -268,8 +270,8 @@
 				<int key="IBSelectedSegmentIndex">0</int>
 				<object class="NSArray" key="IBSegmentTitles">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>My Account</string>
-					<string>Corp Accounts</string>
+					<string>My Journal</string>
+					<string>Corp Journal</string>
 				</object>
 				<object class="NSMutableArray" key="IBSegmentWidths">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -317,7 +319,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="596929858">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="358979442">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle"/>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
@@ -640,6 +641,7 @@
 					<string>125.CustomClassName</string>
 					<string>125.IBPluginDependency</string>
 					<string>140.IBPluginDependency</string>
+					<string>140.IUISegmentedControlInspectorSelectedSegmentMetadataKey</string>
 					<string>143.IBLastUsedUIStatusBarStylesToTargetRuntimesMap</string>
 					<string>143.IBPluginDependency</string>
 					<string>144.IBPluginDependency</string>
@@ -670,6 +672,7 @@
 					<string>EUSearchDisplayController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<integer value="1"/>
 					<object class="NSMutableDictionary">
 						<string key="NS.key.0">IBCocoaTouchFramework</string>
 						<integer value="0" key="NS.object.0"/>
@@ -949,7 +952,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NS.key.0">background3.png</string>
-			<string key="NS.object.0">{703, 704}</string>
+			<string key="NS.object.0">{768, 960}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">1930</string>
 	</data>

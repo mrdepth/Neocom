@@ -25,6 +25,7 @@
 + (id) fitWithBCString:(NSString*) string character:(eufe::Character*) character;
 + (id) fitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
 + (id) fitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
++ (id) fitWithDNA:(NSString*) dna character:(eufe::Character*) character;
 
 + (NSString*) allFitsEveXML;
 
@@ -34,6 +35,7 @@
 - (id) initWithBCString:(NSString*) string character:(eufe::Character*) character;
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
 - (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
+- (id) initWithDNA:(NSString*) dna character:(eufe::Character*) character;
 - (NSDictionary*) dictionary;
 - (NSString*) dna;
 - (NSString*) eveXML;

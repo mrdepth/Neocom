@@ -37,6 +37,7 @@
 - (void) keyboardWillShow: (NSNotification*) notification;
 - (void) keyboardWillHide: (NSNotification*) notification;
 - (void) save;
+- (void) performExport;
 
 @end
 
@@ -461,49 +462,7 @@
 		[requiredSkillsViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonExport]) {
-		NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Clipboard EVE XML", nil), NSLocalizedString(@"Clipboard DNA", nil), nil];
-		if ([MFMailComposeViewController canSendMail])
-			[buttons addObject:NSLocalizedString(@"Email", nil)];
-		[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					  destructiveButtonTitle:nil
-						   otherButtonTitles:buttons
-							 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
-									 return;
-
-								 NSString* name;
-								 
-								 if (self.fit.fitName.length > 0)
-									 name = self.fit.fitName;
-								 else {
-									 eufe::Character* character = self.fit.character;
-									 eufe::Ship* ship = character->getShip();
-									 name = [[ItemInfo itemInfoWithItem:ship error:nil] typeName];
-								 }
-								 
-								 NSString* xml = [self.fit eveXML];
-								 NSString* dna = [self.fit dna];
-								 NSString* link = [NSString stringWithFormat:@"<a href=\"javascript:CCPEVE.showFitting('%@');\">%@</a>", dna, name];
-								 
-								 if (selectedButtonIndex == 0) {
-									 [[UIPasteboard generalPasteboard] setString:xml];
-								 }
-								 else if (selectedButtonIndex == 1) {
-									 [[UIPasteboard generalPasteboard] setString:link];
-								 }
-								 else if (selectedButtonIndex == 2) {
-									 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-									 controller.mailComposeDelegate = self;
-									 [controller setMessageBody:link isHTML:YES];
-									 [controller setSubject:name];
-									 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
-									 [self presentModalViewController:controller animated:YES];
-									 [controller release];
-									 
-								 }
-							 }
-								 cancelBlock:nil] showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+		[self performExport];
 	}
 	[actionSheet release];
 	actionSheet = nil;
@@ -700,6 +659,53 @@
 	for (Fit* item in fits)
 		if (item.fitID > 0)
 			[item save];
+}
+
+- (void) performExport {
+	NSString* xml = [self.fit eveXML];
+	NSString* dna = [self.fit dna];
+
+	NSString* name;
+	
+	if (self.fit.fitName.length > 0)
+		name = self.fit.fitName;
+	else {
+		eufe::Character* character = self.fit.character;
+		eufe::Ship* ship = character->getShip();
+		name = [[ItemInfo itemInfoWithItem:ship error:nil] typeName];
+	}
+	NSString* link = [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@</a>", dna, dna, name];
+	
+	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Clipboard EVE XML", nil), NSLocalizedString(@"Clipboard DNA", nil), nil];
+	if ([MFMailComposeViewController canSendMail])
+		[buttons addObject:NSLocalizedString(@"Email", nil)];
+	[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:buttons
+						 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
+								 return;
+							 
+							 
+							 if (selectedButtonIndex == 0) {
+								 [[UIPasteboard generalPasteboard] setString:xml];
+							 }
+							 else if (selectedButtonIndex == 1) {
+								 [[UIPasteboard generalPasteboard] setString:link];
+							 }
+							 else if (selectedButtonIndex == 2) {
+								 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+								 controller.mailComposeDelegate = self;
+								 [controller setMessageBody:link isHTML:YES];
+								 [controller setSubject:name];
+								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
+								 [self presentModalViewController:controller animated:YES];
+								 [controller release];
+								 
+							 }
+						 }
+							 cancelBlock:nil] showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 @end

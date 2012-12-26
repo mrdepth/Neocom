@@ -30,11 +30,27 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>icon</string>
 			<key>CFBundleURLName</key>
 			<string>com.shimanski.eveuniverse.eve</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>eve</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>icon</string>
+			<key>CFBundleURLName</key>
+			<string>com.shimanski.eveuniverse.fitting</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fitting</string>
 			</array>
 		</dict>
 	</array>
@@ -46,6 +62,8 @@
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>
 	<string>MainWindow-iPad</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIInterfaceOrientation~ipad</key>
 	<string>UIInterfaceOrientationLandscapeRight</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
@@ -59,7 +77,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UIFileSharingEnabled</key>
-	<true/>
 </dict>
 </plist>

@@ -15,14 +15,18 @@
 #import "EVERequestsCache.h"
 #import "EUMailBox.h"
 #import "EUActivityView.h"
+#import "FittingViewController.h"
+#import "CharacterEVE.h"
+#import "Fit.h"
 
-@interface EVEUniverseAppDelegate(Private)
+@interface EVEUniverseAppDelegate()
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
 - (void) updateNotifications;
 - (void) addAPIKeyWithURL:(NSURL*) url;
+- (void) openFitWithURL:(NSURL*) url;
 
 @end
 
@@ -131,18 +135,19 @@
 	loadingViewController.view.center = CGPointMake(self.window.frame.size.width / 2, self.window.frame.size.height / 2);
 	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
+		CGSize gadSize = CGSizeMake(320, 50);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UISplitViewController* splitViewController = (UISplitViewController*) self.controller;
 			CGRect frame = [[[splitViewController.viewControllers objectAtIndex:0] view] frame];
-			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, frame.size.height - GAD_SIZE_320x50.height, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height)];
+			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, frame.size.height - gadSize.height, gadSize.width, gadSize.height)];
 			adView.rootViewController = self.controller;
 			adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 			[[[splitViewController.viewControllers objectAtIndex:0] view] addSubview:adView];
 		}
 		else {
 			CGRect frame = [[UIScreen mainScreen] bounds];
-			frame.origin.y = frame.size.height - GAD_SIZE_320x50.height;
-			frame.size.height = GAD_SIZE_320x50.height;
+			frame.origin.y = frame.size.height - gadSize.height;
+			frame.size.height = gadSize.height;
 			adView = [[GADBannerView alloc] initWithFrame:frame];
 			adView.rootViewController = self.controller;
 			[controller.view addSubview:adView];
@@ -156,7 +161,6 @@
 	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 	
 	updateNotificationsQueue = [[NSOperationQueue alloc] init];
-	
 	return YES;
 }
 
@@ -198,13 +202,12 @@
 	}
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-	[self addAPIKeyWithURL:url];
-	return YES;
-}
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	[self addAPIKeyWithURL:url];
+	NSString* scheme = [url scheme];
+	if ([scheme isEqualToString:@"eve"])
+		[self addAPIKeyWithURL:url];
+	else if ([scheme isEqualToString:@"fitting"])
+		[self openFitWithURL:url];
 	return YES;
 }
 
@@ -415,9 +418,7 @@
 }
 
 
-@end
-
-@implementation EVEUniverseAppDelegate(Private)
+#pragma mark - Private
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
@@ -540,6 +541,65 @@
 		[error release];
 	}];
 	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) openFitWithURL:(NSURL*) url {
+	NSMutableString* dna = [NSMutableString stringWithString:[url absoluteString]];
+	[dna replaceOccurrencesOfString:@"fitting://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, dna.length)];
+	[dna replaceOccurrencesOfString:@"fitting:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, dna.length)];
+	
+	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+	__block Fit* fit = nil;
+	__block eufe::Character* character = NULL;
+	
+	[operation addExecutionBlock:^{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		
+		character = new eufe::Character(fittingViewController.fittingEngine);
+		
+		EVEAccount* theCurrentAccount = [EVEAccount currentAccount];
+		operation.progress = 0.3;
+		if (theCurrentAccount && theCurrentAccount.charKeyID && theCurrentAccount.charVCode && theCurrentAccount.characterID) {
+			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:theCurrentAccount.characterID keyID:theCurrentAccount.charKeyID vCode:theCurrentAccount.charVCode name:theCurrentAccount.characterName];
+			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setSkillLevels(*[eveCharacter skillsMap]);
+		}
+		else
+			character->setCharacterName("All Skills 0");
+		operation.progress = 0.6;
+		fit = [[Fit alloc] initWithDNA:dna character:character];
+		operation.progress = 1.0;
+		[pool release];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^{
+		if (![operation isCancelled]) {
+			if (fit) {
+				fittingViewController.fittingEngine->getGang()->addPilot(character);
+				fittingViewController.fit = fit;
+				[fittingViewController.fits addObject:fit];
+				[self.controller dismissModalViewControllerAnimated:NO];
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+					UINavigationController* navigationController = [[(UISplitViewController*) self.controller viewControllers] objectAtIndex:1];
+					[navigationController pushViewController:fittingViewController animated:YES];
+				}
+				else
+					[(UINavigationController*)self.controller pushViewController:fittingViewController animated:YES];
+			}
+			else {
+				if (character)
+					delete character;
+			}
+		}
+		else {
+			if (character)
+				delete character;
+		}
+		[fittingViewController release];
+		[fit release];
+	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 

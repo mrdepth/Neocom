@@ -22,4 +22,6 @@
 @property (nonatomic, retain) IBOutlet CharacterInfoViewController *characterInfoViewController;
 @property (nonatomic, retain) IBOutlet UIView *characterInfoView;
 @property (nonatomic, retain) NSArray *menuItems;
+
+- (IBAction)onFacebook:(id)sender;
 @end

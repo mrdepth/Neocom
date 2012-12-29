@@ -224,7 +224,7 @@
 		12FE0C4F165A258B002E467E /* KillNetFilterDateViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */; };
 		12FE0C53165A2B04002E467E /* KillboardKillNetViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C52165A2B03002E467E /* KillboardKillNetViewController~ipad.xib */; };
 		12FE0C55165A2CA5002E467E /* KillboardCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */; };
-		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */; };
 		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -603,6 +603,9 @@
 		718364E1131A98DC003D0415 /* tutorial4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718364D7131A98DC003D0415 /* tutorial4@2x.png */; };
 		71836545131AA864003D0415 /* MarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71836543131AA864003D0415 /* MarketOrdersViewController.m */; };
 		71836550131AA990003D0415 /* MarketOrderCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7183654F131AA990003D0415 /* MarketOrderCellView.m */; };
+		71843342168A0D5B00F10FE5 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 7184333F168A0D5B00F10FE5 /* facebook.png */; };
+		71843343168A0D5B00F10FE5 /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71843340168A0D5B00F10FE5 /* facebook@2x.png */; };
+		71843344168A0D5B00F10FE5 /* rss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71843341168A0D5B00F10FE5 /* rss@2x.png */; };
 		7184E09D14043A3400C214A8 /* background4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7184E09C14043A3400C214A8 /* background4.png */; };
 		7184E15C1404572C00C214A8 /* cellAccountBackground-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7184E15B1404572C00C214A8 /* cellAccountBackground-iPad.png */; };
 		7184F75312EC58C2000C7769 /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7184F75112EC58C2000C7769 /* LoadingViewController.m */; };
@@ -1096,7 +1099,7 @@
 		12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "KillboardCellView~ipad.xib"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUniverseAppDelegate.m; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EVEUniverseAppDelegate.mm; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1709,6 +1712,9 @@
 		71836543131AA864003D0415 /* MarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarketOrdersViewController.m; sourceTree = "<group>"; };
 		7183654E131AA990003D0415 /* MarketOrderCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarketOrderCellView.h; sourceTree = "<group>"; };
 		7183654F131AA990003D0415 /* MarketOrderCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarketOrderCellView.m; sourceTree = "<group>"; };
+		7184333F168A0D5B00F10FE5 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		71843340168A0D5B00F10FE5 /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
+		71843341168A0D5B00F10FE5 /* rss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rss@2x.png"; sourceTree = "<group>"; };
 		7184E09C14043A3400C214A8 /* background4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background4.png; sourceTree = "<group>"; };
 		7184E15B1404572C00C214A8 /* cellAccountBackground-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellAccountBackground-iPad.png"; sourceTree = "<group>"; };
 		7184F75012EC58C2000C7769 /* LoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
@@ -2020,7 +2026,7 @@
 				127363921643AB4200FB0EE2 /* Killboard */,
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
-				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
+				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -3968,6 +3974,7 @@
 				717C210812F0C63400757EE5 /* Levels */,
 				71955A651376B5390068DBD7 /* FittingIcons */,
 				718CBFF312F5EEA500CAC006 /* rss.png */,
+				71843341168A0D5B00F10FE5 /* rss@2x.png */,
 				378481841418F5D300450645 /* checkmark.png */,
 				378481851418F5D300450645 /* checkmark@2x.png */,
 				37A4A3CD14CEE361001DB4C7 /* certificateMaskBordered.png */,
@@ -3985,6 +3992,8 @@
 				37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */,
 				37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */,
 				716ED4071688E83800E07C6B /* logo.png */,
+				7184333F168A0D5B00F10FE5 /* facebook.png */,
+				71843340168A0D5B00F10FE5 /* facebook@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -5236,6 +5245,9 @@
 				1259B4A91679C60C00EA49B5 /* LoadingViewController.xib in Resources */,
 				716ED4051688E38500E07C6B /* Default-Portrait~ipad.png in Resources */,
 				716ED4081688E83800E07C6B /* logo.png in Resources */,
+				71843342168A0D5B00F10FE5 /* facebook.png in Resources */,
+				71843343168A0D5B00F10FE5 /* facebook@2x.png in Resources */,
+				71843344168A0D5B00F10FE5 /* rss@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5247,7 +5259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.mm in Sources */,
-				1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.m in Sources */,
+				1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.mm in Sources */,
 				718BA585122BF34A00148015 /* ItemsDBViewController.m in Sources */,
 				71853768122E840400118181 /* MarketGroupsViewController.m in Sources */,
 				718537FD122E90C700118181 /* ItemInfoViewController.m in Sources */,
@@ -6347,8 +6359,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
-					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta2/Library\"",
-					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
@@ -6377,8 +6387,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
-					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta2/Library\"",
-					"\"$(SRCROOT)/Classes/admob_iphone_sdk/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;

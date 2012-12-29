@@ -99,6 +99,10 @@ public:
 	return [[[Fit alloc] initWithKillMail:killMail character:character] autorelease];
 }
 
++ (id) fitWithDNA:(NSString*) dna character:(eufe::Character*) character {
+	return [[[Fit alloc] initWithDNA:dna character:character] autorelease];
+}
+
 + (NSString*) allFitsEveXML {
 	NSArray *fitsArray = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 	NSMutableString* eveXML = [NSMutableString string];
@@ -390,6 +394,68 @@ public:
 					ship->addDrone(item.type.typeID);
 			}
 		
+			for (EVEDBInvType *type in charges) {
+				eufe::Charge* charge = new eufe::Charge(ship->getEngine(), type.typeID, NULL);
+				eufe::ModulesList::const_iterator i, end = ship->getModules().end();
+				for (i = ship->getModules().begin(); i != end; i++) {
+					if ((*i)->canFit(charge))
+						(*i)->setCharge(new eufe::Charge(*charge));
+				}
+				delete charge;
+			}
+		}
+	}
+	return self;
+}
+
+- (id) initWithDNA:(NSString*) dna character:(eufe::Character*) aCharacter {
+	if (self = [self initWithCharacter:aCharacter error:nil]) {
+		NSMutableArray* records = [NSMutableArray arrayWithArray:[dna componentsSeparatedByString:@":"]];
+		if (records.count == 0) {
+			[self release];
+			return nil;
+		}
+		else {
+			NSInteger shipTypeID = [[records objectAtIndex:0] integerValue];
+			eufe::Ship* ship = aCharacter->setShip(shipTypeID);
+			if (!ship) {
+				[self release];
+				return nil;
+			}
+			self.fitName = [NSString stringWithFormat:@"%s", ship->getTypeName()];
+			[records removeObjectAtIndex:0];
+			
+			NSMutableArray* charges = [NSMutableArray array];
+			
+			for (NSString* record in records) {
+				NSArray* components = [record componentsSeparatedByString:@";"];
+				NSInteger typeID = 0;
+				NSInteger amount = 1;
+				
+				if (components.count > 0)
+					typeID = [[components objectAtIndex:0] integerValue];
+				if (components.count > 1)
+					amount = [[components objectAtIndex:1] integerValue];
+				
+				if (amount > 0) {
+					EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+					if (type) {
+						if ([type.group.category.categoryName isEqualToString:@"Module"] ||
+							[type.group.category.categoryName isEqualToString:@"Subsystem"]) {
+							for (NSInteger i = 0; i < amount; i++)
+								ship->addModule(typeID);
+						}
+						else if ([type.group.category.categoryName isEqualToString:@"Charge"]) {
+							[charges addObject:type];
+						}
+						else if ([type.group.category.categoryName isEqualToString:@"Drone"]) {
+							for (int i = 0; i < amount; i++)
+								ship->addDrone(typeID);
+						}
+					}
+				}
+			}
+			
 			for (EVEDBInvType *type in charges) {
 				eufe::Charge* charge = new eufe::Charge(ship->getEngine(), type.typeID, NULL);
 				eufe::ModulesList::const_iterator i, end = ship->getModules().end();

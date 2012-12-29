@@ -189,8 +189,20 @@
 			[notifications addObject:notification];
 		}
 		
-		EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil];
-		if (characterName.characters.count == 0 && ids.count > 0) {
+		NSMutableDictionary*characterNames = [NSMutableDictionary dictionary];
+		NSArray* idsArray = [ids allObjects];
+		NSRange range = NSMakeRange(0, MIN(idsArray.count, 250));
+		while (range.length > 0) {
+			EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[idsArray subarrayWithRange:range] error:&error];
+			if (characterName.characters.count > 0)
+				[characterNames addEntriesFromDictionary:characterName.characters];
+			range.location += range.length;
+			range.length = idsArray.count - range.location;
+			if (range.length > 250)
+				range.length = 250;
+		}
+		
+		/*if (characterName.characters.count == 0 && ids.count > 0) {
 			NSMutableDictionary* characters = [NSMutableDictionary dictionary];
 			NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
 			for (NSString* charID in ids) {
@@ -206,14 +218,15 @@
 				}];
 			}
 			[operationQueue waitUntilAllOperationsAreFinished];
-			characterName.characters = characters;
-		}
+			//EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil];
+			//characterName.characters = characterName.characters;
+		}*/
 		
 		for (EUMailMessage* message in [inbox arrayByAddingObjectsFromArray:sent]) {
 			if (message.header.toCharacterIDs.count > 0) {
 				NSMutableArray* names = [[NSMutableArray alloc] init];
 				for (NSString* key in message.header.toCharacterIDs) {
-					NSString* name = [characterName.characters valueForKey:key];
+					NSString* name = [characterNames valueForKey:key];
 					if (name)
 						[names addObject:name];
 				}
@@ -233,7 +246,7 @@
 					message.to = NSLocalizedString(@"Unknown mailing list", nil);
 			}
 			else if (message.header.toCorpOrAllianceID) {
-				NSString* to = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", message.header.toCorpOrAllianceID]];
+				NSString* to = [characterNames valueForKey:[NSString stringWithFormat:@"%d", message.header.toCorpOrAllianceID]];
 				if (to)
 					message.to = to;
 				else
@@ -242,7 +255,7 @@
 			if (!message.to)
 				message.to = NSLocalizedString(@"Unknown recipient", nil);
 			
-			NSString* from = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", message.header.senderID]];
+			NSString* from = [characterNames valueForKey:[NSString stringWithFormat:@"%d", message.header.senderID]];
 			if (from)
 				message.from = from;
 			else
@@ -252,7 +265,7 @@
 		[sent sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
 		
 		for (EUNotification* notification in notifications) {
-			NSString* sender = [characterName.characters valueForKey:[NSString stringWithFormat:@"%d", notification.header.senderID]];
+			NSString* sender = [characterNames valueForKey:[NSString stringWithFormat:@"%d", notification.header.senderID]];
 			if (sender)
 				notification.sender = sender;
 			else

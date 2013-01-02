@@ -162,12 +162,12 @@
 	else {
 		if (ownerSegmentControl.selectedSegmentIndex == 1) {
 			accountsView.frame = CGRectMake(0, 88, 320, 44);
-			walletTransactionsTableView.frame = CGRectMake(0, 132, 320, 416);
+			walletTransactionsTableView.frame = CGRectMake(0, 132, 320, self.view.frame.size.height);
 			walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 132);
 		}
 		else {
 			accountsView.frame = CGRectMake(0, 44, 320, 44);
-			walletTransactionsTableView.frame = CGRectMake(0, 88, 320, 416);
+			walletTransactionsTableView.frame = CGRectMake(0, 88, 320, self.view.frame.size.height);
 			walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 88);
 		}
 	}

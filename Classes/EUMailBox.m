@@ -154,10 +154,18 @@
 		[dateFormatterTime setDateFormat:@"HH:mm"];
 		[dateFormatterFull setDateFormat:@"yyyy.MM.dd HH:mm"];
 		
+		NSMutableDictionary*characterNames = [NSMutableDictionary dictionary];
 		for (EVEMailMessagesItem* item in mailMessages.mailMessages) {
 			if (item.toCorpOrAllianceID)
 				[ids addObject:[NSString stringWithFormat:@"%d", item.toCorpOrAllianceID]];
-			[ids addObject:[NSString stringWithFormat:@"%d", item.senderID]];
+			if (item.senderID) {
+				NSString* key = [NSString stringWithFormat:@"%d", item.senderID];
+				EVEMailingListsItem* list = [mailingLists.mailingListsMap valueForKey:key];
+				if (list.displayName)
+					[characterNames setValue:list.displayName forKey:[NSString stringWithFormat:@"%d", item.senderID]];
+				else
+					[ids addObject:[NSString stringWithFormat:@"%d", item.senderID]];
+			}
 			for (NSString* charID in item.toCharacterIDs)
 				[ids addObject:charID];
 			EUMailMessage* message = [EUMailMessage mailMessageWithMailBox:self];
@@ -182,14 +190,14 @@
 		[dateFormatterFull release];
 		
 		for (EVENotificationsItem* item in eveNotifications.notifications) {
-			if (item.senderID)
+			if (item.senderID) {
 				[ids addObject:[NSString stringWithFormat:@"%d", item.senderID]];
+			}
 			EUNotification* notification = [EUNotification notificationWithMailBox:self];
 			notification.header = item;
 			[notifications addObject:notification];
 		}
 		
-		NSMutableDictionary*characterNames = [NSMutableDictionary dictionary];
 		NSArray* idsArray = [ids allObjects];
 		NSRange range = NSMakeRange(0, MIN(idsArray.count, 250));
 		while (range.length > 0) {

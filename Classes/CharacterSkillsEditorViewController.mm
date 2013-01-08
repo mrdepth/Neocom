@@ -247,7 +247,7 @@
 	controller.currentLevel = [[character.skills valueForKey:key] integerValue];
 	controller.title = skill.typeName;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+		[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	else
 		[self presentModalViewController:modalController animated:YES];
 

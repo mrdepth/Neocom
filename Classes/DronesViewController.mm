@@ -195,7 +195,7 @@
 		fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
 		fittingItemsViewController.group = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[self.fittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
 	}
@@ -307,7 +307,7 @@
 		dronesAmountViewController.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
 		dronesAmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[dronesAmountViewController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+			[dronesAmountViewController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[dronesAmountViewController presentAnimated:YES];
 		[dronesAmountViewController release];
@@ -318,7 +318,7 @@
 		targetsViewController.modifiedItem = itemInfo;
 		targetsViewController.currentTarget = drone->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[self.fittingViewController presentModalViewController:targetsViewController.navigationController animated:YES];
 	}

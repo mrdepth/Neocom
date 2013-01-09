@@ -56,6 +56,13 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return YES;
+	else
+		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
 - (void) viewDidAppear:(BOOL)animated {
 	[self loadAccountFromPasteboard];
 }

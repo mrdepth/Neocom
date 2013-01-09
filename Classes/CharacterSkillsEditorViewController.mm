@@ -105,6 +105,13 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return YES;
+	else
+		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
 - (void)viewDidUnload
 {
     [self setShadowView:nil];

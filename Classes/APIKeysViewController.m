@@ -33,6 +33,13 @@
 	self.title = NSLocalizedString(@"Add API Key", nil);
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return YES;
+	else
+		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
 - (void) viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	NSIndexSet *indexes = [apiKeys indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {

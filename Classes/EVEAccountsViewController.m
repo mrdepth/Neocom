@@ -49,6 +49,13 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return YES;
+	else
+		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
@@ -371,7 +378,7 @@
 			}
 			
 			EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error];
-			if (characterInfo) {
+			if (characterInfo.lastKnownLocation) {
 				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Location: %@", nil), characterInfo.lastKnownLocation]
 						   forKey:@"location"];
 			}

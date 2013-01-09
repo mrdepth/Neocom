@@ -76,6 +76,13 @@
 		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Learn", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onAddToSkillPlan:)] autorelease]];
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return YES;
+	else
+		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 }

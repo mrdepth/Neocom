@@ -946,6 +946,7 @@
 		12A3B9A4140E4DF500E5A00C /* AccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessMaskViewController.h; sourceTree = "<group>"; };
 		12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessMaskViewController.m; sourceTree = "<group>"; };
 		12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccessMaskViewController.xib; sourceTree = "<group>"; };
+		12A6831F16A6D2F5004D0CA1 /* resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
 		12B336A11410F233002309CD /* APIKeysViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKeysViewController.h; sourceTree = "<group>"; };
 		12B336A21410F233002309CD /* APIKeysViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKeysViewController.m; sourceTree = "<group>"; };
 		12B336CC1410F537002309CD /* APIKeysKeyCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKeysKeyCellView.h; sourceTree = "<group>"; };
@@ -2017,6 +2018,7 @@
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.m */,
+				12A6831F16A6D2F5004D0CA1 /* resources.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";

@@ -76,7 +76,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] valueForKey:@"title"];
+	return NSLocalizedString([[sections objectAtIndex:section] valueForKey:@"title"], nil);
 }
 
 // Customize the appearance of table view cells.
@@ -116,7 +116,7 @@
 	RSSFeedViewController *controller = [[RSSFeedViewController alloc] initWithNibName:@"RSSFeedViewController" bundle:nil];
 	NSDictionary *rss = [[[sections objectAtIndex:indexPath.section] valueForKey:@"feeds"] objectAtIndex:indexPath.row];
 	controller.url = [NSURL URLWithString:[rss valueForKey:@"url"]];
-	controller.title = [rss valueForKey:@"title"];
+	controller.title = NSLocalizedString([rss valueForKey:@"title"], nil);
 	[self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }

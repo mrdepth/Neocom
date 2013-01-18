@@ -12,6 +12,8 @@
 #import "ItemCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "Globals.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface MarketGroupsViewController(Private)
 
@@ -32,9 +34,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.subGroups = [NSMutableArray array];
-	self.groupItems = [NSMutableArray array];
-	self.filteredValues = [NSMutableArray array];
 	if (!parentGroup)
 		self.title = NSLocalizedString(@"Market", nil);
 	else
@@ -83,22 +82,27 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return 1;
-	else
-		return 2;
+		return filteredValues.count;
+	else {
+		if (self.groupItems)
+			return groupItems.count;
+		else
+			return 1;
+	}
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-	if (section == 0) {
-		if (self.searchDisplayController.searchResultsTableView == tableView)
-			return filteredValues.count;
+	if (self.searchDisplayController.searchResultsTableView == tableView) {
+		return [[[filteredValues objectAtIndex:section] valueForKey:@"rows"] count];
+	}
+	else {
+		if (self.groupItems)
+			return [[[groupItems objectAtIndex:section] valueForKey:@"rows"] count];
 		else
 			return subGroups.count;
 	}
-	else
-		return groupItems.count;
 }
 
 
@@ -112,23 +116,23 @@
         cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		EVEDBInvType *row = [self.filteredValues objectAtIndex:indexPath.row];
+		EVEDBInvType *row = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 		cell.titleLabel.text = row.typeName;
 		cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 	}
 	else {
-		if (indexPath.section == 0) {
+		if (self.groupItems) {
+			EVEDBInvType *row = [[[groupItems objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+			cell.titleLabel.text = row.typeName;
+			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		}
+		else {
 			EVEDBInvMarketGroup *row = [subGroups objectAtIndex:indexPath.row];
 			cell.titleLabel.text = row.marketGroupName;
 			if (row.icon.iconImageName)
 				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
 				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		}
-		else {
-			EVEDBInvType *row = [groupItems objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		}
 	}
     
@@ -138,6 +142,18 @@
 		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (self.searchDisplayController.searchResultsTableView == tableView) {
+		return [[self.filteredValues objectAtIndex:section] valueForKey:@"title"];
+	}
+	else {
+		if (self.groupItems)
+			return [[self.groupItems objectAtIndex:section] valueForKey:@"title"];
+		else
+			return nil;
+	}
 }
 
 #pragma mark -
@@ -151,7 +167,7 @@
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
-		controller.type = [filteredValues objectAtIndex:indexPath.row];
+		controller.type = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -164,17 +180,11 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
-	else if (indexPath.section == 0) {
-		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:@"MarketGroupsViewController" bundle:nil];
-		controller.parentGroup = [subGroups objectAtIndex:indexPath.row];
-		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
-	}
-	else {
+	else if (self.groupItems) {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		controller.type = [groupItems objectAtIndex:indexPath.row];
+		controller.type = [[[groupItems objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageMarket];
-
+		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -185,6 +195,47 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		[controller release];
 	}
+	else {
+		MarketGroupsViewController *controller = [[MarketGroupsViewController alloc] initWithNibName:@"MarketGroupsViewController" bundle:nil];
+		controller.parentGroup = [subGroups objectAtIndex:indexPath.row];
+		[self.navigationController pushViewController:controller animated:YES];
+		[controller release];
+	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.collapsed = NO;
+	view.titleLabel.text = title;
+	if (tableView == self.searchDisplayController.searchResultsTableView || !self.groupItems)
+		view.collapsImageView.hidden = YES;
+	else
+		view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+	return view;
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	if (self.groupItems)
+		return [[[groupItems objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
+	else
+		return NO;
+}
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return self.groupItems ? YES : NO;
+}
+
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	if (self.groupItems)
+		[[groupItems objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
+}
+
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	if (self.groupItems)
+		[[groupItems objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
 }
 
 #pragma mark -
@@ -223,7 +274,6 @@
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		if (parentGroup == nil) {
 			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:@"SELECT * FROM invMarketGroups WHERE parentGroupID IS NULL ORDER BY marketGroupName;"
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
@@ -239,12 +289,34 @@
 													   if ([operation isCancelled])
 														   *needsMore = NO;
 												   }];
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE marketGroupID=%d ORDER BY typeName", parentGroup.marketGroupID]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   [itemValues addObject:[EVEDBInvType invTypeWithDictionary:record]];
-													   if ([operation isCancelled])
-														   *needsMore = NO;
-												   }];
+			if (subGroupValues.count == 0) {
+				NSMutableDictionary* sections = [NSMutableDictionary dictionary];
+				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID WHERE marketGroupID = %d ORDER BY typeName;", parentGroup.marketGroupID]
+													   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
+														   EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
+														   NSString* key = [record valueForKey:@"metaGroupID"];
+														   if (!key)
+															   key = @"0";
+														   NSMutableDictionary* section = [sections valueForKey:key];
+														   if (!section) {
+															   NSString* title = [record valueForKey:@"metaGroupName"];
+															   if (!title)
+																   title = @"";
+															   
+															   section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																		  title, @"title",
+																		  [NSMutableArray arrayWithObject:type], @"rows",
+																		  key, @"order", nil];
+															   [sections setObject:section forKey:key];
+														   }
+														   else
+															   [[section valueForKey:@"rows"] addObject:type];
+														   
+														   if ([operation isCancelled])
+															   *needsMore = NO;
+													   }];
+				[itemValues addObjectsFromArray:[[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]];
+			}
 		}
 		[pool release];
 	}];
@@ -252,7 +324,8 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
 			self.subGroups = subGroupValues;
-			self.groupItems = itemValues;
+			if (itemValues.count > 0)
+				self.groupItems = itemValues;
 			[self.itemsTable reloadData];
 		}
 	}];
@@ -271,12 +344,32 @@
 			return;
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (searchString.length >= 2) {
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY typeName;", searchString]
+			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
+			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY typeName;", searchString]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   [values addObject:[EVEDBInvType invTypeWithDictionary:record]];
+													   EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
+													   NSString* key = [record valueForKey:@"metaGroupID"];
+													   if (!key)
+														   key = @"z";
+													   NSMutableDictionary* section = [sections valueForKey:key];
+													   if (!section) {
+														   NSString* title = [record valueForKey:@"metaGroupName"];
+														   if (!title)
+															   title = @"";
+														   
+														   section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																	  title, @"title",
+																	  [NSMutableArray arrayWithObject:type], @"rows",
+																	  key, @"order", nil];
+														   [sections setObject:section forKey:key];
+													   }
+													   else
+														   [[section valueForKey:@"rows"] addObject:type];
+													   
 													   if ([operation isCancelled])
 														   *needsMore = NO;
 												   }];
+			[values addObjectsFromArray:[[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]];
 		}
 		[pool release];
 	}];

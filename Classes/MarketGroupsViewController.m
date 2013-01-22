@@ -291,7 +291,7 @@
 												   }];
 			if (subGroupValues.count == 0) {
 				NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID WHERE marketGroupID = %d ORDER BY typeName;", parentGroup.marketGroupID]
+				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d ORDER BY d.value, typeName;", parentGroup.marketGroupID]
 													   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 														   EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
 														   NSString* key = [record valueForKey:@"metaGroupID"];
@@ -345,7 +345,7 @@
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (searchString.length >= 2) {
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY typeName;", searchString]
+			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY d.value, typeName;", searchString]
 												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
 													   EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
 													   NSString* key = [record valueForKey:@"metaGroupID"];

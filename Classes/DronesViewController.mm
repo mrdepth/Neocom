@@ -196,11 +196,12 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.row >= rows.count) {
-		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,1159) ORDER BY groupName;";
+/*		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,1159) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,97,100,101,299,470,544,545,549,639,640,641,1023,1159) %@ %@ ORDER BY invTypes.typeName;";
-		fittingItemsViewController.modifiedItem = nil;
-		fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
 		fittingItemsViewController.group = nil;
+		fittingItemsViewController.modifiedItem = nil;*/
+		fittingItemsViewController.marketGroupID = 157;
+		fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
@@ -273,9 +274,9 @@
 			ship->addDrone(new eufe::Drone(*drone))->setTarget(drone->getTarget());
 	}
 	else if (left > 0) {
-		int i = 0;
+		int i = drones.count - 1;
 		for (; left > 0; left--) {
-			ItemInfo* itemInfo = [drones objectAtIndex:i++];
+			ItemInfo* itemInfo = [drones objectAtIndex:i--];
 			eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 			ship->removeDrone(drone);
 		}

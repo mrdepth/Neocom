@@ -217,10 +217,12 @@
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
 	if (indexPath.row >= structures.count) {
-		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) ORDER BY groupName;";
-		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) %@ %@ ORDER BY invTypes.typeName;";
+		/*fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) ORDER BY groupName;";
+		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) %@ %@ ORDER BY invTypes.typeName;";*/
+		fittingItemsViewController.marketGroupID = 1285;
+		fittingItemsViewController.except = @[@(478)];
 		fittingItemsViewController.title = NSLocalizedString(@"Structures", nil);
-		fittingItemsViewController.group = nil;
+		//fittingItemsViewController.group = nil;
 		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -376,7 +378,7 @@
 			}
 		}
 		
-		fittingItemsViewController.groupsRequest = [NSString stringWithFormat:@"SELECT * FROM invGroups WHERE groupID IN (%@) ORDER BY groupName;", groups];
+/*		fittingItemsViewController.groupsRequest = [NSString stringWithFormat:@"SELECT * FROM invGroups WHERE groupID IN (%@) ORDER BY groupName;", groups];
 		if (chargeSize) {
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   chargeSize, groups];
@@ -384,7 +386,22 @@
 		else {
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f %%@ %%@ ORDER BY invTypes.typeName;",
 													   groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+		}*/
+		
+		fittingItemsViewController.marketGroupID = 0;
+		if (chargeSize) {
+			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) ORDER BY invTypes.typeName;",
+													   chargeSize, groups];
+			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+														chargeSize, groups];
 		}
+		else {
+			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f ORDER BY invTypes.typeName;",
+													   groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+														groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+		}
+
 		fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
 		if ([button isEqualToString:ActionButtonAmmoAllModules])
 			fittingItemsViewController.modifiedItem = nil;
@@ -395,7 +412,6 @@
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[self.posFittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
-		
 		
 		if ([button isEqualToString:ActionButtonAmmoAllModules]) {
 			[modifiedIndexPath release];
@@ -474,9 +490,9 @@
 			controlTower->addStructure(new eufe::Structure(*structure))->setCharge(structure->getCharge());
 	}
 	else if (left > 0) {
-		int i = 0;
+		int i = array.count - 1;
 		for (; left > 0; left--) {
-			ItemInfo* itemInfo = [array objectAtIndex:i++];
+			ItemInfo* itemInfo = [array objectAtIndex:i--];
 			eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 			controlTower->removeStructure(structure);
 		}

@@ -160,6 +160,7 @@
 		12BF018F140D3DCA00AD9450 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BF018E140D3DCA00AD9450 /* CFNetwork.framework */; };
 		12BF01A4140D418B00AD9450 /* PCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF01A2140D418B00AD9450 /* PCViewController.m */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
+		12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C957F116AD102D00621B7C /* FittingItemsViewController.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
 		12CB26CF16563B34002E58F9 /* KillNetFilterShipsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26CE16563B34002E58F9 /* KillNetFilterShipsViewController.m */; };
 		12CB26D316563D16002E58F9 /* KillNetFilterShipClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */; };
@@ -719,7 +720,6 @@
 		71955A9D1376BE660068DBD7 /* offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A991376BE660068DBD7 /* offline.png */; };
 		71955A9E1376BE660068DBD7 /* online.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A9A1376BE660068DBD7 /* online.png */; };
 		71955A9F1376BE660068DBD7 /* overheated.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A9B1376BE660068DBD7 /* overheated.png */; };
-		71955B501376D53B0068DBD7 /* FittingItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71955B4E1376D53B0068DBD7 /* FittingItemsViewController.m */; };
 		71955B511376D53B0068DBD7 /* FittingItemsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */; };
 		7197DBBE137F5E1D00C3B3F4 /* TagCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7197DBBD137F5E1D00C3B3F4 /* TagCellView.m */; };
 		7197DBC0137F5E2600C3B3F4 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7197DBBF137F5E2600C3B3F4 /* TagCellView.xib */; };
@@ -976,6 +976,8 @@
 		12BF01A2140D418B00AD9450 /* PCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCViewController.m; sourceTree = "<group>"; };
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
+		12C957F016AD102D00621B7C /* FittingItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingItemsViewController.h; sourceTree = "<group>"; };
+		12C957F116AD102D00621B7C /* FittingItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingItemsViewController.m; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
 		12CB26CD16563B34002E58F9 /* KillNetFilterShipsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterShipsViewController.h; sourceTree = "<group>"; };
 		12CB26CE16563B34002E58F9 /* KillNetFilterShipsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterShipsViewController.m; sourceTree = "<group>"; };
@@ -1857,8 +1859,6 @@
 		71955A991376BE660068DBD7 /* offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = offline.png; sourceTree = "<group>"; };
 		71955A9A1376BE660068DBD7 /* online.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = online.png; sourceTree = "<group>"; };
 		71955A9B1376BE660068DBD7 /* overheated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overheated.png; sourceTree = "<group>"; };
-		71955B4D1376D53B0068DBD7 /* FittingItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingItemsViewController.h; sourceTree = "<group>"; };
-		71955B4E1376D53B0068DBD7 /* FittingItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingItemsViewController.m; sourceTree = "<group>"; };
 		71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FittingItemsViewController.xib; sourceTree = "<group>"; };
 		7197DBBC137F5E1D00C3B3F4 /* TagCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagCellView.h; sourceTree = "<group>"; };
 		7197DBBD137F5E1D00C3B3F4 /* TagCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagCellView.m; sourceTree = "<group>"; };
@@ -4530,8 +4530,8 @@
 		71955B451376D4BD0068DBD7 /* FittingItemsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				71955B4D1376D53B0068DBD7 /* FittingItemsViewController.h */,
-				71955B4E1376D53B0068DBD7 /* FittingItemsViewController.m */,
+				12C957F016AD102D00621B7C /* FittingItemsViewController.h */,
+				12C957F116AD102D00621B7C /* FittingItemsViewController.m */,
 				71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */,
 				7194066014059261009E05FF /* FittingItemsViewController~ipad.xib */,
 				718E1BF213778BA4006D3765 /* FittingItemsViewControllerDelegate.h */,
@@ -5305,7 +5305,6 @@
 				71A6540E131DB62D0082FFAC /* POSViewController.m in Sources */,
 				71A65417131DBD370082FFAC /* POSFuelCellView.m in Sources */,
 				71955A561376B00B0068DBD7 /* FittingViewController.mm in Sources */,
-				71955B501376D53B0068DBD7 /* FittingItemsViewController.m in Sources */,
 				71A0E8AB1379D86300CE4062 /* ProgressLabel.m in Sources */,
 				71A0E8B41379DAD500CE4062 /* ModulesViewController.mm in Sources */,
 				71A0E9011379DDBE00CE4062 /* StatsViewController.mm in Sources */,
@@ -5610,6 +5609,7 @@
 				12320D54165B765500333AE7 /* AccountsSelectionViewController.m in Sources */,
 				12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */,
 				12EBB72D167EF806002CDAB6 /* EVECharacterInfo.m in Sources */,
+				12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

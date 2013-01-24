@@ -161,23 +161,25 @@
 
 	
 	if (!itemInfo) {
-		NSString *groups = nil;
-		NSInteger attributeID = 0;
+//		NSString *groups = nil;
+//		NSInteger attributeID = 0;
 		
 		if (indexPath.section == 0) {
-			groups = @"300,738,740,741,742,743,744,745,746,747,748,749,783";
+			/*groups = @"300,738,740,741,742,743,744,745,746,747,748,749,783";
 			fittingItemsViewController.groupsRequest = [NSString stringWithFormat:@"SELECT * FROM invGroups WHERE groupID IN (%@) ORDER BY groupName;", groups];
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   groups];
+			fittingItemsViewController.group = nil;*/
+			fittingItemsViewController.marketGroupID = 27;
 			fittingItemsViewController.title = NSLocalizedString(@"Implants", nil);
-			fittingItemsViewController.group = nil;
 		}
 		else {
-			attributeID = 1087;
+			/*attributeID = 1087;
 			fittingItemsViewController.groupsRequest = nil;
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=%d AND dgmTypeAttributes.value=%d int (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   attributeID, indexPath.row + 1, groups];
-			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:303 error:nil];
+			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:303 error:nil];*/
+			fittingItemsViewController.marketGroupID = 977;
 			fittingItemsViewController.title = NSLocalizedString(@"Boosters", nil);
 		}
 		fittingItemsViewController.modifiedItem = nil;

@@ -781,6 +781,9 @@
 }
 
 - (IBAction)onCombined:(id)sender {
+	if ([self.popover isPopoverVisible])
+		return;
+	
 	AccountsSelectionViewController* controller = [[AccountsSelectionViewController alloc] initWithNibName:@"AccountsSelectionViewController" bundle:nil];
 	controller.selectedAccounts = self.accounts;
 	controller.delegate = self;

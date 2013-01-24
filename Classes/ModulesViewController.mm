@@ -323,42 +323,43 @@
 	if (indexPath.row >= modules.count) {
 		switch ((eufe::Module::Slot)[[[sections objectAtIndex:indexPath.section] valueForKey:@"slot"] integerValue]) {
 			case eufe::Module::SLOT_HI:
-				//SELECT a.groupID, a.groupName FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=12 group by a.groupID;
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (41,52,53,54,55,67,68,71,72,74,96,316,325,330,353,407,464,481,483,501,506,507,508,509,510,511,515,524,585,588,589,590,647,650,658,737,771,815,842,862,899,1122) ORDER BY groupName;";
-				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=12 and b.published = 1 group by a.groupID) ORDER BY groupName;";
-				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=12 %@ %@ ORDER BY invTypes.typeName;";
-				fittingItemsViewController.title = NSLocalizedString(@"Modules", nil);
-				break;
 			case eufe::Module::SLOT_MED:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (38,39,40,43,46,47,48,49,52,61,63,65,76,77,80,82,201,202,208,209,212,213,289,290,291,295,308,316,338,341,353,379,472,538,644,646,1154,1156,1189) ORDER BY groupName;";
-				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=13 and b.published = 1 group by a.groupID) ORDER BY groupName;";
-				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=13 %@ %@ ORDER BY invTypes.typeName;";
-				fittingItemsViewController.title = NSLocalizedString(@"Modules", nil);
-				break;
 			case eufe::Module::SLOT_LOW:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (57,59,60,62,78,98,203,205,210,211,285,302,315,326,328,329,339,353,367,514,546,645,762,763,764,765,766,767,768,769,770,1150) ORDER BY groupName;";
-				//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (SELECT a.groupID FROM invGroups as a, invTypes as b, dgmTypeEffects as c where a.groupID=b.groupID and b.typeID=c.typeID and c.effectID=11 and b.published = 1 group by a.groupID) ORDER BY groupName;";
-				fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeEffects LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeEffects.typeID AND dgmTypeEffects.effectID=11 %@ %@ ORDER BY invTypes.typeName;";
-				fittingItemsViewController.title = NSLocalizedString(@"Modules", nil);
+				fittingItemsViewController.marketGroupID = 9;
+				fittingItemsViewController.title = NSLocalizedString(@"Ship Equipment", nil);
+				fittingItemsViewController.except = @[@(404)];
 				break;
 			case eufe::Module::SLOT_RIG:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (773,774,775,776,777,778,779,780,781,782,786) ORDER BY groupName;";
-				fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=1547 AND dgmTypeAttributes.value=%f AND groupID IN (773,774,775,776,777,778,779,780,781,782,786) %%@ %%@ ORDER BY invTypes.typeName;",
-														   /*[fit.ship.itemModifiedAttributes valueForKey:@"rigSize"]*/ship->getAttribute(eufe::RIG_SIZE_ATTRIBUTE_ID)->getValue()];
+				fittingItemsViewController.marketGroupID = 1111;
 				fittingItemsViewController.title = NSLocalizedString(@"Rigs", nil);
 				break;
-			case eufe::Module::SLOT_SUBSYSTEM:
-				fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (954,955,958,956,957) ORDER BY groupName;";
-				fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT \"Tech III\" as metaGroupName, 14 as metaGroupID, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1  AND invTypes.raceID=%f AND groupID IN (954,955,958,956,957) %%@ %%@ ORDER BY invTypes.typeName;",
-														   ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue()];
-				fittingItemsViewController.title = NSLocalizedString(@"Subsystems", nil);
+			case eufe::Module::SLOT_SUBSYSTEM: {
+				switch(static_cast<int>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue())) {
+					case 1: //Caldari
+						fittingItemsViewController.marketGroupID = 1625;
+						fittingItemsViewController.title = NSLocalizedString(@"Caldari Subsystems", nil);
+						break;
+					case 2: //Minmatar
+						fittingItemsViewController.marketGroupID = 1626;
+						fittingItemsViewController.title = NSLocalizedString(@"Minmatar Subsystems", nil);
+						break;
+					case 4: //Amarr
+						fittingItemsViewController.marketGroupID = 1610;
+						fittingItemsViewController.title = NSLocalizedString(@"Amarr Subsystems", nil);
+						break;
+					case 8: //Gallente
+						fittingItemsViewController.marketGroupID = 1627;
+						fittingItemsViewController.title = NSLocalizedString(@"Gallente Subsystems", nil);
+						break;
+				}
 				break;
+			}
 			default:
 				return;
 		}
 				
 		
-		fittingItemsViewController.group = nil;
+		//fittingItemsViewController.group = nil;
 		fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -532,15 +533,20 @@
 			}
 		}
 			
-		fittingItemsViewController.groupsRequest = [NSString stringWithFormat:@"SELECT * FROM invGroups WHERE groupID IN (%@) ORDER BY groupName;", groups];
+		fittingItemsViewController.marketGroupID = 0;
 		if (chargeSize) {
-			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) %%@ %%@ ORDER BY invTypes.typeName;",
+			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) ORDER BY invTypes.typeName;",
 													   chargeSize, groups];
+			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+														chargeSize, groups];
 		}
 		else {
-			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f %%@ %%@ ORDER BY invTypes.typeName;",
+			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f ORDER BY invTypes.typeName;",
+													   groups, module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
 													   groups, module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
 		}
+
 		fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
 		if ([button isEqualToString:ActionButtonAmmoAllModules])
 			fittingItemsViewController.modifiedItem = nil;

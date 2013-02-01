@@ -63,11 +63,11 @@
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidImportFromCloud object:nil];
 	[skillsTableView release];
 	[skillPlan release];
 	[trainingTimeLabel release];
@@ -87,7 +87,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeSkill:) name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveSkill:) name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NotificationSkillPlanDidImportFromCloud object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -104,11 +104,11 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidImportFromCloud object:nil];
 	[self setTrainingTimeLabel:nil];
     [super viewDidUnload];
 	self.skillsTableView = nil;
@@ -493,14 +493,8 @@
 }
 
 - (void) didUpdateCloud:(NSNotification*) notification {
-	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:NSUUIDChangedPersistentStoresKey]) {
-		if ([skillPlan.objectID isEqual:objectID]) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[skillPlan.managedObjectContext refreshObject:skillPlan mergeChanges:YES];
-				[self loadData];
-			});
-		}
-	}
+	if (notification.object == skillPlan)
+		[self loadData];
 }
 
 @end

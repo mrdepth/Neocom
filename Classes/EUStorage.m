@@ -78,6 +78,8 @@ static EUStorage* sharedStorage;
     if (coordinator != nil) {
         _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+		[_managedObjectContext setMergePolicy:[[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyStoreTrumpMergePolicyType] autorelease]];
+		[_managedObjectContext setStalenessInterval:0];
     }
     return _managedObjectContext;
 }

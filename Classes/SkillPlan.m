@@ -212,7 +212,8 @@
 - (void) save {
 	if (!self.characterID)
 		return;
-	[self.managedObjectContext performBlockAndWait:^{
+	EUStorage* storage = [EUStorage sharedStorage];
+	[storage.managedObjectContext performBlockAndWait:^{
 		NSMutableString* s = [NSMutableString string];
 		BOOL isFirst = YES;
 		for (EVEDBInvTypeRequiredSkill* skill in self.skills) {
@@ -228,7 +229,6 @@
 		if (![self.skillPlanSkills isEqualToString:s])
 			self.skillPlanSkills = s;
 		
-		EUStorage* storage = [EUStorage sharedStorage];
 		if (![self managedObjectContext])
 			[storage.managedObjectContext insertObject:self];
 		[storage saveContext];
@@ -236,7 +236,9 @@
 }
 
 - (void) load {
-	[self.managedObjectContext performBlockAndWait:^{
+	EUStorage* storage = [EUStorage sharedStorage];
+
+	[storage.managedObjectContext performBlockAndWait:^{
 		[self.skills removeAllObjects];
 		_trainingTime = -1;
 		for (NSString* row in [self.skillPlanSkills componentsSeparatedByString:@";"]) {
@@ -284,12 +286,15 @@
 #pragma mark - Private
 
 - (void) didUpdateCloud:(NSNotification*) notification {
-	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:NSUUIDChangedPersistentStoresKey]) {
-		if ([self.objectID isEqual:objectID]) {
+	NSURL* url = [self.objectID URIRepresentation];
+	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:@"updated"]) {
+		if ([url isEqual:[objectID URIRepresentation]]) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.managedObjectContext refreshObject:self mergeChanges:YES];
 				[self load];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidImportFromCloud object:self];
 			});
+			break;
 		}
 	}
 }

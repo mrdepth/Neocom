@@ -47,7 +47,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[[EUStorage sharedStorage] managedObjectContext];
 	
-/*	NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
+	/*NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
     if (coordinator != nil) {
 		NSManagedObjectContext* managedObjectContext1 = [[EUStorage sharedStorage] managedObjectContext];
         NSManagedObjectContext* managedObjectContext2 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
@@ -81,17 +81,17 @@
 		}
 		
 		NSLog(@"%@", fit1.fitName);
-		fit1.fitName = @"Fit1";
-		fit2.fitName = @"Fit2";
+		fit1.fitName = @"Fit11";
+		fit2.fitName = @"Fit22";
 		NSError* error  = nil;
 		[managedObjectContext1 save:&error];
 		NSLog(@"%@", error);
 		[managedObjectContext2 save:&error];
 		NSLog(@"%@", error);
-		[managedObjectContext2 refreshObject:fit2 mergeChanges:YES];
+		[managedObjectContext2 refreshObject:fit2 mergeChanges:NO];
 		error = nil;
 		[managedObjectContext2 save:&error];
-		NSLog(@"%@", error);
+		NSLog(@"%@ %@", error, fit2.fitName);
     }*/
 
 	

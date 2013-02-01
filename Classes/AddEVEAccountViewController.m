@@ -115,9 +115,12 @@
 - (IBAction) onSave:(id) sender {
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:NSLocalizedString(@"Checking API Key", nil)];
 	__block NSError *error = nil;
+	NSInteger keyID = [keyIDTextField.text integerValue];
+	NSString* vCode = vCodeTextField.text;
+	
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[keyIDTextField.text integerValue] vCode:vCodeTextField.text error:&error];
+		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 		[error retain];
 		[pool release];
 	}];

@@ -13,6 +13,7 @@
 #define NotificationSkillPlanDidChangeSkill @"NotificationSkillPlanDidChangeSkill"
 #define NotificationSkillPlanDidAddSkill @"NotificationSkillPlanDidAddSkill"
 #define NotificationSkillPlanDidRemoveSkill @"NotificationSkillPlanDidRemoveSkill"
+#define NotificationSkillPlanDidImportFromCloud @"NotificationSkillPlanDidImportFromCloud"
 
 @class EVEAccount;
 @class CharacterAttributes;

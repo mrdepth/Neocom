@@ -211,9 +211,11 @@
 	return indexPath.section == 0;
 }
 
-/*- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
- return proposedDestinationIndexPath;
- }*/
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.section > 0)
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:skillPlan.skills.count - 1 inSection:0];
+	return proposedDestinationIndexPath;
+}
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     NSObject *objectToMove = [[skillPlan.skills objectAtIndex:fromIndexPath.row] retain];
@@ -411,6 +413,9 @@
 - (void) loadData {
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:NSLocalizedString(@"Loading Skill Plan", nil)];
 	__block SkillPlan* skillPlanTmp = nil;
+	[skillPlan release];
+	skillPlan = nil;
+	[self.skillsTableView reloadData];
 	[operation addExecutionBlock:^(void) {
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		

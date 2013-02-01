@@ -15,7 +15,7 @@
 #import "EVEDBAPI.h"
 #import "UIAlertView+Error.h"
 #import "Globals.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "CharacterEVE.h"
 #import "EVEAccount.h"
 
@@ -115,7 +115,7 @@
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Loadout", nil)];
-	__block Fit* fit = nil;
+	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 
 	[operation addExecutionBlock:^{
@@ -148,9 +148,9 @@
 					character->setCharacterName("All Skills 0");
 				operation.progress = 0.8;
 				
-				fit = [[Fit fitWithBCString:loadoutDetails.fitting character:character] retain];
+				fit = [[ShipFit shipFitWithBCString:loadoutDetails.fitting character:character] retain];
 				fit.fitName = loadoutDetails.title;
-				fit.fitURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://eve.battleclinic.com/loadout/%d.html", loadoutDetails.loadoutID]];
+				fit.url =[NSString stringWithFormat:@"http://eve.battleclinic.com/loadout/%d.html", loadoutDetails.loadoutID];
 				operation.progress = 1;
 			}
 		}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="11G63" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="APIKey" representedClassName="APIKey" syncable="YES">
+        <attribute name="keyID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Fit" representedClassName="Fit" isAbstract="YES" syncable="YES">
+        <attribute name="fitName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="typeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="IgnoredCharacter" representedClassName="IgnoredCharacter" syncable="YES">
+        <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="POSFit" representedClassName="POSFit" parentEntity="Fit" syncable="YES">
+        <attribute name="structures" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Setting" syncable="YES">
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ShipFit" representedClassName="ShipFit" parentEntity="Fit" syncable="YES">
+        <attribute name="boosters" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cargo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="drones" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hiSlots" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="implants" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lowSlots" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="medSlots" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rigSlots" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subsystems" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SkillPlan" representedClassName="SkillPlan" syncable="YES">
+        <attribute name="attributes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="skillPlanName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skillPlanSkills" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="APIKey" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Fit" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="IgnoredCharacter" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="POSFit" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="ShipFit" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="SkillPlan" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Setting" positionX="160" positionY="192" width="128" height="75"/>
+    </elements>
+</model>

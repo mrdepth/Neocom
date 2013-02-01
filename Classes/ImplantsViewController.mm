@@ -16,7 +16,7 @@
 #import "EVEDBAPI.h"
 
 #import "ItemInfo.h"
-#import "Fit.h"
+#import "ShipFit.h"
 
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)

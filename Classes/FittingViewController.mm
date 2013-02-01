@@ -11,7 +11,7 @@
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "FittingItemsViewController.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "ItemInfo.h"
 #import "DamagePattern.h"
 #import "RequiredSkillsViewController.h"
@@ -193,6 +193,8 @@
 
 
 - (void)dealloc {
+	for (ShipFit* shipFit in fits)
+		[shipFit unload];
 
 	[sectionsView release];
 	[sectionSegmentControl release];
@@ -271,10 +273,10 @@
 	}
 
 	[actionSheet addButtonWithTitle:ActionButtonSetName];
-	if (fit.fitID <= 0)
+	if (!fit.managedObjectContext)
 		[actionSheet addButtonWithTitle:ActionButtonSave];
 	[actionSheet addButtonWithTitle:ActionButtonCharacter];
-	if (fit.fitURL)
+	if (fit.url)
 		[actionSheet addButtonWithTitle:ActionButtonViewInBrowser];
 	[actionSheet addButtonWithTitle:ActionButtonAreaEffect];
 	
@@ -352,7 +354,7 @@
 	[fitsViewController release];
 }
 
-- (void) selectCharacterForFit:(Fit*) aFit {
+- (void) selectCharacterForFit:(ShipFit*) aFit {
 	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
 	charactersViewController.delegate = self;
 	charactersViewController.modifiedFit = aFit;
@@ -368,7 +370,7 @@
 	[charactersViewController release];
 }
 
-- (void) setFit:(Fit*) value {
+- (void) setFit:(ShipFit*) value {
 	[value retain];
 	[fit release];
 	fit = value;
@@ -387,7 +389,7 @@
 	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
 	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
 	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
-	for (Fit* item in fits) {
+	for (ShipFit* item in fits) {
 		eufe::Character* character = item.character;
 		character->getShip()->setDamagePattern(eufeDamagePattern);
 	}
@@ -424,7 +426,7 @@
 	else if ([button isEqualToString:ActionButtonViewInBrowser]) {
 		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
 		//controller.delegate = self;
-		controller.startPageURL = fit.fitURL;
+		controller.startPageURL = [NSURL URLWithString:fit.url];
 		[self presentModalViewController:controller animated:YES];
 		[controller release];
 	}
@@ -584,7 +586,7 @@
 
 #pragma mark FitsViewControllerDelegate
 
-- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(Fit*) aFit {
+- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(ShipFit*) aFit {
 	eufe::Character* character = aFit.character;
 	fittingEngine->getGang()->addPilot(character);
 	[fits addObject:aFit];
@@ -664,7 +666,7 @@
 
 - (void) save {
 	for (Fit* item in fits)
-		if (item.fitID > 0)
+		if (item.managedObjectContext)
 			[item save];
 }
 

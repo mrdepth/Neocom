@@ -21,7 +21,7 @@
 #import "FittingViewController.h"
 #import "POSFittingViewController.h"
 #import "CharacterEVE.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "POSFit.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
@@ -155,7 +155,7 @@
 	if (asset.type.group.categoryID == 6) {// Ship
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
-		__block Fit* fit = nil;
+		__block ShipFit* fit = nil;
 		__block eufe::Character* character = NULL;
 		
 		[operation addExecutionBlock:^{
@@ -173,7 +173,7 @@
 			else
 				character->setCharacterName("All Skills 0");
 			operation.progress = 0.6;
-			fit = [[Fit alloc] initWithAsset:asset character:character];
+			fit = [[ShipFit shipFitWithAsset:asset character:character] retain];
 			operation.progress = 1.0;
 			[pool release];
 		}];
@@ -202,7 +202,7 @@
 		[operation addExecutionBlock:^{
 			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			
-			fit = [[POSFit alloc] initWithAsset:asset engine:posFittingViewController.fittingEngine];
+			fit = [[POSFit posFitWithAsset:asset engine:posFittingViewController.fittingEngine] retain];
 			[pool release];
 		}];
 		

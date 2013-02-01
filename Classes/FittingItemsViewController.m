@@ -79,16 +79,19 @@
 }
 
 - (void) setMarketGroupID:(NSInteger)value {
+	if (value == _marketGroupID && value)
+		return;
+	
 	if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
 		[self.navigationController popToRootViewControllerAnimated:YES];
 		self.subGroups = nil;
 		self.groupItems = nil;
 		self.filteredValues = nil;
-		if (value) {
+//		if (value) {
 			self.groupsRequest = nil;
 			self.typesRequest = nil;
 			self.searchRequest = nil;
-		}
+//		}
 		if ([self.searchDisplayController isActive])
 			[self.searchDisplayController setActive:NO];
 		[self.tableView reloadData];

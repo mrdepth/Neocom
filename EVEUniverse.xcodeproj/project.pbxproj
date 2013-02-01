@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1203571016B68B740015706B /* ShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570716B68A3E0015706B /* ShipFit.mm */; };
 		1203985816537336008F047B /* KillNetFilterDBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203985616537336008F047B /* KillNetFilterDBViewController.m */; };
 		1203985916537336008F047B /* KillNetFilterDBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1203985716537336008F047B /* KillNetFilterDBViewController.xib */; };
 		1203985E1653C5AE008F047B /* EVEKillNetLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203985D1653C5AE008F047B /* EVEKillNetLog.m */; };
@@ -26,6 +27,7 @@
 		120B46B1164B9995000C33CE /* UIAlertView+Error.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4698164B9995000C33CE /* UIAlertView+Error.m */; };
 		120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469B164B9995000C33CE /* UIColor+NSNumber.m */; };
 		120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469E164B9995000C33CE /* UIImageView+URL.m */; };
+		120FE35516B9504B0091E692 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570D16B68A3F0015706B /* POSFit.mm */; };
 		121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121D8D2C15F498DA0003CAA5 /* Mutex.cpp */; };
 		121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */; };
 		121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */; };
@@ -72,6 +74,11 @@
 		12448F571679D24300DC90AC /* KillMailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F591679D24300DC90AC /* KillMailViewController~ipad.xib */; };
 		125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125147DC165223D70008AC6B /* KillboardKillNetViewController.m */; };
 		125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125147E0165224300008AC6B /* KillboardKillNetViewController.xib */; };
+		12582F0A16B251C300445581 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F0916B251C300445581 /* EUStorage.m */; };
+		12582F0C16B2523200445581 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12582F0B16B2523200445581 /* CoreData.framework */; };
+		12582F0F16B2537000445581 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12582F0D16B2537000445581 /* EUStorage.xcdatamodeld */; };
+		12582F1F16B25BF400445581 /* APIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F1E16B25BF400445581 /* APIKey.m */; };
+		12582F2216B2903600445581 /* IgnoredCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F2116B2903600445581 /* IgnoredCharacter.m */; };
 		1259B4A11679C56F00EA49B5 /* CharacterInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4A31679C56F00EA49B5 /* CharacterInfoViewController.xib */; };
 		1259B4A91679C60C00EA49B5 /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4A81679C60C00EA49B5 /* LoadingViewController.xib */; };
 		1259B4AA1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4AC1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib */; };
@@ -151,6 +158,8 @@
 		12B3E5BF1405587B00FC6B5B /* POSesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B3E5BE1405587B00FC6B5B /* POSesViewController~ipad.xib */; };
 		12B3E60814055D9E00FC6B5B /* POSViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B3E60714055D9E00FC6B5B /* POSViewController~ipad.xib */; };
 		12B3E6661405662F00FC6B5B /* NSArray+GroupBy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */; };
+		12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F1216B25A4500445581 /* SkillPlan.m */; };
+		12B8CD2516BB993000C5104E /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B8CD2416BB993000C5104E /* Fit.mm */; };
 		12BEA855140EA22C00D85E88 /* EVEAccountStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BEA854140EA22C00D85E88 /* EVEAccountStorage.m */; };
 		12BF008B140D3C4000AD9450 /* EUHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF0084140D3C3F00AD9450 /* EUHTTPConnection.m */; };
 		12BF008C140D3C4000AD9450 /* EUHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF0086140D3C3F00AD9450 /* EUHTTPRequest.m */; };
@@ -231,7 +240,6 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		370814DF14A0EAF700919C0B /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 370814DE14A0EAF500919C0B /* Fit.mm */; };
 		370CCEAA14ED467100605A42 /* AssetContentsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 370CCEA814ED467100605A42 /* AssetContentsViewController.mm */; };
 		370CCEAD14ED469900605A42 /* AssetContentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */; };
 		370CCEB414ED7B9000605A42 /* assetsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEB314ED7B8F00605A42 /* assetsFilter.plist */; };
@@ -476,7 +484,6 @@
 		37C76E0A14D07EE700EABCA7 /* CertificatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0814D07EE700EABCA7 /* CertificatesViewController.xib */; };
 		37C76E0E14D0882400EABCA7 /* CertificateCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C76E0D14D0882400EABCA7 /* CertificateCellView.m */; };
 		37C76E1014D0883400EABCA7 /* CertificateCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */; };
-		37CE795015134D8B00621D52 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37CE794F15134D8B00621D52 /* POSFit.mm */; };
 		37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37CE795415135CA800621D52 /* POSStatsViewController.mm */; };
 		37CE79591513600200621D52 /* StructuresViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37CE79581513600200621D52 /* StructuresViewController.xib */; };
 		37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEED14B5C61200BF148F /* cellBackground.png */; };
@@ -509,7 +516,6 @@
 		37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */; };
 		37EBCE1514D31F8A0085D1CB /* linesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1214D31F8A0085D1CB /* linesButton.png */; };
 		37EBCE1614D31F8A0085D1CB /* linesButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1314D31F8A0085D1CB /* linesButton@2x.png */; };
-		37FD3AAA14D840C3005FA724 /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD3AA914D840C3005FA724 /* SkillPlan.m */; };
 		37FD3B4314D86589005FA724 /* SkillPlannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */; };
 		37FD3B4414D86589005FA724 /* SkillPlannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37FD3B4214D86589005FA724 /* SkillPlannerViewController.xib */; };
 		710852E4123125C800397BC7 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710852E2123125C800397BC7 /* MainMenuViewController.m */; };
@@ -780,6 +786,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1203570616B68A3E0015706B /* ShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipFit.h; sourceTree = "<group>"; };
+		1203570716B68A3E0015706B /* ShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShipFit.mm; sourceTree = "<group>"; };
+		1203570C16B68A3F0015706B /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
+		1203570D16B68A3F0015706B /* POSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFit.mm; sourceTree = "<group>"; };
 		1203985516537336008F047B /* KillNetFilterDBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterDBViewController.h; sourceTree = "<group>"; };
 		1203985616537336008F047B /* KillNetFilterDBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterDBViewController.m; sourceTree = "<group>"; };
 		1203985716537336008F047B /* KillNetFilterDBViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterDBViewController.xib; sourceTree = "<group>"; };
@@ -871,6 +881,17 @@
 		125147DB165223D70008AC6B /* KillboardKillNetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetViewController.h; sourceTree = "<group>"; };
 		125147DC165223D70008AC6B /* KillboardKillNetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetViewController.m; sourceTree = "<group>"; };
 		125147E0165224300008AC6B /* KillboardKillNetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetViewController.xib; sourceTree = "<group>"; };
+		12582F0816B251C300445581 /* EUStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUStorage.h; sourceTree = "<group>"; };
+		12582F0916B251C300445581 /* EUStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUStorage.m; sourceTree = "<group>"; };
+		12582F0B16B2523200445581 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		12582F0E16B2537000445581 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
+		12582F1016B2599200445581 /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
+		12582F1116B25A4500445581 /* SkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlan.h; sourceTree = "<group>"; };
+		12582F1216B25A4500445581 /* SkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlan.m; sourceTree = "<group>"; };
+		12582F1D16B25BF400445581 /* APIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKey.h; sourceTree = "<group>"; };
+		12582F1E16B25BF400445581 /* APIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKey.m; sourceTree = "<group>"; };
+		12582F2016B2903600445581 /* IgnoredCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IgnoredCharacter.h; sourceTree = "<group>"; };
+		12582F2116B2903600445581 /* IgnoredCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IgnoredCharacter.m; sourceTree = "<group>"; };
 		1259B4A21679C56F00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CharacterInfoViewController.xib; sourceTree = "<group>"; };
 		1259B4A81679C60C00EA49B5 /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
 		1259B4AB1679C63C00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/EVEAccountsCharacterCellView.xib; sourceTree = "<group>"; };
@@ -960,6 +981,8 @@
 		12B3E60714055D9E00FC6B5B /* POSViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "POSViewController~ipad.xib"; sourceTree = "<group>"; };
 		12B3E6641405662F00FC6B5B /* NSArray+GroupBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+GroupBy.h"; sourceTree = "<group>"; };
 		12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+GroupBy.m"; sourceTree = "<group>"; };
+		12B8CD2316BB993000C5104E /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
+		12B8CD2416BB993000C5104E /* Fit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fit.mm; sourceTree = "<group>"; };
 		12BEA853140EA22C00D85E88 /* EVEAccountStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStorage.h; sourceTree = "<group>"; };
 		12BEA854140EA22C00D85E88 /* EVEAccountStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorage.m; sourceTree = "<group>"; };
 		12BF0083140D3C3F00AD9450 /* EUHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUHTTPConnection.h; sourceTree = "<group>"; };
@@ -1108,8 +1131,6 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* EVEUniverse_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverse_Prefix.pch; sourceTree = "<group>"; };
-		370814DD14A0EAF300919C0B /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
-		370814DE14A0EAF500919C0B /* Fit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fit.mm; sourceTree = "<group>"; };
 		370CCEA714ED467100605A42 /* AssetContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetContentsViewController.h; sourceTree = "<group>"; };
 		370CCEA814ED467100605A42 /* AssetContentsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssetContentsViewController.mm; sourceTree = "<group>"; };
 		370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssetContentsViewController.xib; sourceTree = "<group>"; };
@@ -1549,8 +1570,6 @@
 		37C76E0C14D0882400EABCA7 /* CertificateCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateCellView.h; sourceTree = "<group>"; };
 		37C76E0D14D0882400EABCA7 /* CertificateCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateCellView.m; sourceTree = "<group>"; };
 		37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateCellView.xib; sourceTree = "<group>"; };
-		37CE794E15134D8B00621D52 /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
-		37CE794F15134D8B00621D52 /* POSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFit.mm; sourceTree = "<group>"; };
 		37CE795315135CA800621D52 /* POSStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSStatsViewController.h; sourceTree = "<group>"; };
 		37CE795415135CA800621D52 /* POSStatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSStatsViewController.mm; sourceTree = "<group>"; };
 		37CE79581513600200621D52 /* StructuresViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StructuresViewController.xib; sourceTree = "<group>"; };
@@ -1593,8 +1612,6 @@
 		37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graphButton@2x.png"; sourceTree = "<group>"; };
 		37EBCE1214D31F8A0085D1CB /* linesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linesButton.png; sourceTree = "<group>"; };
 		37EBCE1314D31F8A0085D1CB /* linesButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linesButton@2x.png"; sourceTree = "<group>"; };
-		37FD3AA814D840C3005FA724 /* SkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlan.h; sourceTree = "<group>"; };
-		37FD3AA914D840C3005FA724 /* SkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlan.m; sourceTree = "<group>"; };
 		37FD3B4014D86588005FA724 /* SkillPlannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlannerViewController.h; sourceTree = "<group>"; };
 		37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlannerViewController.m; sourceTree = "<group>"; };
 		37FD3B4214D86589005FA724 /* SkillPlannerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkillPlannerViewController.xib; sourceTree = "<group>"; };
@@ -1951,6 +1968,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12582F0C16B2523200445581 /* CoreData.framework in Frameworks */,
 				12F17D7516707C6A0070B97C /* AdSupport.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -2025,6 +2043,7 @@
 				379B8D9E1507A9AF00326B5D /* NPCGroupsViewController */,
 				127363921643AB4200FB0EE2 /* Killboard */,
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
+				12582F0616B251A800445581 /* EUStorage */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
 			);
@@ -2243,6 +2262,27 @@
 				12FE0C52165A2B03002E467E /* KillboardKillNetViewController~ipad.xib */,
 			);
 			name = KillboardKillNetViewController;
+			sourceTree = "<group>";
+		};
+		12582F0616B251A800445581 /* EUStorage */ = {
+			isa = PBXGroup;
+			children = (
+				12582F0816B251C300445581 /* EUStorage.h */,
+				12582F0916B251C300445581 /* EUStorage.m */,
+				12582F1D16B25BF400445581 /* APIKey.h */,
+				12582F1E16B25BF400445581 /* APIKey.m */,
+				12582F2016B2903600445581 /* IgnoredCharacter.h */,
+				12582F2116B2903600445581 /* IgnoredCharacter.m */,
+				12582F1116B25A4500445581 /* SkillPlan.h */,
+				12582F1216B25A4500445581 /* SkillPlan.m */,
+				1203570C16B68A3F0015706B /* POSFit.h */,
+				1203570D16B68A3F0015706B /* POSFit.mm */,
+				12B8CD2316BB993000C5104E /* Fit.h */,
+				12B8CD2416BB993000C5104E /* Fit.mm */,
+				1203570616B68A3E0015706B /* ShipFit.h */,
+				1203570716B68A3E0015706B /* ShipFit.mm */,
+			);
+			name = EUStorage;
 			sourceTree = "<group>";
 		};
 		127363921643AB4200FB0EE2 /* Killboard */ = {
@@ -2627,6 +2667,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				12582F1016B2599200445581 /* Neocom.entitlements */,
+				12582F0B16B2523200445581 /* CoreData.framework */,
 				12F17D7416707C670070B97C /* AdSupport.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -2674,6 +2716,7 @@
 				370CCEB314ED7B8F00605A42 /* assetsFilter.plist */,
 				1224EBF216491D5D004401C5 /* killboardApiFilter.plist */,
 				37B967C314D9C478003F3900 /* damagePatterns.plist */,
+				12582F0D16B2537000445581 /* EUStorage.xcdatamodeld */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3728,7 +3771,6 @@
 		37FD3AA514D84080005FA724 /* SkillPlanner */ = {
 			isa = PBXGroup;
 			children = (
-				37FD3AA714D84091005FA724 /* SkillPlan */,
 				37B6F96B14E14C470046FC08 /* SkillPlannerImportViewController */,
 				37FD3B4014D86588005FA724 /* SkillPlannerViewController.h */,
 				37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */,
@@ -3736,15 +3778,6 @@
 				37BE978614DC3C4300575642 /* SkillPlannerViewController~ipad.xib */,
 			);
 			name = SkillPlanner;
-			sourceTree = "<group>";
-		};
-		37FD3AA714D84091005FA724 /* SkillPlan */ = {
-			isa = PBXGroup;
-			children = (
-				37FD3AA814D840C3005FA724 /* SkillPlan.h */,
-				37FD3AA914D840C3005FA724 /* SkillPlan.m */,
-			);
-			name = SkillPlan;
 			sourceTree = "<group>";
 		};
 		710852E0123125B500397BC7 /* MainMenuViewController */ = {
@@ -3768,17 +3801,13 @@
 			name = SelectCharacterBarButtonItem;
 			sourceTree = "<group>";
 		};
-		71196C9214B1E60300614711 /* Fit */ = {
+		71196C9214B1E60300614711 /* ItemInfo */ = {
 			isa = PBXGroup;
 			children = (
 				37AC5E12149A71E6005DEAEB /* ItemInfo.h */,
 				37AC5E13149A71E9005DEAEB /* ItemInfo.mm */,
-				370814DD14A0EAF300919C0B /* Fit.h */,
-				370814DE14A0EAF500919C0B /* Fit.mm */,
-				37CE794E15134D8B00621D52 /* POSFit.h */,
-				37CE794F15134D8B00621D52 /* POSFit.mm */,
 			);
-			name = Fit;
+			name = ItemInfo;
 			sourceTree = "<group>";
 		};
 		71196C9314B1E75D00614711 /* TargetsViewController */ = {
@@ -4437,7 +4466,7 @@
 			isa = PBXGroup;
 			children = (
 				37DF48C4151C8D7300BC87A5 /* PriceManager */,
-				71196C9214B1E60300614711 /* Fit */,
+				71196C9214B1E60300614711 /* ItemInfo */,
 				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				71997B86137F4AF70061BA4E /* BCSearchViewController */,
 				7197DC3B137F686400C3B3F4 /* BCSearchResultViewController */,
@@ -5348,7 +5377,6 @@
 				371583561417B14000A20C92 /* ContractInfoCellView.m in Sources */,
 				37AC5E14149A71EB005DEAEB /* ItemInfo.mm in Sources */,
 				37A6718A14A0D52800D3284E /* FleetViewController.mm in Sources */,
-				370814DF14A0EAF700919C0B /* Fit.mm in Sources */,
 				37DDFD9314A2031600BCDEBB /* CharactersViewController.mm in Sources */,
 				37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */,
 				37DDFD9E14A2164A00BCDEBB /* CharacterEVE.mm in Sources */,
@@ -5374,7 +5402,6 @@
 				37C76DF614D0798B00EABCA7 /* CertificateCategoriesViewController.m in Sources */,
 				37C76E0914D07EE700EABCA7 /* CertificatesViewController.m in Sources */,
 				37C76E0E14D0882400EABCA7 /* CertificateCellView.m in Sources */,
-				37FD3AAA14D840C3005FA724 /* SkillPlan.m in Sources */,
 				37FD3B4314D86589005FA724 /* SkillPlannerViewController.m in Sources */,
 				37B965B214D98224003F3900 /* DamagePatternsViewController.m in Sources */,
 				37B965B814D98532003F3900 /* DamagePatternCellView.m in Sources */,
@@ -5529,7 +5556,6 @@
 				37BBC5A61512373700EDE204 /* Structure.cpp in Sources */,
 				37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */,
 				37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */,
-				37CE795015134D8B00621D52 /* POSFit.mm in Sources */,
 				37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */,
 				3741051B151A309E00BCED1B /* AssemblyLinesViewController.mm in Sources */,
 				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
@@ -5610,6 +5636,14 @@
 				12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */,
 				12EBB72D167EF806002CDAB6 /* EVECharacterInfo.m in Sources */,
 				12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */,
+				12582F0A16B251C300445581 /* EUStorage.m in Sources */,
+				12582F0F16B2537000445581 /* EUStorage.xcdatamodeld in Sources */,
+				12582F1F16B25BF400445581 /* APIKey.m in Sources */,
+				12582F2216B2903600445581 /* IgnoredCharacter.m in Sources */,
+				1203571016B68B740015706B /* ShipFit.mm in Sources */,
+				120FE35516B9504B0091E692 /* POSFit.mm in Sources */,
+				12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */,
+				12B8CD2516BB993000C5104E /* Fit.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6344,7 +6378,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aliaksei Shlovikau (AKC9H535F6)";
+				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6352,7 +6387,7 @@
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _DEBUG;
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = /Developer/Tools/boost;
 				INFOPLIST_FILE = "EVEUniverse-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -6362,7 +6397,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2522DCC5-7E9D-403A-A737-7E0572BF4A88";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C43BB89B-3F08-4081-BFF2-D9679D73015D";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s";
@@ -6374,13 +6409,14 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _DEBUG;
 				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = /Developer/Tools/boost;
 				INFOPLIST_FILE = "EVEUniverse-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
@@ -6450,6 +6486,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		12582F0D16B2537000445581 /* EUStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12582F0E16B2537000445581 /* EUStorage.xcdatamodel */,
+			);
+			currentVersion = 12582F0E16B2537000445581 /* EUStorage.xcdatamodel */;
+			path = EUStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

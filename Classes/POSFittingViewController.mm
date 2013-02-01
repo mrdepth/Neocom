@@ -244,7 +244,7 @@
 	}*/
 	
 	[actionSheet addButtonWithTitle:ActionButtonSetName];
-	if (fit.fitID <= 0)
+	if (!fit.managedObjectContext)
 		[actionSheet addButtonWithTitle:ActionButtonSave];
 	//[actionSheet addButtonWithTitle:ActionButtonAreaEffect];
 	
@@ -317,7 +317,7 @@
 
 - (EVEDBInvControlTowerResource*) posFuelRequirements {
 	if (!posFuelRequirements) {
-		for (EVEDBInvControlTowerResource* resource in fit.resources) {
+		for (EVEDBInvControlTowerResource* resource in fit.type.resources) {
 			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
 				posFuelRequirements = [resource retain];
 				break;
@@ -468,7 +468,7 @@
 }
 
 - (void) save {
-	if (fit.fitID > 0)
+	if (fit.managedObjectContext)
 		[fit save];
 }
 

@@ -14,11 +14,12 @@
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"
 #import "BCSearchViewController.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
 #import "CharacterEVE.h"
 #import "NSArray+GroupBy.h"
+#import "EUStorage.h"
 
 
 @implementation FitsViewController
@@ -66,7 +67,31 @@
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		@autoreleasepool {
+			EUStorage* storage = [EUStorage sharedStorage];
+			[storage.managedObjectContext performBlockAndWait:^{
+				NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+				NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
+				[fetchRequest setEntity:entity];
+				
+				NSError *error = nil;
+				NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+				[fetchRequest release];
+				
+				operation.progress = 0.5;
+				
+				[fitsTmp addObjectsFromArray:[fetchedObjects arrayGroupedByKey:@"type.groupID"]];
+				operation.progress = 0.75;
+				[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					Fit* a = [obj1 objectAtIndex:0];
+					Fit* b = [obj2 objectAtIndex:0];
+					return [a.type.group.groupName compare:b.type.group.groupName];
+				}];
+				operation.progress = 1.0;
+			}];
+		}
+
+			/*		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
 		[fitsArray filterUsingPredicate:[NSPredicate predicateWithFormat:@"isPOS != 1"]];
 		
@@ -88,7 +113,7 @@
 			NSDictionary* b = [obj2 objectAtIndex:0];
 			return [[a valueForKeyPath:@"type.group.groupName"] compare:[b valueForKeyPath:@"type.group.groupName"]];
 		}];
-		[pool release];
+		[pool release];*/
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
@@ -170,10 +195,10 @@
 		if (cell == nil) {
 			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		cell.shipNameLabel.text = [fit valueForKey:@"shipName"];
-		cell.fitNameLabel.text = [fit valueForKey:@"fitName"];
-		cell.iconView.image = [UIImage imageNamed:[fit valueForKey:@"imageName"]];
+		Fit* fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		cell.shipNameLabel.text = fit.typeName;
+		cell.fitNameLabel.text = fit.fitName;
+		cell.iconView.image = [UIImage imageNamed:fit.imageName];
 		return cell;
 	}
 }
@@ -231,27 +256,29 @@
 			[self presentModalViewController:modalController animated:YES];
 	}
 	else {
-		NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
-		__block Fit* fit = nil;
+		__block ShipFit* fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			character = new eufe::Character(engine);
-
-			EVEAccount* currentAccount = [EVEAccount currentAccount];
-			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				character->setSkillLevels(*[eveCharacter skillsMap]);
+			@autoreleasepool {
+				character = new eufe::Character(engine);
+				
+				EVEAccount* currentAccount = [EVEAccount currentAccount];
+				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
+					CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
+					character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setSkillLevels(*[eveCharacter skillsMap]);
+				}
+				else
+					character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
+				
+				operation.progress = 0.5;
+				
+				fit.character = character;
+				[fit load];
+				
+				operation.progress = 1.0;
 			}
-			else
-				character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
-
-			operation.progress = 0.5;
-			fit = [[Fit fitWithDictionary:row character:character] retain];
-			operation.progress = 1.0;
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
@@ -276,7 +303,7 @@
 		[popoverController dismissPopoverAnimated:YES];
 	
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
-	__block Fit* fit = nil;
+	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -293,7 +320,7 @@
 			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
 
 		operation.progress = 0.5;
-		fit = [[Fit fitWithFitID:nil fitName:type.typeName character:character] retain];
+		fit = [[ShipFit shipFitWithFitName:type.typeName character:character] retain];
 		operation.progress = 1.0;
 		[pool release];
 	}];

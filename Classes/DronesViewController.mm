@@ -16,7 +16,7 @@
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
 #import "ItemInfo.h"
-#import "Fit.h"
+#import "ShipFit.h"
 
 #include "eufe.h"
 

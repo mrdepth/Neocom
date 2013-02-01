@@ -29,7 +29,7 @@
 #define ActionButtonLevel5 NSLocalizedString(@"Train to Level 5", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
-@interface SkillPlannerViewController(Private)
+@interface SkillPlannerViewController()
 
 - (void) loadData;
 - (void) didAddSkill:(NSNotification*) notification;
@@ -37,6 +37,7 @@
 - (void) didRemoveSkill:(NSNotification*) notification;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) reloadTrainingTime;
+- (void) didUpdateCloud:(NSNotification*) notification;
 
 @end
 
@@ -62,6 +63,7 @@
 }
 
 - (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
@@ -85,6 +87,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeSkill:) name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveSkill:) name:NotificationSkillPlanDidRemoveSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -101,6 +104,7 @@
 
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSkillPlanDidRemoveSkill object:nil];
@@ -402,10 +406,7 @@
 	[self loadData];
 }
 
-@end
-
-
-@implementation SkillPlannerViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerViewController+Load" name:NSLocalizedString(@"Loading Skill Plan", nil)];
@@ -489,6 +490,17 @@
 
 - (void) reloadTrainingTime {
 	trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
+}
+
+- (void) didUpdateCloud:(NSNotification*) notification {
+	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:NSUUIDChangedPersistentStoresKey]) {
+		if ([skillPlan.objectID isEqual:objectID]) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[skillPlan.managedObjectContext refreshObject:skillPlan mergeChanges:YES];
+				[self loadData];
+			});
+		}
+	}
 }
 
 @end

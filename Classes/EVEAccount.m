@@ -252,7 +252,7 @@
 		if (!skillPlan) {
 			if (!self.characterID || !self.characterSheet)
 				return nil;
-			skillPlan = [[SkillPlan skillPlanWithAccount:self] retain];
+			skillPlan = [[SkillPlan skillPlanWithAccount:self name:@"main"] retain];
 			[skillPlan load];
 		}
 		return [[skillPlan retain] autorelease];

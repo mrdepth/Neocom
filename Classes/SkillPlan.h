@@ -2,8 +2,8 @@
 //  SkillPlan.h
 //  EVEUniverse
 //
-//  Created by Mr. Depth on 1/31/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Artem Shimanski on 25.01.13.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -16,27 +16,25 @@
 
 @class EVEAccount;
 @class CharacterAttributes;
-@interface SkillPlan : NSObject<NSXMLParserDelegate> {
-	NSMutableArray* skills;
-	NSTimeInterval trainingTime;
-	CharacterAttributes* characterAttributes;
-	NSDictionary* characterSkills;
-	NSInteger characterID;
-	NSString* name;
-}
+
+@interface SkillPlan : NSManagedObject<NSXMLParserDelegate>
+
 @property (nonatomic, retain) NSMutableArray* skills;
 @property (nonatomic, readonly) NSTimeInterval trainingTime;
 @property (nonatomic, retain) CharacterAttributes* characterAttributes;
 @property (nonatomic, retain) NSDictionary* characterSkills;
-@property (nonatomic, assign) NSInteger characterID;
 @property (nonatomic, retain) NSString* name;
 
-+ (id) skillPlanWithAccount:(EVEAccount*) aAccount;
+//CoreData
+@property (nonatomic, retain) NSString * attributes;
+@property (nonatomic) int32_t characterID;
+@property (nonatomic, retain) NSString * skillPlanName;
+@property (nonatomic, retain) NSString * skillPlanSkills;
+
++ (id) skillPlanWithAccount:(EVEAccount*) aAccount name:(NSString*) name;
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath;
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan;
 - (id) initWithAccount:(EVEAccount*) aAccount;
-- (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath;
-- (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan;
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill;
 - (void) addType:(EVEDBInvType*) type;

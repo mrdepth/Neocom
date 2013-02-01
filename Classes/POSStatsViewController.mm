@@ -13,6 +13,7 @@
 #import "EUOperationQueue.h"
 #import "POSFit.h"
 #import "PriceManager.h"
+#import "ItemInfo.h"
 
 #import "eufe.h"
 

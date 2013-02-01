@@ -23,7 +23,7 @@
 #import "eufe.h"
 
 @class EVEFittingFit;
-@class Fit;
+@class ShipFit;
 @class DamagePattern;
 @class PriceManager;
 @interface FittingViewController : UIViewController<UIActionSheetDelegate,
@@ -55,7 +55,7 @@
 	UIPopoverController *popoverController;
 	UIPopoverController *targetsPopoverController;
 	UIPopoverController *areaEffectsPopoverController;
-	Fit* fit;
+	ShipFit* fit;
 
 	eufe::Engine* fittingEngine;
 	NSMutableArray* fits;
@@ -87,7 +87,7 @@
 @property (nonatomic, retain) UIPopoverController *targetsPopoverController;
 @property (nonatomic, retain) UIPopoverController *areaEffectsPopoverController;
 
-@property (nonatomic, retain) Fit* fit;
+@property (nonatomic, retain) ShipFit* fit;
 
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
 @property (nonatomic, retain, readonly) NSMutableArray* fits;
@@ -101,6 +101,6 @@
 - (IBAction) onBack:(id) sender;
 - (void) update;
 - (void) addFleetMember;
-- (void) selectCharacterForFit:(Fit*) fit;
+- (void) selectCharacterForFit:(ShipFit*) fit;
 
 @end

@@ -18,11 +18,13 @@
 #import "NSString+TimeLeft.h"
 #import "AccessMaskViewController.h"
 #import "UIImageView+URL.h"
+#import "EUStorage.h"
 
 @interface EVEAccountsViewController(Private)
 - (void) loadSection:(NSMutableDictionary*) section;
 - (void) accountStorageDidChange:(NSNotification*) notification;
 - (void) reload;
+- (void) didUpdateCloud:(NSNotification*) notification;
 @end
 
 
@@ -47,6 +49,7 @@
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	self.logoffButton.hidden = [EVEAccount currentAccount] == nil;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -59,6 +62,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	self.accountsTableView = nil;
@@ -87,6 +91,7 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[accountsTableView release];
 	[logoffButton release];
 	[sections release];
@@ -117,6 +122,10 @@
 		sectionIndex++;
 	}
 	[accountsTableView reloadSections:indexes withRowAnimation:UITableViewRowAnimationFade];
+	if (!self.editing) {
+		EUStorage* storage = [EUStorage sharedStorage];
+		[storage saveContext];
+	}
 }
 
 #pragma mark -
@@ -481,6 +490,12 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) didUpdateCloud:(NSNotification*) notification {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self reload];
+	});
 }
 
 @end

@@ -184,7 +184,7 @@
 				[pool release];
 				return;
 			}
-			skillPlanTmp = [[SkillPlan skillPlanWithAccount:account] retain];
+			skillPlanTmp = [[SkillPlan skillPlanWithAccount:account name:@"main"] retain];
 			for (EVEDBInvTypeRequiredSkill* skill in account.skillPlan.skills)
 				[skillPlanTmp addSkill:skill];
 			operation.progress = 0.3;

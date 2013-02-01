@@ -16,7 +16,7 @@
 #import "UITableViewCell+Nib.h"
 #import "FittingViewController.h"
 #import "CharacterEVE.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "EVEAccount.h"
 #import "ItemViewController.h"
 
@@ -374,7 +374,7 @@
 - (IBAction)onOpenFit:(id)sender {
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
-	__block Fit* fit = nil;
+	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 	
 	[operation addExecutionBlock:^{
@@ -392,7 +392,7 @@
 		else
 			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
 		operation.progress = 0.6;
-		fit = [[Fit alloc] initWithKillMail:self.killMail character:character];
+		fit = [[ShipFit alloc] initWithKillMail:self.killMail character:character];
 		operation.progress = 1.0;
 		[pool release];
 	}];

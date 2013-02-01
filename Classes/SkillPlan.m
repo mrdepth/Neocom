@@ -2,43 +2,94 @@
 //  SkillPlan.m
 //  EVEUniverse
 //
-//  Created by Mr. Depth on 1/31/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Artem Shimanski on 25.01.13.
+//
 //
 
 #import "SkillPlan.h"
-#import "TrainingQueue.h"
+#import "EUStorage.h"
 #import "EVEAccount.h"
-#import "Globals.h"
+#import "TrainingQueue.h"
+
+@interface SkillPlan()
+- (void) didUpdateCloud:(NSNotification*) notification;
+@end
 
 @implementation SkillPlan
-@synthesize skills;
-@synthesize characterAttributes;
-@synthesize characterSkills;
-@synthesize characterID;
-@synthesize name;
 
-+ (id) skillPlanWithAccount:(EVEAccount*) aAccount {
-	return [[[SkillPlan alloc] initWithAccount:aAccount] autorelease];
+@dynamic attributes;
+@dynamic characterID;
+@dynamic skillPlanName;
+@dynamic skillPlanSkills;
+
+@synthesize skills = _skills;
+@synthesize trainingTime = _trainingTime;
+@synthesize characterAttributes = _characterAttributes;
+@synthesize characterSkills = _characterSkills;
+@synthesize name = _name;
+
++ (id) skillPlanWithAccount:(EVEAccount*) account name:(NSString*) name {
+	if (!account || !account.characterID)
+		return nil;
+	
+	EUStorage* storage = [EUStorage sharedStorage];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext];
+	[fetchRequest setEntity:entity];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"characterID = %d AND skillPlanName == %@", account.characterID, name];
+	[fetchRequest setPredicate:predicate];
+	
+	NSError *error = nil;
+	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	[fetchRequest release];
+	
+	SkillPlan* skillPlan;
+	if (fetchedObjects.count > 0) {
+		skillPlan = [fetchedObjects objectAtIndex:0];
+		skillPlan.characterAttributes = [account characterAttributes];
+		skillPlan.characterSkills = account.characterSheet.skillsMap;
+	}
+	else {
+		skillPlan = [[[SkillPlan alloc] initWithAccount:account] autorelease];
+		skillPlan.skillPlanName = name;
+	}
+	return skillPlan;
 }
 
-+ (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath {
-	return [[[SkillPlan alloc] initWithAccount:aAccount eveMonSkillPlanPath:skillPlanPath] autorelease];
++ (id) skillPlanWithAccount:(EVEAccount*) account eveMonSkillPlanPath:(NSString*) skillPlanPath {
+	SkillPlan* skillPlan = [self skillPlanWithAccount:account name:nil];
+	NSXMLParser* parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:skillPlanPath]];
+	parser.delegate = skillPlan;
+	if (![parser parse]) {
+		[parser release];
+		return nil;
+	}
+	[parser release];
+	return skillPlan;
 }
 
-+ (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan {
-	return [[[SkillPlan alloc] initWithAccount:aAccount eveMonSkillPlan:skillPlan] autorelease];
++ (id) skillPlanWithAccount:(EVEAccount*) account eveMonSkillPlan:(NSString*) eveMonSkillPlan {
+	SkillPlan* skillPlan = [self skillPlanWithAccount:account name:nil];
+	NSXMLParser* parser = [[NSXMLParser alloc] initWithData:[eveMonSkillPlan dataUsingEncoding:NSUTF8StringEncoding]];
+	parser.delegate = skillPlan;
+	if (![parser parse]) {
+		[parser release];
+		return nil;
+	}
+	[parser release];
+	return skillPlan;
 }
 
 - (id) initWithAccount:(EVEAccount*) aAccount {
-	if (self = [super init]) {
+	if (self = [self init]) {
 		if (!aAccount) {
 			[self release];
 			return nil;
 		}
 		self.skills = [NSMutableArray array];
-		trainingTime = -1;
-
+		_trainingTime = -1;
+		
 		self.characterAttributes = [aAccount characterAttributes];
 		self.characterSkills = aAccount.characterSheet.skillsMap;
 		self.characterID = aAccount.characterID;
@@ -47,56 +98,42 @@
 }
 
 - (id) init {
-	if (self = [super init]) {
+	EUStorage* storage = [EUStorage sharedStorage];
+	if (self = [super initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+
 		self.skills = [NSMutableArray array];
-		trainingTime = -1;
-		characterID = 0;
+		_trainingTime = -1;
+		self.characterID = 0;
 		self.characterAttributes = [CharacterAttributes defaultCharacterAttributes];
 	}
 	return self;
 }
 
-- (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath {
-	if (self = [self initWithAccount:aAccount]) {
-		NSXMLParser* parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:skillPlanPath]];
-		parser.delegate = self;
-		[parser parse];
-		[parser release];
-	}
-	return self;
-}
+- (void) awakeFromFetch {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 
-- (id) initWithAccount:(EVEAccount*) aAccount eveMonSkillPlan:(NSString*) skillPlan {
-	if (self = [self initWithAccount:aAccount]) {
-		NSXMLParser* parser = [[NSXMLParser alloc] initWithData:[skillPlan dataUsingEncoding:NSUTF8StringEncoding]];
-		parser.delegate = self;
-		if (![parser parse]) {
-			[parser release];
-			[self release];
-			return nil;
-		}
-		[parser release];
-	}
-	return self;
+	self.skills = [NSMutableArray array];
 }
 
 - (void) dealloc {
-	[skills release];
-	[characterAttributes retain];
-	[characterSkills retain];
-	[name release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+	[_skills release];
+	[_characterAttributes retain];
+	[_characterSkills retain];
+	[_name release];
 	[super dealloc];
 }
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {
-	EVECharacterSheetSkill *characterSkill = [characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+	EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 	if (characterSkill.level >= skill.requiredLevel)
 		return;
 	
 	BOOL addedDependence = NO;
 	for (NSInteger level = characterSkill.level + 1; level <= skill.requiredLevel; level++) {
 		BOOL isExist = NO;
-		for (EVEDBInvTypeRequiredSkill *item in skills) {
+		for (EVEDBInvTypeRequiredSkill *item in self.skills) {
 			if (item.typeID == skill.typeID && item.requiredLevel == level) {
 				isExist = YES;
 				break;
@@ -112,11 +149,11 @@
 			requiredSkill.currentLevel = characterSkill.level;
 			float sp = [requiredSkill skillpointsAtLevel:level - 1];
 			requiredSkill.currentSP = MAX(sp, characterSkill.skillpoints);
-			[skills addObject:requiredSkill];
+			[self.skills addObject:requiredSkill];
 			[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidAddSkill object:self userInfo:[NSDictionary dictionaryWithObject:requiredSkill forKey:@"skill"]];
 		}
 	}
-	trainingTime = -1;
+	_trainingTime = -1;
 }
 
 - (void) addType:(EVEDBInvType*) type {
@@ -138,30 +175,30 @@
 	NSInteger level = skill.requiredLevel;
 	NSInteger index = 0;
 	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
-	for (EVEDBInvTypeRequiredSkill* requiredSkill in [NSArray arrayWithArray:skills]) {
+	for (EVEDBInvTypeRequiredSkill* requiredSkill in [NSArray arrayWithArray:self.skills]) {
 		if (requiredSkill.typeID == typeID && requiredSkill.requiredLevel >= level) {
-			trainingTime -= (requiredSkill.requiredSP - requiredSkill.currentSP) / [characterAttributes skillpointsPerSecondForSkill:requiredSkill];
+			_trainingTime -= (requiredSkill.requiredSP - requiredSkill.currentSP) / [self.characterAttributes skillpointsPerSecondForSkill:requiredSkill];
 			//[skills removeObject:requiredSkill];
 			[indexes addIndex:index];
 			//[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidRemoveSkill object:self userInfo:@{@"skill" : requiredSkill, @"index" : @(index)}];
 		}
 		index++;
 	}
-	[skills removeObjectsAtIndexes:indexes];
+	[self.skills removeObjectsAtIndexes:indexes];
 	if (indexes.count > 0)
 		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidRemoveSkill object:self userInfo:@{@"indexes" : indexes}];
 }
 
 - (NSTimeInterval) trainingTime {
-	if (trainingTime < 0) {
-		trainingTime = 0;
+	if (_trainingTime < 0) {
+		_trainingTime = 0;
 		
-		for (EVEDBInvTypeRequiredSkill *skill in skills) {
+		for (EVEDBInvTypeRequiredSkill *skill in self.skills) {
 			if (skill.currentLevel < skill.requiredLevel)
-				trainingTime += (skill.requiredSP - skill.currentSP) / [characterAttributes skillpointsPerSecondForSkill:skill];
+				_trainingTime += (skill.requiredSP - skill.currentSP) / [self.characterAttributes skillpointsPerSecondForSkill:skill];
 		}
 	}
-	return trainingTime;
+	return _trainingTime;
 }
 
 - (void) reload {
@@ -169,69 +206,61 @@
 }
 
 - (void) resetTrainingTime {
-	trainingTime = -1;
+	_trainingTime = -1;
 }
 
 - (void) save {
-	if (!characterID)
+	if (!self.characterID)
 		return;
-	NSMutableArray* items = [[NSMutableArray alloc] init];
-	for (EVEDBInvTypeRequiredSkill* skill in skills) {
-		[items addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						  [NSNumber numberWithInt:skill.typeID], @"typeID",
-						  [NSNumber numberWithInt:skill.requiredLevel], @"level", nil]];
-	}
-	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"skillPlan_%d.plist", characterID]];
-	[items writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
-	[items release];
+	[self.managedObjectContext performBlockAndWait:^{
+		NSMutableString* s = [NSMutableString string];
+		BOOL isFirst = YES;
+		for (EVEDBInvTypeRequiredSkill* skill in self.skills) {
+			if (isFirst) {
+				[s appendFormat:@"%d:%d", skill.typeID, skill.requiredLevel];
+				isFirst = NO;
+			}
+			else {
+				[s appendFormat:@";%d:%d", skill.typeID, skill.requiredLevel];
+			}
+		}
+		
+		if (![self.skillPlanSkills isEqualToString:s])
+			self.skillPlanSkills = s;
+		
+		EUStorage* storage = [EUStorage sharedStorage];
+		if (![self managedObjectContext])
+			[storage.managedObjectContext insertObject:self];
+		[storage saveContext];
+	}];
 }
 
 - (void) load {
-	[skills removeAllObjects];
-	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"skillPlan_%d.plist", characterID]];
-	NSArray* items = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:path]];
-	
-	for (NSDictionary* item in items) {
-		NSInteger typeID = [[item valueForKey:@"typeID"] integerValue];
-		NSInteger requiredLevel = [[item valueForKey:@"level"] integerValue];
-		EVECharacterSheetSkill *characterSkill = [characterSkills valueForKey:[NSString stringWithFormat:@"%d", typeID]];
-		if (characterSkill.level < requiredLevel) {
-			/*for (NSInteger level = characterSkill.level + 1; level <= requiredLevel; level++) {
-				BOOL found = NO;
-				for (EVEDBInvTypeRequiredSkill* skill in skills) {
-					if (skill.typeID == typeID && skill.requiredLevel == level) {
-						found = YES;
-						break;
-					}
-				}
-				if (!found) {
+	[self.managedObjectContext performBlockAndWait:^{
+		[self.skills removeAllObjects];
+		_trainingTime = -1;
+		for (NSString* row in [self.skillPlanSkills componentsSeparatedByString:@";"]) {
+			NSArray* components = [row componentsSeparatedByString:@":"];
+			if (components.count == 2) {
+				NSInteger typeID = [[components objectAtIndex:0] integerValue];
+				NSInteger requiredLevel = [[components objectAtIndex:1] integerValue];
+				EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", typeID]];
+				if (characterSkill.level < requiredLevel) {
 					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:typeID error:nil];
-					skill.requiredLevel = level;
+					skill.requiredLevel = requiredLevel;
 					skill.currentLevel = characterSkill.level;
-					float sp = [skill skillpointsAtLevel:level - 1];
+					float sp = [skill skillpointsAtLevel:requiredLevel - 1];
 					skill.currentSP = MAX(sp, characterSkill.skillpoints);
-					//skill.currentSP = characterSkill.skillpoints;
-					[skills addObject:skill];
+					[self.skills addObject:skill];
 				}
-			}*/
-/*			EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:typeID error:nil];
-			skill.requiredLevel = requiredLevel;
-			skill.currentLevel = characterSkill.level;
-			skill.currentSP = characterSkill.skillpoints;
-			[skills addObject:skill];*/
-			EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:typeID error:nil];
-			skill.requiredLevel = requiredLevel;
-			skill.currentLevel = characterSkill.level;
-			float sp = [skill skillpointsAtLevel:requiredLevel - 1];
-			skill.currentSP = MAX(sp, characterSkill.skillpoints);
-			[skills addObject:skill];
+			}
 		}
-	}
+	}];
 }
 
 - (void) clear {
-	[skills removeAllObjects];
-	trainingTime = 0;
+	[self.skills removeAllObjects];
+	_trainingTime = 0;
 }
 
 #pragma mark NSXMLParserDelegate
@@ -248,6 +277,20 @@
 	}
 	else if ([elementName isEqualToString:@"plan"]) {
 		self.name = [attributeDict valueForKey:@"name"];
+	}
+}
+
+
+#pragma mark - Private
+
+- (void) didUpdateCloud:(NSNotification*) notification {
+	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:NSUUIDChangedPersistentStoresKey]) {
+		if ([self.objectID isEqual:objectID]) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.managedObjectContext refreshObject:self mergeChanges:YES];
+				[self load];
+			});
+		}
 	}
 }
 

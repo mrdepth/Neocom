@@ -13,11 +13,11 @@
 @interface EVEAccountStorage : NSObject {
 	NSMutableDictionary *apiKeys;
 	NSMutableDictionary *characters;
-	NSMutableSet *ignored;
+	NSMutableDictionary *ignored;
 }
 @property (nonatomic, readonly, retain) NSMutableDictionary *apiKeys;
 @property (nonatomic, readonly, retain) NSMutableDictionary *characters;
-@property (nonatomic, readonly, retain) NSMutableSet *ignored;
+@property (nonatomic, readonly, retain) NSMutableDictionary *ignored;
 
 + (EVEAccountStorage*) sharedAccountStorage;
 

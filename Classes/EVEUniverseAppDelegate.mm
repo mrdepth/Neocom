@@ -17,7 +17,8 @@
 #import "EUActivityView.h"
 #import "FittingViewController.h"
 #import "CharacterEVE.h"
-#import "Fit.h"
+#import "ShipFit.h"
+#import "EUStorage.h"
 
 @interface EVEUniverseAppDelegate()
 
@@ -44,6 +45,56 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[[EUStorage sharedStorage] managedObjectContext];
+	
+/*	NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
+    if (coordinator != nil) {
+		NSManagedObjectContext* managedObjectContext1 = [[EUStorage sharedStorage] managedObjectContext];
+        NSManagedObjectContext* managedObjectContext2 = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        [managedObjectContext2 setPersistentStoreCoordinator:coordinator];
+		
+		ShipFit* fit1;
+		ShipFit* fit2;
+
+		{
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:managedObjectContext1];
+			[fetchRequest setEntity:entity];
+			
+			
+			NSError *error = nil;
+			NSArray *fetchedObjects = [managedObjectContext1 executeFetchRequest:fetchRequest error:&error];
+			fit1 = [fetchedObjects objectAtIndex:0];
+			[fetchRequest release];
+		}
+		
+		{
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:managedObjectContext2];
+			[fetchRequest setEntity:entity];
+			
+			
+			NSError *error = nil;
+			NSArray *fetchedObjects = [managedObjectContext2 executeFetchRequest:fetchRequest error:&error];
+			fit2 = [fetchedObjects objectAtIndex:0];
+			[fetchRequest release];
+		}
+		
+		NSLog(@"%@", fit1.fitName);
+		fit1.fitName = @"Fit1";
+		fit2.fitName = @"Fit2";
+		NSError* error  = nil;
+		[managedObjectContext1 save:&error];
+		NSLog(@"%@", error);
+		[managedObjectContext2 save:&error];
+		NSLog(@"%@", error);
+		[managedObjectContext2 refreshObject:fit2 mergeChanges:YES];
+		error = nil;
+		[managedObjectContext2 save:&error];
+		NSLog(@"%@", error);
+    }*/
+
+	
 	//[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	
     // Override point for customization after application launch.
@@ -551,7 +602,7 @@
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
-	__block Fit* fit = nil;
+	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 	
 	[operation addExecutionBlock:^{
@@ -569,7 +620,7 @@
 		else
 			character->setCharacterName("All Skills 0");
 		operation.progress = 0.6;
-		fit = [[Fit alloc] initWithDNA:dna character:character];
+		fit = [[ShipFit alloc] initWithDNA:dna character:character];
 		operation.progress = 1.0;
 		[pool release];
 	}];

@@ -14,7 +14,7 @@
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "EVEDBAPI.h"
 #import "NSString+TimeLeft.h"
 

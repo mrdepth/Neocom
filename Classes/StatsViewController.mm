@@ -11,7 +11,7 @@
 #import "NSString+Fitting.h"
 #import "NSString+TimeLeft.h"
 #import "EUOperationQueue.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "ItemInfo.h"
 #import "PriceManager.h"
 

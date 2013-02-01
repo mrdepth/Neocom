@@ -10,17 +10,17 @@
 #import "CharactersViewControllerDelegate.h"
 #import "Character.h"
 
-@class Fit;
+@class ShipFit;
 @interface CharactersViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
 	UITableView *charactersTableView;
 	id<CharactersViewControllerDelegate> delegate;
-	Fit* modifiedFit;
+	ShipFit* modifiedFit;
 @private
 	NSMutableArray *sections;
 }
 @property (retain, nonatomic) IBOutlet UITableView *charactersTableView;
 @property (nonatomic, assign) IBOutlet id<CharactersViewControllerDelegate> delegate;
-@property (retain, nonatomic) Fit* modifiedFit;
+@property (retain, nonatomic) ShipFit* modifiedFit;
 
 - (IBAction) onClose:(id)sender;
 

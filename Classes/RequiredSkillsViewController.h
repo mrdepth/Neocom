@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class Fit;
+@class ShipFit;
 @class SkillPlan;
 @interface RequiredSkillsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
 	UITableView* skillsTableView;
 	UILabel *trainingTimeLabel;
-	Fit* fit;
+	ShipFit* fit;
 @private
 	SkillPlan* skillPlan;
 }
 @property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
 @property (retain, nonatomic) IBOutlet UILabel *trainingTimeLabel;
-@property (nonatomic, retain) Fit* fit;
+@property (nonatomic, retain) ShipFit* fit;
 
 - (IBAction)onClose:(id)sender;
 - (IBAction)onAddToSkillPlan:(id)sender;

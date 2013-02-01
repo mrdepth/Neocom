@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class FitsViewController;
-@class Fit;
+@class ShipFit;
 @protocol FitsViewControllerDelegate <NSObject>
-- (void) fitsViewController:(FitsViewController*) controller didSelectFit:(Fit*) fit;
+- (void) fitsViewController:(FitsViewController*) controller didSelectFit:(ShipFit*) fit;
 @end

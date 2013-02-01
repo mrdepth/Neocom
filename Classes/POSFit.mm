@@ -2,30 +2,25 @@
 //  POSFit.m
 //  EVEUniverse
 //
-//  Created by Mr. Depth on 3/16/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Artem Shimanski on 28.01.13.
+//
 //
 
 #import "POSFit.h"
-#import "ItemInfo.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+AssetsViewController.h"
-#import "NSString+UUID.h"
-
-#include <functional>
+#import "EUStorage.h"
+#import "ItemInfo.h"
 
 @implementation POSFit
-@synthesize fitID;
-@synthesize fitName;
 
-+ (id) posFitWithFitID:(NSString*) fitID fitName:(NSString*) fitName controlTower:(eufe::ControlTower*) aControlTower {
-	return [[[POSFit alloc] initWithFitID:fitID fitName:fitName controlTower:aControlTower] autorelease];
-}
+@synthesize controlTower = _controlTower;
+@dynamic structures;
 
-+ (id) posFitWithDictionary:(NSDictionary*) dictionary engine:(eufe::Engine*) engine {
-	return [[[POSFit alloc] initWithDictionary:dictionary engine:engine] autorelease];
++ (id) posFitWithFitName:(NSString*) fitName controlTower:(eufe::ControlTower*) aControlTower {
+	return [[[POSFit alloc] initWithFitName:fitName controlTower:aControlTower] autorelease];
 }
 
 + (id) posFitWithAsset:(EVEAssetListItem*) asset engine:(eufe::Engine*) engine {
@@ -33,53 +28,51 @@
 	
 }
 
-- (id) initWithFitID:(NSString*) aFitID fitName:(NSString*) aFitName controlTower:(eufe::ControlTower*) aControlTower {
-	if (self = [super initWithItem:aControlTower error:nil]) {
-		self.fitID = aFitID;
-		self.fitName = aFitName;
-	}
-	return self;
++ (NSArray*) allFits {
+	EUStorage* storage = [EUStorage sharedStorage];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"POSFit" inManagedObjectContext:storage.managedObjectContext];
+	[fetchRequest setEntity:entity];
+	
+	NSError *error = nil;
+	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	for (POSFit* fit in fetchedObjects)
+		[storage.managedObjectContext refreshObject:fit mergeChanges:YES];
+	[fetchRequest release];
+	return fetchedObjects;
 }
 
-- (id) initWithDictionary:(NSDictionary*) dictionary engine:(eufe::Engine*) engine {
-	NSString* aFitID = [dictionary valueForKey:@"fitID"];
-	NSString *aFitName = [dictionary valueForKey:@"fitName"];
-	NSDictionary* fit = [dictionary valueForKey:@"fit"];
-	NSInteger controlTowerID = [[fit valueForKey:@"controlTowerID"] integerValue];
-	eufe::ControlTower* ct = engine->setControlTower(controlTowerID);
-
-	if (self = [self initWithFitID:aFitID fitName:aFitName controlTower:ct]) {
-		if (ct == NULL) {
-			[self release];
-			return nil;
-		}
-		for (NSDictionary* record in [fit valueForKey:@"structures"]) {
-			NSInteger aTypeID = [[record valueForKey:@"typeID"] integerValue];
-			NSInteger chargeID = [[record valueForKey:@"chargeID"] integerValue];
-			if (aTypeID != 0) {
-				eufe::Module::State state = static_cast<eufe::Module::State>([[record valueForKey:@"state"] integerValue]);
-				eufe::Structure* structure = ct->addStructure(aTypeID);
-				if (structure != NULL) {
-					if (chargeID != 0)
-						structure->setCharge(chargeID);
-					if (structure->canHaveState(state))
-						structure->setState(state);
-				}
-			}
+- (id) initWithFitName:(NSString*) aFitName controlTower:(eufe::ControlTower*) aControlTower {
+	EUStorage* storage = [EUStorage sharedStorage];
+	if (self = [super initWithEntity:[NSEntityDescription entityForName:@"POSFit" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil]) {
+		self.fitName = aFitName;
+		_controlTower = aControlTower;
+		if (aControlTower) {
+			ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:aControlTower error:nil];
+			self.typeID = itemInfo.typeID;
+			self.typeName = itemInfo.typeName;
+			self.imageName = itemInfo.typeSmallImageName;
 		}
 	}
 	return self;
 }
 
 - (id) initWithAsset:(EVEAssetListItem*) asset engine:(eufe::Engine*) engine {
-	eufe::ControlTower* ct = engine->setControlTower(asset.typeID);
-	if (self = [self initWithItem:ct error:nil]) {
+	EUStorage* storage = [EUStorage sharedStorage];
+	if (self = [super initWithEntity:[NSEntityDescription entityForName:@"POSFit" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil]) {
+		_controlTower = engine->setControlTower(asset.typeID);
 		self.fitName = asset.location.itemName ? asset.location.itemName : asset.type.typeName;
-		if (ct == NULL) {
+		if (_controlTower == NULL) {
 			[self release];
 			return nil;
 		}
 		else {
+			ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:self.controlTower error:nil];
+			self.typeID = itemInfo.typeID;
+			self.typeName = itemInfo.typeName;
+			self.imageName = itemInfo.typeSmallImageName;
+
 			for (EVEAssetListItem* assetItem in asset.contents) {
 				int amount = assetItem.quantity;
 				if (amount < 1)
@@ -87,7 +80,7 @@
 				EVEDBInvType* type = assetItem.type;
 				if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
 					for (int i = 0; i < amount; i++)
-						ct->addStructure(type.typeID);
+						_controlTower->addStructure(type.typeID);
 				}
 			}
 		}
@@ -97,75 +90,79 @@
 
 
 - (void) dealloc {
-	[fitName release];
-	[fitID release];
 	[super dealloc];
 }
 
+- (void) save {
+	NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];
+	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:self.controlTower error:nil];
 
-- (eufe::ControlTower*) controlTower {
-	return dynamic_cast<eufe::ControlTower*>(self.item);
-}
+	if (self.typeID != itemInfo.typeID) {
+		self.typeID = itemInfo.typeID;
+		self.imageName = itemInfo.typeSmallImageName;
+		self.typeName = itemInfo.typeName;
+	}
 
-- (NSDictionary*) dictionary {
-	eufe::ControlTower* ct = self.controlTower;
-	if (ct == NULL)
-		return nil;
-	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:ct error:NULL];
+	
+	for (auto i : self.controlTower->getStructures()) {
+		eufe::Charge* charge = i->getCharge();
+		eufe::TypeID chargeID = charge ? charge->getTypeID() : 0;
+		NSString* key = [NSString stringWithFormat:@"%d:%d:%d", i->getTypeID(), i->getState(), chargeID];
+		NSMutableDictionary* dic = [structuresDic valueForKey:key];
+		if (!dic) {
+			dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:@(i->getTypeID()), @"typeID", @(i->getState()), @"state", @(structuresDic.count), @"order", @(1), @"count", @(chargeID), @"chargeTypeID", nil];
+			[structuresDic setValue:dic forKey:key];
+		}
+		else
+			[dic setValue:@([[dic valueForKey:@"count"] integerValue] + 1) forKey:@"count"];
+	}
 	
 	NSMutableArray* structures = [NSMutableArray array];
-	{
-		eufe::StructuresList structuresList = ct->getStructures();
-		eufe::StructuresList::const_iterator i, end = structuresList.end();
-		for(i = structuresList.begin(); i != end; i++) {
-			NSMutableDictionary* row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-										[NSNumber numberWithInteger:(*i)->getTypeID()], @"typeID",
-										[NSNumber numberWithInteger:(*i)->getState()], @"state", nil];
-			if ((*i)->getCharge() != NULL)
-				[row setValue:[NSNumber numberWithInteger:(*i)->getCharge()->getTypeID()] forKey:@"chargeID"];
-			[structures addObject:row];
-		}
+	for (NSDictionary* dic in [[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]) {
+		NSString* record = [NSString stringWithFormat:@"%d:%d:%d:%d",
+							[[dic valueForKey:@"typeID"] integerValue],
+							[[dic valueForKey:@"count"] integerValue],
+							[[dic valueForKey:@"state"] integerValue],
+							[[dic valueForKey:@"chargeTypeID"] integerValue]];
+		[structures addObject:record];
 	}
 	
-	NSDictionary* fit = [NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:ct->getTypeID()], @"controlTowerID",
-						 structures, @"structures", nil];
+	NSString* structuresString = [structures componentsJoinedByString:@";"];
 	
-	if (!fitID)
-		self.fitID = [NSString uuidString];
+	if (![self.structures isEqualToString:structuresString])
+		self.structures = structuresString;
 
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			fitID, @"fitID",
-			fitName, @"fitName",
-			itemInfo.typeName, @"shipName",
-			[itemInfo typeSmallImageName], @"imageName",
-			[NSNumber numberWithBool:YES], @"isPOS",
-			fit, @"fit",nil];
+	EUStorage* storage = [EUStorage sharedStorage];
+	
+	if (![self managedObjectContext])
+		[storage.managedObjectContext insertObject:self];
+	[storage saveContext];
 }
 
-- (void) save {
-	NSURL *url = [NSURL fileURLWithPath:[Globals fitsFilePath]];
-	NSMutableArray *fits = [NSMutableArray arrayWithContentsOfURL:url];
-	if (!fits)
-		fits = [NSMutableArray array];
-	if (!fitID) {
-		self.fitID = [NSString uuidString];
-	}
-	NSDictionary *record = [self dictionary];
-	
-	BOOL bFind = NO;
-	NSInteger i = 0;
-	for (NSDictionary *aItem in fits) {
-		if ([[aItem valueForKey:@"fitID"] isEqualToString:fitID]) {
-			[fits replaceObjectAtIndex:i withObject:record];
-			bFind = YES;
-			break;
+- (void) load {
+	[self.managedObjectContext performBlockAndWait:^{
+		for (NSString* row in [self.structures componentsSeparatedByString:@";"]) {
+			NSArray* components = [row componentsSeparatedByString:@":"];
+			NSInteger numberOfComponents = components.count;
+			
+			if (numberOfComponents >= 1) {
+				eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+				if (typeID) {
+					NSInteger count = numberOfComponents >= 2 ? [[components objectAtIndex:1] integerValue] : 1;
+					eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] integerValue] : eufe::Module::STATE_ONLINE;
+					NSInteger chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] integerValue] : 0;
+					for (NSInteger i = 0; i < count; i++) {
+						eufe::Structure* structure = self.controlTower->addStructure(typeID);
+						if (!structure)
+							break;
+						structure->setState(state);
+						if (chargeTypeID)
+							structure->setCharge(chargeTypeID);
+					}
+				}
+			}
 		}
-		i++;
-	}
-	if (!bFind)
-		[fits addObject:record];
-	[fits writeToURL:url atomically:YES];
+	}];
 }
 
 @end

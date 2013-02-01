@@ -11,7 +11,7 @@
 #import "FleetMemberCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "ItemInfo.h"
 
 #include "eufe.h"
@@ -80,7 +80,7 @@
 		//for (i = characters.begin(); i != end; i++) {
 		float n = fittingViewController.fits.count;
 		float i = 0;
-		for (Fit* fit in fittingViewController.fits) {
+		for (ShipFit* fit in fittingViewController.fits) {
 			operation.progress = i++ / n;
 			if (fit == fittingViewController.fit)
 				continue;
@@ -150,7 +150,7 @@
 	}
 	NSDictionary* row = [targets objectAtIndex:indexPath.row];
 	ItemInfo* ship = [row valueForKey:@"ship"];
-	Fit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
+	ShipFit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
 
 	cell.titleLabel.text = [row valueForKey:@"title"];
 	cell.fitNameLabel.text = [row valueForKey:@"fitName"];
@@ -172,7 +172,7 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	Fit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
+	ShipFit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
 	[delegate targetsViewController:self didSelectTarget:fit.character->getShip()];
 }
 

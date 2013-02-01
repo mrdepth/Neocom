@@ -15,7 +15,7 @@
 #import "NSString+Fitting.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
-#import "Fit.h"
+#import "ShipFit.h"
 
 #import "ItemInfo.h"
 
@@ -153,7 +153,7 @@
 		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
 		[actionSheet addButtonWithTitle:ActionButtonShowShipInfo];
 		[actionSheet addButtonWithTitle:ActionButtonCharacter];
-		Fit* fit = [[pilots objectAtIndex:indexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:indexPath.row] valueForKey:@"fit"];
 
 		if (fit != self.fittingViewController.fit) {
 			[actionSheet addButtonWithTitle:ActionButtonSelect];
@@ -205,7 +205,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonCharacter]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		[fittingViewController selectCharacterForFit:fit];
 	}
 	else if ([button isEqualToString:ActionButtonSelect]) {
@@ -213,14 +213,14 @@
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonDelete]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		[fittingViewController.fits removeObject:fit];
 		fittingViewController.fittingEngine->getGang()->removePilot(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonBooster]) {
 		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		eufe::Character* character = fit.character;
 		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 		
@@ -251,22 +251,22 @@
 		
 	}
 	else if ([button isEqualToString:ActionButtonSetFleetBooster]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		fittingViewController.fittingEngine->getGang()->setFleetBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetWingBooster]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		fittingViewController.fittingEngine->getGang()->setWingBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetSquadBooster]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		fittingViewController.fittingEngine->getGang()->setSquadBooster(fit.character);
 		[fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonRemoveBooster]) {
-		Fit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
 		eufe::Character* character = fit.character;
 		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
 		
@@ -317,7 +317,7 @@
 			//for (i = characters.begin(); i != end; i++) {
 			float n = fittingViewController.fits.count;
 			float i = 0;
-			for (Fit* fit in fittingViewController.fits) {
+			for (ShipFit* fit in fittingViewController.fits) {
 				operation.progress = i++ / n;
 				eufe::Character* character = fit.character;
 				ItemInfo* ship = [ItemInfo itemInfoWithItem:character->getShip() error:NULL];

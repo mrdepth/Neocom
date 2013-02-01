@@ -11,10 +11,11 @@
 #import "EUOperationQueue.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "ItemInfo.h"
 #import "NSArray+GroupBy.h"
 #include "eufe.h"
+#import "EUStorage.h"
 
 @interface FittingExportViewController (Private)
 
@@ -46,40 +47,28 @@
 	NSMutableString* eveXML = [NSMutableString string];
 	NSMutableString *pageTmp = [NSMutableString stringWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"fits" ofType:@"html"]] encoding:NSUTF8StringEncoding error:nil];
 	
-	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
-	EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:NSLocalizedString(@"Exporting Fits", nil)];
+//	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:NSLocalizedString(@"Exporting Fits", nil)];
 	[operation addExecutionBlock:^{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
-		NSMutableArray *fitsArray = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[Globals fitsFilePath]]];
+		EUStorage* storage = [EUStorage sharedStorage];
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
+		[fetchRequest setEntity:entity];
 		
-		float n = fitsArray.count;
-		float i = 0;
-		for (NSMutableDictionary* row in [NSArray arrayWithArray:fitsArray]) {
-			operation.progress = i++ / n / 2;
-			if ([[row valueForKey:@"isPOS"] boolValue]) {
-				[fitsArray removeObject:row];
-				continue;
-			}
-			
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[[row valueForKeyPath:@"fit.shipID"] integerValue] error:nil]; 
+		NSError *error = nil;
+		NSMutableArray *fitsArray = [NSMutableArray arrayWithArray:[storage.managedObjectContext executeFetchRequest:fetchRequest error:&error]];
+		[fetchRequest release];
 
-			if (type) {
-				NSString* fitString = [self eveXMLWithFit:row];
-				[row setValue:type forKey:@"type"];
-				[row setValue:[type typeSmallImageName] forKey:@"imageName"];
-				[row setValue:fitString forKey:@"xml"];
-				[row setValue:[self dnaWithFit:row] forKey:@"dna"];
-				[eveXML appendString:fitString];
-			}
-		}
+		[eveXML appendString:[ShipFit allFitsEveXML]];
 		
-		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"shipName" ascending:YES]]];
+		[fitsArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
 		[fitsTmp addObjectsFromArray:[fitsArray arrayGroupedByKey:@"type.groupID"]];
 		[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-			NSDictionary* a = [obj1 objectAtIndex:0];
-			NSDictionary* b = [obj2 objectAtIndex:0];
-			return [[a valueForKeyPath:@"type.group.groupName"] compare:[b valueForKeyPath:@"type.group.groupName"]];
+			ShipFit* a = [obj1 objectAtIndex:0];
+			ShipFit* b = [obj2 objectAtIndex:0];
+			return [a.type.group.groupName compare:b.type.group.groupName];
 		}];
 		operation.progress = 0.75;
 		
@@ -89,10 +78,10 @@
 			NSString* groupName = [[group objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
 			[body appendFormat:@"<tr><td colspan=4 class=\"group\"><b>%@</b></td></tr>\n", groupName];
 			NSInteger fitID = 0;
-			for (NSDictionary* fit in group) {
-				EVEDBInvType* type = [fit valueForKey:@"type"];
+			for (ShipFit* fit in group) {
+				EVEDBInvType* type = fit.type;
 				[body appendFormat:@"<tr><td class=\"icon\"><image src=\"%@\" width=32 height=32 /></td><td width=\"20%%\">%@</td><td>%@</td><td width=\"30%%\">Download <a href=\"%d_%d.xml\">EVE XML file</a> or <a href=\"javascript:CCPEVE.showFitting('%@');\">Show Fitting</a> ingame</td></tr>\n",
-				 type.typeSmallImageName, type.typeName, [fit valueForKey:@"fitName"], groupID, fitID, [fit valueForKey:@"dna"]];
+				 type.typeSmallImageName, type.typeName, fit.fitName, groupID, fitID, fit.dna];
 				fitID++;
 			}
 			groupID++;
@@ -105,7 +94,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		[eveXML appendString:@"</fittings>"];
+//		[eveXML appendString:@"</fittings>"];
 		NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"exportedFits.xml"];
 		[eveXML writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
 		
@@ -200,9 +189,9 @@
 			if (fits.count > groupID) {
 				NSArray* group = [fits objectAtIndex:groupID];
 				if (group.count > fitID) {
-					NSDictionary* fit = [group objectAtIndex:fitID];
-					xml = [NSString stringWithFormat:@"<?xml version=\"1.0\" ?>\n<fittings>\n%@</fittings>", [fit valueForKey:@"xml"]];
-					typeName = [fit valueForKeyPath:@"type.typeName"];
+					ShipFit* fit = [group objectAtIndex:fitID];
+					xml = [NSString stringWithFormat:@"<?xml version=\"1.0\" ?>\n<fittings>\n%@</fittings>", [fit eveXML]];
+					typeName = fit.type.typeName;
 				}
 			}
 		}

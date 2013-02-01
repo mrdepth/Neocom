@@ -17,7 +17,7 @@
 #import "UIImageView+GIF.h"
 #import "NSString+TimeLeft.h"
 #import "ItemViewController.h"
-#import "Fit.h"
+#import "ShipFit.h"
 #import "ItemInfo.h"
 #import "Globals.h"
 

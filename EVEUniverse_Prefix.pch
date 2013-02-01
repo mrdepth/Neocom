@@ -11,4 +11,5 @@
 	#import <iAd/iAd.h>
 	#import <QuartzCore/QuartzCore.h>
 	#import <MessageUI/MessageUI.h>
+	#import <CoreData/CoreData.h>
 #endif

@@ -14,7 +14,7 @@
 #import "AccountsSelectionViewController.h"
 
 @interface AssetsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, AccountsSelectionViewControllerDelegate> {
-	UITableView *assetsTableView;
+	CollapsableTableView *assetsTableView;
 	UISegmentedControl *ownerSegmentControl;
 	UISearchBar *searchBar;
 	FilterViewController *filterViewController;
@@ -22,7 +22,7 @@
 	UIPopoverController *filterPopoverController;
 @private
 }
-@property (nonatomic, retain) IBOutlet UITableView *assetsTableView;
+@property (nonatomic, retain) IBOutlet CollapsableTableView *assetsTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;

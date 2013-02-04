@@ -13,7 +13,7 @@
 
 @class EVEAssetListItem;
 @interface AssetContentsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate> {
-	UITableView *assetsTableView;
+	CollapsableTableView *assetsTableView;
 	UISearchBar *searchBar;
 	FilterViewController *filterViewController;
 	UINavigationController *filterNavigationViewController;
@@ -26,7 +26,7 @@
 	NSArray *sections;
 	EUFilter *filter;
 }
-@property (nonatomic, retain) IBOutlet UITableView *assetsTableView;
+@property (nonatomic, retain) IBOutlet CollapsableTableView *assetsTableView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *filterNavigationViewController;

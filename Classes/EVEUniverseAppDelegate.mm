@@ -19,6 +19,7 @@
 #import "CharacterEVE.h"
 #import "ShipFit.h"
 #import "EUStorage.h"
+#import "EUMigrationManager.h"
 
 @interface EVEUniverseAppDelegate()
 
@@ -98,62 +99,9 @@
 	//[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	
     // Override point for customization after application launch.
-	NSInteger version = [[NSUserDefaults standardUserDefaults] integerForKey:@"version"];
-	if (version < 3) {
-		NSFileManager* fileManager = [NSFileManager defaultManager];
-		[fileManager removeItemAtPath:[Globals accountsFilePath] error:nil];
-		[[NSUserDefaults standardUserDefaults] setValue:nil forKey:SettingsCurrentAccount];
-	}
-	if (version < 4) {
-		NSFileManager* fileManager = [NSFileManager defaultManager];
-		NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-		NSString *directory = [documentsDirectory stringByAppendingPathComponent:@"EVEOnlineAPICache"];
-		[fileManager removeItemAtPath:directory error:nil];
-		
-		directory = [documentsDirectory stringByAppendingPathComponent:@"URLImageViewCache"];
-		[fileManager removeItemAtPath:directory error:nil];
-		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-		if ([userDefaults boolForKey:@"noAds"])
-			[userDefaults setBool:YES forKey:SettingsNoAds];
-		[userDefaults setInteger:4 forKey:@"version"];
-	}
-	if (version < 5) {
-		NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"URLImageViewCache"];
-		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-		[userDefaults setInteger:5 forKey:@"version"];
-	}
-	if (version < 6) {
-		NSString* documentsDirectory = [Globals documentsDirectory];
-		NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:documentsDirectory];
-		for (NSString* file in files) {
-			if ([file hasPrefix:@"skillPlan_"] && [[file pathExtension] isEqualToString:@"plist"]) {
-				NSString* filePath = [documentsDirectory stringByAppendingPathComponent:file];
-				NSMutableArray* skills = [NSMutableArray arrayWithContentsOfFile:filePath];
-				NSMutableArray* output = [NSMutableArray array];
-				for (NSDictionary* targetSkill in skills) {
-					NSInteger typeID = [[targetSkill valueForKey:@"typeID"] integerValue];
-					NSInteger requiredLevel = [[targetSkill valueForKey:@"level"] integerValue];
-					for (NSInteger level = 1; level <= requiredLevel; level++) {
-						BOOL found = NO;
-						for (NSDictionary* skill in output) {
-							if ([[skill valueForKey:@"typeID"] integerValue] == typeID && [[skill valueForKey:@"level"] integerValue] == level) {
-								found = YES;
-								break;
-							}
-						}
-						if (!found) {
-							NSDictionary* outputSkill = @{@"typeID" : @(typeID), @"level" : @(level)};
-							[output addObject:outputSkill];
-						}
-					}
-				}
-				[output writeToFile:filePath atomically:YES];
-			}
-		}
-		NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-		[userDefaults setInteger:6 forKey:@"version"];
-	}
+	EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
+	[migrationManager migrateIfNeeded];
+	[migrationManager release];
 
 	
 	
@@ -164,8 +112,6 @@
 		[[NSFileManager defaultManager] removeItemAtURL:cacheFileURL  error:nil];
 		[[EVERequestsCache sharedRequestsCache] clear];
 	}
-	
-	
 	
 	UILocalNotification *notification = [launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (notification) {

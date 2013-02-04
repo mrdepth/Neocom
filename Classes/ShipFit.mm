@@ -117,6 +117,11 @@ public:
 
 - (id) initWithBCString:(NSString*) string character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
+		if (!aCharacter) {
+			[self release];
+			return nil;
+		}
+		
 		NSMutableArray *components = [NSMutableArray arrayWithArray:[string componentsSeparatedByString:@":"]];
 		[components removeObjectAtIndex:0];
 		NSInteger shipID = [[components objectAtIndex:0] integerValue];
@@ -175,6 +180,11 @@ public:
 
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
+		if (!aCharacter) {
+			[self release];
+			return nil;
+		}
+
 		self.fitName = asset.location.itemName ? asset.location.itemName : asset.type.typeName;
 		eufe::Ship* ship = aCharacter->setShip(asset.type.typeID);
 		
@@ -226,6 +236,11 @@ public:
 
 - (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
+		if (!aCharacter) {
+			[self release];
+			return nil;
+		}
+
 		self.fitName = killMail.victim.shipType.typeName;
 		eufe::Ship* ship = aCharacter->setShip(killMail.victim.shipType.typeID);
 		
@@ -277,6 +292,11 @@ public:
 
 - (id) initWithDNA:(NSString*) dna character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
+		if (!aCharacter) {
+			[self release];
+			return nil;
+		}
+
 		NSMutableArray* records = [NSMutableArray arrayWithArray:[dna componentsSeparatedByString:@":"]];
 		if (records.count == 0) {
 			[self release];

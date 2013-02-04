@@ -217,6 +217,7 @@
 		12D81BFC15D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD715D8F72C006AA4B2 /* EVEDBRamInstallationTypeContent.m */; };
 		12D81BFD15D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BD915D8F72C006AA4B2 /* EVEDBRamTypeRequirement.m */; };
 		12D81BFE15D8F72C006AA4B2 /* EVEDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */; };
+		12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */; };
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
 		12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31221651047C00C69C5D /* KillMailItemCellView.m */; };
 		12EB31251651049A00C69C5D /* KillMailItemCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31241651049A00C69C5D /* KillMailItemCellView.xib */; };
@@ -1092,6 +1093,8 @@
 		12D81BDA15D8F72C006AA4B2 /* EVEDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBStaStation.h; sourceTree = "<group>"; };
 		12D81BDB15D8F72C006AA4B2 /* EVEDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBStaStation.m; sourceTree = "<group>"; };
 		12D81BDD15D8F72C006AA4B2 /* EVEDBGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBGlobals.h; sourceTree = "<group>"; };
+		12DED91616BF8C0200C560E5 /* EUMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUMigrationManager.h; sourceTree = "<group>"; };
+		12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUMigrationManager.mm; sourceTree = "<group>"; };
 		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
 		12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingExportViewController.mm; sourceTree = "<group>"; };
 		12EB31211651047C00C69C5D /* KillMailItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailItemCellView.h; sourceTree = "<group>"; };
@@ -2044,6 +2047,7 @@
 				127363921643AB4200FB0EE2 /* Killboard */,
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				12582F0616B251A800445581 /* EUStorage */,
+				12DED91516BF8BEB00C560E5 /* EUMigrationManager */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
 			);
@@ -2605,6 +2609,15 @@
 				12D81BDD15D8F72C006AA4B2 /* EVEDBGlobals.h */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		12DED91516BF8BEB00C560E5 /* EUMigrationManager */ = {
+			isa = PBXGroup;
+			children = (
+				12DED91616BF8C0200C560E5 /* EUMigrationManager.h */,
+				12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */,
+			);
+			name = EUMigrationManager;
 			sourceTree = "<group>";
 		};
 		12DEFD81152EC92A0076ABC7 /* FittingExportViewController */ = {
@@ -5644,6 +5657,7 @@
 				120FE35516B9504B0091E692 /* POSFit.mm in Sources */,
 				12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */,
 				12B8CD2516BB993000C5104E /* Fit.mm in Sources */,
+				12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

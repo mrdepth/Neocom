@@ -201,7 +201,7 @@
 		NSArray* idsArray = [ids allObjects];
 		NSRange range = NSMakeRange(0, MIN(idsArray.count, 250));
 		while (range.length > 0) {
-			EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[idsArray subarrayWithRange:range] error:&error];
+			EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[idsArray subarrayWithRange:range] error:nil];
 			if (characterName.characters.count > 0)
 				[characterNames addEntriesFromDictionary:characterName.characters];
 			range.location += range.length;

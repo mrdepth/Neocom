@@ -31,6 +31,7 @@
 #define ActionButtonRequiredSkills NSLocalizedString(@"Required Skills", nil)
 #define ActionButtonExport NSLocalizedString(@"Export", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
 
 @interface FittingViewController(Private)
 
@@ -275,6 +276,8 @@
 	[actionSheet addButtonWithTitle:ActionButtonSetName];
 	if (!fit.managedObjectContext)
 		[actionSheet addButtonWithTitle:ActionButtonSave];
+	else
+		[actionSheet addButtonWithTitle:ActionButtonDuplicate];
 	[actionSheet addButtonWithTitle:ActionButtonCharacter];
 	if (fit.url)
 		[actionSheet addButtonWithTitle:ActionButtonViewInBrowser];
@@ -419,6 +422,17 @@
 	}
 	else if ([button isEqualToString:ActionButtonSave]) {
 		[fit save];
+	}
+	else if ([button isEqualToString:ActionButtonDuplicate]) {
+		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:fit.managedObjectContext] insertIntoManagedObjectContext:fit.managedObjectContext];
+		shipFit.typeID = fit.typeID;
+		shipFit.typeName = fit.typeName;
+		shipFit.imageName = fit.imageName;
+		shipFit.fitName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), fit.fitName ? fit.fitName : @""];
+		shipFit.character = fit.character;
+		[self.fits replaceObjectAtIndex:[self.fits indexOfObject:fit] withObject:shipFit];
+		self.fit = shipFit;
+		[self update];
 	}
 	else if ([button isEqualToString:ActionButtonCharacter]) {
 		[self selectCharacterForFit:fit];

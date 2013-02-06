@@ -28,6 +28,7 @@
 #define SettingsTipsMarketInfo @"SettingsTipsMarketInfo"
 #define SettingsTipsAddAccount @"SettingsTipsAddAccount"
 #define SettingsTipsPosFuel @"SettingsTipsPosFuel"
+#define SettingsUseCloud @"SettingsUseCloud"
 
 #define SkillTreeRequirementIDKey @"requirementID"
 #define SkillTreeSkillLevelIDKey @"skillLevelID"

@@ -152,6 +152,7 @@
 		129DC5BD1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129DC5BC1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib */; };
 		12A3B9A7140E4DF500E5A00C /* AccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */; };
 		12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */; };
+		12AFBC7616C1375D0098C5BB /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12AFBC7516C1375D0098C5BB /* Settings.bundle */; };
 		12B336A41410F233002309CD /* APIKeysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B336A21410F233002309CD /* APIKeysViewController.m */; };
 		12B336CE1410F537002309CD /* APIKeysKeyCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B336CD1410F537002309CD /* APIKeysKeyCellView.m */; };
 		12B338681411270B002309CD /* AccessMaskViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B338671411270B002309CD /* AccessMaskViewController~ipad.xib */; };
@@ -973,6 +974,7 @@
 		12A3B9A4140E4DF500E5A00C /* AccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessMaskViewController.h; sourceTree = "<group>"; };
 		12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessMaskViewController.m; sourceTree = "<group>"; };
 		12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccessMaskViewController.xib; sourceTree = "<group>"; };
+		12AFBC7516C1375D0098C5BB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		12B336A11410F233002309CD /* APIKeysViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKeysViewController.h; sourceTree = "<group>"; };
 		12B336A21410F233002309CD /* APIKeysViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKeysViewController.m; sourceTree = "<group>"; };
 		12B336CC1410F537002309CD /* APIKeysKeyCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKeysKeyCellView.h; sourceTree = "<group>"; };
@@ -2730,6 +2732,7 @@
 				1224EBF216491D5D004401C5 /* killboardApiFilter.plist */,
 				37B967C314D9C478003F3900 /* damagePatterns.plist */,
 				12582F0D16B2537000445581 /* EUStorage.xcdatamodeld */,
+				12AFBC7516C1375D0098C5BB /* Settings.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -5290,6 +5293,7 @@
 				71843342168A0D5B00F10FE5 /* facebook.png in Resources */,
 				71843343168A0D5B00F10FE5 /* facebook@2x.png in Resources */,
 				71843344168A0D5B00F10FE5 /* rss@2x.png in Resources */,
+				12AFBC7616C1375D0098C5BB /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6393,6 +6397,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Artem Shimanski (EB6EUZ8H2P)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6411,7 +6416,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C43BB89B-3F08-4081-BFF2-D9679D73015D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "696B4FE5-6F23-49B1-9481-9FCB8045167E";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "armv7 armv7s";
@@ -6424,6 +6429,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -6440,7 +6446,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5ED83E0E-D348-439F-926D-EAAD9757FAFE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0FC95749-1970-46B6-8158-A0159B5C19EC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

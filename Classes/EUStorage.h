@@ -15,6 +15,6 @@
 
 + (id) sharedStorage;
 + (void) cleanup;
-- (void)saveContext;
+- (void) saveContext;
 
 @end

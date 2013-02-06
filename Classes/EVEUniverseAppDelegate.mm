@@ -20,6 +20,7 @@
 #import "ShipFit.h"
 #import "EUStorage.h"
 #import "EUMigrationManager.h"
+#import "UIAlertView+Block.h"
 
 @interface EVEUniverseAppDelegate()
 
@@ -29,6 +30,7 @@
 - (void) updateNotifications;
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
+- (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler;
 
 @end
 
@@ -46,7 +48,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[[EUStorage sharedStorage] managedObjectContext];
+	//[[EUStorage sharedStorage] managedObjectContext];
 	
 	/*NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
     if (coordinator != nil) {
@@ -99,12 +101,9 @@
 	//[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	
     // Override point for customization after application launch.
-	EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
-	[migrationManager migrateIfNeeded];
-	[migrationManager release];
+	
+	updateNotificationsQueue = [[NSOperationQueue alloc] init];
 
-	
-	
 	NSURL *cacheFileURL = [NSURL fileURLWithPath:[EVERequestsCache cacheFileName]];
 	NSDictionary *cache = [NSMutableDictionary dictionaryWithContentsOfURL:cacheFileURL];
 	NSArray *values = [cache allValues];
@@ -119,13 +118,13 @@
 	}
 	
 	[window addSubview:controller.view];
-    [window makeKeyAndVisible];
+	[window makeKeyAndVisible];
 	
 	if (![[NSFileManager defaultManager] fileExistsAtPath:[[Globals documentsDirectory] stringByAppendingPathComponent:@"disableActivityIndicator"]]) {
 		EUActivityView* activityView = [[[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds] autorelease];
 		[self.window addSubview:activityView];
 	}
-
+	
 	
 	loadingViewController.view.alpha = 0;
 	[window addSubview:loadingViewController.view];
@@ -149,15 +148,21 @@
 			adView.rootViewController = self.controller;
 			[controller.view addSubview:adView];
 		}
-
+		
 		adView.adUnitID = @"a14d501062a8c09";
 		GADRequest *request = [GADRequest request];
 		[adView loadRequest:request];
 		
 	}
 	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+
 	
-	updateNotificationsQueue = [[NSOperationQueue alloc] init];
+	[self configureCloudWithCompletionHandler:^{
+		EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
+		[migrationManager migrateIfNeeded];
+		[migrationManager release];
+	}];
+	
 	return YES;
 }
 
@@ -598,6 +603,24 @@
 		[fit release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler {
+	NSNumber* useCloud = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsUseCloud];
+	id currentiCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+	if (useCloud == nil && currentiCloudToken) {
+		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
+								 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
+					   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)
+					   otherButtonTitles:@[NSLocalizedString(@"iCloud", nil)]
+						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+							 [[NSUserDefaults standardUserDefaults] setBool:selectedButtonIndex != alertView.cancelButtonIndex
+																	 forKey:SettingsUseCloud];
+							 completionHandler();
+						 } cancelBlock:nil] show];
+	}
+	else
+		completionHandler();
 }
 
 @end

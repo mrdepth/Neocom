@@ -12,6 +12,12 @@
 
 static EUStorage* sharedStorage;
 
+@interface EUStorage()
+
+- (void) applicationDidBecomeActive:(NSNotification*) notification;
+
+@end
+
 @implementation EUStorage
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -21,6 +27,8 @@ static EUStorage* sharedStorage;
 + (id) sharedStorage {
 	@synchronized(self) {
 		if (!sharedStorage) {
+			if ([[NSUserDefaults standardUserDefaults] valueForKey:SettingsUseCloud] == nil)
+				return nil;
 			sharedStorage = [[EUStorage alloc] init];
 		}
 		return sharedStorage;
@@ -34,7 +42,15 @@ static EUStorage* sharedStorage;
 	}
 }
 
+- (id) init {
+	if (self = [super init]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	}
+	return self;
+}
+
 - (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[_managedObjectContext release];
 	[_managedObjectModel release];
 	[_persistentStoreCoordinator release];
@@ -108,44 +124,44 @@ static EUStorage* sharedStorage;
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
+	NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 												   configuration:nil
 															 URL:storeURL
 														 options:url ? @{NSPersistentStoreUbiquitousContentNameKey : @"EUStorage", NSPersistentStoreUbiquitousContentURLKey : url} : nil
 														   error:&error]) {
-		
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter:
-         @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
-        //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        //abort();
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[[UIAlertView alertViewWithError:error] show];
 		});
     }
     
     return _persistentStoreCoordinator;
+}
+
+#pragma mark - Private
+
+- (void) applicationDidBecomeActive:(NSNotification*) notification {
+	if (_persistentStoreCoordinator) {
+		NSURL *storeURL = [NSURL fileURLWithPath:[[Globals documentsDirectory] stringByAppendingPathComponent:@"eustorage.sqlite"]];
+		NSPersistentStore* persistentStore = [_persistentStoreCoordinator persistentStoreForURL:storeURL];
+		if (persistentStore) {
+			BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
+			NSString* ubiquitousContentName = [[persistentStore options] valueForKey:@"NSPersistentStoreUbiquitousContentNameKey"];
+			if ((useCloud && !ubiquitousContentName) || (!useCloud && ubiquitousContentName)) {
+				[_persistentStoreCoordinator removePersistentStore:persistentStore error:nil];
+				NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
+				NSError* error = nil;
+				if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+															   configuration:nil
+																		 URL:storeURL
+																	 options:url ? @{NSPersistentStoreUbiquitousContentNameKey : @"EUStorage", NSPersistentStoreUbiquitousContentURLKey : url} : nil
+																	   error:&error]) {
+					[[UIAlertView alertViewWithError:error] show];
+				}
+			}
+		}
+	}
 }
 
 @end

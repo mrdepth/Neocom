@@ -22,7 +22,9 @@
 #import "EUMigrationManager.h"
 #import "UIAlertView+Block.h"
 
-@interface EVEUniverseAppDelegate()
+@interface EVEUniverseAppDelegate() {
+	BOOL launchingFinished;
+}
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
@@ -158,9 +160,24 @@
 
 	
 	[self configureCloudWithCompletionHandler:^{
-		EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
-		[migrationManager migrateIfNeeded];
-		[migrationManager release];
+		self.window.userInteractionEnabled = NO;
+		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+migrate" name:NSLocalizedString(@"Initializing storage.", nil)];
+		[operation addExecutionBlock:^{
+			@autoreleasepool {
+				EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
+				[migrationManager migrateIfNeeded];
+				[migrationManager release];
+			}
+		}];
+		[operation setCompletionBlockInCurrentThread:^{
+			launchingFinished = YES;
+			
+			EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
+			self.currentAccount = account;
+			[self updateNotifications];
+			self.window.userInteractionEnabled = YES;
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}];
 	
 	return YES;
@@ -180,9 +197,11 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
-	self.currentAccount = account;
-	[self updateNotifications];
+	if (launchingFinished) {
+		EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
+		self.currentAccount = account;
+		[self updateNotifications];
+	}
 }
 
 
@@ -607,8 +626,8 @@
 
 - (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler {
 	NSNumber* useCloud = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsUseCloud];
-	id currentiCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-	if (useCloud == nil && currentiCloudToken) {
+	id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+	if (useCloud == nil && currentCloudToken) {
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
 								 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
 					   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)

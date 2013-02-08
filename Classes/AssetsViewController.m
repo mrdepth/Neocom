@@ -494,6 +494,14 @@
 								[structures addObject:asset];
 								[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
 							}
+							else if (type.group.categoryID == 6) { //Ship
+								[structures addObject:asset];
+								[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
+							}
+							else if (type.groupID == 340) { //Secure Container
+								[structures addObject:asset];
+								[itemIDs addObject:[NSString stringWithFormat:@"%qi", asset.itemID]];
+							}
 						}
 						
 						for (EVEAssetListItem* item in asset.contents)
@@ -507,7 +515,7 @@
 						process(asset);
 					}
 					
-					if (corporate && account.corpAccessMask & 16777216 && itemIDs.count > 0) {
+					if (itemIDs.count > 0 && ((corporate && account.corpAccessMask & 16777216) || (!corporate && account.charAccessMask & 134217728))) {
 						EVELocations* eveLocations = nil;
 						NSMutableDictionary* locations = [NSMutableDictionary dictionary];
 						NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];

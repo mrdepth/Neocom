@@ -304,16 +304,29 @@
 						NSInteger level = [[skill valueForKey:@"level"] integerValue];
 						if (isFirst) {
 							[skills appendFormat:@"%d:%d", typeID, level];
-							isFirst = YES;
+							isFirst = NO;
 						}
 						else
 							[skills appendFormat:@";%d:%d", typeID, level];
 					}
 					
-					SkillPlan* skillPlan = [[SkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+					NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+					NSEntityDescription *entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext];
+					[fetchRequest setEntity:entity];
+					
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"characterID = %d AND skillPlanName like \"main\"", characterID];
+					[fetchRequest setPredicate:predicate];
+					
+					NSError *error = nil;
+					NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+					SkillPlan* skillPlan = fetchedObjects.count > 0 ?
+						[fetchedObjects objectAtIndex:0] :
+						[[[SkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext] autorelease];
+					
 					skillPlan.skillPlanName = @"main";
 					skillPlan.skillPlanSkills = skills;
-					[skillPlan release];
+					skillPlan.characterID = characterID;
 					[[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
 				}
 			}

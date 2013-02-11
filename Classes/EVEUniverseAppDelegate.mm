@@ -629,7 +629,7 @@
 	id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 	if (useCloud == nil && currentCloudToken) {
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
-								 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
+								 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices? Initializing Cloud Storage can take a few minutes.", nil)
 					   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)
 					   otherButtonTitles:@[NSLocalizedString(@"iCloud", nil)]
 						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {

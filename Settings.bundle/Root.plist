@@ -9,6 +9,8 @@
 			<string>iCloud</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>Changes will take effect after restart Neocom</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>

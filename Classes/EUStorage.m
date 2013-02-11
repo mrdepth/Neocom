@@ -129,7 +129,6 @@ static EUStorage* sharedStorage;
 		}
 		
 		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
-		useCloud = YES;
 		NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
 		
 		NSURL *storeURL = [NSURL fileURLWithPath:[[Globals documentsDirectory] stringByAppendingPathComponent:url ? @"cloudStorage.sqlite" : @"localStorage.sqlite"]];
@@ -223,7 +222,6 @@ static EUStorage* sharedStorage;
 					@autoreleasepool {
 						@synchronized(self) {
 							BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
-							useCloud = YES;
 							NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
 							operation.progress = 0.5;
 							if (useCloud && url) {

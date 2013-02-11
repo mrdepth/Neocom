@@ -28,6 +28,12 @@
 		120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469B164B9995000C33CE /* UIColor+NSNumber.m */; };
 		120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469E164B9995000C33CE /* UIImageView+URL.m */; };
 		120FE35516B9504B0091E692 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570D16B68A3F0015706B /* POSFit.mm */; };
+		1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0F616C8EEF8006E504E /* VariationsViewController.m */; };
+		1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0F716C8EEF8006E504E /* VariationsViewController.xib */; };
+		1213C0FD16C8FD07006E504E /* FittingVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */; };
+		1213C0FF16C902DE006E504E /* VariationsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0FE16C902DE006E504E /* VariationsViewController~ipad.xib */; };
+		1213C10216C90373006E504E /* FittingVariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C10016C90373006E504E /* FittingVariationsViewController.xib */; };
+		1213C10316C90373006E504E /* FittingVariationsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C10116C90373006E504E /* FittingVariationsViewController~ipad.xib */; };
 		121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121D8D2C15F498DA0003CAA5 /* Mutex.cpp */; };
 		121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */; };
 		121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */; };
@@ -829,6 +835,14 @@
 		120B469B164B9995000C33CE /* UIColor+NSNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSNumber.m"; sourceTree = "<group>"; };
 		120B469D164B9995000C33CE /* UIImageView+URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+URL.h"; sourceTree = "<group>"; };
 		120B469E164B9995000C33CE /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
+		1213C0F516C8EEF8006E504E /* VariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariationsViewController.h; sourceTree = "<group>"; };
+		1213C0F616C8EEF8006E504E /* VariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariationsViewController.m; sourceTree = "<group>"; };
+		1213C0F716C8EEF8006E504E /* VariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VariationsViewController.xib; sourceTree = "<group>"; };
+		1213C0FB16C8FD07006E504E /* FittingVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingVariationsViewController.h; sourceTree = "<group>"; };
+		1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingVariationsViewController.m; sourceTree = "<group>"; };
+		1213C0FE16C902DE006E504E /* VariationsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VariationsViewController~ipad.xib"; sourceTree = "<group>"; };
+		1213C10016C90373006E504E /* FittingVariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingVariationsViewController.xib; sourceTree = "<group>"; };
+		1213C10116C90373006E504E /* FittingVariationsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingVariationsViewController~ipad.xib"; sourceTree = "<group>"; };
 		121D8D2C15F498DA0003CAA5 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
 		121D8D2D15F498DA0003CAA5 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
 		121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
@@ -2050,6 +2064,7 @@
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				12582F0616B251A800445581 /* EUStorage */,
 				12DED91516BF8BEB00C560E5 /* EUMigrationManager */,
+				1213C0F416C8EEDC006E504E /* VariationsViewController */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
 			);
@@ -2214,6 +2229,28 @@
 				120B469E164B9995000C33CE /* UIImageView+URL.m */,
 			);
 			path = "UIImageView+URL";
+			sourceTree = "<group>";
+		};
+		1213C0F416C8EEDC006E504E /* VariationsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1213C0F516C8EEF8006E504E /* VariationsViewController.h */,
+				1213C0F616C8EEF8006E504E /* VariationsViewController.m */,
+				1213C0F716C8EEF8006E504E /* VariationsViewController.xib */,
+				1213C0FE16C902DE006E504E /* VariationsViewController~ipad.xib */,
+			);
+			name = VariationsViewController;
+			sourceTree = "<group>";
+		};
+		1213C0FA16C8FCE3006E504E /* FittingVariationsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1213C0FB16C8FD07006E504E /* FittingVariationsViewController.h */,
+				1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */,
+				1213C10016C90373006E504E /* FittingVariationsViewController.xib */,
+				1213C10116C90373006E504E /* FittingVariationsViewController~ipad.xib */,
+			);
+			name = FittingVariationsViewController;
 			sourceTree = "<group>";
 		};
 		1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */ = {
@@ -4497,6 +4534,7 @@
 		71955A521376AFFC0068DBD7 /* FittingViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1213C0FA16C8FCE3006E504E /* FittingVariationsViewController */,
 				71A0E8B01379DAC600CE4062 /* ModulesViewController */,
 				7187F1D5137B4A5E00EA8B86 /* DronesViewController */,
 				71880358137C7F57004060CC /* ImplantsViewController */,
@@ -5294,6 +5332,10 @@
 				71843343168A0D5B00F10FE5 /* facebook@2x.png in Resources */,
 				71843344168A0D5B00F10FE5 /* rss@2x.png in Resources */,
 				12AFBC7616C1375D0098C5BB /* Settings.bundle in Resources */,
+				1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */,
+				1213C0FF16C902DE006E504E /* VariationsViewController~ipad.xib in Resources */,
+				1213C10216C90373006E504E /* FittingVariationsViewController.xib in Resources */,
+				1213C10316C90373006E504E /* FittingVariationsViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5662,6 +5704,8 @@
 				12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */,
 				12B8CD2516BB993000C5104E /* Fit.mm in Sources */,
 				12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */,
+				1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */,
+				1213C0FD16C8FD07006E504E /* FittingVariationsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

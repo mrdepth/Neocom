@@ -39,6 +39,7 @@
 #define ActionButtonShowAmmoInfo NSLocalizedString(@"Show Ammo Info", nil)
 #define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
+#define ActionButtonVariations NSLocalizedString(@"Variations", nil)
 
 @implementation ModulesViewController
 @synthesize fittingViewController;
@@ -447,6 +448,7 @@
 			if (module->getTarget() != NULL)
 				[actionSheet addButtonWithTitle:ActionButtonClearTarget];
 		}
+		[actionSheet addButtonWithTitle:ActionButtonVariations];
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
@@ -668,6 +670,23 @@
 		else
 			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 		[itemViewController release];
+	}
+	else if ([button isEqualToString:ActionButtonVariations]) {
+		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"FittingVariationsViewController" bundle:nil];
+		controller.type = itemInfo;
+		controller.delegate = self.fittingViewController;
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navController.navigationBar.barStyle = self.fittingViewController.navigationController.navigationBar.barStyle;
+
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			self.fittingViewController.variationsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+			[self.fittingViewController.variationsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		}
+		else
+			[self.fittingViewController presentModalViewController:navController animated:YES];
+
+		[navController release];
+		[controller release];
 	}
 }
 

@@ -188,6 +188,7 @@
 	self.popoverController = nil;
 	self.targetsPopoverController = nil;
 	self.areaEffectsPopoverController = nil;
+	self.variationsPopoverController = nil;
 	self.priceManager = nil;
 	currentSection = nil;
 }
@@ -216,6 +217,7 @@
 	[popoverController release];
 	[targetsPopoverController release];
 	[areaEffectsPopoverController release];
+	[_variationsPopoverController release];
 	
 	[fit release];
 	
@@ -642,6 +644,22 @@
 	else
 		[self dismissModalViewControllerAnimated:YES];
 }
+
+#pragma mark FittingVariationsViewControllerDelegate
+
+- (void) fittingVariationsViewController:(FittingVariationsViewController*) controller didSelectType:(EVEDBInvType*) type {
+	ItemInfo* oldModule = (ItemInfo*) controller.type;
+	eufe::Module* module = dynamic_cast<eufe::Module*>(oldModule.item);
+	eufe::Ship* ship = fit.character->getShip();
+	ship->replaceModule(module, type.typeID);
+	[self update];
+
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.variationsPopoverController dismissPopoverAnimated:YES];
+	else
+		[self dismissModalViewControllerAnimated:YES];
+}
+
 
 #pragma mark - MFMailComposeViewControllerDelegate
 

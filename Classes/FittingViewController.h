@@ -19,6 +19,7 @@
 #import "DamagePatternsViewController.h"
 #import "FitsViewController.h"
 #import "TargetsViewController.h"
+#import "FittingVariationsViewController.h"
 
 #import "eufe.h"
 
@@ -34,7 +35,8 @@
 													DamagePatternsViewControllerDelegate,
 													FitsViewControllerDelegate,
 													TargetsViewControllerDelegate,
-													MFMailComposeViewControllerDelegate> {
+													MFMailComposeViewControllerDelegate,
+													FittingVariationsViewControllerDelegate> {
 	UIView *sectionsView;
 	UISegmentedControl *sectionSegmentControl;
 	UINavigationController *modalController;
@@ -86,6 +88,7 @@
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, retain) UIPopoverController *targetsPopoverController;
 @property (nonatomic, retain) UIPopoverController *areaEffectsPopoverController;
+@property (nonatomic, retain) UIPopoverController *variationsPopoverController;
 
 @property (nonatomic, retain) ShipFit* fit;
 

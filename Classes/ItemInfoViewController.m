@@ -24,6 +24,8 @@
 #import "CertificateCellView.h"
 #import "EVEDBCrtCertificate+State.h"
 #import "CertificateViewController.h"
+#import "ItemCellView.h"
+#import "VariationsViewController.h"
 
 
 @interface ItemInfoViewController(Private)
@@ -208,6 +210,19 @@
 		
 		return cell;
 	}
+	else if (cellType == 6) {
+		NSString *cellIdentifier = @"ItemCellView";
+		
+		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil) {
+			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		}
+		
+		cell.titleLabel.text = [row valueForKey:@"title"];
+		cell.iconImageView.image = [UIImage imageNamed:[row valueForKey:@"icon"]];
+		
+		return cell;
+	}
 	else {
 		static NSString *cellIdentifier = @"ItemInfoSkillCellView";
 		
@@ -291,6 +306,12 @@
 		[alertView show];
 		[alertView autorelease];
 	}
+	else if (cellType == 6) {
+		VariationsViewController* controller = [[VariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
+		controller.type = self.type;
+		[self.containerViewController.navigationController pushViewController:controller animated:YES];
+		[controller release];
+	}
 }
 
 #pragma mark UIAlertViewDelegate
@@ -326,6 +347,36 @@
 		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
+		
+		{
+			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
+			__block NSInteger parentTypeID = self.type.typeID;
+			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMetaTypes WHERE typeID=%d;", parentTypeID] resultBlock:^(NSDictionary *record, BOOL *needsMore) {
+				NSInteger typeID = [[record valueForKey:@"parentTypeID"] integerValue];
+				if (typeID)
+					parentTypeID = typeID;
+				*needsMore = NO;
+			}];
+			
+			__block NSInteger count = 0;
+			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT count() as count FROM invMetaTypes WHERE parentTypeID=%d;", parentTypeID] resultBlock:^(NSDictionary *record, BOOL *needsMore) {
+				count = [[record valueForKey:@"count"] integerValue];
+			}];
+			
+			if (count > 1) {
+				NSMutableDictionary *section = [NSMutableDictionary dictionary];
+				[section setValue:NSLocalizedString(@"Variations", nil) forKey:@"name"];
+				NSMutableArray* rows = [NSMutableArray array];
+				[section setValue:rows forKey:@"rows"];
+				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+											[NSNumber numberWithInteger:6], @"cellType",
+											NSLocalizedString(@"Variations", nil), @"title",
+											@"Icons/icon09_07.png", @"icon",
+											nil];
+				[rows addObject:row];
+				[sections addObject:section];
+			}
+		}
 		
 		TrainingQueue* requiredSkillsQueue = nil;
 		TrainingQueue* certificateRecommendationsQueue = nil;

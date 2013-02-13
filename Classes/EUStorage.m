@@ -67,7 +67,7 @@ static EUStorage* sharedStorage;
 		if (managedObjectContext != nil) {
 			NSError *error = nil;
 			if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-				NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+				//NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 				BOOL resolved = NO;
 				for (NSMergeConflict* conflict in [error.userInfo valueForKey:@"conflictList"]) {
 					[managedObjectContext refreshObject:conflict.sourceObject mergeChanges:YES];
@@ -76,7 +76,6 @@ static EUStorage* sharedStorage;
 				if (resolved) {
 					error = nil;
 					[managedObjectContext save:&error];
-					NSLog(@"%@", error);
 				}
 			}
 		}
@@ -225,7 +224,6 @@ static EUStorage* sharedStorage;
 							NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
 							operation.progress = 0.5;
 							if (useCloud && url) {
-								NSLog(@"%d", [[NSFileManager defaultManager] fileExistsAtPath:[cloudStorageURL path]]);
 								NSPersistentStore* persistentStore = [self.persistentStoreCoordinator persistentStoreForURL:localStorageURL];
 								NSError* error = nil;
 								//[self.persistentStoreCoordinator removePersistentStore:persistentStore error:nil];

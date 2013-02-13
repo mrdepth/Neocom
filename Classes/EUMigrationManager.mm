@@ -319,6 +319,7 @@
 					
 					NSError *error = nil;
 					NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+					[fetchRequest release];
 
 					SkillPlan* skillPlan = fetchedObjects.count > 0 ?
 						[fetchedObjects objectAtIndex:0] :

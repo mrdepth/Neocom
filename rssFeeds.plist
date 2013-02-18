@@ -87,6 +87,18 @@
 				<key>url</key>
 				<string>http://www.reddit.com/r/eve/.rss</string>
 			</dict>
+			<dict>
+				<key>title</key>
+				<string>Eve News24</string>
+				<key>url</key>
+				<string>http://evenews24.com/feed/</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>TheMittani.com</string>
+				<key>url</key>
+				<string>http://themittani.com/feeds/all/rss.xml</string>
+			</dict>
 		</array>
 	</dict>
 	<dict>

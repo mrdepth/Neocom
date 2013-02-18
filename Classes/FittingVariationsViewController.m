@@ -23,6 +23,11 @@
     return self;
 }
 
+- (void) dealloc {
+	[_modifiedItem release];
+	[super dealloc];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

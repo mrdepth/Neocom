@@ -17,6 +17,7 @@
 #import "ShipFit.h"
 #import "EVEDBAPI.h"
 #import "NSString+TimeLeft.h"
+#import "UIActionSheet+Block.h"
 
 #import "ItemInfo.h"
 
@@ -28,8 +29,6 @@
 #define ActionButtonOverheatOff NSLocalizedString(@"Disable Overheating", nil)
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
 #define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
-#define ActionButtonAmmoCurrentModule NSLocalizedString(@"Ammo (Current Module)", nil)
-#define ActionButtonAmmoAllModules NSLocalizedString(@"Ammo (All Modules)", nil)
 #define ActionButtonAmmo NSLocalizedString(@"Ammo", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -40,6 +39,13 @@
 #define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 #define ActionButtonVariations NSLocalizedString(@"Variations", nil)
+#define ActionButtonAllSimilarModules NSLocalizedString(@"All Similar Modules", nil)
+
+@interface ModulesViewController()
+
+- (void) presentAllSimilarModulesActionSheet;
+
+@end
 
 @implementation ModulesViewController
 @synthesize fittingViewController;
@@ -373,7 +379,7 @@
 
 		ItemInfo* itemInfo = [modules objectAtIndex:indexPath.row];
 		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
-		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
+		/*const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
 		bool multiple = false;
 		int chargeSize = module->getChargeSize();
 		if (chargeGroups.size() > 0)
@@ -397,6 +403,16 @@
 						}
 					}
 				}
+			}
+		}*/
+		
+		bool multiple = false;
+		for (ItemInfo* item in modules) {
+			if (item == itemInfo)
+				continue;
+			if (item.marketGroupID == itemInfo.marketGroupID) {
+				multiple = true;
+				break;
 			}
 		}
 		
@@ -436,10 +452,9 @@
 		else
 			[actionSheet addButtonWithTitle:ActionButtonChangeState];
 
-		if (chargeGroups.size() > 0) {
-			[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
-			if (multiple)
-				[actionSheet addButtonWithTitle:ActionButtonAmmoAllModules];
+		//if (chargeGroups.size() > 0) {
+		if (module->getChargeGroups().size() > 0) {
+			[actionSheet addButtonWithTitle:ActionButtonAmmo];
 			if (module->getCharge() != nil)
 				[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
 		}
@@ -449,6 +464,11 @@
 				[actionSheet addButtonWithTitle:ActionButtonClearTarget];
 		}
 		[actionSheet addButtonWithTitle:ActionButtonVariations];
+		
+		if (multiple) {
+			[actionSheet addButtonWithTitle:ActionButtonAllSimilarModules];
+		}
+		
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
@@ -466,59 +486,12 @@
 	int chargeSize = module->getChargeSize();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-	eufe::Character* character = fittingViewController.fit.character;
-	eufe::Ship* ship = character->getShip();
-
 	if ([button isEqualToString:ActionButtonDelete]) {
 		fittingViewController.fit.character->getShip()->removeModule(module);
 		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmmo]) {
-		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
-		bool multiple = false;
-		int chargeSize = module->getChargeSize();
-		if (chargeGroups.size() > 0)
-		{
-			const eufe::ModulesList& modulesList = ship->getModules();
-			eufe::ModulesList::const_iterator i, end = modulesList.end();
-			for (i = modulesList.begin(); i != end; i++)
-			{
-				if (*i != module)
-				{
-					int chargeSize2 = (*i)->getChargeSize();
-					if (chargeSize == chargeSize2)
-					{
-						const std::vector<eufe::TypeID>& chargeGroups2 = (*i)->getChargeGroups();
-						std::vector<eufe::TypeID> intersection;
-						std::set_intersection(chargeGroups.begin(), chargeGroups.end(), chargeGroups2.begin(), chargeGroups2.end(), std::inserter(intersection, intersection.end()));
-						if (intersection.size() > 0)
-						{
-							multiple = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		
-		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-																 delegate:self
-														cancelButtonTitle:nil
-												   destructiveButtonTitle:nil
-														otherButtonTitles:nil];
-		[actionSheet addButtonWithTitle:ActionButtonAmmoCurrentModule];
-		if (multiple)
-			[actionSheet addButtonWithTitle:ActionButtonAmmoAllModules];
-		if (module->getCharge() != NULL)
-			[actionSheet addButtonWithTitle:ActionButtonUnloadAmmo];
-		
-		[actionSheet addButtonWithTitle:ActionButtonCancel];
-		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
-		
-		[actionSheet showFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView animated:YES];
-		[actionSheet autorelease];
-	}
-	else if ([button isEqualToString:ActionButtonAmmoCurrentModule] || [button isEqualToString:ActionButtonAmmoAllModules]) {
+
 		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
 		std::vector<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
 
@@ -550,21 +523,13 @@
 		}
 
 		fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
-		if ([button isEqualToString:ActionButtonAmmoAllModules])
-			fittingItemsViewController.modifiedItem = nil;
-		else
-			fittingItemsViewController.modifiedItem = itemInfo;
+		fittingItemsViewController.modifiedItem = itemInfo;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[self.fittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
 		
-		
-		if ([button isEqualToString:ActionButtonAmmoAllModules]) {
-			[modifiedIndexPath release];
-			modifiedIndexPath = nil;
-		}
 		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonOffline]) {
@@ -674,6 +639,7 @@
 	else if ([button isEqualToString:ActionButtonVariations]) {
 		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"FittingVariationsViewController" bundle:nil];
 		controller.type = itemInfo;
+		controller.modifiedItem = itemInfo;
 		controller.delegate = self.fittingViewController;
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = self.fittingViewController.navigationController.navigationBar.barStyle;
@@ -687,6 +653,9 @@
 
 		[navController release];
 		[controller release];
+	}
+	else if ([button isEqualToString:ActionButtonAllSimilarModules]) {
+		[self presentAllSimilarModulesActionSheet];
 	}
 }
 
@@ -771,6 +740,189 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+#pragma mark - Private
+
+- (void) presentAllSimilarModulesActionSheet {
+	NSArray *modules = [[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"modules"];
+	ItemInfo* itemInfo = [modules objectAtIndex:modifiedIndexPath.row];
+	eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+	
+	NSMutableArray *buttons = [NSMutableArray array];
+
+	eufe::Module::State state = module->getState();
+	if (state >= eufe::Module::STATE_ACTIVE) {
+		[buttons addObject:ActionButtonOffline];
+		[buttons addObject:ActionButtonDeactivate];
+		if (module->canHaveState(eufe::Module::STATE_OVERLOADED)) {
+			if (state == eufe::Module::STATE_OVERLOADED)
+				[buttons addObject:ActionButtonOverheatOff];
+			else
+				[buttons addObject:ActionButtonOverheatOn];
+		}
+	}
+	else if (state == eufe::Module::STATE_ONLINE) {
+		[buttons addObject:ActionButtonOffline];
+		if (module->canHaveState(eufe::Module::STATE_ACTIVE))
+			[buttons addObject:ActionButtonActivate];
+	}
+	else
+		[buttons addObject:ActionButtonOnline];
+	
+	if (module->getChargeGroups().size() > 0) {
+		[buttons addObject:ActionButtonAmmo];
+		if (module->getCharge() != nil)
+			[buttons addObject:ActionButtonUnloadAmmo];
+	}
+	[buttons addObject:ActionButtonVariations];
+	
+	UIActionSheet *actionSheet = [UIActionSheet actionSheetWithTitle:nil
+												   cancelButtonTitle:ActionButtonCancel
+											  destructiveButtonTitle:ActionButtonDelete
+												   otherButtonTitles:buttons
+													 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+														 NSString *button = [actionSheet buttonTitleAtIndex:selectedButtonIndex];
+														 NSInteger marketGroupID = itemInfo.marketGroupID;
+														 eufe::Ship* ship = self.fittingViewController.fit.character->getShip();
+														 
+														 if ([button isEqualToString:ActionButtonDelete]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID)
+																	 ship->removeModule(dynamic_cast<eufe::Module*>(itemInfo.item));
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonOffline]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 module->setState(eufe::Module::STATE_OFFLINE);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonOnline]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 if (module->canHaveState(eufe::Module::STATE_ACTIVE))
+																		 module->setState(eufe::Module::STATE_ACTIVE);
+																	 else
+																		 module->setState(eufe::Module::STATE_ONLINE);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonActivate]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 if (module->canHaveState(eufe::Module::STATE_ACTIVE))
+																		 module->setState(eufe::Module::STATE_ACTIVE);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonDeactivate]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 if (module->canHaveState(eufe::Module::STATE_ONLINE))
+																		 module->setState(eufe::Module::STATE_ONLINE);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonOverheatOn]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 if (module->canHaveState(eufe::Module::STATE_OVERLOADED))
+																		 module->setState(eufe::Module::STATE_OVERLOADED);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonOverheatOff]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 if (module->canHaveState(eufe::Module::STATE_ACTIVE))
+																		 module->setState(eufe::Module::STATE_ACTIVE);
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonAmmo]) {
+															 const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
+															 std::vector<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
+															 int chargeSize = module->getChargeSize();
+															 
+															 NSMutableString *groups = [NSMutableString string];
+															 bool isFirst = true;
+															 for (i = chargeGroups.begin(); i != end; i++)
+															 {
+																 if (!isFirst)
+																	 [groups appendFormat:@",%d", *i];
+																 else
+																 {
+																	 [groups appendFormat:@"%d", *i];
+																	 isFirst = false;
+																 }
+															 }
+															 
+															 fittingItemsViewController.marketGroupID = 0;
+															 if (chargeSize) {
+																 fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) ORDER BY invTypes.typeName;",
+																											chargeSize, groups];
+																 fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+																											 chargeSize, groups];
+															 }
+															 else {
+																 fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f ORDER BY invTypes.typeName;",
+																											groups, module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+																 fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+																											 groups, module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
+															 }
+															 
+															 fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
+															 fittingItemsViewController.modifiedItem = nil;
+															 
+															 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+																 [popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+															 else
+																 [self.fittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
+														 }
+														 else if ([button isEqualToString:ActionButtonUnloadAmmo]) {
+															 for (ItemInfo* itemInfo in modules) {
+																 if (itemInfo.marketGroupID == marketGroupID) {
+																	 eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+																	 module->clearCharge();
+																 }
+															 }
+															 [self.fittingViewController update];
+														 }
+														 else if ([button isEqualToString:ActionButtonVariations]) {
+															 FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"FittingVariationsViewController" bundle:nil];
+															 controller.type = itemInfo;
+															 controller.delegate = self.fittingViewController;
+															 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+															 navController.navigationBar.barStyle = self.fittingViewController.navigationController.navigationBar.barStyle;
+															 
+															 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+																 self.fittingViewController.variationsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+																 [self.fittingViewController.variationsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+															 }
+															 else
+																 [self.fittingViewController presentModalViewController:navController animated:YES];
+															 
+															 [navController release];
+															 [controller release];
+														 }
+													 } cancelBlock:nil];
+
+	[actionSheet showFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView animated:YES];
 }
 
 @end

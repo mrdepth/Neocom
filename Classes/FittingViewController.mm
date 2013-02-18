@@ -17,6 +17,7 @@
 #import "RequiredSkillsViewController.h"
 #import "PriceManager.h"
 #import "UIActionSheet+Block.h"
+#import "ItemViewController.h"
 
 #include "eufe.h"
 
@@ -32,6 +33,7 @@
 #define ActionButtonExport NSLocalizedString(@"Export", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
+#define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 
 @interface FittingViewController(Private)
 
@@ -275,6 +277,7 @@
 		actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 1;
 	}
 
+	[actionSheet addButtonWithTitle:ActionButtonShowShipInfo];
 	[actionSheet addButtonWithTitle:ActionButtonSetName];
 	if (!fit.managedObjectContext)
 		[actionSheet addButtonWithTitle:ActionButtonSave];
@@ -407,6 +410,23 @@
 	if ([button isEqualToString:ActionButtonBack]) {
 		[self save];
 		[self.navigationController popViewControllerAnimated:YES];
+	}
+	else if ([button isEqualToString:ActionButtonShowShipInfo]) {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:self.fit.character->getShip() error:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+		
+		[itemInfo updateAttributes];
+		itemViewController.type = itemInfo;
+		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentModalViewController:navController animated:YES];
+			[navController release];
+		}
+		else
+			[self.navigationController pushViewController:itemViewController animated:YES];
+		[itemViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonSetName]) {
 		[fitNameTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.2];
@@ -648,10 +668,22 @@
 #pragma mark FittingVariationsViewControllerDelegate
 
 - (void) fittingVariationsViewController:(FittingVariationsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	ItemInfo* oldModule = (ItemInfo*) controller.type;
-	eufe::Module* module = dynamic_cast<eufe::Module*>(oldModule.item);
 	eufe::Ship* ship = fit.character->getShip();
-	ship->replaceModule(module, type.typeID);
+
+	if (controller.modifiedItem) {
+		eufe::Module* module = dynamic_cast<eufe::Module*>(controller.modifiedItem.item);
+		ship->replaceModule(module, type.typeID);
+	}
+	else {
+		eufe::ModulesList modules = ship->getModules();
+		NSInteger marketGroupID = type.marketGroupID;
+		NSInteger typeID = type.typeID;
+		for (auto module: modules) {
+			ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:module error:nil];
+			if (itemInfo.marketGroupID == marketGroupID)
+				ship->replaceModule(module, typeID);
+		}
+	}
 	[self update];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

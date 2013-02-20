@@ -50,23 +50,23 @@ INSERT INTO eveDB.invMetaTypes VALUES (29990,NULL,14);
 INSERT INTO eveDB.invMetaTypes
 	SELECT a.typeID AS typeID, NULL AS parentTypeID, 14 AS metaGroupID
 		FROM dgmTypeAttributes AS a, invTypes AS b
-		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=3 AND a.typeID NOT IN (SELECT typeID FROM invMetaTypes);
+		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=3 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
 
 INSERT INTO eveDB.invMetaTypes
 	SELECT a.typeID AS typeID, NULL AS parentTypeID, 1 AS metaGroupID
 		FROM dgmTypeAttributes AS a, invTypes AS b
-		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=1 AND a.typeID NOT IN (SELECT typeID FROM invMetaTypes);
+		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=1 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 		
 INSERT INTO eveDB.invMetaTypes
 	SELECT a.typeID AS typeID, NULL AS parentTypeID, 2 AS metaGroupID
 		FROM dgmTypeAttributes AS a, invTypes AS b
-		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=2 AND a.typeID NOT IN (SELECT typeID FROM invMetaTypes);
+		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=422 AND a.value=2 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 		
 INSERT INTO eveDB.invMetaTypes
 	SELECT a.typeID AS typeID, NULL AS parentTypeID, 1 AS metaGroupID
 		FROM dgmTypeAttributes AS a, invTypes AS b
-		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM invMetaTypes);
+		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
 
 --COMMIT TRANSACTION;

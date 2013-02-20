@@ -51,8 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"About", nil);
-	databaseVersionLabel.text = @"Retribution_1.0_82596";
-	imagesVersionLabel.text = @"Retribution_1.0_imgs";
+	databaseVersionLabel.text = @"Retribution_1.1_84566";
+	imagesVersionLabel.text = @"Retribution_1.1_imgs";
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];

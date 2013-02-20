@@ -41,12 +41,6 @@ CREATE TABLE "dgmAttributeCategories" (
   "categoryDescription" varchar(200) DEFAULT NULL,
   PRIMARY KEY ("categoryID")
 );
-CREATE TABLE "eveIcons" (
-  "iconID" integer NOT NULL,
-  "iconFile" varchar(500) NOT NULL,
-  "description" text NOT NULL,
-  PRIMARY KEY ("iconID")
-);
 CREATE TABLE "eveUnits" (
   "unitID" integer NOT NULL,
   "unitName" varchar(100) DEFAULT NULL,
@@ -74,6 +68,15 @@ CREATE TABLE "invControlTowerResourcePurposes" (
   "purpose" integer NOT NULL,
   "purposeText" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("purpose")
+);
+CREATE TABLE "invMarketGroups" (
+  "marketGroupID" integer NOT NULL,
+  "parentGroupID" integer DEFAULT NULL,
+  "marketGroupName" varchar(100) DEFAULT NULL,
+  "description" varchar(3000) DEFAULT NULL,
+  "iconID" integer DEFAULT NULL,
+  "hasTypes" integer DEFAULT NULL,
+  PRIMARY KEY ("marketGroupID")
 );
 CREATE TABLE "invMetaGroups" (
   "metaGroupID" integer NOT NULL,
@@ -255,6 +258,12 @@ CREATE INDEX "crtRecommendations_crtRecommendations_IX_shipType" ON "crtRecommen
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
+CREATE TABLE "eveIcons" (
+  "iconID" integer NOT NULL,
+  "iconFile" varchar(500) NOT NULL,
+  "description" text NOT NULL,
+  PRIMARY KEY ("iconID")
+);
 CREATE TABLE dgmAttributeTypes (
   "attributeID" smallint(6) NOT NULL,
   "attributeName" varchar(100) default NULL,
@@ -385,16 +394,3 @@ CREATE TABLE invControlTowerResources (
   PRIMARY KEY  ("controlTowerTypeID","resourceTypeID")
 );
 
-CREATE TABLE invMarketGroups (
- marketGroupID  INTEGER NOT NULL,
- parentGroupID  INTEGER DEFAULT NULL,
- marketGroupName  TEXT(100),
- description  TEXT(3000),
- graphicID  INTEGER,
- hasTypes  INTEGER,
- iconID  INTEGER,
- dataID  INTEGER,
- marketGroupNameID INTEGER,
- descriptionID INTEGER,
- PRIMARY KEY  (marketGroupID)
-);

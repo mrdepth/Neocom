@@ -290,7 +290,7 @@
 	for (NSManagedObjectID* objectID in [notification.userInfo valueForKey:@"updated"]) {
 		if ([url isEqual:[objectID URIRepresentation]]) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.managedObjectContext refreshObject:self mergeChanges:YES];
+//				[self.managedObjectContext refreshObject:self mergeChanges:YES];
 				[self load];
 				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidImportFromCloud object:self];
 			});

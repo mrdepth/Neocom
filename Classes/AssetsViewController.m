@@ -528,9 +528,9 @@
 							first += length;
 							left -= length;
 							if (corporate)
-								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
+								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:nil];
 							else
-								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:&error];
+								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:nil];
 							for (EVELocationsItem* location in eveLocations.locations)
 								[locations setValue:location forKey:[NSString stringWithFormat:@"%qi", location.itemID]];
 						}

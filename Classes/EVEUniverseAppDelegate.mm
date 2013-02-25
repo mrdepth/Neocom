@@ -158,7 +158,6 @@
 	}
 	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 
-	
 	[self configureCloudWithCompletionHandler:^{
 		self.window.userInteractionEnabled = NO;
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+migrate" name:NSLocalizedString(@"Initializing storage.", nil)];
@@ -179,7 +178,7 @@
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}];
-	
+
 	return YES;
 }
 

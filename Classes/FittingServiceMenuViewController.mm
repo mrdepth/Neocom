@@ -468,9 +468,6 @@
 			EUStorage* storage = [EUStorage sharedStorage];
 			[storage.managedObjectContext performBlockAndWait:^{
 				NSArray* shipFits = [ShipFit allFits];
-				for (Fit* fit in shipFits)
-					[storage.managedObjectContext refreshObject:fit mergeChanges:YES];
-				
 				operation.progress = 0.25;
 				
 				[fitsTmp addObjectsFromArray:[shipFits arrayGroupedByKey:@"type.groupID"]];

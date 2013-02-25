@@ -37,8 +37,6 @@
 	
 	NSError *error = nil;
 	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	for (POSFit* fit in fetchedObjects)
-		[storage.managedObjectContext refreshObject:fit mergeChanges:YES];
 	[fetchRequest release];
 	return fetchedObjects;
 }

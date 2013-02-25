@@ -47,6 +47,7 @@ static EUStorage* sharedStorage;
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	}
 	return self;
 }
@@ -54,6 +55,7 @@ static EUStorage* sharedStorage;
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUbiquityIdentityDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[_managedObjectContext release];
 	[_managedObjectModel release];
 	[_persistentStoreCoordinator release];
@@ -97,8 +99,8 @@ static EUStorage* sharedStorage;
 		if (coordinator != nil) {
 			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
-			[_managedObjectContext setMergePolicy:[[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyStoreTrumpMergePolicyType] autorelease]];
-			[_managedObjectContext setStalenessInterval:0];
+			[_managedObjectContext setMergePolicy:[[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType] autorelease]];
+//			[_managedObjectContext setStalenessInterval:0];
 		}
 		return _managedObjectContext;
 	}
@@ -185,6 +187,14 @@ static EUStorage* sharedStorage;
 
 - (void) ubiquityIdentityDidChange:(NSNotification*) notification {
 	[self reconnectStore];
+}
+
+- (void) didUpdateCloud:(NSNotification*) notification {
+	[self.managedObjectContext performBlock:^{
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+		if ([self.managedObjectContext hasChanges])
+			[self.managedObjectContext save:nil];
+	}];
 }
 
 - (void) reconnectStore {

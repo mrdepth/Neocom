@@ -624,7 +624,7 @@
 }
 
 - (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler {
-	NSNumber* useCloud = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsUseCloud];
+/*	NSNumber* useCloud = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsUseCloud];
 	id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 	if (useCloud == nil && currentCloudToken) {
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
@@ -637,7 +637,7 @@
 							 completionHandler();
 						 } cancelBlock:nil] show];
 	}
-	else
+	else*/
 		completionHandler();
 }
 

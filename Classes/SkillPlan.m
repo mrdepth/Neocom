@@ -100,7 +100,7 @@
 - (id) init {
 	EUStorage* storage = [EUStorage sharedStorage];
 	if (self = [super initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil]) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 
 		self.skills = [NSMutableArray array];
 		_trainingTime = -1;
@@ -111,13 +111,13 @@
 }
 
 - (void) awakeFromFetch {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 
 	self.skills = [NSMutableArray array];
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[_skills release];
 	[_characterAttributes retain];
 	[_characterSkills retain];

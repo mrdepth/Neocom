@@ -62,7 +62,7 @@
 		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -85,7 +85,7 @@
 }
 
 - (void)viewDidUnload {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
     [super viewDidUnload];
 	self.menuTableView = nil;
 	self.fittingItemsViewController = nil;
@@ -97,7 +97,7 @@
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[menuTableView release];
 	[fittingItemsViewController release];
 	[modalController release];

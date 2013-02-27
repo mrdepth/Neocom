@@ -158,7 +158,6 @@
 		129DC5BD1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129DC5BC1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib */; };
 		12A3B9A7140E4DF500E5A00C /* AccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */; };
 		12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */; };
-		12AFBC7616C1375D0098C5BB /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12AFBC7516C1375D0098C5BB /* Settings.bundle */; };
 		12B336A41410F233002309CD /* APIKeysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B336A21410F233002309CD /* APIKeysViewController.m */; };
 		12B336CE1410F537002309CD /* APIKeysKeyCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B336CD1410F537002309CD /* APIKeysKeyCellView.m */; };
 		12B338681411270B002309CD /* AccessMaskViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B338671411270B002309CD /* AccessMaskViewController~ipad.xib */; };
@@ -5331,7 +5330,6 @@
 				71843342168A0D5B00F10FE5 /* facebook.png in Resources */,
 				71843343168A0D5B00F10FE5 /* facebook@2x.png in Resources */,
 				71843344168A0D5B00F10FE5 /* rss@2x.png in Resources */,
-				12AFBC7616C1375D0098C5BB /* Settings.bundle in Resources */,
 				1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */,
 				1213C0FF16C902DE006E504E /* VariationsViewController~ipad.xib in Resources */,
 				1213C10216C90373006E504E /* FittingVariationsViewController.xib in Resources */,

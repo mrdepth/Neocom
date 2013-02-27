@@ -45,17 +45,17 @@ static EUStorage* sharedStorage;
 
 - (id) init {
 	if (self = [super init]) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
+//		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	}
 	return self;
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUbiquityIdentityDidChangeNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUbiquityIdentityDidChangeNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[_managedObjectContext release];
 	[_managedObjectModel release];
 	[_persistentStoreCoordinator release];
@@ -100,7 +100,6 @@ static EUStorage* sharedStorage;
 			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
 			[_managedObjectContext setMergePolicy:[[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType] autorelease]];
-//			[_managedObjectContext setStalenessInterval:0];
 		}
 		return _managedObjectContext;
 	}
@@ -129,10 +128,10 @@ static EUStorage* sharedStorage;
 			return _persistentStoreCoordinator;
 		}
 		
-		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
+		BOOL useCloud = NO;//[[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
 		NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
 		
-		NSURL *storeURL = [NSURL fileURLWithPath:[[Globals documentsDirectory] stringByAppendingPathComponent:url ? @"cloudStorage.sqlite" : @"localStorage.sqlite"]];
+		NSURL *storeURL = [NSURL fileURLWithPath:[[Globals documentsDirectory] stringByAppendingPathComponent:url ? @"cloudStore.sqlite" : @"fallbackStore.sqlite"]];
 		
 		NSError *error = nil;
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

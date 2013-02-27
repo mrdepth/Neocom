@@ -49,7 +49,7 @@
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	self.logoffButton.hidden = [EVEAccount currentAccount] == nil;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -62,7 +62,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	self.accountsTableView = nil;
@@ -91,7 +91,7 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 	[accountsTableView release];
 	[logoffButton release];
 	[sections release];

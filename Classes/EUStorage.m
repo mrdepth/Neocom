@@ -148,11 +148,11 @@ static EUStorage* sharedStorage;
 				[[UIAlertView alertViewWithError:error] show];
 			});
 		}
-		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+/*		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 		if (currentCloudToken) {
 			NSData *tokenData = [NSKeyedArchiver archivedDataWithRootObject: currentCloudToken];
 			[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:SettingsCloudToken];
-		}
+		}*/
 		
 		return _persistentStoreCoordinator;
 	}
@@ -197,7 +197,7 @@ static EUStorage* sharedStorage;
 }
 
 - (void) reconnectStore {
-	id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+/*	id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 	id storedCloudToken = nil;
 	NSData* storedTokenData = [[NSUserDefaults standardUserDefaults] objectForKey:SettingsCloudToken];
 	if (storedTokenData) {
@@ -274,7 +274,7 @@ static EUStorage* sharedStorage;
 			else
 				dispatch_async (dispatch_get_global_queue (DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), migrateToCloud);
 		}
-	}
+	}*/
 }
 
 @end

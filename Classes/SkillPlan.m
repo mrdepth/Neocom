@@ -239,7 +239,10 @@
 	EUStorage* storage = [EUStorage sharedStorage];
 
 	[storage.managedObjectContext performBlockAndWait:^{
-		[self.skills removeAllObjects];
+		if (!self.skills)
+			self.skills = [NSMutableArray array];
+		else
+			[self.skills removeAllObjects];
 		_trainingTime = -1;
 		for (NSString* row in [self.skillPlanSkills componentsSeparatedByString:@";"]) {
 			NSArray* components = [row componentsSeparatedByString:@":"];

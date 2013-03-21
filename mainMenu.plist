@@ -274,7 +274,7 @@
 		<key>nibName</key>
 		<string>DonationViewController</string>
 		<key>title</key>
-		<string>Donate</string>
+		<string>Remove Ads</string>
 		<key>image</key>
 		<string>Icons/icon64_09.png</string>
 		<key>charAccessMask</key>

@@ -40,7 +40,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Donation", nil);
+	self.title = NSLocalizedString(@"Remove Ads", nil);
 	[self reload];
 }
 
@@ -59,6 +59,7 @@
 }
 
 - (void)viewDidUnload {
+	[self setUpgradeDoneView:nil];
     [super viewDidUnload];
 	self.upgradeView = nil;
 	self.donateView = nil;
@@ -70,6 +71,7 @@
 	[upgradeView release];
 	[donateView release];
 	
+	[_upgradeDoneView release];
     [super dealloc];
 }
 
@@ -188,8 +190,8 @@
 		upgradeView.frame = CGRectMake(0, 0, upgradeView.frame.size.width, upgradeView.frame.size.height);
 	}
 	else {
-		[self.view addSubview:donateView];
-		donateView.frame = CGRectMake(0, 0, donateView.frame.size.width, donateView.frame.size.height);
+		[self.view addSubview:self.upgradeDoneView];
+		self.upgradeDoneView.frame = CGRectMake(0, 0, self.upgradeDoneView.frame.size.width, self.upgradeDoneView.frame.size.height);
 	}
 }
 

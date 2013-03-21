@@ -14,6 +14,7 @@
 }
 @property (nonatomic, retain) IBOutlet UIView *upgradeView;
 @property (nonatomic, retain) IBOutlet UIView *donateView;
+@property (retain, nonatomic) IBOutlet UIView *upgradeDoneView;
 
 - (IBAction) onUpgrade:(id) sender;
 - (IBAction) onDonate:(id) sender;

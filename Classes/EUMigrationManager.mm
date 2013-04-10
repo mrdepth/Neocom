@@ -334,6 +334,9 @@
 		}
 	}
 	[storage saveContext];
+	
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+	[userDefaults setInteger:7 forKey:@"version"];
 }
 
 

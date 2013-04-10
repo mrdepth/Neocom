@@ -190,8 +190,8 @@
 		upgradeView.frame = CGRectMake(0, 0, upgradeView.frame.size.width, upgradeView.frame.size.height);
 	}
 	else {
-		[self.view addSubview:self.upgradeDoneView];
-		self.upgradeDoneView.frame = CGRectMake(0, 0, self.upgradeDoneView.frame.size.width, self.upgradeDoneView.frame.size.height);
+		[self.view addSubview:self.donateView];
+		self.donateView.frame = CGRectMake(0, 0, self.donateView.frame.size.width, self.donateView.frame.size.height);
 	}
 }
 

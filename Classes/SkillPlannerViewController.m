@@ -21,6 +21,7 @@
 #import "Globals.h"
 #import "SkillPlannerImportViewController.h"
 #import "BrowserViewController.h"
+#import "EUStorage.h"
 
 #define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
 #define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
@@ -403,8 +404,9 @@
 
 #pragma mark SkillPlannerImportViewControllerDelegate
 - (void) skillPlannerImportViewController:(SkillPlannerImportViewController*) controller didSelectSkillPlan:(SkillPlan*) aSkillPlan {
-	[[EVEAccount currentAccount] setSkillPlan:aSkillPlan];
-	[aSkillPlan save];
+	SkillPlan* currentSkillPlan = [[EVEAccount currentAccount] skillPlan];
+	currentSkillPlan.skills = aSkillPlan.skills;
+	[currentSkillPlan save];
 	[self loadData];
 }
 

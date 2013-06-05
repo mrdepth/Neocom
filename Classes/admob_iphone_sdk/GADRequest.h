@@ -55,8 +55,8 @@ typedef enum {
 
 #pragma mark Testing
 
-// Setting this property to YES will return a test ad for this request.
-@property (nonatomic, getter=isTesting) BOOL testing;
+// Add the device's identifier into this array for testing purposes.
+@property (nonatomic, retain) NSArray *testDevices;
 
 #pragma mark User Information
 
@@ -90,9 +90,6 @@ typedef enum {
 // and then @"Football".
 - (void)addKeyword:(NSString *)keyword;
 
-// Add the device's identifier into this array for testing purposes.
-@property (nonatomic, retain) NSArray *testDevices;
-
 #pragma mark -
 #pragma mark Deprecated Methods
 
@@ -100,5 +97,9 @@ typedef enum {
 // use -registerAdNetworkExtras: method above and pass an instance of
 // GADAdMobExtras instead.
 @property (nonatomic, retain) NSDictionary *additionalParameters;
+
+// This property has been deprecated with the latest SDK releases. Please use
+// testDevices.
+@property (nonatomic, getter=isTesting) BOOL testing;
 
 @end

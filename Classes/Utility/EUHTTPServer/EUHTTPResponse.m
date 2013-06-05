@@ -41,7 +41,7 @@
 		
 		CFRelease(data);
 		
-		[self.outputData writeToFile:@"/Users/shimanski/response.txt" atomically:YES];
+		//[self.outputData writeToFile:@"/Users/shimanski/response.txt" atomically:YES];
 
 		self.outputStream.delegate = self;
 		[self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];

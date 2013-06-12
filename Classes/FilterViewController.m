@@ -119,7 +119,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[filter.filters objectAtIndex:section] name];
+	return NSLocalizedString([[filter.filters objectAtIndex:section] name], nil);
 }
 
 // Customize the appearance of table view cells.

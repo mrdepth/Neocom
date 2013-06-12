@@ -7,4 +7,5 @@ do
 strings=`echo $xib | sed -e "s/.xib/.strings/g"`
 ibtool --generate-strings-file $strings $xib
 ./stringstool --extract $strings xib.strings
+rm $strings
 done

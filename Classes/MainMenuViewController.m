@@ -153,10 +153,10 @@
 	NSString *className = [item valueForKey:@"className"];
 
 	if (numberOfUnreadMessages > 0 && [className isEqualToString:@"MessagesViewController"]) {
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (%d)", [item valueForKey:@"title"], numberOfUnreadMessages];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString([item valueForKey:@"title"], nil), numberOfUnreadMessages];
 	}
 	else {
-		cell.titleLabel.text = [item valueForKey:@"title"];
+		cell.titleLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
 	}
 	cell.iconImageView.image = [UIImage imageNamed:[item valueForKey:@"image"]];
     return cell;

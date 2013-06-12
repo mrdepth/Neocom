@@ -106,7 +106,7 @@
     if (cell == nil)
         cell = [RSSFeedCellView cellWithNibName:@"RSSFeedCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	NSDictionary *row = [rows objectAtIndex:indexPath.row];
-	cell.titleLabel.text = [row valueForKey:@"title"];
+	cell.titleLabel.text = NSLocalizedString([row valueForKey:@"title"], nil);
 	cell.dateLabel.text = [row valueForKey:@"date"];
 	cell.descriptionLabel.text = [row valueForKey:@"description"];
 	[cell layoutSubviews];

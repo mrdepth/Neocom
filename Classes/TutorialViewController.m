@@ -10,20 +10,6 @@
 
 
 @implementation TutorialViewController
-@synthesize scrollView;
-@synthesize pageControl;
-
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
-
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -32,17 +18,17 @@
 	NSArray *images = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tutorial" ofType:@"plist"]]];
 	int x = 20;
 	for (NSString *imageName in images) {
-		UIImageView *imageView = [[[UIImageView alloc]  initWithImage:[UIImage imageNamed:imageName]] autorelease];
+		UIImageView *imageView = [[UIImageView alloc]  initWithImage:[UIImage imageNamed:imageName]];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			imageView.contentMode = UIViewContentModeCenter;
 		else
 			imageView.contentMode = UIViewContentModeScaleAspectFit;
-		imageView.frame = CGRectMake(x, 0, scrollView.frame.size.width - 40, scrollView.frame.size.height);
-		[scrollView addSubview:imageView];
-		x += scrollView.frame.size.width;
+		imageView.frame = CGRectMake(x, 0, self.scrollView.frame.size.width - 40, self.scrollView.frame.size.height);
+		[self.scrollView addSubview:imageView];
+		x += self.scrollView.frame.size.width;
 	}
-	scrollView.contentSize = CGSizeMake(x - 20, scrollView.frame.size.height);
-	pageControl.numberOfPages = images.count;
+	self.scrollView.contentSize = CGSizeMake(x - 20, self.scrollView.frame.size.height);
+	self.pageControl.numberOfPages = images.count;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -67,22 +53,15 @@
     // e.g. self.myOutlet = nil;
 }
 
-
-- (void)dealloc {
-	[scrollView release];
-	[pageControl release];
-    [super dealloc];
-}
-
 - (IBAction) onPageChanged:(id) sender {
-	float x = pageControl.currentPage * scrollView.frame.size.width;
-	[scrollView scrollRectToVisible:CGRectMake(x, 0, scrollView.frame.size.width, scrollView.frame.size.height) animated:YES];
+	float x = self.pageControl.currentPage * self.scrollView.frame.size.width;
+	[self.scrollView scrollRectToVisible:CGRectMake(x, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height) animated:YES];
 }
 
 #pragma mark UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)aScrollView {
-	pageControl.currentPage = (int) scrollView.contentOffset.x / 320;
+	self.pageControl.currentPage = (int) self.scrollView.contentOffset.x / self.scrollView.frame.size.width;
 }
 
 @end

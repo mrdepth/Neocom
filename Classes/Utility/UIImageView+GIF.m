@@ -14,7 +14,7 @@
 - (void) setGIFImageWithContentsOfURL:(NSURL*) url {
 	self.image = nil;
 	
-	CGImageSourceRef source = CGImageSourceCreateWithURL((CFURLRef) url, NULL);
+	CGImageSourceRef source = CGImageSourceCreateWithURL((__bridge CFURLRef) url, NULL);
 	if (!source)
 		return;
 	

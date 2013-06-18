@@ -19,13 +19,7 @@
 @end
 
 
-@interface EUHTTPConnection: NSObject<EUHTTPRequestDelegate, EUHTTPResponseDelegate> {
-	NSString *peerName;
-	id <EUHTTPConnectionDelegate> delegate;
-	CFHTTPMessageRef requestMessage;
-	EUHTTPRequest *request;
-	EUHTTPResponse *response;
-}
+@interface EUHTTPConnection: NSObject<EUHTTPRequestDelegate, EUHTTPResponseDelegate>
 @property (nonatomic, retain) NSString *peerName;
 @property (nonatomic, assign) id <EUHTTPConnectionDelegate> delegate;
 @property (nonatomic, retain) EUHTTPRequest *request;

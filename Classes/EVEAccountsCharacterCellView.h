@@ -10,16 +10,16 @@
 #import "EVEAccountStorage.h"
 
 @interface EVEAccountsCharacterCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *portraitImageView;
-@property (nonatomic, retain) IBOutlet UIImageView *corpImageView;
-@property (nonatomic, retain) IBOutlet UILabel *userNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *corpLabel;
-@property (nonatomic, retain) IBOutlet UILabel *trainingTimeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *paidUntilLabel;
-@property (nonatomic, retain) IBOutlet UISwitch *enableSwitch;
+@property (nonatomic, weak) IBOutlet UIImageView *portraitImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *corpImageView;
+@property (nonatomic, weak) IBOutlet UILabel *userNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *corpLabel;
+@property (nonatomic, weak) IBOutlet UILabel *trainingTimeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *paidUntilLabel;
+@property (nonatomic, weak) IBOutlet UISwitch *enableSwitch;
 @property (nonatomic, retain) EVEAccountStorageCharacter *character;
-@property (retain, nonatomic) IBOutlet UILabel *wealthLabel;
-@property (retain, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *wealthLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
 - (IBAction) onChangeEnableValue:(id) sender;
 

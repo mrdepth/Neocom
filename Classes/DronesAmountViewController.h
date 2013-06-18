@@ -10,16 +10,7 @@
 #import "DronesAmountViewControllerDelegate.h"
 
 
-@interface DronesAmountViewController : UIViewController<UIPickerViewDataSource, UIPopoverControllerDelegate> {
-	UIPickerView *pickerView;
-	UIView *backgroundView;
-	UIView *contentView;
-	NSInteger maxAmount;
-	NSInteger amount;
-	id<DronesAmountViewControllerDelegate> delegate;
-@private
-	UIPopoverController *popoverController;
-}
+@interface DronesAmountViewController : UIViewController<UIPickerViewDataSource, UIPopoverControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIPickerView *pickerView;
 @property (nonatomic, retain) IBOutlet UIView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIView *contentView;

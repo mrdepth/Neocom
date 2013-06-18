@@ -47,12 +47,12 @@
 	NSString* characterName = objc_getAssociatedObject(self, @"characterName");
 	
 	NSMutableString* string;
-	if (quantity > 1)
-		string = [NSMutableString stringWithFormat:@"%@ (x%d)", name, quantity];
-	else if (contents.count == 1)
+	if (self.quantity > 1)
+		string = [NSMutableString stringWithFormat:@"%@ (x%d)", name, self.quantity];
+	else if (self.contents.count == 1)
 		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (1 item)", nil), name];
-	else if (contents.count > 1)
-		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (%d items)", nil), name, contents.count];
+	else if (self.contents.count > 1)
+		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (%d items)", nil), name, self.contents.count];
 	else {
 		if (!name)
 			NSLog(@"%@", name);

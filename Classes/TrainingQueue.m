@@ -38,35 +38,40 @@
 
 @end
 
+@interface TrainingQueue()
+@property (nonatomic, strong) EVEAccount *account;
+@property (nonatomic, strong) NSDictionary *characterSkills;
+@property (nonatomic, readwrite, assign) NSTimeInterval trainingTime;
+
+@end
+
 
 @implementation TrainingQueue
-@synthesize skills;
-@synthesize trainingTime;
 
 + (id) trainingQueueWithType: (EVEDBInvType*) type {
-	return [[[TrainingQueue alloc] initWithType:type] autorelease];
+	return [[TrainingQueue alloc] initWithType:type];
 }
 
 + (id) trainingQueueWithCertificate: (EVEDBCrtCertificate*) certificate {
-	return [[[TrainingQueue alloc] initWithCertificate:certificate] autorelease];
+	return [[TrainingQueue alloc] initWithCertificate:certificate];
 }
 
 + (id) trainingQueueWithRequiredSkills: (NSArray*) requiredSkills {
-	return [[[TrainingQueue alloc] initWithRequiredSkills:requiredSkills] autorelease];
+	return [[TrainingQueue alloc] initWithRequiredSkills:requiredSkills];
 }
 
 - (id) init {
 	if (self = [super init]) {
-		account = [[EVEAccount currentAccount] retain];
-		characterSkills = [[NSMutableDictionary dictionary] retain];
-		trainingTime = -1;
-		if (account && account.characterSheet) {
-			for (EVECharacterSheetSkill *skill in account.characterSheet.skills) {
-				[characterSkills setValue:skill forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+		self.account = [EVEAccount currentAccount];
+		self.characterSkills = [NSMutableDictionary dictionary];
+		self.trainingTime = -1;
+		if (self.account && self.account.characterSheet) {
+			for (EVECharacterSheetSkill *skill in self.account.characterSheet.skills) {
+				[self.characterSkills setValue:skill forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 			}
 		}
 		else {
-			account = [[EVEAccount dummyAccount] retain];
+			self.account = [EVEAccount dummyAccount];
 		}
 		
 		self.skills = [NSMutableArray array];
@@ -91,7 +96,7 @@
 					[self addSkill:item];
 			}
 		}
-		trainingTime = -1;
+		self.trainingTime = -1;
 	}
 	return self;
 }
@@ -105,44 +110,37 @@
 	return self;
 }
 
-- (void) dealloc {
-	[skills release];
-	[account release];
-	[characterSkills release];
-	[super dealloc];
-}
-
 - (NSTimeInterval) trainingTime {
-	if (trainingTime < 0) {
-		trainingTime = 0;
+	if (_trainingTime < 0) {
+		_trainingTime = 0;
 		
-		for (EVEDBInvTypeRequiredSkill *skill in skills) {
+		for (EVEDBInvTypeRequiredSkill *skill in self.skills) {
 			if (skill.currentLevel < skill.requiredLevel)
-				trainingTime += (skill.requiredSP - skill.currentSP) / [account.characterAttributes skillpointsPerSecondForSkill:skill];
+				_trainingTime += (skill.requiredSP - skill.currentSP) / [self.account.characterAttributes skillpointsPerSecondForSkill:skill];
 		}
 	}
-	return trainingTime;
+	return _trainingTime;
 }
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {
 	int i = 0;
-	EVECharacterSheetSkill *characterSkill = [characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+	EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 	skill.currentLevel = characterSkill.level;
 	skill.currentSP = characterSkill.skillpoints;
 	if (skill.currentLevel >= skill.requiredLevel)
 		return;
 	
-	for (EVEDBInvTypeRequiredSkill *item in skills) {
+	for (EVEDBInvTypeRequiredSkill *item in self.skills) {
 		if (item.typeID == skill.typeID) {
 			if (skill.requiredLevel > item.requiredLevel)
-				[skills replaceObjectAtIndex:i withObject:skill];
+				[self.skills replaceObjectAtIndex:i withObject:skill];
 			return;
 		}
 		i++;
 	}
 	
-	[skills insertObject:skill atIndex:0];
-	trainingTime = -1;
+	[self.skills insertObject:skill atIndex:0];
+	self.trainingTime = -1;
 	for (EVEDBInvTypeRequiredSkill* requiredSkill in skill.requiredSkills)
 		[self addSkill:requiredSkill];
 }

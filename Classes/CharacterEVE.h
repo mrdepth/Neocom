@@ -10,12 +10,7 @@
 #import "Character.h"
 
 @class EVEAccountStorageCharacter;
-@interface CharacterEVE : Character {
-@private
-	//EVEAccountStorageCharacter* character;
-	NSInteger keyID;
-	NSString *vCode;
-}
+@interface CharacterEVE : Character
 
 
 + (id) characterWithCharacter:(EVEAccountStorageCharacter*) character;

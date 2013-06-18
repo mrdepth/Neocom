@@ -10,9 +10,6 @@
 
 
 @implementation AttributeCellView
-@synthesize iconView;
-@synthesize attributeNameLabel;
-@synthesize attributeValueLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
@@ -29,15 +26,6 @@
     [super setSelected:selected animated:animated];
     
     // Configure the view for the selected state.
-}
-
-
-- (void)dealloc {
-	[iconView release];
-	[attributeNameLabel release];
-	[attributeValueLabel release];
-	
-    [super dealloc];
 }
 
 

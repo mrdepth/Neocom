@@ -32,12 +32,6 @@
     return self;
 }
 
-- (void) dealloc {
-	[_selectedAccounts release];
-	[_accounts release];
-	[super dealloc];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -45,9 +39,9 @@
 	self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 	else {
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	
@@ -145,7 +139,7 @@
 	cell.characterNameLabel.text = account.characterName;
 	cell.corpNameLabel.text = account.corporationName;
 	//cell.accessoryType = [[item valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-	cell.accessoryView = [[item valueForKey:@"selected"] boolValue] ? [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] autorelease] : nil;
+	cell.accessoryView = [[item valueForKey:@"selected"] boolValue] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
     
     return cell;
 }
@@ -198,7 +192,7 @@
 	BOOL selected = ![[item valueForKey:@"selected"] boolValue];
 	[item setValue:@(selected) forKey:@"selected"];
 	AccountsSelectionCellView* cell = (AccountsSelectionCellView*) [tableView cellForRowAtIndexPath:indexPath];
-	cell.accessoryView = selected ? [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] autorelease] : nil;
+	cell.accessoryView = selected ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 }
 
 @end

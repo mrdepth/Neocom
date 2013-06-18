@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
 	self.contentSizeForViewInPopover = self.view.frame.size;
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStyleDone target:self action:@selector(onDone:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStyleDone target:self action:@selector(onDone:)];
 	self.titleLabel.text = self.title;
 
 	self.datePicker.minimumDate = self.minimumDate;
@@ -44,16 +44,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-	[_titleLabel release];
-	[_valueLabel release];
-	[_datePicker release];
-	[_minimumDate release];
-	[_maximumDate release];
-	[_date release];
-	[super dealloc];
-}
-
 - (void)viewDidUnload {
 	[self setTitleLabel:nil];
 	[self setValueLabel:nil];
@@ -76,7 +66,6 @@
 	NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyy.MM.dd"];
 	self.valueLabel.text = [formatter stringFromDate:self.date];
-	[formatter release];
 }
 
 @end

@@ -17,19 +17,21 @@
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
 
-@interface MarketOrdersViewController(Private)
+@interface MarketOrdersViewController()
+@property (nonatomic, strong) NSMutableArray *filteredValues;
+@property (nonatomic, strong) NSMutableArray *orders;
+@property (nonatomic, strong) NSMutableArray *charOrders;
+@property (nonatomic, strong) NSMutableArray *corpOrders;
+@property (nonatomic, strong) NSMutableDictionary *conquerableStations;
+@property (nonatomic, strong) EUFilter *charFilter;
+@property (nonatomic, strong) EUFilter *corpFilter;
+
 - (void) reloadOrders;
-- (NSDictionary*) conquerableStations;
 - (void) searchWithSearchString:(NSString*) searchString;
+
 @end
 
 @implementation MarketOrdersViewController
-@synthesize marketOrdersTableView;
-@synthesize ownerSegmentControl;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -48,16 +50,15 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Market Orders", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
-		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+		self.navigationItem.titleView = self.ownerSegmentControl;
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsMarketOrdersOwner];
+	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsMarketOrdersOwner];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[self reloadOrders];
@@ -79,47 +80,29 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.marketOrdersTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
-	[orders release];
-	[charOrders release];
-	[corpOrders release];
-	[filteredValues release];
-	[conquerableStations release];
-	[charFilter release];
-	[corpFilter release];
-
-	orders = charOrders = corpOrders = filteredValues = nil;
-	conquerableStations = nil;
-	charFilter = corpFilter = nil;
+	self.orders = nil;
+	self.charOrders = nil;
+	self.corpOrders = nil;
+	self.filteredValues = nil;
+	self.conquerableStations = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[marketOrdersTableView release];
-	[ownerSegmentControl release];
-	[searchBar release];
-	[orders release];
-	[charOrders release];
-	[corpOrders release];
-	[filteredValues release];
-	[conquerableStations release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[charFilter release];
-	[corpFilter release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsMarketOrdersOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsMarketOrdersOwner];
 	[self reloadOrders];
 }
 
@@ -139,9 +122,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return filteredValues.count;
+		return self.filteredValues.count;
 	else {
-		return orders.count;
+		return self.orders.count;
 	}
 }
 
@@ -154,7 +137,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == marketOrdersTableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
+			nibName = tableView == self.marketOrdersTableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
 		else
 			nibName = @"MarketOrderCellView";
 		
@@ -163,9 +146,9 @@
 	NSDictionary *order;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		order = [filteredValues objectAtIndex:indexPath.row];
+		order = [self.filteredValues objectAtIndex:indexPath.row];
 	else {
-		order = [orders objectAtIndex:indexPath.row];
+		order = [self.orders objectAtIndex:indexPath.row];
 	}
 	
 	cell.expireInLabel.text = [order valueForKey:@"expireIn"];
@@ -228,7 +211,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == marketOrdersTableView ? 70 : 104;
+		return tableView == self.marketOrdersTableView ? 70 : 104;
 	else
 		return 104;
 }
@@ -237,20 +220,18 @@
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.type = [[filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
 	else
-		controller.type = [[orders objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.orders objectAtIndex:indexPath.row] valueForKey:@"type"];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 
@@ -271,11 +252,11 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];	
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 		
@@ -283,14 +264,14 @@
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
-	filterViewController.filter = filter;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
+	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -304,47 +285,43 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation MarketOrdersViewController(Private)
+#pragma mark - Private
 
 - (void) reloadOrders {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentOrders = corporate ? corpOrders : charOrders;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	NSMutableArray *currentOrders = corporate ? self.corpOrders : self.charOrders;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"marketOrdersFilter" ofType:@"plist"]]];
 	
-	[orders release];
-	orders = nil;
+	self.orders = nil;
 	if (!currentOrders) {
 		if (corporate) {
-			corpOrders = [[NSMutableArray alloc] init];
-			currentOrders = corpOrders;
+			self.corpOrders = [[NSMutableArray alloc] init];
+			currentOrders = self.corpOrders;
 		}
 		else {
-			charOrders = [[NSMutableArray alloc] init];
-			currentOrders = charOrders;
+			self.charOrders = [[NSMutableArray alloc] init];
+			currentOrders = self.charOrders;
 		}
 		
 		EVEAccount *account = [EVEAccount currentAccount];
 		
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Market Orders", nil)];
+		__weak EUOperation* weakOperation = operation;
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 
 			if (!account) {
-				[pool release];
 				return;
 			}
 
 			EVEMarketOrders *marketOrders;
 			if (corporate)
-				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 			else
-				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
-			operation.progress = 0.5;
+				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+			weakOperation.progress = 0.5;
 			
 			NSDate *currentTime = [marketOrders serverTimeWithLocalTime:[NSDate date]];
 			
@@ -448,13 +425,12 @@
 										  nil
 										  ]];
 				}
-				[dateFormatter release];
-				operation.progress = 0.75;
+				weakOperation.progress = 0.75;
 				[ordersTmp sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"issued" ascending:NO], nil]];
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;
-					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
+					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
 						for (NSDictionary *order in ordersTmp) {
 							NSString *charID = [order valueForKey:@"charID"];
@@ -466,23 +442,20 @@
 					}
 				}
 				[filterTmp updateWithValues:ordersTmp];
-				operation.progress = 1.0;
+				weakOperation.progress = 1.0;
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (corporate) {
-					[corpFilter release];
-					corpFilter = [filterTmp retain];
+					self.corpFilter = filterTmp;
 				}
 				else {
-					[charFilter release];
-					charFilter = [filterTmp retain];
+					self.charFilter = filterTmp;
 				}
 				[currentOrders addObjectsFromArray:ordersTmp];
-				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
+				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadOrders];
 			}
 		}];
@@ -490,93 +463,87 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		EUFilter *filter = corporate ? corpFilter : charFilter;
+		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 		NSMutableArray *ordersTmp = [NSMutableArray array];
 		if (filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						[orders release];
-						orders = [ordersTmp retain];
+				if (![weakOperation isCancelled]) {
+					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+						self.orders = ordersTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[marketOrdersTableView reloadData];
+						[self.marketOrdersTableView reloadData];
 					}
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else
-			orders = [currentOrders retain];
+			self.orders = currentOrders;
 	}
-	[marketOrdersTableView reloadData];
+	[self.marketOrdersTableView reloadData];
 }
 
-- (NSDictionary*) conquerableStations {
-	if (!conquerableStations) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (conquerableStations)
-			[conquerableStations release];
-		conquerableStations = [[NSMutableDictionary alloc] init];
-		
-		NSError *error = nil;
-		EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error];
-		
-		if (!error) {
-			for (EVEConquerableStationListItem *station in stationsList.outposts)
-				[conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+- (NSMutableDictionary*) conquerableStations {
+	if (!_conquerableStations) {
+		@autoreleasepool {
+			_conquerableStations = [[NSMutableDictionary alloc] init];
+			
+			NSError *error = nil;
+			EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error progressHandler:nil];
+			
+			if (!error) {
+				for (EVEConquerableStationListItem *station in stationsList.outposts)
+					[_conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+			}
 		}
-		[pool release];
 	}
-	return conquerableStations;
+	return _conquerableStations;
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account)
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[orders release];
-			[charOrders release];
-			[corpOrders release];
-			[filteredValues release];
-			orders = charOrders = corpOrders = filteredValues = nil;
-			[charFilter release];
-			[corpFilter release];
-			charFilter = corpFilter = nil;
+			self.orders = nil;
+			self.charOrders = nil;
+			self.corpOrders = nil;
+			self.filteredValues = nil;
+			self.charFilter = nil;
+			self.corpFilter = nil;
 			[self reloadOrders];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	else {
-		[orders release];
-		[charOrders release];
-		[corpOrders release];
-		[filteredValues release];
-		orders = charOrders = corpOrders = filteredValues = nil;
-		[charFilter release];
-		[corpFilter release];
-		charFilter = corpFilter = nil;
+		self.orders = nil;
+		self.charOrders = nil;
+		self.corpOrders = nil;
+		self.filteredValues = nil;
+		self.charFilter = nil;
+		self.corpFilter = nil;
 		[self reloadOrders];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (orders.count == 0 || !aSearchString)
+	if (self.orders.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *order in orders) {
+		for (NSDictionary *order in self.orders) {
+			if ([weakOperation isCancelled])
+				 break;
 			if (([order valueForKey:@"typeName"] && [[order valueForKey:@"typeName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([order valueForKey:@"stationName"] && [[order valueForKey:@"stationName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([order valueForKey:@"characterName"] && [[order valueForKey:@"characterName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
@@ -584,13 +551,11 @@
 				([order valueForKey:@"issued"] && [[order valueForKey:@"issued"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 				[filteredValuesTmp addObject:order];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

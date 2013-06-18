@@ -28,7 +28,8 @@
 #define ActionButtonLevel5 NSLocalizedString(@"Train to Level 5", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
-@interface RequiredSkillsViewController(Private)
+@interface RequiredSkillsViewController()
+@property (nonatomic, strong) SkillPlan* skillPlan;
 
 - (void) loadData;
 
@@ -56,13 +57,6 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void) dealloc {
-	[skillsTableView release];
-	[trainingTimeLabel release];
-	[skillPlan release];
-	[fit release];
-	[super dealloc];
-}
 
 #pragma mark - View lifecycle
 
@@ -71,9 +65,9 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Required Skills", nil);
 	[self loadData];
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 	if ([[EVEAccount currentAccount] skillPlan])
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Learn", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onAddToSkillPlan:)] autorelease]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Learn", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onAddToSkillPlan:)]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -92,8 +86,7 @@
 	[self setTrainingTimeLabel:nil];
     [super viewDidUnload];
 	self.skillsTableView = nil;
-	[skillPlan release];
-	skillPlan = nil;
+	self.skillPlan = nil;
 }
 
 - (IBAction) onClose:(id)sender {
@@ -102,12 +95,11 @@
 
 - (IBAction)onAddToSkillPlan:(id)sender {
 	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-														message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]]
+														message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]]
 													   delegate:self
 											  cancelButtonTitle:NSLocalizedString(@"No", nil)
 											  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
 	[alertView show];
-	[alertView autorelease];
 }
 
 #pragma mark -
@@ -119,7 +111,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return skillPlan.skills.count + (self.editing ? 1 : 0);
+	return self.skillPlan.skills.count + (self.editing ? 1 : 0);
 }
 
 // Customize the appearance of table view cells.
@@ -133,7 +125,7 @@
 	
 	EVEAccount* account = [EVEAccount currentAccount];
 	
-	EVEDBInvTypeRequiredSkill* skill = [skillPlan.skills objectAtIndex:indexPath.row];
+	EVEDBInvTypeRequiredSkill* skill = [self.skillPlan.skills objectAtIndex:indexPath.row];
 	EVESkillQueueItem* trainedSkill = account.skillQueue.skillQueue.count > 0 ? [account.skillQueue.skillQueue objectAtIndex:0] : nil;
 	
 	BOOL isActive = trainedSkill.typeID == skill.typeID;
@@ -150,7 +142,7 @@
 	cell.skillLabel.text = [NSString stringWithFormat:@"%@ (x%d)", skill.typeName, (int) attribute.value];
 	cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skill.requiredSP] numberStyle:NSNumberFormatterDecimalStyle]];
 	cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), skill.requiredLevel];
-	NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
+	NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [self.skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
 	cell.remainingLabel.text = [NSString stringWithTimeLeft:trainingTime];
 	return cell;
 }
@@ -167,11 +159,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
-	EVEDBInvTypeRequiredSkill* skill = [skillPlan.skills objectAtIndex:indexPath.row];
+	EVEDBInvTypeRequiredSkill* skill = [self.skillPlan.skills objectAtIndex:indexPath.row];
 	controller.type = skill;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark UIAlertViewDelegate
@@ -180,7 +171,7 @@
 	if (buttonIndex == 1) {
 		SkillPlan* currentSkillPlan = [[EVEAccount currentAccount] skillPlan];
 		if (currentSkillPlan) {
-			for (EVEDBInvTypeRequiredSkill* skill in skillPlan.skills)
+			for (EVEDBInvTypeRequiredSkill* skill in self.skillPlan.skills)
 				[currentSkillPlan addSkill:skill];
 			[currentSkillPlan save];
 			UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Skill plan updated", nil)
@@ -189,22 +180,17 @@
 													  cancelButtonTitle:@"Ok"
 													  otherButtonTitles:nil];
 			[alertView show];
-			[alertView autorelease];
 		}
 	}
 }
 
-@end
-
-
-@implementation RequiredSkillsViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"RequiredSkillsViewController+Load" name:NSLocalizedString(@"Loading Requirements", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		skillPlanTmp = [[SkillPlan alloc] init];
 		EVEAccount* account = [EVEAccount currentAccount];
 		if (account) {
@@ -215,7 +201,7 @@
 		eufe::Character* character = fit.character;
 
 		[skillPlanTmp addType:[ItemInfo itemInfoWithItem:character->getShip() error:nil]];
-		operation.progress = 0.25;
+		weakOperation.progress = 0.25;
 		{
 			const eufe::ModulesList& modules = character->getShip()->getModules();
 			eufe::ModulesList::const_iterator i, end = modules.end();
@@ -225,7 +211,7 @@
 					[skillPlanTmp addType:[ItemInfo itemInfoWithItem:(*i)->getCharge() error:nil]];
 			}
 		}
-		operation.progress = 0.5;
+		weakOperation.progress = 0.5;
 
 		{
 			const eufe::DronesList& drones = character->getShip()->getDrones();
@@ -242,7 +228,7 @@
 				[skillPlanTmp addType:[ItemInfo itemInfoWithItem:*i error:nil]];
 			}
 		}
-		operation.progress = 0.75;
+		weakOperation.progress = 0.75;
 
 		{
 			const eufe::BoostersList& boosters = character->getBoosters();
@@ -253,21 +239,18 @@
 		}
 	
 		[skillPlanTmp trainingTime];
-		operation.progress = 1.0;
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
-		[skillPlan release];
+	[weakOperation setCompletionBlockInCurrentThread:^(void) {
 		if (![operation isCancelled]) {
-			skillPlan = skillPlanTmp;
+			self.skillPlan = skillPlanTmp;
 			
 			[skillsTableView reloadData];
-			trainingTimeLabel.text = skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
+			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 		}
 		else {
-			skillPlan = nil;
-			[skillPlanTmp release];
+			self.skillPlan = nil;
 		}
 	}];
 	

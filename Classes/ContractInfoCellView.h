@@ -9,10 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ContractInfoCellView : UITableViewCell {
-	UILabel *titleLabel;
-	UILabel *valueLabel;
-}
+@interface ContractInfoCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *valueLabel;
 

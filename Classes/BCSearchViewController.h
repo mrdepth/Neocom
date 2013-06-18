@@ -10,18 +10,7 @@
 #import "FittingItemsViewController.h"
 
 @class EVEDBInvType;
-@interface BCSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate> {
-	UITableView *menuTableView;
-	FittingItemsViewController *fittingItemsViewController;
-	UINavigationController *modalController;
-	UIBarButtonItem *searchButton;
-	UIPopoverController *popoverController;
-	
-@private
-	EVEDBInvType *ship;
-	NSArray *tags;
-	NSMutableArray *selectedTags;
-}
+@interface BCSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate>
 @property (nonatomic, retain) IBOutlet UITableView *menuTableView;
 @property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;

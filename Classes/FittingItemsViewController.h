@@ -21,7 +21,6 @@
 @property (nonatomic, retain) NSString *groupsRequest;
 @property (nonatomic, retain) NSString *typesRequest;
 @property (nonatomic, retain) NSString *searchRequest;
-//@property (nonatomic, retain) EVEDBInvGroup *group;
 @property (nonatomic, retain) ItemInfo* modifiedItem;
 
 @end

@@ -9,14 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface MarketInfoCellView : UITableViewCell {
-	UILabel *systemLabel;
-	UILabel *stationLabel;
-	UILabel *securityLabel;
-	UILabel *priceLabel;
-	UILabel *qtyLabel;
-	UILabel *reportedLabel;
-}
+@interface MarketInfoCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *systemLabel;
 @property (nonatomic, retain) IBOutlet UILabel *stationLabel;
 @property (nonatomic, retain) IBOutlet UILabel *securityLabel;

@@ -11,7 +11,8 @@
 #import "UIDevice+IP.h"
 #import "Globals.h"
 
-@interface PCViewController(Private)
+@interface PCViewController()
+@property (nonatomic, strong) EUHTTPServer *server;
 
 - (void) updateAddress;
 
@@ -21,17 +22,6 @@
 @implementation PCViewController
 @synthesize addressLabel;
 
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
-
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -40,14 +30,14 @@
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:NSLocalizedString(@"Loading Accounts", nil)];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		[[EVEAccountStorage sharedAccountStorage] reload];
-		[pool release];
+		@autoreleasepool {
+			[[EVEAccountStorage sharedAccountStorage] reload];
+		}
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		server = [[EUHTTPServer alloc] initWithDelegate:self];
-		[server run];
+		self.server = [[EUHTTPServer alloc] initWithDelegate:self];
+		[self.server run];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -70,9 +60,6 @@
 }
 
 - (void)viewDidUnload {
-    [super viewDidUnload];
-	[server shutdown];
-	[server release];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -81,11 +68,6 @@
 
 - (void)dealloc {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
-	[addressLabel release];
-
-	[server shutdown];
-	[server release];
-    [super dealloc];
 }
 
 #pragma mark EUHTTPServerDelegate
@@ -121,16 +103,15 @@
 	
 	if (canRun) {
 		NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
-		CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
-		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
-		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"text/html; charset=UTF-8");
+		CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
+		CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+		CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Type", (__bridge CFStringRef) @"text/html; charset=UTF-8");
 
 		[connection.response run];
 	}
 	else {
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+Request" name:NSLocalizedString(@"Checking API Key", nil)];
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 			NSInteger keyID = [[arguments valueForKey:@"keyID"] integerValue];
 			NSString* vCode = [arguments valueForKey:@"vCode"];
@@ -146,14 +127,13 @@
 				[page replaceOccurrencesOfString:@"{keyID}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
 				[page replaceOccurrencesOfString:@"{vCode}" withString:@"" options:0 range:NSMakeRange(0, page.length)];
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
 			NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
-			CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
-			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
-			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"text/html; charset=UTF-8");
+			CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
+			CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+			CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Type", (__bridge CFStringRef) @"text/html; charset=UTF-8");
 
 			[connection.response run];
 		}];
@@ -162,9 +142,7 @@
 	}
 }
 
-@end
-
-@implementation PCViewController(Private)
+#pragma mark - Private
 
 - (void) updateAddress {
 	NSArray *addresses = [UIDevice localIPAddresses];
@@ -187,8 +165,3 @@
 }
 
 @end
-
-/*
-Connect your device via Wi-Fi to LAN
-
-*/

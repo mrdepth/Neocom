@@ -18,21 +18,22 @@
 #import "ContractViewController.h"
 #import "NSString+TimeLeft.h"
 
-@interface ContractsViewController(Private)
+@interface ContractsViewController()
+@property(nonatomic, strong) NSMutableArray *filteredValues;
+@property(nonatomic, strong) NSMutableArray *contracts;
+@property(nonatomic, strong) NSMutableArray *charContracts;
+@property(nonatomic, strong) NSMutableArray *corpContracts;
+@property(nonatomic, strong) NSMutableDictionary *conquerableStations;
+@property(nonatomic, strong) EUFilter *charFilter;
+@property(nonatomic, strong) EUFilter *corpFilter;
+
 - (void) reloadContracts;
-- (NSDictionary*) conquerableStations;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (IBAction) onClose:(id) sender;
 @end
 
 @implementation ContractsViewController
-@synthesize contractsTableView;
-@synthesize ownerSegmentControl;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -52,16 +53,15 @@
 	self.title = NSLocalizedString(@"Contracts", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
-		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+		self.navigationItem.titleView = self.ownerSegmentControl;
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsContractsOwner];
+	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsContractsOwner];
 
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
@@ -84,46 +84,29 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.contractsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
-	[contracts release];
-	[charContracts release];
-	[corpContracts release];
-	[filteredValues release];
-	[conquerableStations release];
-	[charFilter release];
-	[corpFilter release];
-	contracts = charContracts = corpContracts = filteredValues = nil;
-	conquerableStations = nil;
-	charFilter = corpFilter = nil;
+	self.contracts = nil;
+	self.charContracts = nil;
+	self.corpContracts = nil;
+	self.filteredValues = nil;
+	self.conquerableStations = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[contractsTableView release];
-	[ownerSegmentControl release];
-	[searchBar release];
-	[filteredValues release];
-	[contracts release];
-	[charContracts release];
-	[corpContracts release];
-	[conquerableStations release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[charFilter release];
-	[corpFilter release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsContractsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsContractsOwner];
 	[self reloadContracts];
 }
 
@@ -139,9 +122,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return filteredValues.count;
+		return self.filteredValues.count;
 	else {
-		return contracts.count;
+		return self.contracts.count;
 	}
 }
 
@@ -154,7 +137,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == contractsTableView ? @"ContractCellView" : @"ContractCellViewCompact";
+			nibName = tableView == self.contractsTableView ? @"ContractCellView" : @"ContractCellViewCompact";
 		else
 			nibName = @"ContractCellView";
 		
@@ -163,9 +146,9 @@
 	NSDictionary *contractDic;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		contractDic = [filteredValues objectAtIndex:indexPath.row];
+		contractDic = [self.filteredValues objectAtIndex:indexPath.row];
 	else {
-		contractDic = [contracts objectAtIndex:indexPath.row];
+		contractDic = [self.contracts objectAtIndex:indexPath.row];
 	}
 	EVEContractsItem *contract = [contractDic valueForKey:@"contract"];
 	
@@ -229,7 +212,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == contractsTableView ? 71 : 123;
+		return tableView == self.contractsTableView ? 71 : 123;
 	else
 		return 123;
 }
@@ -240,22 +223,20 @@
 	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:@"ContractViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.contract = [[filteredValues objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
+		controller.contract = [[self.filteredValues objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
 	else
-		controller.contract = [[contracts objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
-	controller.corporate = ownerSegmentControl.selectedSegmentIndex == 1;
+		controller.contract = [[self.contracts objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
+	controller.corporate = self.ownerSegmentControl.selectedSegmentIndex == 1;
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 
@@ -276,23 +257,23 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
-	filterViewController.filter = filter;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
+	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -306,46 +287,42 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation ContractsViewController(Private)
+#pragma mark - Private
 
 - (void) reloadContracts {
 	
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentContracts = corporate ? corpContracts : charContracts;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	NSMutableArray *currentContracts = corporate ? self.corpContracts : self.charContracts;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"contractsFilter" ofType:@"plist"]]];
 	
-	[contracts release];
-	contracts = nil;
+	self.contracts = nil;
 	if (!currentContracts) {
 		if (corporate) {
-			corpContracts = [[NSMutableArray alloc] init];
-			currentContracts = corpContracts;
+			self.corpContracts = [[NSMutableArray alloc] init];
+			currentContracts = self.corpContracts;
 		}
 		else {
-			charContracts = [[NSMutableArray alloc] init];
-			currentContracts = charContracts;
+			self.charContracts = [[NSMutableArray alloc] init];
+			currentContracts = self.charContracts;
 		}
 		EVEAccount *account = [EVEAccount currentAccount];
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Contracts", nil)];
+		__weak EUOperation* weakOperation = operation;
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 			
 			if (!account) {
-				[pool release];
 				return;
 			}
 			
 			EVEContracts *eveContracts;
 			if (corporate)
-				eveContracts = [EVEContracts contractsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+				eveContracts = [EVEContracts contractsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 			else
-				eveContracts = [EVEContracts contractsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
-			operation.progress = 0.5;
+				eveContracts = [EVEContracts contractsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+			weakOperation.progress = 0.5;
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
@@ -359,7 +336,7 @@
 				float n = eveContracts.contractList.count;
 				float i = 0;
 				for (EVEContractsItem *contract in eveContracts.contractList) {
-					operation.progress = 0.5 + i++ / n / 2;
+					weakOperation.progress = 0.5 + i++ / n / 2;
 					NSString *remains;
 					UIColor *remainsColor;
 					NSString *stationName = nil;
@@ -414,13 +391,12 @@
 											 [dateFormatter stringFromDate:contract.dateIssued], @"dateIssued",
 											 nil]];
 				}
-				[dateFormatter release];
 				
 				[contractsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"dateIssued" ascending:NO]]];
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;
-					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
+					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
 						for (NSMutableDictionary *item in contractsTmp) {
 							EVEContractsItem *contract = [item valueForKey:@"contract"];
@@ -442,21 +418,18 @@
 				
 				[filterTmp updateWithValues:contractsTmp];
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (corporate) {
-					[corpFilter release];
-					corpFilter = [filterTmp retain];
+					self.corpFilter = filterTmp;
 				}
 				else {
-					[charFilter release];
-					charFilter = [filterTmp retain];
+					self.charFilter = filterTmp;
 				}
 				[currentContracts addObjectsFromArray:contractsTmp];
-				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
+				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadContracts];
 			}
 		}];
@@ -464,94 +437,90 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		EUFilter *filter = corporate ? corpFilter : charFilter;
+		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 		NSMutableArray *contractsTmp = [NSMutableArray array];
 		if (filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[contractsTmp addObjectsFromArray:[filter applyToValues:currentContracts]];
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						[contracts release];
-						contracts = [contractsTmp retain];
+				if (![weakOperation isCancelled]) {
+					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+						self.contracts = contractsTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[contractsTableView reloadData];
+						[self.contractsTableView reloadData];
 					}
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else
-			contracts = [currentContracts retain];
+			self.contracts = currentContracts;
 	}
-	[contractsTableView reloadData];
+	[self.contractsTableView reloadData];
 }
 
-- (NSDictionary*) conquerableStations {
-	if (!conquerableStations) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (conquerableStations)
-			[conquerableStations release];
-		conquerableStations = [[NSMutableDictionary alloc] init];
-		
-		NSError *error = nil;
-		EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error];
-		
-		if (!error) {
-			for (EVEConquerableStationListItem *station in stationsList.outposts)
-				[conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+- (NSMutableDictionary*) conquerableStations {
+	if (!_conquerableStations) {
+		@autoreleasepool {
+			_conquerableStations = [[NSMutableDictionary alloc] init];
+			
+			NSError *error = nil;
+			EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error progressHandler:nil];
+			
+			if (!error) {
+				for (EVEConquerableStationListItem *station in stationsList.outposts)
+					[_conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+			}
 		}
-		[pool release];
 	}
-	return conquerableStations;
+	return _conquerableStations;
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[contracts release];
-			[charContracts release];
-			[corpContracts release];
-			[filteredValues release];
-			contracts = charContracts = corpContracts = filteredValues = nil;
-			[charFilter release];
-			[corpFilter release];
-			charFilter = corpFilter = nil;
+			self.contracts = nil;
+			self.charContracts = nil;
+			self.corpContracts = nil;
+			self.filteredValues = nil;
+			self.conquerableStations = nil;
+			self.charFilter = nil;
+			self.corpFilter = nil;
 			[self reloadContracts];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
-		[contracts release];
-		[charContracts release];
-		[corpContracts release];
-		[filteredValues release];
-		contracts = charContracts = corpContracts = filteredValues = nil;
-		[charFilter release];
-		[corpFilter release];
-		charFilter = corpFilter = nil;
+		self.contracts = nil;
+		self.charContracts = nil;
+		self.corpContracts = nil;
+		self.filteredValues = nil;
+		self.conquerableStations = nil;
+		self.charFilter = nil;
+		self.corpFilter = nil;
 		[self reloadContracts];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (contracts.count == 0 || !aSearchString)
+	if (self.contracts.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *contract in contracts) {
+		for (NSDictionary *contract in self.contracts) {
+			if ([weakOperation isCancelled])
+				break;
 			if (([contract valueForKeyPath:@"remains"] && [[contract valueForKeyPath:@"remains"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([contract valueForKeyPath:@"location"] && [[contract valueForKeyPath:@"location"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([contract valueForKeyPath:@"issuerName"] && [[contract valueForKeyPath:@"issuerName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
@@ -560,13 +529,11 @@
 				([contract valueForKeyPath:@"typeString"] && [[contract valueForKeyPath:@"typeString"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 				[filteredValuesTmp addObject:contract];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

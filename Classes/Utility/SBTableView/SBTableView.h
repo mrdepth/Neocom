@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SBTableView : UITableView<UITableViewDelegate> {
-	UIView *topView;
-	id <UITableViewDelegate> delegate;
-	float visibleTopPartHeight;
-}
+@interface SBTableView : UITableView<UITableViewDelegate>
 @property (nonatomic, retain) IBOutlet UIView *topView;
 @property (nonatomic, assign) id <UITableViewDelegate> delegate;
 @property (nonatomic, assign) float visibleTopPartHeight;

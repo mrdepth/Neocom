@@ -20,11 +20,11 @@
 @dynamic structures;
 
 + (id) posFitWithFitName:(NSString*) fitName controlTower:(eufe::ControlTower*) aControlTower {
-	return [[[POSFit alloc] initWithFitName:fitName controlTower:aControlTower] autorelease];
+	return [[POSFit alloc] initWithFitName:fitName controlTower:aControlTower];
 }
 
 + (id) posFitWithAsset:(EVEAssetListItem*) asset engine:(eufe::Engine*) engine {
-	return [[[POSFit alloc] initWithAsset:asset engine:engine] autorelease];
+	return [[POSFit alloc] initWithAsset:asset engine:engine];
 	
 }
 
@@ -37,7 +37,6 @@
 	
 	NSError *error = nil;
 	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	[fetchRequest release];
 	return fetchedObjects;
 }
 
@@ -62,7 +61,6 @@
 		_controlTower = engine->setControlTower(asset.typeID);
 		self.fitName = asset.location.itemName ? asset.location.itemName : asset.type.typeName;
 		if (_controlTower == NULL) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -86,10 +84,6 @@
 	return self;
 }
 
-
-- (void) dealloc {
-	[super dealloc];
-}
 
 - (void) save {
 	NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];

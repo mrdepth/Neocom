@@ -17,49 +17,11 @@
 
 #import "eufe.h"
 
-@interface POSStatsViewController(Private)
+@interface POSStatsViewController()
 - (void) updatePrice;
 @end
 
 @implementation POSStatsViewController
-@synthesize posFittingViewController;
-@synthesize scrollView;
-@synthesize contentView;
-
-@synthesize powerGridLabel;
-@synthesize cpuLabel;
-
-@synthesize shieldEMLabel;
-@synthesize shieldThermalLabel;
-@synthesize shieldKineticLabel;
-@synthesize shieldExplosiveLabel;
-@synthesize armorEMLabel;
-@synthesize armorThermalLabel;
-@synthesize armorKineticLabel;
-@synthesize armorExplosiveLabel;
-@synthesize hullEMLabel;
-@synthesize hullThermalLabel;
-@synthesize hullKineticLabel;
-@synthesize hullExplosiveLabel;
-@synthesize damagePatternEMLabel;
-@synthesize damagePatternThermalLabel;
-@synthesize damagePatternKineticLabel;
-@synthesize damagePatternExplosiveLabel;
-
-@synthesize shieldHPLabel;
-@synthesize armorHPLabel;
-@synthesize hullHPLabel;
-@synthesize ehpLabel;
-
-@synthesize shieldRecharge;
-
-@synthesize weaponDPSLabel;
-
-@synthesize fuelTypeLabel;
-@synthesize fuelCostLabel;
-@synthesize fuelImageView;
-@synthesize infrastructureUpgradesCostLabel;
-@synthesize posCostLabel;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -79,8 +41,8 @@
 	[self.scrollView addSubview:self.contentView];
 	self.scrollView.contentSize = self.contentView.frame.size;
 
-	self.fuelImageView.image = [UIImage imageNamed:posFittingViewController.posFuelRequirements.resourceType.typeSmallImageName];
-	self.fuelTypeLabel.text = posFittingViewController.posFuelRequirements.resourceType.typeName;
+	self.fuelImageView.image = [UIImage imageNamed:self.posFittingViewController.posFuelRequirements.resourceType.typeSmallImageName];
+	self.fuelTypeLabel.text = self.posFittingViewController.posFuelRequirements.resourceType.typeName;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -143,50 +105,6 @@
 	[self update];
 }
 
-
-- (void)dealloc {
-	[scrollView release];
-	[contentView release];
-	
-	[powerGridLabel release];
-	[cpuLabel release];
-	
-	[shieldEMLabel release];
-	[shieldThermalLabel release];
-	[shieldKineticLabel release];
-	[shieldExplosiveLabel release];
-	[armorEMLabel release];
-	[armorThermalLabel release];
-	[armorKineticLabel release];
-	[armorExplosiveLabel release];
-	[hullEMLabel release];
-	[hullThermalLabel release];
-	[hullKineticLabel release];
-	[hullExplosiveLabel release];
-	[damagePatternEMLabel release];
-	[damagePatternThermalLabel release];
-	[damagePatternKineticLabel release];
-	[damagePatternExplosiveLabel release];
-	
-	[shieldHPLabel release];
-	[armorHPLabel release];
-	[hullHPLabel release];
-	[ehpLabel release];
-	
-	[shieldRecharge release];
-	
-	[weaponDPSLabel release];
-	
-	[fuelTypeLabel release];
-	[fuelCostLabel release];
-	[fuelImageView release];
-	[infrastructureUpgradesCostLabel release];
-	[posCostLabel release];
-
-    [super dealloc];
-}
-
-
 #pragma mark FittingSection
 
 - (void) update {
@@ -203,15 +121,14 @@
 	__block float weaponDPS;
 	__block float volleyDamage;
 	
-	__block UIImage *sensorImage = nil;
 	__block DamagePattern* damagePattern = nil;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+Update" name:NSLocalizedString(@"Updating Stats", nil)];
-	POSFittingViewController* aPosFittingViewController = posFittingViewController;
+	__weak EUOperation* weakOperation = operation;
+	POSFittingViewController* aPosFittingViewController = self.posFittingViewController;
 
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(posFittingViewController) {
+		@synchronized(self.posFittingViewController) {
 			
 			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			
@@ -233,22 +150,21 @@
 			weaponDPS = controlTower->getWeaponDps();
 			volleyDamage = controlTower->getWeaponVolley();
 			
-			damagePattern = [aPosFittingViewController.damagePattern retain];
+			damagePattern = self.posFittingViewController.damagePattern;
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-			powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-			cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-			cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+		if (![weakOperation isCancelled]) {
+			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
 			
-			NSArray *resistanceLabels = [NSArray arrayWithObjects:shieldEMLabel, shieldThermalLabel, shieldKineticLabel, shieldExplosiveLabel,
-										 armorEMLabel, armorThermalLabel, armorKineticLabel, armorExplosiveLabel,
-										 hullEMLabel, hullThermalLabel, hullKineticLabel, hullExplosiveLabel,
-										 damagePatternEMLabel, damagePatternThermalLabel, damagePatternKineticLabel, damagePatternExplosiveLabel, nil];
+			NSArray *resistanceLabels = [NSArray arrayWithObjects:self.shieldEMLabel, self.shieldThermalLabel, self.shieldKineticLabel, self.shieldExplosiveLabel,
+										 self.armorEMLabel, self.armorThermalLabel, self.armorKineticLabel, self.armorExplosiveLabel,
+										 self.hullEMLabel, self.hullThermalLabel, self.hullKineticLabel, self.hullExplosiveLabel,
+										 self.damagePatternEMLabel, self.damagePatternThermalLabel, self.damagePatternKineticLabel, self.damagePatternExplosiveLabel, nil];
 			
 			float resistanceValues[] = {resistances.shield.em, resistances.shield.thermal, resistances.shield.kinetic, resistances.shield.explosive,
 				resistances.armor.em, resistances.armor.thermal, resistances.armor.kinetic, resistances.armor.explosive,
@@ -261,27 +177,23 @@
 				label.text = [NSString stringWithFormat:@"%.1f%%", resist * 100];
 			}
 			
-			shieldHPLabel.text = [NSString stringWithResource:hp.shield unit:nil];
-			armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
-			hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
+			self.shieldHPLabel.text = [NSString stringWithResource:hp.shield unit:nil];
+			self.armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
+			self.hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
 			
-			ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
+			self.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
 			
-			shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.passiveShield, ertank.passiveShield];
+			self.shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.passiveShield, ertank.passiveShield];
 			
-			weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f\n%.0f",weaponDPS, volleyDamage];
+			self.weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f\n%.0f",weaponDPS, volleyDamage];
 		}
-		[sensorImage release];
-		[damagePattern release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 	[self updatePrice];
 }
 
-@end
-
-@implementation POSStatsViewController(Private)
+#pragma mark - Private
 
 - (void) updatePrice {
 	__block int fuelConsumtion;
@@ -291,15 +203,14 @@
 	__block float posCost;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSStatsViewController+UpdatePrice" name:NSLocalizedString(@"Updating Price", nil)];
-	POSFittingViewController* aPosFittingViewController = posFittingViewController;
+	__weak EUOperation* weakOperation = operation;
+	POSFittingViewController* aPosFittingViewController = self.posFittingViewController;
 	
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 		NSMutableSet* types = [NSMutableSet set];
 		NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
 
-		@synchronized(posFittingViewController) {
+		@synchronized(self.posFittingViewController) {
 			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			fuelConsumtion = aPosFittingViewController.posFuelRequirements.quantity;
 			
@@ -336,10 +247,10 @@
 
 		float fuelPrice = [aPosFittingViewController.priceManager priceWithType:aPosFittingViewController.posFuelRequirements.resourceType];
 		fuelDailyCost = fuelConsumtion * fuelPrice * 24;
-		operation.progress = 0.5;
+		weakOperation.progress = 0.5;
 		
-		@synchronized(aPosFittingViewController) {
-			eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
+		@synchronized(self.posFittingViewController) {
+			eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
 			for (i = structuresList.begin(); i != end; i++) {
@@ -354,21 +265,19 @@
 		prices = [aPosFittingViewController.priceManager pricesWithTypes:[infrastructureUpgrades allValues]];
 		for (NSNumber* number in [prices allValues])
 			upgradesCost += [number floatValue];
-		operation.progress = 1.0;
-
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			fuelCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
+		if (![weakOperation isCancelled]) {
+			self.fuelCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
 								  fuelConsumtion,
 								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
 			
-			infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
+			self.infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
 													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
 													[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
-			posCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
+			self.posCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
 								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:posCost] numberStyle:NSNumberFormatterDecimalStyle]];
 		}
 	}];

@@ -9,12 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SelectCharacterBarButtonItem : UIBarButtonItem {
-	UIViewController *parentViewController;
-	UIViewController *modalViewController;
-}
-@property (nonatomic, assign) UIViewController *parentViewController;
-@property (nonatomic, retain) UIViewController *modalViewController;
+@interface SelectCharacterBarButtonItem : UIBarButtonItem
+@property (nonatomic, weak) UIViewController *parentViewController;
+@property (nonatomic, strong) UIViewController *modalViewController;
 
 + (id) barButtonItemWithParentViewController: (UIViewController*) controller;
 - (id) initWithParentViewController: (UIViewController*) controller;

@@ -8,12 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CertificateCellView : UITableViewCell {
-	UIImageView *iconView;
-	UIImageView *stateView;
-	UILabel *titleLabel;
-	UILabel *detailLabel;
-}
+@interface CertificateCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UIImageView *stateView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;

@@ -9,13 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface EVEAccountsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
-	UITableView *accountsTableView;
-	UIButton *logoffButton;
-@private
-	NSMutableArray *sections;
-	NSOperation *loadingOperation;
-}
+@interface EVEAccountsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) IBOutlet UITableView *accountsTableView;
 @property (nonatomic, retain) IBOutlet UIButton *logoffButton;

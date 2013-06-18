@@ -11,28 +11,7 @@
 #import "FilterViewController.h"
 #import "EUFilter.h"
 
-@interface WalletTransactionsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	SBTableView *walletTransactionsTableView;
-	UISegmentedControl *ownerSegmentControl;
-	UISegmentedControl *accountSegmentControl;
-	UIView *accountsView;
-	UIToolbar *ownerToolbar;
-	UIToolbar *accountToolbar;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *walletTransactions;
-	NSMutableArray *charWalletTransactions;
-	NSMutableArray *corpWalletTransactions;
-	NSMutableArray *filteredValues;
-	NSMutableArray *corpAccounts;
-	NSNumber *characterBalance;
-	BOOL isFail;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-}
+@interface WalletTransactionsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet SBTableView *walletTransactionsTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *accountSegmentControl;

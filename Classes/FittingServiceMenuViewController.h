@@ -10,15 +10,7 @@
 #import "FittingItemsViewController.h"
 
 
-@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate> {
-	UITableView *menuTableView;
-	FittingItemsViewController *fittingItemsViewController;
-	UINavigationController *modalController;
-	UIPopoverController *popoverController;
-@private
-	NSMutableArray *fits;
-	BOOL needsConvert;
-}
+@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, retain) IBOutlet UITableView *menuTableView;
 @property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;

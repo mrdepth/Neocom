@@ -13,14 +13,7 @@
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface FleetViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
-	FittingViewController *fittingViewController;
-	UITableView *tableView;
-	
-@private
-	NSMutableArray* pilots;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface FleetViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 

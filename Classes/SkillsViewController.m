@@ -21,18 +21,8 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 
-@interface Skill : NSObject {
-	NSString *skillName;
-	NSString *skillPoints;
-	NSString *level;
-	NSString *iconImageName;
-	NSString *levelImageName;
-	NSString *remainingTime;
-	NSInteger typeID;
-	NSInteger targetLevel;
-	NSInteger startSkillPoints;
-	NSInteger targetSkillPoints;
-}
+@interface Skill : NSObject
+
 @property (nonatomic, retain) NSString *skillName;
 @property (nonatomic, retain) NSString *skillPoints;
 @property (nonatomic, retain) NSString *level;
@@ -44,34 +34,13 @@
 @property (nonatomic, assign) NSInteger startSkillPoints;
 @property (nonatomic, assign) NSInteger targetSkillPoints;
 
-- (NSComparisonResult) compare:(Skill*) other;
 @end
 
 
 @implementation Skill
-@synthesize skillName;
-@synthesize skillPoints;
-@synthesize level;
-@synthesize iconImageName;
-@synthesize levelImageName;
-@synthesize remainingTime;
-@synthesize typeID;
-@synthesize targetLevel;
-@synthesize startSkillPoints;
-@synthesize targetSkillPoints;
 
 - (NSComparisonResult) compare:(Skill*) other {
-	return [skillName compare:skillName];
-}
-
-- (void) dealloc {
-	[skillName release];
-	[skillPoints release];
-	[level release];
-	[iconImageName release];
-	[levelImageName release];
-	[remainingTime release];
-	[super dealloc];
+	return [self.skillName compare:other.skillName];
 }
 
 @end
@@ -80,7 +49,10 @@
  return [[[[[a objectAtIndex:0] skill] group] groupName] compare:[[[[b objectAtIndex:0] skill] group] groupName]];
  }*/
 
-@interface SkillsViewController(Private)
+@interface SkillsViewController()
+@property (nonatomic, strong) NSArray *skillGroups;
+@property (nonatomic, strong) NSMutableArray *skillQueue;
+@property (nonatomic, strong) NSString *skillQueueTitle;
 
 - (void) loadData;
 - (void) didSelectAccount:(NSNotification*) notification;
@@ -154,34 +126,21 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
 	self.skillsTableView = nil;
 	self.skillsQueueTableView = nil;
 	self.segmentedControl = nil;
 	self.characterInfoViewController = nil;
-	
-	[skillGroups release];
-	[skillQueue release];
-	[skillQueueTitle release];
-	skillGroups = nil;
-	skillQueue = nil;
-	skillQueueTitle = nil;
+	self.skillGroups = nil;
+	self.skillQueue = nil;
+	self.skillQueueTitle = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
-	[skillsTableView release];
-	[skillsQueueTableView release];
-	[segmentedControl release];
-	[characterInfoViewController release];
-	
-	[skillGroups release];
-	[skillQueue release];
-	[skillQueueTitle release];
-    [super dealloc];
 }
 
 - (IBAction) onChangeSegmentedControl:(id) sender {
@@ -195,15 +154,15 @@
     // Return the number of sections.
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			return skillGroups.count;
+			return self.skillGroups.count;
 		else
-			return skillQueue.count > 0 ? 1 : 0;
+			return self.skillQueue.count > 0 ? 1 : 0;
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			return skillGroups.count;
+			return self.skillGroups.count;
 		else
-			return skillQueue.count > 0 ? 1 : 0;
+			return self.skillQueue.count > 0 ? 1 : 0;
 	}
 }
 
@@ -211,30 +170,30 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			return [[[skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
+			return [[[self.skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
 		else
-			return skillQueue.count;
+			return self.skillQueue.count;
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			return [[[skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
+			return [[[self.skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
 		else
-			return skillQueue.count;
+			return self.skillQueue.count;
 	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			return [[skillGroups objectAtIndex:section] valueForKey:@"groupName"];
+			return [[self.skillGroups objectAtIndex:section] valueForKey:@"groupName"];
 		else
-			return skillQueueTitle;
+			return self.skillQueueTitle;
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			return [[skillGroups objectAtIndex:section] valueForKey:@"groupName"];
+			return [[self.skillGroups objectAtIndex:section] valueForKey:@"groupName"];
 		else
-			return skillQueueTitle;
+			return self.skillQueueTitle;
 	}
 }
 
@@ -250,15 +209,15 @@
 	Skill *skill;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			skill = [[[skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
+			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
-			skill = [skillQueue objectAtIndex:indexPath.row];
+			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			skill = [[[skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
+			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
-			skill = [skillQueue objectAtIndex:indexPath.row];
+			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	cell.iconImageView.image = [UIImage imageNamed:skill.iconImageName];
 	NSString* levelImagePath = [[NSBundle mainBundle] pathForResource:skill.levelImageName ofType:nil];
@@ -308,15 +267,15 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			skill = [[[skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
+			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
-			skill = [skillQueue objectAtIndex:indexPath.row];
+			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			skill = [[[skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
+			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
-			skill = [skillQueue objectAtIndex:indexPath.row];
+			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -328,11 +287,9 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark - CollapsableTableViewDelegate
@@ -341,11 +298,11 @@
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 
 	return [[dic valueForKey:@"collapsed"] boolValue];
@@ -355,11 +312,11 @@
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	return dic != nil;
 }
@@ -368,11 +325,11 @@
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 
 	[dic setValue:@(YES) forKey:@"collapsed"];
@@ -382,38 +339,34 @@
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == skillsTableView)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
 		if (segmentedControl.selectedSegmentIndex == 1)
-			dic = [skillGroups objectAtIndex:section];
+			dic = [self.skillGroups objectAtIndex:section];
 	}
 	
 	[dic setValue:@(NO) forKey:@"collapsed"];
 }
 
-@end
-
-@implementation SkillsViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *skillQueueTmp = [NSMutableArray array];
 	NSMutableArray *skillGroupsTmp = [NSMutableArray array];
 	__block NSString *skillQueueTitleTmp = nil;
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillsViewController+Load" name:NSLocalizedString(@"Loading Skills", nil)];
+	__weak EUOperation* weakOperation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		
 		EVEAccount *account = [EVEAccount currentAccount];
-		if (!account) {
-			[pool release];
+		if (!account)
 			return;
-		}
 		
 		NSError *error = nil;
 		//character.skillQueue = [EVESkillQueue skillQueueWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID error:&error];
-		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error];
-		operation.progress = 0.3;
+		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error progressHandler:nil];
+		weakOperation.progress = 0.3;
 		//[character updateSkillpoints];
 		
 		if (error) {
@@ -447,10 +400,9 @@
 					skill.remainingTime = nil;
 				
 				[skillQueueTmp addObject:skill];
-				[skill release];
 				i++;
 			}
-			operation.progress = 0.3;
+			weakOperation.progress = 0.3;
 			if (account.characterSheet.skills) {
 				NSMutableDictionary *groups = [NSMutableDictionary dictionary];
 				for (EVECharacterSheetSkill *item in account.characterSheet.skills) {
@@ -504,7 +456,6 @@
 					[group setValue:[NSNumber numberWithInt:[[group valueForKey:@"skillPoints"] integerValue] + item.skillpoints] forKey:@"skillPoints"];
 					
 					[skills addObject:skill];
-					[skill release];
 				}
 				
 				[skillGroupsTmp addObjectsFromArray:[[groups allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]]]];
@@ -513,13 +464,11 @@
 					[group setValue:[NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil), [group valueForKey:@"groupName"], [NSNumberFormatter localizedStringFromNumber:[group valueForKey:@"skillPoints"] numberStyle:NSNumberFormatterDecimalStyle]] forKey:@"groupName"];
 				}
 			}
-			operation.progress = 0.6;
-			if (skillQueueTitle) {
-				[skillQueueTitle release];
-				skillQueueTitle = nil;
-			}
+			weakOperation.progress = 0.6;
+			if (self.skillQueueTitle)
+				self.skillQueueTitle = nil;
 			if (account.skillQueue.skillQueue.count == 0)
-				skillQueueTitle = [[NSString alloc] initWithFormat:NSLocalizedString(@"Training queue inactive.", nil)];
+				skillQueueTitleTmp = [[NSString alloc] initWithFormat:NSLocalizedString(@"Training queue inactive.", nil)];
 			else {
 				EVESkillQueueItem *lastSkill = [account.skillQueue.skillQueue lastObject];
 				if (lastSkill.endTime) {
@@ -531,17 +480,14 @@
 				else
 					skillQueueTitleTmp = [[NSString alloc] initWithString:NSLocalizedString(@"Training queue is inactive", nil)];
 			}
-			operation.progress = 1.0;
+			weakOperation.progress = 1.0;
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		skillQueueTitle = skillQueueTitleTmp;
-		[skillGroups release];
-		skillGroups = [skillGroupsTmp retain];
-		[skillQueue release];
-		skillQueue = [skillQueueTmp retain];
+		self.skillQueueTitle = skillQueueTitleTmp;
+		self.skillGroups = skillGroupsTmp;
+		self.skillQueue = skillQueueTmp;
 		[skillsTableView reloadData];
 		[skillsQueueTableView reloadData];
 	}];

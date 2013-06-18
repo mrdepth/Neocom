@@ -12,13 +12,6 @@
 #import "EVEDBInvType.h"
 
 @implementation ItemViewController
-@synthesize itemInfoViewController;
-@synthesize marketInfoViewController;
-@synthesize parentView;
-@synthesize activePage;
-@synthesize type;
-@synthesize pageSegmentControl;
-
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -34,30 +27,30 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = type.typeName;
+	self.title = self.type.typeName;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		if ([[self.navigationController viewControllers] objectAtIndex:0] == self)
-			[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)] autorelease]];
+			[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)]];
 	}
 	
-	marketInfoViewController.type = type;
-	itemInfoViewController.type = type;
-	marketInfoViewController.parentViewController = self;
+	self.marketInfoViewController.type = self.type;
+	self.itemInfoViewController.type = self.type;
+	self.marketInfoViewController.parentViewController = self;
 	
-	if (activePage == ItemViewControllerActivePageInfo) {
-		[parentView addSubview:itemInfoViewController.view];
-		itemInfoViewController.view.frame = CGRectMake(0, 0, parentView.frame.size.width, parentView.frame.size.height);
-		pageSegmentControl.selectedSegmentIndex = 0;
-		if (type.marketGroupID != 0)
-			[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:pageSegmentControl] autorelease]];
+	if (self.activePage == ItemViewControllerActivePageInfo) {
+		[self.parentView addSubview:self.itemInfoViewController.view];
+		self.itemInfoViewController.view.frame = CGRectMake(0, 0, self.parentView.frame.size.width, self.parentView.frame.size.height);
+		self.pageSegmentControl.selectedSegmentIndex = 0;
+		if (self.type.marketGroupID != 0)
+			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.pageSegmentControl]];
 	}
 	else {
-		[parentView addSubview:marketInfoViewController.view];
-		marketInfoViewController.view.frame = CGRectMake(0, 0, parentView.frame.size.width, parentView.frame.size.height);
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:pageSegmentControl] autorelease]];
-		pageSegmentControl.selectedSegmentIndex = 1;
+		[self.parentView addSubview:self.marketInfoViewController.view];
+		self.marketInfoViewController.view.frame = CGRectMake(0, 0, self.parentView.frame.size.width, self.parentView.frame.size.height);
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.pageSegmentControl]];
+		self.pageSegmentControl.selectedSegmentIndex = 1;
 	}
 }
 
@@ -84,38 +77,29 @@
 }
 
 
-- (void)dealloc {
-	[itemInfoViewController release];
-	[marketInfoViewController release];
-	[parentView release];
-	[type release];
-	[pageSegmentControl release];
-    [super dealloc];
-}
-
 - (void) setActivePage:(ItemViewControllerActivePage) value animated:(BOOL) animated;{
-	if (activePage == value)
+	if (_activePage == value)
 		return;
 	if (animated) {
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 		[UIView setAnimationTransition:(value == ItemViewControllerActivePageInfo ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft)
-							   forView:parentView cache:NO];
+							   forView:self.parentView cache:NO];
 		[UIView setAnimationDuration:1];
 	}
-	activePage = value;
+	_activePage = value;
 
-	if (activePage == ItemViewControllerActivePageInfo) {
-		[marketInfoViewController.view removeFromSuperview];
-		[parentView addSubview:itemInfoViewController.view];
-		itemInfoViewController.view.frame = CGRectMake(0, 0, parentView.frame.size.width, parentView.frame.size.height);
+	if (_activePage == ItemViewControllerActivePageInfo) {
+		[self.marketInfoViewController.view removeFromSuperview];
+		[self.parentView addSubview:self.itemInfoViewController.view];
+		self.itemInfoViewController.view.frame = CGRectMake(0, 0, self.parentView.frame.size.width, self.parentView.frame.size.height);
 		if (animated)
 			[UIView commitAnimations];
 	}
 	else {
-		[itemInfoViewController.view removeFromSuperview];
-		[parentView addSubview:marketInfoViewController.view];
-		marketInfoViewController.view.frame = CGRectMake(0, 0, parentView.frame.size.width, parentView.frame.size.height);
+		[self.itemInfoViewController.view removeFromSuperview];
+		[self.parentView addSubview:self.marketInfoViewController.view];
+		self.marketInfoViewController.view.frame = CGRectMake(0, 0, self.parentView.frame.size.width, self.parentView.frame.size.height);
 		if (animated)
 			[UIView commitAnimations];
 	}
@@ -127,7 +111,7 @@
 }
 
 - (IBAction) onChangePage:(id) sender {
-	[self setActivePage:pageSegmentControl.selectedSegmentIndex == 0 ? ItemViewControllerActivePageInfo : ItemViewControllerActivePageMarket];
+	[self setActivePage:self.pageSegmentControl.selectedSegmentIndex == 0 ? ItemViewControllerActivePageInfo : ItemViewControllerActivePageMarket];
 }
 
 - (IBAction) dismissModalViewController:(id) sender {

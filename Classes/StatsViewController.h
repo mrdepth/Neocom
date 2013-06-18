@@ -11,76 +11,7 @@
 #import "FittingSection.h"
 
 @class FittingViewController;
-@interface StatsViewController : UIViewController<FittingSection> {
-	FittingViewController *fittingViewController;
-	UIScrollView *scrollView;
-	UIView *contentView;
-
-	ProgressLabel *powerGridLabel;
-	ProgressLabel *cpuLabel;
-	ProgressLabel *droneBayLabel;
-	ProgressLabel *droneBandwidthLabel;
-	UILabel *calibrationLabel;
-	UILabel *turretsLabel;
-	UILabel *launchersLabel;
-	UILabel *dronesLabel;
-	
-	ProgressLabel *shieldEMLabel;
-	ProgressLabel *shieldThermalLabel;
-	ProgressLabel *shieldKineticLabel;
-	ProgressLabel *shieldExplosiveLabel;
-	ProgressLabel *armorEMLabel;
-	ProgressLabel *armorThermalLabel;
-	ProgressLabel *armorKineticLabel;
-	ProgressLabel *armorExplosiveLabel;
-	ProgressLabel *hullEMLabel;
-	ProgressLabel *hullThermalLabel;
-	ProgressLabel *hullKineticLabel;
-	ProgressLabel *hullExplosiveLabel;
-	ProgressLabel *damagePatternEMLabel;
-	ProgressLabel *damagePatternThermalLabel;
-	ProgressLabel *damagePatternKineticLabel;
-	ProgressLabel *damagePatternExplosiveLabel;
-	
-	UILabel *shieldHPLabel;
-	UILabel *armorHPLabel;
-	UILabel *hullHPLabel;
-	UILabel *ehpLabel;
-	
-	UILabel *shieldSustainedRecharge;
-	UILabel *shieldReinforcedBoost;
-	UILabel *shieldSustainedBoost;
-	UILabel *armorReinforcedRepair;
-	UILabel *armorSustainedRepair;
-	UILabel *hullReinforcedRepair;
-	UILabel *hullSustainedRepair;
-	
-	UILabel *capacitorCapacityLabel;
-	UILabel *capacitorStateLabel;
-	UILabel *capacitorRechargeTimeLabel;
-	UILabel *capacitorDeltaLabel;
-	
-	UILabel *weaponDPSLabel;
-	UILabel *droneDPSLabel;
-	UILabel *volleyDamageLabel;
-	UILabel *dpsLabel;
-	
-	UILabel *targetsLabel;
-	UILabel *targetRangeLabel;
-	UILabel *scanResLabel;
-	UILabel *sensorStrLabel;
-	UILabel *speedLabel;
-	UILabel *alignTimeLabel;
-	UILabel *signatureLabel;
-	UILabel *cargoLabel;
-	UIImageView *sensorImageView;
-	UILabel *droneRangeLabel;
-	UILabel *warpSpeedLabel;
-
-	UILabel *shipPriceLabel;
-	UILabel *fittingsPriceLabel;
-	UILabel *totalPriceLabel;
-}
+@interface StatsViewController : UIViewController<FittingSection>
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIView *contentView;

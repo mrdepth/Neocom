@@ -9,11 +9,5 @@
 #import "CharacterCellView.h"
 
 @implementation CharacterCellView
-@synthesize characterNameLabel;
-
-- (void) dealloc {
-	[characterNameLabel release];
-	[super dealloc];
-}
 
 @end

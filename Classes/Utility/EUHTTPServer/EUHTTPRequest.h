@@ -16,25 +16,17 @@
 @end
 
 
-@interface EUHTTPRequest : NSObject<NSStreamDelegate> {
-	NSInputStream *inputStream;
-	CFHTTPMessageRef message;
-	id <EUHTTPRequestDelegate> delegate;
-	NSMutableDictionary* arguments;
-	NSString* contentType;
-	NSInteger contentLength;
-	NSString* boundary;
-}
+@interface EUHTTPRequest : NSObject<NSStreamDelegate>
 @property (nonatomic, retain) NSInputStream *inputStream;
 @property (nonatomic, assign, readonly) CFHTTPMessageRef message;
-@property (nonatomic, assign) id <EUHTTPRequestDelegate> delegate;
+@property (nonatomic, weak) id <EUHTTPRequestDelegate> delegate;
 @property (nonatomic, readonly) NSURL* url;
 @property (nonatomic, readonly) NSString* method;
 @property (nonatomic, readonly) NSData* body;
-@property (nonatomic, readonly) NSDictionary* arguments;
-@property (nonatomic, readonly) NSString* contentType;
-@property (nonatomic, readonly) NSInteger contentLength;
-@property (nonatomic, readonly) NSString* boundary;
+@property (nonatomic, strong) NSMutableDictionary* arguments;
+@property (nonatomic, strong) NSString* contentType;
+@property (nonatomic, assign) NSInteger contentLength;
+@property (nonatomic, strong) NSString* boundary;
 
 - (id)initWithInputStream:(NSInputStream *)readStream 
 				 delegate:(id<EUHTTPRequestDelegate>) anObject;

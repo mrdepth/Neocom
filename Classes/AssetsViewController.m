@@ -20,16 +20,15 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 
-@interface AssetsViewController() {
-	NSMutableArray *filteredValues;
-	NSMutableArray *assets;
-	NSMutableArray *charAssets;
-	NSMutableArray *corpAssets;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-}
-@property (nonatomic, retain) NSArray* accounts;
-@property (nonatomic, retain) UIPopoverController* popover;
+@interface AssetsViewController()
+@property (nonatomic, strong) NSArray* accounts;
+@property (nonatomic, strong) UIPopoverController* popover;
+@property (nonatomic, strong) NSMutableArray *filteredValues;
+@property (nonatomic, strong) NSMutableArray *assets;
+@property (nonatomic, strong) NSMutableArray *charAssets;
+@property (nonatomic, strong) NSMutableArray *corpAssets;
+@property (nonatomic, strong) EUFilter *charFilter;
+@property (nonatomic, strong) EUFilter *corpFilter;
 
 
 - (void) reloadAssets;
@@ -40,12 +39,6 @@
 @end
 
 @implementation AssetsViewController
-@synthesize assetsTableView;
-@synthesize ownerSegmentControl;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -72,15 +65,15 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		self.navigationItem.titleView = self.ownerSegmentControl;
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Combined", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Combined", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)];
 	
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
+	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[self reloadAssets];
@@ -116,7 +109,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.assetsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
@@ -124,38 +117,21 @@
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
 	self.popover = nil;
-	[assets release];
-	[charAssets release];
-	[corpAssets release];
-	[filteredValues release];
-	[charFilter release];
-	[corpFilter release];
-	assets = charAssets = corpAssets = filteredValues = nil;
-	charFilter = corpFilter = nil;
+	self.assets = nil;
+	self.charAssets = nil;
+	self.corpAssets = nil;
+	self.filteredValues = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[assetsTableView release];
-	[ownerSegmentControl release];
-	[searchBar release];
-	[filteredValues release];
-	[assets release];
-	[charAssets release];
-	[corpAssets release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[charFilter release];
-	[corpFilter release];
-	[_accounts release];
-	[_popover release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsAssetsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsAssetsOwner];
 	[self reloadAssets];
 }
 
@@ -165,9 +141,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return filteredValues.count;
+		return self.filteredValues.count;
 	else
-		return assets.count;
+		return self.assets.count;
 }
 
 
@@ -175,9 +151,9 @@
     // Return the number of rows in the section.
 	NSDictionary* dic;
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		dic = [filteredValues objectAtIndex:section];
+		dic = [self.filteredValues objectAtIndex:section];
 	else
-		dic = [assets objectAtIndex:section];
+		dic = [self.assets objectAtIndex:section];
 	return [[dic valueForKey:@"assets"] count];
 }
 
@@ -193,9 +169,9 @@
 	EVEAssetListItem* asset;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		asset = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	else
-		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	cell.iconImageView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
 
@@ -214,9 +190,9 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	NSDictionary* dic;
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		dic = [filteredValues objectAtIndex:section];
+		dic = [self.filteredValues objectAtIndex:section];
 	else
-		dic = [assets objectAtIndex:section];
+		dic = [self.assets objectAtIndex:section];
 	NSInteger count = [[dic valueForKey:@"assets"] count];
 	return count == 1 ?
 			[NSString stringWithFormat:NSLocalizedString(@"%@ (1 item)", nil), [dic valueForKey:@"title"]] :
@@ -234,9 +210,9 @@
 	EVEAssetListItem* asset;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		asset = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	else
-		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
@@ -247,31 +223,28 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	EVEAssetListItem* asset;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		asset = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 //		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 //			[self.searchDisplayController setActive:NO];
 		
 	}
 	else
-		asset = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		asset = [[[self.assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (asset.contents.count > 0) {
 		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = asset;
-		controller.corporate = ownerSegmentControl.selectedSegmentIndex == 1;
+		controller.corporate = self.ownerSegmentControl.selectedSegmentIndex == 1;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -283,11 +256,9 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 }
 
@@ -310,7 +281,7 @@
 #pragma mark - CollapsableTableViewDelegate
 
 - (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[assets objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
+	return [[[self.assets objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
 }
 
 - (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
@@ -318,11 +289,11 @@
 }
 
 - (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[assets objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
+	[[self.assets objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
 }
 
 - (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[assets objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+	[[self.assets objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
 }
 
 #pragma mark -
@@ -343,23 +314,23 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
-	filterViewController.filter = filter;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
+	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -377,15 +348,12 @@
 
 - (void) accountsSelectionViewController:(AccountsSelectionViewController*) controller didSelectAccounts:(NSArray*) accounts {
 	self.accounts = accounts;
-	[assets release];
-	[charAssets release];
-	[corpAssets release];
-	assets = charAssets = corpAssets = nil;
-	[filteredValues release];
-	filteredValues = nil;
-	[charFilter release];
-	[corpFilter release];
-	charFilter = corpFilter = nil;
+	self.assets = nil;
+	self.charAssets = nil;
+	self.corpAssets = nil;
+	self.filteredValues = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 	[self reloadAssets];
 }
 
@@ -393,27 +361,26 @@
 #pragma mark - Private
 
 - (void) reloadAssets {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentAssets = corporate ? corpAssets : charAssets;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	NSMutableArray *currentAssets = corporate ? self.corpAssets : self.charAssets;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"assetsFilter" ofType:@"plist"]]];
 	
-	[assets release];
-	assets = nil;
+	self.assets = nil;
 	if (!currentAssets) {
 		if (corporate) {
-			corpAssets = [[NSMutableArray alloc] init];
-			currentAssets = corpAssets;
+			self.corpAssets = [[NSMutableArray alloc] init];
+			currentAssets = self.corpAssets;
 		}
 		else {
-			charAssets = [[NSMutableArray alloc] init];
-			currentAssets = charAssets;
+			self.charAssets = [[NSMutableArray alloc] init];
+			currentAssets = self.charAssets;
 		}
 		
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Assets", nil)];
+		__weak EUOperation* weakOperation = operation;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 			NSMutableSet* usedIDs = [NSMutableSet set];
 			float n = self.accounts.count;
@@ -424,7 +391,7 @@
 					characterID = -characterID;
 				//NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
 				NSNumber* currentID = @(characterID);
-				operation.progress = i / n;
+				weakOperation.progress = i / n;
 				
 				if ([usedIDs containsObject:currentID]) {
 					i++;
@@ -434,9 +401,9 @@
 				
 				EVEAssetList *assetsList;
 				if (corporate)
-					assetsList = [EVEAssetList assetListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+					assetsList = [EVEAssetList assetListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 				else
-					assetsList = [EVEAssetList assetListWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+					assetsList = [EVEAssetList assetListWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 				
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -452,8 +419,8 @@
 					NSMutableArray* structures = [NSMutableArray array];
 					NSMutableArray* topLevelAssets = [NSMutableArray arrayWithArray:assetsList.assets];
 					
-					__block void (^process)(EVEAssetListItem*);
-					process = ^(EVEAssetListItem* asset) {
+					__block void* weakProcess;
+					void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
 						NSString* typeID = [NSString stringWithFormat:@"%d", asset.typeID];
 						EVEDBInvType* type = [types valueForKey:typeID];
 						if (!type) {
@@ -505,13 +472,15 @@
 						}
 						
 						for (EVEAssetListItem* item in asset.contents)
-							process(item);
+							((__bridge void (^)(EVEAssetListItem*)) weakProcess)(item);
 					};
-					operation.progress = (i + 0.5) / n;
+					weakProcess = (__bridge  void*) process;
+					
+					weakOperation.progress = (i + 0.5) / n;
 					float n1 = assetsList.assets.count;
 					float i1 = 0;
 					for (EVEAssetListItem* asset in assetsList.assets) {
-						operation.progress = (i + 0.5 + i1++ / n1 * 0.5) / n;
+						weakOperation.progress = (i + 0.5 + i1++ / n1 * 0.5) / n;
 						process(asset);
 					}
 					
@@ -528,9 +497,9 @@
 							first += length;
 							left -= length;
 							if (corporate)
-								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:nil];
+								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
 							else
-								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:nil];
+								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
 							for (EVELocationsItem* location in eveLocations.locations)
 								[locations setValue:location forKey:[NSString stringWithFormat:@"%qi", location.itemID]];
 						}
@@ -575,7 +544,7 @@
 					}
 					
 					if (locationIDs.count > 0) {
-						EVECharacterName* locationNames = [EVECharacterName characterNameWithIDs:[locationIDs allObjects] error:nil];
+						EVECharacterName* locationNames = [EVECharacterName characterNameWithIDs:[locationIDs allObjects] error:nil progressHandler:nil];
 						if (locationNames) {
 							for (NSString* key in [locationNames.characters allKeys]) {
 								NSMutableArray* locationAssets = [NSMutableArray array];
@@ -605,21 +574,18 @@
 					i++;
 				}
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (corporate) {
-					[corpFilter release];
-					corpFilter = [filterTmp retain];
+					self.corpFilter = filterTmp;
 				}
 				else {
-					[charFilter release];
-					charFilter = [filterTmp retain];
+					self.charFilter = filterTmp;
 				}
 				[currentAssets addObjectsFromArray:assetsTmp];
-				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
+				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadAssets];
 			}
 		}];
@@ -627,19 +593,19 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		EUFilter *filter = corporate ? corpFilter : charFilter;
+		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		if (filter.predicate) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-				__block void (^search)(NSArray*, NSMutableArray*);
-				search = ^(NSArray* contents, NSMutableArray* location) {
+				__block void* weakSearch;
+				void (^search)(NSArray*, NSMutableArray*) = ^(NSArray* contents, NSMutableArray* location) {
 					[location addObjectsFromArray:[filter applyToValues:contents]];
 					for (EVEAssetListItem* item in contents)
-						search(item.contents, location);
+						((__bridge void (^)(NSArray*, NSMutableArray*)) weakSearch)(item.contents, location);
 				};
+				weakSearch = (__bridge void*) search;
 				float n = currentAssets.count;
 				float i = 0;
 				for (NSDictionary* section in currentAssets) {
@@ -653,31 +619,29 @@
 											  [NSNumber numberWithBool:YES], @"expanded",
 											  location, @"assets", nil]];
 					}
-					operation.progress = i++ / n;
+					weakOperation.progress = i++ / n;
 				}
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						[assets release];
-						assets = [assetsTmp retain];
+				if (![weakOperation isCancelled]) {
+					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+						self.assets = assetsTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[assetsTableView reloadData];
+						[self.assetsTableView reloadData];
 					}
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
-			assets = [currentAssets retain];
-			if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+			self.assets = currentAssets;
+			if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 				[self searchWithSearchString:self.searchBar.text];
 			}
 		}
 	}
-	[assetsTableView reloadData];
+	[self.assetsTableView reloadData];
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
@@ -685,15 +649,12 @@
 	if (!account) {
 		self.accounts = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[assets release];
-			[charAssets release];
-			[corpAssets release];
-			assets = charAssets = corpAssets = nil;
-			[filteredValues release];
-			filteredValues = nil;
-			[charFilter release];
-			[corpFilter release];
-			charFilter = corpFilter = nil;
+			self.assets = nil;
+			self.charAssets = nil;
+			self.corpAssets = nil;
+			self.filteredValues = nil;
+			self.charFilter = nil;
+			self.corpFilter = nil;
 			[self reloadAssets];
 		}
 		else
@@ -702,35 +663,31 @@
 	else {
 		self.accounts = [NSArray arrayWithObject:account];
 
-		[assets release];
-		[charAssets release];
-		[corpAssets release];
-		assets = charAssets = corpAssets = nil;
-		[filteredValues release];
-		filteredValues = nil;
-		[charFilter release];
-		[corpFilter release];
-		charFilter = corpFilter = nil;
+		self.assets = nil;
+		self.charAssets = nil;
+		self.corpAssets = nil;
+		self.filteredValues = nil;
+		self.charFilter = nil;
+		self.corpFilter = nil;
 		[self reloadAssets];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (assets.count == 0 || !aSearchString)
+	if (self.assets.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		__block void (^search)(NSArray*, NSMutableArray*);
-		
-		search = ^(NSArray* contents, NSMutableArray* values) {
+		__block void* weakSearch;
+		void (^search)(NSArray*, NSMutableArray*) = ^(NSArray* contents, NSMutableArray* values) {
 			for (EVEAssetListItem* asset in contents) {
 				if ([asset.name rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 					[asset.type.typeName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
@@ -739,18 +696,18 @@
 					(asset.location.itemName && [asset.location.itemName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 					[values addObject:asset];
 				if (asset.contents.count > 0)
-					search(asset.contents, values);
+					((__bridge void (^)(NSArray*, NSMutableArray*)) weakSearch)(asset.contents, values);
 			}
 		};
-
-		float n = assets.count;
+		weakSearch = (__bridge void*) search;
+		
+		float n = self.assets.count;
 		float i = 0;
-		for (NSDictionary* section in assets) {
+		for (NSDictionary* section in self.assets) {
 			NSMutableArray* values = [[NSMutableArray alloc] init];
 			search([section valueForKey:@"assets"], values);
 			
 			NSMutableArray* values2 =[NSMutableArray arrayWithArray:[filter applyToValues:values]];
-			[values release];
 
 			if (values2.count > 0) {
 				[values2 sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
@@ -759,15 +716,13 @@
 									  [NSNumber numberWithBool:YES], @"expanded",
 									  values2, @"assets", nil]];
 			}
-			operation.progress = i++ / n;
+			weakOperation.progress = i++ / n;
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];
@@ -780,9 +735,9 @@
 	UITableView* tableView = (UITableView*) recognizer.view.superview;
 	NSInteger sectionIndex = recognizer.view.tag;
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		section = [filteredValues objectAtIndex:sectionIndex];
+		section = [self.filteredValues objectAtIndex:sectionIndex];
 	else
-		section = [assets objectAtIndex:sectionIndex];
+		section = [self.assets objectAtIndex:sectionIndex];
 	
 	BOOL expanded = ![[section valueForKey:@"expanded"] boolValue];
 	[section setValue:[NSNumber numberWithBool:expanded] forKey:@"expanded"];
@@ -799,7 +754,6 @@
 		[tableView insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	else
 		[tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
-	[indexes release];
 }
 
 - (IBAction)onCombined:(id)sender {
@@ -810,12 +764,11 @@
 	controller.selectedAccounts = self.accounts;
 	controller.delegate = self;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popover = [[[UIPopoverController alloc] initWithContentViewController:controller] autorelease];
+		self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
 		[self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 @end

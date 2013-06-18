@@ -31,9 +31,14 @@
 #define ActionButtonSetSquadBooster NSLocalizedString(@"Set Squad Booster", nil)
 #define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
+@interface FleetViewController()
+@property (nonatomic, strong) NSMutableArray* pilots;
+@property (nonatomic, strong) NSIndexPath *modifiedIndexPath;
+
+
+@end
+
 @implementation FleetViewController
-@synthesize fittingViewController;
-@synthesize tableView;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -81,13 +86,6 @@
 }
 
 
-- (void)dealloc {
-	[tableView release];
-	[modifiedIndexPath release];
-	[pilots release];
-    [super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -99,13 +97,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return pilots.count + 1;
+    return self.pilots.count + 1;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= pilots.count) {
+	if (indexPath.row >= self.pilots.count) {
 		NSString *cellIdentifier = @"ModuleCellView";
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
@@ -122,12 +120,12 @@
 		if (cell == nil) {
 			cell = [FleetMemberCellView cellWithNibName:@"FleetMemberCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		NSDictionary* row = [pilots objectAtIndex:indexPath.row];
+		NSDictionary* row = [self.pilots objectAtIndex:indexPath.row];
 		ItemInfo* ship = [row valueForKey:@"ship"];
 		cell.titleLabel.text = [row valueForKey:@"title"];
 		cell.fitNameLabel.text = [row valueForKey:@"fitName"];
 		cell.iconView.image = [UIImage imageNamed:[ship typeSmallImageName]];
-		if (fittingViewController.fit == [[pilots objectAtIndex:indexPath.row] valueForKey:@"fit"])
+		if (self.fittingViewController.fit == [[self.pilots objectAtIndex:indexPath.row] valueForKey:@"fit"])
 			cell.stateView.image = [UIImage imageNamed:@"checkmark.png"];
 		else
 			cell.stateView.image = nil;
@@ -146,14 +144,14 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	if (indexPath.row == pilots.count) {
-		[fittingViewController addFleetMember];
+	if (indexPath.row == self.pilots.count) {
+		[self.fittingViewController addFleetMember];
 	}
 	else {
-		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
+		UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
 		[actionSheet addButtonWithTitle:ActionButtonShowShipInfo];
 		[actionSheet addButtonWithTitle:ActionButtonCharacter];
-		ShipFit* fit = [[pilots objectAtIndex:indexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[self.pilots objectAtIndex:indexPath.row] valueForKey:@"fit"];
 
 		if (fit != self.fittingViewController.fit) {
 			[actionSheet addButtonWithTitle:ActionButtonSelect];
@@ -161,7 +159,7 @@
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			eufe::Character* character = fit.character;
-			eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
+			eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
 			
 			bool isBooster = false;
 			if (gang->getFleetBooster() != character)
@@ -185,7 +183,7 @@
 		else
 			[actionSheet addButtonWithTitle:ActionButtonBooster];
 
-		if (indexPath.row > 0 && fit != fittingViewController.fit) {
+		if (indexPath.row > 0 && fit != self.fittingViewController.fit) {
 			[actionSheet addButtonWithTitle:ActionButtonDelete];
 			actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 1;
 		}
@@ -193,11 +191,8 @@
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
-		[modifiedIndexPath release];
-		modifiedIndexPath = [indexPath retain];
+		self.modifiedIndexPath = indexPath;
 	}
-	
-	
 }
 
 #pragma mark UIActionSheetDelegate
@@ -205,24 +200,24 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonCharacter]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		[fittingViewController selectCharacterForFit:fit];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		[self.fittingViewController selectCharacterForFit:fit];
 	}
 	else if ([button isEqualToString:ActionButtonSelect]) {
-		fittingViewController.fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		[fittingViewController update];
+		self.fittingViewController.fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonDelete]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		[fittingViewController.fits removeObject:fit];
-		fittingViewController.fittingEngine->getGang()->removePilot(fit.character);
-		[fittingViewController update];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		[self.fittingViewController.fits removeObject:fit];
+		self.fittingViewController.fittingEngine->getGang()->removePilot(fit.character);
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonBooster]) {
-		UIActionSheet* actionSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil] autorelease];
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
 		eufe::Character* character = fit.character;
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
+		eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
 		
 		bool isBooster = false;
 		if (gang->getFleetBooster() != character)
@@ -247,28 +242,28 @@
 		
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
-		[actionSheet showFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView animated:YES];
+		[actionSheet showFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView animated:YES];
 		
 	}
 	else if ([button isEqualToString:ActionButtonSetFleetBooster]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang()->setFleetBooster(fit.character);
-		[fittingViewController update];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		self.fittingViewController.fittingEngine->getGang()->setFleetBooster(fit.character);
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetWingBooster]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang()->setWingBooster(fit.character);
-		[fittingViewController update];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		self.fittingViewController.fittingEngine->getGang()->setWingBooster(fit.character);
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonSetSquadBooster]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
-		fittingViewController.fittingEngine->getGang()->setSquadBooster(fit.character);
-		[fittingViewController update];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
+		self.fittingViewController.fittingEngine->getGang()->setSquadBooster(fit.character);
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonRemoveBooster]) {
-		ShipFit* fit = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"fit"];
+		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
 		eufe::Character* character = fit.character;
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
+		eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
 		
 		if (gang->getFleetBooster() == character)
 			gang->removeFleetBooster();
@@ -277,10 +272,10 @@
 		else if (gang->getSquadBooster() == character)
 			gang->removeSquadBooster();
 		
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowShipInfo]) {
-		ItemInfo* itemInfo = [[pilots objectAtIndex:modifiedIndexPath.row] valueForKey:@"ship"];
+		ItemInfo* itemInfo = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"ship"];
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		
 		[itemInfo updateAttributes];
@@ -289,12 +284,10 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[fittingViewController presentModalViewController:navController animated:YES];
-			[navController release];
+			[self.fittingViewController presentModalViewController:navController animated:YES];
 		}
 		else
-			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
-		[itemViewController release];
+			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 }
 
@@ -302,23 +295,21 @@
 
 - (void) update {
 	NSMutableArray* pilotsTmp = [NSMutableArray array];
-	FittingViewController* aFittingViewController = fittingViewController;
-
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:NSLocalizedString(@"Updating Fleet", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(fittingViewController) {
-			eufe::Gang* gang = aFittingViewController.fittingEngine->getGang();
+		@synchronized(self.fittingViewController) {
+			eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
 			
 			eufe::Character* fleetBooster = gang->getFleetBooster();
 			eufe::Character* wingBooster = gang->getWingBooster();
 			eufe::Character* squadBooster = gang->getSquadBooster();
 			
 			//for (i = characters.begin(); i != end; i++) {
-			float n = fittingViewController.fits.count;
+			float n = self.fittingViewController.fits.count;
 			float i = 0;
-			for (ShipFit* fit in fittingViewController.fits) {
-				operation.progress = i++ / n;
+			for (ShipFit* fit in self.fittingViewController.fits) {
+				weakOperation.progress = i++ / n;
 				eufe::Character* character = fit.character;
 				ItemInfo* ship = [ItemInfo itemInfoWithItem:character->getShip() error:NULL];
 				NSString *booster = nil;
@@ -339,15 +330,12 @@
 				[pilotsTmp addObject:row];
 			}
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (pilots)
-				[pilots release];
-			pilots = [pilotsTmp retain];
-			[tableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.pilots = pilotsTmp;
+			[self.tableView reloadData];
 		}
 	}];
 	

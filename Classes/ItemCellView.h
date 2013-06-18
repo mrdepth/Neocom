@@ -9,10 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ItemCellView : UITableViewCell {
-	UIImageView *iconImageView;
-	UILabel *titleLabel;
-}
+@interface ItemCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 

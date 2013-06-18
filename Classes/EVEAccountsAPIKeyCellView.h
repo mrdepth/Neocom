@@ -9,19 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface EVEAccountsAPIKeyCellView : UITableViewCell {
-	UILabel *accessMaskLabel;
-	UILabel *keyIDLabel;
-	UILabel *keyTypeLabel;
-	UILabel *expiredLabel;
-	UILabel *errorLabel;
-	UIImageView *topSeparator;
-}
-@property (nonatomic, retain) IBOutlet UILabel *accessMaskLabel;
-@property (nonatomic, retain) IBOutlet UILabel *keyIDLabel;
-@property (nonatomic, retain) IBOutlet UILabel *keyTypeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *expiredLabel;
-@property (nonatomic, retain) IBOutlet UILabel *errorLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *topSeparator;
+@interface EVEAccountsAPIKeyCellView : UITableViewCell
+@property (nonatomic, weak) IBOutlet UILabel *accessMaskLabel;
+@property (nonatomic, weak) IBOutlet UILabel *keyIDLabel;
+@property (nonatomic, weak) IBOutlet UILabel *keyTypeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *expiredLabel;
+@property (nonatomic, weak) IBOutlet UILabel *errorLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *topSeparator;
 
 @end

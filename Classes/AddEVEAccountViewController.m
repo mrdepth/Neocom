@@ -14,7 +14,7 @@
 #import "APIKeysViewController.h"
 #import "UIAlertView+Error.h"
 
-@interface AddEVEAccountViewController(Private)
+@interface AddEVEAccountViewController()
 
 - (void) loadAccountFromPasteboard;
 - (void) saveAccount;
@@ -23,11 +23,8 @@
 
 @end
 
-
 @implementation AddEVEAccountViewController
-@synthesize keyIDTextField;
-@synthesize vCodeTextField;
-@synthesize saveButton;
+
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -42,14 +39,13 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.navigationItem setRightBarButtonItem:saveButton];
+	[self.navigationItem setRightBarButtonItem:self.saveButton];
 	self.title = NSLocalizedString(@"Add API Key", nil);
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (![userDefaults boolForKey:SettingsTipsAddAccount]) {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Tip", nil) message:NSLocalizedString(@"To gain access to corporate information, you should add Corp API Key.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alertView show];
-		[alertView release];
 		[userDefaults setBool:YES forKey:SettingsTipsAddAccount];
 	}
 	
@@ -77,7 +73,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.
 	self.keyIDTextField = nil;
 	self.vCodeTextField = nil;
@@ -87,11 +83,7 @@
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-	[keyIDTextField release];
-	[vCodeTextField release];
-	[saveButton release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onBrowser: (id) sender {
@@ -99,7 +91,6 @@
 	//controller.delegate = self;
 	controller.startPageURL = [NSURL URLWithString:@"https://support.eveonline.com/api/Key/ActivateInstallLinks"];
 	[self presentModalViewController:controller animated:YES];
-	[controller release];
 }
 
 - (IBAction) onSafari: (id) sender {
@@ -109,31 +100,28 @@
 - (IBAction) onPC: (id) sender {
 	PCViewController *controller = [[PCViewController alloc] initWithNibName:@"PCViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 - (IBAction) onSave:(id) sender {
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:NSLocalizedString(@"Checking API Key", nil)];
 	__block NSError *error = nil;
-	NSInteger keyID = [keyIDTextField.text integerValue];
-	NSString* vCode = vCodeTextField.text;
+	NSInteger keyID = [self.keyIDTextField.text integerValue];
+	NSString* vCode = self.vCodeTextField.text;
 	
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
-		[error retain];
-		[pool release];
 	}];
 	
+	EUOperation* weakOperation = operation;
+	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			if (error) {
 				[[UIAlertView alertViewWithError:error] show];
 			}
 			else
 				[self.navigationController popViewControllerAnimated:YES];
 		}
-		[error release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -142,7 +130,6 @@
 - (IBAction) onToutorial: (id) sender {
 	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark BrowserViewControllerDelegate
@@ -155,9 +142,9 @@
 #pragma mark UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == keyIDTextField)
-		[vCodeTextField becomeFirstResponder];
-	else if (textField == vCodeTextField)
+	if (textField == self.keyIDTextField)
+		[self.vCodeTextField becomeFirstResponder];
+	else if (textField == self.vCodeTextField)
 		[textField resignFirstResponder];
 	return YES;
 }
@@ -189,23 +176,23 @@
 		return;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:NSLocalizedString(@"Checking API Keys", nil)];
+	__weak EUOperation* weakOperation = operation;
+	
 	NSMutableArray *errors = [NSMutableArray array];
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		float n = apiKeys.count;
 		float i = 0;
 		for (NSDictionary *apiKey in apiKeys) {
-			operation.progress = i++ / n;
+			weakOperation.progress = i++ / n;
 			NSError *error = nil;
 			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[apiKey valueForKey:@"keyID"] integerValue] vCode:[apiKey valueForKey:@"vCode"] error:&error];
 			if (error)
 				[errors addObject:[apiKey valueForKey:@"keyID"]];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			if (errors.count > 0) {
 				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
 																	message:[NSString stringWithFormat:NSLocalizedString(@"Unable to import keys: %@.", nil), [errors componentsJoinedByString:@","]]
@@ -213,7 +200,6 @@
 														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 														  otherButtonTitles:nil];
 				[alertView show];
-				[alertView release];
 			}
 			else {
 				if ([self.navigationController visibleViewController] == self)
@@ -225,9 +211,7 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
-@end
-
-@implementation AddEVEAccountViewController(Private)
+#pragma mark - Private
 
 - (void) loadAccountFromPasteboard {
 	UIPasteboard *pb = [UIPasteboard generalPasteboard];
@@ -257,8 +241,8 @@
 				if (apiKeys.count == 1) {
 					[pb setValue:@"" forPasteboardType:type];
 					NSDictionary *apiKey = [apiKeys objectAtIndex:0];
-					keyIDTextField.text = [apiKey valueForKey:@"keyID"];
-					vCodeTextField.text = [apiKey valueForKey:@"vCode"];
+					self.keyIDTextField.text = [apiKey valueForKey:@"keyID"];
+					self.vCodeTextField.text = [apiKey valueForKey:@"vCode"];
 					break;
 				}
 				else if (apiKeys.count > 1 && [self.navigationController visibleViewController] == self) {
@@ -267,7 +251,6 @@
 					controller.apiKeys = apiKeys;
 					controller.delegate = self;
 					[self.navigationController pushViewController:controller animated:YES];
-					[controller release];
 					break;
 				}
 			}
@@ -283,18 +266,18 @@
 	if (!accounts)
 		accounts = [NSMutableDictionary dictionary];
 	NSMutableDictionary *account = [NSMutableDictionary dictionary];
-	[account setValue:vCodeTextField.text forKey:@"apiKey"];
-	[account setValue:keyIDTextField.text forKey:@"userID"];
-	[accounts setValue:account forKey:keyIDTextField.text];
+	[account setValue:self.vCodeTextField.text forKey:@"apiKey"];
+	[account setValue:self.keyIDTextField.text forKey:@"userID"];
+	[accounts setValue:account forKey:self.keyIDTextField.text];
 	[accounts writeToURL:url atomically:YES];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) testForSave {
-	if (keyIDTextField.text.length == 0 || vCodeTextField.text.length == 0)
-		saveButton.enabled = NO;
+	if (self.keyIDTextField.text.length == 0 || self.vCodeTextField.text.length == 0)
+		self.saveButton.enabled = NO;
 	else
-		saveButton.enabled = YES;
+		self.saveButton.enabled = YES;
 }
 
 - (void) applicationDidBecomeActive:(NSNotification*) notification {

@@ -20,16 +20,16 @@
 #import "ContractInfoCellView.h"
 #import "BidCellView.h"
 
-@interface ContractViewController(Private)
+@interface ContractViewController()
+@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSMutableDictionary *conquerableStations;
+
 - (void) loadData;
 - (NSString*) stationNameWithID:(NSInteger) stationID;
-- (NSDictionary*) conquerableStations;
+
 @end
 
 @implementation ContractViewController
-@synthesize contractTableView;
-@synthesize contract;
-@synthesize corporate;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -67,32 +67,22 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.contractTableView = nil;
-	[sections release];
-	sections = nil;
-	[conquerableStations release];
-	conquerableStations = nil;
+	self.sections = nil;
+	self.conquerableStations = nil;
 }
 
-
-- (void)dealloc {
-	[contractTableView release];
-	[contract release];
-	[sections release];
-	[conquerableStations release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return [sections count];
+    return [self.sections count];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] count];
+	return [[self.sections objectAtIndex:section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -120,7 +110,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	NSDictionary *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	if (indexPath.section == 0) {
 		NSString *cellIdentifier = @"ContractInfoCellView";
 		
@@ -210,11 +200,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -234,7 +224,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 1 || indexPath.section == 2) {
-		NSDictionary *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		NSDictionary *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		EVEDBInvType *resourceType = [row valueForKey:@"type"];
 		
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -249,22 +239,19 @@
 		}
 		else*/
 			[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	
 }
 
-@end
-
-@implementation ContractViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractViewController+Load" name:NSLocalizedString(@"Loading Contract Details", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
 		
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -272,69 +259,69 @@
 
 		NSMutableArray *rows = [NSMutableArray array];
 
-		if (contract.title.length > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Title:", nil), @"title", contract.title, @"value", nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Status:", nil), @"title", [contract localizedStatusString], @"value", nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Type:", nil), @"title", [contract localizedTypeString], @"value", nil]];
+		if (self.contract.title.length > 0)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Title:", nil), @"title", self.contract.title, @"value", nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Status:", nil), @"title", [self.contract localizedStatusString], @"value", nil]];
+		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Type:", nil), @"title", [self.contract localizedTypeString], @"value", nil]];
 
-		if (contract.startStationID)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Start Station:", nil), @"title", [self stationNameWithID:contract.startStationID], @"value", nil]];
-		if (contract.endStationID)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"End Station:", nil), @"title", [self stationNameWithID:contract.endStationID], @"value", nil]];
-		if (contract.dateIssued)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued:", nil), @"title", [dateFormatter stringFromDate:contract.dateIssued], @"value", nil]];
-		if (contract.dateAccepted)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted:", nil), @"title", [dateFormatter stringFromDate:contract.dateAccepted], @"value", nil]];
-		if (contract.dateCompleted)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Completed:", nil), @"title", [dateFormatter stringFromDate:contract.dateCompleted], @"value", nil]];
-		if (contract.dateExpired)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Expired:", nil), @"title", [dateFormatter stringFromDate:contract.dateExpired], @"value", nil]];
+		if (self.contract.startStationID)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Start Station:", nil), @"title", [self stationNameWithID:self.contract.startStationID], @"value", nil]];
+		if (self.contract.endStationID)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"End Station:", nil), @"title", [self stationNameWithID:self.contract.endStationID], @"value", nil]];
+		if (self.contract.dateIssued)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued:", nil), @"title", [dateFormatter stringFromDate:self.contract.dateIssued], @"value", nil]];
+		if (self.contract.dateAccepted)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted:", nil), @"title", [dateFormatter stringFromDate:self.contract.dateAccepted], @"value", nil]];
+		if (self.contract.dateCompleted)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Completed:", nil), @"title", [dateFormatter stringFromDate:self.contract.dateCompleted], @"value", nil]];
+		if (self.contract.dateExpired)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Expired:", nil), @"title", [dateFormatter stringFromDate:self.contract.dateExpired], @"value", nil]];
 		
 		NSMutableSet *charIDs = [NSMutableSet set];
-		if (contract.issuerID) {
-			NSString *key = [NSString stringWithFormat:@"%d", contract.issuerID];
+		if (self.contract.issuerID) {
+			NSString *key = [NSString stringWithFormat:@"%d", self.contract.issuerID];
 			[charIDs addObject:key];
 		}
-		if (contract.acceptorID) {
-			NSString *key = [NSString stringWithFormat:@"%d", contract.acceptorID];
+		if (self.contract.acceptorID) {
+			NSString *key = [NSString stringWithFormat:@"%d", self.contract.acceptorID];
 			[charIDs addObject:key];
 		}
-		if (contract.assigneeID) {
-			NSString *key = [NSString stringWithFormat:@"%d", contract.assigneeID];
+		if (self.contract.assigneeID) {
+			NSString *key = [NSString stringWithFormat:@"%d", self.contract.assigneeID];
 			[charIDs addObject:key];
 		}
 		
 		if (charIDs.count > 0) {
 			NSError *error = nil;
-			EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
+			EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 			if (!error) {
-				if (contract.issuerID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.issuerID]], @"value", nil]];
-				if (contract.acceptorID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.acceptorID]], @"value", nil]];
-				if (contract.assigneeID)
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Assigned To:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.assigneeID]], @"value", nil]];
+				if (self.contract.issuerID)
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Issued By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", self.contract.issuerID]], @"value", nil]];
+				if (self.contract.acceptorID)
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Accepted By:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", self.contract.acceptorID]], @"value", nil]];
+				if (self.contract.assigneeID)
+					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Assigned To:", nil), @"title", [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", self.contract.assigneeID]], @"value", nil]];
 			}
 		}
 			
-		if (contract.price > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Price:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.price] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
-		if (contract.reward > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Reward:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
-		if (contract.buyout > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Buyout:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
-		if (contract.volume > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Volume:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ m3", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.volume] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+		if (self.contract.price > 0)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Price:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.price] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+		if (self.contract.reward > 0)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Reward:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.reward] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+		if (self.contract.buyout > 0)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Buyout:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+		if (self.contract.volume > 0)
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Volume:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ m3", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.volume] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
 
 		[sectionsTmp addObject:rows];
 		
 		EVEContractItems *contractItems;
-		if (corporate)
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID contractID:contract.contractID corporate:corporate error:&error];
+		if (self.corporate)
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
 		else
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID contractID:contract.contractID corporate:corporate error:&error];
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
 
-		operation.progress = 0.5;
+		weakOperation.progress = 0.5;
 		
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -359,13 +346,13 @@
 			[sectionsTmp addObject:sell];
 			[sectionsTmp addObject:buy];
 			
-			operation.progress = 0.75;
+			weakOperation.progress = 0.75;
 
 			EVEContractBids *contractBids;
-			if (corporate)
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+			if (self.corporate)
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:self.contract error:&error progressHandler:nil];
 			else
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:self.contract error:&error progressHandler:nil];
 
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -374,7 +361,7 @@
 				NSMutableSet *charIDs = [NSMutableSet set];
 				NSMutableArray *rows = [NSMutableArray array];
 				for (EVEContractBidsItem *item in contractBids.bidList) {
-					if (item.contractID != contract.contractID)
+					if (item.contractID != self.contract.contractID)
 						continue;
 					NSString *bidderID = [NSString stringWithFormat:@"%d", item.bidderID];
 					[charIDs addObject:bidderID];
@@ -390,7 +377,7 @@
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;
-					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
+					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
 						for (NSMutableDictionary *row in rows) {
 							NSString *bidderID = [row valueForKey:@"bidderID"];
@@ -405,27 +392,24 @@
 				
 				[sectionsTmp addObject:rows];
 			}
-			operation.progress = 1.0;
+			weakOperation.progress = 1.0;
 		}
-		[dateFormatter release];
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		[sections release];
-		sections = [sectionsTmp retain];
-		[contractTableView reloadData];
+		self.sections = sectionsTmp;
+		[self.contractTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 - (NSString*) stationNameWithID:(NSInteger) stationID {
-	EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:contract.startStationID error:nil];
+	EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:self.contract.startStationID error:nil];
 	NSString *stationName = nil;
 	
 	if (!station) {
-		EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", contract.startStationID]];
+		EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", self.contract.startStationID]];
 		if (conquerableStation) {
 			EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 			if (solarSystem)
@@ -441,23 +425,21 @@
 	return stationName;
 }
 
-- (NSDictionary*) conquerableStations {
-	if (!conquerableStations) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (conquerableStations)
-			[conquerableStations release];
-		conquerableStations = [[NSMutableDictionary alloc] init];
-		
-		NSError *error = nil;
-		EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error];
-		
-		if (!error) {
-			for (EVEConquerableStationListItem *station in stationsList.outposts)
-				[conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+- (NSMutableDictionary*) conquerableStations {
+	if (!_conquerableStations) {
+		@autoreleasepool {
+			_conquerableStations = [[NSMutableDictionary alloc] init];
+			
+			NSError *error = nil;
+			EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error progressHandler:nil];
+			
+			if (!error) {
+				for (EVEConquerableStationListItem *station in stationsList.outposts)
+					[_conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+			}
 		}
-		[pool release];
 	}
-	return conquerableStations;
+	return _conquerableStations;
 }
 
 @end

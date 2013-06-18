@@ -15,17 +15,7 @@
 #include "eufe.h"
 
 @class POSFittingViewController;
-@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate> {
-	POSFittingViewController *posFittingViewController;
-	UITableView *tableView;
-	ProgressLabel *powerGridLabel;
-	ProgressLabel *cpuLabel;
-	FittingItemsViewController *fittingItemsViewController;
-	UIPopoverController *popoverController;
-@private
-	NSMutableArray *structures;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate>
 
 @property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

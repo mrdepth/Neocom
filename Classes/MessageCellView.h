@@ -8,12 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MessageCellView : UITableViewCell {
-	UILabel* subjectLabel;
-	UILabel* fromLabel;
-	UILabel* dateLabel;
-	
-}
+@interface MessageCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel* subjectLabel;
 @property (nonatomic, retain) IBOutlet UILabel* fromLabel;
 @property (nonatomic, retain) IBOutlet UILabel* dateLabel;

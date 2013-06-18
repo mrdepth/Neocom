@@ -22,7 +22,11 @@
 #define INTERCELL_WIDTH 40
 #define INTERCELL_HEIGHT 5
 
-@interface CertificateTreeView(Private)
+@interface CertificateTreeView()
+@property (strong, nonatomic, readwrite) NSMutableArray* prerequisites;
+@property (strong, nonatomic, readwrite) NSMutableArray* derivations;
+@property (strong, nonatomic, readwrite) CertificateView* certificateView;
+
 - (UIImage*) imageForState:(EVEDBCrtCertificateState) state;
 - (UIColor*) colorForState:(EVEDBCrtCertificateState) state;
 - (CertificateRelationshipView*) relationshipViewWithCertificate:(EVEDBCrtCertificate*) certificate;
@@ -32,11 +36,6 @@
 @end
 
 @implementation CertificateTreeView
-@synthesize certificate;
-@synthesize prerequisites;
-@synthesize derivations;
-@synthesize certificateView;
-@synthesize delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -56,19 +55,11 @@
 }
 */
 
-- (void) dealloc {
-	[certificate release];
-	[prerequisites release];
-	[derivations release];
-	[certificateView release];
-	[super dealloc];
-}
-
 - (void) drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextClearRect(context, rect);
 
-	if (!certificateView)
+	if (!self.certificateView)
 		return;
 
 	CGContextSetAllowsAntialiasing(context, NO);
@@ -78,7 +69,7 @@
 	UIImage* arrow = [UIImage imageNamed:@"Icons/icon105_05.png"];
 
 	
-	for (CertificateRelationshipView* relationshipView in prerequisites) {
+	for (CertificateRelationshipView* relationshipView in self.prerequisites) {
 		if (relationshipView.center.x < center.x) {
 			CGContextMoveToPoint(context, relationshipView.center.x + relationshipView.frame.size.width / 2.0, relationshipView.center.y);
 			CGContextAddLineToPoint(context, center.x, relationshipView.center.y);
@@ -91,17 +82,17 @@
 		}
 	}
 	
-	if (prerequisites.count > 0) {
-		center.y = certificateView.center.y - certificateView.frame.size.height / 2.0 - 8;
+	if (self.prerequisites.count > 0) {
+		center.y = self.certificateView.center.y - self.certificateView.frame.size.height / 2.0 - 8;
 		[arrow drawAtPoint:CGPointMake(center.x - 15, center.y - 16)];
 	}
 	
-	if (derivations.count > 0) {
-		center.y = certificateView.center.y + certificateView.frame.size.height / 2.0 + 8;
+	if (self.derivations.count > 0) {
+		center.y = self.certificateView.center.y + self.certificateView.frame.size.height / 2.0 + 8;
 		[arrow drawAtPoint:CGPointMake(center.x - 15, center.y - 16)];
 	}
 	
-	for (CertificateRelationshipView* relationshipView in derivations) {
+	for (CertificateRelationshipView* relationshipView in self.derivations) {
 		if (relationshipView.center.x < center.x) {
 			CGContextMoveToPoint(context, relationshipView.center.x + relationshipView.frame.size.width / 2.0, relationshipView.center.y);
 			CGContextAddLineToPoint(context, center.x, relationshipView.center.y);
@@ -118,18 +109,13 @@
 }
 
 - (void) setCertificate:(EVEDBCrtCertificate *)value {
-	[value retain];
-	[certificate release];
-	certificate = value;
+	_certificate = value;
 	
-	[prerequisites release];
-	[derivations release];
-	prerequisites = [[NSMutableArray alloc] init];
-	derivations = [[NSMutableArray alloc] init];
-	[certificateView release];
-	certificateView = nil;
+	self.prerequisites = [[NSMutableArray alloc] init];
+	self.derivations = [[NSMutableArray alloc] init];
+	self.certificateView = nil;
 	
-	if (!certificate)
+	if (!self.certificate)
 		return;
 	
 	for (UIView* view in [self subviews])
@@ -140,21 +126,20 @@
 
 - (IBAction)onAddToTrainingPlan {
 	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-														message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:certificate.trainingQueue.trainingTime]]
+														message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.certificate.trainingQueue.trainingTime]]
 													   delegate:self
 											  cancelButtonTitle:NSLocalizedString(@"No", nil)
 											  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
 	[alertView show];
-	[alertView release];
 }
 
 #pragma mark CertificateRelationshipViewDelegate
 
 - (void) certificateRelationshipViewDidTap:(CertificateRelationshipView*) relationshipView {
 	if (relationshipView.certificate != NULL)
-		[delegate certificateTreeView:self didSelectCertificate:relationshipView.certificate];
+		[self.delegate certificateTreeView:self didSelectCertificate:relationshipView.certificate];
 	else if (relationshipView.type != NULL)
-		[delegate certificateTreeView:self didSelectType:relationshipView.type];
+		[self.delegate certificateTreeView:self didSelectType:relationshipView.type];
 }
 
 #pragma mark UIAlertViewDelegate
@@ -162,7 +147,7 @@
 - (void) alertView:(UIAlertView *)aAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
 		SkillPlan* skillPlan = [[EVEAccount currentAccount] skillPlan];
-		for (EVEDBInvTypeRequiredSkill* skill in certificate.trainingQueue.skills)
+		for (EVEDBInvTypeRequiredSkill* skill in self.certificate.trainingQueue.skills)
 			[skillPlan addSkill:skill];
 		[skillPlan save];
 		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Skill plan updated", nil)
@@ -171,13 +156,10 @@
 												  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 												  otherButtonTitles:nil];
 		[alertView show];
-		[alertView autorelease];
 	}
 }
 
-@end
-
-@implementation CertificateTreeView(Private)
+#pragma mark - Private
 
 - (UIImage*) imageForState:(EVEDBCrtCertificateState) state {
 	switch (state) {
@@ -244,80 +226,78 @@
 
 - (void) loadCertificate {
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadCertificate" name:NSLocalizedString(@"Loading Certificate", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		[certificate state];
-		[certificate certificateClass];
-		float n = certificate.prerequisites.count;
+		[self.certificate state];
+		[self.certificate certificateClass];
+		float n = self.certificate.prerequisites.count;
 		float i = 0;
-		for (EVEDBCrtRelationship* relationship in certificate.prerequisites) {
-			operation.progress = i++ / n / 2;
+		for (EVEDBCrtRelationship* relationship in self.certificate.prerequisites) {
+			weakOperation.progress = i++ / n / 2;
 			if (relationship.parent) {
 				[relationship.parent state];
 				[relationship.parent certificateClass];
 			}
 		}
 		
-		n = certificate.derivations.count;
+		n = self.certificate.derivations.count;
 		i = 0;
-		for (EVEDBCrtRelationship* relationship in certificate.derivations) {
-			operation.progress = 0.5 + i++ / n / 2;
+		for (EVEDBCrtRelationship* relationship in self.certificate.derivations) {
+			weakOperation.progress = 0.5 + i++ / n / 2;
 			if (relationship.child) {
 				[relationship.child state];
 				[relationship.child certificateClass];
 			}
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		certificateView = [[CertificateView viewWithNibName:@"CertificateView" bundle:nil] retain];
-		certificateView.iconView.image = [UIImage imageNamed:[certificate iconImageName]];
-		certificateView.statusView.image = [UIImage imageNamed:certificate.stateIconImageName];
-		certificateView.color = [self colorForState:certificate.state];
+		self.certificateView = [CertificateView viewWithNibName:@"CertificateView" bundle:nil];
+		self.certificateView.iconView.image = [UIImage imageNamed:[self.certificate iconImageName]];
+		self.certificateView.statusView.image = [UIImage imageNamed:self.certificate.stateIconImageName];
+		self.certificateView.color = [self colorForState:self.certificate.state];
 		
-		if (certificate.state == EVEDBCrtCertificateStateLearned) {
-			certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", certificate.certificateClass.className, certificate.gradeText];
-			certificateView.descriptionLabel.text = certificate.description;
+		if (self.certificate.state == EVEDBCrtCertificateStateLearned) {
+			self.certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", self.certificate.certificateClass.className, self.certificate.gradeText];
+			self.certificateView.descriptionLabel.text = self.certificate.description;
 		}
 		else {
 			if ([[EVEAccount currentAccount] skillPlan]) {
-				certificateView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@ (Tap to add to training plan)", nil), certificate.certificateClass.className, certificate.gradeText];
+				self.certificateView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\n%@ (Tap to add to training plan)", nil), self.certificate.certificateClass.className, self.certificate.gradeText];
 				UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAddToTrainingPlan)];
-				[certificateView addGestureRecognizer:tapGestureRecognizer];
-				[tapGestureRecognizer release];
+				[self.certificateView addGestureRecognizer:tapGestureRecognizer];
 			}
 			else
-				certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", certificate.certificateClass.className, certificate.gradeText];
+				self.certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", self.certificate.certificateClass.className, self.certificate.gradeText];
 
-			certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: \n\n%@", nil), certificate.description];
+			self.certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: \n\n%@", nil), self.certificate.description];
 		}
 		
-		[certificateView sizeToFit];
+		[self.certificateView sizeToFit];
 		
 		CGSize cellSize = CGSizeZero;
 		
-		for (EVEDBCrtRelationship* relationship in certificate.prerequisites) {
+		for (EVEDBCrtRelationship* relationship in self.certificate.prerequisites) {
 			if (relationship.parent)
-				[prerequisites addObject:[self relationshipViewWithCertificate:relationship.parent]];
+				[self.prerequisites addObject:[self relationshipViewWithCertificate:relationship.parent]];
 			else if (relationship.parentType)
-				[prerequisites addObject:[self relationshipViewWithRequiredSkill:relationship.parentType]];
+				[self.prerequisites addObject:[self relationshipViewWithRequiredSkill:relationship.parentType]];
 		}
 		
-		for (EVEDBCrtRelationship* relationship in certificate.derivations) {
+		for (EVEDBCrtRelationship* relationship in self.certificate.derivations) {
 			if (relationship.child)
-				[derivations addObject:[self relationshipViewWithCertificate:relationship.child]];
+				[self.derivations addObject:[self relationshipViewWithCertificate:relationship.child]];
 		}
 		
-		if (prerequisites.count > 0)
-			cellSize = [[prerequisites objectAtIndex:0] frame].size;
-		else if (derivations.count > 0)
-			cellSize = [[derivations objectAtIndex:0] frame].size;
+		if (self.prerequisites.count > 0)
+			cellSize = [[self.prerequisites objectAtIndex:0] frame].size;
+		else if (self.derivations.count > 0)
+			cellSize = [[self.derivations objectAtIndex:0] frame].size;
 		
 		CGPoint center = CGPointMake(cellSize.width / 2.0 + LEFT_MARGIN, cellSize.height / 2.0 + TOP_MARGIN);
-		BOOL nextRow = prerequisites.count % 2 != 0;
+		BOOL nextRow = self.prerequisites.count % 2 != 0;
 		
-		for (CertificateRelationshipView* relationshipView in prerequisites) {
+		for (CertificateRelationshipView* relationshipView in self.prerequisites) {
 			relationshipView.center = center;
 			[self addSubview:relationshipView];
 			if (nextRow) {
@@ -330,14 +310,14 @@
 			}
 		}
 		
-		certificateView.center = CGPointMake(cellSize.width + LEFT_MARGIN + INTERCELL_WIDTH / 2.0, center.y + certificateView.frame.size.height / 2.0 + 20);
-		[self addSubview:certificateView];
+		self.certificateView.center = CGPointMake(cellSize.width + LEFT_MARGIN + INTERCELL_WIDTH / 2.0, center.y + self.certificateView.frame.size.height / 2.0 + 20);
+		[self addSubview:self.certificateView];
 		
-		center.y = certificateView.center.y + certificateView.frame.size.height / 2.0 + 20 + cellSize.height / 2.0 + INTERCELL_HEIGHT + 20;
+		center.y = self.certificateView.center.y + self.certificateView.frame.size.height / 2.0 + 20 + cellSize.height / 2.0 + INTERCELL_HEIGHT + 20;
 		
 		nextRow = NO;
 		
-		for (CertificateRelationshipView* relationshipView in derivations) {
+		for (CertificateRelationshipView* relationshipView in self.derivations) {
 			relationshipView.center = center;
 			[self addSubview:relationshipView];
 			if (nextRow) {
@@ -356,7 +336,7 @@
 			center.y -= cellSize.height / 2.0 - INTERCELL_HEIGHT;
 		
 		self.bounds = CGRectMake(0, 0, cellSize.width * 2 + LEFT_MARGIN * 2 + INTERCELL_WIDTH, center.y + 50 + TOP_MARGIN);
-		[delegate certificateTreeViewDidFinishLoad:self];
+		[self.delegate certificateTreeViewDidFinishLoad:self];
 		[self setNeedsDisplay];
 		[self performSelector:@selector(loadTrainingTimes) withObject:nil afterDelay:0];
 	}];
@@ -366,20 +346,19 @@
 
 - (void) loadTrainingTimes {
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CertificateTreeView+loadTrainingTimes" name:NSLocalizedString(@"Calculating Training Time", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-
-		NSTimeInterval trainingTime = certificate.trainingQueue.trainingTime;
+		NSTimeInterval trainingTime = self.certificate.trainingQueue.trainingTime;
 		if (trainingTime > 0)
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-				certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@\n\n%@", nil), [NSString stringWithTimeLeft:trainingTime], certificate.description];
+				self.certificateView.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@\n\n%@", nil), [NSString stringWithTimeLeft:trainingTime], self.certificate.description];
 			}];
 		
-		float n = prerequisites.count + derivations.count;
+		float n = self.prerequisites.count + self.derivations.count;
 		float i = 0;
-		for (CertificateRelationshipView* relationshipView in [prerequisites arrayByAddingObjectsFromArray:derivations]) {
-			operation.progress = i++ / n;
-			if ([operation isCancelled])
+		for (CertificateRelationshipView* relationshipView in [self.prerequisites arrayByAddingObjectsFromArray:self.derivations]) {
+			weakOperation.progress = i++ / n;
+			if ([weakOperation isCancelled])
 				break;
 			NSString* text = nil;
 			if (relationshipView.certificate) {
@@ -396,7 +375,6 @@
 				[relationshipView.titleLabel performSelectorOnMainThread:@selector(setText:) withObject:text waitUntilDone:NO];
 
 		}
-		[pool release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

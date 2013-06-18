@@ -18,9 +18,8 @@
 #import "NSMutableString+RSSParser10.h"
 #import "NSString+HTML.h"
 
-@interface RSSFeedViewController(Private)
-
-//- (void) didReceiveRSS:(RSS*) rss object:(id) object error:(NSError*) error;
+@interface RSSFeedViewController()
+@property (nonatomic, strong) NSMutableArray *rows;
 - (void) loadData;
 
 @end
@@ -28,9 +27,6 @@
 #define DESCRIPTION_LENGTH 200
 
 @implementation RSSFeedViewController
-@synthesize rssTableView;
-@synthesize feedTitleLabel;
-@synthesize url;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -68,18 +64,9 @@
     [super viewDidUnload];
 	self.rssTableView = nil;
 	self.feedTitleLabel = nil;
-	[rows release];
-	rows = nil;
+	self.rows = nil;
 }
 
-
-- (void)dealloc {
-	[rssTableView release];
-	[feedTitleLabel release];
-	[url release];
-	[rows release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -91,7 +78,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return rows.count;
+	return self.rows.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -105,7 +92,7 @@
     RSSFeedCellView *cell = (RSSFeedCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil)
         cell = [RSSFeedCellView cellWithNibName:@"RSSFeedCellView" bundle:nil reuseIdentifier:cellIdentifier];
-	NSDictionary *row = [rows objectAtIndex:indexPath.row];
+	NSDictionary *row = [self.rows objectAtIndex:indexPath.row];
 	cell.titleLabel.text = NSLocalizedString([row valueForKey:@"title"], nil);
 	cell.dateLabel.text = [row valueForKey:@"date"];
 	cell.descriptionLabel.text = [row valueForKey:@"description"];
@@ -119,26 +106,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:@"RSSViewController" bundle:nil];
-	controller.rss = [[rows objectAtIndex:indexPath.row] valueForKey:@"item"];
+	controller.rss = [[self.rows objectAtIndex:indexPath.row] valueForKey:@"item"];
 	
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self presentModalViewController:controller animated:YES];
 //	else
 //		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
-@end
-
-@implementation RSSFeedViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *values = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:NSLocalizedString(@"Loading RSS Feed", nil)];
+	__block EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		RSS *rss = [RSS rssWithContentsOfURL:url error:&error];
+		RSS *rss = [RSS rssWithContentsOfURL:self.url error:&error progressHandler:nil];
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -148,13 +132,12 @@
 			float n = rss.feed.items.count;
 			float i = 0;
 			for (RSSItem *item in rss.feed.items) {
-				operation.progress = i++ / n;
+				weakOperation.progress = i++ / n;
 				NSMutableString *description = [NSMutableString stringWithString:item.description ? item.description : @""];
 				[description removeHTMLTags];
 				[description replaceHTMLEscapes];
 				[description removeSpaces];
 				
-				//NSString *description = [[[item.description stringByReplacingOccurrencesOfString:@"\n" withString:@""] stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
 				NSDictionary *row = [NSDictionary dictionaryWithObjectsAndKeys:
 									 [item.title stringByReplacingHTMLEscapes], @"title",
 									 item, @"item",
@@ -163,16 +146,13 @@
 									 nil];
 				[values addObject:row];
 			}
-			[dateFormatter release];
 			[self.feedTitleLabel performSelectorOnMainThread:@selector(setText:) withObject:rss.feed.title waitUntilDone:NO];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		[rows release];
-		rows = [values retain];
-		[rssTableView reloadData];
+		self.rows = values;
+		[self.rssTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

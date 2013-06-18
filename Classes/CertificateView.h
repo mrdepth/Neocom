@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CertificateView : UIView {
-	UIImageView *iconView;
-	UIImageView *statusView;
-	UILabel *titleLabel;
-	UILabel *descriptionLabel;
-	UIColor* color;
-}
+@interface CertificateView : UIView
 @property (retain, nonatomic) IBOutlet UIImageView *iconView;
 @property (retain, nonatomic) IBOutlet UIImageView *statusView;
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;

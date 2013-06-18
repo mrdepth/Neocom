@@ -9,31 +9,25 @@
 #import "EUFilter.h"
 
 @implementation EUFilter
-@synthesize filters;
 
 + (id) filterWithContentsOfURL:(NSURL*) url {
-	return [[[EUFilter alloc] initWithContentsOfURL:url] autorelease];
+	return [[EUFilter alloc] initWithContentsOfURL:url];
 }
 
 - (id) initWithContentsOfURL:(NSURL*) url {
 	if (self = [super init]){
 		NSArray *array = [NSArray arrayWithContentsOfURL:url];
-		filters = [[NSMutableArray alloc] init];
+		self.filters = [[NSMutableArray alloc] init];
 		for (NSDictionary *filter in array) {
-			EUFilterItem *item = [[[EUFilterItem alloc] init] autorelease];
+			EUFilterItem *item = [[EUFilterItem alloc] init];
 			item.name = [filter valueForKey:@"name"];
 			item.allValue = [filter valueForKey:@"allValue"];
 			item.valuePropertyKey = [filter valueForKey:@"valuePropertyKey"];
 			item.titlePropertyKey = [filter valueForKey:@"titlePropertyKey"];
-			[filters addObject:item];
+			[self.filters addObject:item];
 		}
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[filters release];
-	[super dealloc];
 }
 
 - (void) updateWithValues:(NSArray*) values {
@@ -43,7 +37,7 @@
 }
 
 - (void) updateWithValue:(id) value {
-	for (EUFilterItem *item in filters) {
+	for (EUFilterItem *item in self.filters) {
 		[item updateWithValue:value];
 	}
 }
@@ -55,7 +49,7 @@
 
 - (NSPredicate*) predicate {
 	NSMutableArray *predicates = [NSMutableArray array];
-	for (EUFilterItem *filterItem in filters) {
+	for (EUFilterItem *filterItem in self.filters) {
 		NSPredicate *predicate = [filterItem predicate];
 		if (predicate)
 			[predicates addObject:predicate];
@@ -67,7 +61,7 @@
 
 - (id) copyWithZone:(NSZone *)zone {
 	EUFilter *filter = [[EUFilter alloc] init];
-	filter.filters = [[[NSMutableArray alloc] initWithArray:self.filters copyItems:YES] autorelease];
+	filter.filters = [[NSMutableArray alloc] initWithArray:self.filters copyItems:YES];
 	return filter;
 }
 

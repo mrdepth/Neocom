@@ -9,10 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ProgressLabel : UILabel {
-	float progress;
-	UIColor *color;
-}
+@interface ProgressLabel : UILabel
 @property (nonatomic, assign) float progress;
 @property (nonatomic, retain) UIColor *color;
 @end

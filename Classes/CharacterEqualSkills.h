@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Character.h"
 
-@interface CharacterEqualSkills : Character {
-}
-
+@interface CharacterEqualSkills : Character
 + (id) characterWithSkillsLevel:(NSInteger) level;
 - (id) initWithSkillsLevel:(NSInteger) level;
 @end

@@ -32,8 +32,6 @@
 	NSMutableArray *result = [NSMutableArray arrayWithArray:[dic allValues]];
 	if (unknown.count > 0)
 		[result addObject:unknown];
-	[dic release];
-	
 	return result;
 }
 

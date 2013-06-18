@@ -53,11 +53,11 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
 		self.navigationItem.titleView = self.ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController] autorelease];
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	self.title = NSLocalizedString(@"Kill Reports", nil);
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl] autorelease];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl];
 	//[self loadKillLogBeforeKillID:0 corporate:self.ownerSegmentControl.selectedSegmentIndex == 1];
 	[self reload];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
@@ -78,24 +78,11 @@
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[_tableView release];
-	[_ownerSegmentControl release];
-	[_killboardTypeSegmentControl release];
-	[_charFilter release];
-	[_corpFilter release];
-	[_charKillLog release];
-	[_corpKillLog release];
-	[_killLog release];
-	[_filteredValues release];
-	[_filterNavigationViewController release];
-	[_filterViewController release];
-	[_filterPopoverController release];
-	[super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidUnload {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self setTableView:nil];
 	[self setOwnerSegmentControl:nil];
 	[self setKillboardTypeSegmentControl:nil];
@@ -208,6 +195,7 @@
 	EVEKillLogKill* kill = [record valueForKey:@"kill"];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block KillMail* killMail = nil;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
@@ -216,13 +204,11 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			KillMailViewController* controller = [[KillMailViewController alloc] initWithNibName:@"KillMailViewController" bundle:nil];
 			controller.killMail = killMail;
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 		}
-		[killMail release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -295,9 +281,9 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -357,14 +343,15 @@
 		NSMutableDictionary *currentKillLogTmp = [NSMutableDictionary dictionary];
 		
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+reload" name:NSLocalizedString(@"Loading Kill Log", nil)];
+		__weak EUOperation* weakOperation = operation;
 		
 		[operation addExecutionBlock:^{
 			@autoreleasepool {
 				NSError* error = nil;
 				EVEKillLog* killLog = corporate ?
-				[EVEKillLog killLogWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error] :
-				[EVEKillLog killLogWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error];
-				operation.progress = 0.5;
+				[EVEKillLog killLogWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil] :
+				[EVEKillLog killLogWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil];
+				weakOperation.progress = 0.5;
 				if (error) {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						[[UIAlertView alertViewWithError:error] show];
@@ -379,10 +366,10 @@
 					NSMutableDictionary* losses = [NSMutableDictionary dictionary];
 					
 					for (EVEKillLogKill* kill in [killLog.kills sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"killTime" ascending:NO]]]) {
-						if ([operation isCancelled])
+						if ([weakOperation isCancelled])
 							return;
 						
-						operation.progress = 0.5 + n / i++ / 2;
+						weakOperation.progress = 0.5 + n / i++ / 2;
 						NSMutableDictionary* record = [NSMutableDictionary dictionaryWithObject:kill forKey:@"kill"];
 						EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
 						if (type)
@@ -422,7 +409,7 @@
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (corporate)
 					self.corpFilter = filterTmp;
 				else
@@ -442,19 +429,18 @@
 		NSMutableArray* sections = [NSMutableArray array];
 		if (filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				for (NSDictionary* record in [currentKillLog valueForKey:killboardType]) {
 					NSArray* rows = [filter applyToValues:[record valueForKey:@"rows"]];
 					if (rows.count > 0) {
 						[sections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:rows, @"rows", [record valueForKey:@"title"], @"title", [record valueForKey:@"daysAgo"], @"daysAgo", nil]];
 					}
 				}
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
+				if (![weakOperation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.killLog = sections;
 						[self searchWithSearchString:self.searchDisplayController.searchBar.text];
@@ -474,15 +460,16 @@
 	if (self.killLog.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			NSArray* keyPaths = @[@"kill.victim.characterName", @"kill.victim.corporationName", @"kill.victim.allianceName", @"ship.typeName"];
 			for (NSDictionary *section in self.killLog) {
-				if ([operation isCancelled])
+				if ([weakOperation isCancelled])
 					break;
 				NSMutableDictionary* filteredSections = [NSMutableDictionary dictionary];
 				for (NSDictionary* row in [section valueForKey:@"rows"]) {
@@ -506,7 +493,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}

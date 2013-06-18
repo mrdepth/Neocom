@@ -10,14 +10,7 @@
 #import "EVEDBAPI.h"
 #import "CollapsableTableView.h"
 
-@interface MarketGroupsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate> {
-	CollapsableTableView *itemsTable;
-	UISearchBar *searchBar;
-	EVEDBInvMarketGroup *parentGroup;
-	NSMutableArray *subGroups;
-	NSMutableArray *groupItems;
-	NSMutableArray *filteredValues;
-}
+@interface MarketGroupsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (nonatomic, retain) IBOutlet CollapsableTableView *itemsTable;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) EVEDBInvMarketGroup *parentGroup;

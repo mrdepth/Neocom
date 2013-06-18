@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DonationViewController : UIViewController<UIActionSheetDelegate, SKPaymentTransactionObserver> {
-	UIView *upgradeView;
-	UIView *donateView;
-}
+@interface DonationViewController : UIViewController<UIActionSheetDelegate, SKPaymentTransactionObserver>
 @property (nonatomic, retain) IBOutlet UIView *upgradeView;
 @property (nonatomic, retain) IBOutlet UIView *donateView;
 @property (retain, nonatomic) IBOutlet UIView *upgradeDoneView;

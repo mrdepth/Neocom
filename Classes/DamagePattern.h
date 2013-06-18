@@ -9,14 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class EVEDBInvType;
-@interface DamagePattern : NSObject<NSCoding> {
-	float emAmount;
-	float thermalAmount;
-	float kineticAmount;
-	float explosiveAmount;
-	NSString* patternName;
-	NSString* uuid;
-}
+@interface DamagePattern : NSObject<NSCoding>
 @property (nonatomic, assign) float emAmount;
 @property (nonatomic, assign) float thermalAmount;
 @property (nonatomic, assign) float kineticAmount;

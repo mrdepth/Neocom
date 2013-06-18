@@ -17,7 +17,10 @@
 #import "UIAlertView+Error.h"
 #import "BCSearchResultViewController.h"
 
-@interface BCSearchViewController(Private)
+@interface BCSearchViewController()
+@property(nonatomic, strong) EVEDBInvType *ship;
+@property(nonatomic, strong) NSArray *tags;
+@property(nonatomic, strong) NSMutableArray *selectedTags;
 
 - (void) testInputData;
 
@@ -25,10 +28,6 @@
 
 
 @implementation BCSearchViewController
-@synthesize menuTableView;
-@synthesize fittingItemsViewController;
-@synthesize modalController;
-@synthesize searchButton;
 @synthesize popoverController;
 
 
@@ -49,32 +48,30 @@
     [super viewDidLoad];
 	NSMutableArray *tagsTmp = [NSMutableArray array];
 	self.title = NSLocalizedString(@"Search", nil);
-	[self.navigationItem setRightBarButtonItem:searchButton];
+	[self.navigationItem setRightBarButtonItem:self.searchButton];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
+		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
 
-	if (!selectedTags)
-		selectedTags = [[NSMutableArray alloc] init];
+	if (!self.selectedTags)
+		self.selectedTags = [[NSMutableArray alloc] init];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"BCSearchViewController+viewDidLoad" name:NSLocalizedString(@"Loading Tags", nil)];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		BCEveLoadoutsTags *loadoutsTags = [BCEveLoadoutsTags eveLoadoutsTagsWithAPIKey:BattleClinicAPIKey error:&error];
+		BCEveLoadoutsTags *loadoutsTags = [BCEveLoadoutsTags eveLoadoutsTagsWithAPIKey:BattleClinicAPIKey error:&error progressHandler:nil];
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			[tagsTmp addObjectsFromArray:[loadoutsTags.tags sortedArrayUsingSelector:@selector(compare:)]];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		tags = [tagsTmp retain];
-		[menuTableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+		self.tags = tagsTmp;
+		[self.menuTableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 	[self testInputData];
@@ -101,26 +98,9 @@
 	self.modalController = nil;
 	self.searchButton = nil;
 	self.popoverController = nil;
-	
-	[tags release];
-	//[selectedTags release];
-	tags = nil;
-	//selectedTags = nil;
+	self.tags = nil;
 }
 
-
-- (void)dealloc {
-	[menuTableView release];
-	[fittingItemsViewController release];
-	[modalController release];
-	[searchButton release];
-	[popoverController release];
-	
-	[ship release];
-	[tags release];
-	[selectedTags release];
-    [super dealloc];
-}
 
 - (IBAction) didCloseModalViewController:(id) sender {
 	[self dismissModalViewControllerAnimated:YES];
@@ -130,32 +110,30 @@
 	NSMutableArray *loadouts = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"BCSearchViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		BCEveLoadoutsList *loadoutsList = [BCEveLoadoutsList eveLoadoutsListWithAPIKey:BattleClinicAPIKey raceID:0 typeID:ship.typeID classID:0 userID:0 tags:selectedTags error:&error];
+		BCEveLoadoutsList *loadoutsList = [BCEveLoadoutsList eveLoadoutsListWithAPIKey:BattleClinicAPIKey raceID:0 typeID:self.ship.typeID classID:0 userID:0 tags:self.selectedTags error:&error progressHandler:nil];
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			if (loadoutsList.loadouts.count == 0) {
-				UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Nothing found", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil] autorelease];
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Nothing found", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil];
 				[alertView performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
 			else {
 				[loadouts addObjectsFromArray:[loadoutsList.loadouts sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"thumbsTotal" ascending:NO]]]];
 			}
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (loadouts.count > 0 && ![operation isCancelled]) {
+		if (loadouts.count > 0 && ![weakOperation isCancelled]) {
 			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:@"BCSearchResultViewController" bundle:nil];
 			controller.loadouts = loadouts;
-			controller.ship = ship;
+			controller.ship = self.ship;
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 		}
 	}];
 	
@@ -167,12 +145,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return tags ? 2 : 1;
+	return self.tags ? 2 : 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 1 : tags.count;
+	return section == 0 ? 1 : self.tags.count;
 }
 
 // Customize the appearance of table view cells.
@@ -185,13 +163,13 @@
 			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.accessoryType = UITableViewCellAccessoryNone;
-		if (!ship) {
+		if (!self.ship) {
 			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 		}
 		else {
-			cell.titleLabel.text = ship.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[ship typeSmallImageName]];
+			cell.titleLabel.text = self.ship.typeName;
+			cell.iconImageView.image = [UIImage imageNamed:[self.ship typeSmallImageName]];
 		}
 		return cell;
 	}
@@ -202,10 +180,9 @@
 		if (cell == nil) {
 			cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		NSString *tag = [tags objectAtIndex:indexPath.row];
+		NSString *tag = [self.tags objectAtIndex:indexPath.row];
 		cell.titleLabel.text = tag;
-		//cell.accessoryType = [selectedTags containsObject:tag] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-		cell.checkmarkImageView.image = [selectedTags containsObject:tag] ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell.checkmarkImageView.image = [self.selectedTags containsObject:tag] ? [UIImage imageNamed:@"checkmark.png"] : nil;
 		return cell;
 	}
 }
@@ -221,11 +198,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -247,19 +224,19 @@
 		//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) ORDER BY groupName;";
 //		fittingItemsViewController.typesRequest = @"SELECT * FROM invTypes WHERE published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName;";
 		//fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName";
-		fittingItemsViewController.marketGroupID = 4;
-		fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
+		self.fittingItemsViewController.marketGroupID = 4;
+		self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self presentModalViewController:modalController animated:YES];
+			[self presentModalViewController:self.modalController animated:YES];
 	}
 	else {
-		NSString *tag = [tags objectAtIndex:indexPath.row];
-		if ([selectedTags containsObject:tag])
-			[selectedTags removeObject:tag];
+		NSString *tag = [self.tags objectAtIndex:indexPath.row];
+		if ([self.selectedTags containsObject:tag])
+			[self.selectedTags removeObject:tag];
 		else
-			[selectedTags addObject:tag];
+			[self.selectedTags addObject:tag];
 		[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self testInputData];
 	}
@@ -269,23 +246,20 @@
 #pragma mark FittingItemsViewControllerDelegate
 
 - (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	[ship release];
-	ship = [type retain];
+	self.ship = type;
 	[self testInputData];
-	[menuTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+	[self.menuTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[popoverController dismissPopoverAnimated:YES];
+		[self.popoverController dismissPopoverAnimated:YES];
 	else
 		[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation BCSearchViewController(Private)
+#pragma mark - Private
 
 - (void) testInputData {
-	searchButton.enabled = ship && selectedTags.count > 0;
+	self.searchButton.enabled = self.ship && self.selectedTags.count > 0;
 }
 
 @end

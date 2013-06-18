@@ -8,7 +8,10 @@
 
 #import "DronesAmountViewController.h"
 
-@interface DronesAmountViewController(Private)
+@interface DronesAmountViewController() {
+	id _strongSelf;
+}
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 - (void) remove;
 - (void) animationDidStop:(NSString*) animationID finished:(NSNumber*) finished context:(void*) context;
@@ -17,12 +20,7 @@
 
 
 @implementation DronesAmountViewController
-@synthesize pickerView;
-@synthesize backgroundView;
-@synthesize contentView;
-@synthesize maxAmount;
-@synthesize amount;
-@synthesize delegate;
+@synthesize popoverController;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -40,7 +38,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[pickerView selectRow:amount - 1 inComponent:0 animated:NO];
+	[self.pickerView selectRow:self.amount - 1 inComponent:0 animated:NO];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.contentSizeForViewInPopover = self.view.frame.size;
 }
@@ -66,26 +64,18 @@
 	self.contentView = nil;
 }
 
-
-- (void)dealloc {
-	[pickerView release];
-	[backgroundView release];
-	[contentView release];
-    [super dealloc];
-}
-
 - (void) presentAnimated:(BOOL) animated {
-	[self retain];
 	UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 	[window addSubview:self.view];
 	self.view.frame = CGRectMake(0, window.frame.size.height - self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height);
+	_strongSelf = self;
 	if (animated) {
-		backgroundView.alpha = 0;
-		contentView.frame = CGRectMake(contentView.frame.origin.x, self.view.frame.size.height, contentView.frame.size.width, contentView.frame.size.height);
+		self.backgroundView.alpha = 0;
+		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationDuration:0.3];
-		backgroundView.alpha = 1;
-		contentView.frame = CGRectMake(contentView.frame.origin.x, self.view.frame.size.height - contentView.frame.size.height, contentView.frame.size.width, contentView.frame.size.height);
+		self.backgroundView.alpha = 1;
+		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height - self.contentView.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
 		[UIView commitAnimations];
 	}
 }
@@ -104,8 +94,8 @@
 		[UIView setAnimationDuration:0.3];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-		backgroundView.alpha = 0;
-		contentView.frame = CGRectMake(contentView.frame.origin.x, self.view.frame.size.height, contentView.frame.size.width, contentView.frame.size.height);
+		self.backgroundView.alpha = 0;
+		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
 		[UIView commitAnimations];
 	}
 	else
@@ -113,12 +103,12 @@
 }
 
 - (IBAction) onCancel:(id) sender {
-	[delegate dronesAmountViewControllerDidCancel:self];
+	[self.delegate dronesAmountViewControllerDidCancel:self];
 	[self dismissAnimated:YES];
 }
 
 - (IBAction) onDone:(id) sender {
-	[delegate dronesAmountViewController:self didSelectAmount:[pickerView selectedRowInComponent:0] + 1];
+	[self.delegate dronesAmountViewController:self didSelectAmount:[self.pickerView selectedRowInComponent:0] + 1];
 	[self dismissAnimated:YES];
 }
 
@@ -130,7 +120,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-	return maxAmount < amount ? amount : maxAmount;
+	return self.maxAmount < self.amount ? self.amount : self.maxAmount;
 }
 
 - (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
@@ -142,7 +132,7 @@
 	if (!label) {
 		CGRect rect = CGRectMake(0, 0, 0, 0);
 		rect.size = [aPickerView rowSizeForComponent:component];
-		label = [[[UILabel alloc] initWithFrame:rect] autorelease];
+		label = [[UILabel alloc] initWithFrame:rect];
 		label.backgroundColor = [UIColor clearColor];
 		label.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
 		label.textAlignment = UITextAlignmentCenter;
@@ -154,18 +144,15 @@
 #pragma mark UIPopoverControllerDelegate
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)aPopoverController {
-	[popoverController release];
-	popoverController = nil;
-	[delegate dronesAmountViewController:self didSelectAmount:[pickerView selectedRowInComponent:0] + 1];
+	self.popoverController = nil;
+	[self.delegate dronesAmountViewController:self didSelectAmount:[self.pickerView selectedRowInComponent:0] + 1];
 }
 
-@end
-
-@implementation DronesAmountViewController(Private)
+#pragma mark - Private
 
 - (void) remove {
 	[self.view removeFromSuperview];
-	[self release];
+	_strongSelf = nil;
 }
 
 - (void) animationDidStop:(NSString*) animationID finished:(NSNumber*) finished context:(void*) contex {

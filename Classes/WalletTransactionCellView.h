@@ -9,15 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WalletTransactionCellView : UITableViewCell {
-	UILabel *dateLabel;
-	UILabel *transactionAmmountLabel;
-	UILabel *typeNameLabel;
-	UILabel *locationLabel;
-	UILabel *priceLabel;
-	UILabel *characterLabel;
-	UIImageView *iconImageView;
-}
+@interface WalletTransactionCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, retain) IBOutlet UILabel *transactionAmmountLabel;
 @property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;

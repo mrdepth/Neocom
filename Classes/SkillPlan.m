@@ -42,7 +42,6 @@
 	
 	NSError *error = nil;
 	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	[fetchRequest release];
 	
 	SkillPlan* skillPlan;
 	if (fetchedObjects.count > 0) {
@@ -51,7 +50,7 @@
 		skillPlan.characterSkills = account.characterSheet.skillsMap;
 	}
 	else {
-		skillPlan = [[[SkillPlan alloc] initWithAccount:account] autorelease];
+		skillPlan = [[SkillPlan alloc] initWithAccount:account];
 		skillPlan.skillPlanName = name;
 	}
 	return skillPlan;
@@ -62,10 +61,8 @@
 	NSXMLParser* parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:skillPlanPath]];
 	parser.delegate = skillPlan;
 	if (![parser parse]) {
-		[parser release];
 		return nil;
 	}
-	[parser release];
 	return skillPlan;
 }
 
@@ -74,17 +71,14 @@
 	NSXMLParser* parser = [[NSXMLParser alloc] initWithData:[eveMonSkillPlan dataUsingEncoding:NSUTF8StringEncoding]];
 	parser.delegate = skillPlan;
 	if (![parser parse]) {
-		[parser release];
 		return nil;
 	}
-	[parser release];
 	return skillPlan;
 }
 
 - (id) initWithAccount:(EVEAccount*) aAccount {
 	if (self = [self init]) {
 		if (!aAccount) {
-			[self release];
 			return nil;
 		}
 		self.skills = [NSMutableArray array];
@@ -118,11 +112,6 @@
 
 - (void) dealloc {
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
-	[_skills release];
-	[_characterAttributes retain];
-	[_characterSkills retain];
-	[_name release];
-	[super dealloc];
 }
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {

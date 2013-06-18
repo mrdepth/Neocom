@@ -15,12 +15,7 @@
 
 @end
 
-@interface EUHTTPResponse : NSObject<NSStreamDelegate> {
-	NSOutputStream *outputStream;
-	NSMutableData *outputData;
-	CFHTTPMessageRef message;
-	id <EUHTTPResponseDelegate> delegate;
-}
+@interface EUHTTPResponse : NSObject<NSStreamDelegate>
 @property (nonatomic, retain) NSOutputStream *outputStream;
 @property (nonatomic, retain) NSMutableData *outputData;
 @property (nonatomic, assign) CFHTTPMessageRef message;

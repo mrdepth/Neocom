@@ -9,13 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EUFilterItemValue.h"
 
-@interface EUFilterItem : NSObject<NSCopying> {
-	NSString *name;
-	NSString *allValue;
-	NSString *valuePropertyKey;
-	NSString *titlePropertyKey;
-	NSMutableSet *values;
-}
+@interface EUFilterItem : NSObject<NSCopying>
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *allValue;
 @property (nonatomic, copy) NSString *valuePropertyKey;

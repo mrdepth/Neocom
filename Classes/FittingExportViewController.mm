@@ -17,7 +17,11 @@
 #include "eufe.h"
 #import "EUStorage.h"
 
-@interface FittingExportViewController (Private)
+@interface FittingExportViewController ()
+@property(nonatomic, strong) EUHTTPServer *server;
+@property(nonatomic, strong) NSArray* fits;
+@property(nonatomic, strong) NSString* page;
+
 
 - (void) updateAddress;
 - (NSString*) eveXMLWithFit:(NSDictionary*) fit;
@@ -40,7 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 	self.title = NSLocalizedString(@"Export", nil);
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -49,9 +53,8 @@
 	
 //	[eveXML appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingExportViewController" name:NSLocalizedString(@"Exporting Fits", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		EUStorage* storage = [EUStorage sharedStorage];
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
@@ -59,7 +62,6 @@
 		
 		NSError *error = nil;
 		NSMutableArray *fitsArray = [NSMutableArray arrayWithArray:[storage.managedObjectContext executeFetchRequest:fetchRequest error:&error]];
-		[fetchRequest release];
 
 		[eveXML appendString:[ShipFit allFitsEveXML]];
 		
@@ -70,7 +72,7 @@
 			ShipFit* b = [obj2 objectAtIndex:0];
 			return [a.type.group.groupName compare:b.type.group.groupName];
 		}];
-		operation.progress = 0.75;
+		weakOperation.progress = 0.75;
 		
 		NSMutableString* body = [NSMutableString string];
 		NSInteger groupID = 0;
@@ -88,9 +90,7 @@
 		}
 		
 		[pageTmp replaceOccurrencesOfString:@"{body}" withString:body options:0 range:NSMakeRange(0, pageTmp.length)];
-		operation.progress = 1.0;
-
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
@@ -98,15 +98,12 @@
 		NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"exportedFits.xml"];
 		[eveXML writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];
 		
-		[fits release];
-		fits = [fitsTmp retain];
+		self.fits = fitsTmp;
 		
-		[page release];
-		page = [pageTmp retain];
+		self.page = pageTmp;
 		
-		[server release];
-		server = [[EUHTTPServer alloc] initWithDelegate:self];
-		[server run];
+		self.server = [[EUHTTPServer alloc] initWithDelegate:self];
+		[self.server run];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -125,13 +122,10 @@
 {
     [super viewDidUnload];
 	self.addressLabel = nil;
-	[server shutdown];
-	[server release];
-	server = nil;
-	[fits release];
-	fits = nil;
-	[page release];
-	page = nil;
+	[self.server shutdown];
+	self.server = nil;
+	self.fits = nil;
+	self.page = nil;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
 
     // Release any retained subviews of the main view.
@@ -139,14 +133,7 @@
 
 - (void)dealloc {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
-	[addressLabel release];
-	
-	[server shutdown];
-	[server release];
-	
-	[fits release];
-	[page release];
-    [super dealloc];
+	[self.server shutdown];
 }
 
 - (IBAction) onClose:(id)sender {
@@ -167,9 +154,9 @@
 			message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
 			connection.response.message = message;
 
-			CFHTTPMessageSetBody(connection.response.message, (CFDataRef)data);
-			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", data.length]);
-			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"image/png");
+			CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef)data);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", data.length]);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (__bridge CFStringRef) @"image/png");
 			CFRelease(message);
 		}
 		else {
@@ -186,8 +173,8 @@
 		if (components.count == 2) {
 			NSInteger groupID = [[components objectAtIndex:0] integerValue];
 			NSInteger fitID = [[components objectAtIndex:1] integerValue];
-			if (fits.count > groupID) {
-				NSArray* group = [fits objectAtIndex:groupID];
+			if (self.fits.count > groupID) {
+				NSArray* group = [self.fits objectAtIndex:groupID];
 				if (group.count > fitID) {
 					ShipFit* fit = [group objectAtIndex:fitID];
 					xml = [NSString stringWithFormat:@"<?xml version=\"1.0\" ?>\n<fittings>\n%@</fittings>", [fit eveXML]];
@@ -207,13 +194,13 @@
 			connection.response.message = message;
 			CFRelease(message);
 			NSData* bodyData = [xml dataUsingEncoding:NSUTF8StringEncoding];
-			CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
-			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+			CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
+			CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
 			
 			CFHTTPMessageSetHeaderFieldValue(connection.response.message, (CFStringRef) @"Content-Type", (CFStringRef) @"application/xml");
 			CFHTTPMessageSetHeaderFieldValue(connection.response.message,
-											 (CFStringRef) @"Content-Disposition",
-											 (CFStringRef) [NSString stringWithFormat:@"attachment; filename=\"%@.xml\"", typeName]);
+											 (__bridge CFStringRef) @"Content-Disposition",
+											 (__bridge CFStringRef) [NSString stringWithFormat:@"attachment; filename=\"%@.xml\"", typeName]);
 		}
 		else {
 			message = CFHTTPMessageCreateResponse(NULL, 404, NULL, kCFHTTPVersion1_0);
@@ -226,17 +213,15 @@
 		CFHTTPMessageRef message = CFHTTPMessageCreateResponse(NULL, 200, NULL, kCFHTTPVersion1_0);
 		connection.response.message = message;
 		CFRelease(message);
-		NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
-		CFHTTPMessageSetBody(connection.response.message, (CFDataRef) bodyData);
-		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
-		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (CFStringRef) @"text/html; charset=UTF-8");
+		NSData* bodyData = [self.page dataUsingEncoding:NSUTF8StringEncoding];
+		CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
+		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
+		CFHTTPMessageSetHeaderFieldValue(message, (CFStringRef) @"Content-Type", (__bridge CFStringRef) @"text/html; charset=UTF-8");
 		[connection.response run];
 	}
 }
 
-@end
-
-@implementation FittingExportViewController(Private)
+#pragma mark - Private
 
 - (void) updateAddress {
 	NSArray *addresses = [UIDevice localIPAddresses];

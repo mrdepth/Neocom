@@ -12,27 +12,6 @@
 #import "EUFilter.h"
 
 @interface WalletJournalViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	SBTableView *walletJournalTableView;
-	UISegmentedControl *ownerSegmentControl;
-	UISegmentedControl *accountSegmentControl;
-	UIView *accountsView;
-	UIToolbar *ownerToolbar;
-	UIToolbar *accountToolbar;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *walletJournal;
-	NSMutableArray *charWalletJournal;
-	NSMutableArray *corpWalletJournal;
-	NSMutableArray *filteredValues;
-	NSMutableArray *corpAccounts;
-	NSNumber *characterBalance;
-	BOOL isFail;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-	NSMutableDictionary* refTypes;
 }
 @property (nonatomic, retain) IBOutlet SBTableView *walletJournalTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;

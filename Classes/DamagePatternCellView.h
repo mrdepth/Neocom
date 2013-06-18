@@ -9,14 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ProgressLabel.h"
 
-@interface DamagePatternCellView : UITableViewCell {
-	UILabel* titleLabel;
-	ProgressLabel* emLabel;
-	ProgressLabel* kineticLabel;
-	ProgressLabel* thermalLabel;
-	ProgressLabel* explosiveLabel;
-	UIImageView* checkmarkImageView;
-}
+@interface DamagePatternCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel* titleLabel;
 @property (nonatomic, retain) IBOutlet ProgressLabel* emLabel;
 @property (nonatomic, retain) IBOutlet ProgressLabel* kineticLabel;

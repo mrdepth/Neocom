@@ -145,7 +145,6 @@
 			controller.delegate = self;
 			controller.title = [self.filter valueForKey:@"title"];
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 			break;
 		}
 		case KillNetFilterTypeSolarSystem: {
@@ -153,7 +152,6 @@
 			controller.delegate = self;
 			controller.title = [self.filter valueForKey:@"title"];
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 			break;
 		}
 		case KillNetFilterTypeRegion: {
@@ -162,7 +160,6 @@
 			controller.delegate = self;
 			controller.title = [self.filter valueForKey:@"title"];
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 			break;
 		}
 		case KillNetFilterTypeVictimShipClass:
@@ -171,7 +168,6 @@
 			controller.delegate = self;
 			controller.title = [self.filter valueForKey:@"title"];
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 			break;
 		}
 		case KillNetFilterTypeStartDate:
@@ -182,7 +178,6 @@
 			controller.date = [self.filter valueForKey:@"value"];
 			controller.delegate = self;
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 			break;
 		}
 		default:
@@ -190,11 +185,6 @@
 			break;
 	}
 	
-}
-
-- (void)dealloc {
-	[_tableView release];
-	[super dealloc];
 }
 
 - (void)viewDidUnload {

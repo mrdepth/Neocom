@@ -17,15 +17,7 @@ typedef enum {
 @class ItemInfoViewController;
 @class MarketInfoViewController;
 @class EVEDBInvType;
-@interface ItemViewController : UIViewController {
-	ItemInfoViewController *itemInfoViewController;
-	MarketInfoViewController *marketInfoViewController;
-	UIView *parentView;
-	EVEDBInvType *type;
-	ItemViewControllerActivePage activePage;
-	
-	UISegmentedControl *pageSegmentControl;
-}
+@interface ItemViewController : UIViewController
 @property (nonatomic, retain) IBOutlet ItemInfoViewController *itemInfoViewController;
 @property (nonatomic, retain) IBOutlet MarketInfoViewController *marketInfoViewController;
 @property (nonatomic, retain) IBOutlet UIView *parentView;

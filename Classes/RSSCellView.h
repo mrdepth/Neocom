@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface RSSCellView : UITableViewCell {
-	UILabel *titleLabel;
-}
+@interface RSSCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @end

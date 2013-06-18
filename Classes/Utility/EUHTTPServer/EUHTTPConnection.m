@@ -9,11 +9,6 @@
 #import "EUHTTPConnection.h"
 
 @implementation EUHTTPConnection
-@synthesize peerName;
-@synthesize delegate;
-@synthesize request;
-@synthesize response;
-
 
 - (id)initWithInputStream:(NSInputStream *)readStream 
 			 outputStream:(NSOutputStream *) writeStream 
@@ -21,17 +16,10 @@
 				 delegate:(id<EUHTTPConnectionDelegate>) anObject {
 	if (self = [super init]) {
 		self.delegate = anObject;
-		self.request = [[[EUHTTPRequest alloc] initWithInputStream:readStream delegate:self] autorelease];
-		self.response = [[[EUHTTPResponse alloc] initWithOutputStream:writeStream delegate:self] autorelease];
+		self.request = [[EUHTTPRequest alloc] initWithInputStream:readStream delegate:self];
+		self.response = [[EUHTTPResponse alloc] initWithOutputStream:writeStream delegate:self];
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[peerName release];
-	[request release];
-	[response release];
-	[super dealloc];
 }
 
 - (void) run {
@@ -41,7 +29,7 @@
 #pragma mark EUHTTPRequestDelegate<NSObject>
 
 - (void) httpRequest:(EUHTTPRequest*) aRequest didCompleteWithError:(NSError*) error {
-	[delegate connection:self didReceiveRequest:aRequest];
+	[self.delegate connection:self didReceiveRequest:aRequest];
 }
 
 #pragma mark EUHTTPResponseDelegate

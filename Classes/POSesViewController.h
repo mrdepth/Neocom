@@ -8,15 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface POSesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *posesTableView;
-	UISearchBar *searchBar;
-@private
-	NSMutableArray *poses;
-	NSMutableArray *sections;
-	NSMutableDictionary *sovereigntySolarSystems;
-	NSMutableArray *filteredValues;
-}
+@interface POSesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet UITableView *posesTableView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @end

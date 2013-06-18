@@ -15,19 +15,7 @@
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate> {
-	FittingViewController *fittingViewController;
-	UITableView *tableView;
-	ProgressLabel *droneBayLabel;
-	ProgressLabel *droneBandwidthLabel;
-	UILabel *dronesCountLabel;
-	FittingItemsViewController *fittingItemsViewController;
-	TargetsViewController* targetsViewController;
-	UIPopoverController *popoverController;
-@private
-	NSMutableArray *rows;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate>
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet ProgressLabel *droneBayLabel;

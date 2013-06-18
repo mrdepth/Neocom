@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface BidCellView : UITableViewCell {
-	UILabel *characterNameLabel;
-	UILabel *dateLabel;
-	UILabel *amountLabel;
-}
+@interface BidCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *characterNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, retain) IBOutlet UILabel *amountLabel;

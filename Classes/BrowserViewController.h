@@ -14,20 +14,13 @@
 @end
 
 
-@interface BrowserViewController : UIViewController<UIWebViewDelegate> {
-	UIWebView *webView;
-	UIBarButtonItem *backButton;
-	UIBarButtonItem *forwardButton;
-	UIActivityIndicatorView *activityIndicatorView;
-	NSURL *startPageURL;
-	id<BrowserViewControllerDelegate> delegate;
-}
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@interface BrowserViewController : UIViewController<UIWebViewDelegate>
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *forwardButton;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, retain) NSURL *startPageURL;
-@property (nonatomic, assign) id<BrowserViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<BrowserViewControllerDelegate> delegate;
 
 - (IBAction) onClose:(id) sender;
 

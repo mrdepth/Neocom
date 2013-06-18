@@ -27,6 +27,8 @@
 
 @interface MainMenuViewController()
 @property (nonatomic, retain) UIPopoverController* masterPopover;
+@property (nonatomic, assign) NSInteger numberOfUnreadMessages;
+
 
 - (void) didSelectAccount:(NSNotification*) notification;
 - (IBAction) dismissModalViewController;
@@ -37,10 +39,6 @@
 
 
 @implementation MainMenuViewController
-@synthesize menuTableView;
-@synthesize characterInfoViewController;
-@synthesize menuItems;
-@synthesize characterInfoView;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -62,13 +60,13 @@
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
-	menuTableView.visibleTopPartHeight = 24;
-	[characterInfoView addSubview:characterInfoViewController.view];
-	characterInfoViewController.view.frame = characterInfoView.bounds;
-	menuTableView.backgroundColor = [UIColor clearColor];
+	self.menuTableView.visibleTopPartHeight = 24;
+	[self.characterInfoView addSubview:self.characterInfoViewController.view];
+	self.characterInfoViewController.view.frame = self.characterInfoView.bounds;
+	self.menuTableView.backgroundColor = [UIColor clearColor];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReadMail:) name:NotificationReadMail object:nil];
-	numberOfUnreadMessages = 0;
+	self.numberOfUnreadMessages = 0;
 	[self loadMail];
 }
 
@@ -88,9 +86,8 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationReadMail object:nil];
-	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
 	self.menuTableView = nil;
 	self.characterInfoViewController = nil;
 	self.menuItems = nil;
@@ -102,15 +99,8 @@
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationReadMail object:nil];
-	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
-	[menuTableView release];
-	[characterInfoViewController release];
-	[menuItems release];
-	[characterInfoView release];
-	[_masterPopover release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
 }
 
 - (IBAction)onFacebook:(id)sender {
@@ -127,14 +117,14 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return menuItems.count;
+	return self.menuItems.count;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *cellIdentifier;
-	NSDictionary *item = [menuItems objectAtIndex:indexPath.row];
+	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
@@ -152,8 +142,8 @@
     }
 	NSString *className = [item valueForKey:@"className"];
 
-	if (numberOfUnreadMessages > 0 && [className isEqualToString:@"MessagesViewController"]) {
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString([item valueForKey:@"title"], nil), numberOfUnreadMessages];
+	if (self.numberOfUnreadMessages > 0 && [className isEqualToString:@"MessagesViewController"]) {
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString([item valueForKey:@"title"], nil), self.numberOfUnreadMessages];
 	}
 	else {
 		cell.titleLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
@@ -168,7 +158,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	NSDictionary *item = [menuItems objectAtIndex:indexPath.row];
+	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
@@ -190,10 +180,8 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController)] autorelease]];
+			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController)]];
 			[self.splitViewController presentModalViewController:navController animated:YES];
-			[navController release];
-			[controller release];
 		}
 		else {
 			NSArray *viewControllers = [self.splitViewController viewControllers];
@@ -210,15 +198,12 @@
 					[self.masterPopover dismissPopoverAnimated:YES];
 				}
 				[self.splitViewController setViewControllers:[NSArray arrayWithObjects:[viewControllers objectAtIndex:0], navController, nil]];
-				[navController release];
-				[controller release];
 			}
 		}
 	}
 	else {
 		UIViewController *controller = [[NSClassFromString(className) alloc] initWithNibName:nibName bundle:nil];
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	
 	return;
@@ -232,11 +217,11 @@
 		[UIView setAnimationDuration:0.5];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
-	characterInfoView.frame = CGRectMake(0, 0, size.width, size.height);
-	menuTableView.frame = CGRectMake(0, size.height, menuTableView.frame.size.width, menuTableView.superview.frame.size.height - menuTableView.visibleTopPartHeight);
+	self.characterInfoView.frame = CGRectMake(0, 0, size.width, size.height);
+	self.menuTableView.frame = CGRectMake(0, size.height, self.menuTableView.frame.size.width, self.menuTableView.superview.frame.size.height - self.menuTableView.visibleTopPartHeight);
 	if (animated)
 		[UIView commitAnimations];
-	[menuTableView setContentOffset:CGPointMake(0, 0) animated:YES];
+	[self.menuTableView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
 #pragma mark ADBannerViewDelegate
@@ -272,8 +257,8 @@
 #pragma mark - Private
 
 - (void) didSelectAccount:(NSNotification*) notification {
-	numberOfUnreadMessages = 0;
-	[menuTableView reloadData];
+	self.numberOfUnreadMessages = 0;
+	[self.menuTableView reloadData];
 	[self loadMail];
 }
 
@@ -288,17 +273,17 @@
 - (void) loadMail {
 	EVEAccount* currentAccount = [EVEAccount currentAccount];
 	if (currentAccount) {
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:NSLocalizedString(@"Checking Mail", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:NSLocalizedString(@"Checking Mail", nil)];
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-			numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];
-			[pool release];
+			@autoreleasepool {
+				self.numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];
+			}
 		}];
 		
+		__weak EUOperation* weakOperation = operation;
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
-				[menuTableView reloadData];
-			}
+			if (![weakOperation isCancelled])
+				[self.menuTableView reloadData];
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];

@@ -21,34 +21,7 @@
 @class DamagePattern;
 @class EVEDBInvControlTowerResource;
 @class PriceManager;
-@interface POSFittingViewController : UIViewController<UIActionSheetDelegate,UITextFieldDelegate, AreaEffectsViewControllerDelegate, DamagePatternsViewControllerDelegate> {
-	UIView *sectionsView;
-	UISegmentedControl *sectionSegmentControl;
-	UINavigationController *modalController;
-	UINavigationController *areaEffectsModalController;
-	AreaEffectsViewController* areaEffectsViewController;
-	StructuresViewController *structuresViewController;
-	AssemblyLinesViewController* assemblyLinesViewController;
-	POSStatsViewController *posStatsViewController;
-	
-	UIView *shadeView;
-	UIToolbar *fitNameView;
-	UITextField *fitNameTextField;
-	UIView *statsSectionView;
-	UIPopoverController *popoverController;
-	UIPopoverController *areaEffectsPopoverController;
-	POSFit* fit;
-	
-	eufe::Engine* fittingEngine;
-	DamagePattern* damagePattern;
-	
-	EVEDBInvControlTowerResource* posFuelRequirements;
-	PriceManager* priceManager;
-@private
-	UIViewController<FittingSection> *currentSection;
-	NSInteger currentSectionIndex;
-	UIActionSheet *actionSheet;
-}
+@interface POSFittingViewController : UIViewController<UIActionSheetDelegate,UITextFieldDelegate, AreaEffectsViewControllerDelegate, DamagePatternsViewControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIView *sectionsView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *sectionSegmentControl;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;

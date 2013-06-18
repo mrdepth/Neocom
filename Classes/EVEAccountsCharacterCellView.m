@@ -8,7 +8,7 @@
 
 #import "EVEAccountsCharacterCellView.h"
 
-@interface EVEAccountsCharacterCellView(Private)
+@interface EVEAccountsCharacterCellView()
 - (void) update;
 @end
 
@@ -41,34 +41,16 @@
 	[UIView commitAnimations];
 }
 
-- (void)dealloc {
-	[_portraitImageView release];
-	[_corpImageView release];
-	[_userNameLabel release];
-	[_corpLabel release];
-	[_trainingTimeLabel release];
-	[_paidUntilLabel release];
-	[_enableSwitch release];
-	[_character release];
-	[_wealthLabel release];
-	[_locationLabel release];
-    [super dealloc];
-}
-
 - (IBAction) onChangeEnableValue:(id) sender {
 	self.character.enabled = self.enableSwitch.on;
 }
 
 - (void) setCharacter:(EVEAccountStorageCharacter *)value {
-	[value retain];
-	[_character release];
 	_character = value;
 	self.enableSwitch.on = self.character.enabled;
 }
 
-@end
-
-@implementation EVEAccountsCharacterCellView(Private)
+#pragma mark - Private
 
 - (void) update {
 }

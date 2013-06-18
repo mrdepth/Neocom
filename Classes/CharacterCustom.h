@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Character.h"
 
-@interface CharacterCustom : Character {
-}
+@interface CharacterCustom : Character
 
 + (id) characterWithCharacter:(Character*) character;
 - (id) initWithCharacter:(Character*) character;

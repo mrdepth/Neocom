@@ -11,25 +11,10 @@
 #import "EVEOnlineAPI.h"
 
 @implementation EVEAccount
-@synthesize charKeyID;
-@synthesize charVCode;
-@synthesize charAccessMask;
-@synthesize corpKeyID;
-@synthesize corpVCode;
-@synthesize corpAccessMask;
-
-@synthesize characterID;
-@synthesize characterName;
-@synthesize corporationID;
-@synthesize corporationName;
-
-@synthesize characterSheet;
-@synthesize skillQueue;
-@synthesize properties;
-@synthesize skillPlan;
-@synthesize mailBox;
-
-@synthesize characterAttributes;
+@synthesize characterSheet = _characterSheet;
+@synthesize skillQueue = _skillQueue;
+@synthesize skillPlan = _skillPlan;
+@synthesize mailBox = _mailBox;
 
 - (id) init {
 	if (self = [super init]) {
@@ -41,17 +26,17 @@
 + (EVEAccount*) accountWithCharacter:(EVEAccountStorageCharacter*) character {
 	if (!character)
 		return nil;
-	return [[[EVEAccount alloc] initWithCharacter:character] autorelease];
+	return [[EVEAccount alloc] initWithCharacter:character];
 }
 
 + (EVEAccount*) accountWithDictionary:(NSDictionary*) dictionary {
 	if (!dictionary)
 		return nil;
-	return [[[EVEAccount alloc] initWithDictionary:dictionary] autorelease];
+	return [[EVEAccount alloc] initWithDictionary:dictionary];
 }
 
 + (EVEAccount*) dummyAccount {
-	EVEAccount *account = [[[EVEAccount alloc] init] autorelease];
+	EVEAccount *account = [[EVEAccount alloc] init];
 	return account;
 }
 
@@ -97,24 +82,12 @@
 }
 
 - (void) dealloc {
-	[charVCode release];
-	[corpVCode release];
-	[characterName release];
-	[corporationName release];
-	[characterSheet release];
-	[skillQueue release];
-	[properties release];
-
-	[skillPlan save];
-	[skillPlan release];
-	[mailBox release];
-	[characterAttributes release];
-	[super dealloc];
+	[self.skillPlan save];
 }
 
 + (EVEAccount*) currentAccount {
 	EVEUniverseAppDelegate *delegate = (EVEUniverseAppDelegate*) [[UIApplication sharedApplication] delegate];
-	return [[delegate.currentAccount retain] autorelease];
+	return delegate.currentAccount;
 }
 
 - (void) login {
@@ -134,26 +107,25 @@
 
 
 - (NSDictionary*) dictionary {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithInteger:charKeyID], @"charKeyID",
-			charVCode ? charVCode : @"", @"charVCode",
-			[NSNumber numberWithInteger:charAccessMask], @"charAccessMask",
-			[NSNumber numberWithInteger:corpKeyID], @"corpKeyID",
-			corpVCode ? corpVCode : @"", @"corpVCode",
-			[NSNumber numberWithInteger:corpAccessMask], @"corpAccessMask",
-			[NSNumber numberWithInteger:characterID], @"characterID",
-			characterName ? characterName : @"", @"characterName",
-			[NSNumber numberWithInteger:corporationID], @"corporationID",
-			corporationName ? corporationName : @"", @"corporationName",
-			nil];
+	return @{@"charKeyID": @(self.charKeyID),
+		  @"charVCode": self.charVCode ? self.charVCode : @"",
+		  @"charAccessMask": @(self.charAccessMask),
+		  @"corpKeyID": @(self.corpKeyID),
+		  @"corpVCode": self.corpVCode ? self.corpVCode : @"",
+		  @"corpAccessMask": @(self.corpAccessMask),
+		  @"characterID": @(self.characterID),
+		  @"characterName": self.characterName ? self.characterName : @"",
+		  @"corporationID": @(self.corporationID),
+		  @"corporationName": self.corporationName ? self.corporationName : @"",
+		  };
 }
 
 - (void) updateSkillpoints {
 	if (!self.characterSheet || !self.skillQueue)
 		return;
-	NSDate *currentTime = [skillQueue serverTimeWithLocalTime:[NSDate date]];
-	for (EVESkillQueueItem *item in skillQueue.skillQueue) {
-		for (EVECharacterSheetSkill *skill in characterSheet.skills) {
+	NSDate *currentTime = [self.skillQueue serverTimeWithLocalTime:[NSDate date]];
+	for (EVESkillQueueItem *item in self.skillQueue.skillQueue) {
+		for (EVECharacterSheetSkill *skill in self.characterSheet.skills) {
 			if (skill.typeID == item.typeID && item.endTime && item.startTime) {
 				if (item.queuePosition == 0) {
 					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
@@ -170,46 +142,44 @@
 
 - (EVECharacterSheet*) characterSheet {
 	@synchronized(self) {
-		if (!characterSheet) {
+		if (!_characterSheet) {
 			NSError *error = nil;
 			if (!self.charKeyID || !self.charVCode || !self.characterID)
 				return nil;
-			self.characterSheet = [EVECharacterSheet characterSheetWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
+			_characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.charKeyID vCode:self.charVCode characterID:self.characterID error:&error progressHandler:nil];
 		}
-		return [[characterSheet retain] autorelease];
+		return _characterSheet;
 	}
 }
 
 - (void) setCharacterSheet:(EVECharacterSheet *) value {
 	@synchronized(self) {
-		[value retain];
-		[characterSheet release];
-		characterSheet = value;
+		_characterSheet = value;
 		
-		self.characterAttributes = [CharacterAttributes defaultCharacterAttributes];
-		if (characterSheet) {
-			characterAttributes.charisma = characterSheet.attributes.charisma;
-			characterAttributes.intelligence = characterSheet.attributes.intelligence;
-			characterAttributes.memory = characterSheet.attributes.memory;
-			characterAttributes.perception = characterSheet.attributes.perception;
-			characterAttributes.willpower = characterSheet.attributes.willpower;
+		_characterAttributes = [CharacterAttributes defaultCharacterAttributes];
+		if (_characterSheet) {
+			_characterAttributes.charisma = _characterSheet.attributes.charisma;
+			_characterAttributes.intelligence = _characterSheet.attributes.intelligence;
+			_characterAttributes.memory = _characterSheet.attributes.memory;
+			_characterAttributes.perception = _characterSheet.attributes.perception;
+			_characterAttributes.willpower = _characterSheet.attributes.willpower;
 			
-			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+			for (EVECharacterSheetAttributeEnhancer *enhancer in _characterSheet.attributeEnhancers) {
 				switch (enhancer.attribute) {
 					case EVECharacterAttributeCharisma:
-						characterAttributes.charisma += enhancer.augmentatorValue;
+						_characterAttributes.charisma += enhancer.augmentatorValue;
 						break;
 					case EVECharacterAttributeIntelligence:
-						characterAttributes.intelligence += enhancer.augmentatorValue;
+						_characterAttributes.intelligence += enhancer.augmentatorValue;
 						break;
 					case EVECharacterAttributeMemory:
-						characterAttributes.memory += enhancer.augmentatorValue;
+						_characterAttributes.memory += enhancer.augmentatorValue;
 						break;
 					case EVECharacterAttributePerception:
-						characterAttributes.perception += enhancer.augmentatorValue;
+						_characterAttributes.perception += enhancer.augmentatorValue;
 						break;
 					case EVECharacterAttributeWillpower:
-						characterAttributes.willpower += enhancer.augmentatorValue;
+						_characterAttributes.willpower += enhancer.augmentatorValue;
 						break;
 				}
 			}
@@ -219,71 +189,64 @@
 }
 
 - (CharacterAttributes*) characterAttributes {
-	if (!characterAttributes)
-		characterAttributes = [[CharacterAttributes defaultCharacterAttributes] retain];
-	return characterAttributes;
+	if (!_characterAttributes)
+		_characterAttributes = [CharacterAttributes defaultCharacterAttributes];
+	return _characterAttributes;
 }
 
 - (EVESkillQueue*) skillQueue {
 	@synchronized(self) {
-		if (!skillQueue) {
+		if (!_skillQueue) {
 			NSError *error = nil;
 			if (!self.charKeyID || !self.charVCode || !self.characterID)
 				return nil;
-			//self.skillQueue = [EVESkillQueue skillQueueWithUserID:self.userID apiKey:self.apiKey characterID:self.characterID error:&error];
-			self.skillQueue = [EVESkillQueue skillQueueWithKeyID:charKeyID vCode:charVCode characterID:characterID error:&error];
+			_skillQueue = [EVESkillQueue skillQueueWithKeyID:self.charKeyID vCode:self.charVCode characterID:self.characterID error:&error progressHandler:nil];
 		}
-		return [[skillQueue retain] autorelease];
+		return _skillQueue;
 	}
 }
 
 - (void) setSkillQueue:(EVESkillQueue *) value {
 	@synchronized(self) {
-		[value retain];
-		[skillQueue release];
-		skillQueue = value;
-		if (skillQueue)
+		_skillQueue = value;
+		if (_skillQueue)
 			[self updateSkillpoints];
 	}
 }
 
 - (SkillPlan*) skillPlan {
 	@synchronized(self) {
-		if (!skillPlan) {
+		if (!_skillPlan) {
 			if (!self.characterID || !self.characterSheet)
 				return nil;
-			skillPlan = [[SkillPlan skillPlanWithAccount:self name:@"main"] retain];
-			[skillPlan load];
+			_skillPlan = [SkillPlan skillPlanWithAccount:self name:@"main"];
+			[_skillPlan load];
 		}
-		return [[skillPlan retain] autorelease];
+		return _skillPlan;
 	}
 }
 
 - (void) setSkillPlan:(SkillPlan *)value {
 	@synchronized(self) {
-		[value retain];
-		[skillPlan release];
-		skillPlan = value;
+		_skillPlan = value;
 	}
 }
 
 - (EUMailBox*) mailBox {
 	@synchronized(self) {
-		if (!mailBox) {
+		if (!_mailBox) {
 			if (!self.charKeyID || !self.charVCode)
 				return nil;
-			mailBox = [[EUMailBox alloc] initWithAccount:self];
-			[mailBox inbox];
+			_mailBox = [[EUMailBox alloc] initWithAccount:self];
+			[_mailBox inbox];
 		}
-		return [[mailBox retain] autorelease];
+		return _mailBox;
 	}
 }
 
 - (void) setMailBox:(EUMailBox *)value {
 	@synchronized(self) {
-		[value retain];
-		[mailBox release];
-		mailBox = value;
+		_mailBox = value;
 	}
 }
 

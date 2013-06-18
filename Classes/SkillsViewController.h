@@ -16,9 +16,6 @@
 	UISegmentedControl *segmentedControl;
 	CharacterInfoViewController *characterInfoViewController;
 @private
-	NSArray *skillGroups;
-	NSMutableArray *skillQueue;
-	NSString *skillQueueTitle;
 }
 @property (nonatomic, retain) IBOutlet CollapsableTableView *skillsTableView;
 @property (nonatomic, retain) IBOutlet CollapsableTableView *skillsQueueTableView;

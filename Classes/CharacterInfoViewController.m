@@ -14,7 +14,7 @@
 #import "NSString+TimeLeft.h"
 #import "UIImageView+URL.h"
 
-@interface CharacterInfoViewController(Private)
+@interface CharacterInfoViewController()
 - (void) update;
 - (void) updateCharacterInfo:(EVEAccount*) account;
 - (void) updateSkillInfoWithAccount:(EVEAccount*) account;
@@ -24,40 +24,11 @@
 @end
 
 @implementation CharacterInfoViewController
-@synthesize portraitImageView;
-@synthesize corpImageView;
-@synthesize allianceImageView;
-@synthesize corpLabel;
-@synthesize allianceLabel;
-@synthesize skillsLabel;
-@synthesize wealthLabel;
-@synthesize serverStatusLabel;
-@synthesize onlineLabel;
-@synthesize delegate;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:NO];
-	
-	/*[[EUOperationQueue sharedQueue] addOperationWithBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
-		NSError *error = nil;
-		EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error];
-		if (error) {
-			[self.serverStatusLabel performSelectorOnMainThread:@selector(setText:) withObject:@"error" waitUntilDone:NO];
-			[self.onlineLabel performSelectorOnMainThread:@selector(setText:) withObject:@"" waitUntilDone:NO];
-		}
-		else {		
-			[self.serverStatusLabel performSelectorOnMainThread:@selector(setText:)
-														  withObject:serverStatus.serverOpen ? @"Online" : @"Offline"
-													   waitUntilDone:NO];
-			[self.onlineLabel performSelectorOnMainThread:@selector(setText:)
-													withObject:[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle]
-												 waitUntilDone:NO];
-		}
-		[pool release];
-	}];*/
+	[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:NO];
 	[self checkServerStatus];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
@@ -94,23 +65,9 @@
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	
-	[portraitImageView release];
-	[corpImageView release];
-	[allianceImageView release];
-	[corpLabel release];
-	[allianceLabel release];
-	[skillsLabel release];
-	[wealthLabel release];
-	[serverStatusLabel release];
-	[onlineLabel release];
-    [super dealloc];
 }
 
-@end
-
-
-@implementation CharacterInfoViewController(Private)
+#pragma mark - Private
 
 - (void) update {
 	EVEAccount *account = [EVEAccount currentAccount];
@@ -118,9 +75,7 @@
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self] name:NSLocalizedString(@"Loading Character Info", nil)];
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[self updateCharacterInfo:account];
-		[pool release];
 	}];
 
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -143,8 +98,6 @@
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			//[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale];
-			//[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale];
 			[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale completion:nil failureBlock:nil];
 			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
 			self.corpLabel.text = account.corporationName;
@@ -163,7 +116,7 @@
 		else {
 			wealth = @"";
 			NSError *error = nil;
-			EVECorporationSheet *corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporationID:account.corporationID error:&error];
+			EVECorporationSheet *corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporationID:account.corporationID error:&error progressHandler:nil];
 			if (!error) {
 				allianceID = corporationSheet.allianceID;
 				allianceName = corporationSheet.allianceName;
@@ -201,7 +154,7 @@
 		});
 		if (self.view.frame.size.height != 24) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:YES];
+				[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:YES];
 			});
 		}
 	}
@@ -234,7 +187,7 @@
 
 - (void) show {
 	if (self.view.frame.size.height != 142)
-		[delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 142) animated:YES];
+		[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 142) animated:YES];
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
@@ -242,31 +195,31 @@
 }
 
 - (void) checkServerStatus {
-	NSOperationQueue* queue = [[[NSOperationQueue alloc] init] autorelease];
+	NSOperationQueue* queue = [[NSOperationQueue alloc] init];
 	
 	[queue addOperationWithBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]  init];
-		NSError* error = nil;
-		EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error];
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (error) {
-				self.serverStatusLabel.text = NSLocalizedString(@"Error", nil);
-				self.onlineLabel.text = @"";
-			}
-			else {
-				self.serverStatusLabel.text = serverStatus.serverOpen ? NSLocalizedString(@"Online", nil) : NSLocalizedString(@"Offline", nil);
-				self.onlineLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle];
-				
-				NSDate* cachedUntil = [serverStatus localTimeWithServerTime:serverStatus.cachedUntil];
-				NSTimeInterval timeInterval = [cachedUntil timeIntervalSinceNow];
-				if (timeInterval < 30 * 60)
-					timeInterval = 30 * 60;
-				
-				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkServerStatus) object:nil];
-				[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:timeInterval];
-			}
-		});
-		[pool release];
+		@autoreleasepool {
+			NSError* error = nil;
+			EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error progressHandler:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				if (error) {
+					self.serverStatusLabel.text = NSLocalizedString(@"Error", nil);
+					self.onlineLabel.text = @"";
+				}
+				else {
+					self.serverStatusLabel.text = serverStatus.serverOpen ? NSLocalizedString(@"Online", nil) : NSLocalizedString(@"Offline", nil);
+					self.onlineLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle];
+					
+					NSDate* cachedUntil = [serverStatus localTimeWithServerTime:serverStatus.cachedUntil];
+					NSTimeInterval timeInterval = [cachedUntil timeIntervalSinceNow];
+					if (timeInterval < 30 * 60)
+						timeInterval = 30 * 60;
+					
+					[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkServerStatus) object:nil];
+					[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:timeInterval];
+				}
+			});
+		}
 	}];
 }
 

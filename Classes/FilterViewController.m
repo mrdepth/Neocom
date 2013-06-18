@@ -13,16 +13,12 @@
 #import "UIView+Nib.h"
 
 @interface FilterViewController()
-@property (nonatomic, retain) NSMutableIndexSet* collapsedSections;
+@property (nonatomic, strong) NSMutableIndexSet* collapsedSections;
 
 @end
 
 @implementation FilterViewController
-@synthesize tableView;
-@synthesize delegate;
-@synthesize filter;
-@synthesize values;
-@synthesize collapsedSections;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,8 +44,8 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Filter", nil);
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCancel:)] autorelease]];
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)] autorelease]];
+		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCancel:)]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)]];
 	}
     // Do any additional setup after loading the view from its nib.
 }
@@ -74,34 +70,25 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.values = [NSMutableArray array];
-	for (EUFilterItem *item in filter.filters)
-		[values addObject:[item.values sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]]];
+	for (EUFilterItem *item in self.filter.filters)
+		[self.values addObject:[item.values sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]]];
 	
-	[tableView reloadData];
-}
-
-- (void) dealloc {
-	[tableView release];
-	[filter release];
-	[values release];
-	[collapsedSections release];
-	[super dealloc];
+	[self.tableView reloadData];
 }
 
 - (IBAction) onDone:(id)sender {
-	[delegate filterViewController:self didApplyFilter:filter];
+	[self.delegate filterViewController:self didApplyFilter:self.filter];
 }
 
 - (IBAction) onCancel:(id)sender {
-	[delegate filterViewControllerDidCancel:self];
+	[self.delegate filterViewControllerDidCancel:self];
 }
 
 - (void) setFilter:(EUFilter *)value {
-	EUFilter *oldValue = filter;
-	filter = [value retain];
+	EUFilter *oldValue = self.filter;
+	_filter = value;
 	if (value != oldValue && self.navigationController.visibleViewController != self)
 		[self.navigationController popViewControllerAnimated:NO];
-	[oldValue release];
 	self.collapsedSections = [NSMutableIndexSet indexSet];
 }
 
@@ -110,16 +97,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return values.count;
+	return self.values.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[values objectAtIndex:section] count] + 1;
+	return [[self.values objectAtIndex:section] count] + 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return NSLocalizedString([[filter.filters objectAtIndex:section] name], nil);
+	return NSLocalizedString([[self.filter.filters objectAtIndex:section] name], nil);
 }
 
 // Customize the appearance of table view cells.
@@ -127,18 +114,18 @@
     
 	NSString *cellIdentifier = @"TagCellView";
 	
-	TagCellView *cell = (TagCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	TagCellView *cell = (TagCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
 		cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	EUFilterItem *filterItem = [filter.filters objectAtIndex:indexPath.section];
+	EUFilterItem *filterItem = [self.filter.filters objectAtIndex:indexPath.section];
 	if (indexPath.row == 0) {
 		cell.titleLabel.text = filterItem.allValue;
 		//cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
 		cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	}
 	else {
-		EUFilterItemValue *value = [[values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+		EUFilterItemValue *value = [[self.values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
 		cell.titleLabel.text = value.title;
 		//cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
 		cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
@@ -153,8 +140,8 @@
 	return 36;
 }
 
-- (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
-	NSString* title = [self tableView:aTableView titleForHeaderInSection:section];
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
 		view.collapsed = NO;
@@ -162,7 +149,7 @@
 		if (tableView == self.searchDisplayController.searchResultsTableView)
 			view.collapsImageView.hidden = YES;
 		else
-			view.collapsed = [self tableView:aTableView sectionIsCollapsed:section];
+			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;
 	}
 	else
@@ -171,10 +158,10 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	EUFilterItem *filterItem = [filter.filters objectAtIndex:indexPath.section];
+	EUFilterItem *filterItem = [self.filter.filters objectAtIndex:indexPath.section];
 	if (indexPath.row == 0) {
 		NSInteger row = 1;
-		for (EUFilterItemValue *value in [values objectAtIndex:indexPath.section]) {
+		for (EUFilterItemValue *value in [self.values objectAtIndex:indexPath.section]) {
 			if (value.enabled) {
 				value.enabled = NO;
 				TagCellView *cell = (TagCellView*) [aTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:indexPath.section]];
@@ -186,7 +173,7 @@
 		cell.checkmarkImageView.image = [UIImage imageNamed:@"checkmark.png"];
 	}
 	else {
-		EUFilterItemValue *value = [[values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+		EUFilterItemValue *value = [[self.values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
 		TagCellView *cell = (TagCellView*) [aTableView cellForRowAtIndexPath:indexPath];
 		value.enabled = !value.enabled;
 		cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
@@ -195,7 +182,7 @@
 		cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	}
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[delegate filterViewController:self didApplyFilter:filter];
+		[self.delegate filterViewController:self didApplyFilter:self.filter];
 	return;
 }
 

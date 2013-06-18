@@ -43,24 +43,24 @@ public:
 
 
 + (id) shipFitWithFitName:(NSString*) fitName character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithFitName:fitName character:character] autorelease];
+	return [[ShipFit alloc] initWithFitName:fitName character:character];
 }
 
 + (id) shipFitWithBCString:(NSString*) string character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithBCString:string character:character] autorelease];
+	return [[ShipFit alloc] initWithBCString:string character:character];
 }
 
 + (id) shipFitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithAsset:asset character:character] autorelease];
+	return [[ShipFit alloc] initWithAsset:asset character:character];
 	
 }
 
 + (id) shipFitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithKillMail:killMail character:character] autorelease];
+	return [[ShipFit alloc] initWithKillMail:killMail character:character];
 }
 
 + (id) shipFitWithDNA:(NSString*) dna character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithDNA:dna character:character] autorelease];
+	return [[ShipFit alloc] initWithDNA:dna character:character];
 }
 
 + (NSArray*) allFits {
@@ -72,7 +72,6 @@ public:
 	
 	NSError *error = nil;
 	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	[fetchRequest release];
 	return fetchedObjects;
 }
 
@@ -116,7 +115,6 @@ public:
 - (id) initWithBCString:(NSString*) string character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 		
@@ -126,7 +124,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(shipID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -179,7 +176,6 @@ public:
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
@@ -187,7 +183,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(asset.type.typeID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -235,7 +230,6 @@ public:
 - (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
@@ -243,7 +237,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(killMail.victim.shipType.typeID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -291,20 +284,17 @@ public:
 - (id) initWithDNA:(NSString*) dna character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
 		NSMutableArray* records = [NSMutableArray arrayWithArray:[dna componentsSeparatedByString:@":"]];
 		if (records.count == 0) {
-			[self release];
 			return nil;
 		}
 		else {
 			NSInteger shipTypeID = [[records objectAtIndex:0] integerValue];
 			eufe::Ship* ship = aCharacter->setShip(shipTypeID);
 			if (!ship) {
-				[self release];
 				return nil;
 			}
 			self.fitName = [NSString stringWithFormat:@"%s", ship->getTypeName()];

@@ -28,7 +28,11 @@
 #import "VariationsViewController.h"
 
 
-@interface ItemInfoViewController(Private)
+@interface ItemInfoViewController()
+@property (nonatomic, assign) NSTimeInterval trainingTime;
+@property (nonatomic, strong) NSIndexPath* modifiedIndexPath;
+@property (nonatomic, strong) NSMutableArray *sections;
+
 - (void) loadAttributes;
 - (void) loadNPCAttributes;
 - (void) loadBlueprintAttributes;
@@ -92,8 +96,8 @@
 	else
 		techLevelImageView.image = nil;
 	
-	trainingTime = 0;
-	sections = [[NSMutableArray alloc] init];
+	self.trainingTime = 0;
+	self.sections = [[NSMutableArray alloc] init];
 	if (type.group.categoryID == 11)
 		[self loadNPCAttributes];
 	else if (type.group.categoryID == 9)
@@ -130,50 +134,31 @@
 	self.imageView = nil;
 	self.techLevelImageView = nil;
 	self.typeInfoView = nil;
-	[sections release];
-	sections = nil;
-	[modifiedIndexPath release];
-	modifiedIndexPath = nil;
+	self.sections = nil;
+	self.modifiedIndexPath = nil;
 }
 
-
-- (void)dealloc {
-	[attributesTable release];
-	[titleLabel release];
-	[volumeLabel release];
-	[massLabel release];
-	[capacityLabel release];
-	[radiusLabel release];
-	[descriptionLabel release];
-	[imageView release];
-	[techLevelImageView release];
-	[typeInfoView release];
-	[type release];
-	[sections release];
-	[modifiedIndexPath release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return sections.count;
+    return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[[sections objectAtIndex:section] valueForKey:@"rows"] count];
+	return [[[self.sections objectAtIndex:section] valueForKey:@"rows"] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] valueForKey:@"name"];
+	return [[self.sections objectAtIndex:section] valueForKey:@"name"];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
 	if (cellType == 0 || cellType == 2 || cellType == 4 || cellType == 5) {
 		static NSString *cellIdentifier = @"AttributeCellView";
@@ -249,11 +234,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -267,7 +252,7 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
 	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
 	if (cellType == 1 || cellType == 5) {
@@ -275,7 +260,6 @@
 		controller.type = [row valueForKey:@"type"];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else if (cellType == 2) {
 		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal" : @"ItemsDBViewController")
@@ -284,17 +268,14 @@
 		controller.group = [row valueForKey:@"group"];
 		controller.category = controller.group.category;
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else if (cellType == 3) {
 		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
 		controller.certificate = [row valueForKey:@"certificate"];
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else if (cellType == 4) {
-		[modifiedIndexPath release];
-		modifiedIndexPath = [indexPath retain];
+		self.modifiedIndexPath = indexPath;
 
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		TrainingQueue* trainingQueue = [row valueForKey:@"trainingQueue"];
@@ -304,13 +285,11 @@
 												  cancelButtonTitle:NSLocalizedString(@"No", nil)
 												  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
 		[alertView show];
-		[alertView autorelease];
 	}
 	else if (cellType == 6) {
 		VariationsViewController* controller = [[VariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
 		controller.type = self.type;
 		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 }
 
@@ -318,7 +297,7 @@
 
 - (void) alertView:(UIAlertView *)aAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
-		NSDictionary *row = [[[sections objectAtIndex:modifiedIndexPath.section] valueForKey:@"rows"] objectAtIndex:modifiedIndexPath.row];
+		NSDictionary *row = [[[self.sections objectAtIndex:self.modifiedIndexPath.section] valueForKey:@"rows"] objectAtIndex:self.modifiedIndexPath.row];
 		TrainingQueue* trainingQueue = [row valueForKey:@"trainingQueue"];
 		SkillPlan* skillPlan = [[EVEAccount currentAccount] skillPlan];
 		for (EVEDBInvTypeRequiredSkill* skill in trainingQueue.skills)
@@ -330,20 +309,15 @@
 												  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 												  otherButtonTitles:nil];
 		[alertView show];
-		[alertView autorelease];
 	}
 }
 
-@end
-
-
-@implementation ItemInfoViewController(Private)
+#pragma mark - Private
 
 - (void) loadAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:NSLocalizedString(@"Loading Attributes", nil)];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
+		self.trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
 		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
@@ -351,17 +325,17 @@
 		{
 			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 			__block NSInteger parentTypeID = self.type.typeID;
-			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMetaTypes WHERE typeID=%d;", parentTypeID] resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-				NSInteger typeID = [[record valueForKey:@"parentTypeID"] integerValue];
-				if (typeID)
-					parentTypeID = typeID;
-				*needsMore = NO;
-			}];
+			[database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
+						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+							 parentTypeID = sqlite3_column_int(stmt, 0);
+							 *needsMore = NO;
+						 }];
 			
 			__block NSInteger count = 0;
-			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT count() as count FROM invMetaTypes WHERE parentTypeID=%d;", parentTypeID] resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-				count = [[record valueForKey:@"count"] integerValue];
-			}];
+			[database execSQLRequest:[NSString stringWithFormat:@"SELECT count() as count FROM invMetaTypes WHERE parentTypeID=%d;", parentTypeID]
+							 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+								 count = sqlite3_column_int(stmt, 0);
+							 }];
 			
 			if (count > 1) {
 				NSMutableDictionary *section = [NSMutableDictionary dictionary];
@@ -374,7 +348,7 @@
 											@"Icons/icon09_07.png", @"icon",
 											nil];
 				[rows addObject:row];
-				[sections addObject:section];
+				[self.sections addObject:section];
 			}
 		}
 		
@@ -386,8 +360,8 @@
 			NSMutableArray* rows = [NSMutableArray array];
 			[section setValue:rows forKey:@"rows"];
 
-			requiredSkillsQueue = [[[TrainingQueue alloc] initWithType:type] autorelease];
-			certificateRecommendationsQueue = [[[TrainingQueue alloc] init] autorelease];
+			requiredSkillsQueue = [[TrainingQueue alloc] initWithType:type];
+			certificateRecommendationsQueue = [[TrainingQueue alloc] init];
 			
 			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
 				for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
@@ -398,7 +372,7 @@
 				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", type.typeID]];
 				NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
 				for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
-					TrainingQueue* trainingQueue = [[[TrainingQueue alloc] init] autorelease];
+					TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
 					[trainingQueue.skills addObjectsFromArray:requiredSkillsQueue.skills];
 					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:type];
 					skill.requiredLevel = level;
@@ -438,7 +412,7 @@
 				}
 			}
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		if (type.blueprint) {
@@ -453,15 +427,15 @@
 							 [self.type.blueprint typeSmallImageName], @"icon",
 							 self.type.blueprint, @"type",
 							 nil]];
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		for (EVEDBInvTypeAttributeCategory *category in type.attributeCategories) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			
-			if (category.categoryID == 8 && trainingTime > 0) {
-				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingTime]];
+			if (category.categoryID == 8 && self.trainingTime > 0) {
+				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
 				[section setValue:name forKey:@"name"];
 			}
 			else
@@ -611,7 +585,7 @@
 				}
 			}
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		if (type.group.category.categoryID == 16) { //Skill
 			EVEAccount *account = [EVEAccount currentAccount];
@@ -620,7 +594,7 @@
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Training time", nil) forKey:@"name"];
-			[sections addObject:section];
+			[self.sections addObject:section];
 			float startSP = 0;
 			float endSP;
 			for (int i = 1; i <= 5; i++) {
@@ -647,7 +621,7 @@
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
-			[sections addObject:section];
+			[self.sections addObject:section];
 
 			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
 				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -669,12 +643,10 @@
 				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Recommended certificates (%@)", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]] forKey:@"name"];
 			else
 				[section setValue:NSLocalizedString(@"Recommended certificates", nil) forKey:@"name"];
-			[trainingQueue release];
 			[section setValue:rows forKey:@"rows"];
 		}
 		
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-		[pool release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -683,8 +655,6 @@
 - (void) loadNPCAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:NSLocalizedString(@"Loading Attributes", nil)];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
 		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [type.attributesDictionary valueForKey:@"116"];
 		EVEDBDgmTypeAttribute* kineticDamageAttribute = [type.attributesDictionary valueForKey:@"117"];
@@ -765,7 +735,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 
 		
@@ -822,7 +792,7 @@
 								 icons[i], @"icon",
 								 nil]];
 			}
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		//Missiles damage
@@ -907,7 +877,7 @@
 									 icons[i], @"icon",
 									 nil]];
 				}
-				[sections addObject:section];
+				[self.sections addObject:section];
 			}
 		}
 		
@@ -958,7 +928,7 @@
 								 icons[i], @"icon",
 								 nil]];
 			}
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		//Shield
@@ -1028,7 +998,7 @@
 								 nil]];
 
 			}
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		//Armor
@@ -1095,7 +1065,7 @@
 								 nil]];
 				
 			}
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		//Structure
@@ -1134,7 +1104,7 @@
 								 icons[i], @"icon",
 								 nil]];
 			}
-			[sections addObject:section];
+			[self.sections addObject:section];
 		}
 		
 		//Targeting
@@ -1192,7 +1162,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 
 		//Movement
@@ -1234,7 +1204,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		//Stasis Webifying
@@ -1285,7 +1255,7 @@
 			}
 
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		//Warp Scramble
@@ -1336,7 +1306,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 
 		//Target Painting
@@ -1397,7 +1367,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		//Tracking Disruption
@@ -1458,7 +1428,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}		
 		
 		//Sensor Dampening
@@ -1529,7 +1499,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		//ECM Jamming
@@ -1620,7 +1590,7 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 
 		//Energy Vampire
@@ -1684,11 +1654,10 @@
 			}
 			
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-		[pool release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
@@ -1696,7 +1665,6 @@
 - (void) loadBlueprintAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:@"Loading Attributes"];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
 		
@@ -1756,7 +1724,7 @@
 						 NSLocalizedString(@"Research Tech Time", nil), @"title",
 						 [NSString stringWithTimeLeft:self.type.blueprintType.researchTechTime], @"value",
 						 nil]];
-		[sections addObject:section];
+		[self.sections addObject:section];
 
 
 		
@@ -1764,8 +1732,8 @@
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			
-			if (category.categoryID == 8 && trainingTime > 0) {
-				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingTime]];
+			if (category.categoryID == 8 && self.trainingTime > 0) {
+				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
 				[section setValue:name forKey:@"name"];
 			}
 			else
@@ -1791,7 +1759,7 @@
 				[rows addObject:row];
 			}
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		NSArray* activities = [[self.type.blueprintType activities] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
@@ -1850,7 +1818,7 @@
 				}
 			}
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 
 			rows = [NSMutableArray array];
 			section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -1892,11 +1860,10 @@
 			}
 
 			if (rows.count > 0)
-				[sections addObject:section];
+				[self.sections addObject:section];
 		}
 		
 		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-		[pool release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

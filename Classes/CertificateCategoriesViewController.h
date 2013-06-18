@@ -8,11 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CertificateCategoriesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
-	UITableView* categoriesTableView;
-@private
-	NSMutableArray* rows;
-}
+@interface CertificateCategoriesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, retain) IBOutlet UITableView* categoriesTableView;
 
 @end

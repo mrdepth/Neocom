@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface LoadoutCellView : UITableViewCell {
-	UIImageView *iconImageView;
-	UILabel *titleLabel;
-	UILabel *thumbsUpLabel;
-	UILabel *thumbsDownLabel;
-}
+@interface LoadoutCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *thumbsUpLabel;

@@ -18,7 +18,12 @@
 #import "EUMailBox.h"
 #import "MessageViewController.h"
 
-@interface MessagesViewController(Private)
+@interface MessagesViewController()
+@property(nonatomic, strong) NSMutableArray *filteredValues;
+@property(nonatomic, strong) NSArray *messages;
+@property(nonatomic, strong) EUFilter *filter;
+@property(nonatomic, strong) EUMailBox* mailBox;
+
 - (void) reloadMessages;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
@@ -26,11 +31,7 @@
 @end
 
 @implementation MessagesViewController
-@synthesize messagesTableView;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -51,13 +52,13 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		//[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.toolbar] autorelease];
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.toolbar];
 	}
 	else
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
@@ -86,41 +87,29 @@
 - (void)viewDidUnload {
 	[self setToolbar:nil];
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.messagesTableView = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
-	[messages release];
-	[filteredValues release];
-	messages = filteredValues = nil;
-	[mailBox release];
-	mailBox = nil;
+	self.messages = nil;
+	self.filteredValues = nil;
+	self.mailBox = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[messagesTableView release];
-	[searchBar release];
-	[filteredValues release];
-	[messages release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[mailBox release];
-	[_toolbar release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)markAsRead:(id)sender {
-	for (EUMailMessage* message in [messages objectAtIndex:0])
+	for (EUMailMessage* message in [self.messages objectAtIndex:0])
 		message.read = YES;
-	[mailBox save];
-	[messagesTableView reloadData];
+	[self.mailBox save];
+	[self.messagesTableView reloadData];
 	[self.searchDisplayController.searchResultsTableView reloadData];
-	[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
+	[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
 }
 
 #pragma mark -
@@ -135,9 +124,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return [[filteredValues objectAtIndex:section] count];
+		return [[self.filteredValues objectAtIndex:section] count];
 	else {
-		return [[messages objectAtIndex:section] count];
+		return [[self.messages objectAtIndex:section] count];
 	}
 }
 
@@ -150,7 +139,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == messagesTableView ? @"MessageCellView" : @"MessageCellViewCompact";
+			nibName = tableView == self.messagesTableView ? @"MessageCellView" : @"MessageCellViewCompact";
 		else
 			nibName = @"MessageCellView";
 		
@@ -159,9 +148,9 @@
 	EUMailMessage *message;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		message = [[filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		message = [[self.filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	else {
-		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		message = [[self.messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	}
 	UIFont* font = [UIFont fontWithName:message.read ? @"Helvetica" : @"Helvetica-Bold" size:cell.subjectLabel.font.pointSize];
 	UIColor* color = message.read ? [UIColor lightTextColor] : [UIColor whiteColor];
@@ -228,11 +217,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 40, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width - 40, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -246,7 +235,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == messagesTableView ? 32 : 54;
+		return tableView == self.messagesTableView ? 32 : 54;
 	else
 		return 54;
 }
@@ -257,41 +246,38 @@
 	
 	EUMailMessage* message = nil;
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		message = [[filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		message = [[self.filteredValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	else
-		message = [[messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		message = [[self.messages objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+LoadMessage" name:NSLocalizedString(@"Loading Message Body", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[message text];
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:@"MessageViewController" bundle:nil];
 			controller.message = message;
 			
 			if (!message.read && message.text) {
 				message.read = YES;
-				[mailBox save];
+				[self.mailBox save];
 				[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 				[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:mailBox];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
 			}
 			
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 				navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 				navController.modalPresentationStyle = UIModalPresentationFormSheet;
-				[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+				[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 				[self presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 				[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 		}
 	}];
 	
@@ -316,22 +302,22 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	filterViewController.filter = filter;
+	self.filterViewController.filter = self.filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -345,45 +331,34 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation MessagesViewController(Private)
+#pragma mark - Private
 
 - (void) reloadMessages {
-	[messages release];
-	messages = nil;
-	if (!mailBox) {
+	self.messages = nil;
+	if (!self.mailBox) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mailMessagesFilter" ofType:@"plist"]]];
 		__block EUMailBox* mailBoxTmp = nil;
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Load" name:NSLocalizedString(@"Loading Messages", nil)];
+		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			//mailBoxTmp = [[EUMailBox alloc] initWithAccount:[EVEAccount currentAccount]];
-			mailBoxTmp = [[[EVEAccount currentAccount] mailBox] retain];
+			mailBoxTmp = [[EVEAccount currentAccount] mailBox];
 			if (!mailBoxTmp.inbox) {
 				NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"Neocom" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown error", nil) forKey:NSLocalizedDescriptionKey]];
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-				[mailBoxTmp release];
 				mailBoxTmp = nil;
 			}
 			else {
 				[filterTmp updateWithValues:mailBoxTmp.inbox];
 				[filterTmp updateWithValues:mailBoxTmp.sent];
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
-				[mailBox release];
-				mailBox = mailBoxTmp;
-				if (mailBox)
+			if (![weakOperation isCancelled]) {
+				self.mailBox = mailBoxTmp;
+				if (self.mailBox)
 					[self reloadMessages];
-				[filter release];
-				filter = [filterTmp retain];
-			}
-			else {
-				[mailBoxTmp release];
+				self.filter = filterTmp;
 			}
 		}];
 		
@@ -391,56 +366,48 @@
 	}
 	else {
 		NSMutableArray* messagesTmp = [NSMutableArray array];
-		if (filter) {
+		if (self.filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-				[messagesTmp addObject:[filter applyToValues:mailBox.inbox]];
-				[messagesTmp addObject:[filter applyToValues:mailBox.sent]];
-				[pool release];
+				[messagesTmp addObject:[self.filter applyToValues:self.mailBox.inbox]];
+				[messagesTmp addObject:[self.filter applyToValues:self.mailBox.sent]];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					[messages release];
-					messages = [messagesTmp retain];
+				if (![weakOperation isCancelled]) {
+					self.messages = messagesTmp;
 					[self searchWithSearchString:self.searchBar.text];
-					[messagesTableView reloadData];
+					[self.messagesTableView reloadData];
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
-			messages = [[NSArray alloc] initWithObjects:mailBox.inbox, mailBox.sent, nil];
+			self.messages = [[NSArray alloc] initWithObjects:self.mailBox.inbox, self.mailBox.sent, nil];
 		}
 	}
-	[messagesTableView reloadData];
+	[self.messagesTableView reloadData];
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[messages release];
-			[filteredValues release];
-			messages = filteredValues = nil;
-			[mailBox release];
-			mailBox = nil;
-			[filter release];
-			filter = nil;
+			self.messages = nil;
+			self.filteredValues = nil;
+			self.mailBox = nil;
+			self.filter = nil;
 			[self reloadMessages];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
-		[messages release];
-		[filteredValues release];
-		messages = filteredValues = nil;
-		[mailBox release];
-		mailBox = nil;
-		[filter release];
-		filter = nil;
+		self.messages = nil;
+		self.filteredValues = nil;
+		self.mailBox = nil;
+		self.filter = nil;
 		[self reloadMessages];
 	}
 }
@@ -450,16 +417,16 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (messages.count == 0 || !aSearchString)
+	if (self.messages.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSArray* section in messages) {
+		for (NSArray* section in self.messages) {
 			NSMutableArray* filteredSection = [NSMutableArray array];
 			for (EUMailMessage *message in section) {
 				if (([message.header.title rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
@@ -469,19 +436,11 @@
 			}
 			[filteredValuesTmp addObject:filteredSection];
 		}
-/*		for (NSDictionary *message in messages) {
-			if (([message valueForKeyPath:@"header.title"] && [[message valueForKeyPath:@"header.title"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-				([message valueForKey:@"from"] && [[message valueForKey:@"from"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
-				([message valueForKey:@"to"] && [[message valueForKey:@"to"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
-				[filteredValuesTmp addObject:message];
-		}*/
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

@@ -9,19 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AboutViewController : UIViewController<UIAlertViewDelegate> {
-	UIScrollView *scrollView;
-	UIView *cacheView;
-	UIView *databaseView;
-	UIView *marketView;
-	UIView *versionView;
-	UIView *specialThanksView;
-	UILabel *apiCacheSizeLabel;
-	UILabel *imagesCacheSizeLabel;
-	UILabel *databaseVersionLabel;
-	UILabel *imagesVersionLabel;
-	UILabel *applicationVersionLabel;
-}
+@interface AboutViewController : UIViewController<UIAlertViewDelegate>
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIView *cacheView;
 @property (nonatomic, retain) IBOutlet UIView *databaseView;

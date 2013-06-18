@@ -10,14 +10,10 @@
 #import "EVEAccountStorageAPIKey.h"
 #import "EVEAccountStorageCharacter.h"
 
-@interface EVEAccountStorage : NSObject {
-	NSMutableDictionary *apiKeys;
-	NSMutableDictionary *characters;
-	NSMutableDictionary *ignored;
-}
-@property (nonatomic, readonly, retain) NSMutableDictionary *apiKeys;
-@property (nonatomic, readonly, retain) NSMutableDictionary *characters;
-@property (nonatomic, readonly, retain) NSMutableDictionary *ignored;
+@interface EVEAccountStorage : NSObject
+@property (nonatomic, readonly, strong) NSMutableDictionary *apiKeys;
+@property (nonatomic, readonly, strong) NSMutableDictionary *characters;
+@property (nonatomic, readonly, strong) NSMutableDictionary *ignored;
 
 + (EVEAccountStorage*) sharedAccountStorage;
 

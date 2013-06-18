@@ -10,15 +10,7 @@
 
 @class EVEMailMessagesItem;
 @class EUMailBox;
-@interface EUMailMessage : NSObject {
-	EUMailBox* mailBox;
-	NSString* to;
-	NSString* from;
-	NSString* text;
-	NSString* date;
-	EVEMailMessagesItem* header;
-	BOOL read;
-}
+@interface EUMailMessage : NSObject
 @property(nonatomic, assign) EUMailBox* mailBox;
 @property(nonatomic, retain) NSString* to;
 @property(nonatomic, retain) NSString* from;

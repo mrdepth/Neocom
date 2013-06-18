@@ -9,9 +9,7 @@
 #import "NPCGroupsViewController.h"
 #import "DamagePatternsViewController.h"
 
-@interface FittingNPCGroupsViewController : NPCGroupsViewController {
-	DamagePatternsViewController* damagePatternsViewController;
-}
+@interface FittingNPCGroupsViewController : NPCGroupsViewController
 @property (nonatomic, assign) DamagePatternsViewController* damagePatternsViewController;
 
 @end

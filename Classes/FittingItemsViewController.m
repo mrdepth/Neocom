@@ -60,17 +60,6 @@
 	}
 }
 
-- (void) dealloc {
-	[_tableView release];
-	[_except release];
-	[_subGroups release];
-	[_groupItems release];
-	[_filteredValues release];
-	[_searchRequest release];
-	[_groupsRequest release];
-	[_typesRequest release];
-	[super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -102,7 +91,7 @@
 - (NSString*) typesRequest {
 	if (!_typesRequest && self.marketGroupID) {
 		NSString* exceptString = [self.except componentsJoinedByString:@","];
-		self.typesRequest = [NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d %@ ORDER BY d.value, typeName;",
+		self.typesRequest = [NSString stringWithFormat:@"SELECT a.*, c.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d %@ ORDER BY d.value, typeName;",
 							 self.marketGroupID,
 							 exceptString ? [NSString stringWithFormat:@" AND marketGroupID NOT IN (%@)", exceptString] : @""];
 	}
@@ -224,11 +213,9 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self.mainViewController presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -244,7 +231,6 @@
 		controller.delegate = self;
 		controller.mainViewController = self.mainViewController;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
 		EVEDBInvType *row = [[[self.groupItems objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
@@ -304,11 +290,11 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -332,31 +318,34 @@
 	NSString* typesRequest = self.typesRequest;
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"FittingItemsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			NSMutableArray* test = [NSMutableArray array];
 			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 			NSString* exceptString = [self.except componentsJoinedByString:@","];
 			
-			[database execWithSQLRequest:groupsRequest
-							 resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-								 [test addObject:[record valueForKey:@"marketGroupID"]];
+			[database execSQLRequest:groupsRequest
+							 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+								 EVEDBInvMarketGroup* marketGroup = [[EVEDBInvMarketGroup alloc] initWithStatement:stmt];
+								 [test addObject:@(marketGroup.marketGroupID)];
 
-								 [subGroupValues addObject:[EVEDBInvMarketGroup invMarketGroupWithDictionary:record]];
-								 if ([operation isCancelled])
+								 [subGroupValues addObject:marketGroup];
+								 if ([weakOperation isCancelled])
 									 *needsMore = NO;
 							 }];
 
 			while (test.count > 0) {
-				NSString* testID = [test objectAtIndex:0];
+				NSNumber* testID = [test objectAtIndex:0];
 				__block BOOL isLast = YES;
 
-				[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT marketGroupID FROM invMarketGroups WHERE parentGroupID=%@ %@;",
+				[database execSQLRequest:[NSString stringWithFormat:@"SELECT marketGroupID FROM invMarketGroups WHERE parentGroupID=%@ %@;",
 											  testID,
 											  exceptString ? [NSString stringWithFormat:@" AND marketGroupID NOT IN (%@)", exceptString] : @""]
-								 resultBlock:^(NSDictionary *record, BOOL *needsMore) {
+								 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+									 NSInteger marketGroupID = sqlite3_column_int(stmt, 0);
 									 isLast = NO;
-									 [test addObject:[record valueForKey:@"marketGroupID"]];
+									 [test addObject:@(marketGroupID)];
 								 }];
 				if (isLast)
 					[marketGroupsTmp addObject:testID];
@@ -368,17 +357,15 @@
 					[marketGroupsTmp addObject:@(self.marketGroupID)];
 				
 				NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-				[database execWithSQLRequest:typesRequest
-								 resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-									 EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
-									 NSString* key = [record valueForKey:@"metaGroupID"];
-									 if (!key)
-										 key = @"0";
-									 NSMutableDictionary* section = [sections valueForKey:key];
+				[database execSQLRequest:typesRequest
+								 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+									 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+									 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
+									 
+									 NSNumber* key = @(metaGroup.metaGroupID);
+									 NSMutableDictionary* section = [sections objectForKey:key];
 									 if (!section) {
-										 NSString* title = [record valueForKey:@"metaGroupName"];
-										 if (!title)
-											 title = @"";
+										 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
 										 
 										 section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 													title, @"title",
@@ -389,7 +376,7 @@
 									 else
 										 [[section valueForKey:@"rows"] addObject:type];
 									 
-									 if ([operation isCancelled])
+									 if ([weakOperation isCancelled])
 										 *needsMore = NO;
 								 }];
 				[itemValues addObjectsFromArray:[[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]];
@@ -399,9 +386,9 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			if (marketGroupsTmp.count > 0)
-				self.searchRequest = [NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%%%%@%%%%\" AND marketGroupID IN (%@) ORDER BY d.value, typeName;", [marketGroupsTmp componentsJoinedByString:@","]];
+				self.searchRequest = [NSString stringWithFormat:@"SELECT a.*, c.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%%%%@%%%%\" AND marketGroupID IN (%@) ORDER BY d.value, typeName;", [marketGroupsTmp componentsJoinedByString:@","]];
 			
 			self.subGroups = subGroupValues;
 			if (itemValues.count > 0)
@@ -414,27 +401,25 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *values = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([operation isCancelled])
+		if ([weakOperation isCancelled])
 			return;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (searchString.length >= 2 && self.searchRequest) {
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:self.searchRequest, searchString]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
-													   NSString* key = [record valueForKey:@"metaGroupID"];
-													   if (!key)
-														   key = @"z";
-													   NSMutableDictionary* section = [sections valueForKey:key];
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:self.searchRequest, searchString]
+												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+													   EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+													   EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
+													   
+													   NSNumber* key = @(metaGroup.metaGroupID);
+													   NSMutableDictionary* section = [sections objectForKey:key];
 													   if (!section) {
-														   NSString* title = [record valueForKey:@"metaGroupName"];
-														   if (!title)
-															   title = @"";
+														   NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
 														   
 														   section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																	  title, @"title",
@@ -445,16 +430,15 @@
 													   else
 														   [[section valueForKey:@"rows"] addObject:type];
 													   
-													   if ([operation isCancelled])
+													   if ([weakOperation isCancelled])
 														   *needsMore = NO;
 												   }];
 			[values addObjectsFromArray:[[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}

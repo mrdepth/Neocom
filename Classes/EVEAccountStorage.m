@@ -12,10 +12,13 @@
 #import "APIKey.h"
 #import "IgnoredCharacter.h"
 
+@interface EVEAccountStorage()
+@property (nonatomic, readwrite, strong) NSMutableDictionary *apiKeys;
+@property (nonatomic, readwrite, strong) NSMutableDictionary *characters;
+@property (nonatomic, readwrite, strong) NSMutableDictionary *ignored;
+@end
+
 @implementation EVEAccountStorage
-@synthesize apiKeys;
-@synthesize characters;
-@synthesize ignored;
 
 - (id) init {
 	if (self = [super init]) {
@@ -24,12 +27,8 @@
 }
 
 - (void) dealloc {
-	[apiKeys release];
-	for (EVEAccountStorageCharacter *character in [characters allValues])
+	for (EVEAccountStorageCharacter *character in [_characters allValues])
 		[character removeObserver:self forKeyPath:@"enabled"];
-	[characters release];
-	[ignored release];
-	[super dealloc];
 }
 
 + (EVEAccountStorage*) sharedAccountStorage {
@@ -38,20 +37,12 @@
 
 - (void) reload {
 	@synchronized(self) {
-		if (apiKeys)
-			[apiKeys release];
-		if (characters) {
-			for (EVEAccountStorageCharacter *character in [characters allValues])
-				[character removeObserver:self forKeyPath:@"enabled"];
-			[characters release];
-		}
+		for (EVEAccountStorageCharacter *character in [_characters allValues])
+			[character removeObserver:self forKeyPath:@"enabled"];
 		
-		if (ignored)
-			[ignored release];
-		
-		apiKeys = [[NSMutableDictionary alloc] init];
-		characters = [[NSMutableDictionary alloc] init];
-		ignored = [[NSMutableDictionary alloc] init];
+		_apiKeys = [[NSMutableDictionary alloc] init];
+		_characters = [[NSMutableDictionary alloc] init];
+		_ignored = [[NSMutableDictionary alloc] init];
 		
 		
 		EUStorage* storage = [EUStorage sharedStorage];
@@ -62,10 +53,9 @@
 			[fetchRequest setEntity:entity];
 			
 			NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-			[fetchRequest release];
 			for (IgnoredCharacter* character in fetchedObjects) {
 				NSString* key = [NSString stringWithFormat:@"%d", character.characterID];
-				[ignored setValue:character forKey:key];
+				[_ignored setValue:character forKey:key];
 			}
 			
 			
@@ -75,7 +65,6 @@
 			
 			NSError *error = nil;
 			fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-			[fetchRequest release];
 			
 			NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 			for (APIKey *apiKey in fetchedObjects) {
@@ -83,40 +72,37 @@
 				apiKey.error = nil;
 				apiKey.apiKeyInfo = nil;
 				
-				[apiKeys setValue:apiKey forKey:[NSString stringWithFormat:@"%d", apiKey.keyID]];
+				[_apiKeys setValue:apiKey forKey:[NSString stringWithFormat:@"%d", apiKey.keyID]];
 				
 				NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^(void) {
-					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					NSError *error = nil;
-					EVEAPIKeyInfo *apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error];
-					if (error) {
-						apiKey.error = error;
+					@autoreleasepool {
+						NSError *error = nil;
+						EVEAPIKeyInfo *apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error progressHandler:nil];
+						if (error)
+							apiKey.error = error;
+						else
+							apiKey.apiKeyInfo = apiKeyInfo;
 					}
-					else {
-						apiKey.apiKeyInfo = apiKeyInfo;
-					}
-					[pool release];
 				}];
 				[queue addOperation:operation];
 			}
 			[queue waitUntilAllOperationsAreFinished];
-			[queue release];
 			
-			for (APIKey *apiKey in [apiKeys allValues]) {
+			for (APIKey *apiKey in [_apiKeys allValues]) {
 				if (!apiKey.error) {
 					for (EVEAPIKeyInfoCharactersItem *item in apiKey.apiKeyInfo.characters) {
 						NSString *key = [NSString stringWithFormat:@"%d", item.characterID];
-						EVEAccountStorageCharacter *character = [characters valueForKey:key];
+						EVEAccountStorageCharacter *character = [_characters valueForKey:key];
 						if (!character) {
-							character = [[[EVEAccountStorageCharacter alloc] init] autorelease];
-							[characters setValue:character forKey:key];
+							character = [[EVEAccountStorageCharacter alloc] init];
+							[_characters setValue:character forKey:key];
 							character.characterID = item.characterID;
 							character.characterName = item.characterName;
 							character.corporationID = item.corporationID;
 							character.corporationName = item.corporationName;
-							character.assignedCharAPIKeys = [[[NSMutableArray alloc] init] autorelease];
-							character.assignedCorpAPIKeys = [[[NSMutableArray alloc] init] autorelease];
-							character.enabled = ![ignored valueForKey:key];
+							character.assignedCharAPIKeys = [[NSMutableArray alloc] init];
+							character.assignedCorpAPIKeys = [[NSMutableArray alloc] init];
+							character.enabled = ![_ignored valueForKey:key];
 							[character addObserver:self forKeyPath:@"enabled" options: NSKeyValueObservingOptionNew |  NSKeyValueObservingOptionOld context:nil];
 						}
 						if (apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation)
@@ -133,7 +119,7 @@
 
 - (void) save {
 	@synchronized(self) {
-		if (!apiKeys)
+		if (!_apiKeys)
 			return;
 		[[EUStorage sharedStorage] saveContext];
 	}
@@ -141,11 +127,11 @@
 
 - (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
 	@synchronized(self) {
-		if (!apiKeys)
+		if (!_apiKeys)
 			[self reload];
 		
 		NSError *error = nil;
-		EVEAPIKeyInfo *apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:keyID vCode:vCode error:&error];
+		EVEAPIKeyInfo *apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:keyID vCode:vCode error:&error progressHandler:nil];
 		if (error) {
 			if (errorPtr)
 				*errorPtr = error;
@@ -153,7 +139,7 @@
 		}
 		else {
 			NSString *key = [NSString stringWithFormat:@"%d", keyID];
-			__block APIKey *apiKey = [apiKeys valueForKey:key];
+			__block APIKey *apiKey = [self.apiKeys valueForKey:key];
 			if (apiKey) {
 				//[self removeAPIKey:keyID];
 				apiKey.vCode = vCode;
@@ -166,24 +152,23 @@
 					apiKey.keyID = keyID;
 					apiKey.vCode = vCode;
 					apiKey.apiKeyInfo = apiKeyInfo;
-					[apiKeys setValue:apiKey forKey:key];
+					[self.apiKeys setValue:apiKey forKey:key];
 				}];
-				[apiKey autorelease];
 			}
 			
 			for (EVEAPIKeyInfoCharactersItem *item in apiKey.apiKeyInfo.characters) {
 				NSString *key = [NSString stringWithFormat:@"%d", item.characterID];
-				EVEAccountStorageCharacter *character = [characters valueForKey:key];
+				EVEAccountStorageCharacter *character = [self.characters valueForKey:key];
 				if (!character) {
-					character = [[[EVEAccountStorageCharacter alloc] init] autorelease];
-					[characters setValue:character forKey:key];
+					character = [[EVEAccountStorageCharacter alloc] init];
+					[self.characters setValue:character forKey:key];
 					character.characterID = item.characterID;
 					character.characterName = item.characterName;
 					character.corporationID = item.corporationID;
 					character.corporationName = item.corporationName;
-					character.assignedCharAPIKeys = [[[NSMutableArray alloc] init] autorelease];
-					character.assignedCorpAPIKeys = [[[NSMutableArray alloc] init] autorelease];
-					character.enabled = ![ignored valueForKey:key];
+					character.assignedCharAPIKeys = [[NSMutableArray alloc] init];
+					character.assignedCorpAPIKeys = [[NSMutableArray alloc] init];
+					character.enabled = ![self.ignored valueForKey:key];
 					[character addObserver:self forKeyPath:@"enabled" options: NSKeyValueObservingOptionNew |  NSKeyValueObservingOptionOld context:nil];
 				}
 				if (apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation)
@@ -200,10 +185,10 @@
 
 - (void) removeAPIKey:(NSInteger) keyID {
 	@synchronized(self) {
-		if (!apiKeys)
+		if (!self.apiKeys)
 			[self reload];
 		NSString *key = [NSString stringWithFormat:@"%d", keyID];
-		APIKey *apiKey = [apiKeys valueForKey:key];
+		APIKey *apiKey = [self.apiKeys valueForKey:key];
 		if (apiKey) {
 			for (EVEAccountStorageCharacter *character in apiKey.assignedCharacters) {
 				if ([character.assignedCharAPIKeys containsObject:apiKey])
@@ -212,10 +197,10 @@
 					[character.assignedCorpAPIKeys removeObject:apiKey];
 				if (character.assignedCharAPIKeys.count == 0 && character.assignedCorpAPIKeys.count == 0) {
 					[character removeObserver:self forKeyPath:@"enabled"];
-					[characters setValue:nil forKey:[NSString stringWithFormat:@"%d", character.characterID]];
+					[self.characters setValue:nil forKey:[NSString stringWithFormat:@"%d", character.characterID]];
 				}
 			}
-			[apiKeys setValue:nil forKey:key];
+			[self.apiKeys setValue:nil forKey:key];
 			EUStorage* storage = [EUStorage sharedStorage];
 			[storage.managedObjectContext performBlockAndWait:^{
 				[storage.managedObjectContext deleteObject:apiKey];
@@ -226,17 +211,17 @@
 
 - (NSMutableDictionary*) apiKeys {
 	@synchronized(self) {
-		if (!apiKeys)
+		if (!_apiKeys)
 			[self reload];
-		return apiKeys;
+		return _apiKeys;
 	}
 }
 
 - (NSMutableDictionary*) characters {
 	@synchronized(self) {
-		if (!characters)
+		if (!_characters)
 			[self reload];
-		return characters;
+		return _characters;
 	}
 }
 
@@ -248,17 +233,17 @@
 	NSString *key = [NSString stringWithFormat:@"%d", [object characterID]];
 	EUStorage* storage = [EUStorage sharedStorage];
 	if (oldValue == NO && newValue == YES) {
-		IgnoredCharacter* character = [ignored valueForKey:key];
+		IgnoredCharacter* character = [self.ignored valueForKey:key];
 		if (character) {
 			[storage.managedObjectContext deleteObject:character];
 		}
-		[ignored removeObjectForKey:key];
+		[self.ignored removeObjectForKey:key];
 	}
 	else if (oldValue == YES && newValue == NO) {
-		IgnoredCharacter* character = [[[IgnoredCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"IgnoredCharacter" inManagedObjectContext:storage.managedObjectContext]
-												 insertIntoManagedObjectContext:storage.managedObjectContext] autorelease];
+		IgnoredCharacter* character = [[IgnoredCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"IgnoredCharacter" inManagedObjectContext:storage.managedObjectContext]
+												insertIntoManagedObjectContext:storage.managedObjectContext];
 		character.characterID = [object characterID];
-		[ignored setValue:character forKey:key];
+		[self.ignored setValue:character forKey:key];
 	}
 	[self save];
 }

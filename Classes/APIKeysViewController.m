@@ -11,9 +11,7 @@
 #import "UITableViewCell+Nib.h"
 
 @implementation APIKeysViewController
-@synthesize keysTableView;
-@synthesize apiKeys;
-@synthesize delegate;
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -42,10 +40,10 @@
 
 - (void) viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	NSIndexSet *indexes = [apiKeys indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+	NSIndexSet *indexes = [self.apiKeys indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		return [[obj valueForKey:@"selected"] boolValue];
 	}];
-	[delegate apiKeysViewController:self didSelectAPIKeys:[apiKeys objectsAtIndexes:indexes]];
+	[self.delegate apiKeysViewController:self didSelectAPIKeys:[self.apiKeys objectsAtIndexes:indexes]];
 }
 
 
@@ -63,12 +61,6 @@
 }
 
 
-- (void)dealloc {
-	[keysTableView release];
-	[apiKeys release];
-    [super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -80,7 +72,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return apiKeys.count;
+    return self.apiKeys.count;
 }
 
 
@@ -93,7 +85,7 @@
     if (cell == nil) {
         cell = [APIKeysKeyCellView cellWithNibName:@"APIKeysKeyCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	NSDictionary *apiKey = [apiKeys objectAtIndex:indexPath.row];
+	NSDictionary *apiKey = [self.apiKeys objectAtIndex:indexPath.row];
 	cell.nameLabel.text = [apiKey valueForKey:@"name"];
 	cell.vCodeLabel.text = [apiKey valueForKey:@"vCode"];
 	cell.keyIDLabel.text = [apiKey valueForKey:@"keyID"];
@@ -150,7 +142,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	APIKeysKeyCellView *cell = (APIKeysKeyCellView*) [tableView cellForRowAtIndexPath:indexPath];
-	NSDictionary *apiKey = [apiKeys objectAtIndex:indexPath.row];
+	NSDictionary *apiKey = [self.apiKeys objectAtIndex:indexPath.row];
 	[apiKey setValue:[NSNumber numberWithBool:![[apiKey valueForKey:@"selected"] boolValue]] forKey:@"selected"];
 	cell.checkmarkImageView.image = [[apiKey valueForKey:@"selected"] boolValue] ? [UIImage imageNamed:@"checkmark.png"] : nil;
 }

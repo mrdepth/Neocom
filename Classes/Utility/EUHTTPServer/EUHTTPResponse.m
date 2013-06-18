@@ -10,10 +10,6 @@
 
 
 @implementation EUHTTPResponse
-@synthesize outputStream;
-@synthesize outputData;
-@synthesize message;
-@synthesize delegate;
 
 - (id)initWithOutputStream:(NSOutputStream *)writeStream 
 				  delegate:(id<EUHTTPResponseDelegate>) anObject {
@@ -25,24 +21,17 @@
 }
 
 - (void) dealloc {
-	[outputStream close];
-	[outputStream release];
-	[outputData release];
-	if (message)
-		CFRelease(message);
-	
-	[super dealloc];
+	[self.outputStream close];
+	if (_message)
+		CFRelease(_message);
 }
 
 - (void) run {
 	if (self.outputStream) {
-		CFDataRef data = CFHTTPMessageCopySerializedMessage(message);
-		self.outputData = [NSMutableData dataWithData:(NSData*) data];
-		
+		CFDataRef data = CFHTTPMessageCopySerializedMessage(_message);
+		self.outputData = [NSMutableData dataWithData:(__bridge NSData*) data];
 		CFRelease(data);
 		
-		//[self.outputData writeToFile:@"/Users/shimanski/response.txt" atomically:YES];
-
 		self.outputStream.delegate = self;
 		[self.outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 		[self.outputStream open];
@@ -51,22 +40,21 @@
 
 - (void) setMessage:(CFHTTPMessageRef)value {
 	CFRetain(value);
-	if (message)
-		CFRelease(message);
-	message = value;
+	if (_message)
+		CFRelease(_message);
+	_message = value;
 }
 
 #pragma mark NSStreamDelegate
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
 {
-	[self retain];
 	switch(eventCode) {
 		case NSStreamEventHasSpaceAvailable: {
 			if (stream == self.outputStream) {
-				NSInteger len = [self.outputStream write:[outputData bytes] maxLength:outputData.length];
-				[outputData replaceBytesInRange:NSMakeRange(0, len) withBytes:NULL length:0];
-				if (outputData.length == 0)
+				NSInteger len = [self.outputStream write:[self.outputData bytes] maxLength:self.outputData.length];
+				[self.outputData replaceBytesInRange:NSMakeRange(0, len) withBytes:NULL length:0];
+				if (self.outputData.length == 0)
 					[self.delegate httpResponse:self didCompleteWithError:nil];
 				[self.outputStream close];
 				self.outputStream = nil;
@@ -74,7 +62,7 @@
 			break;
 		}
 		case NSStreamEventErrorOccurred: {
-			[self.delegate httpResponse:self didCompleteWithError:[outputStream streamError]];
+			[self.delegate httpResponse:self didCompleteWithError:[self.outputStream streamError]];
 			[self.outputStream close];
 			self.outputStream = nil;
 			break;
@@ -87,7 +75,6 @@
 		default:
 			break;
 	}
-	[self release];
 }
 
 @end

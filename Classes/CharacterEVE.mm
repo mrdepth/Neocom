@@ -12,60 +12,65 @@
 #import "EVEOnlineAPI.h"
 #import "UIAlertView+Error.h"
 
+@interface CharacterEVE()
+@property (nonatomic, assign) NSInteger keyID;
+@property (nonatomic, strong) NSString *vCode;
+
+@end
+
 @implementation CharacterEVE
 
 + (id) characterWithCharacter:(EVEAccountStorageCharacter*) character {
-	return [[[CharacterEVE alloc] initWithCharacter:character] autorelease];
+	return [[CharacterEVE alloc] initWithCharacter:character];
 }
 
 + (id) characterWithCharacterID:(NSInteger) characterID keyID:(NSInteger) keyID vCode:(NSString*) vCode name:(NSString*) name {
-	return [[[CharacterEVE alloc] initWithCharacterID:characterID keyID:keyID vCode:vCode name:name] autorelease];
+	return [[CharacterEVE alloc] initWithCharacterID:characterID keyID:keyID vCode:vCode name:name];
 }
 
 - (id) initWithCharacter:(EVEAccountStorageCharacter*) character {
 	if (self = [super init]) {
 		if (character && character.assignedCharAPIKeys.count > 0) {
 			EVEAccountStorageAPIKey* apiKey = [character.assignedCharAPIKeys objectAtIndex:0];
-			name = [character.characterName copy];
-			characterID = character.characterID;
-			keyID = apiKey.keyID;
-			vCode = [apiKey.vCode copy];
+			self.name = [character.characterName copy];
+			self.characterID = character.characterID;
+			self.keyID = apiKey.keyID;
+			self.vCode = [apiKey.vCode copy];
 		}
 		else {
-			[self release];
 			return nil;
 		}
 	}
 	return self;
 }
 
-- (id) initWithCharacterID:(NSInteger) aCharacterID keyID:(NSInteger) aKeyID vCode:(NSString*) aVCode name:(NSString*) aName {
+- (id) initWithCharacterID:(NSInteger) characterID keyID:(NSInteger) keyID vCode:(NSString*) vCode name:(NSString*) name {
 	if (self = [super init]) {
-		if (!aCharacterID || !aKeyID || !aKeyID) {
-			[self release];
+		if (!characterID || !keyID || !vCode) {
 			return nil;
 		}
 		else {
-			characterID = aCharacterID;
-			keyID = aKeyID;
-			vCode = [aVCode copy];
-			name = [aName copy];
+			self.characterID = characterID;
+			self.keyID = keyID;
+			self.vCode = [vCode copy];
+			self.name = [name copy];
 		}
 	}
 	return self;
 }
 
 - (NSMutableDictionary*) skills {
+	NSMutableDictionary* skills = [super skills];
 	if (!skills) {
 		NSError* error = nil;
-		EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:keyID vCode:vCode characterID:characterID error:&error];
+		EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
 		
 		if (error) {
 			Character* cachedCharacter = [NSKeyedUnarchiver unarchiveObjectWithFile:[[[Character charactersDirectory] stringByAppendingPathComponent:self.guid] stringByAppendingPathExtension:@"plist"]];
 			if (cachedCharacter)
-				skills = [cachedCharacter.skills retain];
+				skills = cachedCharacter.skills;
 			else {
-				skills = (NSMutableDictionary*) [[NSNull null] retain];
+				skills = (NSMutableDictionary*) [NSNull null];
 				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 					[[UIAlertView alertViewWithError:error] show];
 				}];
@@ -76,17 +81,13 @@
 			for (EVECharacterSheetSkill* skill in characterSheet.skills)
 				[skills setValue:[NSNumber numberWithInteger:skill.level] forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 		}
+		self.skills = skills;
 	}
 	return skills != (NSMutableDictionary*) [NSNull null] ? skills : nil;
 }
 
-- (void) dealloc {
-	[vCode release];
-	[super dealloc];
-}
-
 - (NSString*) guid {
-	return [NSString stringWithFormat:@"e%d", characterID];
+	return [NSString stringWithFormat:@"e%d", self.characterID];
 }
 
 @end

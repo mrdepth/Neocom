@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
-@interface TutorialViewController : UIViewController<UIScrollViewDelegate> {
-	UIScrollView *scrollView;
-	UIPageControl *pageControl;
-}
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet UIPageControl *pageControl;
+@interface TutorialViewController : UIViewController<UIScrollViewDelegate>
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 
 - (IBAction) onPageChanged:(id) sender;
 @end

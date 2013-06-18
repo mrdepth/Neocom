@@ -11,13 +11,7 @@
 @class EUMailBox;
 @class EVENotificationTextsItem;
 @class EVENotificationsItem;
-@interface EUNotification : NSObject {
-	EUMailBox* mailBox;
-	EVENotificationsItem* header;
-	EVENotificationTextsItem* details;
-	NSString* sender;
-	BOOL read;
-}
+@interface EUNotification : NSObject
 @property (nonatomic, assign) EUMailBox* mailBox;
 @property (nonatomic, retain) EVENotificationsItem* header;
 @property (nonatomic, retain) EVENotificationTextsItem* details;

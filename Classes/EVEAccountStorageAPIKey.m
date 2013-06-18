@@ -10,11 +10,6 @@
 
 
 @implementation EVEAccountStorageAPIKey
-@synthesize apiKeyInfo;
-@synthesize keyID;
-@synthesize vCode;
-@synthesize error;
-@synthesize assignedCharacters;
 
 - (id) init {
 	if (self = [super init]) {
@@ -23,15 +18,8 @@
 	return self;
 }
 
-- (void) dealloc {
-	[vCode release];
-	[error release];
-	[assignedCharacters release];
-	[super dealloc];
-}
-
 - (NSUInteger) hash {
-	return keyID;
+	return self.keyID;
 }
 
 - (BOOL) isEqual:(id)object {

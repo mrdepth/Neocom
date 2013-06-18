@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface RSSFeedsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-@private
-	NSArray *sections;
-}
+@interface RSSFeedsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @end

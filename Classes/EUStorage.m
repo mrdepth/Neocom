@@ -38,7 +38,6 @@ static EUStorage* sharedStorage;
 
 + (void) cleanup {
 	@synchronized(self) {
-		[sharedStorage release];
 		sharedStorage = nil;
 	}
 }
@@ -56,10 +55,6 @@ static EUStorage* sharedStorage;
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSUbiquityIdentityDidChangeNotification object:nil];
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
-	[_managedObjectContext release];
-	[_managedObjectModel release];
-	[_persistentStoreCoordinator release];
-	[super dealloc];
 }
 
 - (void)saveContext
@@ -99,7 +94,7 @@ static EUStorage* sharedStorage;
 		if (coordinator != nil) {
 			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
-			[_managedObjectContext setMergePolicy:[[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType] autorelease]];
+			[_managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
 		}
 		return _managedObjectContext;
 	}

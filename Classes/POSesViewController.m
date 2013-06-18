@@ -19,10 +19,14 @@
 #import "NSString+TimeLeft.h"
 #import "NSArray+GroupBy.h"
 
-@interface POSesViewController(Private)
+@interface POSesViewController()
+@property(nonatomic,strong) NSMutableArray *poses;
+@property(nonatomic,strong) NSMutableArray *sections;
+@property(nonatomic,strong) NSMutableDictionary *sovereigntySolarSystems;
+@property(nonatomic,strong) NSMutableArray *filteredValues;
+
 - (void) loadData;
 - (void) loadStarbaseDetailForStarbase:(NSMutableDictionary *)pos account:(EVEAccount*) account;
-- (NSDictionary*) sovereigntySolarSystems;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (IBAction) onClose:(id) sender;
@@ -50,7 +54,7 @@
 	self.title = NSLocalizedString(@"POS'es", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 
@@ -74,30 +78,20 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.posesTableView = nil;
 	self.searchBar = nil;
 	@synchronized(self) {
-		[poses release];
-		[sections release];
-		[filteredValues release];
-		[sovereigntySolarSystems release];
-		poses = sections = filteredValues = nil;
-		sovereigntySolarSystems = nil;
+		self.poses = nil;
+		self.sections = nil;
+		self.filteredValues = nil;
+		self.sovereigntySolarSystems = nil;
 	}
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[posesTableView release];
-	[searchBar release];
-	[poses release];
-	[sections release];
-	[sovereigntySolarSystems release];
-	[filteredValues release];
-
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -108,16 +102,16 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return 1;
 	else
-		return sections.count;
+		return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	@synchronized(self) {
 		if (tableView == self.searchDisplayController.searchResultsTableView)
-			return filteredValues.count;
+			return self.filteredValues.count;
 		else
-			return [[sections objectAtIndex:section] count];
+			return [[self.sections objectAtIndex:section] count];
 	}
 }
 
@@ -126,7 +120,7 @@
 		if (tableView == self.searchDisplayController.searchResultsTableView)
 			return nil;
 		else
-			return [[[sections objectAtIndex:section] objectAtIndex:0] valueForKeyPath:@"solarSystem.region.regionName"];
+			return [[[self.sections objectAtIndex:section] objectAtIndex:0] valueForKeyPath:@"solarSystem.region.regionName"];
 	}
 }
 
@@ -147,9 +141,9 @@
 	NSDictionary *pos;
 	@synchronized(self) {
 		if (tableView == self.searchDisplayController.searchResultsTableView)
-			pos = [filteredValues objectAtIndex:indexPath.row];
+			pos = [self.filteredValues objectAtIndex:indexPath.row];
 		else
-			pos = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];//[poses objectAtIndex:indexPath.row];
+			pos = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];//[poses objectAtIndex:indexPath.row];
 	}
 	if (!pos)
 		return cell;
@@ -179,11 +173,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = tableView == self.searchDisplayController.searchResultsTableView ? nil : [self tableView:tableView titleForHeaderInSection:section];
@@ -206,10 +200,10 @@
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary *pos;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		pos = [filteredValues objectAtIndex:indexPath.row];
+		pos = [self.filteredValues objectAtIndex:indexPath.row];
 	}
 	else {
-		pos = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		pos = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	}
 
 	POSViewController *controller = [[POSViewController alloc] initWithNibName:@"POSViewController" bundle:nil];
@@ -224,13 +218,11 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark -
@@ -250,20 +242,18 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 
-@end
-
-@implementation POSesViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *posesTmp = [NSMutableArray array];
@@ -272,17 +262,17 @@
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Load" name:NSLocalizedString(@"Loading POS'es", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		EVEStarbaseList *starbaseList = [EVEStarbaseList starbaseListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID error:&error];
-		operation.progress = 0.25;
+		EVEStarbaseList *starbaseList = [EVEStarbaseList starbaseListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID error:&error progressHandler:nil];
+		weakOperation.progress = 0.25;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			[self sovereigntySolarSystems];
-			operation.progress = 0.5;
+			weakOperation.progress = 0.5;
 			EVEAccount *account = [EVEAccount currentAccount];
 			
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -292,7 +282,7 @@
 			float n = starbaseList.starbases.count;
 			float i = 0;
 			for (EVEStarbaseListItem *starbase in starbaseList.starbases) {
-				if ([operation isCancelled])
+				if ([weakOperation isCancelled])
 					break;
 
 				EVEDBInvType *controlTower = [EVEDBInvType invTypeWithTypeID:starbase.typeID error:nil];
@@ -378,32 +368,25 @@
 				[posesTmp addObject:row];
 				EUOperation *loadDetailsOperation = [EUOperation operationWithIdentifier:nil name:NSLocalizedString(@"Loading POS Details", nil)];
 				[loadDetailsOperation addExecutionBlock:^{
-					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[self loadStarbaseDetailForStarbase:row account:account];
-					[pool release];
 				}];
-				[loadDetailsOperation addDependency:operation];
+				[loadDetailsOperation addDependency:weakOperation];
 				[[EUOperationQueue sharedQueue] addOperation:loadDetailsOperation];
-				operation.progress = 0.5 + i++ / n / 2.0;
+				weakOperation.progress = 0.5 + i++ / n / 2.0;
 				
 			}
-			[dateFormatter release];
 			[posesTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES]]];
 			[sectionsTmp addObjectsFromArray:[posesTmp arrayGroupedByKey:@"solarSystem.region.regionName"]];
 			[sectionsTmp sortUsingComparator:^(id obj1, id obj2) {
 				return [[[obj1 objectAtIndex:0] valueForKeyPath:@"solarSystem.region.regionName"] compare:[[obj2 objectAtIndex:0] valueForKeyPath:@"solarSystem.region.regionName"]];
 			}];
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
-			[poses release];
-			poses = [posesTmp retain];
-			[sections release];
-			sections = [sectionsTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.poses = posesTmp;
+			self.sections = sectionsTmp;
 			[posesTableView reloadData];
 		}
 	}];
@@ -413,15 +396,14 @@
 
 - (void) loadStarbaseDetailForStarbase:(NSMutableDictionary *)pos account:(EVEAccount*) account {
 	NSError *error = nil;
-	//EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID itemID:[[pos valueForKey:@"posID"] longLongValue] error:&error];
-	EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:[[pos valueForKey:@"posID"] longLongValue] error:&error];
+	EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:[[pos valueForKey:@"posID"] longLongValue] error:&error progressHandler:nil];
 
 	if (!error) {
 		NSUInteger section = NSNotFound;
 		NSUInteger row = NSNotFound;
 		@synchronized(self) {
 			NSString *regionName = [pos valueForKeyPath:@"solarSystem.region.regionName"];
-			section = [sections indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
+			section = [self.sections indexOfObjectPassingTest:^BOOL (id obj, NSUInteger idx, BOOL *stop) {
 				if ([[[obj objectAtIndex:0] valueForKeyPath:@"solarSystem.region.regionName"] isEqualToString:regionName]) {
 					*stop = YES;
 					return YES;
@@ -431,7 +413,7 @@
 			}];
 			
 			if (section != NSNotFound) {
-				NSArray *array = [sections objectAtIndex:section];
+				NSArray *array = [self.sections objectAtIndex:section];
 				row = [array indexOfObject:pos];
 			}
 		}
@@ -509,8 +491,8 @@
 			}];
 		}
 		
-		NSUInteger index = [filteredValues indexOfObject:pos];
-		if (filteredValues && index != NSNotFound) {
+		NSUInteger index = [self.filteredValues indexOfObject:pos];
+		if (self.filteredValues && index != NSNotFound) {
 			indexPath = [NSIndexPath indexPathForRow:index inSection:0];
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
 				[self.searchDisplayController.searchResultsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -521,18 +503,16 @@
 
 - (NSDictionary*) sovereigntySolarSystems {
 	@synchronized(self) {
-		if (!sovereigntySolarSystems) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-			sovereigntySolarSystems = [[NSMutableDictionary alloc] init];
+		if (!_sovereigntySolarSystems) {
+			_sovereigntySolarSystems = [[NSMutableDictionary alloc] init];
 			NSError *error = nil;
-			EVESovereignty *sovereignty = [EVESovereignty sovereigntyWithError:&error];
+			EVESovereignty *sovereignty = [EVESovereignty sovereigntyWithError:&error progressHandler:nil];
 			if (!error) {
 				for (EVESovereigntyItem *solarSystem in sovereignty.solarSystems)
-					[sovereigntySolarSystems setValue:solarSystem forKey:[NSString stringWithFormat:@"%d", solarSystem.solarSystemID]];
+					[_sovereigntySolarSystems setValue:solarSystem forKey:[NSString stringWithFormat:@"%d", solarSystem.solarSystemID]];
 			}
-			[pool release];
 		}
-		return sovereigntySolarSystems;
+		return _sovereigntySolarSystems;
 	}
 }
 
@@ -542,38 +522,37 @@
 		[self.navigationController popToRootViewControllerAnimated:YES];
 	else {
 		@synchronized (self) {
-			[poses release];
-			[filteredValues release];
-			poses = filteredValues = nil;
+			self.poses = nil;
+			self.filteredValues = nil;
 		}
 		[self loadData];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (poses.count == 0)
+	if (self.poses.count == 0)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSesViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *pos in poses) {
+		for (NSDictionary *pos in self.poses) {
+			if ([weakOperation isCancelled])
+				 break;
 			if (([pos valueForKey:@"location"] && [[pos valueForKey:@"location"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([pos valueForKey:@"state"] && [[pos valueForKey:@"state"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([pos valueForKey:@"controlTower"] && [[[pos valueForKey:@"controlTower"] typeName] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([pos valueForKey:@"solarSystem"] && [[[[pos valueForKey:@"solarSystem"] region] regionName] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 				[filteredValuesTmp addObject:pos];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

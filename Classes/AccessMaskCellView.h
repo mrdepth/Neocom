@@ -9,8 +9,5 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AccessMaskCellView : UITableViewCell {
-
-}
-
+@interface AccessMaskCellView : UITableViewCell
 @end

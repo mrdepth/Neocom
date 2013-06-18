@@ -32,23 +32,13 @@
     return self;
 }
 
-- (void) dealloc {
-	[_groupsRequest release];
-	[_itemsRequest release];
-	[_searchRequest release];
-	[_rows release];
-	[_filteredRows release];
-	[_groupName release];
-	[super dealloc];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 	else {
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	[self reload];
@@ -163,7 +153,6 @@
 		controller.delegate = self.delegate;
 		controller.title = [row valueForKey:@"name"];
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
 		[self.delegate killNetFilterDBViewController:(self.parent ? self.parent : self) didSelectItem:row];
@@ -183,11 +172,11 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)aTableView {
 	aTableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		aTableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		aTableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		aTableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		aTableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		aTableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	aTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -200,9 +189,10 @@
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
-			if ([operation isCancelled])
+			if ([weakOperation isCancelled])
 				return;
 			NSMutableString* request = [NSMutableString string];
 			if (!self.groupID && self.groupsRequest)
@@ -214,11 +204,11 @@
 					[request appendFormat:self.itemsRequest, @""];
 			}
 			
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:request
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore){
-													   [rowsTmp addObject:record];
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:request
+												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+													   [rowsTmp addObject:[NSDictionary dictionaryWithStatement:stmt]];
 												   }];
-			operation.progress = 0.75;
+			weakOperation.progress = 0.75;
 		}
 	}];
 	
@@ -237,25 +227,26 @@
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillNetFilterDBViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
-			if ([operation isCancelled])
+			if ([weakOperation isCancelled])
 				return;
 			NSMutableString* where = [NSMutableString stringWithFormat:@"AND %@", [NSString stringWithFormat:self.searchRequest, searchString]];
 			if (self.groupID)
 				[where appendFormat:@" AND %@=%d", self.groupName, self.groupID];
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:self.itemsRequest, where]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore){
-													   if ([operation isCancelled])
-														   *needsMore = NO;
-													   [rowsTmp addObject:record];
-												   }];
-			operation.progress = 0.75;
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:self.itemsRequest, where]
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   if ([weakOperation isCancelled])
+													   *needsMore = NO;
+												   [rowsTmp addObject:[NSDictionary dictionaryWithStatement:stmt]];
+											   }];
+			weakOperation.progress = 0.75;
 		}
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.filteredRows = rowsTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}

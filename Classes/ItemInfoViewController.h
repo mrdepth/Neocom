@@ -9,24 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EVEDBAPI.h"
 
-@interface ItemInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
-	UITableView *attributesTable;
-	UILabel *titleLabel;
-	UILabel *volumeLabel;
-	UILabel *massLabel;
-	UILabel *capacityLabel;
-	UILabel *radiusLabel;
-	UILabel *descriptionLabel;
-	UIImageView *imageView;
-	UIImageView *techLevelImageView;
-	UIView *typeInfoView;
-	UIViewController *containerViewController;
-	EVEDBInvType *type;
-	NSMutableArray *sections;
-@private
-	NSTimeInterval trainingTime;
-	NSIndexPath* modifiedIndexPath;
-}
+@interface ItemInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, retain) IBOutlet UITableView *attributesTable;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *volumeLabel;

@@ -11,9 +11,6 @@
 #import "UITableViewCell+Nib.h"
 
 @implementation SkillLevelsViewController
-@synthesize skillLevelsTableView;
-@synthesize delegate;
-@synthesize currentLevel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,12 +54,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[skillLevelsTableView reloadData];
-}
-
-- (void)dealloc {
-	[skillLevelsTableView release];
-	[super dealloc];
+	[self.skillLevelsTableView reloadData];
 }
 
 #pragma mark -
@@ -86,7 +78,7 @@
 		cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
 	cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), indexPath.row];;
-	cell.checkmarkImageView.image = currentLevel == indexPath.row ? [UIImage imageNamed:@"checkmark.png"] : nil;
+	cell.checkmarkImageView.image = self.currentLevel == indexPath.row ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	return cell;
 }
 
@@ -95,7 +87,7 @@
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	[delegate skillLevelsViewController:self didSelectLevel:indexPath.row];
+	[self.delegate skillLevelsViewController:self didSelectLevel:indexPath.row];
 }
 
 

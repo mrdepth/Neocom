@@ -8,6 +8,11 @@
 
 #import "Character.h"
 
+@interface Character()
+
+
+@end
+
 @implementation Character
 @synthesize characterID;
 @synthesize name;
@@ -17,21 +22,15 @@
 	return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"FittingCharacters"];
 }
 
-- (void) dealloc {
-	[name release];
-	[skills release];
-	[super dealloc];
-}
-
 - (NSString*) guid {
 	return nil;
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		name = [[aDecoder decodeObjectForKey:@"name"] retain];
-		characterID = [aDecoder decodeIntegerForKey:@"characterID"];
-		skills = [[aDecoder decodeObjectForKey:@"skills"] retain];
+		self.name = [aDecoder decodeObjectForKey:@"name"];
+		self.characterID = [aDecoder decodeIntegerForKey:@"characterID"];
+		self.skills = [aDecoder decodeObjectForKey:@"skills"];
 	}
 	return self;
 }

@@ -15,26 +15,7 @@
 #include "eufe.h"
 
 @class FittingViewController;
-@interface ModulesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
-	FittingViewController *fittingViewController;
-	UITableView *tableView;
-	ProgressLabel *powerGridLabel;
-	ProgressLabel *cpuLabel;
-	ProgressLabel *calibrationLabel;
-	UILabel *turretsLabel;
-	UILabel *launchersLabel;
-	UIView *highSlotsHeaderView;
-	UIView *medSlotsHeaderView;
-	UIView *lowSlotsHeaderView;
-	UIView *rigsSlotsHeaderView;
-	UIView *subsystemsSlotsHeaderView;
-	FittingItemsViewController *fittingItemsViewController;
-	TargetsViewController* targetsViewController;
-	UIPopoverController *popoverController;
-@private
-	NSMutableArray *sections;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface ModulesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet ProgressLabel *powerGridLabel;

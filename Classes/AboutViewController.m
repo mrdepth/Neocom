@@ -7,12 +7,11 @@
 //
 
 #import "AboutViewController.h"
-#import "EVERequestsCache.h"
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
 
-@interface AboutViewController(Private)
+@interface AboutViewController()
 
 - (NSUInteger) contentsSizeOfDirectoryAtPath:(NSString*) path;
 - (void) reload;
@@ -21,19 +20,6 @@
 
 
 @implementation AboutViewController
-@synthesize scrollView;
-@synthesize cacheView;
-@synthesize databaseView;
-@synthesize marketView;
-@synthesize versionView;
-@synthesize specialThanksView;
-@synthesize apiCacheSizeLabel;
-@synthesize imagesCacheSizeLabel;
-@synthesize databaseVersionLabel;
-@synthesize imagesVersionLabel;
-@synthesize applicationVersionLabel;
-
-
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -51,11 +37,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"About", nil);
-	databaseVersionLabel.text = @"Retribution_1.1_84566";
-	imagesVersionLabel.text = @"Retribution_1.1_imgs";
+	self.databaseVersionLabel.text = @"Retribution_1.1_84566";
+	self.imagesVersionLabel.text = @"Retribution_1.1_imgs";
 	
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
+	self.applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
 	
 	[self reload];
 }
@@ -90,26 +76,9 @@
 }
 
 
-- (void)dealloc {
-	[scrollView release];
-	[cacheView release];
-	[databaseView release];
-	[marketView release];
-	[versionView release];
-	[specialThanksView release];
-	[apiCacheSizeLabel release];
-	[imagesCacheSizeLabel release];
-	[databaseVersionLabel release];
-	[imagesVersionLabel release];
-	[applicationVersionLabel release];
-	
-    [super dealloc];
-}
-
 - (IBAction) onClearCache:(id) sender {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Some features may be temporarily unavailable.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
 	[alertView show];
-	[alertView release];
 }
 
 - (IBAction) onHomepage:(id) sender {
@@ -128,16 +97,16 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
-		[[EVERequestsCache sharedRequestsCache] clear];
 		[[NSURLCache sharedURLCache] removeAllCachedResponses];
-		[self reload];
+		self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), @(0)];
+
+//		[self reload];
 		[EVEAccount reload];
+		
 	}
 }
 
-@end
-
-@implementation AboutViewController(Private)
+#pragma mark - Private
 
 - (NSUInteger) contentsSizeOfDirectoryAtPath:(NSString*) path {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -150,38 +119,36 @@
 }
 
 - (void) reload {
-	for (UIView *v in [scrollView subviews])
+	for (UIView *v in [self.scrollView subviews])
 		[v removeFromSuperview];
 
 	float y = 0;
 	
-	[scrollView addSubview:cacheView];
-	cacheView.frame = CGRectMake(0, y, cacheView.frame.size.width, cacheView.frame.size.height);
-	y += cacheView.frame.size.height;
+	[self.scrollView addSubview:self.cacheView];
+	self.cacheView.frame = CGRectMake(0, y, self.cacheView.frame.size.width, self.cacheView.frame.size.height);
+	y += self.cacheView.frame.size.height;
 	
-	[scrollView addSubview:databaseView];
-	databaseView.frame = CGRectMake(0, y, databaseView.frame.size.width, databaseView.frame.size.height);
-	y += databaseView.frame.size.height;
+	[self.scrollView addSubview:self.databaseView];
+	self.databaseView.frame = CGRectMake(0, y, self.databaseView.frame.size.width, self.databaseView.frame.size.height);
+	y += self.databaseView.frame.size.height;
 	
-	[scrollView addSubview:marketView];
-	marketView.frame = CGRectMake(0, y, marketView.frame.size.width, marketView.frame.size.height);
-	y += marketView.frame.size.height;
+	[self.scrollView addSubview:self.marketView];
+	self.marketView.frame = CGRectMake(0, y, self.marketView.frame.size.width, self.marketView.frame.size.height);
+	y += self.marketView.frame.size.height;
 
-	[scrollView addSubview:specialThanksView];
-	specialThanksView.frame = CGRectMake(0, y, specialThanksView.frame.size.width, specialThanksView.frame.size.height);
-	y += specialThanksView.frame.size.height;
+	[self.scrollView addSubview:self.specialThanksView];
+	self.specialThanksView.frame = CGRectMake(0, y, self.specialThanksView.frame.size.width, self.specialThanksView.frame.size.height);
+	y += self.specialThanksView.frame.size.height;
 
-	[scrollView addSubview:versionView];
-	versionView.frame = CGRectMake(0, y, versionView.frame.size.width, versionView.frame.size.height);
-	y += versionView.frame.size.height;
+	[self.scrollView addSubview:self.versionView];
+	self.versionView.frame = CGRectMake(0, y, self.versionView.frame.size.width, self.versionView.frame.size.height);
+	y += self.versionView.frame.size.height;
 	
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		y += 50;
 
-	scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, y);
-	
-	NSString *path = [EVERequestsCache cacheDirectory];
-	apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[self contentsSizeOfDirectoryAtPath:path]] numberStyle:NSNumberFormatterDecimalStyle]];
+	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, y);
+	self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[[NSURLCache sharedURLCache] currentDiskUsage]] numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

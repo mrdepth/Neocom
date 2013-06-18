@@ -14,19 +14,7 @@
 
 @class FittingViewController;
 @class EVEFittingFit;
-@interface ImplantsViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate> {
-	FittingViewController *fittingViewController;
-	UITableView *tableView;
-	UIView *implantsHeaderView;
-	UIView *boostersHeaderView;
-	FittingItemsViewController *fittingItemsViewController;
-	UIPopoverController *popoverController;
-
-@private
-	NSMutableDictionary *implants;
-	NSMutableDictionary *boosters;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface ImplantsViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 @property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIView *implantsHeaderView;

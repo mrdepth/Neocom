@@ -10,8 +10,6 @@
 
 
 @implementation ProgressLabel
-@synthesize progress;
-@synthesize color;
 
 - (void) awakeFromNib {
 	self.color = self.backgroundColor;
@@ -30,18 +28,18 @@
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	const float *components = CGColorGetComponents([color CGColor]);
+	const float *components = CGColorGetComponents([self.color CGColor]);
 	CGContextSetRGBFillColor(context, components[0] * 0.4, components[1] * 0.4, components[2] * 0.4, 1);
 	CGContextFillRect(context, rect);
 	
 	float scale;
-	if (progress > 1.0) {
+	if (self.progress > 1.0) {
 		CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
 		scale = 1;
 	}
 	else {
-		CGContextSetFillColorWithColor(context, [color CGColor]);
-		scale = progress;
+		CGContextSetFillColorWithColor(context, [self.color CGColor]);
+		scale = self.progress;
 	}
 	CGContextFillRect(context, CGRectMake(rect.origin.x, rect.origin.y, rect.size.width * scale, rect.size.height));
 	
@@ -50,13 +48,8 @@
 	[super drawRect:rect];
 }
 
-- (void)dealloc {
-	[color release];
-    [super dealloc];
-}
-
 - (void) setProgress:(float)value {
-	progress = value;
+	_progress = value;
 	[self setNeedsDisplay];
 }
 

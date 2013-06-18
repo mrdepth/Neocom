@@ -56,12 +56,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-    [_tableView release];
-	[_killLog release];
-	[_sections release];
-    [super dealloc];
-}
 - (void)viewDidUnload {
     [self setTableView:nil];
 	[self setSections:nil];
@@ -131,13 +125,13 @@
 	NSDictionary* record = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+KillLoading" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block KillMail* killMail = nil;
 	__block NSError* error = nil;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			EVEKillNetLogEntry* kill = [record valueForKey:@"kill"];
-			EVEKillNetLog* killDetails = [EVEKillNetLog logWithFilter:@{EVEKillNetLogFilterKLLid : @(kill.internalID)} mask:EVEKillNetLogMaskAll error:&error];
-			[error retain];
+			EVEKillNetLog* killDetails = [EVEKillNetLog logWithFilter:@{EVEKillNetLogFilterKLLid : @(kill.internalID)} mask:EVEKillNetLogMaskAll error:&error progressHandler:nil];
 			if (killDetails.killLog.count > 0)
 				killMail = [[KillMail alloc] initWithKillNetLogEntry:[killDetails.killLog objectAtIndex:0]];
 			else
@@ -146,18 +140,15 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			if (error)
 				[[UIAlertView alertViewWithError:error] show];
 			else {
 				KillMailViewController* controller = [[KillMailViewController alloc] initWithNibName:@"KillMailViewController" bundle:nil];
 				controller.killMail = killMail;
 				[self.navigationController pushViewController:controller animated:YES];
-				[controller release];
 			}
 		}
-		[error release];
-		[killMail release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -202,6 +193,7 @@
 - (void) reload {
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+Loading" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		@autoreleasepool {
 			
@@ -210,10 +202,10 @@
 			float i = 0;
 			float n = self.killLog.killLog.count;
 			for (EVEKillNetLogEntry* kill in [self.killLog.killLog sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]]) {
-				if ([operation isCancelled])
+				if ([weakOperation isCancelled])
 					return;
 				
-				operation.progress = 0.5 + n / i++ / 2;
+				weakOperation.progress = 0.5 + n / i++ / 2;
 				NSMutableDictionary* record = [NSMutableDictionary dictionaryWithObject:kill forKey:@"kill"];
 				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:kill.victimShipID error:nil];
 				if (type)
@@ -242,7 +234,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
 			[self.tableView reloadData];
 		}

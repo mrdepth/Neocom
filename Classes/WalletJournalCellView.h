@@ -8,15 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WalletJournalCellView : UITableViewCell {
-	UILabel *dateLabel;
-	UILabel *amountLabel;
-	UILabel *titleLabel;
-	UILabel *nameLabel;
-	UILabel *balanceLabel;
-	UILabel *taxLabel;
-}
-
+@interface WalletJournalCellView : UITableViewCell
 @property (retain, nonatomic) IBOutlet UILabel *dateLabel;
 @property (retain, nonatomic) IBOutlet UILabel *amountLabel;
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;

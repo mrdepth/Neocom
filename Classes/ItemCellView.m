@@ -10,14 +10,4 @@
 
 
 @implementation ItemCellView
-@synthesize iconImageView;
-@synthesize titleLabel;
-
-- (void)dealloc {
-	[iconImageView release];
-	[titleLabel release];
-    [super dealloc];
-}
-
-
 @end

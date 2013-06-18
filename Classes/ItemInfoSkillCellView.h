@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ItemInfoSkillCellView : UITableViewCell {
-	UIImageView *iconView;
-	UILabel *skillLabel;
-	UIView *hierarchyView;
-}
+@interface ItemInfoSkillCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UILabel *skillLabel;
 @property (nonatomic, retain) IBOutlet UIView *hierarchyView;

@@ -11,14 +11,9 @@
 #import "EVEOnlineAPI.h"
 
 @implementation EUNotification
-@synthesize mailBox;
-@synthesize header;
-@synthesize details;
-@synthesize sender;
-@synthesize read;
 
 + (id) notificationWithMailBox:(EUMailBox*) mailBox {
-	return [[[EUNotification alloc] initWithMailBox:mailBox] autorelease];
+	return [[EUNotification alloc] initWithMailBox:mailBox];
 }
 
 - (id) initWithMailBox:(EUMailBox*) aMailBox {
@@ -28,30 +23,24 @@
 	return self;
 }
 
-- (void) dealloc {
-	[header release];
-	[details release];
-	[sender release];
-	[super dealloc];
-}
-
 - (EVENotificationTextsItem*) details {
-	if (!details) {
+	if (!_details) {
 		NSError* error = nil;
-		EVENotificationTexts* texts = [EVENotificationTexts notificationTextsWithKeyID:mailBox.keyID
-																				 vCode:mailBox.vCode
-																		   characterID:mailBox.characterID
-																				   ids:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", header.notificationID]]
-																				 error:&error];
+		EVENotificationTexts* texts = [EVENotificationTexts notificationTextsWithKeyID:self.mailBox.keyID
+																				 vCode:self.mailBox.vCode
+																		   characterID:self.mailBox.characterID
+																				   ids:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", self.header.notificationID]]
+																				 error:&error
+																	   progressHandler:nil];
 		if (error != nil)
-			details = (EVENotificationTextsItem*) [NSNull null];
+			_details = (EVENotificationTextsItem*) [NSNull null];
 		else {
 			if (texts.notifications.count > 0) {
-				details = [[texts.notifications objectAtIndex:0] retain];
+				_details = [texts.notifications objectAtIndex:0];
 			}
 		}
 	}
-	return details != (EVENotificationTextsItem*) [NSNull null] ? details : nil;
+	return _details != (EVENotificationTextsItem*) [NSNull null] ? _details : nil;
 }
 
 @end

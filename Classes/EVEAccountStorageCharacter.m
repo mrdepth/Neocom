@@ -10,18 +10,9 @@
 
 
 @implementation EVEAccountStorageCharacter
-@synthesize assignedCharAPIKeys;
-@synthesize assignedCorpAPIKeys;
-@synthesize enabled;
-
-- (void) dealloc {
-	[assignedCharAPIKeys release];
-	[assignedCorpAPIKeys release];
-	[super dealloc];
-}
 
 - (NSUInteger) hash {
-	return characterID;
+	return self.characterID;
 }
 
 - (BOOL) isEqual:(id)object {
@@ -29,17 +20,17 @@
 }
 
 - (EVEAccountStorageAPIKey*) anyCharAPIKey {
-	if (assignedCharAPIKeys.count == 0)
+	if (self.assignedCharAPIKeys.count == 0)
 		return nil;
 	else
-		return [assignedCharAPIKeys objectAtIndex:0];
+		return [self.assignedCharAPIKeys objectAtIndex:0];
 }
 
 - (EVEAccountStorageAPIKey*) anyCorpAPIKey {
-	if (assignedCorpAPIKeys.count == 0)
+	if (self.assignedCorpAPIKeys.count == 0)
 		return nil;
 	else
-		return [assignedCorpAPIKeys objectAtIndex:0];
+		return [self.assignedCorpAPIKeys objectAtIndex:0];
 }
 
 

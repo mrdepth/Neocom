@@ -8,12 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FleetMemberCellView : UITableViewCell {
-	UIImageView *iconView;
-	UIImageView *stateView;
-	UILabel *titleLabel;
-	UILabel *fitNameLabel;
-}
+@interface FleetMemberCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UIImageView *stateView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;

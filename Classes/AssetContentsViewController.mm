@@ -26,20 +26,19 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 
-@interface AssetContentsViewController(Private)
+@interface AssetContentsViewController()
+@property (nonatomic, strong) NSMutableArray *filteredValues;
+@property (nonatomic, strong) NSArray *assets;
+@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) EUFilter *filter;
+
 - (void) reloadAssets;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (IBAction)onClose:(id)sender;
 @end
 
 @implementation AssetContentsViewController
-@synthesize assetsTableView;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
-@synthesize asset;
-@synthesize corporate;
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -58,46 +57,47 @@
     [super viewDidLoad];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	if (asset.type.group.categoryID == 6 || asset.type.groupID == eufe::CONTROL_TOWER_GROUP_ID) // Ship or Control Tower
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+	if (self.asset.type.group.categoryID == 6 || self.asset.type.groupID == eufe::CONTROL_TOWER_GROUP_ID) // Ship or Control Tower
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)];
 	EVEAccount* account = [EVEAccount currentAccount];
 	
 	
-	if (asset.location.itemName) {
-		self.title = asset.location.itemName;
+	if (self.asset.location.itemName) {
+		self.title = self.asset.location.itemName;
 	}
 	else {
-		self.title = asset.name;
+		self.title = self.asset.name;
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:NSLocalizedString(@"Loading Locations", nil)];
+		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			EVELocations* locations = nil;
-			if (corporate && account.corpAccessMask & 16777216)
+			if (self.corporate && account.corpAccessMask & 16777216)
 				locations = [EVELocations locationsWithKeyID:account.corpKeyID
 													   vCode:account.corpVCode
 												 characterID:account.characterID
-														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:asset.itemID]]
+														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:self.asset.itemID]]
 												   corporate:YES
-													   error:nil];
-			else if (!corporate && account.charAccessMask & 134217728)
+													   error:nil
+											 progressHandler:nil];
+			else if (!self.corporate && account.charAccessMask & 134217728)
 				locations = [EVELocations locationsWithKeyID:account.charKeyID
 													   vCode:account.charVCode
 												 characterID:account.characterID
-														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:asset.itemID]]
+														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:self.asset.itemID]]
 												   corporate:NO
-													   error:nil];
+													   error:nil
+											 progressHandler:nil];
 			if (locations.locations.count == 1)
-				asset.location = [locations.locations objectAtIndex:0];
-			[pool release];
+				self.asset.location = [locations.locations objectAtIndex:0];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
-				if (asset.location)
-					self.title = asset.location.itemName;
+			if (![weakOperation isCancelled]) {
+				if (self.asset.location)
+					self.title = self.asset.location.itemName;
 			}
 		}];
 		
@@ -148,38 +148,23 @@
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
-	[assets release];
-	[filteredValues release];
-	assets = filteredValues = nil;
-}
-
-
-- (void)dealloc {
-	[assetsTableView release];
-	[searchBar release];
-	[filteredValues release];
-	[assets release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[asset release];
-    [super dealloc];
+	self.assets = nil;
+	self.filteredValues = nil;
 }
 
 - (IBAction)onOpenFit:(id)sender {
-	if (asset.type.group.categoryID == 6) {// Ship
+	if (self.asset.type.group.categoryID == 6) {// Ship
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+		__weak EUOperation* weakOperation = operation;
 		__block ShipFit* fit = nil;
 		__block eufe::Character* character = NULL;
 		
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			
 			character = new eufe::Character(fittingViewController.fittingEngine);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
-			operation.progress = 0.3;
+			weakOperation.progress = 0.3;
 			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
 				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -187,14 +172,13 @@
 			}
 			else
 				character->setCharacterName("All Skills 0");
-			operation.progress = 0.6;
-			fit = [[ShipFit shipFitWithAsset:asset character:character] retain];
-			operation.progress = 1.0;
-			[pool release];
+			weakOperation.progress = 0.6;
+			fit = [ShipFit shipFitWithAsset:self.asset character:character];
+			weakOperation.progress = 1.0;
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
 				[fittingViewController.fits addObject:fit];
@@ -204,30 +188,24 @@
 				if (character)
 					delete character;
 			}
-			[fittingViewController release];
-			[fit release];
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading POS Fit", nil)];
+		__weak EUOperation* weakOperation = operation;
 		__block POSFit* fit = nil;
 		
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			
-			fit = [[POSFit posFitWithAsset:asset engine:posFittingViewController.fittingEngine] retain];
-			[pool release];
+			fit = [POSFit posFitWithAsset:self.asset engine:posFittingViewController.fittingEngine];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				posFittingViewController.fit = fit;
 				[self.navigationController pushViewController:posFittingViewController animated:YES];
 			}
-			[posFittingViewController release];
-			[fit release];
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
@@ -239,18 +217,18 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return [filteredValues count];
+		return [self.filteredValues count];
 	else {
-		return [sections count];
+		return [self.sections count];
 	}
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return [[[filteredValues objectAtIndex:section] valueForKey:@"assets"] count];
+		return [[[self.filteredValues objectAtIndex:section] valueForKey:@"assets"] count];
 	else
-		return [[[sections objectAtIndex:section] valueForKey:@"assets"] count];
+		return [[[self.sections objectAtIndex:section] valueForKey:@"assets"] count];
 }
 
 
@@ -265,13 +243,13 @@
 	EVEAssetListItem* item;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		item = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	else
-		item = [[[sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	cell.iconImageView.image = [UIImage imageNamed:item.type.typeSmallImageName];
 	
-	if (item.parent && item.parent != asset) {
+	if (item.parent && item.parent != self.asset) {
 		cell.titleLabel.numberOfLines = 2;
 		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), item.name, item.parent.name];
 	}
@@ -286,9 +264,9 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return [[filteredValues objectAtIndex:section] valueForKey:@"title"];
+		return [[self.filteredValues objectAtIndex:section] valueForKey:@"title"];
 	else
-		return [[sections objectAtIndex:section] valueForKey:@"title"];
+		return [[self.sections objectAtIndex:section] valueForKey:@"title"];
 }
 
 #pragma mark -
@@ -298,9 +276,9 @@
 	EVEAssetListItem* item;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		item = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	else
-		item = [[[sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
@@ -311,11 +289,9 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 
@@ -344,16 +320,15 @@
 	EVEAssetListItem* item;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		item = [[[filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	else
-		item = [[[assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
+		item = [[[self.assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
 	if (item.contents.count > 0) {
 		AssetContentsViewController* controller = [[AssetContentsViewController alloc] initWithNibName:@"AssetContentsViewController" bundle:nil];
 		controller.asset = item;
 		controller.corporate = self.corporate;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -365,18 +340,16 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 }
 
 #pragma mark - CollapsableTableViewDelegate
 
 - (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
+	return [[[self.sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
 }
 
 - (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
@@ -384,11 +357,11 @@
 }
 
 - (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
+	[[self.sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
 }
 
 - (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+	[[self.sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
 }
 
 #pragma mark -
@@ -408,21 +381,21 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	filterViewController.filter = filter;
+	self.filterViewController.filter = self.filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -436,20 +409,17 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation AssetContentsViewController(Private)
+#pragma mark - Private
 
 - (void) reloadAssets {
-	[sections release];
-	sections = nil;
-	if (!assets) {
+	self.sections = nil;
+	if (!self.assets) {
 		EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"assetsFilter" ofType:@"plist"]]];
 		NSMutableArray* assetsTmp = [NSMutableArray array];
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Load" name:NSLocalizedString(@"Loading Assets", nil)];
+		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-			if (asset.type.group.categoryID == 6) { // Ship
+			if (self.asset.type.group.categoryID == 6) { // Ship
 				NSMutableArray* hiSlots = [NSMutableArray array];
 				NSMutableArray* medSlots = [NSMutableArray array];
 				NSMutableArray* lowSlots = [NSMutableArray array];
@@ -458,7 +428,7 @@
 				NSMutableArray* droneBay = [NSMutableArray array];
 				NSMutableArray* cargo = [NSMutableArray array];
 				
-				for (EVEAssetListItem* item in asset.contents) {
+				for (EVEAssetListItem* item in self.asset.contents) {
 					if (item.flag >= EVEInventoryFlagHiSlot0 && item.flag <= EVEInventoryFlagHiSlot7)
 						[hiSlots addObject:item];
 					else if (item.flag >= EVEInventoryFlagMedSlot0 && item.flag <= EVEInventoryFlagMedSlot7)
@@ -494,8 +464,8 @@
 				}
 				
 			}
-			else if (asset.type.groupID == 471) { //Hangar or Office
-				NSMutableArray* groups = [NSMutableArray arrayWithArray:[asset.contents arrayGroupedByKey:@"flag"]];
+			else if (self.asset.type.groupID == 471) { //Hangar or Office
+				NSMutableArray* groups = [NSMutableArray arrayWithArray:[self.asset.contents arrayGroupedByKey:@"flag"]];
 				
 				[groups sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					EVEAssetListItem* asset1 = [obj1 objectAtIndex:0];
@@ -519,19 +489,19 @@
 					}
 					else
 						title = NSLocalizedString(@"Unknown hangar", nil);
-					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-					if (group.count == 1)
+					NSArray* sortedGroup = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+					if (sortedGroup.count == 1)
 						title = [title stringByAppendingString:NSLocalizedString(@" (1 item)", nil)];
 					else
-						title = [title stringByAppendingFormat:NSLocalizedString(@" (%d items)", nil), group.count];
+						title = [title stringByAppendingFormat:NSLocalizedString(@" (%d items)", nil), sortedGroup.count];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
 										  [NSNumber numberWithBool:NO], @"collapsed",
-										  group, @"assets", nil]];
+										  sortedGroup, @"assets", nil]];
 				}
 			}
-			else if (asset.type.groupID == 363) { //Ship Maintenance Array
-				NSMutableArray* groups = [NSMutableArray arrayWithArray:[asset.contents arrayGroupedByKey:@"type.groupID"]];
+			else if (self.asset.type.groupID == 363) { //Ship Maintenance Array
+				NSMutableArray* groups = [NSMutableArray arrayWithArray:[self.asset.contents arrayGroupedByKey:@"type.groupID"]];
 				
 				[groups sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					EVEAssetListItem* asset1 = [obj1 objectAtIndex:0];
@@ -542,15 +512,15 @@
 				for (NSArray* group in groups) {
 					EVEAssetListItem* item = [group objectAtIndex:0];
 					NSString* title = item.type.group.groupName;
-					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+					NSArray* sortedGroup = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
 										  [NSNumber numberWithBool:NO], @"collapsed",
-										  group, @"assets", nil]];
+										  sortedGroup, @"assets", nil]];
 				}
 			}
 			else {
-				NSMutableArray* groups = [NSMutableArray arrayWithArray:[asset.contents arrayGroupedByKey:@"type.group.categoryID"]];
+				NSMutableArray* groups = [NSMutableArray arrayWithArray:[self.asset.contents arrayGroupedByKey:@"type.group.categoryID"]];
 				
 				[groups sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					EVEAssetListItem* asset1 = [obj1 objectAtIndex:0];
@@ -561,39 +531,36 @@
 				for (NSArray* group in groups) {
 					EVEAssetListItem* item = [group objectAtIndex:0];
 					NSString* title = item.type.group.category.categoryName;
-					group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+					NSArray* sortedGroup = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 					[assetsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 										  title, @"title",
 										  [NSNumber numberWithBool:NO], @"collapsed",
-										  group, @"assets", nil]];
+										  sortedGroup, @"assets", nil]];
 				}
 			}
 			
-			__block void (^process)(EVEAssetListItem*);
-			process = ^(EVEAssetListItem* item) {
+			__block void* weakProcess;
+			void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* item) {
 				[filterTmp updateWithValue:item];
 				for (EVEAssetListItem* subItem in item.contents)
-					process(subItem);
+					((__bridge void (^)(EVEAssetListItem*))weakProcess)(subItem);
 			};
+			weakProcess = (__bridge void*) process;
 			
-			float n = asset.contents.count;
+			float n = self.asset.contents.count;
 			float i = 0;
-			for (EVEAssetListItem* item in asset.contents) {
-				operation.progress = i++ / n;
+			for (EVEAssetListItem* item in self.asset.contents) {
+				weakOperation.progress = i++ / n;
 				process(item);
 			}
-			
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
-				[assets release];
-				assets = [assetsTmp retain];
-				if (assets)
+			if (![weakOperation isCancelled]) {
+				self.assets = assetsTmp;
+				if (self.assets)
 					[self reloadAssets];
-				[filter release];
-				filter = [filterTmp retain];
+				self.filter = filterTmp;
 			}
 		}];
 		
@@ -601,23 +568,23 @@
 	}
 	else {
 		NSMutableArray* sectionsTmp = [NSMutableArray array];
-		if (filter.predicate) {
+		if (self.filter.predicate) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-				__block void (^search)(NSArray*, NSMutableArray*);
-				search = ^(NSArray* contents, NSMutableArray* location) {
-					[location addObjectsFromArray:[filter applyToValues:contents]];
+				__block void* weakSearch;
+				void (^search)(NSArray*, NSMutableArray*) = ^(NSArray* contents, NSMutableArray* location) {
+					[location addObjectsFromArray:[self.filter applyToValues:contents]];
 					for (EVEAssetListItem* item in contents)
-						search(item.contents, location);
+						((__bridge void (^)(NSArray*, NSMutableArray*)) weakSearch)(item.contents, location);
 				};
+				weakSearch = (__bridge void*) search;
 				
 				NSMutableArray* filteredAssets = [NSMutableArray array];
-				float n = assets.count;
+				float n = self.assets.count;
 				float i = 0;
-				for (NSDictionary* section in assets) {
-					operation.progress = i++ / n;
+				for (NSDictionary* section in self.assets) {
+					weakOperation.progress = i++ / n;
 					search([section valueForKey:@"assets"], filteredAssets);
 				}
 
@@ -633,33 +600,30 @@
 					for (NSArray* group in groups) {
 						EVEAssetListItem* item = [group objectAtIndex:0];
 						NSString* title = item.type.group.category.categoryName;
-						group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+						NSArray* sortedGroup = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 						[sectionsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 												title, @"title",
 												[NSNumber numberWithBool:NO], @"collapsed",
-												group, @"assets", nil]];
+												sortedGroup, @"assets", nil]];
 					}
 				}
-
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					[sections release];
-					sections = [sectionsTmp retain];
+				if (![weakOperation isCancelled]) {
+					self.sections = sectionsTmp;
 					[self searchWithSearchString:self.searchBar.text];
-					[assetsTableView reloadData];
+					[self.assetsTableView reloadData];
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
-			sections = [assets retain];
+			self.sections = self.assets;
 			[self searchWithSearchString:self.searchBar.text];
 		}
 	}
-	[assetsTableView reloadData];
+	[self.assetsTableView reloadData];
 }
 
 
@@ -668,40 +632,43 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (sections.count == 0 || !aSearchString)
+	if (self.sections.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		__block void (^search)(NSArray*, NSMutableArray*);
+		void (^search)(NSArray*, NSMutableArray*);
+		__block void* weakSearch;
 		
 		search = ^(NSArray* contents, NSMutableArray* values) {
 			for (EVEAssetListItem* item in contents) {
+				if ([weakOperation isCancelled])
+					break;
 				if ([item.name rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 					[item.type.typeName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 					[item.type.group.groupName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 					[item.type.group.category.categoryName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 					(item.location.itemName && [item.location.itemName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 					[values addObject:item];
-				if (asset.contents.count > 0)
-					search(item.contents, values);
+				if (self.asset.contents.count > 0)
+					((__bridge void (^)(NSArray*, NSMutableArray*)) weakSearch)(item.contents, values);
 			}
 		};
+		weakSearch = (__bridge void*) search;
 		
 		
 		NSMutableArray* values = [[NSMutableArray alloc] init];
-		float n = sections.count;
+		float n = self.sections.count;
 		float i = 0;
-		for (NSDictionary* section in sections) {
-			operation.progress = i++ / n / 2;
+		for (NSDictionary* section in self.sections) {
+			weakOperation.progress = i++ / n / 2;
 			search([section valueForKey:@"assets"], values);
 		}
-		NSMutableArray* values2 =[NSMutableArray arrayWithArray:[filter applyToValues:values]];
-		[values release];
+		NSMutableArray* values2 =[NSMutableArray arrayWithArray:[self.filter applyToValues:values]];
 		
 		if (values2.count > 0) {
 			NSMutableArray* groups = [NSMutableArray arrayWithArray:[values2 arrayGroupedByKey:@"type.group.categoryID"]];
@@ -716,25 +683,22 @@
 			n = groups.count;
 			i = 0;
 			for (NSArray* group in groups) {
-				operation.progress = 0.5 + i++ / n / 2;
+				weakOperation.progress = 0.5 + i++ / n / 2;
 
 				EVEAssetListItem* item = [group objectAtIndex:0];
 				NSString* title = item.type.group.category.categoryName;
-				group = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+				NSArray* sortedGroup = [group sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 				[filteredValuesTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 											  title, @"title",
 											  [NSNumber numberWithBool:NO], @"collapsed",
-											  group, @"assets", nil]];
+											  sortedGroup, @"assets", nil]];
 			}
 		}
-
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

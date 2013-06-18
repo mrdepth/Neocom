@@ -21,19 +21,6 @@
 @dynamic typeName;
 @dynamic url;
 
-- (id) retain {
-	return [super retain];
-}
-
-- (oneway  void) release {
-	[super release];
-}
-
-- (void) dealloc {
-	[_type release];
-	[super dealloc];
-}
-
 - (EVEDBInvType*) type {
 	if (!_type) {
 		if (self.typeID) {

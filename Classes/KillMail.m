@@ -10,34 +10,15 @@
 
 @implementation KillMailPilot
 
-- (void) dealloc {
-	[_allianceName release];
-	[_characterName release];
-	[_corporationName release];
-	[_shipType release];
-	[super dealloc];
-}
-
 @end
 
 @implementation KillMailVictim
 @end
 
 @implementation KillMailAttacker
-
-- (void) dealloc {
-	[_weaponType release];
-	[super dealloc];
-}
-
 @end
 
 @implementation KillMailItem
-
-- (void) dealloc {
-	[_type release];
-	[super dealloc];
-}
 
 @end
 
@@ -49,7 +30,7 @@
 		self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
 		self.killTime = kill.killTime;
 		
-		self.victim = [[[KillMailVictim alloc] init] autorelease];
+		self.victim = [[KillMailVictim alloc] init];
 		self.victim.allianceID = kill.victim.allianceID;
 		self.victim.allianceName = kill.victim.allianceName;
 		self.victim.characterID = kill.victim.characterID;
@@ -61,7 +42,7 @@
 		
 		self.attackers = [NSMutableArray array];
 		for (EVEKillLogAttacker* item in kill.attackers) {
-			KillMailAttacker* attacker = [[[KillMailAttacker alloc] init] autorelease];
+			KillMailAttacker* attacker = [[KillMailAttacker alloc] init];
 			attacker.allianceID = item.allianceID;
 			attacker.allianceName = item.allianceName;
 			attacker.characterID = item.characterID;
@@ -113,7 +94,7 @@
 				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"destroyed"];
 				KillMailItem* destroyedItem = [container valueForKey:key];
 				if (!destroyedItem) {
-					destroyedItem = [[[KillMailItem alloc] init] autorelease];
+					destroyedItem = [[KillMailItem alloc] init];
 					destroyedItem.type = type;
 					destroyedItem.qty = item.qtyDestroyed;
 					destroyedItem.destroyed = YES;
@@ -127,7 +108,7 @@
 				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"dropped"];
 				KillMailItem* droppedItem = [container valueForKey:key];
 				if (!droppedItem) {
-					droppedItem = [[[KillMailItem alloc] init] autorelease];
+					droppedItem = [[KillMailItem alloc] init];
 					droppedItem.type = type;
 					droppedItem.qty = item.qtyDropped;
 					droppedItem.destroyed = NO;
@@ -160,7 +141,7 @@
 		
 		NSMutableDictionary* names = [NSMutableDictionary dictionary];
 		
-		self.victim = [[[KillMailVictim alloc] init] autorelease];
+		self.victim = [[KillMailVictim alloc] init];
 		self.victim.allianceName = kill.victimAllianceName;
 		self.victim.characterName = kill.victimName;
 		self.victim.corporationName = kill.victimCorpName;
@@ -174,7 +155,7 @@
 		if (self.victim.characterName.length > 0)
 			[names setValue:@(0) forKey:self.victim.characterName];
 		if (names.count > 0) {
-			EVECharacterID* charIDs = [EVECharacterID characterIDWithNames:[names allKeys] error:nil];
+			EVECharacterID* charIDs = [EVECharacterID characterIDWithNames:[names allKeys] error:nil progressHandler:nil];
 			for (EVECharacterIDItem* item in charIDs.characters)
 				[names setValue:@(item.characterID) forKey:item.name];
 		}
@@ -188,7 +169,7 @@
 		
 		self.attackers = [NSMutableArray array];
 		for (EVEKillNetLogInvolved* item in kill.involved) {
-			KillMailAttacker* attacker = [[[KillMailAttacker alloc] init] autorelease];
+			KillMailAttacker* attacker = [[KillMailAttacker alloc] init];
 			attacker.allianceID = item.allianceID;
 			attacker.allianceName = item.allianceName;
 			attacker.characterID = item.characterID;
@@ -236,7 +217,7 @@
 				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"destroyed"];
 				KillMailItem* destroyedItem = [container valueForKey:key];
 				if (!destroyedItem) {
-					destroyedItem = [[[KillMailItem alloc] init] autorelease];
+					destroyedItem = [[KillMailItem alloc] init];
 					destroyedItem.type = type;
 					destroyedItem.qty = item.qtyDestroyed;
 					destroyedItem.destroyed = YES;
@@ -250,7 +231,7 @@
 				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"dropped"];
 				KillMailItem* droppedItem = [container valueForKey:key];
 				if (!droppedItem) {
-					droppedItem = [[[KillMailItem alloc] init] autorelease];
+					droppedItem = [[KillMailItem alloc] init];
 					droppedItem.type = type;
 					droppedItem.qty = item.qtyDropped;
 					droppedItem.destroyed = NO;
@@ -273,21 +254,6 @@
 		}
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[_hiSlots release];
-	[_medSlots release];
-	[_lowSlots release];
-	[_rigSlots release];
-	[_subsystemSlots release];
-	[_droneBay release];
-	[_cargo release];
-	[_attackers release];
-	[_victim release];
-	[_solarSystem release];
-	[_killTime release];
-	[super dealloc];
 }
 
 @end

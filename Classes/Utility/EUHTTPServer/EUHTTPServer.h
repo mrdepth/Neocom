@@ -30,15 +30,10 @@ typedef enum {
 @end
 
 
-@interface EUHTTPServer : NSObject<EUHTTPConnectionDelegate, NSNetServiceDelegate> {
-	NSMutableSet * connections;
-	NSNetService * netService;
-	CFSocketRef ipv4socket;
-	id<EUHTTPServerDelegate> delegate;
-}
+@interface EUHTTPServer : NSObject<EUHTTPConnectionDelegate, NSNetServiceDelegate>
 
-@property (nonatomic, retain) NSNetService * netService;
-@property (nonatomic, retain) NSMutableSet * connections;
+@property (nonatomic, strong) NSNetService * netService;
+@property (nonatomic, strong) NSMutableSet * connections;
 @property (assign) CFSocketRef ipv4socket;
 @property (nonatomic, assign) id<EUHTTPServerDelegate> delegate;
 

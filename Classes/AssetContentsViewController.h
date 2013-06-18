@@ -12,20 +12,7 @@
 #import "CollapsableTableView.h"
 
 @class EVEAssetListItem;
-@interface AssetContentsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate> {
-	CollapsableTableView *assetsTableView;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-	EVEAssetListItem *asset;
-	BOOL corporate;
-@private
-	NSMutableArray *filteredValues;
-	NSArray *assets;
-	NSArray *sections;
-	EUFilter *filter;
-}
+@interface AssetContentsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
 @property (nonatomic, retain) IBOutlet CollapsableTableView *assetsTableView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;

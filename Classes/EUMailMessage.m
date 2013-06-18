@@ -12,16 +12,9 @@
 #import "NSMutableString+HTML.h"
 
 @implementation EUMailMessage
-@synthesize mailBox;
-@synthesize to;
-@synthesize from;
-@synthesize text;
-@synthesize date;
-@synthesize header;
-@synthesize read;
 
 + (id) mailMessageWithMailBox:(EUMailBox*) mailBox {
-	return [[[EUMailMessage alloc] initWithMailBox:mailBox] autorelease];
+	return [[EUMailMessage alloc] initWithMailBox:mailBox];
 }
 
 - (id) initWithMailBox:(EUMailBox*) aMailBox {
@@ -31,37 +24,27 @@
 	return self;
 }
 
-- (void) dealloc {
-	[to release];
-	[from release];
-	[text release];
-	[date release];
-	[header release];
-	[super dealloc];
-}
-
 - (NSString*) text {
-	if (!text) {
+	if (!_text) {
 		NSError* error = nil;
-		EVEMailBodies* bodies = [EVEMailBodies mailBodiesWithKeyID:mailBox.keyID
-															 vCode:mailBox.vCode
-													   characterID:mailBox.characterID
-															   ids:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", header.messageID]]
-															 error:&error];
+		EVEMailBodies* bodies = [EVEMailBodies mailBodiesWithKeyID:self.mailBox.keyID
+															 vCode:self.mailBox.vCode
+													   characterID:self.mailBox.characterID
+															   ids:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", self.header.messageID]]
+															 error:&error
+												   progressHandler:nil];
 		if (error != nil)
-			text = [[error localizedDescription] retain];
+			_text = [error localizedDescription];
 		else {
 			if (bodies.messages.count == 0) {
-				//text = @"Can't load the message body.";
-				//[text retain];
-				text = (id) [[NSNull null] retain];
+				_text = (id) [NSNull null];
 			}
 			else {
-				text = [[[bodies.messages objectAtIndex:0] text] retain];
+				_text = [[bodies.messages objectAtIndex:0] text];
 			}
 		}
 	}
-	return (id) text != [NSNull null] ? text : nil;
+	return (id) _text != [NSNull null] ? _text : nil;
 }
 
 @end

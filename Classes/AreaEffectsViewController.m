@@ -13,15 +13,12 @@
 #import "Globals.h"
 #import "ItemViewController.h"
 
-@interface AreaEffectsViewController(Private)
+@interface AreaEffectsViewController()
+@property (nonatomic, strong) NSMutableArray *sections;
 - (void) reload;
 @end
 
 @implementation AreaEffectsViewController
-@synthesize tableView;
-@synthesize delegate;
-@synthesize mainViewController;
-@synthesize selectedArea;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -60,8 +57,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.tableView = nil;
-	[sections release];
-	sections = nil;
+	self.sections = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -69,19 +65,12 @@
 	[self.tableView reloadData];
 }
 
-- (void)dealloc {
-	[tableView release];
-	[sections release];
-	[selectedArea release];
-    [super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
     // Return the number of sections.
-	return sections.count;
+	return self.sections.count;
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
@@ -106,7 +95,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] count];
+	return [[self.sections objectAtIndex:section] count];
 }
 
 
@@ -119,9 +108,9 @@
     if (cell == nil) {
         cell = [AreaEffectCellView cellWithNibName:@"AreaEffectCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	EVEDBInvType *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVEDBInvType *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.titleLabel.text = row.typeName;
-	cell.stateView.image = selectedArea && selectedArea.typeID == row.typeID ? [UIImage imageNamed:@"checkmark.png"] : nil;
+	cell.stateView.image = self.selectedArea && self.selectedArea.typeID == row.typeID ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	
     return cell;
 }
@@ -131,11 +120,11 @@
 
 - (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
 	NSString *s = [self tableView:aTableView titleForHeaderInSection:section];
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = s;
@@ -153,11 +142,11 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	[delegate areaEffectsViewController:self didSelectAreaEffect:[[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+	[self.delegate areaEffectsViewController:self didSelectAreaEffect:[[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)aTableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	EVEDBInvType *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVEDBInvType *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
@@ -166,12 +155,10 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[mainViewController presentModalViewController:navController animated:YES];
-		[navController release];
+		[self.mainViewController presentModalViewController:navController animated:YES];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark UIPopoverControllerDelegate
@@ -180,19 +167,16 @@
 	popoverController.popoverContentSize = CGSizeMake(320, 1100);
 }
 
-@end
-
-
-@implementation AreaEffectsViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AreaEffectsViewController+Load" name:NSLocalizedString(@"Loading Area Effects", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([operation isCancelled])
+		if ([weakOperation isCancelled])
 			return;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray* blackHole = [NSMutableArray array];
 		NSMutableArray* cataclysmic = [NSMutableArray array];
 		NSMutableArray* magnetar = [NSMutableArray array];
@@ -204,28 +188,29 @@
 			
 		EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
 		if (database) {
-			[database execWithSQLRequest:@"SELECT * from invTypes WHERE groupID=920 ORDER BY typeName" resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-				if (![operation isCancelled]) {
-					EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
-					if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
-						[blackHole addObject:type];
-					else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
-						[cataclysmic addObject:type];
-					else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
-						[incursion addObject:type];
-					else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
-						[magnetar addObject:type];
-					else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
-						[pulsar addObject:type];
-					else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
-						[redGiant addObject:type];
-					else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
-						[wolfRayet addObject:type];
-					else
-						[other addObject:type];
-				}
-				else
-					*needsMore = NO;
+			[database execSQLRequest:@"SELECT * from invTypes WHERE groupID=920 ORDER BY typeName"
+						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+							 if (![weakOperation isCancelled]) {
+								 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+								 if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
+									 [blackHole addObject:type];
+								 else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
+									 [cataclysmic addObject:type];
+								 else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
+									 [incursion addObject:type];
+								 else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
+									 [magnetar addObject:type];
+								 else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
+									 [pulsar addObject:type];
+								 else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
+									 [redGiant addObject:type];
+								 else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
+									 [wolfRayet addObject:type];
+								 else
+									 [other addObject:type];
+							 }
+							 else
+								 *needsMore = NO;
 			}];
 		}
 		
@@ -237,14 +222,11 @@
 		[sectionsTmp addObject:wolfRayet];
 		[sectionsTmp addObject:incursion];
 		[sectionsTmp addObject:other];
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[sections release];
-			sections = [sectionsTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.sections = sectionsTmp;
 			[self.tableView reloadData];
 		}
 	}];

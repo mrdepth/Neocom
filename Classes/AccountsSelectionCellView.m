@@ -26,11 +26,4 @@
     // Configure the view for the selected state
 }
 
-- (void)dealloc {
-    [_portraitImageView release];
-    [_corpImageView release];
-    [_characterNameLabel release];
-    [_corpNameLabel release];
-    [super dealloc];
-}
 @end

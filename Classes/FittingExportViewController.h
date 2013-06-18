@@ -9,13 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EUHTTPServer.h"
 
-@interface FittingExportViewController : UIViewController<EUHTTPServerDelegate> {
-	UILabel *addressLabel;
-@private
-	EUHTTPServer *server;
-	NSArray* fits;
-	NSString* page;
-}
+@interface FittingExportViewController : UIViewController<EUHTTPServerDelegate>
 @property (nonatomic, retain) IBOutlet UILabel *addressLabel;
 
 - (IBAction) onClose:(id)sender;

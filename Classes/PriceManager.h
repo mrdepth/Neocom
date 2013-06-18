@@ -10,11 +10,7 @@
 
 @class EVEDBInvType;
 @class EVEC0rporationFaction;
-@interface PriceManager : NSObject {
-	EVEC0rporationFaction* faction;
-@private
-	NSMutableDictionary* prices;
-}
+@interface PriceManager : NSObject
 @property (nonatomic, retain) EVEC0rporationFaction* faction;
 
 - (float) priceWithType:(EVEDBInvType*) type;

@@ -9,17 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface MarketOrderCellView : UITableViewCell {
-	UILabel *expireInLabel;
-	UILabel *stateLabel;
-	UILabel *typeNameLabel;
-	UILabel *locationLabel;
-	UILabel *priceLabel;
-	UILabel *qtyLabel;
-	UILabel *issuedLabel;
-	UILabel *characterLabel;
-	UIImageView *iconImageView;
-}
+@interface MarketOrderCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *expireInLabel;
 @property (nonatomic, retain) IBOutlet UILabel *stateLabel;
 @property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;

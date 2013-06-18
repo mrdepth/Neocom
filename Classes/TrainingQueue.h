@@ -14,24 +14,15 @@
 @property (nonatomic) NSInteger currentLevel;
 @property (nonatomic) float currentSP;
 
-//- (id) initWithTypeID:(NSInteger) typeID characterSkills:(NSDictionary*) characterSkills requiredLevel:(NSInteger) requiredLevel error:(NSError**) error;
-//- (id) initWithInvType:(EVEDBInvType *) skill characterSkills:(NSDictionary*) characterSkills requiredLevel:(NSInteger) aRequiredLevel;
-
 @end
 
 
 @class EVESkillQueue;
 @class EVEAccount;
-@interface TrainingQueue : NSObject {
-	NSMutableArray *skills;
-	NSTimeInterval trainingTime;
-@private
-	EVEAccount *account;
-	NSDictionary *characterSkills;
-}
+@interface TrainingQueue : NSObject
 
 @property (nonatomic, retain) NSMutableArray *skills;
-@property (nonatomic, readonly) NSTimeInterval trainingTime;
+@property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
 
 + (id) trainingQueueWithType: (EVEDBInvType*) type;
 + (id) trainingQueueWithCertificate: (EVEDBCrtCertificate*) certificate;

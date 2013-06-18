@@ -318,6 +318,14 @@
 		12CE3316165251F2009C2E1A /* TitleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE3315165251F2009C2E1A /* TitleCellView.xib */; };
 		12CE331916527467009C2E1A /* KillNetFilterValueCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */; };
 		12CE331C165274A1009C2E1A /* KillNetFilterValueCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE331B165274A1009C2E1A /* KillNetFilterValueCellView.m */; };
+		12D5F8C617707B3A0061D57C /* NAPISearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8C217707B3A0061D57C /* NAPISearch.m */; };
+		12D5F8C717707B3A0061D57C /* NAPIUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8C417707B3A0061D57C /* NAPIUpload.m */; };
+		12D5F8CC17708CCF0061D57C /* NAPISearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8CA17708CCF0061D57C /* NAPISearchViewController.m */; };
+		12D5F8CD17708CCF0061D57C /* NAPISearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D5F8CB17708CCF0061D57C /* NAPISearchViewController.xib */; };
+		12D5F8D11770998F0061D57C /* NAPISearchTitleCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8D01770998F0061D57C /* NAPISearchTitleCellView.m */; };
+		12D5F8D31770999F0061D57C /* NAPISearchTitleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D5F8D21770999F0061D57C /* NAPISearchTitleCellView.xib */; };
+		12D5F8D61770A2120061D57C /* NAPISearchSwitchCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */; };
+		12D5F8D81770A22A0061D57C /* NAPISearchSwitchCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */; };
 		12D6EDEF176F42B000F45382 /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE1176F42B000F45382 /* Blob.cpp */; };
 		12D6EDF0176F42B000F45382 /* Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE3176F42B000F45382 /* Decoder.cpp */; };
 		12D6EDF1176F42B000F45382 /* Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE5176F42B000F45382 /* Encoder.cpp */; };
@@ -1309,6 +1317,20 @@
 		12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFilterValueCellView.xib; sourceTree = "<group>"; };
 		12CE331A165274A1009C2E1A /* KillNetFilterValueCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterValueCellView.h; sourceTree = "<group>"; };
 		12CE331B165274A1009C2E1A /* KillNetFilterValueCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterValueCellView.m; sourceTree = "<group>"; };
+		12D5F8C117707B3A0061D57C /* NAPISearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearch.h; sourceTree = "<group>"; };
+		12D5F8C217707B3A0061D57C /* NAPISearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearch.m; sourceTree = "<group>"; };
+		12D5F8C317707B3A0061D57C /* NAPIUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPIUpload.h; sourceTree = "<group>"; };
+		12D5F8C417707B3A0061D57C /* NAPIUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPIUpload.m; sourceTree = "<group>"; };
+		12D5F8C517707B3A0061D57C /* NeocomAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeocomAPI.h; sourceTree = "<group>"; };
+		12D5F8C917708CCF0061D57C /* NAPISearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchViewController.h; sourceTree = "<group>"; };
+		12D5F8CA17708CCF0061D57C /* NAPISearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearchViewController.m; sourceTree = "<group>"; };
+		12D5F8CB17708CCF0061D57C /* NAPISearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchViewController.xib; sourceTree = "<group>"; };
+		12D5F8CF1770998F0061D57C /* NAPISearchTitleCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchTitleCellView.h; sourceTree = "<group>"; };
+		12D5F8D01770998F0061D57C /* NAPISearchTitleCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearchTitleCellView.m; sourceTree = "<group>"; };
+		12D5F8D21770999F0061D57C /* NAPISearchTitleCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchTitleCellView.xib; sourceTree = "<group>"; };
+		12D5F8D41770A2120061D57C /* NAPISearchSwitchCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchSwitchCellView.h; sourceTree = "<group>"; };
+		12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearchSwitchCellView.m; sourceTree = "<group>"; };
+		12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchSwitchCellView.xib; sourceTree = "<group>"; };
 		12D6EDE1176F42B000F45382 /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blob.cpp; sourceTree = "<group>"; };
 		12D6EDE2176F42B000F45382 /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blob.h; sourceTree = "<group>"; };
 		12D6EDE3176F42B000F45382 /* Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Decoder.cpp; sourceTree = "<group>"; };
@@ -2723,6 +2745,11 @@
 		12774D6C177032C100E98F8C /* NeocomAPI */ = {
 			isa = PBXGroup;
 			children = (
+				12D5F8C117707B3A0061D57C /* NAPISearch.h */,
+				12D5F8C217707B3A0061D57C /* NAPISearch.m */,
+				12D5F8C317707B3A0061D57C /* NAPIUpload.h */,
+				12D5F8C417707B3A0061D57C /* NAPIUpload.m */,
+				12D5F8C517707B3A0061D57C /* NeocomAPI.h */,
 			);
 			path = NeocomAPI;
 			sourceTree = "<group>";
@@ -3024,6 +3051,30 @@
 				12CE331816527467009C2E1A /* KillNetFilterValueCellView.xib */,
 			);
 			name = KillNetFilterValueCellView;
+			sourceTree = "<group>";
+		};
+		12D5F8C817708CA00061D57C /* NAPISearchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12D5F8CE177099650061D57C /* Cells */,
+				12D5F8C917708CCF0061D57C /* NAPISearchViewController.h */,
+				12D5F8CA17708CCF0061D57C /* NAPISearchViewController.m */,
+				12D5F8CB17708CCF0061D57C /* NAPISearchViewController.xib */,
+			);
+			name = NAPISearchViewController;
+			sourceTree = "<group>";
+		};
+		12D5F8CE177099650061D57C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				12D5F8CF1770998F0061D57C /* NAPISearchTitleCellView.h */,
+				12D5F8D01770998F0061D57C /* NAPISearchTitleCellView.m */,
+				12D5F8D21770999F0061D57C /* NAPISearchTitleCellView.xib */,
+				12D5F8D41770A2120061D57C /* NAPISearchSwitchCellView.h */,
+				12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */,
+				12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		12DED91516BF8BEB00C560E5 /* EUMigrationManager */ = {
@@ -4535,6 +4586,7 @@
 		71955A511376AFEF0068DBD7 /* FittingService */ = {
 			isa = PBXGroup;
 			children = (
+				12D5F8C817708CA00061D57C /* NAPISearchViewController */,
 				37DF48C4151C8D7300BC87A5 /* PriceManager */,
 				71196C9214B1E60300614711 /* ItemInfo */,
 				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
@@ -5352,6 +5404,9 @@
 				1213C0FF16C902DE006E504E /* VariationsViewController~ipad.xib in Resources */,
 				1213C10216C90373006E504E /* FittingVariationsViewController.xib in Resources */,
 				1213C10316C90373006E504E /* FittingVariationsViewController~ipad.xib in Resources */,
+				12D5F8CD17708CCF0061D57C /* NAPISearchViewController.xib in Resources */,
+				12D5F8D31770999F0061D57C /* NAPISearchTitleCellView.xib in Resources */,
+				12D5F8D81770A22A0061D57C /* NAPISearchSwitchCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5726,6 +5781,11 @@
 				12774E13177032C100E98F8C /* NSString+MD5.m in Sources */,
 				12774E14177032C100E98F8C /* NSURL+MD5.m in Sources */,
 				12774E1A1770348500E98F8C /* ASURLConnection.m in Sources */,
+				12D5F8C617707B3A0061D57C /* NAPISearch.m in Sources */,
+				12D5F8C717707B3A0061D57C /* NAPIUpload.m in Sources */,
+				12D5F8CC17708CCF0061D57C /* NAPISearchViewController.m in Sources */,
+				12D5F8D11770998F0061D57C /* NAPISearchTitleCellView.m in Sources */,
+				12D5F8D61770A2120061D57C /* NAPISearchSwitchCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

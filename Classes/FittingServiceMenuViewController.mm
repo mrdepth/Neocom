@@ -24,6 +24,7 @@
 #import "NSString+UUID.h"
 #import "UIActionSheet+Block.h"
 #import "EUStorage.h"
+#import "NAPISearchViewController.h"
 
 @interface FittingServiceMenuViewController()
 @property (nonatomic, strong) NSMutableArray *fits;
@@ -117,7 +118,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 4 : [[self.fits objectAtIndex:section - 1] count];
+	return section == 0 ? 5 : [[self.fits objectAtIndex:section - 1] count];
 }
 
 // Customize the appearance of table view cells.
@@ -134,10 +135,14 @@
 			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
 		else if (indexPath.row == 1) {
-			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Browse Neocom Community Fits", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
 		else if (indexPath.row == 2) {
+			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+		}
+		else if (indexPath.row == 3) {
 			cell.titleLabel.text = NSLocalizedString(@"New POS Fit", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
 		}
@@ -236,6 +241,10 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		}
 		else if (indexPath.row == 1) {
+			NAPISearchViewController *controller = [[NAPISearchViewController alloc] initWithNibName:@"NAPISearchViewController" bundle:nil];
+			[self.navigationController pushViewController:controller animated:YES];
+		}
+		else if (indexPath.row == 2) {
 			self.fittingItemsViewController.marketGroupID = 4;
 			self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -244,7 +253,7 @@
 				[self presentModalViewController:self.modalController animated:YES];
 
 		}
-		else if (indexPath.row == 2) {
+		else if (indexPath.row == 3) {
 			self.fittingItemsViewController.marketGroupID = 478;
 			self.fittingItemsViewController.title = NSLocalizedString(@"Control Towers", nil);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

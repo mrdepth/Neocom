@@ -18,7 +18,8 @@
 @property (nonatomic, strong) IBOutlet UINavigationController *fittingItemsNavigationController;
 @property (weak, nonatomic) IBOutlet KillNetFilterShipClassesViewController *shipClassesViewController;
 @property (strong, nonatomic) IBOutlet UINavigationController *shipClassesNavigationController;
+@property (weak, nonatomic) IBOutlet UILabel *fitsCountLabel;
 
 - (IBAction)onClose:(id)sender;
-
+- (IBAction)onSearch:(id)sender;
 @end

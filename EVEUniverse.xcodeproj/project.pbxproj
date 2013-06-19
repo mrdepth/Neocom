@@ -77,6 +77,13 @@
 		12448F511679D1C800DC90AC /* KillboardApiViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F531679D1C800DC90AC /* KillboardApiViewController~ipad.xib */; };
 		12448F541679D1F900DC90AC /* KillMailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F561679D1F900DC90AC /* KillMailViewController.xib */; };
 		12448F571679D24300DC90AC /* KillMailViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F591679D24300DC90AC /* KillMailViewController~ipad.xib */; };
+		1248696E17717D1D0025C647 /* NAPILookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1248696D17717D1D0025C647 /* NAPILookup.m */; };
+		124869A217718C240025C647 /* NAPIValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 124869A017718C240025C647 /* NAPIValuesViewController.m */; };
+		124869A317718C240025C647 /* NAPIValuesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124869A117718C240025C647 /* NAPIValuesViewController.xib */; };
+		12486BBD1771B8B60025C647 /* NAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12486BBB1771B8B60025C647 /* NAPISearchResultsViewController.mm */; };
+		12486BBE1771B8B60025C647 /* NAPISearchResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12486BBC1771B8B60025C647 /* NAPISearchResultsViewController.xib */; };
+		12486BC21771BBBC0025C647 /* NAPISearchFitCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12486BC11771BBBC0025C647 /* NAPISearchFitCellView.m */; };
+		12486BC41771BBCF0025C647 /* NAPISearchFitCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12486BC31771BBCF0025C647 /* NAPISearchFitCellView.xib */; };
 		125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125147DC165223D70008AC6B /* KillboardKillNetViewController.m */; };
 		125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125147E0165224300008AC6B /* KillboardKillNetViewController.xib */; };
 		12582F0A16B251C300445581 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F0916B251C300445581 /* EUStorage.m */; };
@@ -902,6 +909,17 @@
 		12448F521679D1C800DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/KillboardApiViewController~ipad.xib"; sourceTree = "<group>"; };
 		12448F551679D1F900DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/KillMailViewController.xib; sourceTree = "<group>"; };
 		12448F581679D24300DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/KillMailViewController~ipad.xib"; sourceTree = "<group>"; };
+		1248696C17717D1D0025C647 /* NAPILookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPILookup.h; sourceTree = "<group>"; };
+		1248696D17717D1D0025C647 /* NAPILookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPILookup.m; sourceTree = "<group>"; };
+		1248699F17718C240025C647 /* NAPIValuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPIValuesViewController.h; sourceTree = "<group>"; };
+		124869A017718C240025C647 /* NAPIValuesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPIValuesViewController.m; sourceTree = "<group>"; };
+		124869A117718C240025C647 /* NAPIValuesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPIValuesViewController.xib; sourceTree = "<group>"; };
+		12486BBA1771B8B60025C647 /* NAPISearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchResultsViewController.h; sourceTree = "<group>"; };
+		12486BBB1771B8B60025C647 /* NAPISearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NAPISearchResultsViewController.mm; sourceTree = "<group>"; };
+		12486BBC1771B8B60025C647 /* NAPISearchResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchResultsViewController.xib; sourceTree = "<group>"; };
+		12486BC01771BBBB0025C647 /* NAPISearchFitCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchFitCellView.h; sourceTree = "<group>"; };
+		12486BC11771BBBC0025C647 /* NAPISearchFitCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearchFitCellView.m; sourceTree = "<group>"; };
+		12486BC31771BBCF0025C647 /* NAPISearchFitCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchFitCellView.xib; sourceTree = "<group>"; };
 		125147DB165223D70008AC6B /* KillboardKillNetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetViewController.h; sourceTree = "<group>"; };
 		125147DC165223D70008AC6B /* KillboardKillNetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetViewController.m; sourceTree = "<group>"; };
 		125147E0165224300008AC6B /* KillboardKillNetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetViewController.xib; sourceTree = "<group>"; };
@@ -2317,6 +2335,26 @@
 			name = AccountsSelectionCellView;
 			sourceTree = "<group>";
 		};
+		1248696F17717D2C0025C647 /* NAPIValuesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1248699F17718C240025C647 /* NAPIValuesViewController.h */,
+				124869A017718C240025C647 /* NAPIValuesViewController.m */,
+				124869A117718C240025C647 /* NAPIValuesViewController.xib */,
+			);
+			name = NAPIValuesViewController;
+			sourceTree = "<group>";
+		};
+		12486BB91771B8970025C647 /* NAPISearchResultsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12486BBA1771B8B60025C647 /* NAPISearchResultsViewController.h */,
+				12486BBB1771B8B60025C647 /* NAPISearchResultsViewController.mm */,
+				12486BBC1771B8B60025C647 /* NAPISearchResultsViewController.xib */,
+			);
+			name = NAPISearchResultsViewController;
+			sourceTree = "<group>";
+		};
 		125147D9165223B40008AC6B /* KillboardKillNetViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2749,6 +2787,8 @@
 				12D5F8C217707B3A0061D57C /* NAPISearch.m */,
 				12D5F8C317707B3A0061D57C /* NAPIUpload.h */,
 				12D5F8C417707B3A0061D57C /* NAPIUpload.m */,
+				1248696C17717D1D0025C647 /* NAPILookup.h */,
+				1248696D17717D1D0025C647 /* NAPILookup.m */,
 				12D5F8C517707B3A0061D57C /* NeocomAPI.h */,
 			);
 			path = NeocomAPI;
@@ -3056,7 +3096,9 @@
 		12D5F8C817708CA00061D57C /* NAPISearchViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1248696F17717D2C0025C647 /* NAPIValuesViewController */,
 				12D5F8CE177099650061D57C /* Cells */,
+				12486BB91771B8970025C647 /* NAPISearchResultsViewController */,
 				12D5F8C917708CCF0061D57C /* NAPISearchViewController.h */,
 				12D5F8CA17708CCF0061D57C /* NAPISearchViewController.m */,
 				12D5F8CB17708CCF0061D57C /* NAPISearchViewController.xib */,
@@ -3073,6 +3115,9 @@
 				12D5F8D41770A2120061D57C /* NAPISearchSwitchCellView.h */,
 				12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */,
 				12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */,
+				12486BC01771BBBB0025C647 /* NAPISearchFitCellView.h */,
+				12486BC11771BBBC0025C647 /* NAPISearchFitCellView.m */,
+				12486BC31771BBCF0025C647 /* NAPISearchFitCellView.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -5407,6 +5452,9 @@
 				12D5F8CD17708CCF0061D57C /* NAPISearchViewController.xib in Resources */,
 				12D5F8D31770999F0061D57C /* NAPISearchTitleCellView.xib in Resources */,
 				12D5F8D81770A22A0061D57C /* NAPISearchSwitchCellView.xib in Resources */,
+				124869A317718C240025C647 /* NAPIValuesViewController.xib in Resources */,
+				12486BBE1771B8B60025C647 /* NAPISearchResultsViewController.xib in Resources */,
+				12486BC41771BBCF0025C647 /* NAPISearchFitCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5786,6 +5834,10 @@
 				12D5F8CC17708CCF0061D57C /* NAPISearchViewController.m in Sources */,
 				12D5F8D11770998F0061D57C /* NAPISearchTitleCellView.m in Sources */,
 				12D5F8D61770A2120061D57C /* NAPISearchSwitchCellView.m in Sources */,
+				1248696E17717D1D0025C647 /* NAPILookup.m in Sources */,
+				124869A217718C240025C647 /* NAPIValuesViewController.m in Sources */,
+				12486BBD1771B8B60025C647 /* NAPISearchResultsViewController.mm in Sources */,
+				12486BC21771BBBC0025C647 /* NAPISearchFitCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

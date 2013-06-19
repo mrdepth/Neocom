@@ -20,6 +20,7 @@
 #import "EUStorage.h"
 #import "EUMigrationManager.h"
 #import "UIAlertView+Block.h"
+#import "NSString+UUID.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 
@@ -101,6 +102,9 @@
 	
     // Override point for customization after application launch.
 	[[NSURLCache sharedURLCache] setDiskCapacity:NSURLCacheDiskCapacity];
+	
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID])
+		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:SettingsUDID];
 	
 	self.updateNotificationsQueue = [[NSOperationQueue alloc] init];
 

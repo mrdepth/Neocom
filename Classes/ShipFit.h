@@ -34,6 +34,7 @@
 + (id) shipFitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
 + (id) shipFitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
 + (id) shipFitWithDNA:(NSString*) dna character:(eufe::Character*) character;
++ (id) shipFitWithCanonicalName:(NSString*) canonicalName character:(eufe::Character*) character;
 
 + (NSArray*) allFits;
 + (NSString*) allFitsEveXML;
@@ -44,9 +45,11 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character;
 - (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) character;
 - (id) initWithDNA:(NSString*) dna character:(eufe::Character*) character;
+- (id) initWithCanonicalName:(NSString*) canonicalName character:(eufe::Character*) character;
 - (NSString*) dna;
 - (NSString*) eveXML;
 - (NSString*) fitXML;
+- (NSString*) canonicalName;
 
 
 @end

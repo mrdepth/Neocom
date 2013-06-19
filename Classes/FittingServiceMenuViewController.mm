@@ -25,6 +25,7 @@
 #import "UIActionSheet+Block.h"
 #import "EUStorage.h"
 #import "NAPISearchViewController.h"
+#import "NeocomAPI.h"
 
 @interface FittingServiceMenuViewController()
 @property (nonatomic, strong) NSMutableArray *fits;
@@ -135,7 +136,7 @@
 			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
 		else if (indexPath.row == 1) {
-			cell.titleLabel.text = NSLocalizedString(@"Browse Neocom Community Fits", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Browse Community Fits", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
 		else if (indexPath.row == 2) {
@@ -441,7 +442,7 @@
 #pragma mark - Private
 
 - (void) reload {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block BOOL needsConvertTmp = NO;
 	
@@ -474,6 +475,32 @@
 	
 	[operation setCompletionBlockInCurrentThread:^{
 		if (![weakOperation isCancelled]) {
+			NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsNeocomAPILastSyncDate];
+			if (!date || [date timeIntervalSinceNow] < -60 * 60 * 24) {
+				EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
+				__weak EUOperation* weakOperation = operation;
+				__block NSError* error = nil;
+				
+				[operation addExecutionBlock:^{
+					NSMutableArray* canonicalNames = [[NSMutableArray alloc] init];
+					for (ShipFit* fit in [ShipFit allFits]) {
+						[canonicalNames addObject:[fit canonicalName]];
+					}
+					if (canonicalNames.count > 0)
+						[NAPIUpload uploadFitsWithCannonicalNames:canonicalNames userID:[[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID]
+															error:&error
+												  progressHandler:nil];
+				}];
+				 
+				[operation setCompletionBlockInCurrentThread:^{
+					if (![weakOperation isCancelled] && !error) {
+						[[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:SettingsNeocomAPILastSyncDate];
+					}
+				}];
+				
+				[[EUOperationQueue sharedQueue] addOperation:operation];
+			}
+			
 			self.needsConvert = needsConvertTmp;
 			self.fits = fitsTmp;
 			[self.menuTableView reloadData];

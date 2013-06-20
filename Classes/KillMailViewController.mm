@@ -84,6 +84,7 @@
 	}
 
 	NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+	[formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	[formatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	self.killTimeLabel.text = [formatter stringFromDate:self.killMail.killTime];
 	[formatter release];

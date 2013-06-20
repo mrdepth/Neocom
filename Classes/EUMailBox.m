@@ -151,6 +151,8 @@
 		
 		NSDateFormatter* dateFormatterTime = [[NSDateFormatter alloc] init];
 		NSDateFormatter* dateFormatterFull = [[NSDateFormatter alloc] init];
+		[dateFormatterTime setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatterFull setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 		[dateFormatterTime setDateFormat:@"HH:mm"];
 		[dateFormatterFull setDateFormat:@"yyyy.MM.dd HH:mm"];
 		

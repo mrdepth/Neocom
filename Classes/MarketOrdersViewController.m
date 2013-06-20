@@ -353,6 +353,7 @@
 			}
 			else {
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+				[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 				[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 				NSMutableSet *charIDs = [NSMutableSet set];
 				

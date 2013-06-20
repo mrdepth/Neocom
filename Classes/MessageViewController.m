@@ -46,6 +46,7 @@
 	[template replaceOccurrencesOfString:@"{text}" withString:message.text ? message.text : NSLocalizedString(@"Can't load the message body.", nil) options:0 range:NSMakeRange(0, template.length)];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 	NSString* dateString = [dateFormatter stringFromDate:message.header.sentDate];
 	[template replaceOccurrencesOfString:@"{date}" withString:dateString ? dateString : @"" options:0 range:NSMakeRange(0, template.length)];

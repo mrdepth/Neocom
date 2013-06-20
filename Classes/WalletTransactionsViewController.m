@@ -397,6 +397,7 @@
 				}
 				else {
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+					[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 					[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 					float n = transactions.transactions.count;
 					float i = 0;
@@ -583,6 +584,7 @@
 	}
 	else {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 		
 		for (EVECorpWalletTransactionsItem *transaction in transactions.transactions) {

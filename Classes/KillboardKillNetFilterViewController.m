@@ -557,6 +557,7 @@
 		}
 		else if ([value isKindOfClass:[NSDate class]]) {
 			NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+			[formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 			[formatter setDateFormat:@"yyyy-MM-dd_HH.mm.ss"];
 			value = [formatter stringFromDate:(NSDate*) value];
 			[formatter release];

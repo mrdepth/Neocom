@@ -398,6 +398,7 @@
 				}
 				else {
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+					[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 					[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 					
 					float n = journal.charWalletJournal.count;
@@ -603,6 +604,7 @@
 	}
 	else {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
 		
 		for (EVECorpWalletJournalItem *transaction in journal.corpWalletJournal) {

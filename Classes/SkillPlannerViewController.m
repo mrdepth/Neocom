@@ -22,6 +22,7 @@
 #import "SkillPlannerImportViewController.h"
 #import "BrowserViewController.h"
 #import "EUStorage.h"
+#import "SkillPlannerSkillsBrowserViewController.h"
 
 #define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
 #define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
@@ -128,7 +129,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? self.skillPlan.skills.count : 3;
+	return section == 0 ? self.skillPlan.skills.count : 4;
 }
 
 // Customize the appearance of table view cells.
@@ -150,10 +151,15 @@
 			cell.titleLabel.text = NSLocalizedString(@"Import skill plan from EVEMon", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"EVEMonLogoBlue.png"];
 		}
-		else {
+		else if (indexPath.row == 2) {
 			cell.titleLabel.text = NSLocalizedString(@"Importing tutorial", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
 		}
+		else {
+			cell.titleLabel.text = NSLocalizedString(@"Browse skills", nil);
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon50_12.png"];
+		}
+			
 		return cell;
 	}
 	else {
@@ -290,7 +296,7 @@
 			
 			[self presentModalViewController:navController animated:YES];
 		}
-		else {
+		else if (indexPath.row == 1) {
 			BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
 			NSString* path = [[NSBundle mainBundle] pathForResource:@"ImportingTutorial/index" ofType:@"html"];
 			controller.title = NSLocalizedString(@"Importing tutorial", nil);
@@ -298,6 +304,16 @@
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				controller.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self presentModalViewController:controller animated:YES];
+		}
+		else {
+			SkillPlannerSkillsBrowserViewController* controller = [[SkillPlannerSkillsBrowserViewController alloc] initWithNibName:@"SkillPlannerSkillsBrowserViewController" bundle:nil];
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+			navController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			[self presentModalViewController:navController animated:YES];
 		}
 	}
 }

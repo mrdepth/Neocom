@@ -13,6 +13,9 @@
 #import "NeocomAPI.h"
 #import "EUOperationQueue.h"
 #import "NAPISearchResultsViewController.h"
+#import "ShipFit.h"
+#import "UIAlertView+Block.h"
+#import "Globals.h"
 
 @interface NAPISearchViewController ()
 @property (nonatomic, strong) EVEDBInvType* ship;
@@ -22,7 +25,7 @@
 @property (nonatomic, strong) NSDictionary* criteria;
 
 - (void) update;
-
+- (void) uploadFits;
 @end
 
 @implementation NAPISearchViewController
@@ -40,6 +43,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
+	else {
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+
 	self.flags = NeocomAPIFlagComplete | NeocomAPIFlagValid;
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)];
 	self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -48,10 +58,32 @@
 	self.fittingItemsViewController.marketGroupID = 4;
 	self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 	[self update];
+	
+	NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsNeocomAPINextSyncDate];
+	if (!date || [date earlierDate:[NSDate date]] == date) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:SettingsNeocomAPIAlwaysUploadFits])
+			[self uploadFits];
+		else {
+			[[UIAlertView alertViewWithTitle:nil
+									 message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Don't share this time", nil)
+						   otherButtonTitles:@[NSLocalizedString(@"Share this time", nil), NSLocalizedString(@"Always share", nil)]
+							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+								 if (selectedButtonIndex == 2)
+									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNeocomAPIAlwaysUploadFits];
+								 if (selectedButtonIndex != alertView.cancelButtonIndex)
+									 [self uploadFits];
+								 else {
+									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 6] forKey:SettingsNeocomAPINextSyncDate];
+								 }
+								 NSLog(@"%d", selectedButtonIndex);
+							 } cancelBlock:^{
+							 }] show];
+		}
+	}
 }
 
 - (void)viewDidUnload {
-	[self setTableView:nil];
 	self.fittingItemsViewController = nil;
 	self.fittingItemsNavigationController = nil;
 	[self setShipClassesViewController:nil];
@@ -349,6 +381,31 @@
 		if (![weakOperation isCancelled]) {
 			self.fitsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d loadouts", nil), count];
 			self.navigationItem.rightBarButtonItem.enabled = count > 0;
+		}
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) uploadFits {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
+	__weak EUOperation* weakOperation = operation;
+	__block NSError* error = nil;
+	
+	[operation addExecutionBlock:^{
+		NSMutableArray* canonicalNames = [[NSMutableArray alloc] init];
+		for (ShipFit* fit in [ShipFit allFits]) {
+			[canonicalNames addObject:[fit canonicalName]];
+		}
+		if (canonicalNames.count > 0)
+			[NAPIUpload uploadFitsWithCannonicalNames:canonicalNames userID:[[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID]
+												error:&error
+									  progressHandler:nil];
+	}];
+	
+	[operation setCompletionBlockInCurrentThread:^{
+		if (![weakOperation isCancelled] && !error) {
+			[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:SettingsNeocomAPINextSyncDate];
 		}
 	}];
 	

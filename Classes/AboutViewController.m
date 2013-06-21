@@ -148,7 +148,8 @@
 		y += 50;
 
 	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, y);
-	self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithUnsignedInteger:[[NSURLCache sharedURLCache] currentDiskUsage]] numberStyle:NSNumberFormatterDecimalStyle]];
+	NSURLCache* cache = [NSURLCache sharedURLCache];
+	self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:@([cache currentDiskUsage] + [cache currentMemoryUsage]) numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

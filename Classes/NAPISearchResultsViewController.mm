@@ -17,6 +17,7 @@
 #import "CharacterEVE.h"
 #import "EVEAccount.h"
 #import "ShipFit.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface NAPISearchResultsViewController ()
 @property (nonatomic, strong) NSArray* rows;
@@ -40,8 +41,10 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Community Fits", nil);
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
+		self.navigationItem.titleView = self.orderSegmentedControl;
+	}
 	else {
 		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
@@ -111,23 +114,19 @@
 		tankType = NSLocalizedString(@"Passive", nil);
 	}
 	
-	NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
-	[formatter setPositiveFormat:@"#,##0"];
-	[formatter setGroupingSeparator:@" "];
-	
 	cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ EHP, %@", nil),
-						  [formatter stringFromNumber:@(item.ehp)],
+						  [NSNumberFormatter neocomLocalizedStringFromInteger:item.ehp],
 						  tankType];
 	cell.turretDpsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil),
-								[formatter stringFromNumber:@(item.turretDps)]];
+								[NSNumberFormatter neocomLocalizedStringFromInteger:item.turretDps]];
 	cell.droneDpsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil),
-							   [formatter stringFromNumber:@(item.droneDps)]];
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:item.droneDps]];
 	cell.velocityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Speed: %@ m/s", nil),
-							   [formatter stringFromNumber:@(item.speed)]];
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:item.speed]];
 	cell.maxRangeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Optimal: %@ m", nil),
-							   [formatter stringFromNumber:@(item.maxRange)]];
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:item.maxRange]];
 	cell.falloffLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Falloff: %@ m", nil),
-							  [formatter stringFromNumber:@(item.falloff)]];
+							  [NSNumberFormatter neocomLocalizedStringFromInteger:item.falloff]];
 	cell.capacitorLabel.text = item.flags & NeocomAPIFlagCapStable ? NSLocalizedString(@"Capacitor is Stable", nil) : NSLocalizedString(@"Capacitor is Unstable", nil);
 	
     return cell;

@@ -114,6 +114,18 @@
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
+- (NSMutableArray*) skills {
+	if (!_skills) {
+		_skills = [[NSMutableArray alloc] init];
+	}
+	return _skills;
+}
+
+- (void) setSkills:(NSMutableArray *)skills {
+	_skills = skills;
+	_trainingTime = -1;
+}
+
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {
 	EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 	if (characterSkill.level >= skill.requiredLevel)

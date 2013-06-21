@@ -137,7 +137,7 @@
 		}
 		else if (indexPath.row == 1) {
 			cell.titleLabel.text = NSLocalizedString(@"Browse Community Fits", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon26_02.png"];
 		}
 		else if (indexPath.row == 2) {
 			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
@@ -475,32 +475,6 @@
 	
 	[operation setCompletionBlockInCurrentThread:^{
 		if (![weakOperation isCancelled]) {
-			NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsNeocomAPILastSyncDate];
-			if (!date || [date timeIntervalSinceNow] < -60 * 60 * 24) {
-				EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
-				__weak EUOperation* weakOperation = operation;
-				__block NSError* error = nil;
-				
-				[operation addExecutionBlock:^{
-					NSMutableArray* canonicalNames = [[NSMutableArray alloc] init];
-					for (ShipFit* fit in [ShipFit allFits]) {
-						[canonicalNames addObject:[fit canonicalName]];
-					}
-					if (canonicalNames.count > 0)
-						[NAPIUpload uploadFitsWithCannonicalNames:canonicalNames userID:[[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID]
-															error:&error
-												  progressHandler:nil];
-				}];
-				 
-				[operation setCompletionBlockInCurrentThread:^{
-					if (![weakOperation isCancelled] && !error) {
-						[[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:SettingsNeocomAPILastSyncDate];
-					}
-				}];
-				
-				[[EUOperationQueue sharedQueue] addOperation:operation];
-			}
-			
 			self.needsConvert = needsConvertTmp;
 			self.fits = fitsTmp;
 			[self.menuTableView reloadData];

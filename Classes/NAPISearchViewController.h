@@ -12,8 +12,7 @@
 #import "NAPISearchTitleCellView.h"
 #import "NAPISearchSwitchCellView.h"
 
-@interface NAPISearchViewController : UIViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, NAPISearchTitleCellViewDelegate, NAPISearchSwitchCellViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface NAPISearchViewController : UITableViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, NAPISearchTitleCellViewDelegate, NAPISearchSwitchCellViewDelegate>
 @property (weak, nonatomic) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *fittingItemsNavigationController;
 @property (weak, nonatomic) IBOutlet KillNetFilterShipClassesViewController *shipClassesViewController;

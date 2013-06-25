@@ -9,13 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class EVEDBInvType;
-@interface CharacterAttributes : NSObject {
-	NSInteger intelligence;
-	NSInteger memory;
-	NSInteger charisma;
-	NSInteger perception;
-	NSInteger willpower;
-}
+@interface CharacterAttributes : NSObject
 @property (nonatomic, assign) NSInteger intelligence;
 @property (nonatomic, assign) NSInteger memory;
 @property (nonatomic, assign) NSInteger charisma;

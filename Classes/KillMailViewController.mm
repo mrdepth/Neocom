@@ -46,7 +46,7 @@
 		self.navigationItem.titleView = self.sectionSegmentedControler;
 
 	if (self.killMail.victim.shipType.group.categoryID == 6)
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)] autorelease];
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)];
 
 	[self.sectionSegmentedControler setTitle:[NSString stringWithFormat:NSLocalizedString(@"Involved Parties (%d)", nil), self.killMail.attackers.count] forSegmentAtIndex:1];
 	
@@ -87,7 +87,6 @@
 	[formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	[formatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	self.killTimeLabel.text = [formatter stringFromDate:self.killMail.killTime];
-	[formatter release];
 	
 	self.shipNameLabel.text = [NSString stringWithFormat:@"%@ (%@)", self.killMail.victim.shipType.typeName, self.killMail.victim.shipType.group.groupName];
 	self.shipImageView.image = [UIImage imageNamed:self.killMail.victim.shipType.typeSmallImageName];
@@ -147,27 +146,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-	[_characterNameLabel release];
-	[_allianceNameLabel release];
-	[_corporationNameLabel release];
-	[_characterImageView release];
-	[_allianceImageView release];
-	[_corporationImageView release];
-	[_killTimeLabel release];
-	[_shipNameLabel release];
-	[_solarSystemNameLabel release];
-	[_securityStatusLabel release];
-	[_regionNameLabel release];
-	[_sectionSegmentedControler release];
-	[_tableView release];
-	[_damageTakenLabel release];
-	[_killMail release];
-	[_shipImageView release];
-	[_itemsSections release];
-	[super dealloc];
 }
 
 - (void)viewDidUnload {
@@ -323,11 +301,9 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -375,16 +351,15 @@
 - (IBAction)onOpenFit:(id)sender {
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 	
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
 		character = new eufe::Character(fittingViewController.fittingEngine);
 		
 		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		operation.progress = 0.3;
+		weakOperation.progress = 0.3;
 		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
 			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
 			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -392,14 +367,13 @@
 		}
 		else
 			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
-		operation.progress = 0.6;
+		weakOperation.progress = 0.6;
 		fit = [[ShipFit alloc] initWithKillMail:self.killMail character:character];
-		operation.progress = 1.0;
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			fittingViewController.fittingEngine->getGang()->addPilot(character);
 			fittingViewController.fit = fit;
 			[fittingViewController.fits addObject:fit];
@@ -409,8 +383,6 @@
 			if (character)
 				delete character;
 		}
-		[fittingViewController release];
-		[fit release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

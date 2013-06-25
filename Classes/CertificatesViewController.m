@@ -16,7 +16,8 @@
 #import "CertificateViewController.h"
 #import "Globals.h"
 
-@interface CertificatesViewController(Private)
+@interface CertificatesViewController()
+@property (nonatomic, strong) NSMutableArray* sections;
 - (void) reload;
 - (void) didSelectAccount:(NSNotification*) notification;
 @end
@@ -43,11 +44,7 @@
 }
 
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[certificatesTableView release];
-	[sections release];
-	[category release];
-	[super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View lifecycle
@@ -69,23 +66,22 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 	self.certificatesTableView = nil;
-	[sections release];
-	sections = nil;
+	self.sections = nil;
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return sections.count;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] count];
+	return [[self.sections objectAtIndex:section] count];
 }
 
 
@@ -98,7 +94,7 @@
     if (cell == nil) {
         cell = [CertificateCellView cellWithNibName:@"CertificateCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	EVEDBCrtCertificate *row = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVEDBCrtCertificate *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.titleLabel.text = row.certificateClass.className;
 	cell.iconView.image = [UIImage imageNamed:row.iconImageName];
 	cell.stateView.image = [UIImage imageNamed:row.stateIconImageName];
@@ -124,11 +120,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = tableView == self.searchDisplayController.searchResultsTableView ? nil : [self tableView:tableView titleForHeaderInSection:section];
@@ -148,53 +144,46 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	CertificateViewController *controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
-	controller.certificate = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	controller.certificate = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
-@end
-
-@implementation CertificatesViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Certificates", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray* certificates = [NSMutableArray array];
 		
-		[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM crtCertificates WHERE categoryID = %d", category.categoryID]
-											   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-												   [certificates addObject:[EVEDBCrtCertificate crtCertificateWithDictionary:record]];
-												   if ([operation isCancelled])
+		[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM crtCertificates WHERE categoryID = %d", category.categoryID]
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   [certificates addObject:[[EVEDBCrtCertificate alloc] initWithStatement:stmt]];
+												   if ([weakOperation isCancelled])
 													   *needsMore = NO;
 											   }];
-		operation.progress = 0.5;
+		weakOperation.progress = 0.5;
 		[certificates sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"certificateClass.className" ascending:YES]]];
 		
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			[sectionsTmp addObjectsFromArray:[certificates arrayGroupedByKey:@"grade"]];
 			[sectionsTmp sortUsingComparator:^(id obj1, id obj2) {
 				return [[[obj1 objectAtIndex:0] valueForKeyPath:@"grade"] compare:[[obj2 objectAtIndex:0] valueForKeyPath:@"grade"]];
 			}];
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[sections release];
-			sections = [sectionsTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.sections = sectionsTmp;
 			[certificatesTableView reloadData];
 		}
 	}];

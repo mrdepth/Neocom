@@ -10,22 +10,7 @@
 #import "FilterViewController.h"
 #import "EUFilter.h"
 
-@interface ContractsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *contractsTableView;
-	UISegmentedControl *ownerSegmentControl;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *filteredValues;
-	NSMutableArray *contracts;
-	NSMutableArray *charContracts;
-	NSMutableArray *corpContracts;
-	NSMutableDictionary *conquerableStations;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-}
+@interface ContractsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet UITableView *contractsTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;

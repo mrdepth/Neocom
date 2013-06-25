@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface LoadingViewController : UIViewController {
-	UIActivityIndicatorView *activityIndicatorView;
-}
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@interface LoadingViewController : UIViewController
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end

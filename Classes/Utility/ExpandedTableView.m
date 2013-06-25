@@ -8,15 +8,13 @@
 
 #import "ExpandedTableView.h"
 
-@interface ExpandedTableView(Private)
+@interface ExpandedTableView()
 
 - (void) didTapSection:(UITapGestureRecognizer*) recognizer;
 
 @end
 
 @implementation ExpandedTableView
-@synthesize expandedTableViewdDelegate;
-@synthesize expandedTableViewdDataSource;
 
 - (void) awakeFromNib {
 	self.delegate = self;
@@ -24,8 +22,10 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
-	self.delegate = self;
-	self.dataSource = self;
+	if (self = [super initWithFrame]) {
+		self.delegate = self;
+		self.dataSource = self;
+	}
     return self;
 }
 
@@ -87,9 +87,7 @@
 	return header;
 }
 
-@end
-
-@implementation ExpandedTableView(Private)
+#pragma mark - Private
 
 - (void) didTapSection:(UITapGestureRecognizer*) recognizer {
 	NSInteger section = recognizer.view.tag;
@@ -98,19 +96,11 @@
 	UIImage* image = [UIImage imageNamed:expanded ? @"Icons/icon105_04.png" : @"Icons/icon105_05.png"];
 	[(UIImageView*) [recognizer.view viewWithTag:-1] setImage:image];
 	
-/*	NSMutableArray* indexes = [[NSMutableArray alloc] init];
-	int n = [expandedTableViewdDataSource tableView:self numberOfRowsInSection:section];
-	
-	for (int i = 0; i < n; i++)
-		[indexes addObject:[NSIndexPath indexPathForRow:i inSection:section]];*/
-	
 	if (expanded) {
 		[expandedTableViewdDelegate tableView:self didExpandSection:section];
-//		[self insertRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else {
 		[expandedTableViewdDelegate tableView:self didCollapseSection:section];
-//		[self deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	}
 	[self reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
 }

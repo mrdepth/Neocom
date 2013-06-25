@@ -11,18 +11,7 @@
 #import "EUFilter.h"
 
 @class EUMailBox;
-@interface MessagesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *messagesTableView;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *filteredValues;
-	NSArray *messages;
-	EUFilter *filter;
-	EUMailBox* mailBox;
-}
+@interface MessagesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet UITableView *messagesTableView;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;

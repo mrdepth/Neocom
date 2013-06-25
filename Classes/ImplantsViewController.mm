@@ -22,12 +22,15 @@
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
 #define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
 
+@interface ImplantsViewController()
+@property (nonatomic, strong) NSMutableDictionary *implants;
+@property (nonatomic, strong) NSMutableDictionary *boosters;
+@property (nonatomic, strong) NSIndexPath *modifiedIndexPath;
+
+
+@end
+
 @implementation ImplantsViewController
-@synthesize fittingViewController;
-@synthesize tableView;
-@synthesize implantsHeaderView;
-@synthesize boostersHeaderView;
-@synthesize fittingItemsViewController;
 @synthesize popoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -75,18 +78,6 @@
 }
 
 
-- (void)dealloc {
-	[tableView release];
-	[implantsHeaderView release];
-	[boostersHeaderView release];
-	[fittingItemsViewController release];
-	[popoverController release];
-	[implants release];
-	[boosters release];
-	[modifiedIndexPath release];
-    [super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -106,9 +97,9 @@
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	ItemInfo* itemInfo = nil;
 	if (indexPath.section == 0)
-		itemInfo = [implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
+		itemInfo = [self.implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
 	else
-		itemInfo = [boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
+		itemInfo = [self.boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
 	if (!itemInfo) {
 		NSString *cellIdentifier = @"ModuleCellView";
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -141,9 +132,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return implantsHeaderView;
+		return self.implantsHeaderView;
 	else
-		return boostersHeaderView;
+		return self.boostersHeaderView;
 }
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -155,9 +146,9 @@
 	
 	ItemInfo* itemInfo = nil;
 	if (indexPath.section == 0)
-		itemInfo = [implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
+		itemInfo = [self.implants valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
 	else
-		itemInfo = [boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
+		itemInfo = [self.boosters valueForKey:[NSString stringWithFormat:@"%d", indexPath.row + 1]];
 
 	
 	if (!itemInfo) {
@@ -170,8 +161,8 @@
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   groups];
 			fittingItemsViewController.group = nil;*/
-			fittingItemsViewController.marketGroupID = 27;
-			fittingItemsViewController.title = NSLocalizedString(@"Implants", nil);
+			self.fittingItemsViewController.marketGroupID = 27;
+			self.fittingItemsViewController.title = NSLocalizedString(@"Implants", nil);
 		}
 		else {
 			/*attributeID = 1087;
@@ -179,14 +170,14 @@
 			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=%d AND dgmTypeAttributes.value=%d int (%@) %%@ %%@ ORDER BY invTypes.typeName;",
 													   attributeID, indexPath.row + 1, groups];
 			fittingItemsViewController.group = [EVEDBInvGroup invGroupWithGroupID:303 error:nil];*/
-			fittingItemsViewController.marketGroupID = 977;
-			fittingItemsViewController.title = NSLocalizedString(@"Boosters", nil);
+			self.fittingItemsViewController.marketGroupID = 977;
+			self.fittingItemsViewController.title = NSLocalizedString(@"Boosters", nil);
 		}
-		fittingItemsViewController.modifiedItem = nil;
+		self.fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.fittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
+			[self.fittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
 	}
 	else {
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -201,9 +192,7 @@
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
-		[actionSheet autorelease];
-		[modifiedIndexPath release];
-		modifiedIndexPath = [indexPath retain];
+		self.modifiedIndexPath = indexPath;
 	}
 }
 
@@ -212,23 +201,23 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonDelete]) {
-		if (modifiedIndexPath.section == 0) {
-			ItemInfo* itemInfo = [implants valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
-			fittingViewController.fit.character->removeImplant(dynamic_cast<eufe::Implant*>(itemInfo.item));
+		if (self.modifiedIndexPath.section == 0) {
+			ItemInfo* itemInfo = [self.implants valueForKey:[NSString stringWithFormat:@"%d", self.modifiedIndexPath.row + 1]];
+			self.fittingViewController.fit.character->removeImplant(dynamic_cast<eufe::Implant*>(itemInfo.item));
 		}
 		else {
-			ItemInfo* itemInfo = [boosters valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
-			fittingViewController.fit.character->removeBooster(dynamic_cast<eufe::Booster*>(itemInfo.item));
+			ItemInfo* itemInfo = [self.boosters valueForKey:[NSString stringWithFormat:@"%d", self.modifiedIndexPath.row + 1]];
+			self.fittingViewController.fit.character->removeBooster(dynamic_cast<eufe::Booster*>(itemInfo.item));
 		}
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowInfo]) {
 		ItemInfo* type;
-		if (modifiedIndexPath.section == 0) {
-			type = [implants valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
+		if (self.modifiedIndexPath.section == 0) {
+			type = [self.implants valueForKey:[NSString stringWithFormat:@"%d", self.modifiedIndexPath.row + 1]];
 		}
 		else {
-			type = [boosters valueForKey:[NSString stringWithFormat:@"%d", modifiedIndexPath.row + 1]];
+			type = [self.boosters valueForKey:[NSString stringWithFormat:@"%d", self.modifiedIndexPath.row + 1]];
 		}
 		
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -239,12 +228,10 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[fittingViewController presentModalViewController:navController animated:YES];
-			[navController release];
+			[self.fittingViewController presentModalViewController:navController animated:YES];
 		}
 		else
-			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
-		[itemViewController release];
+			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 }
 
@@ -253,13 +240,12 @@
 - (void) update {
 	NSMutableDictionary *implantsTmp = [NSMutableDictionary dictionary];
 	NSMutableDictionary *boostersTmp = [NSMutableDictionary dictionary];
-	FittingViewController* aFittingViewController = fittingViewController;
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ImplantsViewController+Update" name:NSLocalizedString(@"Updating Implants", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(fittingViewController) {
-			eufe::Character* character = aFittingViewController.fit.character;
+		@synchronized(self.fittingViewController) {
+			eufe::Character* character = self.fittingViewController.fit.character;
 			const eufe::ImplantsList& implantsList = character->getImplants();
 			eufe::ImplantsList::const_iterator i, end = implantsList.end();
 			for (i = implantsList.begin(); i != end; i++)
@@ -270,20 +256,13 @@
 			for (j = boostersList.begin(); j != endj; j++)
 				[boostersTmp setValue:[ItemInfo itemInfoWithItem:*j error:nil] forKey:[NSString stringWithFormat:@"%d", (*j)->getSlot()]];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (implants)
-				[implants release];
-			implants = [implantsTmp retain];
-
-			if (boosters)
-				[boosters release];
-			boosters = [boostersTmp retain];
-
-			[tableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.implants = implantsTmp;
+			self.boosters = boostersTmp;
+			[self.tableView reloadData];
 		}
 	}];
 	

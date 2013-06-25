@@ -12,7 +12,6 @@
 #import "EVEOnlineAPI.h"
 #import "UIAlertView+Error.h"
 #import "UIImageView+GIF.h"
-#import "EVERequestsCache.h"
 #import "EUMailBox.h"
 #import "EUActivityView.h"
 #import "FittingViewController.h"
@@ -21,10 +20,15 @@
 #import "EUStorage.h"
 #import "EUMigrationManager.h"
 #import "UIAlertView+Block.h"
+#import "NSString+UUID.h"
 
-@interface EVEUniverseAppDelegate() {
-	BOOL launchingFinished;
-}
+#define NSURLCacheDiskCapacity (1024*1024*50)
+
+@interface EVEUniverseAppDelegate()
+@property (nonatomic, strong) GADBannerView *adView;
+@property (nonatomic, strong) NSOperationQueue *updateNotificationsQueue;
+@property (nonatomic, strong) NSOperation *updateNotificationsOperation;
+@property (nonatomic, assign) BOOL launchingFinished;
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
@@ -37,13 +41,7 @@
 @end
 
 @implementation EVEUniverseAppDelegate
-
-@synthesize window;
-@synthesize controller;
-@synthesize loadingViewController;
-@synthesize currentAccount;
-@synthesize sharedQueue;
-@synthesize sharedAccountStorage;
+@synthesize inAppStatus = _inAppStatus;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -104,56 +102,51 @@
 	
     // Override point for customization after application launch.
 	
-	updateNotificationsQueue = [[NSOperationQueue alloc] init];
-
-	NSURL *cacheFileURL = [NSURL fileURLWithPath:[EVERequestsCache cacheFileName]];
-	NSDictionary *cache = [NSMutableDictionary dictionaryWithContentsOfURL:cacheFileURL];
-	NSArray *values = [cache allValues];
-	if (values.count > 0 && [[values objectAtIndex:0] isKindOfClass:[NSDate class]]) {
-		[[NSFileManager defaultManager] removeItemAtURL:cacheFileURL  error:nil];
-		[[EVERequestsCache sharedRequestsCache] clear];
-	}
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID])
+		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:SettingsUDID];
 	
+	self.updateNotificationsQueue = [[NSOperationQueue alloc] init];
+
 	UILocalNotification *notification = [launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (notification) {
 		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo forKey:SettingsCurrentAccount];
 	}
 	
-	[window addSubview:controller.view];
-	[window makeKeyAndVisible];
+	[self.window addSubview:self.controller.view];
+	[self.window makeKeyAndVisible];
 	
 	if (![[NSFileManager defaultManager] fileExistsAtPath:[[Globals documentsDirectory] stringByAppendingPathComponent:@"disableActivityIndicator"]]) {
-		EUActivityView* activityView = [[[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds] autorelease];
+		EUActivityView* activityView = [[EUActivityView alloc] initWithFrame:self.window.rootViewController.view.bounds];
 		[self.window addSubview:activityView];
 	}
 	
 	
-	loadingViewController.view.alpha = 0;
-	[window addSubview:loadingViewController.view];
-	loadingViewController.view.center = CGPointMake(self.window.frame.size.width / 2, self.window.frame.size.height / 2);
+	self.loadingViewController.view.alpha = 0;
+	[self.window addSubview:self.loadingViewController.view];
+	self.loadingViewController.view.center = CGPointMake(self.window.frame.size.width / 2, self.window.frame.size.height / 2);
 	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
 		CGSize gadSize = CGSizeMake(320, 50);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UISplitViewController* splitViewController = (UISplitViewController*) self.controller;
 			CGRect frame = [[[splitViewController.viewControllers objectAtIndex:0] view] frame];
-			adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, frame.size.height - gadSize.height, gadSize.width, gadSize.height)];
-			adView.rootViewController = self.controller;
-			adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-			[[[splitViewController.viewControllers objectAtIndex:0] view] addSubview:adView];
+			self.adView = [[GADBannerView alloc] initWithFrame:CGRectMake(0, frame.size.height - gadSize.height, gadSize.width, gadSize.height)];
+			self.adView.rootViewController = self.controller;
+			self.adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+			[[[splitViewController.viewControllers objectAtIndex:0] view] addSubview:self.adView];
 		}
 		else {
 			CGRect frame = [[UIScreen mainScreen] bounds];
 			frame.origin.y = frame.size.height - gadSize.height;
 			frame.size.height = gadSize.height;
-			adView = [[GADBannerView alloc] initWithFrame:frame];
-			adView.rootViewController = self.controller;
-			[controller.view addSubview:adView];
+			self.adView = [[GADBannerView alloc] initWithFrame:frame];
+			self.adView.rootViewController = self.controller;
+			[self.controller.view addSubview:self.adView];
 		}
 		
-		adView.adUnitID = @"a14d501062a8c09";
+		self.adView.adUnitID = @"a14d501062a8c09";
 		GADRequest *request = [GADRequest request];
-		[adView loadRequest:request];
+		[self.adView loadRequest:request];
 		
 	}
 	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
@@ -165,11 +158,10 @@
 			@autoreleasepool {
 				EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
 				[migrationManager migrateIfNeeded];
-				[migrationManager release];
 			}
 		}];
 		[operation setCompletionBlockInCurrentThread:^{
-			launchingFinished = YES;
+			self.launchingFinished = YES;
 			
 			EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
 			self.currentAccount = account;
@@ -196,7 +188,7 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	if (launchingFinished) {
+	if (self.launchingFinished) {
 		EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
 		self.currentAccount = account;
 		[self updateNotifications];
@@ -215,7 +207,6 @@
 	if (application.applicationState == UIApplicationStateActive) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else {
 		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo forKey:SettingsCurrentAccount];
@@ -232,50 +223,47 @@
 }
 
 - (void) setCurrentAccount: (EVEAccount*) value {
-	if (value != currentAccount) {
-		[value retain];
-		[currentAccount release];
-		currentAccount = value;
+	if (value != _currentAccount) {
+		_currentAccount = value;
 	}
-	if (currentAccount) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:currentAccount];
+	if (_currentAccount) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:_currentAccount];
 	}
 	else
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:currentAccount];
-	if (!currentAccount)
+		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:_currentAccount];
+	if (!_currentAccount)
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentAccount];
 	else
-		[[NSUserDefaults standardUserDefaults] setObject:[currentAccount dictionary] forKey:SettingsCurrentAccount];
+		[[NSUserDefaults standardUserDefaults] setObject:[_currentAccount dictionary] forKey:SettingsCurrentAccount];
 	
-	if (currentAccount && ((currentAccount.charAccessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
+	if (_currentAccount && ((_currentAccount.charAccessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
 		NSMutableArray* wars = [NSMutableArray array];
 		
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:NSLocalizedString(@"Checking War Declarations", nil)];
+		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-			EUMailBox* mailBox = [currentAccount mailBox];
+			EUMailBox* mailBox = [_currentAccount mailBox];
 			NSMutableSet* ids = [NSMutableSet set];
 			float n = mailBox.notifications.count + 1;
 			float i = 0;
 			for (EUNotification* notification in  mailBox.notifications) {
-				operation.progress = i++ / n;
+				weakOperation.progress = i++ / n;
 				if (!notification.read && (notification.header.typeID == 5 || notification.header.typeID == 27)) {
 					NSString* declaredByID = [notification.details.properties valueForKey:@"declaredByID"];
 					NSInteger iDeclaredByID = [declaredByID integerValue];
-					if (declaredByID && currentAccount.characterSheet.corporationID != iDeclaredByID && currentAccount.characterSheet.allianceID != iDeclaredByID)
+					if (declaredByID && _currentAccount.characterSheet.corporationID != iDeclaredByID && _currentAccount.characterSheet.allianceID != iDeclaredByID)
 						[ids addObject:declaredByID];
 				}
 			}
 			if (ids.count > 0) {
-				EVECharacterName* charNames = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil];
+				EVECharacterName* charNames = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil progressHandler:nil];
 				
 				for (NSString* war in [charNames.characters allValues]) {
 					[wars addObject:war];
 				}
 			}
-			operation.progress = 1;
+			weakOperation.progress = 1;
 			[mailBox save];
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
@@ -294,7 +282,6 @@
 														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
 														  otherButtonTitles:nil];
 				[alertView show];
-				[alertView release];
 			}
 		}];
 		
@@ -304,34 +291,34 @@
 
 - (BOOL) isInAppStatus {
 	@synchronized(self) {
-		return inAppStatus;
+		return self.inAppStatus;
 	}
 }
 
 - (void) setInAppStatus:(BOOL)value {
 	@synchronized(self) {
-		inAppStatus = value;
+		_inAppStatus = value;
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 		[UIView setAnimationDuration:0.5];
-		loadingViewController.view.alpha = inAppStatus ? 1 : 0;
+		self.loadingViewController.view.alpha = _inAppStatus ? 1 : 0;
 		[UIView commitAnimations];
 	}
 }
 
 - (EUOperationQueue*) sharedQueue {
-	if (!sharedQueue) {
-		sharedQueue = [[EUOperationQueue alloc] init];
+	if (!_sharedQueue) {
+		_sharedQueue = [[EUOperationQueue alloc] init];
 	}
-	return sharedQueue;
+	return _sharedQueue;
 }
 
 - (EVEAccountStorage*) sharedAccountStorage {
 	@synchronized(self) {
-		if (!sharedAccountStorage) {
-			sharedAccountStorage = [[EVEAccountStorage alloc] init];
+		if (!_sharedAccountStorage) {
+			_sharedAccountStorage = [[EVEAccountStorage alloc] init];
 		}
-		return sharedAccountStorage;
+		return _sharedAccountStorage;
 	}
 }
 
@@ -349,18 +336,6 @@
      */
 }
 
-
-- (void)dealloc {
-    [window release];
-	[controller release];
-	[loadingViewController release];
-	[currentAccount release];
-	[adView release];
-	[sharedQueue release];
-	[sharedAccountStorage release];
-	[updateNotificationsQueue release];
-    [super dealloc];
-}
 
 /*#pragma mark AdMobDelegate
 
@@ -445,12 +420,10 @@
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-	[adView removeFromSuperview];
-	[adView release];
-	adView = nil;
+	[self.adView removeFromSuperview];
+	self.adView = nil;
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
-	[alertView autorelease];
 }
 
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction
@@ -458,12 +431,10 @@
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-	[adView removeFromSuperview];
-	[adView release];
-	adView = nil;
+	[self.adView removeFromSuperview];
+	self.adView = nil;
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
-	[alertView autorelease];
 }
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
@@ -478,20 +449,20 @@
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:NSLocalizedString(@"Updating Notifications", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([operation isCancelled])
+		if ([weakOperation isCancelled])
 			return;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		EVEAccountStorage *storage = [EVEAccountStorage sharedAccountStorage];
 		float n = storage.characters.count;
 		float i = 0;
 		for (EVEAccountStorageCharacter *item in [storage.characters allValues]) {
-			operation.progress = i++ / n;
+			weakOperation.progress = i++ / n;
 			if (item.enabled) {
 				EVEAccountStorageAPIKey *apiKey = item.anyCharAPIKey;
 				if (apiKey) {
 					NSError *error = nil;
-					EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:item.characterID error:&error];
+					EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:item.characterID error:&error progressHandler:nil];
 					if (!error && skillQueue.skillQueue.count > 0) {
 						NSDate *endTime = [[skillQueue.skillQueue lastObject] endTime];
 						if (endTime) {
@@ -504,25 +475,23 @@
 								EVEAccount *account = [EVEAccount accountWithCharacter:item];
 								notification.userInfo = [account dictionary];
 								[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(scheduleLocalNotification:) withObject:notification waitUntilDone:NO];
-								[notification release];
 							}
 						}
 					}
 				}
 			}
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (updateNotificationsOperation == operation)
-			updateNotificationsOperation = nil;
+		if (self.updateNotificationsOperation == weakOperation)
+			self.updateNotificationsOperation = nil;
 	}];
 	
-	if (updateNotificationsOperation)
-		[operation addDependency:updateNotificationsOperation];
-	updateNotificationsOperation = operation;
-	[updateNotificationsQueue addOperation:operation];
+	if (self.updateNotificationsOperation)
+		[operation addDependency:self.updateNotificationsOperation];
+	self.updateNotificationsOperation = operation;
+	[self.updateNotificationsQueue addOperation:operation];
 }
 
 - (void) addAPIKeyWithURL:(NSURL*) url {
@@ -542,10 +511,7 @@
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:NSLocalizedString(@"Adding API Key", nil)];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[properties valueForKey:@"keyid"] integerValue] vCode:[properties valueForKey:@"vcode"] error:&error];
-		[error retain];
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
@@ -555,10 +521,8 @@
 		else {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"API Key added", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 			[alertView show];
-			[alertView release];
 			[[NSNotificationCenter defaultCenter] postNotificationName:NotificationAccountStoargeDidChange object:nil];
 		}
-		[error release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -571,16 +535,15 @@
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 	
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
 		character = new eufe::Character(fittingViewController.fittingEngine);
 		
 		EVEAccount* theCurrentAccount = [EVEAccount currentAccount];
-		operation.progress = 0.3;
+		weakOperation.progress = 0.3;
 		if (theCurrentAccount && theCurrentAccount.charKeyID && theCurrentAccount.charVCode && theCurrentAccount.characterID) {
 			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:theCurrentAccount.characterID keyID:theCurrentAccount.charKeyID vCode:theCurrentAccount.charVCode name:theCurrentAccount.characterName];
 			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -588,14 +551,13 @@
 		}
 		else
 			character->setCharacterName("All Skills 0");
-		operation.progress = 0.6;
+		weakOperation.progress = 0.6;
 		fit = [[ShipFit alloc] initWithDNA:dna character:character];
-		operation.progress = 1.0;
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			if (fit) {
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
@@ -617,8 +579,6 @@
 			if (character)
 				delete character;
 		}
-		[fittingViewController release];
-		[fit release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

@@ -30,6 +30,9 @@
 #define SettingsTipsPosFuel @"SettingsTipsPosFuel"
 #define SettingsUseCloud @"SettingsUseCloud"
 #define SettingsCloudToken @"SettingsCloudToken"
+#define SettingsNeocomAPINextSyncDate @"SettingsNeocomAPINextSyncDate"
+#define SettingsNeocomAPIAlwaysUploadFits @"SettingsNeocomAPIAlwaysUploadFits"
+#define SettingsUDID @"SettingsUDID"
 
 #define SkillTreeRequirementIDKey @"requirementID"
 #define SkillTreeSkillLevelIDKey @"skillLevelID"

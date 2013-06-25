@@ -15,8 +15,8 @@
 #include <arpa/inet.h>
 
 static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, CFDataRef address, const void *data, void *info) {
-    EUHTTPServer * server = (EUHTTPServer *)info;
-    if (kCFSocketAcceptCallBack == type) { 
+    __weak EUHTTPServer * server = (__bridge EUHTTPServer *)info;
+    if (kCFSocketAcceptCallBack == type) {
         // for an AcceptCallBack, the data parameter is a pointer to a CFSocketNativeHandle
         CFSocketNativeHandle nativeSocketHandle = *(CFSocketNativeHandle *)data;
         struct sockaddr_in peerAddress;
@@ -36,24 +36,16 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
         if (readStream && writeStream) {
             CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
             CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-            [server handleConnection:peer inputStream:(NSInputStream *)readStream outputStream:(NSOutputStream *)writeStream];
+            [server handleConnection:peer inputStream:(__bridge_transfer NSInputStream *)readStream outputStream:(__bridge_transfer NSOutputStream *)writeStream];
         } else {
-            // on any failure, need to destroy the CFSocketNativeHandle 
+            // on any failure, need to destroy the CFSocketNativeHandle
             // since we are not going to use it any more
             close(nativeSocketHandle);
         }
-        if (readStream)
-			CFRelease(readStream);
-        if (writeStream)
-			CFRelease(writeStream);
     }
 }
 
 @implementation EUHTTPServer
-@synthesize connections;
-@synthesize netService;
-@synthesize ipv4socket;
-@synthesize delegate;
 
 - (id)initWithDelegate:(id<EUHTTPServerDelegate>) anObject {
 	if (self = [super init]) {
@@ -61,13 +53,6 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 		self.connections = [NSMutableSet set];
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[self shutdown];
-	[connections release];
-	[netService release];
-	[super dealloc];
 }
 
 - (void)handleConnection:(NSString *)peerName inputStream:(NSInputStream *)readStream outputStream:(NSOutputStream *)writeStream {
@@ -82,8 +67,6 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 			[newPeer run];
 			[self.connections addObject:newPeer];
 		}
-		
-		[newPeer release];
 	}
 }
 
@@ -93,25 +76,25 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 	socklen_t nameLen = 0;
 	nameLen = sizeof(serverAddress);
 	
-	if (self.netService && ipv4socket) {
+	if (self.netService && _ipv4socket) {
 		return YES;
 	} else {
 		
-		if (!ipv4socket) {
-			CFSocketContext socketCtxt = {0, self, NULL, NULL, NULL};
-			ipv4socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, kCFSocketAcceptCallBack, (CFSocketCallBack)&httpServerAcceptCallBack, &socketCtxt);
+		if (!_ipv4socket) {
+			CFSocketContext socketCtxt = {0, (__bridge void*) self, NULL, NULL, NULL};
+			_ipv4socket = CFSocketCreate(kCFAllocatorDefault, PF_INET, SOCK_STREAM, IPPROTO_TCP, kCFSocketAcceptCallBack, (CFSocketCallBack)&httpServerAcceptCallBack, &socketCtxt);
 			
-			if (!ipv4socket) {
+			if (!_ipv4socket) {
 				if (error)
-					*error = [[[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
+					*error = [[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
 														 code:EUHTTPServerErrorCodeNoSocketsAvailable
-													 userInfo:[NSDictionary dictionaryWithObject:EUHTTPServerErrorNoSocketsAvailable forKey:NSLocalizedDescriptionKey]] autorelease];
+													userInfo:@{NSLocalizedDescriptionKey: EUHTTPServerErrorNoSocketsAvailable}];
 				[self shutdown];
 				return NO;
 			}
 			
 			int yes = 1;
-			setsockopt(CFSocketGetNative(ipv4socket), SOL_SOCKET, SO_REUSEADDR, (void *)&yes, sizeof(yes));
+			setsockopt(CFSocketGetNative(_ipv4socket), SOL_SOCKET, SO_REUSEADDR, (void *)&yes, sizeof(yes));
 			
 			// set up the IPv4 endpoint; use port 0, so the kernel will choose an arbitrary port for us, which will be advertised using Bonjour
 			memset(&serverAddress, 0, sizeof(serverAddress));
@@ -121,41 +104,40 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 			serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
 			NSData * address4 = [NSData dataWithBytes:&serverAddress length:nameLen];
 			
-			if (kCFSocketSuccess != CFSocketSetAddress(ipv4socket, (CFDataRef)address4)) {
+			if (kCFSocketSuccess != CFSocketSetAddress(_ipv4socket, (__bridge CFDataRef)address4)) {
 				if (error)
-					*error = [[[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
+					*error = [[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
 														 code:EUHTTPServerErrorCodeCouldNotBindToIPv4Address
-													 userInfo:[NSDictionary dictionaryWithObject:EUHTTPServerErrorCouldNotBindToIPv4Address forKey:NSLocalizedDescriptionKey]] autorelease];
-				if (ipv4socket)
-					CFRelease(ipv4socket);
-				ipv4socket = NULL;
+													userInfo:@{NSLocalizedDescriptionKey: EUHTTPServerErrorCouldNotBindToIPv4Address}];
+				if (_ipv4socket)
+					CFRelease(_ipv4socket);
+				_ipv4socket = NULL;
 				return NO;
 			}
 			
 			// now that the binding was successful, we get the port number 
 			// -- we will need it for the NSNetService
-			NSData * addr = [(NSData *)CFSocketCopyAddress(ipv4socket) autorelease];
+			NSData * addr = (__bridge_transfer NSData *)CFSocketCopyAddress(_ipv4socket);
 			memcpy(&serverAddress, [addr bytes], [addr length]);
 			chosenPort = ntohs(serverAddress.sin_port);
 			
 			// set up the run loop sources for the sockets
 			CFRunLoopRef cfrl = CFRunLoopGetCurrent();
-			CFRunLoopSourceRef source = CFSocketCreateRunLoopSource(kCFAllocatorDefault, ipv4socket, 0);
+			CFRunLoopSourceRef source = CFSocketCreateRunLoopSource(kCFAllocatorDefault, _ipv4socket, 0);
 			CFRunLoopAddSource(cfrl, source, kCFRunLoopCommonModes);
 			CFRelease(source);
 		}
 		
-		if (!self.netService && ipv4socket) {
-			self.netService = [[[NSNetService alloc] initWithDomain:@"local" type:@"_http._tcp" name:@"Neocom" port:chosenPort] autorelease];
-			//self.netService = [[[NSNetService alloc] initWithDomain:@"local" type:@"_ftp._tcp" name:@"Neocom" port:chosenPort] autorelease];
+		if (!self.netService && _ipv4socket) {
+			self.netService = [[NSNetService alloc] initWithDomain:@"local" type:@"_http._tcp" name:@"Neocom" port:chosenPort];
 			[self.netService setDelegate:self];
 		}
 		
-		if (!self.netService && !ipv4socket) {
+		if (!self.netService && !_ipv4socket) {
 			if (error)
-				*error = [[[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
+				*error = [[NSError alloc] initWithDomain:EUHTTPServerErrorDomain
 													 code:EUHTTPServerErrorCodeCouldNotBindOrEstablishNetService
-												 userInfo:[NSDictionary dictionaryWithObject:EUHTTPServerErrorCouldNotBindOrEstablishNetService forKey:NSLocalizedDescriptionKey]] autorelease];
+												userInfo:@{NSLocalizedDescriptionKey: EUHTTPServerErrorCouldNotBindOrEstablishNetService}];
 			[self shutdown];
 			return NO;
 		}
@@ -176,15 +158,15 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 
 - (void)shutdown {
 	if (self.netService) {
-		[connections removeAllObjects];
+		[self.connections removeAllObjects];
 		[self.netService stop];
 		[self.netService removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 		self.netService = nil;
 	}
-	if (ipv4socket) {
-		CFSocketInvalidate(ipv4socket);
-		CFRelease(ipv4socket);
-		ipv4socket = NULL;
+	if (_ipv4socket) {
+		CFSocketInvalidate(_ipv4socket);
+		CFRelease(_ipv4socket);
+		_ipv4socket = NULL;
 	}
 }
 
@@ -197,7 +179,7 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 #pragma mark EUHTTPConnectionDelegate
 
 - (void) connectionDidClose:(EUHTTPConnection*) connection {
-	[connections removeObject:connection];
+	[self.connections removeObject:connection];
 }
 
 - (void) connection:(EUHTTPConnection*) connection didReceiveRequest:(EUHTTPRequest*) request {

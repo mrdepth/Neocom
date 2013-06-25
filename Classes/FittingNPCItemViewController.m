@@ -10,7 +10,6 @@
 #import "DamagePattern.h"
 
 @implementation FittingNPCItemViewController
-@synthesize damagePatternsViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,7 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)] autorelease]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -61,7 +60,7 @@
 }
 
 - (IBAction)onDone:(id)sender {
-	[damagePatternsViewController.delegate damagePatternsViewController:damagePatternsViewController didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:type]];
+	[self.damagePatternsViewController.delegate damagePatternsViewController:self.damagePatternsViewController didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:self.type]];
 }
 
 @end

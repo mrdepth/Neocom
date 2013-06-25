@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface AttributeCellView : UITableViewCell {
-	UIImageView *iconView;
-	UILabel *attributeNameLabel;
-	UILabel *attributeValueLabel;
-}
+@interface AttributeCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UILabel *attributeNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *attributeValueLabel;

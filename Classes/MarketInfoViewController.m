@@ -14,7 +14,11 @@
 #import "EVEUniverseAppDelegate.h"
 #import "UIAlertView+Error.h"
 
-@interface MarketInfoViewController(Private)
+@interface MarketInfoViewController()
+@property (nonatomic, strong) NSMutableArray *filteredSellOrdersRegions;
+@property (nonatomic, strong) NSMutableArray *filteredBuyOrdersRegions;
+@property (nonatomic, strong) NSMutableArray *filteredSellSummary;
+@property (nonatomic, strong) NSMutableArray *filteredBuySummary;
 
 - (void) loadData;
 - (void) searchWithSearchString:(NSString*) searchString;
@@ -23,38 +27,29 @@
 
 
 @implementation MarketInfoViewController
-@synthesize ordersTableView;
-@synthesize reportTypeSegment;
-@synthesize searchBar;
 @synthesize searchDisplayController;
-@synthesize parentViewController;
-@synthesize type;
-@synthesize sellOrdersRegions;
-@synthesize buyOrdersRegions;
-@synthesize sellSummary;
-@synthesize buySummary;
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = type.typeName;
+	self.title = self.type.typeName;
 	
-	self.searchDisplayController = [[[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self.parentViewController] autorelease];
+	self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self.parentViewController];
 	self.searchDisplayController.delegate = self;
 	self.searchDisplayController.searchResultsDataSource = self;
 	self.searchDisplayController.searchResultsDelegate = self;
 	
 	
-	filteredSellOrdersRegions = [[NSMutableArray alloc] init];
-	filteredBuyOrdersRegions = [[NSMutableArray alloc] init];
-	filteredSellSummary = [[NSMutableArray alloc] init];
-	filteredBuySummary = [[NSMutableArray alloc] init];
+	self.filteredSellOrdersRegions = [[NSMutableArray alloc] init];
+	self.filteredBuyOrdersRegions = [[NSMutableArray alloc] init];
+	self.filteredSellSummary = [[NSMutableArray alloc] init];
+	self.filteredBuySummary = [[NSMutableArray alloc] init];
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (![userDefaults boolForKey:SettingsTipsMarketInfo]) {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Market section does not provide market statistics in the realtime. Statistics is collected by the users during several days and may be not accurate. This information is cached on your device for 1 hour.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alertView show];
-		[alertView release];
 		[userDefaults setBool:YES forKey:SettingsTipsMarketInfo];
 	}
 	[self loadData];
@@ -81,41 +76,11 @@
 	self.buyOrdersRegions = nil;
 	self.sellSummary = nil;
 	self.buySummary = nil;
-	
-	[filteredSellOrdersRegions release];
-	[filteredBuyOrdersRegions release];
-	[filteredSellSummary release];
-	[filteredBuySummary release];
-	filteredSellOrdersRegions = nil;
-	filteredBuyOrdersRegions = nil;
-	filteredSellSummary = nil;
-	filteredBuySummary = nil;
-}
-
-
-
-- (void)dealloc {
-	[ordersTableView release];
-	[reportTypeSegment release];
-	[searchBar release];
-	[searchDisplayController release];
-	[type release];
-	[sellOrdersRegions release];
-	[buyOrdersRegions release];
-	[sellSummary release];
-	[buySummary release];
-	
-	[filteredSellOrdersRegions release];
-	[filteredBuyOrdersRegions release];
-	[filteredSellSummary release];
-	[filteredBuySummary release];
-	
-    [super dealloc];
 }
 
 - (IBAction) onChangeReportTypeSegment: (id) sender {
-	self.searchBar.selectedScopeButtonIndex = reportTypeSegment.selectedSegmentIndex;
-	[ordersTableView reloadData];
+	self.searchBar.selectedScopeButtonIndex = self.reportTypeSegment.selectedSegmentIndex;
+	[self.ordersTableView reloadData];
 }
 
 #pragma mark -
@@ -127,17 +92,17 @@
 		if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0)
 			return 2;
 		else if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 1)
-			return filteredSellOrdersRegions.count;
+			return self.filteredSellOrdersRegions.count;
 		else
-			return filteredBuyOrdersRegions.count;
+			return self.filteredBuyOrdersRegions.count;
 	}
 	else {
-		if (reportTypeSegment.selectedSegmentIndex == 0)
+		if (self.reportTypeSegment.selectedSegmentIndex == 0)
 			return 2;
-		else if (reportTypeSegment.selectedSegmentIndex == 1)
-			return sellOrdersRegions.count;
+		else if (self.reportTypeSegment.selectedSegmentIndex == 1)
+			return self.sellOrdersRegions.count;
 		else
-			return buyOrdersRegions.count;
+			return self.buyOrdersRegions.count;
 	}
 }
 
@@ -147,26 +112,26 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0) {
 			if (section == 0)
-				count = filteredSellSummary.count;
+				count = self.filteredSellSummary.count;
 			else
-				count = filteredBuySummary.count;
+				count = self.filteredBuySummary.count;
 		}
 		else if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 1)
-			count = [[[filteredSellOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
+			count = [[[self.filteredSellOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
 		else
-			count = [[[filteredBuyOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
+			count = [[[self.filteredBuyOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
 	}
 	else {
-		if (reportTypeSegment.selectedSegmentIndex == 0) {
+		if (self.reportTypeSegment.selectedSegmentIndex == 0) {
 			if (section == 0)
-				count = sellSummary.count;
+				count = self.sellSummary.count;
 			else
-				count = buySummary.count;
+				count = self.buySummary.count;
 		}
-		else if (reportTypeSegment.selectedSegmentIndex == 1)
-			count = [[[sellOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
+		else if (self.reportTypeSegment.selectedSegmentIndex == 1)
+			count = [[[self.sellOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
 		else
-			count = [[[buyOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
+			count = [[[self.buyOrdersRegions objectAtIndex:section] valueForKey:@"orders"] count];
 	}
 	return count > 30 ? 30 : count;
 }
@@ -181,23 +146,23 @@
 		}
 		else {
 			if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 1)
-				return [[filteredSellOrdersRegions objectAtIndex:section] valueForKey:@"region"];
+				return [[self.filteredSellOrdersRegions objectAtIndex:section] valueForKey:@"region"];
 			else
-				return [[filteredBuyOrdersRegions objectAtIndex:section] valueForKey:@"region"];
+				return [[self.filteredBuyOrdersRegions objectAtIndex:section] valueForKey:@"region"];
 		}
 	}
 	else {
-		if (reportTypeSegment.selectedSegmentIndex == 0) {
+		if (self.reportTypeSegment.selectedSegmentIndex == 0) {
 			if (section == 0)
 				return NSLocalizedString(@"Sell Orders", nil);
 			else
 				return NSLocalizedString(@"Buy Orders", nil);
 		}
 		else {
-			if (reportTypeSegment.selectedSegmentIndex == 1)
-				return [[sellOrdersRegions objectAtIndex:section] valueForKey:@"region"];
+			if (self.reportTypeSegment.selectedSegmentIndex == 1)
+				return [[self.sellOrdersRegions objectAtIndex:section] valueForKey:@"region"];
 			else
-				return [[buyOrdersRegions objectAtIndex:section] valueForKey:@"region"];
+				return [[self.buyOrdersRegions objectAtIndex:section] valueForKey:@"region"];
 		}
 	}
 }
@@ -217,26 +182,26 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 0) {
 			if (indexPath.section == 0)
-				order = [filteredSellSummary objectAtIndex:indexPath.row];
+				order = [self.filteredSellSummary objectAtIndex:indexPath.row];
 			else
-				order = [filteredBuySummary objectAtIndex:indexPath.row];
+				order = [self.filteredBuySummary objectAtIndex:indexPath.row];
 		}
 		else if (self.searchDisplayController.searchBar.selectedScopeButtonIndex == 1)
-			order = (EVECentralQuickLookOrder*) [[[filteredSellOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
+			order = (EVECentralQuickLookOrder*) [[[self.filteredSellOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
 		else
-			order = (EVECentralQuickLookOrder*) [[[filteredBuyOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
+			order = (EVECentralQuickLookOrder*) [[[self.filteredBuyOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
 	}
 	else {
-		if (reportTypeSegment.selectedSegmentIndex == 0) {
+		if (self.reportTypeSegment.selectedSegmentIndex == 0) {
 			if (indexPath.section == 0)
-				order = [sellSummary objectAtIndex:indexPath.row];
+				order = [self.sellSummary objectAtIndex:indexPath.row];
 			else
-				order = [buySummary objectAtIndex:indexPath.row];
+				order = [self.buySummary objectAtIndex:indexPath.row];
 		}
-		else if (reportTypeSegment.selectedSegmentIndex == 1)
-			order = (EVECentralQuickLookOrder*) [[[sellOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
+		else if (self.reportTypeSegment.selectedSegmentIndex == 1)
+			order = (EVECentralQuickLookOrder*) [[[self.sellOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
 		else
-			order = (EVECentralQuickLookOrder*) [[[buyOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
+			order = (EVECentralQuickLookOrder*) [[[self.buyOrdersRegions objectAtIndex:indexPath.section] valueForKey:@"orders"] objectAtIndex:indexPath.row];
 	}
 	
 	cell.systemLabel.text = order.region.regionName;
@@ -269,11 +234,11 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -309,27 +274,25 @@
 }
 
 - (void) searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-	reportTypeSegment.selectedSegmentIndex = selectedScope;
+	self.reportTypeSegment.selectedSegmentIndex = selectedScope;
 	[[NSUserDefaults standardUserDefaults] setInteger:selectedScope forKey:SettingsPublishedFilterKey];
-	[ordersTableView reloadData];
+	[self.ordersTableView reloadData];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
-@end
-
-@implementation MarketInfoViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *sellOrdersRegionsTmp = [NSMutableArray array];
@@ -338,11 +301,11 @@
 	NSMutableArray *buySummaryTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+loadData" name:NSLocalizedString(@"Loading Market Info", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:type.typeID regionIDs:nil systemID:0 hours:0 minQ:0 error:&error];
-		operation.progress = 0.5;
+		EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:self.type.typeID regionIDs:nil systemID:0 hours:0 minQ:0 error:&error progressHandler:nil];
+		weakOperation.progress = 0.5;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -365,7 +328,7 @@
 				[orders addObject:order];
 			}
 			
-			operation.progress = 0.75;
+			weakOperation.progress = 0.75;
 			
 			for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
 				NSString *regionID = [NSString stringWithFormat:@"%d", order.regionID];
@@ -386,8 +349,7 @@
 			[sellSummaryTmp addObjectsFromArray:quickLook.sellOrders];
 			[buySummaryTmp addObjectsFromArray:quickLook.buyOrders];
 		}
-		operation.progress = 1;
-		[pool release];
+		weakOperation.progress = 1;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
@@ -395,7 +357,7 @@
 		self.buyOrdersRegions = buyOrdersRegionsTmp;
 		self.sellSummary = sellSummaryTmp;
 		self.buySummary = buySummaryTmp;
-		[ordersTableView reloadData];
+		[self.ordersTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -403,18 +365,18 @@
 
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredSellOrdersRegionsTmp = [NSMutableArray array];
 	NSMutableArray *filteredBuyOrdersRegionsTmp = [NSMutableArray array];
 	NSMutableArray *filteredSellSummaryTmp = [NSMutableArray array];
 	NSMutableArray *filteredBuySummaryTmp = [NSMutableArray array];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([operation isCancelled])
+		if ([weakOperation isCancelled])
 			return;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *item in sellOrdersRegions) {
+		for (NSDictionary *item in self.sellOrdersRegions) {
 			NSString *regionName = [item valueForKey:@"region"];
 			NSMutableArray *orders = [NSMutableArray array];
 			NSDictionary *region = [NSDictionary dictionaryWithObjectsAndKeys:orders, @"orders", regionName, @"region", nil];
@@ -431,9 +393,9 @@
 			if (orders.count > 0)
 				[filteredSellOrdersRegionsTmp addObject:region];
 		}
-		operation.progress = 0.25;
+		weakOperation.progress = 0.25;
 		
-		for (NSDictionary *item in buyOrdersRegions) {
+		for (NSDictionary *item in self.buyOrdersRegions) {
 			NSString *regionName = [item valueForKey:@"region"];
 			NSMutableArray *orders = [NSMutableArray array];
 			NSDictionary *region = [NSDictionary dictionaryWithObjectsAndKeys:orders, @"orders", regionName, @"region", nil];
@@ -450,34 +412,29 @@
 			if (orders.count > 0)
 				[filteredBuyOrdersRegionsTmp addObject:region];
 		}
-		operation.progress = 0.5;
-		for (EVECentralQuickLookOrder *order in sellSummary) {
+		weakOperation.progress = 0.5;
+		for (EVECentralQuickLookOrder *order in self.sellSummary) {
 			if ([order.stationName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 				(order.region && [order.region.regionName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound)) {
 				[filteredSellSummaryTmp addObject:order];
 			}
 		}
-		operation.progress = 0.75;
-		for (EVECentralQuickLookOrder *order in buySummary) {
+		weakOperation.progress = 0.75;
+		for (EVECentralQuickLookOrder *order in self.buySummary) {
 			if ([order.stationName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound ||
 				(order.region && [order.region.regionName rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound)) {
 				[filteredBuySummaryTmp addObject:order];
 			}
 		}
-		operation.progress = 1;
-		[pool release];
+		weakOperation.progress = 1;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredSellOrdersRegions release];
-			[filteredBuyOrdersRegions release];
-			[filteredSellSummary release];
-			[filteredBuySummary release];
-			filteredSellOrdersRegions = [filteredSellOrdersRegionsTmp retain];
-			filteredBuyOrdersRegions = [filteredBuyOrdersRegionsTmp retain];
-			filteredSellSummary = [filteredSellSummaryTmp retain];
-			filteredBuySummary = [filteredBuySummaryTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredSellOrdersRegions = filteredSellOrdersRegionsTmp;
+			self.filteredBuyOrdersRegions = filteredBuyOrdersRegionsTmp;
+			self.filteredSellSummary = filteredSellSummaryTmp;
+			self.filteredBuySummary = filteredBuySummaryTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

@@ -17,7 +17,9 @@
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
 
-@interface POSViewController(Private)
+@interface POSViewController()
+@property (nonatomic, strong) NSArray *sections;
+
 - (void) loadData;
 @end
 
@@ -65,36 +67,25 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.posTableView = nil;
-	[sections release];
-	sections = nil;
+	self.sections = nil;
 }
 
-
-- (void)dealloc {
-	[posTableView release];
-	[controlTowerType release];
-	[solarSystem release];
-	[location release];
-
-	[sections release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return [sections count];
+    return [self.sections count];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[[sections objectAtIndex:section] valueForKey:@"rows"] count];
+	return [[[self.sections objectAtIndex:section] valueForKey:@"rows"] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] valueForKey:@"title"];
+	return [[self.sections objectAtIndex:section] valueForKey:@"title"];
 }
 
 // Customize the appearance of table view cells.
@@ -105,7 +96,7 @@
     if (cell == nil) {
         cell = [POSFuelCellView cellWithNibName:@"POSFuelCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	EVEDBInvType *resourceType = [row valueForKey:@"type"];
 	cell.typeNameLabel.text = resourceType.typeName;
 	cell.remainsLabel.text = [row valueForKey:@"remains"];
@@ -161,11 +152,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -183,31 +174,27 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[[sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	EVEDBInvType *resourceType = [row valueForKey:@"type"];
 
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.type = resourceType;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 
 }
 
-@end
-
-@implementation POSViewController(Private)
+#pragma mark - Private
 
 - (void) loadData {
 	NSMutableArray *sectionsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"POSViewController+Load" name:NSLocalizedString(@"Loading POS Details", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		//EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID itemID:posID error:&error];
-		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:posID error:&error];
+		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:posID error:&error progressHandler:nil];
 
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -220,7 +207,7 @@
 			float n = [[controlTowerType resources] count];
 			float i = 0;
 			for (EVEDBInvControlTowerResource *resource in [controlTowerType resources]) {
-				operation.progress = i++ / n;
+				weakOperation.progress = i++ / n;
 				if ((resource.minSecurityLevel > 0 && solarSystem.security < resource.minSecurityLevel) ||
 					(resource.factionID > 0 && solarSystem.region.factionID != resource.factionID))
 					continue;
@@ -280,14 +267,11 @@
 			}
 			[sectionsTmp addObjectsFromArray:[[sectionsDictionary allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"purposeID" ascending:YES]]]];
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		[sections release];
-		sections = [sectionsTmp retain];
-		[posTableView reloadData];
+		self.sections = sectionsTmp;
+		[self.posTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

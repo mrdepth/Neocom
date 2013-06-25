@@ -9,14 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface POSCellView : UITableViewCell {
-	UILabel *typeNameLabel;
-	UILabel *locationLabel;
-	UILabel *stateLabel;
-	UILabel *fuelRemainsLabel;
-	UIImageView *iconImageView;
-	UIImageView *fuelImageView;
-}
+@interface POSCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *locationLabel;
 @property (nonatomic, retain) IBOutlet UILabel *stateLabel;

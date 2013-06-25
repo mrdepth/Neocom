@@ -10,12 +10,7 @@
 #import "FittingSection.h"
 
 @class POSFittingViewController;
-@interface AssemblyLinesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource> {
-	POSFittingViewController *posFittingViewController;
-	UITableView *tableView;
-@private
-	NSMutableArray *assemblyLines;
-}
+@interface AssemblyLinesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

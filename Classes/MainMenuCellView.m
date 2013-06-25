@@ -10,14 +10,4 @@
 
 
 @implementation MainMenuCellView
-@synthesize titleLabel;
-@synthesize iconImageView;
-
-- (void)dealloc {
-	[titleLabel release];
-	[iconImageView release];
-    [super dealloc];
-}
-
-
 @end

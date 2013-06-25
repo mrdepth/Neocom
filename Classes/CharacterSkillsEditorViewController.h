@@ -10,19 +10,7 @@
 #import "SkillLevelsViewController.h"
 
 @class Character;
-@interface CharacterSkillsEditorViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SkillLevelsViewControllerDelegate, UITextFieldDelegate> {
-	UITableView *skillsTableView;
-	UINavigationController *modalController;
-	UIView *shadowView;
-	UIToolbar *characterNameToolbar;
-	UITextField *characterNameTextField;
-	UIPopoverController *popoverController;
-	Character *character;
-@private
-	NSArray *sections;
-	NSMutableDictionary* groups;
-	NSIndexPath *modifiedIndexPath;
-}
+@interface CharacterSkillsEditorViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SkillLevelsViewControllerDelegate, UITextFieldDelegate>
 @property (nonatomic, retain) IBOutlet UITableView *skillsTableView;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;
 @property (nonatomic, retain) IBOutlet UIView *shadowView;

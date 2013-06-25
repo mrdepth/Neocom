@@ -9,17 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ContractCellView : UITableViewCell {
-	UILabel *statusLabel;
-	UILabel *typeLabel;
-	UILabel *titleLabel;
-	UILabel *locationLabel;
-	UILabel *startTimeLabel;
-	UILabel *characterLabel;
-	UILabel *priceLabel;
-	UILabel *priceTitleLabel;
-	UILabel *buyoutLabel;
-}
+@interface ContractCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *statusLabel;
 @property (nonatomic, retain) IBOutlet UILabel *typeLabel;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;

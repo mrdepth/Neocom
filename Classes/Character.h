@@ -9,14 +9,10 @@
 #import <Foundation/Foundation.h>
 #include "eufe.h"
 
-@interface Character : NSObject<NSCoding> {
-	NSInteger characterID;
-	NSString* name;
-	NSMutableDictionary* skills;
-}
+@interface Character : NSObject<NSCoding>
 @property (nonatomic, assign) NSInteger characterID;
 @property (nonatomic, copy) NSString* name;
-@property (nonatomic, readonly, retain) NSMutableDictionary* skills;
+@property (nonatomic, strong) NSMutableDictionary* skills;
 
 + (NSString*) charactersDirectory;
 - (NSString*) guid;

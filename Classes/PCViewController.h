@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EUHTTPServer.h"
 
-@interface PCViewController : UIViewController<EUHTTPServerDelegate> {
-	UILabel *addressLabel;
-@private
-	EUHTTPServer *server;
-}
-@property (nonatomic, retain) IBOutlet UILabel *addressLabel;
+@interface PCViewController : UIViewController<EUHTTPServerDelegate>
+@property (nonatomic, weak) IBOutlet UILabel *addressLabel;
 
 @end

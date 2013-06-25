@@ -9,13 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EVEOnlineAPI.h"
 
-@interface EVEAccountStorageAPIKey: NSObject {
-	EVEAPIKeyInfo *apiKeyInfo;
-	NSInteger keyID;
-	NSString *vCode;
-	NSError *error;
-	NSMutableArray *assignedCharacters;
-}
+@interface EVEAccountStorageAPIKey: NSObject
 @property (nonatomic, retain) EVEAPIKeyInfo *apiKeyInfo;
 @property (nonatomic) NSInteger keyID;
 @property (nonatomic, copy) NSString *vCode;

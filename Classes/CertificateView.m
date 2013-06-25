@@ -9,11 +9,6 @@
 #import "CertificateView.h"
 
 @implementation CertificateView
-@synthesize iconView;
-@synthesize statusView;
-@synthesize titleLabel;
-@synthesize descriptionLabel;
-@synthesize color;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -45,27 +40,18 @@
 	[background drawInRect:rect];
 	CGContextClipToMask(context, rect, [mask CGImage]);
 	//CGContextSetRGBFillColor(context, 38.0/255.0, 37.0/255.0, 15.0/255.0, 1);
-	CGContextSetFillColorWithColor(context, [color CGColor]);
+	CGContextSetFillColorWithColor(context, [self.color CGColor]);
 	CGContextFillRect(context, rect);
 }
 
 
-- (void)dealloc {
-	[iconView release];
-	[statusView release];
-	[titleLabel release];
-	[descriptionLabel release];
-	[color release];
-	[super dealloc];
-}
-
 - (CGSize) sizeThatFits:(CGSize)size {
 	CGRect r = CGRectMake(0, 0, size.width, size.height);
-	CGRect r2 = descriptionLabel.frame;
+	CGRect r2 = self.descriptionLabel.frame;
 	r2.size.width = size.width - r2.origin.x * 2;
 	r2.size.height = size.height - r2.origin.y + 10;
 
-	r2 = [descriptionLabel textRectForBounds:r2 limitedToNumberOfLines:0];
+	r2 = [self.descriptionLabel textRectForBounds:r2 limitedToNumberOfLines:0];
 	r.size.height = r2.size.height + r2.origin.y + 10;
 	return r.size;
 }

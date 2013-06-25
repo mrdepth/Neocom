@@ -9,9 +9,7 @@
 #import "ItemViewController.h"
 #import "DamagePatternsViewController.h"
 
-@interface FittingNPCItemViewController : ItemViewController {
-	DamagePatternsViewController* damagePatternsViewController;
-}
+@interface FittingNPCItemViewController : ItemViewController
 @property (nonatomic, assign) DamagePatternsViewController* damagePatternsViewController;
 
 - (IBAction)onDone:(id)sender;

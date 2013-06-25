@@ -11,22 +11,16 @@
 #import "EVEDBAPI.h"
 
 @implementation DamagePattern
-@synthesize emAmount;
-@synthesize thermalAmount;
-@synthesize kineticAmount;
-@synthesize explosiveAmount;
-@synthesize patternName;
-@synthesize uuid;
 
 + (id) uniformDamagePattern {
-	DamagePattern* damagePattern = [[[DamagePattern alloc] init] autorelease];
+	DamagePattern* damagePattern = [[DamagePattern alloc] init];
 	damagePattern.patternName = NSLocalizedString(@"Uniform", nil);
 	damagePattern.uuid = @"uniform";
 	return damagePattern;
 }
 
 + (id) damagePatternWithNPCType:(EVEDBInvType*) type {
-	return [[[DamagePattern alloc] initWithNPCType:type] autorelease];
+	return [[DamagePattern alloc] initWithNPCType:type];
 }
 
 - (id) initWithNPCType:(EVEDBInvType*) type {
@@ -118,13 +112,13 @@
 		float totalDPS = totalDPSTurret + totalDPSMissile;
 		
 		if (totalDPS == 0) {
-			emAmount = thermalAmount = kineticAmount = explosiveAmount = 0.25;
+			_emAmount = _thermalAmount = _kineticAmount = _explosiveAmount = 0.25;
 		}
 		else {
-			emAmount = emDPS / totalDPS;
-			thermalAmount = thermalDPS / totalDPS;
-			kineticAmount = kineticDPS / totalDPS;
-			explosiveAmount = explosiveDPS / totalDPS;
+			self.emAmount = emDPS / totalDPS;
+			self.thermalAmount = thermalDPS / totalDPS;
+			self.kineticAmount = kineticDPS / totalDPS;
+			self.explosiveAmount = explosiveDPS / totalDPS;
 		}
 	}
 	return self;
@@ -132,22 +126,16 @@
 
 - (id) init {
 	if (self = [super init]) {
-		emAmount = thermalAmount = kineticAmount = explosiveAmount = 0.25;
+		_emAmount = _thermalAmount = _kineticAmount = _explosiveAmount = 0.25;
 		self.patternName = NSLocalizedString(@"Pattern Name", nil);
 		self.uuid = [NSString uuidString];
 	}
 	return self;
 }
 
-- (void) dealloc {
-	[patternName release];
-	[uuid release];
-	[super dealloc];
-}
-
 - (BOOL) isEqual:(id)object {
 	if ([object isKindOfClass:[self class]])
-		return [uuid isEqual:[object uuid]];
+		return [self.uuid isEqual:[object uuid]];
 	else
 		return NO;
 }
@@ -156,21 +144,21 @@
 	if (self = [super init]) {
 		self.patternName = [aDecoder decodeObjectForKey:@"patternName"];
 		self.uuid = [aDecoder decodeObjectForKey:@"uuid"];
-		emAmount = [aDecoder decodeFloatForKey:@"emAmount"];
-		thermalAmount = [aDecoder decodeFloatForKey:@"thermalAmount"];
-		kineticAmount = [aDecoder decodeFloatForKey:@"kineticAmount"];
-		explosiveAmount = [aDecoder decodeFloatForKey:@"explosiveAmount"];
+		self.emAmount = [aDecoder decodeFloatForKey:@"emAmount"];
+		self.thermalAmount = [aDecoder decodeFloatForKey:@"thermalAmount"];
+		self.kineticAmount = [aDecoder decodeFloatForKey:@"kineticAmount"];
+		self.explosiveAmount = [aDecoder decodeFloatForKey:@"explosiveAmount"];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeObject:patternName forKey:@"patternName"];
-	[aCoder encodeObject:uuid forKey:@"uuid"];
-	[aCoder encodeFloat:emAmount forKey:@"emAmount"];
-	[aCoder encodeFloat:thermalAmount forKey:@"thermalAmount"];
-	[aCoder encodeFloat:kineticAmount forKey:@"kineticAmount"];
-	[aCoder encodeFloat:explosiveAmount forKey:@"explosiveAmount"];
+	[aCoder encodeObject:self.patternName forKey:@"patternName"];
+	[aCoder encodeObject:self.uuid forKey:@"uuid"];
+	[aCoder encodeFloat:self.emAmount forKey:@"emAmount"];
+	[aCoder encodeFloat:self.thermalAmount forKey:@"thermalAmount"];
+	[aCoder encodeFloat:self.kineticAmount forKey:@"kineticAmount"];
+	[aCoder encodeFloat:self.explosiveAmount forKey:@"explosiveAmount"];
 }
 
 @end

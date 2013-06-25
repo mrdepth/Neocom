@@ -11,46 +11,7 @@
 #import "FittingSection.h"
 
 @class POSFittingViewController;
-@interface POSStatsViewController : UIViewController<FittingSection> {
-	POSFittingViewController *posFittingViewController;
-	UIScrollView *scrollView;
-	UIView *contentView;
-	
-	ProgressLabel *powerGridLabel;
-	ProgressLabel *cpuLabel;
-	
-	ProgressLabel *shieldEMLabel;
-	ProgressLabel *shieldThermalLabel;
-	ProgressLabel *shieldKineticLabel;
-	ProgressLabel *shieldExplosiveLabel;
-	ProgressLabel *armorEMLabel;
-	ProgressLabel *armorThermalLabel;
-	ProgressLabel *armorKineticLabel;
-	ProgressLabel *armorExplosiveLabel;
-	ProgressLabel *hullEMLabel;
-	ProgressLabel *hullThermalLabel;
-	ProgressLabel *hullKineticLabel;
-	ProgressLabel *hullExplosiveLabel;
-	ProgressLabel *damagePatternEMLabel;
-	ProgressLabel *damagePatternThermalLabel;
-	ProgressLabel *damagePatternKineticLabel;
-	ProgressLabel *damagePatternExplosiveLabel;
-	
-	UILabel *shieldHPLabel;
-	UILabel *armorHPLabel;
-	UILabel *hullHPLabel;
-	UILabel *ehpLabel;
-	
-	UILabel *shieldRecharge;
-	
-	UILabel *weaponDPSLabel;
-	
-	UILabel *fuelTypeLabel;
-	UILabel *fuelCostLabel;
-	UIImageView *fuelImageView;
-	UILabel *infrastructureUpgradesCostLabel;
-	UILabel *posCostLabel;
-}
+@interface POSStatsViewController : UIViewController<FittingSection>
 @property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIView *contentView;

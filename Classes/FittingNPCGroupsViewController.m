@@ -11,7 +11,6 @@
 #import "DamagePattern.h"
 
 @implementation FittingNPCGroupsViewController
-@synthesize damagePatternsViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -68,7 +67,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
 
-	if (self.searchDisplayController.searchResultsTableView == tableView || (category != nil && group != nil))
+	if (self.searchDisplayController.searchResultsTableView == tableView || (self.category != nil && self.group != nil))
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	return cell;
 }
@@ -79,53 +78,49 @@
 - (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	EVEDBInvType* type;
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		type = [filteredValues objectAtIndex:indexPath.row];
+		type = [self.filteredValues objectAtIndex:indexPath.row];
 	}
 	else {
-		type = [rows objectAtIndex:indexPath.row];
+		type = [self.rows objectAtIndex:indexPath.row];
 	}
 	FittingNPCItemViewController *controller = [[FittingNPCItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	controller.damagePatternsViewController = self.damagePatternsViewController;
 	controller.type = type;
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !modalMode) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.modalMode) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
-		[damagePatternsViewController.delegate damagePatternsViewController:damagePatternsViewController
-													 didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:[filteredValues objectAtIndex:indexPath.row]]];
+		[self.damagePatternsViewController.delegate damagePatternsViewController:self.damagePatternsViewController
+													 didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:[self.filteredValues objectAtIndex:indexPath.row]]];
 	}
-	else if (category == nil) {
+	else if (self.category == nil) {
 		FittingNPCGroupsViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
-		controller.category = [rows objectAtIndex:indexPath.row];
+		controller.category = [self.rows objectAtIndex:indexPath.row];
 		controller.damagePatternsViewController = self.damagePatternsViewController;
 		controller.modalMode = self.modalMode;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
-	else if (group == nil) {
+	else if (self.group == nil) {
 		FittingNPCGroupsViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
 		controller.category = self.category;
-		controller.group = [rows objectAtIndex:indexPath.row];
+		controller.group = [self.rows objectAtIndex:indexPath.row];
 		controller.damagePatternsViewController = self.damagePatternsViewController;
 		controller.modalMode = self.modalMode;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
-		[damagePatternsViewController.delegate damagePatternsViewController:damagePatternsViewController
-													 didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:[rows objectAtIndex:indexPath.row]]];
+		[self.damagePatternsViewController.delegate damagePatternsViewController:self.damagePatternsViewController
+													 didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:[self.rows objectAtIndex:indexPath.row]]];
 	}
 }
 

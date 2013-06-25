@@ -9,15 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ModuleCellView : UITableViewCell {
-	UIImageView *iconView;
-	UIImageView *stateView;
-	UIImageView *targetView;
-	UILabel *titleLabel;
-	UILabel *row1Label;
-	UILabel *row2Label;
-	UILabel *row3Label;
-}
+@interface ModuleCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconView;
 @property (nonatomic, retain) IBOutlet UIImageView *stateView;
 @property (nonatomic, retain) IBOutlet UIImageView *targetView;

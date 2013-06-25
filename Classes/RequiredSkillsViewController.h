@@ -10,13 +10,7 @@
 
 @class ShipFit;
 @class SkillPlan;
-@interface RequiredSkillsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
-	UITableView* skillsTableView;
-	UILabel *trainingTimeLabel;
-	ShipFit* fit;
-@private
-	SkillPlan* skillPlan;
-}
+@interface RequiredSkillsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
 @property (retain, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, retain) ShipFit* fit;

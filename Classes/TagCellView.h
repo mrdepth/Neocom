@@ -9,10 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface TagCellView : UITableViewCell {
-	UILabel *titleLabel;
-	UIImageView *checkmarkImageView;
-}
+@interface TagCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *checkmarkImageView;
 

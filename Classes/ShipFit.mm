@@ -43,24 +43,28 @@ public:
 
 
 + (id) shipFitWithFitName:(NSString*) fitName character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithFitName:fitName character:character] autorelease];
+	return [[ShipFit alloc] initWithFitName:fitName character:character];
 }
 
 + (id) shipFitWithBCString:(NSString*) string character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithBCString:string character:character] autorelease];
+	return [[ShipFit alloc] initWithBCString:string character:character];
 }
 
 + (id) shipFitWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithAsset:asset character:character] autorelease];
+	return [[ShipFit alloc] initWithAsset:asset character:character];
 	
 }
 
 + (id) shipFitWithKillMail:(KillMail*) killMail character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithKillMail:killMail character:character] autorelease];
+	return [[ShipFit alloc] initWithKillMail:killMail character:character];
 }
 
 + (id) shipFitWithDNA:(NSString*) dna character:(eufe::Character*) character {
-	return [[[ShipFit alloc] initWithDNA:dna character:character] autorelease];
+	return [[ShipFit alloc] initWithDNA:dna character:character];
+}
+
++ (id) shipFitWithCanonicalName:(NSString*) canonicalName character:(eufe::Character*) character {
+	return [[ShipFit alloc] initWithCanonicalName:canonicalName character:character];
 }
 
 + (NSArray*) allFits {
@@ -72,7 +76,6 @@ public:
 	
 	NSError *error = nil;
 	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	[fetchRequest release];
 	return fetchedObjects;
 }
 
@@ -116,7 +119,6 @@ public:
 - (id) initWithBCString:(NSString*) string character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 		
@@ -126,7 +128,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(shipID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -179,7 +180,6 @@ public:
 - (id) initWithAsset:(EVEAssetListItem*) asset character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
@@ -187,7 +187,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(asset.type.typeID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -235,7 +234,6 @@ public:
 - (id) initWithKillMail:(KillMail*) killMail character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
@@ -243,7 +241,6 @@ public:
 		eufe::Ship* ship = aCharacter->setShip(killMail.victim.shipType.typeID);
 		
 		if (!ship) {
-			[self release];
 			return nil;
 		}
 		else {
@@ -291,20 +288,17 @@ public:
 - (id) initWithDNA:(NSString*) dna character:(eufe::Character*) aCharacter {
 	if (self = [self initWithCharacter:aCharacter]) {
 		if (!aCharacter) {
-			[self release];
 			return nil;
 		}
 
 		NSMutableArray* records = [NSMutableArray arrayWithArray:[dna componentsSeparatedByString:@":"]];
 		if (records.count == 0) {
-			[self release];
 			return nil;
 		}
 		else {
 			NSInteger shipTypeID = [[records objectAtIndex:0] integerValue];
 			eufe::Ship* ship = aCharacter->setShip(shipTypeID);
 			if (!ship) {
-				[self release];
 				return nil;
 			}
 			self.fitName = [NSString stringWithFormat:@"%s", ship->getTypeName()];
@@ -349,6 +343,80 @@ public:
 						(*i)->setCharge(new eufe::Charge(*charge));
 				}
 				delete charge;
+			}
+		}
+	}
+	return self;
+}
+
+- (id) initWithCanonicalName:(NSString *)canonicalName character:(eufe::Character *)character {
+	if (self = [self initWithCharacter:character]) {
+		if (!character) {
+			return nil;
+		}
+		
+		NSArray* components = [canonicalName componentsSeparatedByString:@"|"];
+		if (components.count > 0) {
+			NSInteger shipTypeID = [components[0] integerValue];
+			eufe::Ship* ship = character->setShip(shipTypeID);
+			
+			try {
+				std::list<eufe::TypeID> typeIDs;
+				std::list<eufe::TypeID> chargeIDs;
+				
+				if (components.count > 1) {
+					for (NSString* component in [components[1] componentsSeparatedByString:@";"]) {
+						NSArray* module = [component componentsSeparatedByString:@":"];
+						eufe::TypeID typeID = module.count > 0 ? [module[0] integerValue] : 0;
+						eufe::TypeID chargeID = module.count > 1 ? [module[1] integerValue] : 0;
+						int count = module.count > 2 ? [module[2] integerValue] : 1;
+						if (!typeID)
+							continue;
+						for (int i = 0; i < count; i++) {
+							typeIDs.push_back(typeID);
+							chargeIDs.push_back(chargeID);
+						}
+					}
+				}
+				eufe::ModulesList modules = ship->addModules(typeIDs);
+				std::list<eufe::TypeID>::const_iterator i = chargeIDs.begin();
+				for (auto module: modules) {
+					eufe::TypeID chargeID = *i++;
+					if (module && chargeID)
+						module->setCharge(chargeID);
+				}
+				
+				if (components.count > 2) {
+					for (NSString* component in [components[2] componentsSeparatedByString:@";"]) {
+						NSArray* drone = [component componentsSeparatedByString:@":"];
+						eufe::TypeID typeID = drone.count > 0 ? [drone[0] integerValue] : 0;
+						int count = drone.count > 1 ? [drone[1] integerValue] : 0;
+						if (!typeID)
+							continue;
+						for (int i = 0; i < count; i++) {
+							ship->addDrone(typeID);
+						}
+					}
+				}
+				
+				if (components.count > 3) {
+					for (NSString* component in [components[3] componentsSeparatedByString:@";"]) {
+						eufe::TypeID typeID = [component integerValue];
+						if (typeID)
+							character->addImplant(typeID);
+					}
+				}
+				
+				if (components.count > 4) {
+					for (NSString* component in [components[4] componentsSeparatedByString:@";"]) {
+						eufe::TypeID typeID = [component integerValue];
+						if (typeID)
+							character->addBooster(typeID);
+					}
+				}
+			}
+			catch (...) {
+				
 			}
 		}
 	}
@@ -731,6 +799,56 @@ public:
 		[xml appendString:@"</fitting>\n"];
 	}
 	return xml;
+}
+
+- (NSString*) canonicalName {
+	NSDictionary* dictionary = [self dictionary];
+	NSMutableArray* modules = [[NSMutableArray alloc] init];
+	
+	std::vector<std::pair<eufe::TypeID, eufe::TypeID> > modulePairs;
+	std::map<std::pair<eufe::TypeID, eufe::TypeID>, int> moduleCounts;
+	for (NSString* key in @[@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"]) {
+		NSArray* slot = [dictionary valueForKey:key];
+		for (NSDictionary* module in slot) {
+			std::pair<eufe::TypeID, eufe::TypeID> pair([module[@"typeID"] integerValue], [module[@"chargeTypeID"] integerValue]);
+			int count = [module[@"count"] integerValue];
+			if (moduleCounts.find(pair) == moduleCounts.end()) {
+				moduleCounts[pair] = count;
+				modulePairs.push_back(pair);
+			}
+			else
+				moduleCounts[pair] += count;
+		}
+	}
+	std::sort(modulePairs.begin(), modulePairs.end());
+	for (auto pair: modulePairs) {
+		NSString* s;
+		if (pair.second > 0)
+			s = [NSString stringWithFormat:@"%d:%d:%d", pair.first, pair.second, moduleCounts[pair]];
+		else
+			s = [NSString stringWithFormat:@"%d::%d", pair.first, moduleCounts[pair]];
+		[modules addObject:s];
+	}
+	
+	NSMutableArray* drones = [[NSMutableArray alloc] init];
+	std::vector<std::pair<eufe::TypeID, int> > dronePairs;
+	
+	for (NSDictionary* drone in [dictionary valueForKey:@"drones"]) {
+		if (![drone[@"active"] boolValue])
+			continue;
+		eufe::TypeID typeID = [drone[@"typeID"] integerValue];
+		int count = [drone[@"count"] integerValue];
+		dronePairs.push_back(std::pair<eufe::TypeID, int>(typeID, count));
+	}
+	std::sort(dronePairs.begin(), dronePairs.end());
+	
+	for (auto pair: dronePairs) {
+		NSString* s;
+		s = [NSString stringWithFormat:@"%d:%d", pair.first, pair.second];
+		[drones addObject:s];
+	}
+	NSString* s = [NSString stringWithFormat:@"%d|%@|%@", self.typeID, [modules componentsJoinedByString:@";"],  [drones componentsJoinedByString:@";"]];
+	return s;
 }
 
 #pragma mark - Private

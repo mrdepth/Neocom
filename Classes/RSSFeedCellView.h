@@ -9,11 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface RSSFeedCellView : UITableViewCell {
-	UILabel *titleLabel;
-	UILabel *dateLabel;
-	UILabel *descriptionLabel;
-}
+@interface RSSFeedCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, retain) IBOutlet UILabel *descriptionLabel;

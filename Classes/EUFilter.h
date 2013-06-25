@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EUFilterItem.h"
 
-@interface EUFilter : NSObject<NSCopying> {
-	NSMutableArray *filters;
-}
+@interface EUFilter : NSObject<NSCopying>
 @property (nonatomic, retain) NSMutableArray *filters;
 
 + (id) filterWithContentsOfURL:(NSURL*) url;

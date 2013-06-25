@@ -9,61 +9,46 @@
 #import "CharacterEqualSkills.h"
 #import "EVEDBAPI.h"
 
-@interface CharacterEqualSkills(Private)
-- (void) didReceiveRecord: (NSDictionary*) record;
-@end
-
 @implementation CharacterEqualSkills
 
 + (id) characterWithSkillsLevel:(NSInteger) level {
-	return [[[CharacterEqualSkills alloc] initWithSkillsLevel:level] autorelease];
+	return [[CharacterEqualSkills alloc] initWithSkillsLevel:level];
 }
 
 - (id) initWithSkillsLevel:(NSInteger) level {
 	if (self = [super init]) {
-		characterID = level;
-		name = [[NSString alloc] initWithFormat:NSLocalizedString(@"All Skills %d", nil), level];
+		self.characterID = level;
+		self.name = [[NSString alloc] initWithFormat:NSLocalizedString(@"All Skills %d", nil), level];
 	}
 	return self;
 }
 
-- (void) dealloc {
-	[super dealloc];
-}
-
 - (NSMutableDictionary*) skills {
+	NSMutableDictionary* skills = [super skills];
 	if (!skills) {
 		skills = [[NSMutableDictionary alloc] init];
-		if (characterID > 0) {
+		if (self.characterID > 0) {
 			
 			EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
 			if (!database) {
-				[self release];
 				return nil;
 			}
-			NSError *error = [database execWithSQLRequest:@"SELECT A.typeID FROM invTypes AS A, invGroups AS B WHERE A.groupID=B.groupID AND B.categoryID=16 AND A.published=1;"
-												   target:self
-												   action:@selector(didReceiveRecord:)];
+			NSError *error = [database execSQLRequest:@"SELECT A.typeID FROM invTypes AS A, invGroups AS B WHERE A.groupID=B.groupID AND B.categoryID=16 AND A.published=1;"
+										  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+											  NSInteger typeID = sqlite3_column_int(stmt, 0);
+											  [skills setValue:@(self.characterID) forKey:[NSString stringWithFormat:@"%d", typeID]];
+										  }];
 			if (error) {
-				[self release];
 				return nil;
 			}
 		}
+		self.skills = skills;
 	}
 	return skills;
 }
 
 - (NSString*) guid {
-	return [NSString stringWithFormat:@"s%d", characterID];
-}
-
-@end
-
-@implementation CharacterEqualSkills(Private)
-
-- (void) didReceiveRecord: (NSDictionary*) record {
-	NSString* typeID = [record valueForKey:@"typeID"];
-	[skills setValue:[NSNumber numberWithInteger:characterID] forKey:typeID];
+	return [NSString stringWithFormat:@"s%d", self.characterID];
 }
 
 @end

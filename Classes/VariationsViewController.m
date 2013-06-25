@@ -36,29 +36,28 @@
 	self.title = self.type.typeName;
 	NSMutableArray* values = [NSMutableArray array];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"VariationsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^{
 		@autoreleasepool {
 			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 			__block NSInteger parentTypeID = self.type.typeID;
-			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMetaTypes WHERE typeID=%d;", parentTypeID] resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-				NSInteger typeID = [[record valueForKey:@"parentTypeID"] integerValue];
-				if (typeID)
-					parentTypeID = typeID;
-				*needsMore = NO;
+			[database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
+						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+							 NSInteger typeID = sqlite3_column_int(stmt, 0);
+							 if (typeID)
+								 parentTypeID = typeID;
+							 *needsMore = NO;
 			}];
 			
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-			[database execWithSQLRequest:[NSString stringWithFormat:@"SELECT a.*, c.metaGroupName, c.metaGroupID FROM invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE (b.parentTypeID=%d OR b.typeID=%d) AND marketGroupID IS NOT NULL ORDER BY d.value, typeName;", parentTypeID, parentTypeID]
-							 resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-								 EVEDBInvType* type = [EVEDBInvType invTypeWithDictionary:record];
-								 NSString* key = [record valueForKey:@"metaGroupID"];
-								 if (!key)
-									 key = @"z";
-								 NSMutableDictionary* section = [sections valueForKey:key];
+			[database execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* FROM invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE (b.parentTypeID=%d OR b.typeID=%d) AND marketGroupID IS NOT NULL ORDER BY d.value, typeName;", parentTypeID, parentTypeID]
+							 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+								 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+								 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
+								 NSNumber* key = metaGroup.metaGroupID > 0 ? @(metaGroup.metaGroupID) : @(INT_MAX);
+								 NSMutableDictionary* section = [sections objectForKey:key];
 								 if (!section) {
-									 NSString* title = [record valueForKey:@"metaGroupName"];
-									 if (!title)
-										 title = @"";
+									 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
 									 
 									 section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 												title, @"title",
@@ -69,7 +68,7 @@
 								 else
 									 [[section valueForKey:@"rows"] addObject:type];
 								 
-								 if ([operation isCancelled])
+								 if ([weakOperation isCancelled])
 									 *needsMore = NO;
 							 }];
 			
@@ -78,7 +77,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.sections = values;
 			[self.tableView reloadData];
 		}
@@ -94,12 +93,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc {
-    [_tableView release];
-	[_sections release];
-    [super dealloc];
-}
-
 - (void)viewDidUnload {
     [self setTableView:nil];
 	self.sections = nil;
@@ -113,7 +106,6 @@
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark -

@@ -13,12 +13,6 @@
 #import "UIAlertView+Error.h"
 
 @implementation RSSViewController
-@synthesize webView;
-@synthesize activityIndicatorView;
-@synthesize backButton;
-@synthesize forwardButton;
-@synthesize reloadButton;
-@synthesize rss;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -36,18 +30,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Browser", nil);
-	NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<a href=\"%@\">%@</a><br>%@<br>", [rss.link absoluteString], rss.title, rss.description];
-	if (rss.enclosure && rss.enclosure.url) {
+	NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<a href=\"%@\">%@</a><br>%@<br>", [self.rss.link absoluteString], self.rss.title, self.rss.description];
+	if (self.rss.enclosure && self.rss.enclosure.url) {
 		//NSString *url = [rss.enclosure valueForKey:@"url"];
 		[htmlString appendFormat:@"<br><a href=\"%@\"><img width=16 height=16 src=\"%@\"/>Play %@ (%.1f Mb)</a><br>",
 		@"dummy://play",
 		 [[[NSBundle mainBundle] URLForResource:((RETINA_DISPLAY) ? @"buttonPlay@2x" : @"buttonPlay") withExtension:@"png"] absoluteString],
-		 [[rss.enclosure.url absoluteString] lastPathComponent],
-		 rss.enclosure.length / (1024.0 * 1024.0)];
+		 [[self.rss.enclosure.url absoluteString] lastPathComponent],
+		 self.rss.enclosure.length / (1024.0 * 1024.0)];
 	}
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[htmlString appendString:@"<br><br>"];
-	[webView loadHTMLString:htmlString baseURL:nil];
+	[self.webView loadHTMLString:htmlString baseURL:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -74,16 +68,6 @@
 }
 
 
-- (void)dealloc {
-	[webView release];
-	[activityIndicatorView release];
-	[backButton release];
-	[forwardButton release];
-	[reloadButton release];
-	[rss release];
-    [super dealloc];
-}
-
 - (IBAction) onClose:(id) sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -91,34 +75,34 @@
 #pragma mark UIWebViewDelegate
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
-	backButton.enabled = webView.canGoBack;
-	forwardButton.enabled = webView.canGoForward;
-	[activityIndicatorView startAnimating];
+	self.backButton.enabled = self.webView.canGoBack;
+	self.forwardButton.enabled = self.webView.canGoForward;
+	[self.activityIndicatorView startAnimating];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-	backButton.enabled = webView.canGoBack;
-	forwardButton.enabled = webView.canGoForward;
-	[activityIndicatorView stopAnimating];
+	self.backButton.enabled = self.webView.canGoBack;
+	self.forwardButton.enabled = self.webView.canGoForward;
+	[self.activityIndicatorView stopAnimating];
 }
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	if ([[[request URL] scheme] isEqualToString:@"dummy"]) {
-		MPMoviePlayerViewController *controller = [[[MPMoviePlayerViewController alloc] initWithContentURL:rss.enclosure.url] autorelease];
+		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:self.rss.enclosure.url];
 		[self presentMoviePlayerViewControllerAnimated:controller];
 		return NO;
 	}
 	else {
 		if (navigationType != UIWebViewNavigationTypeOther) {
 			[aWebView setScalesPageToFit:YES];
-			reloadButton.enabled = YES;
+			self.reloadButton.enabled = YES;
 		}
 		return YES;
 	}
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	[activityIndicatorView stopAnimating];
+	[self.activityIndicatorView stopAnimating];
 	[[UIAlertView alertViewWithError:error] show];
 }
 

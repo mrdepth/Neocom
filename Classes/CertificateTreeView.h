@@ -12,18 +12,12 @@
 #import "CertificateTreeViewDelegate.h"
 
 @class EVEDBCrtCertificate;
-@interface CertificateTreeView : UIView<CertificateRelationshipViewDelegate, UIAlertViewDelegate> {
-	EVEDBCrtCertificate* certificate;
-	NSMutableArray* prerequisites;
-	NSMutableArray* derivations;
-	CertificateView* certificateView;
-	id<CertificateTreeViewDelegate> delegate;
-}
-@property (retain, nonatomic) EVEDBCrtCertificate* certificate;
-@property (retain, nonatomic, readonly) NSMutableArray* prerequisites;
-@property (retain, nonatomic, readonly) NSMutableArray* derivations;
-@property (retain, nonatomic, readonly) CertificateView* certificateView;
-@property (assign, nonatomic) IBOutlet id<CertificateTreeViewDelegate> delegate;
+@interface CertificateTreeView : UIView<CertificateRelationshipViewDelegate, UIAlertViewDelegate>
+@property (strong, nonatomic) EVEDBCrtCertificate* certificate;
+@property (strong, nonatomic, readonly) NSMutableArray* prerequisites;
+@property (strong, nonatomic, readonly) NSMutableArray* derivations;
+@property (strong, nonatomic, readonly) CertificateView* certificateView;
+@property (weak, nonatomic) IBOutlet id<CertificateTreeViewDelegate> delegate;
 
 - (IBAction)onAddToTrainingPlan;
 

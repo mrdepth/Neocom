@@ -9,16 +9,10 @@
 #import <Foundation/Foundation.h>
 
 
-@interface EUSearchDisplayController : UISearchDisplayController<UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate, UISearchBarDelegate> {
-	UIPopoverController *popoverController;
-	UITableViewController *tableViewController;
-	UILabel *noResultsLabel;
-	NSMutableArray *sections;
-	UISegmentedControl *scopeSegmentControler;
-}
-@property (nonatomic, readonly, retain) UIPopoverController *popoverController;
-@property (nonatomic, readonly, retain) UITableViewController *tableViewController;
-@property (nonatomic, readonly, retain) UILabel *noResultsLabel;
+@interface EUSearchDisplayController : UISearchDisplayController<UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate, UISearchBarDelegate>
+@property (nonatomic, readonly, strong) UIPopoverController *popoverController;
+@property (nonatomic, readonly, strong) UITableViewController *tableViewController;
+@property (nonatomic, readonly, strong) UILabel *noResultsLabel;
 
 - (IBAction) onChangePublishedFilterSegment: (id) sender;
 

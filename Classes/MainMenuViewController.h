@@ -10,17 +10,10 @@
 #import "CharacterInfoViewController.h"
 
 @class SBTableView;
-@interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate> {
-	SBTableView *menuTableView;
-	NSArray *menuItems;
-	CharacterInfoViewController *characterInfoViewController;
-	UIView *characterInfoView;
-@private
-	NSInteger numberOfUnreadMessages;
-}
-@property (nonatomic, retain) IBOutlet SBTableView *menuTableView;
-@property (nonatomic, retain) IBOutlet CharacterInfoViewController *characterInfoViewController;
-@property (nonatomic, retain) IBOutlet UIView *characterInfoView;
+@interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate>
+@property (nonatomic, weak) IBOutlet SBTableView *menuTableView;
+@property (nonatomic, weak) IBOutlet CharacterInfoViewController *characterInfoViewController;
+@property (nonatomic, weak) IBOutlet UIView *characterInfoView;
 @property (nonatomic, retain) NSArray *menuItems;
 
 - (IBAction)onFacebook:(id)sender;

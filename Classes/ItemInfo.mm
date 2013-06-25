@@ -8,7 +8,8 @@
 
 #import "ItemInfo.h"
 
-@interface ItemInfo(Private)
+@interface ItemInfo()
+@property (nonatomic, readwrite, assign) eufe::Item* item;
 
 - (void) clear;
 
@@ -17,12 +18,12 @@
 class ItemInfoContext : public eufe::Item::Context
 {
 public:
-	ItemInfoContext(ItemInfo* itemInfo) : itemInfo_([itemInfo retain]) {}
+	ItemInfoContext(ItemInfo* itemInfo) : itemInfo_(itemInfo) {}
 	
 	virtual ~ItemInfoContext()
 	{
 		[itemInfo_ clear];
-		[itemInfo_ release];
+		itemInfo_ = nil;
 	}
 	
 	ItemInfo* getItemInfo() const {return itemInfo_;}
@@ -31,13 +32,12 @@ private:
 };
 
 @implementation ItemInfo
-@synthesize item;
 
 + (id) itemInfoWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr {
 	const eufe::Item::Context* context = aItem->getContext();
 	if (context == NULL)
 	{
-		ItemInfo* itemInfo = [[[ItemInfo alloc] initWithItem:aItem error:errorPtr] autorelease];
+		ItemInfo* itemInfo = [[ItemInfo alloc] initWithItem:aItem error:errorPtr];
 		ItemInfoContext* context = new ItemInfoContext(itemInfo);
 		aItem->setContext(context);
 		return itemInfo;
@@ -46,15 +46,15 @@ private:
 		return dynamic_cast<const ItemInfoContext*>(context)->getItemInfo();
 }
 
-- (id) initWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr {
-	if (self = [super initWithTypeID:aItem->getTypeID() error:errorPtr]) {
-		item = aItem;
+- (id) initWithItem:(eufe::Item*) item error:(NSError **)errorPtr {
+	if (self = [super initWithTypeID:item->getTypeID() error:errorPtr]) {
+		self.item = item;
 	}
 	return self;
 }
 
 - (void) updateAttributes {
-	const eufe::AttributesMap &attributesMap = item->getAttributes();
+	const eufe::AttributesMap &attributesMap = self.item->getAttributes();
 	NSMutableDictionary* attributes = self.attributesDictionary;
 	eufe::AttributesMap::const_iterator i, end = attributesMap.end();
 	for (i = attributesMap.begin(); i != end; i++) {
@@ -65,12 +65,10 @@ private:
 	}
 }
 
-@end
-
-@implementation ItemInfo(Private)
+#pragma mark - Private
 
 - (void) clear {
-	item = NULL;
+	self.item = NULL;
 }
 
 @end

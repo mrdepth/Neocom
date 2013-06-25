@@ -9,19 +9,14 @@
 #import "CharacterAttributes.h"
 #import "EVEDBAPI.h"
 
-@interface CharacterAttributes(Private)
+@interface CharacterAttributes()
 - (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID;
 @end
 
 @implementation CharacterAttributes
-@synthesize intelligence;
-@synthesize memory;
-@synthesize charisma;
-@synthesize perception;
-@synthesize willpower;
 	
 + (CharacterAttributes*) defaultCharacterAttributes {
-	CharacterAttributes* attributes = [[[CharacterAttributes alloc] init] autorelease];
+	CharacterAttributes* attributes = [[CharacterAttributes alloc] init];
 	attributes.charisma = 19;
 	attributes.intelligence = 20;
 	attributes.memory = 20;
@@ -38,9 +33,7 @@
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;
 }
 
-@end
-
-@implementation CharacterAttributes(Private)
+#pragma mark - Private
 
 - (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID {
 	switch (attributeID) {

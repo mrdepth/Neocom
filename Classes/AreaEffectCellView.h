@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AreaEffectCellView : UITableViewCell {
-	UIImageView *stateView;
-	UILabel *titleLabel;
-}
+@interface AreaEffectCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *stateView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 

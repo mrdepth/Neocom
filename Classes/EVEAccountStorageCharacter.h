@@ -10,11 +10,7 @@
 #import "EVEOnlineAPI.h"
 
 @class EVEAccountStorageAPIKey;
-@interface EVEAccountStorageCharacter: EVEAPIKeyInfoCharactersItem {
-	NSMutableArray *assignedCharAPIKeys;
-	NSMutableArray *assignedCorpAPIKeys;
-	BOOL enabled;
-}
+@interface EVEAccountStorageCharacter: EVEAPIKeyInfoCharactersItem
 @property (nonatomic, retain) NSMutableArray *assignedCharAPIKeys;
 @property (nonatomic, retain) NSMutableArray *assignedCorpAPIKeys;
 @property (nonatomic, assign) BOOL enabled;

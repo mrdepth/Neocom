@@ -9,9 +9,6 @@
 #import "MessageCellView.h"
 
 @implementation MessageCellView
-@synthesize subjectLabel;
-@synthesize fromLabel;
-@synthesize dateLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -27,13 +24,6 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-}
-
-- (void) dealloc {
-	[subjectLabel release];
-	[fromLabel release];
-	[dateLabel release];
-	[super dealloc];
 }
 
 @end

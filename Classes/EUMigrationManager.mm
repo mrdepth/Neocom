@@ -132,9 +132,7 @@
 			APIKey* key = [[APIKey alloc] initWithEntity:entity insertIntoManagedObjectContext:storage.managedObjectContext];
 			key.keyID = keyID;
 			key.vCode = vCode;
-			[key release];
 		}
-		[fetchRequest release];
 	}
 	
 	for (NSNumber* characterID in [apiKeys valueForKey:@"ignored"]) {
@@ -151,7 +149,6 @@
 			IgnoredCharacter* ignoredCharacter = [[IgnoredCharacter alloc] initWithEntity:entity insertIntoManagedObjectContext:storage.managedObjectContext];
 			ignoredCharacter.characterID = [characterID integerValue];
 		}
-		[fetchRequest release];
 	}
 	
 	[[NSFileManager defaultManager] removeItemAtPath:[Globals accountsFilePath] error:nil];
@@ -199,7 +196,6 @@
 			posFit.typeID = typeID;
 			posFit.typeName = typeName;
 			posFit.structures = structuresString;
-			[posFit release];
 		}
 		else {
 			NSDictionary* fitDetails = [fit valueForKey:@"fit"];
@@ -282,7 +278,6 @@
 			shipFit.drones = dronesString;
 			shipFit.implants = implantsString;
 			shipFit.boosters = boostersString;
-			[shipFit release];
 		}
 	}
 	[[NSFileManager defaultManager] removeItemAtPath:[Globals fitsFilePath] error:nil];
@@ -319,11 +314,10 @@
 					
 					NSError *error = nil;
 					NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-					[fetchRequest release];
 
 					SkillPlan* skillPlan = fetchedObjects.count > 0 ?
 						[fetchedObjects objectAtIndex:0] :
-						[[[SkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext] autorelease];
+						[[SkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 					
 					skillPlan.skillPlanName = @"main";
 					skillPlan.skillPlanSkills = skills;

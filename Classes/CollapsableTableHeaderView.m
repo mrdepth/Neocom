@@ -43,10 +43,4 @@
 	self.collapsImageView.frame = CGRectMake(self.frame.size.width - 26, 0, 22, 22);
 }
 
-- (void)dealloc {
-    [_titleLabel release];
-    [_collapsImageView release];
-    [super dealloc];
-}
-
 @end

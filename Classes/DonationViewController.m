@@ -7,12 +7,11 @@
 //
 
 #import "DonationViewController.h"
-#import "EVERequestsCache.h"
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
 
-@interface DonationViewController(Private)
+@interface DonationViewController()
 
 - (void) reload;
 
@@ -20,9 +19,6 @@
 
 
 @implementation DonationViewController
-@synthesize upgradeView;
-@synthesize donateView;
-
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -68,11 +64,6 @@
 
 - (void)dealloc {
 	[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
-	[upgradeView release];
-	[donateView release];
-	
-	[_upgradeDoneView release];
-    [super dealloc];
 }
 
 - (IBAction) onUpgrade:(id) sender {
@@ -82,7 +73,7 @@
 	
 	[[Globals appDelegate] setInAppStatus:YES];
 	[paymentQueue addTransactionObserver:self];
-	SKMutablePayment *payment = [[[SKMutablePayment alloc] init] autorelease];
+	SKMutablePayment *payment = [[SKMutablePayment alloc] init];
 	payment.productIdentifier = @"com.shimanski.eveuniverse.full";
 	payment.quantity = 1;
 	[paymentQueue addPayment:payment];
@@ -95,7 +86,6 @@
 											   destructiveButtonTitle:nil
 													otherButtonTitles:NSLocalizedString(@"Donate $1", nil), NSLocalizedString(@"Donate $5", nil), NSLocalizedString(@"Donate $10", nil), nil];
 	[actionSheet showFromRect:[sender frame] inView:[sender superview] animated:YES];
-	[actionSheet release];
 }
 
 - (IBAction) onRestore:(id)sender {
@@ -118,7 +108,7 @@
 		
 		[[Globals appDelegate] setInAppStatus:YES];
 		[paymentQueue addTransactionObserver:self];
-		SKMutablePayment *payment = [[[SKMutablePayment alloc] init] autorelease];
+		SKMutablePayment *payment = [[SKMutablePayment alloc] init];
 		if (buttonIndex == 0)
 			payment.productIdentifier = @"com.shimanski.eveuniverse.donation";
 		else if (buttonIndex == 1)
@@ -155,39 +145,37 @@
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
 	[[Globals appDelegate] setInAppStatus:NO];
-	UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+	UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
 														 message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
 														delegate:nil
 											   cancelButtonTitle:NSLocalizedString(@"Close", nil)
-											   otherButtonTitles:nil] autorelease];
+											   otherButtonTitles:nil];
 	[alertView show];
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
 	if (queue.transactions.count == 0) {
 		[[Globals appDelegate] setInAppStatus:NO];
-		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
+		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
 															 message:NSLocalizedString(@"Sorry, but we haven't found your purchases.", nil)
 															delegate:nil
 												   cancelButtonTitle:NSLocalizedString(@"Close", nil)
-												   otherButtonTitles:nil] autorelease];
+												   otherButtonTitles:nil];
 		[alertView show];
 	}
 }
 
-@end
-
-@implementation DonationViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
-	if (upgradeView.superview)
-		[upgradeView removeFromSuperview];
-	if (donateView.superview)
-		[upgradeView removeFromSuperview];
+	if (self.upgradeView.superview)
+		[self.upgradeView removeFromSuperview];
+	if (self.donateView.superview)
+		[self.upgradeView removeFromSuperview];
 	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
-		[self.view addSubview:upgradeView];
-		upgradeView.frame = CGRectMake(0, 0, upgradeView.frame.size.width, upgradeView.frame.size.height);
+		[self.view addSubview:self.upgradeView];
+		self.upgradeView.frame = CGRectMake(0, 0, self.upgradeView.frame.size.width, self.upgradeView.frame.size.height);
 	}
 	else {
 		[self.view addSubview:self.donateView];

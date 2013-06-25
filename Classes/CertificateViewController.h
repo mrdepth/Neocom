@@ -10,16 +10,7 @@
 #import "CertificateTreeView.h"
 
 @class EVEDBCrtCertificate;
-@interface CertificateViewController : UIViewController<UIScrollViewDelegate, CertificateTreeViewDelegate, UITableViewDelegate, UITableViewDataSource> {
-	UIScrollView* scrollView;
-	CertificateTreeView* certificateTreeView;
-	UITableView* recommendationsTableView;
-	UIView* contentView;
-	UISegmentedControl *pageSegmentControl;
-	EVEDBCrtCertificate* certificate;
-@private
-	NSMutableArray* sections;
-}
+@interface CertificateViewController : UIViewController<UIScrollViewDelegate, CertificateTreeViewDelegate, UITableViewDelegate, UITableViewDataSource>
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (retain, nonatomic) IBOutlet CertificateTreeView *certificateTreeView;
 @property (retain, nonatomic) IBOutlet UITableView *recommendationsTableView;

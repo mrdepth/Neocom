@@ -9,11 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface MainMenuCellView : UITableViewCell {
-	UILabel *titleLabel;
-	UIImageView *iconImageView;
-}
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
+@interface MainMenuCellView : UITableViewCell
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 
 @end

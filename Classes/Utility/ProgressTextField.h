@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProgressTextField : UITextField {
-	float progress;
-	UIColor *color;
-}
+@interface ProgressTextField : UITextField
 @property (nonatomic, assign) float progress;
 @property (nonatomic, retain) UIColor *color;
 

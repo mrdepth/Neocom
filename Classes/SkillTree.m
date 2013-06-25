@@ -11,7 +11,7 @@
 #import "EVEAccount.h"
 #import "EVEOnlineAPI.h"
 
-@implementation SkillTreeItem : EVEDBInvType
+@implementation SkillTreeItem
 @synthesize skillLevel;
 @synthesize hierarchyLevel;
 @synthesize skillAvailability;
@@ -35,7 +35,9 @@
 
 @end
 
-@interface SkillTree(Private)
+@interface SkillTree()
+@property (nonatomic, strong) NSDictionary *characterSkills;
+@property (nonatomic, strong) NSArray *skillRequirementsMap;
 
 - (void) addSkill:(SkillTreeItem*) skill;
 - (SkillTreeItemAvailability) skillAvailability:(SkillTreeItem*) skill;
@@ -48,24 +50,24 @@
 
 
 + (id) skillTreeWithRootSkill: (EVEDBInvType*) skill skillLevel:(NSInteger) skillLevel {
-	return [[[SkillTree alloc] initWithRootSkill:skill skillLevel:skillLevel] autorelease];
+	return [[SkillTree alloc] initWithRootSkill:skill skillLevel:skillLevel];
 }
 													  
 - (id) initWithRootSkill: (EVEDBInvType*) skill skillLevel:(NSInteger) skillLevel {
 	if (self = [super init]) {
 		EVEAccount *account = [EVEAccount currentAccount];
 		if (account.characterSheet.skills) {
-			characterSkills = [NSMutableDictionary dictionary];
+			self.characterSkills = [NSMutableDictionary dictionary];
 			for (EVECharacterSheetSkill *skill in account.characterSheet.skills) {
-				[characterSkills setValue:skill forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+				[self.characterSkills setValue:skill forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 			}
 		}
 		else
-			characterSkills = nil;
+			self.characterSkills = nil;
 		
-		skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
+		self.skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 		
-		SkillTreeItem *item = [[[SkillTreeItem alloc] initWithTypeID:skill.typeID error:nil] autorelease];
+		SkillTreeItem *item = [[SkillTreeItem alloc] initWithTypeID:skill.typeID error:nil];
 		item.skillLevel = skillLevel;
 		item.hierarchyLevel = 0;
 		self.skills = [NSMutableArray array];
@@ -75,26 +77,19 @@
 	return self;
 }
 
-- (void) dealloc {
-	[skills release];
-	[super dealloc];
-}
-
-@end
-
-@implementation SkillTree(Private)
+#pragma mark - Private
 
 - (void) addSkill:(SkillTreeItem*) skill {
-	[skills addObject:skill];
+	[(NSMutableArray*) self.skills addObject:skill];
 	skill.skillAvailability = [self skillAvailability:skill];
 	
-	for (NSDictionary *requirementMap in skillRequirementsMap) {
+	for (NSDictionary *requirementMap in self.skillRequirementsMap) {
 		EVEDBDgmTypeAttribute *attribute = [skill.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeRequirementIDKey]];
 		if (attribute) {
 			EVEDBDgmTypeAttribute *level = [skill.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
 			NSInteger typeID = (NSInteger) attribute.value;
 			if (typeID && skill.hierarchyLevel < 6 && typeID != skill.typeID) {
-				SkillTreeItem *item = [[[SkillTreeItem alloc] initWithTypeID:typeID error:nil] autorelease];
+				SkillTreeItem *item = [[SkillTreeItem alloc] initWithTypeID:typeID error:nil];
 				item.skillLevel = (NSInteger) level.value;
 				item.hierarchyLevel = skill.hierarchyLevel + 1;
 				[self addSkill:item];
@@ -104,8 +99,8 @@
 }
 
 - (SkillTreeItemAvailability) skillAvailability:(SkillTreeItem*) skill {
-	if (characterSkills) {
-		EVECharacterSheetSkill *characterSkill = [characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+	if (self.characterSkills) {
+		EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 		if (!characterSkill)
 			return SkillTreeItemAvailabilityNotLearned;
 		else if (characterSkill.level < skill.skillLevel)

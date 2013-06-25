@@ -11,23 +11,15 @@
 #import "EUNotification.h"
 
 @class EVEAccount;
-@interface EUMailBox : NSObject {
-	NSMutableArray* inbox;
-	NSMutableArray* sent;
-	NSMutableArray* notifications;
-	NSInteger keyID;
-	NSString* vCode;
-	NSInteger characterID;
-	NSError* error;
-}
+@interface EUMailBox : NSObject
 @property (nonatomic, readonly) NSInteger numberOfUnreadMessages;
-@property (nonatomic, readonly, retain) NSArray* inbox;
-@property (nonatomic, readonly, retain) NSArray* sent;
-@property (nonatomic, readonly, retain) NSArray* notifications;
+@property (nonatomic, readonly, strong) NSArray* inbox;
+@property (nonatomic, readonly, strong) NSArray* sent;
+@property (nonatomic, readonly, strong) NSArray* notifications;
 @property (nonatomic, readonly) NSInteger keyID;
-@property (nonatomic, readonly, retain) NSString* vCode;
+@property (nonatomic, readonly, strong) NSString* vCode;
 @property (nonatomic, readonly) NSInteger characterID;
-@property (nonatomic, readonly, retain) NSError* error;
+@property (nonatomic, readonly, strong) NSError* error;
 
 + (id) mailBoxWithAccount:(EVEAccount*) account;
 - (id) initWithAccount:(EVEAccount*) account;

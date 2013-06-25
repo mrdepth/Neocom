@@ -36,38 +36,8 @@
 													FitsViewControllerDelegate,
 													TargetsViewControllerDelegate,
 													MFMailComposeViewControllerDelegate,
-													FittingVariationsViewControllerDelegate> {
-	UIView *sectionsView;
-	UISegmentedControl *sectionSegmentControl;
-	UINavigationController *modalController;
-	UINavigationController *targetsModalController;
-	UINavigationController *areaEffectsModalController;
-	TargetsViewController* targetsViewController;
-	AreaEffectsViewController* areaEffectsViewController;
-	ModulesViewController *modulesViewController;
-	DronesViewController *dronesViewController;
-	ImplantsViewController *implantsViewController;
-	StatsViewController *statsViewController;
-	FleetViewController *fleetViewController;
+													FittingVariationsViewControllerDelegate>
 
-	UIView *shadeView;
-	UIToolbar *fitNameView;
-	UITextField *fitNameTextField;
-	UIView *statsSectionView;
-	UIPopoverController *popoverController;
-	UIPopoverController *targetsPopoverController;
-	UIPopoverController *areaEffectsPopoverController;
-	ShipFit* fit;
-
-	eufe::Engine* fittingEngine;
-	NSMutableArray* fits;
-	DamagePattern* damagePattern;
-	PriceManager* priceManager;
-@private
-	UIViewController<FittingSection> *currentSection;
-	NSInteger currentSectionIndex;
-	UIActionSheet *actionSheet;
-}
 @property (nonatomic, retain) IBOutlet UIView *sectionsView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *sectionSegmentControl;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;

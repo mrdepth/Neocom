@@ -11,15 +11,7 @@
 
 @class EVEDBCrtCertificate;
 @class EVEDBInvTypeRequiredSkill;
-@interface CertificateRelationshipView : UIView {
-	UIImageView *iconView;
-	UIImageView *statusView;
-	UILabel *titleLabel;
-	UIColor* color;
-	EVEDBCrtCertificate* certificate;
-	EVEDBInvTypeRequiredSkill* type;
-	id<CertificateRelationshipViewDelegate> delegate;
-}
+@interface CertificateRelationshipView : UIView
 
 @property (retain, nonatomic) IBOutlet UIImageView *iconView;
 @property (retain, nonatomic) IBOutlet UIImageView *statusView;

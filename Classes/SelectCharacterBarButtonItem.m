@@ -11,7 +11,7 @@
 #import "EVEAccount.h"
 #import "EVEAccountsViewController.h"
 
-@interface SelectCharacterBarButtonItem(Private)
+@interface SelectCharacterBarButtonItem()
 
 - (void) didSelectAccount:(NSNotification*) notification;
 
@@ -20,18 +20,16 @@
 
 
 @implementation SelectCharacterBarButtonItem
-@synthesize parentViewController;
-@synthesize modalViewController;
 
 + (id) barButtonItemWithParentViewController: (UIViewController*) controller {
-	return [[[SelectCharacterBarButtonItem alloc] initWithParentViewController:controller] autorelease];
+	return [[SelectCharacterBarButtonItem alloc] initWithParentViewController:controller];
 }
 
 - (id) initWithParentViewController: (UIViewController*) controller {
 	if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 		EVEAccount *account = [EVEAccount currentAccount];
 		[self setCharacterName:account.characterName];
-		parentViewController = controller;
+		self.parentViewController = controller;
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	}
 	return self;
@@ -42,27 +40,23 @@
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navigationController.navigationBar.barStyle = UIBarStyleBlack;
-	[controller.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
-																					  style:UIBarButtonItemStyleBordered
-																					 target:self
-																					 action:@selector(onBack:)] autorelease]];
+	[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+																					 style:UIBarButtonItemStyleBordered
+																					target:self
+																					action:@selector(onBack:)]];
 	self.modalViewController = navigationController;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-	[parentViewController presentModalViewController:navigationController animated:YES];
-	[controller release];
-	[navigationController release];
+	[self.parentViewController presentModalViewController:navigationController animated:YES];
 }
 
 - (IBAction) onBack: (id) sender {
-	[modalViewController dismissModalViewControllerAnimated:YES];
+	[self.modalViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[modalViewController release];
-	[super dealloc];
 }
 
 - (void) setCharacterName:(NSString*) name {
@@ -76,9 +70,7 @@
 		self.title = NSLocalizedString(@"Select Character", nil);
 }
 
-@end
-
-@implementation SelectCharacterBarButtonItem(Private)
+#pragma mark - Private
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];

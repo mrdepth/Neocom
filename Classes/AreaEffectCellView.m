@@ -9,8 +9,6 @@
 #import "AreaEffectCellView.h"
 
 @implementation AreaEffectCellView
-@synthesize stateView;
-@synthesize titleLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -28,10 +26,5 @@
     // Configure the view for the selected state
 }
 
-- (void)dealloc {
-	[stateView release];
-	[titleLabel release];
-    [super dealloc];
-}
 
 @end

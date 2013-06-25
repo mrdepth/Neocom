@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface APIKeysKeyCellView : UITableViewCell {
-	UILabel *nameLabel;
-	UILabel *keyIDLabel;
-	UILabel *vCodeLabel;
-	UIImageView *checkmarkImageView;
-}
+@interface APIKeysKeyCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel *nameLabel;
 @property (nonatomic, retain) IBOutlet UILabel *keyIDLabel;
 @property (nonatomic, retain) IBOutlet UILabel *vCodeLabel;

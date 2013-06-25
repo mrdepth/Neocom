@@ -9,12 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EVEDBCrtCategory;
-@interface CertificatesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
-	UITableView* certificatesTableView;
-	EVEDBCrtCategory* category;
-@private
-	NSMutableArray* sections;
-}
+@interface CertificatesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, retain) IBOutlet UITableView* certificatesTableView;
 @property (nonatomic, retain) EVEDBCrtCategory* category;
 

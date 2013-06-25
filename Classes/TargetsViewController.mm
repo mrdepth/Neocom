@@ -16,12 +16,12 @@
 
 #include "eufe.h"
 
+@interface TargetsViewController()
+@property (nonatomic, strong) NSArray* targets;
+
+@end
+
 @implementation TargetsViewController
-@synthesize tableView;
-@synthesize fittingViewController;
-@synthesize currentTarget;
-@synthesize delegate;
-@synthesize modifiedItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,8 +60,7 @@
 {
     [super viewDidUnload];
 	[self setTableView:nil];
-	[targets release];
-	targets = nil;
+	self.targets = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -69,20 +68,20 @@
 	
 	NSMutableArray* targetsTmp = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:NSLocalizedString(@"Loading Targets", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		eufe::Gang* gang = fittingViewController.fittingEngine->getGang();
+		eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
 		
 		eufe::Character* fleetBooster = gang->getFleetBooster();
 		eufe::Character* wingBooster = gang->getWingBooster();
 		eufe::Character* squadBooster = gang->getSquadBooster();
 		
 		//for (i = characters.begin(); i != end; i++) {
-		float n = fittingViewController.fits.count;
+		float n = self.fittingViewController.fits.count;
 		float i = 0;
-		for (ShipFit* fit in fittingViewController.fits) {
-			operation.progress = i++ / n;
-			if (fit == fittingViewController.fit)
+		for (ShipFit* fit in self.fittingViewController.fits) {
+			weakOperation.progress = i++ / n;
+			if (fit == self.fittingViewController.fit)
 				continue;
 			
 			eufe::Character* character = fit.character;
@@ -104,26 +103,16 @@
 										fit.fitName ? fit.fitName : ship.typeName, @"fitName", nil];
 			[targetsTmp addObject:row];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (targets)
-				[targets release];
-			targets = [targetsTmp retain];
-			[tableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.targets = targetsTmp;
+			[self.tableView reloadData];
 		}
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
-- (void)dealloc {
-	[tableView release];
-	[targets release];
-	[modifiedItem release];
-	[super dealloc];
 }
 
 #pragma mark -
@@ -137,7 +126,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return targets.count;
+    return self.targets.count;
 }
 
 
@@ -148,14 +137,14 @@
 	if (cell == nil) {
 		cell = [FleetMemberCellView cellWithNibName:@"FleetMemberCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	NSDictionary* row = [targets objectAtIndex:indexPath.row];
+	NSDictionary* row = [self.targets objectAtIndex:indexPath.row];
 	ItemInfo* ship = [row valueForKey:@"ship"];
-	ShipFit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
+	ShipFit* fit = [[self.targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
 
 	cell.titleLabel.text = [row valueForKey:@"title"];
 	cell.fitNameLabel.text = [row valueForKey:@"fitName"];
 	cell.iconView.image = [UIImage imageNamed:[ship typeSmallImageName]];
-	if (currentTarget == fit.character->getShip())
+	if (self.currentTarget == fit.character->getShip())
 		cell.stateView.image = [UIImage imageNamed:@"Icons/icon04_12.png"];
 	else
 		cell.stateView.image = nil;
@@ -172,8 +161,8 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	ShipFit* fit = [[targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
-	[delegate targetsViewController:self didSelectTarget:fit.character->getShip()];
+	ShipFit* fit = [[self.targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
+	[self.delegate targetsViewController:self didSelectTarget:fit.character->getShip()];
 }
 
 #pragma mark UIPopoverControllerDelegate

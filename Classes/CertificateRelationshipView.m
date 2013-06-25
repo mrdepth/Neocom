@@ -8,20 +8,13 @@
 
 #import "CertificateRelationshipView.h"
 
-@interface CertificateRelationshipView(Private)
+@interface CertificateRelationshipView()
 
 - (void) didTap;
 
 @end
 
 @implementation CertificateRelationshipView
-@synthesize iconView;
-@synthesize statusView;
-@synthesize titleLabel;
-@synthesize color;
-@synthesize certificate;
-@synthesize type;
-@synthesize delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -52,29 +45,16 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[background drawInRect:rect];
 	CGContextClipToMask(context, rect, [mask CGImage]);
-	//CGContextSetRGBFillColor(context, 38.0/255.0, 37.0/255.0, 15.0/255.0, 1);
-	CGContextSetFillColorWithColor(context, [color CGColor]);
+	CGContextSetFillColorWithColor(context, [self.color CGColor]);
 	CGContextFillRect(context, rect);
-	[self addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap)] autorelease]];
+	[self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap)]];
 }
 
 
-- (void)dealloc {
-	[iconView release];
-	[statusView release];
-	[titleLabel release];
-	[color release];
-	[certificate release];
-	[type release];
-	[super dealloc];
-}
-
-@end
-
-@implementation CertificateRelationshipView(Private)
+#pragma mark - Private
 
 - (void) didTap {
-	[delegate certificateRelationshipViewDidTap:self];
+	[self.delegate certificateRelationshipViewDidTap:self];
 }
 
 @end

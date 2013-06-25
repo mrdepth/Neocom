@@ -37,12 +37,14 @@
 #define ActionButtonShowAmmoInfo NSLocalizedString(@"Show Ammo Info", nil)
 #define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
 
+@interface StructuresViewController()
+@property(nonatomic, strong) NSMutableArray *structures;
+@property(nonatomic, strong) NSIndexPath *modifiedIndexPath;
+
+
+@end
+
 @implementation StructuresViewController
-@synthesize posFittingViewController;
-@synthesize tableView;
-@synthesize powerGridLabel;
-@synthesize cpuLabel;
-@synthesize fittingItemsViewController;
 @synthesize popoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -90,18 +92,6 @@
 }
 
 
-- (void) dealloc {
-	[tableView release];
-	[powerGridLabel release];
-	[cpuLabel release];
-	[fittingItemsViewController release];
-	[popoverController release];
-	
-	[structures release];
-	[modifiedIndexPath release];
-	[super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -113,14 +103,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return structures.count + 1;
+    return self.structures.count + 1;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	if (indexPath.row >= structures.count) {
+	if (indexPath.row >= self.structures.count) {
 		NSString *cellIdentifier = @"ModuleCellView";
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
@@ -133,7 +123,7 @@
 		return cell;
 	}
 	else {
-		NSArray* array = [structures objectAtIndex:indexPath.row];
+		NSArray* array = [self.structures objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 		eufe::Charge* charge = structure->getCharge();
@@ -215,25 +205,24 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
-	if (indexPath.row >= structures.count) {
+	eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
+	if (indexPath.row >= self.structures.count) {
 		/*fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (311,363,397,404,413,416,417,426,430,438,439,440,441,443,444,449,471,473,707,709,837,838,839) %@ %@ ORDER BY invTypes.typeName;";*/
-		fittingItemsViewController.marketGroupID = 1285;
-		fittingItemsViewController.except = @[@(478)];
-		fittingItemsViewController.title = NSLocalizedString(@"Structures", nil);
+		self.fittingItemsViewController.marketGroupID = 1285;
+		self.fittingItemsViewController.except = @[@(478)];
+		self.fittingItemsViewController.title = NSLocalizedString(@"Structures", nil);
 		//fittingItemsViewController.group = nil;
-		fittingItemsViewController.modifiedItem = nil;
+		self.fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.posFittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
+			[self.posFittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
 	}
 	else {
-		[modifiedIndexPath release];
-		modifiedIndexPath = [indexPath retain];
+		self.modifiedIndexPath = indexPath;
 		
-		NSArray* array = [structures objectAtIndex:indexPath.row];
+		NSArray* array = [self.structures objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 		const std::vector<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
@@ -295,20 +284,19 @@
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
-		[actionSheet autorelease];
 	}
 }
 
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSArray* array = [structures objectAtIndex:modifiedIndexPath.row];
+	NSArray* array = [self.structures objectAtIndex:self.modifiedIndexPath.row];
 	ItemInfo* itemInfo = [array objectAtIndex:0];
 	eufe::Structure* structure = dynamic_cast<eufe::Structure*>(itemInfo.item);
 	int chargeSize = structure->getChargeSize();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	
-	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
+	eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
 	
 	if ([button isEqualToString:ActionButtonDelete]) {
 		for (ItemInfo* itemInfo in array)
@@ -358,8 +346,7 @@
 		[actionSheet addButtonWithTitle:ActionButtonCancel];
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
-		[actionSheet showFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView animated:YES];
-		[actionSheet autorelease];
+		[actionSheet showFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonAmmoCurrentModule] || [button isEqualToString:ActionButtonAmmoAllModules]) {
 		const std::vector<eufe::TypeID>& chargeGroups = structure->getChargeGroups();
@@ -388,34 +375,33 @@
 													   groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
 		}*/
 		
-		fittingItemsViewController.marketGroupID = 0;
+		self.fittingItemsViewController.marketGroupID = 0;
 		if (chargeSize) {
-			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) ORDER BY invTypes.typeName;",
+			self.fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.*, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) ORDER BY invTypes.typeName;",
 													   chargeSize, groups];
-			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+			self.fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.*, invTypes.* FROM invTypes, dgmTypeAttributes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND invTypes.typeID=dgmTypeAttributes.typeID AND dgmTypeAttributes.attributeID=128 AND dgmTypeAttributes.value=%d AND groupID IN (%@) AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
 														chargeSize, groups];
 		}
 		else {
-			fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f ORDER BY invTypes.typeName;",
+			self.fittingItemsViewController.typesRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.*, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f ORDER BY invTypes.typeName;",
 													   groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
-			fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
+			self.fittingItemsViewController.searchRequest = [NSString stringWithFormat:@"SELECT invMetaGroups.*, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (%@) AND invTypes.volume <= %f AND typeName LIKE \"%%%%%%@%%%%\" ORDER BY invTypes.typeName;",
 														groups, structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()];
 		}
 
-		fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
+		self.fittingItemsViewController.title = NSLocalizedString(@"Ammo", nil);
 		if ([button isEqualToString:ActionButtonAmmoAllModules])
-			fittingItemsViewController.modifiedItem = nil;
+			self.fittingItemsViewController.modifiedItem = nil;
 		else
-			fittingItemsViewController.modifiedItem = itemInfo;
+			self.fittingItemsViewController.modifiedItem = itemInfo;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.posFittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
+			[self.posFittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
 		
 		if ([button isEqualToString:ActionButtonAmmoAllModules]) {
-			[modifiedIndexPath release];
-			modifiedIndexPath = nil;
+			self.modifiedIndexPath = nil;
 		}
 		[self.posFittingViewController update];
 	}
@@ -439,10 +425,9 @@
 		dronesAmountViewController.maxAmount = 50;
 		dronesAmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[dronesAmountViewController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[dronesAmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[dronesAmountViewController presentAnimated:YES];
-		[dronesAmountViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -452,12 +437,10 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[posFittingViewController presentModalViewController:navController animated:YES];
-			[navController release];
+			[self.posFittingViewController presentModalViewController:navController animated:YES];
 		}
 		else
-			[posFittingViewController.navigationController pushViewController:itemViewController animated:YES];
-		[itemViewController release];
+			[self.posFittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonShowAmmoInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -468,20 +451,18 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[posFittingViewController presentModalViewController:navController animated:YES];
-			[navController release];
+			[self.posFittingViewController presentModalViewController:navController animated:YES];
 		}
 		else
-			[posFittingViewController.navigationController pushViewController:itemViewController animated:YES];
-		[itemViewController release];
+			[self.posFittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 }
 
 #pragma mark DronesAmountViewControllerDelegate
 
 - (void) dronesAmountViewController:(DronesAmountViewController*) aController didSelectAmount:(NSInteger) amount {
-	eufe::ControlTower* controlTower = posFittingViewController.fit.controlTower;
-	NSMutableArray* array = [structures objectAtIndex:modifiedIndexPath.row];
+	eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
+	NSMutableArray* array = [self.structures objectAtIndex:self.modifiedIndexPath.row];
 	int left = array.count - amount;
 	if (left < 0) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];
@@ -497,7 +478,7 @@
 			controlTower->removeStructure(structure);
 		}
 	}
-	[posFittingViewController update];
+	[self.posFittingViewController update];
 }
 
 - (void) dronesAmountViewControllerDidCancel:(DronesAmountViewController*) controller {
@@ -512,12 +493,12 @@
 	__block float usedCPU;
 	
 	NSMutableArray *structuresTmp = [NSMutableArray array];
-	POSFittingViewController* aPosFittingViewController = posFittingViewController;
+	POSFittingViewController* aPosFittingViewController = self.posFittingViewController;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ModulesViewController+Update" name:NSLocalizedString(@"Updating POS Structures", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(posFittingViewController) {
+		@synchronized(self.posFittingViewController) {
 			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
 			
 			NSMutableDictionary* structuresDic = [NSMutableDictionary dictionary];
@@ -527,7 +508,7 @@
 			float n = structuresList.size();
 			float j = 0;
 			for (i = structuresList.begin(); i != end; i++) {
-				operation.progress = j++ / n;
+				weakOperation.progress = j++ / n;
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [structuresDic valueForKey:key];
 				if (!array) {
@@ -545,21 +526,17 @@
 			totalCPU = controlTower->getTotalCpu();
 			usedCPU = controlTower->getCpuUsed();
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (structures)
-				[structures release];
-			structures  = [structuresTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.structures  = structuresTmp;
 			
-			powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-			powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-			cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-			cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-			[tableView reloadData];
+			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+			[self.tableView reloadData];
 		}
 	}];
 	

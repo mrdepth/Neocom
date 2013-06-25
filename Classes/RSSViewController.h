@@ -9,14 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class RSSItem;
-@interface RSSViewController : UIViewController {
-	UIWebView *webView;
-	UIActivityIndicatorView *activityIndicatorView;
-	UIBarButtonItem *backButton;
-	UIBarButtonItem *forwardButton;
-	UIBarButtonItem *reloadButton;
-	RSSItem *rss;
-}
+@interface RSSViewController : UIViewController
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;

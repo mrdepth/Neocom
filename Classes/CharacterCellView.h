@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CharacterCellView : UITableViewCell {
-	UILabel* characterNameLabel;
-}
+@interface CharacterCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UILabel* characterNameLabel;
 @end

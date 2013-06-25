@@ -8,11 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SkillEditingCellView : UITableViewCell {
-	UIImageView *iconImageView;
-	UIImageView *levelImageView;
-	UILabel *skillLabel;
-}
+@interface SkillEditingCellView : UITableViewCell
 @property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, retain) IBOutlet UIImageView *levelImageView;
 @property (nonatomic, retain) IBOutlet UILabel *skillLabel;

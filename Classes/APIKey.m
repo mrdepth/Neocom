@@ -18,13 +18,6 @@
 @dynamic keyID;
 @dynamic vCode;
 
-- (void) dealloc {
-	[_apiKeyInfo release];
-	[_error release];
-	[_assignedCharacters release];
-	[super dealloc];
-}
-
 - (NSMutableArray*) assignedCharacters {
 	if (!_assignedCharacters) {
 		_assignedCharacters = [[NSMutableArray alloc] init];

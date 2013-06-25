@@ -17,79 +17,12 @@
 
 #import "eufe.h"
 
-@interface StatsViewController(Private)
+@interface StatsViewController()
 - (void) updatePrice;
 @end
 
 @implementation StatsViewController
-@synthesize fittingViewController;
-@synthesize scrollView;
-@synthesize contentView;
 
-@synthesize powerGridLabel;
-@synthesize cpuLabel;
-@synthesize droneBayLabel;
-@synthesize droneBandwidthLabel;
-@synthesize calibrationLabel;
-@synthesize turretsLabel;
-@synthesize launchersLabel;
-@synthesize dronesLabel;
-
-@synthesize shieldEMLabel;
-@synthesize shieldThermalLabel;
-@synthesize shieldKineticLabel;
-@synthesize shieldExplosiveLabel;
-@synthesize armorEMLabel;
-@synthesize armorThermalLabel;
-@synthesize armorKineticLabel;
-@synthesize armorExplosiveLabel;
-@synthesize hullEMLabel;
-@synthesize hullThermalLabel;
-@synthesize hullKineticLabel;
-@synthesize hullExplosiveLabel;
-@synthesize damagePatternEMLabel;
-@synthesize damagePatternThermalLabel;
-@synthesize damagePatternKineticLabel;
-@synthesize damagePatternExplosiveLabel;
-
-@synthesize shieldHPLabel;
-@synthesize armorHPLabel;
-@synthesize hullHPLabel;
-@synthesize ehpLabel;
-
-@synthesize shieldSustainedRecharge;
-@synthesize shieldReinforcedBoost;
-@synthesize shieldSustainedBoost;
-@synthesize armorReinforcedRepair;
-@synthesize armorSustainedRepair;
-@synthesize hullReinforcedRepair;
-@synthesize hullSustainedRepair;
-
-@synthesize capacitorCapacityLabel;
-@synthesize capacitorStateLabel;
-@synthesize capacitorRechargeTimeLabel;
-@synthesize capacitorDeltaLabel;
-
-@synthesize weaponDPSLabel;
-@synthesize droneDPSLabel;
-@synthesize volleyDamageLabel;
-@synthesize dpsLabel;
-
-@synthesize targetsLabel;
-@synthesize targetRangeLabel;
-@synthesize scanResLabel;
-@synthesize sensorStrLabel;
-@synthesize speedLabel;
-@synthesize alignTimeLabel;
-@synthesize signatureLabel;
-@synthesize cargoLabel;
-@synthesize sensorImageView;
-@synthesize droneRangeLabel;
-@synthesize warpSpeedLabel;
-
-@synthesize shipPriceLabel;
-@synthesize fittingsPriceLabel;
-@synthesize totalPriceLabel;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -202,80 +135,6 @@
 	[self update];
 }
 
-
-- (void)dealloc {
-	[scrollView release];
-	[contentView release];
-	
-	[powerGridLabel release];
-	[cpuLabel release];
-	[droneBayLabel release];
-	[droneBandwidthLabel release];
-	[calibrationLabel release];
-	[turretsLabel release];
-	[launchersLabel release];
-	[dronesLabel release];
-	
-	[shieldEMLabel release];
-	[shieldThermalLabel release];
-	[shieldKineticLabel release];
-	[shieldExplosiveLabel release];
-	[armorEMLabel release];
-	[armorThermalLabel release];
-	[armorKineticLabel release];
-	[armorExplosiveLabel release];
-	[hullEMLabel release];
-	[hullThermalLabel release];
-	[hullKineticLabel release];
-	[hullExplosiveLabel release];
-	[damagePatternEMLabel release];
-	[damagePatternThermalLabel release];
-	[damagePatternKineticLabel release];
-	[damagePatternExplosiveLabel release];
-	
-	[shieldHPLabel release];
-	[armorHPLabel release];
-	[hullHPLabel release];
-	[ehpLabel release];
-	
-	[shieldSustainedRecharge release];
-	[shieldReinforcedBoost release];
-	[shieldSustainedBoost release];
-	[armorReinforcedRepair release];
-	[armorSustainedRepair release];
-	[hullReinforcedRepair release];
-	[hullSustainedRepair release];
-	
-	[capacitorCapacityLabel release];
-	[capacitorStateLabel release];
-	[capacitorRechargeTimeLabel release];
-	[capacitorDeltaLabel release];
-	
-	[weaponDPSLabel release];
-	[droneDPSLabel release];
-	[volleyDamageLabel release];
-	[dpsLabel release];
-	
-	[targetsLabel release];
-	[targetRangeLabel release];
-	[scanResLabel release];
-	[sensorStrLabel release];
-	[speedLabel release];
-	[alignTimeLabel release];
-	[signatureLabel release];
-	[cargoLabel release];
-	[sensorImageView release];
-	[droneRangeLabel release];
-	[warpSpeedLabel release];
-	
-	[shipPriceLabel release];
-	[fittingsPriceLabel release];
-	[totalPriceLabel release];
-
-    [super dealloc];
-}
-
-
 #pragma mark FittingSection
 
 - (void) update {
@@ -329,12 +188,10 @@
 	__block float warpSpeed;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+Update" name:NSLocalizedString(@"Updating Stats", nil)];
-	FittingViewController* aFittingViewController = fittingViewController;
-
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(fittingViewController) {
-			eufe::Character* character = aFittingViewController.fit.character;
+		@synchronized(self.fittingViewController) {
+			eufe::Character* character = self.fittingViewController.fit.character;
 			eufe::Ship* ship = character->getShip();
 			
 			totalPG = ship->getTotalPowerGrid();
@@ -346,7 +203,7 @@
 			totalCalibration = ship->getTotalCalibration();
 			usedCalibration = ship->getCalibrationUsed();
 			
-			operation.progress = 0.25;
+			weakOperation.progress = 0.25;
 			
 			maxActiveDrones = ship->getMaxActiveDrones();
 			activeDrones = ship->getActiveDrones();
@@ -365,7 +222,7 @@
 			
 			resistances = ship->getResistances();
 
-			operation.progress = 0.5;
+			weakOperation.progress = 0.5;
 			
 			hp = ship->getHitPoints();
 			eufe::HitPoints effectiveHitPoints = ship->getEffectiveHitPoints();
@@ -387,7 +244,7 @@
 			volleyDamage = ship->getWeaponVolley() + ship->getDroneVolley();
 			dps = weaponDPS + droneDPS;
 
-			operation.progress = 0.75;
+			weakOperation.progress = 0.75;
 			
 			targets = ship->getMaxTargets();
 			targetRange = ship->getMaxTargetRange() / 1000.0;
@@ -400,63 +257,62 @@
 			
 			switch(ship->getScanType()) {
 				case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
-					sensorImage = [[UIImage imageNamed:@"Gravimetric.png"] retain];
+					sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
 					break;
 				case eufe::Ship::SCAN_TYPE_LADAR:
-					sensorImage = [[UIImage imageNamed:@"Ladar.png"] retain];
+					sensorImage = [UIImage imageNamed:@"Ladar.png"];
 					break;
 				case eufe::Ship::SCAN_TYPE_MAGNETOMETRIC:
-					sensorImage = [[UIImage imageNamed:@"Magnetometric.png"] retain];
+					sensorImage = [UIImage imageNamed:@"Magnetometric.png"];
 					break;
 				case eufe::Ship::SCAN_TYPE_RADAR:
-					sensorImage = [[UIImage imageNamed:@"Radar.png"] retain];
+					sensorImage = [UIImage imageNamed:@"Radar.png"];
 					break;
 				default:
-					sensorImage = [[UIImage imageNamed:@"Multispectral.png"] retain];
+					sensorImage = [UIImage imageNamed:@"Multispectral.png"];
 					break;
 			}
 			
 			droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
 			warpSpeed = ship->getWarpSpeed();
 
-			damagePattern = [aFittingViewController.damagePattern retain];
-			operation.progress = 1.0;
+			damagePattern = self.fittingViewController.damagePattern;
+			weakOperation.progress = 1.0;
 
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-			powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-			cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-			cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-			calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
+		if (![weakOperation isCancelled]) {
+			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
+			self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
 			
 			if (usedCalibration > totalCalibration)
-				calibrationLabel.textColor = [UIColor redColor];
+				self.calibrationLabel.textColor = [UIColor redColor];
 			else
-				calibrationLabel.textColor = [UIColor whiteColor];
+				self.calibrationLabel.textColor = [UIColor whiteColor];
 			
-			dronesLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+			self.dronesLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
 			if (activeDrones > maxActiveDrones)
-				dronesLabel.textColor = [UIColor redColor];
+				self.dronesLabel.textColor = [UIColor redColor];
 			else
-				dronesLabel.textColor = [UIColor whiteColor];
+				self.dronesLabel.textColor = [UIColor whiteColor];
 			
-			droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-			droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-			droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-			droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+			self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+			self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+			self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
 			
-			turretsLabel.text = [NSString stringWithFormat:@"%d/%d", usedTurretHardpoints, totalTurretHardpoints];
-			launchersLabel.text = [NSString stringWithFormat:@"%d/%d", usedMissileHardpoints, totalMissileHardpoints];
+			self.turretsLabel.text = [NSString stringWithFormat:@"%d/%d", usedTurretHardpoints, totalTurretHardpoints];
+			self.launchersLabel.text = [NSString stringWithFormat:@"%d/%d", usedMissileHardpoints, totalMissileHardpoints];
 			
-			NSArray *resistanceLabels = [NSArray arrayWithObjects:shieldEMLabel, shieldThermalLabel, shieldKineticLabel, shieldExplosiveLabel,
-										 armorEMLabel, armorThermalLabel, armorKineticLabel, armorExplosiveLabel,
-										 hullEMLabel, hullThermalLabel, hullKineticLabel, hullExplosiveLabel,
-										 damagePatternEMLabel, damagePatternThermalLabel, damagePatternKineticLabel, damagePatternExplosiveLabel, nil];
+			NSArray *resistanceLabels = [NSArray arrayWithObjects:self.shieldEMLabel, self.shieldThermalLabel, self.shieldKineticLabel, self.shieldExplosiveLabel,
+										 self.armorEMLabel, self.armorThermalLabel, self.armorKineticLabel, self.armorExplosiveLabel,
+										 self.hullEMLabel, self.hullThermalLabel, self.hullKineticLabel, self.hullExplosiveLabel,
+										 self.damagePatternEMLabel, self.damagePatternThermalLabel, self.damagePatternKineticLabel, self.damagePatternExplosiveLabel, nil];
 			
 			float resistanceValues[] = {resistances.shield.em, resistances.shield.thermal, resistances.shield.kinetic, resistances.shield.explosive,
 										resistances.armor.em, resistances.armor.thermal, resistances.armor.kinetic, resistances.armor.explosive,
@@ -469,58 +325,54 @@
 				label.text = [NSString stringWithFormat:@"%.1f%%", resist * 100];
 			}
 			
-			shieldHPLabel.text = [NSString stringWithResource:hp.shield unit:nil];
-			armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
-			hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
+			self.shieldHPLabel.text = [NSString stringWithResource:hp.shield unit:nil];
+			self.armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
+			self.hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
 			
-			ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
+			self.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
 			
-			shieldReinforcedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.shieldRepair, ertank.shieldRepair];
-			shieldSustainedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.shieldRepair, estank.shieldRepair];
-			armorReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.armorRepair, ertank.armorRepair];
-			armorSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.armorRepair, estank.armorRepair];
-			hullReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.hullRepair, ertank.hullRepair];
-			hullSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.hullRepair, estank.hullRepair];
-			shieldSustainedRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.passiveShield, estank.passiveShield];
+			self.shieldReinforcedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.shieldRepair, ertank.shieldRepair];
+			self.shieldSustainedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.shieldRepair, estank.shieldRepair];
+			self.armorReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.armorRepair, ertank.armorRepair];
+			self.armorSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.armorRepair, estank.armorRepair];
+			self.hullReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.hullRepair, ertank.hullRepair];
+			self.hullSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.hullRepair, estank.hullRepair];
+			self.shieldSustainedRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.passiveShield, estank.passiveShield];
 			
-			capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString stringWithResource:capCapacity unit:@"GJ"]];
+			self.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString stringWithResource:capCapacity unit:@"GJ"]];
 			if (capStable)
-				capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), capState];
+				self.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), capState];
 			else
-				capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts %@", nil), [NSString stringWithTimeLeft:capState]];
-			capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:capacitorRechargeTime]];
-			capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), delta >= 0.0 ? @"+" : @"", delta];
+				self.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts %@", nil), [NSString stringWithTimeLeft:capState]];
+			self.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:capacitorRechargeTime]];
+			self.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), delta >= 0.0 ? @"+" : @"", delta];
 			
-			weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),weaponDPS];
-			droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),droneDPS];
-			volleyDamageLabel.text = [NSString stringWithFormat:@"%.0f",volleyDamage];
-			dpsLabel.text = [NSString stringWithFormat:@"%.0f",dps];
+			self.weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),weaponDPS];
+			self.droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),droneDPS];
+			self.volleyDamageLabel.text = [NSString stringWithFormat:@"%.0f",volleyDamage];
+			self.dpsLabel.text = [NSString stringWithFormat:@"%.0f",dps];
 			
-			targetsLabel.text = [NSString stringWithFormat:@"%d", targets];
-			targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", targetRange];
-			scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", scanRes];
-			sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", sensorStr];
-			speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", speed];
-			alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", alignTime];
-			signatureLabel.text = [NSString stringWithFormat:@"%.0f", signature];
-			cargoLabel.text = [NSString stringWithResource:cargo unit:@"m3"];
-			sensorImageView.image = sensorImage;
+			self.targetsLabel.text = [NSString stringWithFormat:@"%d", targets];
+			self.targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", targetRange];
+			self.scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", scanRes];
+			self.sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", sensorStr];
+			self.speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", speed];
+			self.alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", alignTime];
+			self.signatureLabel.text = [NSString stringWithFormat:@"%.0f", signature];
+			self.cargoLabel.text = [NSString stringWithResource:cargo unit:@"m3"];
+			self.sensorImageView.image = sensorImage;
 
-			droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", droneRange];
-			warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", warpSpeed];
+			self.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", droneRange];
+			self.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", warpSpeed];
 
 		}
-		[sensorImage release];
-		[damagePattern release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 	[self updatePrice];
 }
 
-@end
-
-@implementation StatsViewController(Private)
+#pragma mark - Private
 
 - (void) updatePrice {
 	__block float shipPrice;
@@ -528,15 +380,13 @@
 	__block float totalPrice;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"StatsViewController+UpdatePrice" name:NSLocalizedString(@"Updating Price", nil)];
-	FittingViewController* aFittingViewController = fittingViewController;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		NSCountedSet* types = [NSCountedSet set];
 		ItemInfo* shipInfo = nil;
 		
-		@synchronized(fittingViewController) {
-			eufe::Character* character = aFittingViewController.fit.character;
+		@synchronized(self.fittingViewController) {
+			eufe::Character* character = self.fittingViewController.fit.character;
 			eufe::Ship* ship = character->getShip();
 			
 			shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
@@ -560,8 +410,8 @@
 					[types addObject:itemInfo];
 			}
 		}
-		NSDictionary* prices = [aFittingViewController.priceManager pricesWithTypes:[types allObjects]];
-		shipPrice = [aFittingViewController.priceManager priceWithType:shipInfo];
+		NSDictionary* prices = [self.fittingViewController.priceManager pricesWithTypes:[types allObjects]];
+		shipPrice = [self.fittingViewController.priceManager priceWithType:shipInfo];
 		fittingsPrice = 0;
 		for (ItemInfo* itemInfo in types) {
 			if (itemInfo != shipInfo) {
@@ -572,14 +422,13 @@
 		}
 		
 		totalPrice = shipPrice + fittingsPrice;
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:shipPrice unit:nil]];
-			fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:fittingsPrice unit:nil]];
-			totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:totalPrice unit:nil]];
+		if (![weakOperation isCancelled]) {
+			self.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:shipPrice unit:nil]];
+			self.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:fittingsPrice unit:nil]];
+			self.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:totalPrice unit:nil]];
 		}
 	}];
 	

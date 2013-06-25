@@ -16,16 +16,18 @@
 @implementation UIDevice(IP)
 
 + (NSString*) localIPAddress {
-	char buf[128];
-	bzero(buf, 128);
-	gethostname(buf, 128);
-	struct hostent *h = NULL;
-	h = gethostbyname(buf);
-	if (!h)
-		return nil;
-	struct in_addr *addr = (struct in_addr*) *(h->h_addr_list);
-	char *s = inet_ntoa(*addr);
-	return [NSString stringWithCString:s encoding:NSASCIIStringEncoding];
+	/*	char buf[128];
+	 bzero(buf, 128);
+	 gethostname(buf, 128);
+	 struct hostent *h = NULL;
+	 h = gethostbyname(buf);
+	 if (!h)
+	 return nil;
+	 struct in_addr *addr = (struct in_addr*) *(h->h_addr_list);
+	 char *s = inet_ntoa(*addr);
+	 return [NSString stringWithCString:s encoding:NSASCIIStringEncoding];*/
+	NSArray* addresses = [self localIPAddresses];
+	return addresses.count > 0 ? [addresses objectAtIndex:0] : nil;
 }
 
 + (NSArray*) localIPAddresses {

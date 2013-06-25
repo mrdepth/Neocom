@@ -11,14 +11,7 @@
 
 @class SkillPlan;
 @class SkillPlannerImportViewController;
-@interface SkillPlanViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate> {
-	UITableView* skillsTableView;
-	UILabel *trainingTimeLabel;
-	NSString* skillPlanPath;
-	SkillPlannerImportViewController* skillPlannerImportViewController;
-	SkillPlan* skillPlan;
-@private
-}
+@interface SkillPlanViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
 @property (nonatomic, retain) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, retain) NSString* skillPlanPath;

@@ -17,15 +17,14 @@
 #import "ItemCellView.h"
 #import "FittingNPCGroupsViewController.h"
 
-@interface DamagePatternsViewController(Private)
+@interface DamagePatternsViewController()
+@property (nonatomic, strong) NSMutableArray *sections;
+
 - (void) reload;
 - (void) save;
 @end
 
 @implementation DamagePatternsViewController
-@synthesize tableView;
-@synthesize delegate;
-@synthesize currentDamagePattern;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -44,7 +43,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Damage Patterns", nil);
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	[self reload];
 }
@@ -66,8 +65,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.tableView = nil;
-	[sections release];
-	sections = nil;
+	self.sections = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -75,23 +73,16 @@
 	[self.tableView reloadData];
 }
 
-- (void)dealloc {
-	[tableView release];
-	[sections release];
-	[currentDamagePattern release];
-    [super dealloc];
-}
-
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[tableView setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
 	
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[sections objectAtIndex:1] count] inSection:2];
+	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[self.sections objectAtIndex:1] count] inSection:2];
 	NSArray* array = [NSArray arrayWithObject:indexPath];
 	if (editing)
-		[tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 	else {
-		[tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 		[self save];
 	}
 }
@@ -105,13 +96,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
     // Return the number of sections.
-	return sections.count + 1;
+	return self.sections.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
 		return 1;
-	NSInteger count = [[sections objectAtIndex:section - 1] count];
+	NSInteger count = [[self.sections objectAtIndex:section - 1] count];
 	if (section == 1 || !self.editing)
 		return count;
 	else
@@ -124,7 +115,7 @@
 	if (indexPath.section == 0) {
 		static NSString *cellIdentifier = @"ItemCellView";
 		
-		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		ItemCellView *cell = (ItemCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
@@ -132,10 +123,10 @@
 		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon04_07.png"];
 		return cell;
 	}
-	else if ([[sections objectAtIndex:indexPath.section - 1] count] == indexPath.row) {
+	else if ([[self.sections objectAtIndex:indexPath.section - 1] count] == indexPath.row) {
 		NSString *cellIdentifier = @"CharacterCellView";
 		
-		CharacterCellView *cell = (CharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		CharacterCellView *cell = (CharacterCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
@@ -148,7 +139,7 @@
 		if (cell == nil) {
 			cell = [DamagePatternCellView cellWithNibName:@"DamagePatternCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		DamagePattern* damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		DamagePattern* damagePattern = [[self.sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.titleLabel.text = damagePattern.patternName;
 		cell.emLabel.progress = damagePattern.emAmount;
 		cell.thermalLabel.progress = damagePattern.thermalAmount;
@@ -158,7 +149,7 @@
 		cell.thermalLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.thermalAmount * 100)];
 		cell.kineticLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.kineticAmount * 100)];
 		cell.explosiveLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.explosiveAmount * 100)];
-		cell.checkmarkImageView.image = [damagePattern isEqual:currentDamagePattern] ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell.checkmarkImageView.image = [damagePattern isEqual:self.currentDamagePattern] ? [UIImage imageNamed:@"checkmark.png"] : nil;
 		return cell;
 	}
 }
@@ -174,19 +165,18 @@
 
 - (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[[sections objectAtIndex:indexPath.section - 1] removeObjectAtIndex:indexPath.row];
-		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[[self.sections objectAtIndex:indexPath.section - 1] removeObjectAtIndex:indexPath.row];
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self save];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		DamagePattern* damagePattern = [[[DamagePattern alloc] init] autorelease];
-		[[sections objectAtIndex:indexPath.section - 1] addObject:damagePattern];
-		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		DamagePattern* damagePattern = [[DamagePattern alloc] init];
+		[[self.sections objectAtIndex:indexPath.section - 1] addObject:damagePattern];
+		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
 		DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
 		controller.damagePattern = damagePattern;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 }
 
@@ -197,16 +187,16 @@
 	if (indexPath.section == 0 || indexPath.section == 1)
 		return UITableViewCellEditingStyleNone;
 	else
-		return indexPath.row == [[sections objectAtIndex:indexPath.section - 1] count] ? UITableViewCellEditingStyleInsert : UITableViewCellEditingStyleDelete;
+		return indexPath.row == [[self.sections objectAtIndex:indexPath.section - 1] count] ? UITableViewCellEditingStyleInsert : UITableViewCellEditingStyleDelete;
 }
 
 - (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
 	NSString *s = [self tableView:aTableView titleForHeaderInSection:section];
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = s;
@@ -222,7 +212,7 @@
 	return indexPath.section == 0 ? 36 : 44;
 }
 
-- (void)tableView:(UITableView*) aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
 		FittingNPCGroupsViewController *controller = [[FittingNPCGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"NPCGroupsViewControllerModal" : @"NPCGroupsViewController")
@@ -230,22 +220,20 @@
 		controller.modalMode = YES;
 		controller.damagePatternsViewController = self;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
-	else if (indexPath.row == [[sections objectAtIndex:indexPath.section - 1] count]) {
-		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+	else if (indexPath.row == [[self.sections objectAtIndex:indexPath.section - 1] count]) {
+		[self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
 	else {
 		if (self.editing) {
 			if (indexPath.section == 2) {
 				DamagePatternEditViewController* controller = [[DamagePatternEditViewController alloc] initWithNibName:@"DamagePatternEditViewController" bundle:nil];
-				controller.damagePattern = [[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+				controller.damagePattern = [[self.sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 				[self.navigationController pushViewController:controller animated:YES];
-				[controller release];
 			}
 		}
 		else {
-			[delegate damagePatternsViewController:self didSelectDamagePattern:[[sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row]];
+			[self.delegate damagePatternsViewController:self didSelectDamagePattern:[[self.sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row]];
 		}
 	}
 }
@@ -256,14 +244,11 @@
 	popoverController.popoverContentSize = CGSizeMake(320, 1100);
 }
 
-@end
-
-@implementation DamagePatternsViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
-	[sections release];
-	sections = [[NSMutableArray alloc] init];
-	[sections addObject:[NSArray arrayWithObject:[DamagePattern uniformDamagePattern]]];
+	self.sections = [[NSMutableArray alloc] init];
+	[self.sections addObject:[NSArray arrayWithObject:[DamagePattern uniformDamagePattern]]];
 	
 	NSMutableArray* array = nil;
 	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"damagePatterns.plist"];
@@ -277,19 +262,17 @@
 			NSObject* object = [unarchiver decodeObject];
 			if ([object isKindOfClass:[NSArray class]])
 				array = [NSMutableArray arrayWithArray:(NSArray*) object];
-			[unarchiver release];
 		}
 	}
 
-	[sections addObject:array ? array : [NSMutableArray array]];
+	[self.sections addObject:array ? array : [NSMutableArray array]];
 }
 
 - (void) save {
 	NSMutableData* data = [NSMutableData data];
 	NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-	[archiver encodeObject:[sections objectAtIndex:1]];
+	[archiver encodeObject:[self.sections objectAtIndex:1]];
 	[archiver finishEncoding];
-	[archiver release];
 	
 	NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"damagePatterns.plist"];
 	[data writeToURL:[NSURL fileURLWithPath:path] atomically:YES];

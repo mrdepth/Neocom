@@ -48,15 +48,15 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"EVE-Kill", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
 	else {
-		self.tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	
 	self.filters = [NSMutableArray array];
 	[self.tableView setEditing:YES];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)];
 	// Do any additional setup after loading the view.
 }
 
@@ -71,14 +71,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-	[_sectionFooterView release];
-	[_searchResultsCountLabel release];
-	[_modifiedIndexPath release];
-	[_popover release];
-    [super dealloc];
 }
 
 - (void)viewDidUnload {
@@ -144,16 +136,13 @@
 				navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 				
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+					self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 				}
-				
-				[navigationController release];
-				[controller release];
 				
 				self.modifiedIndexPath = indexPath;
 				break;
@@ -167,17 +156,14 @@
 				navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+					self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 				}
 				
-				[navigationController release];
-				[controller release];
-
 				self.modifiedIndexPath = indexPath;
 				break;
 			}
@@ -191,16 +177,13 @@
 				navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+					self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 				}
-				
-				[navigationController release];
-				[controller release];
 				
 				self.modifiedIndexPath = indexPath;
 				break;
@@ -215,16 +198,13 @@
 				navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+					self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
 					[self presentModalViewController:navigationController animated:YES];
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 				}
-
-				[navigationController release];
-				[controller release];
 				
 				self.modifiedIndexPath = indexPath;
 				break;
@@ -241,16 +221,13 @@
 				navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-					self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+					self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 					[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 				}
 				else {
-					controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 					[self presentModalViewController:navigationController animated:YES];
 				}
-
-				[navigationController release];
-				[controller release];
 				
 				self.modifiedIndexPath = indexPath;
 				break;
@@ -270,16 +247,13 @@
 		navigationController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			self.popover = [[[UIPopoverController alloc] initWithContentViewController:navigationController] autorelease];
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:navigationController];
 			[self.popover presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 		else {
-			controller.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease];
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
 			[self presentModalViewController:navigationController animated:YES];
 		}
-
-		[navigationController release];
-		[controller release];
 	}
 	else {
 		KillNetFilterTextCellView* cell = [[self.filters objectAtIndex:indexPath.row] valueForKey:@"cell"];
@@ -325,8 +299,6 @@
 			NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
 			[formatter setDateFormat:@"yyyy.MM.dd"];
 			cell.valueLabel.text = [formatter stringFromDate:[filter valueForKey:@"value"]];
-			[formatter release];
-
 			[filter setValue:cell forKey:@"cell"];
 			break;
 		}
@@ -470,7 +442,6 @@
 	NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyy.MM.dd"];
 	cell.valueLabel.text = [formatter stringFromDate:date];
-	[formatter release];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.popover dismissPopoverAnimated:YES];
@@ -491,17 +462,16 @@
 	NSDictionary* logFilter = [self logFilter];
 	if (logFilter.count > 0) {
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Preload" name:NSLocalizedString(@"Loading...", nil)];
+		__weak EUOperation* weakOperation = operation;
 
 		__block NSInteger count = 0;
 		[operation addExecutionBlock:^{
-			@autoreleasepool {
-				EVEKillNetLog* killNetLog = [EVEKillNetLog logWithFilter:logFilter mask:EVEKillNetLogMaskInternalKillID error:nil];
-				count = killNetLog.killLog.count;
-			}
+			EVEKillNetLog* killNetLog = [EVEKillNetLog logWithFilter:logFilter mask:EVEKillNetLogMaskInternalKillID error:nil progressHandler:nil];
+			count = killNetLog.killLog.count;
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled])
+			if (![weakOperation isCancelled])
 				self.searchResultsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d Search Results", nil), count];
 		}];
 		
@@ -515,29 +485,26 @@
 	NSDictionary* logFilter = [self logFilter];
 	if (logFilter.count > 0) {
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardKillNetFilterViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+		__weak EUOperation* weakOperation = operation;
 		__block NSError* error = nil;
 		__block EVEKillNetLog* killNetLog = nil;
 		
 		[operation addExecutionBlock:^{
 			@autoreleasepool {
-				killNetLog = [[EVEKillNetLog logWithFilter:logFilter mask:EVEKillNetLogMaskShort error:&error] retain];
-				[error retain];
+				killNetLog = [EVEKillNetLog logWithFilter:logFilter mask:EVEKillNetLogMaskShort error:&error progressHandler:nil];
 			}
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (error)
 					[[UIAlertView alertViewWithError:error] show];
 				else {
 					KillboardKillNetViewController* controller = [[KillboardKillNetViewController alloc] initWithNibName:@"KillboardKillNetViewController" bundle:nil];
 					controller.killLog = killNetLog;
 					[self.navigationController pushViewController:controller animated:YES];
-					[controller release];
 				}
 			}
-			[error release];
-			[killNetLog release];
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -560,7 +527,6 @@
 			[formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 			[formatter setDateFormat:@"yyyy-MM-dd_HH.mm.ss"];
 			value = [formatter stringFromDate:(NSDate*) value];
-			[formatter release];
 		}
 		if (value)
 			[logFilter setValue:value forKey:[filter valueForKey:@"key"]];

@@ -18,24 +18,16 @@ typedef enum {
 
 @class EVEAccount;
 @class EVEDBInvType;
-@interface SkillTreeItem : EVEDBInvType {
-	NSInteger skillLevel;
-	NSInteger hierarchyLevel;
-	SkillTreeItemAvailability skillAvailability;
-}
+@interface SkillTreeItem : EVEDBInvType
 @property (nonatomic) NSInteger skillLevel;
 @property (nonatomic) NSInteger hierarchyLevel;
 @property (nonatomic) SkillTreeItemAvailability skillAvailability;
+
 - (NSString*) romanSkillLevel;
 @end
 
 
-@interface SkillTree : NSObject {
-	NSMutableArray *skills;
-@private
-	NSDictionary *characterSkills;
-	NSArray *skillRequirementsMap;
-}
+@interface SkillTree : NSObject
 
 @property (nonatomic, retain) NSArray *skills;
 

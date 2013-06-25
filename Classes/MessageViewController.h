@@ -9,10 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EUMailMessage;
-@interface MessageViewController : UIViewController<UIWebViewDelegate> {
-	UIWebView *webView;
-	EUMailMessage* message;
-}
+@interface MessageViewController : UIViewController<UIWebViewDelegate>
 @property (retain, nonatomic) IBOutlet UIWebView *webView;
 @property (retain, nonatomic) EUMailMessage* message;
 

@@ -13,21 +13,13 @@
 #import "UITableViewCell+Nib.h"
 #import "ItemViewController.h"
 
-@interface ItemsDBViewController(Private)
+@interface ItemsDBViewController()
 - (void) reload;
 - (void) searchWithSearchString:(NSString*) aSearchString;
 @end
 
 
 @implementation ItemsDBViewController
-@synthesize itemsTable;
-@synthesize searchBar;
-@synthesize publishedFilterSegment;
-@synthesize category;
-@synthesize group;
-@synthesize rows;
-@synthesize filteredValues;
-@synthesize modalMode;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -35,19 +27,19 @@
 	self.rows = [NSMutableArray array];
 	self.filteredValues = [NSMutableArray array];
 	
-	if (group)
-		self.title = group.groupName;
-	else if (category)
-		self.title = category.categoryName;
+	if (self.group)
+		self.title = self.group.groupName;
+	else if (self.category)
+		self.title = self.category.categoryName;
 	else
 		self.title = NSLocalizedString(@"Database", nil);
 
-	publishedFilterSegment.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
-	self.searchDisplayController.searchBar.selectedScopeButtonIndex = publishedFilterSegment.selectedSegmentIndex;
+	self.publishedFilterSegment.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
+	self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.publishedFilterSegment.selectedSegmentIndex;
 //	if (publishedFilterSegment.selectedSegmentIndex == 0)
 		[self reload];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !modalMode)
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.modalMode)
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -71,27 +63,16 @@
 }
 
 
-- (void)dealloc {
-	[itemsTable release];
-	[searchBar release];
-	[publishedFilterSegment release];
-	[category release];
-	[group release];
-	[rows release];
-	[filteredValues release];
-	[super dealloc];
-}
-
 - (IBAction) onChangePublishedFilterSegment: (id) sender {
 	[self reload];
-	self.searchDisplayController.searchBar.selectedScopeButtonIndex = publishedFilterSegment.selectedSegmentIndex;
-	[[NSUserDefaults standardUserDefaults] setInteger:publishedFilterSegment.selectedSegmentIndex forKey:SettingsPublishedFilterKey];
+	self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.publishedFilterSegment.selectedSegmentIndex;
+	[[NSUserDefaults standardUserDefaults] setInteger:self.publishedFilterSegment.selectedSegmentIndex forKey:SettingsPublishedFilterKey];
 }
 
 - (ItemsDBViewControllerMode) mode {
-	if (publishedFilterSegment.selectedSegmentIndex == 0)
+	if (self.publishedFilterSegment.selectedSegmentIndex == 0)
 		return ItemsDBViewControllerModePublished;
-	else if (publishedFilterSegment.selectedSegmentIndex == 2)
+	else if (self.publishedFilterSegment.selectedSegmentIndex == 2)
 		return ItemsDBViewControllerModeNotPublished;
 	else
 		return ItemsDBViewControllerModeAll;
@@ -107,7 +88,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	// Return the number of rows in the section.
-	return self.searchDisplayController.searchResultsTableView == tableView ? filteredValues.count : rows.count;
+	return self.searchDisplayController.searchResultsTableView == tableView ? self.filteredValues.count : self.rows.count;
 }
 
 
@@ -126,16 +107,16 @@
 		cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 	}
 	else {
-		if (category == nil) {
-			EVEDBInvCategory *row = [rows objectAtIndex:indexPath.row];
+		if (self.category == nil) {
+			EVEDBInvCategory *row = [self.rows objectAtIndex:indexPath.row];
 			cell.titleLabel.text = [row categoryName];
 			if (row.icon.iconImageName)
 				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
 				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		}
-		else if (group == nil) {
-			EVEDBInvGroup *row = [rows objectAtIndex:indexPath.row];
+		else if (self.group == nil) {
+			EVEDBInvGroup *row = [self.rows objectAtIndex:indexPath.row];
 			cell.titleLabel.text = [row groupName];
 			if (row.icon.iconImageName)
 				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
@@ -143,7 +124,7 @@
 				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		}
 		else {
-			EVEDBInvType *row = [rows objectAtIndex:indexPath.row];
+			EVEDBInvType *row = [self.rows objectAtIndex:indexPath.row];
 			cell.titleLabel.text = row.typeName;
 			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		}
@@ -168,46 +149,40 @@
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 
-		controller.type = [filteredValues objectAtIndex:indexPath.row];
+		controller.type = [self.filteredValues objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !modalMode) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.modalMode) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
-	else if (category == nil) {
+	else if (self.category == nil) {
 		ItemsDBViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
-		controller.category = [rows objectAtIndex:indexPath.row];
+		controller.category = [self.rows objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
-	else if (group == nil) {
+	else if (self.group == nil) {
 		ItemsDBViewController *controller = [[[self class] alloc] initWithNibName:self.nibName bundle:nil];
 		controller.category = self.category;
-		controller.group = [rows objectAtIndex:indexPath.row];
+		controller.group = [self.rows objectAtIndex:indexPath.row];
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 	else {
 		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		controller.type = [rows objectAtIndex:indexPath.row];
+		controller.type = [self.rows objectAtIndex:indexPath.row];
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !modalMode) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.modalMode) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[self presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
 	}
 }
 
@@ -226,65 +201,62 @@
 }
 
 - (void) searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-	publishedFilterSegment.selectedSegmentIndex = selectedScope;
+	self.publishedFilterSegment.selectedSegmentIndex = selectedScope;
 	[[NSUserDefaults standardUserDefaults] setInteger:selectedScope forKey:SettingsPublishedFilterKey];
-	[itemsTable reloadData];
+	[self.itemsTable reloadData];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:modalMode ? @"background3.png" : @"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.modalMode ? @"background3.png" : @"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
-@end
-
-@implementation ItemsDBViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
 	NSMutableArray *values = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (category == nil)
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories%@ ORDER BY categoryName;",
-																self.mode == ItemsDBViewControllerModePublished ? @" WHERE published=1" :
-																self.mode == ItemsDBViewControllerModeNotPublished ? @" WHERE published=0" : @""]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   [values addObject:[EVEDBInvCategory invCategoryWithDictionary:record]];
-													   if ([operation isCancelled])
-														   *needsMore = NO;
-												   }];
-		else if (group == nil)
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", category.categoryID,
-																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
-																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   [values addObject:[EVEDBInvGroup invGroupWithDictionary:record]];
-													   if ([operation isCancelled])
-														   *needsMore = NO;
-												   }];
+		if (self.category == nil)
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories%@ ORDER BY categoryName;",
+															self.mode == ItemsDBViewControllerModePublished ? @" WHERE published=1" :
+															self.mode == ItemsDBViewControllerModeNotPublished ? @" WHERE published=0" : @""]
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   [values addObject:[[EVEDBInvCategory alloc] initWithStatement:stmt]];
+												   if ([weakOperation isCancelled])
+													   *needsMore = NO;
+											   }];
+		else if (self.group == nil)
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", self.category.categoryID,
+															self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+															self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   [values addObject:[[EVEDBInvGroup alloc] initWithStatement:stmt]];
+												   if ([weakOperation isCancelled])
+													   *needsMore = NO;
+											   }];
 		else
-			[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", group.groupID,
-																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
-																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
-												   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-													   [values addObject:[EVEDBInvType invTypeWithDictionary:record]];
-													   if ([operation isCancelled])
-														   *needsMore = NO;
-												   }];
-		[pool release];
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", self.group.groupID,
+															self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+															self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   [values addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
+												   if ([weakOperation isCancelled])
+													   *needsMore = NO;
+											   }];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.rows = values;
 			[self.itemsTable reloadData];
 		}
@@ -294,47 +266,46 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *values = [NSMutableArray array];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([operation isCancelled])
+		if ([weakOperation isCancelled])
 			return;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		if (searchString.length >= 2) {
-			EVEDBDatabaseResultBlock block = ^(NSDictionary *record, BOOL *needsMore) {
-				[values addObject:[EVEDBInvType invTypeWithDictionary:record]];
-				if ([operation isCancelled])
+			void (^block)(sqlite3_stmt* stmt, BOOL *needsMore) = ^(sqlite3_stmt* stmt, BOOL *needsMore) {
+				[values addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
+				if ([weakOperation isCancelled])
 					*needsMore = NO;
 			};
 			
-			if (group != nil)
-				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																	group.groupID,
-																	searchString,
-																	self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
-																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
-													   resultBlock:block];
-			else if (category != nil)
-				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invGroups.categoryID=%d AND invTypes.groupID=invGroups.groupID AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																	category.categoryID,
-																	searchString,
-																	self.mode == ItemsDBViewControllerModePublished ? @" AND invTypes.published=1" :
-																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND invTypes.published=0" : @""]
-													   resultBlock:block];
+			if (self.group != nil)
+				[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																self.group.groupID,
+																searchString,
+																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
+												   resultBlock:block];
+			else if (self.category != nil)
+				[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invGroups.categoryID=%d AND invTypes.groupID=invGroups.groupID AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																self.category.categoryID,
+																searchString,
+																self.mode == ItemsDBViewControllerModePublished ? @" AND invTypes.published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND invTypes.published=0" : @""]
+												   resultBlock:block];
 			else
-				[[EVEDBDatabase sharedDatabase] execWithSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																	searchString,
-																	self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
-																	self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
-													   resultBlock:block];
+				[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																searchString,
+																self.mode == ItemsDBViewControllerModePublished ? @" AND published=1" :
+																self.mode == ItemsDBViewControllerModeNotPublished ? @" AND published=0" : @""]
+												   resultBlock:block];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}

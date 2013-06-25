@@ -17,9 +17,12 @@
 
 #import "ItemInfo.h"
 
+@interface AssemblyLinesViewController()
+@property(nonatomic, strong) NSMutableArray *assemblyLines;
+
+@end
+
 @implementation AssemblyLinesViewController
-@synthesize posFittingViewController;
-@synthesize tableView;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -63,31 +66,24 @@
 	[self update];
 }
 
-
-- (void) dealloc {
-	[tableView release];
-	[assemblyLines release];
-	[super dealloc];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return assemblyLines.count;
+    return self.assemblyLines.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [[assemblyLines objectAtIndex:section] count] ;
+    return [[self.assemblyLines objectAtIndex:section] count] ;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary* row = [[assemblyLines objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	NSDictionary* row = [[self.assemblyLines objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	EVEDBRamAssemblyLineType* assemblyLineType = [row valueForKey:@"assemblyLineType"];
 	
 	static NSString *cellIdentifier = @"ModuleCellView";
@@ -105,7 +101,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
-	return [[[[[assemblyLines objectAtIndex:section] objectAtIndex:0] valueForKey:@"assemblyLineType"] activity] activityName];
+	return [[[[[self.assemblyLines objectAtIndex:section] objectAtIndex:0] valueForKey:@"assemblyLineType"] activity] activityName];
 }
 
 
@@ -113,11 +109,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = aTableView == self.searchDisplayController.searchResultsTableView ? nil : [self tableView:aTableView titleForHeaderInSection:section];
@@ -141,13 +137,11 @@
 
 - (void) update {
 	NSMutableArray *assemblyLinesTmp = [NSMutableArray array];
-	POSFittingViewController* aPosFittingViewController = posFittingViewController;
-	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssemblyLinesViewController+Update" name:NSLocalizedString(@"Updating Assembly Lines", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(posFittingViewController) {
-			eufe::ControlTower* controlTower = aPosFittingViewController.fit.controlTower;
+		@synchronized(self.posFittingViewController) {
+			eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
 			
 			const eufe::StructuresList& structuresList = controlTower->getStructures();
 			eufe::StructuresList::const_iterator i, end = structuresList.end();
@@ -156,7 +150,7 @@
 			float n = structuresList.size();
 			float j = 0;
 			for (i = structuresList.begin(); i != end; i++) {
-				operation.progress = j++ / n;
+				weakOperation.progress = j++ / n;
 				if ((*i)->getState() >= eufe::Module::STATE_ACTIVE) {
 					ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
 					if (itemInfo) {
@@ -186,16 +180,12 @@
 			}];
 			[assemblyLinesTmp addObjectsFromArray:rows];
 		}
-
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (assemblyLines)
-				[assemblyLines release];
-			assemblyLines  = [assemblyLinesTmp retain];
-			[tableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.assemblyLines  = assemblyLinesTmp;
+			[self.tableView reloadData];
 		}
 	}];
 	

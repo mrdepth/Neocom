@@ -13,10 +13,15 @@
 #import "UITableViewCell+Nib.h"
 #import "AccessMaskCellView.h"
 
+@interface AccessMaskViewController()
+
+@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSDictionary *groups;
+
+
+@end
+
 @implementation AccessMaskViewController
-@synthesize accessMaskTableView;
-@synthesize accessMask;
-@synthesize corporate;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -40,9 +45,8 @@
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AccessMaskViewController+viewDidLoad" name:NSLocalizedString(@"Loading Access Mask", nil)];
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		NSError *error = nil;
-		EVECalllist *calllist = [EVECalllist calllistWithError:&error];
+		EVECalllist *calllist = [EVECalllist calllistWithError:&error progressHandler:nil];
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
@@ -52,28 +56,25 @@
 			}
 
 			NSIndexSet *indexes = [calllist.calls indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-				return corporate ^ ([(EVECalllistCallsItem*) obj type] == EVECallTypeCharacter);
+				return self.corporate ^ ([(EVECalllistCallsItem*) obj type] == EVECallTypeCharacter);
 			}];
 			
 			sectionsTmp = [[calllist.calls objectsAtIndexes:indexes] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 			sectionsTmp = [sectionsTmp arrayGroupedByKey:@"groupID"];
-			sectionsTmp = [[sectionsTmp sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+			sectionsTmp = [sectionsTmp sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 				NSInteger groupID1 = [[obj1 objectAtIndex:0] groupID];
 				NSInteger groupID2 = [[obj2 objectAtIndex:0] groupID];
 				NSString *name1 = [groupsTmp valueForKey:[NSString stringWithFormat:@"%d", groupID1]];
 				NSString *name2 = [groupsTmp valueForKey:[NSString stringWithFormat:@"%d", groupID2]];
 				return [name1 compare:name2];
-			}] retain];
+			}];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		[sections release];
-		sections = sectionsTmp;
-		[groups release];
-		groups = [groupsTmp retain];
-		[accessMaskTableView reloadData];
+		self.sections = sectionsTmp;
+		self.groups = groupsTmp;
+		[self.accessMaskTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -96,37 +97,26 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.accessMaskTableView = nil;
-	[sections release];
-	sections = nil;
-	[groups release];
-	groups = nil;
+	self.sections = nil;
+	self.groups = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
-
-
-- (void)dealloc {
-	[accessMaskTableView release];
-	[sections release];
-	[groups release];
-    [super dealloc];
-}
-
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return sections.count;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[sections objectAtIndex:section] count];
+	return [[self.sections objectAtIndex:section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [groups valueForKeyPath:[NSString stringWithFormat:@"%d", [[[sections objectAtIndex:section] objectAtIndex:0] groupID]]];
+	return [self.groups valueForKeyPath:[NSString stringWithFormat:@"%d", [[[self.sections objectAtIndex:section] objectAtIndex:0] groupID]]];
 }
 
 // Customize the appearance of table view cells.
@@ -142,10 +132,10 @@
 		cell.textLabel.shadowColor = [UIColor blackColor];
 		cell.textLabel.shadowOffset = CGSizeMake(1, 1);
     }
-	EVECalllistCallsItem *call = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVECalllistCallsItem *call = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.textLabel.text = call.name;
 	UISwitch *switchView = (UISwitch*) cell.accessoryView;
-	switchView.on = (accessMask & call.accessMask) > 0;
+	switchView.on = (self.accessMask & call.accessMask) > 0;
     return cell;
 }
 
@@ -153,11 +143,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];

@@ -11,7 +11,15 @@
 #import "EVEOnlineAPI.h"
 #import "Globals.h"
 
-@interface EUMailBox(Private)
+@interface EUMailBox()
+@property (nonatomic, readwrite) NSInteger numberOfUnreadMessages;
+@property (nonatomic, readwrite, strong) NSArray* inbox;
+@property (nonatomic, readwrite, strong) NSArray* sent;
+@property (nonatomic, readwrite, strong) NSArray* notifications;
+@property (nonatomic, readwrite) NSInteger keyID;
+@property (nonatomic, readwrite, strong) NSString* vCode;
+@property (nonatomic, readwrite) NSInteger characterID;
+@property (nonatomic, readwrite, strong) NSError* error;
 
 + (NSString*) mailBoxDirectory;
 - (NSString*) messagesFilePath;
@@ -21,64 +29,47 @@
 @end
 
 @implementation EUMailBox
-@synthesize inbox;
-@synthesize sent;
-@synthesize notifications;
-@synthesize keyID;
-@synthesize vCode;
-@synthesize characterID;
-@synthesize error;
 
 + (id) mailBoxWithAccount:(EVEAccount*) account {
-	return [[[EUMailBox alloc] initWithAccount:account] autorelease];
+	return [[EUMailBox alloc] initWithAccount:account];
 }
 
 - (id) initWithAccount:(EVEAccount*) account {
 	if (self = [super init]) {
 		if (!account.charKeyID || !account.charVCode) {
-			[self release];
 			return nil;
 		}
-		characterID = account.characterID;
-		vCode = [account.charVCode retain];
-		keyID = account.charKeyID;
+		self.characterID = account.characterID;
+		self.vCode = account.charVCode;
+		self.keyID = account.charKeyID;
 	}
 	return self;
 }
 
-- (void) dealloc {
-	[inbox release];
-	[sent release];
-	[notifications release];
-	[vCode release];
-	[error release];
-	[super dealloc];
-}
-
 - (NSArray*) inbox {
-	if (!inbox) {
+	if (!_inbox) {
 		[self reload];
 	}
-	return inbox;
+	return _inbox;
 }
 
 - (NSArray*) sent {
-	if (!sent) {
+	if (!_sent) {
 		[self reload];
 	}
-	return sent;
+	return _sent;
 }
 
 - (NSArray*) notifications {
-	if (!notifications) {
+	if (!_notifications) {
 		[self reload];
 	}
-	return notifications;
+	return _notifications;
 }
 
 - (NSInteger) numberOfUnreadMessages {
 	NSInteger unreaded = 0;
-	for (EUMailMessage* message in inbox)
+	for (EUMailMessage* message in self.inbox)
 		if (!message.read)
 			unreaded++;
 	return unreaded;
@@ -87,52 +78,46 @@
 - (void) save {
 	[[NSFileManager defaultManager] createDirectoryAtPath:[EUMailBox mailBoxDirectory] withIntermediateDirectories:NO attributes:nil error:nil];
 	NSMutableArray* readMessages = [[NSMutableArray alloc] init];
-	for (EUMailMessage* message in inbox)
+	for (EUMailMessage* message in self.inbox)
 		if (message.read)
 			[readMessages addObject:[NSNumber numberWithInteger:message.header.messageID]];
 	[readMessages writeToURL:[NSURL fileURLWithPath:[self messagesFilePath]] atomically:YES];
-	[readMessages release];
 	
 	NSMutableArray* readNotifications = [[NSMutableArray alloc] init];
-	for (EUNotification* notification in notifications)
+	for (EUNotification* notification in self.notifications)
 		[readNotifications addObject:[NSNumber numberWithInteger:notification.header.notificationID]];
 	[readNotifications writeToURL:[NSURL fileURLWithPath:[self notificationsFilePath]] atomically:YES];
-	[readNotifications release];
 }
 
-@end
-
-@implementation EUMailBox(Private)
+#pragma mark - Private
 
 + (NSString*) mailBoxDirectory {
 	return [[Globals cachesDirectory] stringByAppendingPathComponent:@"MailBox"];
 }
 
 - (NSString*) messagesFilePath {
-	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"m%d.plist", characterID]];
+	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"m%d.plist", self.characterID]];
 }
 
 - (NSString*) notificationsFilePath {
-	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"n%d.plist", characterID]];
+	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"n%d.plist", self.characterID]];
 }
 
 - (void) reload {
-	[inbox release];
-	[sent release];
-	[notifications release];
-	inbox = nil;
-	sent = nil;
-	notifications = nil;
+	self.inbox = nil;
+	self.sent = nil;
+	self.notifications = nil;
 	
-	[error release];
-	error = nil;
-	EVEMailMessages* mailMessages = [EVEMailMessages mailMessagesWithKeyID:keyID vCode:vCode characterID:characterID error:&error];
-	EVENotifications* eveNotifications = [EVENotifications notificationsWithKeyID:keyID vCode:vCode characterID:characterID error:&error];
+	self.error = nil;
+	NSError *error = nil;
+	
+	EVEMailMessages* mailMessages = [EVEMailMessages mailMessagesWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
+	EVENotifications* eveNotifications = [EVENotifications notificationsWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
 	if (error) {
-		[error retain];
+		self.error = error;
 	}
 	else {
-		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:keyID vCode:vCode characterID:characterID error:nil];
+		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:nil progressHandler:nil];
 		NSArray* readMessages = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[self messagesFilePath]]];
 		NSArray* readNotifications = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[self notificationsFilePath]]];
 		
@@ -142,11 +127,10 @@
 		components.hour = 0;
 		NSDate* today = [calendar dateFromComponents:components];
 		NSDate* yesterday = [today dateByAddingTimeInterval:-60 * 60 * 24];
-		[calendar release];
 		
-		inbox = [[NSMutableArray alloc] init];
-		sent = [[NSMutableArray alloc] init];
-		notifications = [[NSMutableArray alloc] initWithCapacity:eveNotifications.notifications.count];
+		self.inbox = [[NSMutableArray alloc] init];
+		self.sent = [[NSMutableArray alloc] init];
+		self.notifications = [[NSMutableArray alloc] initWithCapacity:eveNotifications.notifications.count];
 		NSMutableSet* ids = [NSMutableSet set];
 		
 		NSDateFormatter* dateFormatterTime = [[NSDateFormatter alloc] init];
@@ -172,12 +156,12 @@
 				[ids addObject:charID];
 			EUMailMessage* message = [EUMailMessage mailMessageWithMailBox:self];
 			message.header = item;
-			if (item.senderID == characterID) {
-				[sent addObject:message];
+			if (item.senderID == self.characterID) {
+				[(NSMutableArray*) self.sent addObject:message];
 				message.read = YES;
 			}
 			else {
-				[inbox addObject:message];
+				[(NSMutableArray*) self.inbox addObject:message];
 				message.read = !readMessages || [readMessages containsObject:[NSNumber numberWithInteger:message.header.messageID]];
 			}
 			
@@ -188,8 +172,6 @@
 			else
 				message.date = [dateFormatterFull stringFromDate:item.sentDate];
 		}
-		[dateFormatterTime release];
-		[dateFormatterFull release];
 		
 		for (EVENotificationsItem* item in eveNotifications.notifications) {
 			if (item.senderID) {
@@ -197,13 +179,13 @@
 			}
 			EUNotification* notification = [EUNotification notificationWithMailBox:self];
 			notification.header = item;
-			[notifications addObject:notification];
+			[(NSMutableArray*) self.notifications addObject:notification];
 		}
 		
 		NSArray* idsArray = [ids allObjects];
 		NSRange range = NSMakeRange(0, MIN(idsArray.count, 250));
 		while (range.length > 0) {
-			EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[idsArray subarrayWithRange:range] error:nil];
+			EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[idsArray subarrayWithRange:range] error:nil progressHandler:nil];
 			if (characterName.characters.count > 0)
 				[characterNames addEntriesFromDictionary:characterName.characters];
 			range.location += range.length;
@@ -232,7 +214,7 @@
 			//characterName.characters = characterName.characters;
 		}*/
 		
-		for (EUMailMessage* message in [inbox arrayByAddingObjectsFromArray:sent]) {
+		for (EUMailMessage* message in [self.inbox arrayByAddingObjectsFromArray:self.sent]) {
 			if (message.header.toCharacterIDs.count > 0) {
 				NSMutableArray* names = [[NSMutableArray alloc] init];
 				for (NSString* key in message.header.toCharacterIDs) {
@@ -241,7 +223,6 @@
 						[names addObject:name];
 				}
 				message.to = [names componentsJoinedByString:@", "];
-				[names release];
 			}
 			else if (message.header.toListID.count > 0) {
 				NSMutableArray* lists = [NSMutableArray array];
@@ -271,10 +252,10 @@
 			else
 				message.from = NSLocalizedString(@"Unknown sender", nil);
 		}
-		[inbox sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
-		[sent sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
+		[(NSMutableArray*) self.inbox sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
+		[(NSMutableArray*) self.sent sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"header.sentDate" ascending:NO]]];
 		
-		for (EUNotification* notification in notifications) {
+		for (EUNotification* notification in self.notifications) {
 			NSString* sender = [characterNames valueForKey:[NSString stringWithFormat:@"%d", notification.header.senderID]];
 			if (sender)
 				notification.sender = sender;

@@ -10,13 +10,6 @@
 
 
 @implementation WalletTransactionCellView
-@synthesize dateLabel;
-@synthesize transactionAmmountLabel;
-@synthesize typeNameLabel;
-@synthesize locationLabel;
-@synthesize priceLabel;
-@synthesize characterLabel;
-@synthesize iconImageView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
@@ -33,19 +26,6 @@
     [super setSelected:selected animated:animated];
     
     // Configure the view for the selected state.
-}
-
-
-- (void)dealloc {
-	[dateLabel release];
-	[transactionAmmountLabel release];
-	[typeNameLabel release];
-	[locationLabel release];
-	[priceLabel release];
-	[characterLabel release];
-	[iconImageView release];
-	
-    [super dealloc];
 }
 
 

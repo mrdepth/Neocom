@@ -9,21 +9,12 @@
 #import "DamagePatternEditViewController.h"
 #import "DamagePattern.h"
 
-@interface DamagePatternEditViewController(Private)
+@interface DamagePatternEditViewController()
 - (void) update;
 @end
 
 @implementation DamagePatternEditViewController
-@synthesize tableView;
-@synthesize damageAmountsCellView;
-@synthesize titleCellView;
-@synthesize titleTextField;
-@synthesize emTextField;
-@synthesize thermalTextField;
-@synthesize kineticTextField;
-@synthesize explosiveTextField;
-@synthesize totalDamageLabel;
-@synthesize damagePattern;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,21 +38,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSave:)] autorelease];
-	self.title = damagePattern.patternName;
-	titleTextField.text = damagePattern.patternName;
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSave:)];
+	self.title = self.damagePattern.patternName;
+	self.titleTextField.text = self.damagePattern.patternName;
 	
-	emTextField.progress = damagePattern.emAmount;
-	thermalTextField.progress = damagePattern.thermalAmount;
-	kineticTextField.progress = damagePattern.kineticAmount;
-	explosiveTextField.progress = damagePattern.explosiveAmount;
-	emTextField.text = [NSString stringWithFormat:@"%d", (int) (damagePattern.emAmount * 100)];
-	thermalTextField.text = [NSString stringWithFormat:@"%d", (int) (damagePattern.thermalAmount * 100)];
-	kineticTextField.text = [NSString stringWithFormat:@"%d", (int) (damagePattern.kineticAmount * 100)];
-	explosiveTextField.text = [NSString stringWithFormat:@"%d", (int) (damagePattern.explosiveAmount * 100)];
+	self.emTextField.progress = self.damagePattern.emAmount;
+	self.thermalTextField.progress = self.damagePattern.thermalAmount;
+	self.kineticTextField.progress = self.damagePattern.kineticAmount;
+	self.explosiveTextField.progress = self.damagePattern.explosiveAmount;
+	self.emTextField.text = [NSString stringWithFormat:@"%d", (int) (self.damagePattern.emAmount * 100)];
+	self.thermalTextField.text = [NSString stringWithFormat:@"%d", (int) (self.damagePattern.thermalAmount * 100)];
+	self.kineticTextField.text = [NSString stringWithFormat:@"%d", (int) (self.damagePattern.kineticAmount * 100)];
+	self.explosiveTextField.text = [NSString stringWithFormat:@"%d", (int) (self.damagePattern.explosiveAmount * 100)];
 	
-	totalDamageLabel.progress = damagePattern.emAmount + damagePattern.thermalAmount + damagePattern.kineticAmount + damagePattern.explosiveAmount;
-	totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(totalDamageLabel.progress * 100)];
+	self.totalDamageLabel.progress = self.damagePattern.emAmount + self.damagePattern.thermalAmount + self.damagePattern.kineticAmount + self.damagePattern.explosiveAmount;
+	self.totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(self.totalDamageLabel.progress * 100)];
 
 	
     // Do any additional setup after loading the view from its nib.
@@ -76,7 +67,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[titleTextField becomeFirstResponder];
+	[self.titleTextField becomeFirstResponder];
 }
 
 - (void)viewDidUnload
@@ -95,26 +86,12 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc {
-	[tableView release];
-	[damageAmountsCellView release];
-	[titleCellView release];
-	[titleTextField release];
-	[emTextField release];
-	[thermalTextField release];
-	[kineticTextField release];
-	[explosiveTextField release];
-	[totalDamageLabel release];
-	[damagePattern release];
-	[super dealloc];
-}
-
 - (IBAction)onSave:(id)sender {
-	damagePattern.patternName = titleTextField.text;
-	damagePattern.emAmount = emTextField.progress;
-	damagePattern.thermalAmount = thermalTextField.progress;
-	damagePattern.kineticAmount = kineticTextField.progress;
-	damagePattern.explosiveAmount = explosiveTextField.progress;
+	self.damagePattern.patternName = self.titleTextField.text;
+	self.damagePattern.emAmount = self.emTextField.progress;
+	self.damagePattern.thermalAmount = self.thermalTextField.progress;
+	self.damagePattern.kineticAmount = self.kineticTextField.progress;
+	self.damagePattern.explosiveAmount = self.explosiveTextField.progress;
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -133,7 +110,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.row == 0 ? titleCellView : damageAmountsCellView;
+	return indexPath.row == 0 ? self.titleCellView : self.damageAmountsCellView;
 }
 
 #pragma mark -
@@ -143,21 +120,21 @@
 	return 32;
 }
 
-- (void)tableView:(UITableView*) aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if (textField == titleTextField)
-		[emTextField becomeFirstResponder];
-	else if (textField == emTextField)
-		[thermalTextField becomeFirstResponder];
-	else if (textField == thermalTextField)
-		[kineticTextField becomeFirstResponder];
-	else if (textField == kineticTextField)
-		[explosiveTextField becomeFirstResponder];
+	if (textField == self.titleTextField)
+		[self.emTextField becomeFirstResponder];
+	else if (textField == self.emTextField)
+		[self.thermalTextField becomeFirstResponder];
+	else if (textField == self.thermalTextField)
+		[self.kineticTextField becomeFirstResponder];
+	else if (textField == self.kineticTextField)
+		[self.explosiveTextField becomeFirstResponder];
 	return YES;
 }
 
@@ -166,23 +143,21 @@
 	return YES;
 }
 
-@end
-
-@implementation DamagePatternEditViewController(Private)
+#pragma mark - Private
 
 - (void) update {
-	self.title = titleTextField.text;
-	float em = [emTextField.text floatValue] / 100.0;
-	float thermal = [thermalTextField.text floatValue] / 100.0;
-	float kinetic = [kineticTextField.text floatValue] / 100.0;
-	float explosive = [explosiveTextField.text floatValue] / 100.0;
+	self.title = self.titleTextField.text;
+	float em = [self.emTextField.text floatValue] / 100.0;
+	float thermal = [self.thermalTextField.text floatValue] / 100.0;
+	float kinetic = [self.kineticTextField.text floatValue] / 100.0;
+	float explosive = [self.explosiveTextField.text floatValue] / 100.0;
 	float total = em + thermal + kinetic + explosive;
-	totalDamageLabel.progress = total;
-	totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(total * 100)];
-	emTextField.progress = em;
-	thermalTextField.progress = thermal;
-	kineticTextField.progress = kinetic;
-	explosiveTextField.progress = explosive;
+	self.totalDamageLabel.progress = total;
+	self.totalDamageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(total * 100)];
+	self.emTextField.progress = em;
+	self.thermalTextField.progress = thermal;
+	self.kineticTextField.progress = kinetic;
+	self.explosiveTextField.progress = explosive;
 	
 	self.navigationItem.rightBarButtonItem.enabled = fabs(1.0 - total) < 0.001;
 }

@@ -16,7 +16,17 @@
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
 
-@interface WalletTransactionsViewController(Private)
+@interface WalletTransactionsViewController()
+@property (nonatomic, strong) NSMutableArray *walletTransactions;
+@property (nonatomic, strong) NSMutableArray *charWalletTransactions;
+@property (nonatomic, strong) NSMutableArray *corpWalletTransactions;
+@property (nonatomic, strong) NSMutableArray *filteredValues;
+@property (nonatomic, strong) NSMutableArray *corpAccounts;
+@property (nonatomic, strong) NSNumber *characterBalance;
+@property (nonatomic, assign, getter = isFail) BOOL fail;
+@property (nonatomic, strong) EUFilter *charFilter;
+@property (nonatomic, strong) EUFilter *corpFilter;
+
 - (void) reloadTransactions;
 - (NSMutableArray*) downloadWalletTransactionsWithAccountIndex:(NSInteger) accountIndex;
 - (void) downloadAccountBalance;
@@ -26,16 +36,6 @@
 
 
 @implementation WalletTransactionsViewController
-@synthesize walletTransactionsTableView;
-@synthesize ownerSegmentControl;
-@synthesize accountSegmentControl;
-@synthesize accountsView;
-@synthesize ownerToolbar;
-@synthesize accountToolbar;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -55,21 +55,21 @@
 	self.title = NSLocalizedString(@"Wallet Transactions", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		self.navigationItem.titleView = self.ownerSegmentControl;
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
-	corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
+	self.corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
 
-	[ownerSegmentControl layoutSubviews];
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsOwner];
-	accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsCorpAccount];
+	[self.ownerSegmentControl layoutSubviews];
+	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsOwner];
+	self.accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsCorpAccount];
 	
 	[self reloadTransactions];
 	[self downloadAccountBalance];
@@ -91,7 +91,7 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.walletTransactionsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.accountSegmentControl = nil;
@@ -103,88 +103,59 @@
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
 	
-	[walletTransactions release];
-	[charWalletTransactions release];
-	[corpWalletTransactions release];
-	[filteredValues release];
-	[corpAccounts release];
-	[characterBalance release];
-	[charFilter release];
-	[corpFilter release];
-	
-	walletTransactions = nil;
-	charWalletTransactions = nil;
-	corpWalletTransactions = nil;
-	filteredValues = nil;
-	corpAccounts = nil;
-	characterBalance = nil;
-	charFilter = corpFilter = nil;
+	self.walletTransactions = nil;
+	self.charWalletTransactions = nil;
+	self.corpWalletTransactions = nil;
+	self.filteredValues = nil;
+	self.corpAccounts = nil;
+	self.characterBalance = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[walletTransactionsTableView release];
-	[ownerSegmentControl release];
-	[accountSegmentControl release];
-	[accountsView release];
-	[ownerToolbar release];
-	[accountToolbar release];
-	[searchBar release];
-	
-	[walletTransactions release];
-	[charWalletTransactions release];
-	[corpWalletTransactions release];
-	[filteredValues release];
-	[corpAccounts release];
-	[characterBalance release];
-	
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[charFilter release];
-	[corpFilter release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsOwner];
 	
-	[walletTransactionsTableView reloadData];
+	[self.walletTransactionsTableView reloadData];
 	[self reloadTransactions];
 	
 	[UIView beginAnimations:0 context:0];
 	[UIView setAnimationDuration:0.5];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (ownerSegmentControl.selectedSegmentIndex == 1) {
-			accountToolbar.frame = CGRectMake(0, 0, accountToolbar.frame.size.width, accountToolbar.frame.size.height);
-			walletTransactionsTableView.frame = CGRectMake(0, accountToolbar.frame.size.height, walletTransactionsTableView.frame.size.width, walletTransactionsTableView.frame.size.height);
+		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
+			self.accountToolbar.frame = CGRectMake(0, 0, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
+			self.walletTransactionsTableView.frame = CGRectMake(0, self.accountToolbar.frame.size.height, self.walletTransactionsTableView.frame.size.width, self.walletTransactionsTableView.frame.size.height);
 		}
 		else {
-			accountToolbar.frame = CGRectMake(0, -accountToolbar.frame.size.height, accountToolbar.frame.size.width, accountToolbar.frame.size.height);
-			walletTransactionsTableView.frame = CGRectMake(0, 0, walletTransactionsTableView.frame.size.width, walletTransactionsTableView.frame.size.height);
+			self.accountToolbar.frame = CGRectMake(0, -self.accountToolbar.frame.size.height, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
+			self.walletTransactionsTableView.frame = CGRectMake(0, 0, self.walletTransactionsTableView.frame.size.width, self.walletTransactionsTableView.frame.size.height);
 		}
 	}
 	else {
-		if (ownerSegmentControl.selectedSegmentIndex == 1) {
-			accountsView.frame = CGRectMake(0, 88, 320, 44);
-			walletTransactionsTableView.frame = CGRectMake(0, 132, 320, self.view.frame.size.height);
-			walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 132);
+		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
+			self.accountsView.frame = CGRectMake(0, 88, 320, 44);
+			self.walletTransactionsTableView.frame = CGRectMake(0, 132, 320, self.view.frame.size.height);
+			self.walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 132);
 		}
 		else {
-			accountsView.frame = CGRectMake(0, 44, 320, 44);
-			walletTransactionsTableView.frame = CGRectMake(0, 88, 320, self.view.frame.size.height);
-			walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 88);
+			self.accountsView.frame = CGRectMake(0, 44, 320, 44);
+			self.walletTransactionsTableView.frame = CGRectMake(0, 88, 320, self.view.frame.size.height);
+			self.walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 88);
 		}
 	}
 	[UIView commitAnimations];
 }
 
 - (IBAction) onChangeAccount:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsCorpAccount];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsCorpAccount];
 
-	[walletTransactionsTableView reloadData];
+	[self.walletTransactionsTableView reloadData];
 	[self reloadTransactions];
 }
 		 
@@ -201,9 +172,9 @@
     // Return the number of rows in the section.
 	@synchronized(self) {
 		if (self.searchDisplayController.searchResultsTableView == tableView)
-			return filteredValues.count;
+			return self.filteredValues.count;
 		else {
-			return walletTransactions.count;
+			return self.walletTransactions.count;
 		}
 	}
 }
@@ -217,7 +188,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == walletTransactionsTableView ? @"WalletTransactionCellView" : @"WalletTransactionCellViewCompact";
+			nibName = tableView == self.walletTransactionsTableView ? @"WalletTransactionCellView" : @"WalletTransactionCellViewCompact";
 		else
 			nibName = @"WalletTransactionCellView";
 		
@@ -227,9 +198,9 @@
 	
 	@synchronized(self) {
 		if (self.searchDisplayController.searchResultsTableView == tableView)
-			transaction = [filteredValues objectAtIndex:indexPath.row];
+			transaction = [self.filteredValues objectAtIndex:indexPath.row];
 		else {
-			transaction = [walletTransactions objectAtIndex:indexPath.row];
+			transaction = [self.walletTransactions objectAtIndex:indexPath.row];
 		}
 	}
 	
@@ -254,13 +225,12 @@
 	NSNumber *balance = nil;
 	
 	@synchronized(self) {
-		if (ownerSegmentControl.selectedSegmentIndex == 0)
-			balance = [[characterBalance retain] autorelease];
+		if (self.ownerSegmentControl.selectedSegmentIndex == 0)
+			balance = self.characterBalance;
 		else {
-			if (corpAccounts.count > accountSegmentControl.selectedSegmentIndex)
-				balance = [corpAccounts objectAtIndex:accountSegmentControl.selectedSegmentIndex];
+			if (self.corpAccounts.count > self.accountSegmentControl.selectedSegmentIndex)
+				balance = [self.corpAccounts objectAtIndex:self.accountSegmentControl.selectedSegmentIndex];
 		}
-		[[balance retain] autorelease];
 	}
 	
 	if (balance)
@@ -273,11 +243,11 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -291,7 +261,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == walletTransactionsTableView ? 53 : 72;
+		return tableView == self.walletTransactionsTableView ? 53 : 72;
 	else
 		return 72;
 }
@@ -301,20 +271,18 @@
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.type = [[filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
 	else
-		controller.type = [[walletTransactions objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.walletTransactions objectAtIndex:indexPath.row] valueForKey:@"type"];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark -
@@ -334,25 +302,25 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];	
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
-	filterViewController.filter = filter;
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
+	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -366,32 +334,28 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation WalletTransactionsViewController(Private)
+#pragma mark - Private
 
 - (void) reloadTransactions {
 	EVEAccount *account = [EVEAccount currentAccount];
-	isFail = NO;
-	BOOL corporate = ownerSegmentControl.selectedSegmentIndex == 1;
-	[walletTransactions release];
-	walletTransactions = nil;
+	self.fail = NO;
+	BOOL corporate = self.ownerSegmentControl.selectedSegmentIndex == 1;
+	self.walletTransactions = nil;
 	if (!corporate) {
-		if (!charWalletTransactions) {
-			charWalletTransactions = [[NSMutableArray alloc] init];
+		if (!self.charWalletTransactions) {
+			self.charWalletTransactions = [[NSMutableArray alloc] init];
 			NSMutableArray *charWalletTransactionsTmp = [NSMutableArray array];
 			EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CharacterWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSError *error = nil;
 				
 				if (!account) {
-					[pool release];
 					return;
 				}
 				
-				EVECharWalletTransactions *transactions = [EVECharWalletTransactions charWalletTransactionsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeTransID:0 error:&error];
+				EVECharWalletTransactions *transactions = [EVECharWalletTransactions charWalletTransactionsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeTransID:0 error:&error progressHandler:nil];
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 				}
@@ -402,7 +366,7 @@
 					float n = transactions.transactions.count;
 					float i = 0;
 					for (EVECharWalletTransactionsItem *transaction in transactions.transactions) {
-						operation.progress = 0.5 + i++ / n;
+						weakOperation.progress = 0.5 + i++ / n;
 						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:transaction.typeID error:nil];
 						BOOL sell = [transaction.transactionType isEqualToString:@"sell"];
 						[charWalletTransactionsTmp addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -419,18 +383,15 @@
 															  [NSNumber numberWithInteger:transaction.transactionID], @"transactionID",
 															  nil]];
 					}
-					[dateFormatter release];
 					[filterTmp updateWithValues:charWalletTransactionsTmp];
 				}
 				[charWalletTransactionsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-				[pool release];
 			}];
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
-					[charFilter release];
-					charFilter = [filterTmp retain];
-					[charWalletTransactions addObjectsFromArray:charWalletTransactionsTmp];
-					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+				if (![weakOperation isCancelled]) {
+					self.charFilter = filterTmp;
+					[self.charWalletTransactions addObjectsFromArray:charWalletTransactionsTmp];
+					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						[self reloadTransactions];
 					}
 				}
@@ -439,57 +400,55 @@
 		}
 		else {
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
-			if (charFilter) {
-				NSMutableArray* charWalletTransactionsLocal = charWalletTransactions;
+			if (self.charFilter) {
+				NSMutableArray* charWalletTransactionsLocal = self.charWalletTransactions;
 				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+				__weak EUOperation* weakOperation = operation;
 				[operation addExecutionBlock:^(void) {
-					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					[transactionsTmp addObjectsFromArray:[charFilter applyToValues:charWalletTransactionsLocal]];
-					[pool release];
+					[transactionsTmp addObjectsFromArray:[self.charFilter applyToValues:charWalletTransactionsLocal]];
 				}];
 				
 				[operation setCompletionBlockInCurrentThread:^(void) {
-					if (![operation isCancelled]) {
-						if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-							[walletTransactions release];
-							walletTransactions = [transactionsTmp retain];
+					if (![weakOperation isCancelled]) {
+						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+							self.walletTransactions = transactionsTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[walletTransactionsTableView reloadData];
+							[self.walletTransactionsTableView reloadData];
 						}
 					}
 				}];
 				[[EUOperationQueue sharedQueue] addOperation:operation];
 			}
 			else
-				walletTransactions = [transactionsTmp retain];
+				self.walletTransactions = transactionsTmp;
 		}
 	}
 	
 	else {
-		if ((NSNull*) [corpWalletTransactions objectAtIndex:accountSegmentControl.selectedSegmentIndex] == [NSNull null]) {
-			if ((NSNull*) [corpWalletTransactions objectAtIndex:0] == [NSNull null])
-				[corpWalletTransactions replaceObjectAtIndex:0 withObject:[NSMutableArray array]];
+		if ((NSNull*) [self.corpWalletTransactions objectAtIndex:self.accountSegmentControl.selectedSegmentIndex] == [NSNull null]) {
+			if ((NSNull*) [self.corpWalletTransactions objectAtIndex:0] == [NSNull null])
+				[self.corpWalletTransactions replaceObjectAtIndex:0 withObject:[NSMutableArray array]];
 			
 			NSMutableIndexSet *accountsToLoad = [NSMutableIndexSet indexSet];
 			
-			if (accountSegmentControl.selectedSegmentIndex > 0) {
-				[accountsToLoad addIndex:accountSegmentControl.selectedSegmentIndex];
+			if (self.accountSegmentControl.selectedSegmentIndex > 0) {
+				[accountsToLoad addIndex:self.accountSegmentControl.selectedSegmentIndex];
 			}
 			else {
 				for (int i = 1; i <= 7; i++) {
-					if ((NSNull*) [corpWalletTransactions objectAtIndex:i] == [NSNull null]) {
-						[corpWalletTransactions replaceObjectAtIndex:i withObject:[NSMutableArray array]];
+					if ((NSNull*) [self.corpWalletTransactions objectAtIndex:i] == [NSNull null]) {
+						[self.corpWalletTransactions replaceObjectAtIndex:i withObject:[NSMutableArray array]];
 						[accountsToLoad addIndex:i];
 					}
 				}
 			}
 			
-			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:corpWalletTransactions];
-			EUFilter *filter = corpFilter ? [[corpFilter copy] autorelease] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
+			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:self.corpWalletTransactions];
+			EUFilter *filter = self.corpFilter ? [self.corpFilter copy] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
 			
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 				NSMutableArray *account0 = [NSMutableArray arrayWithArray:[corpWalletTransactionsTmp objectAtIndex:0]];
 
@@ -499,13 +458,13 @@
 					NSMutableArray *account = [NSMutableArray array];
 					EUOperation *loadingOperation = [EUOperation operation];
 					[loadingOperation addExecutionBlock:^{
-						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-						[account addObjectsFromArray:[self downloadWalletTransactionsWithAccountIndex:idx]];
-						[pool release];
+						@autoreleasepool {
+							[account addObjectsFromArray:[self downloadWalletTransactionsWithAccountIndex:idx]];
+						}
 					}];
 					
 					[loadingOperation setCompletionBlockInCurrentThread:^(void) {
-						operation.progress = i++ / n;
+						weakOperation.progress = i++ / n;
 						[filter updateWithValues:account];
 						[corpWalletTransactionsTmp replaceObjectAtIndex:idx withObject:account];
 						[account0 addObjectsFromArray:account];
@@ -517,17 +476,12 @@
 				[queue waitUntilAllOperationsAreFinished];
 				[account0 sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
 				[corpWalletTransactionsTmp replaceObjectAtIndex:0 withObject:account0];
-				
-				[queue release];
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				[corpWalletTransactions release];
-				corpWalletTransactions = [corpWalletTransactionsTmp retain];
-				[corpFilter release];
-				corpFilter = [filter retain];
-				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+				self.corpWalletTransactions = corpWalletTransactionsTmp;
+				self.corpFilter = filter;
+				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 					[self reloadTransactions];
 				}
 			}];
@@ -536,32 +490,30 @@
 		}
 		else {
 			NSMutableArray *transactionsTmp = [NSMutableArray array];
-			if (corpFilter) {
-				NSMutableArray *corpWalletTransactionsLocal = corpWalletTransactions;
+			if (self.corpFilter) {
+				NSMutableArray *corpWalletTransactionsLocal = self.corpWalletTransactions;
 				__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+				__weak EUOperation* weakOperation = operation;
 				[operation addExecutionBlock:^(void) {
-					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-					[transactionsTmp addObjectsFromArray:[corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:accountSegmentControl.selectedSegmentIndex]]];
-					[pool release];
+					[transactionsTmp addObjectsFromArray:[self.corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:self.accountSegmentControl.selectedSegmentIndex]]];
 				}];
 				
 				[operation setCompletionBlockInCurrentThread:^(void) {
-					if (![operation isCancelled]) {
-						if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-							[walletTransactions release];
-							walletTransactions = [transactionsTmp retain];
+					if (![weakOperation isCancelled]) {
+						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+							self.walletTransactions = transactionsTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[walletTransactionsTableView reloadData];
+							[self.walletTransactionsTableView reloadData];
 						}
 					}
 				}];
 				[[EUOperationQueue sharedQueue] addOperation:operation];
 			}
 			else
-				walletTransactions = [[corpWalletTransactions objectAtIndex:accountSegmentControl.selectedSegmentIndex] retain];
+				self.walletTransactions = [self.corpWalletTransactions objectAtIndex:self.accountSegmentControl.selectedSegmentIndex];
 		}
 	}
-	[walletTransactionsTableView reloadData];
+	[self.walletTransactionsTableView reloadData];
 }
 
 - (NSMutableArray*) downloadWalletTransactionsWithAccountIndex:(NSInteger) accountIndex {
@@ -574,12 +526,12 @@
 	if (!account)
 		return currentAccount;
 	
-	EVECorpWalletTransactions *transactions = [EVECorpWalletTransactions corpWalletTransactionsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeTransID:0 accountKey:accountKey error:&error];
+	EVECorpWalletTransactions *transactions = [EVECorpWalletTransactions corpWalletTransactionsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeTransID:0 accountKey:accountKey error:&error progressHandler:nil];
 	if (error) {
 		@synchronized(self) {
-			if (!isFail)
+			if (!self.fail)
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-			isFail = YES;
+			self.fail = YES;
 		}
 	}
 	else {
@@ -605,7 +557,6 @@
 									   transaction.characterName, @"characterName",
 									   nil]];
 		}
-		[dateFormatter release];
 		[currentAccount sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
 	}
 	return currentAccount;
@@ -615,14 +566,14 @@
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Corp Balance", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		characterBalanceTmp = [[NSNumber numberWithFloat:account.characterSheet.balance] retain];
+		characterBalanceTmp = [NSNumber numberWithFloat:account.characterSheet.balance];
 		
 		NSError *error = nil;
 		//EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID corporate:YES error:&error];
-		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:YES error:&error];
+		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:YES error:&error progressHandler:nil];
 		if (!error) {
 			float summary = 0;
 			[corpAccountsTmp addObject:[NSNull null]];
@@ -631,22 +582,15 @@
 				[corpAccountsTmp addObject:[NSNumber numberWithFloat:account.balance]];
 			}
 			[corpAccountsTmp replaceObjectAtIndex:0 withObject:[NSNumber numberWithFloat:summary]];
-			[walletTransactionsTableView reloadData];
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[characterBalance release];
-			characterBalance = characterBalanceTmp;
-			[corpAccounts release];
-			corpAccounts = [corpAccountsTmp retain];
-			[walletTransactionsTableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.characterBalance = characterBalanceTmp;
+			self.corpAccounts = corpAccountsTmp;
+			[self.walletTransactionsTableView reloadData];
 		}
-		else
-			[characterBalanceTmp release];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -654,63 +598,51 @@
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
-	isFail = NO;
+	self.fail = NO;
 	if (!account) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			@synchronized(self) {
-				[walletTransactions release];
-				walletTransactions = nil;
-				[charWalletTransactions release];
-				charWalletTransactions = nil;
-				[corpWalletTransactions release];
-				corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
-				[characterBalance release];
-				characterBalance = nil;
-				[corpAccounts release];
-				corpAccounts = nil;
-				[charFilter release];
-				[corpFilter release];
-				charFilter = corpFilter = nil;
+				self.walletTransactions = nil;
+				self.charWalletTransactions = nil;
+				self.corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
+				self.characterBalance = nil;
+				self.corpAccounts = nil;
+				self.charFilter = nil;
+				self.corpFilter = nil;
 			}
-			[walletTransactionsTableView reloadData];
+			[self.walletTransactionsTableView reloadData];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
 		@synchronized(self) {
-			[walletTransactions release];
-			walletTransactions = nil;
-			[charWalletTransactions release];
-			charWalletTransactions = nil;
-			[corpWalletTransactions release];
-			corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
-			[characterBalance release];
-			characterBalance = nil;
-			[corpAccounts release];
-			corpAccounts = nil;
-			[charFilter release];
-			[corpFilter release];
-			charFilter = corpFilter = nil;
+			self.walletTransactions = nil;
+			self.charWalletTransactions = nil;
+			self.corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
+			self.characterBalance = nil;
+			self.corpAccounts = nil;
+			self.charFilter = nil;
+			self.corpFilter = nil;
 		}
-		[walletTransactionsTableView reloadData];
+		[self.walletTransactionsTableView reloadData];
 		[self reloadTransactions];
 		[self downloadAccountBalance];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (!walletTransactions || !aSearchString)
+	if (!self.walletTransactions || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *transcation in walletTransactions) {
-			if ([operation isCancelled])
+		for (NSDictionary *transcation in self.walletTransactions) {
+			if ([weakOperation isCancelled])
 				break;
 			if (([transcation valueForKey:@"date"] && [[transcation valueForKey:@"date"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([transcation valueForKey:@"typeName"] && [[transcation valueForKey:@"typeName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
@@ -719,13 +651,11 @@
 				[filteredValuesTmp addObject:transcation];
 			}
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

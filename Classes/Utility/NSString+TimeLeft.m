@@ -12,29 +12,6 @@
 @implementation NSString(TimeLeft)
 
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft {
-/*	NSMutableString *text = [NSMutableString string];
-	int sec = timeLeft;
-	if (sec < 0)
-		sec = 0;
-	
-	int days = sec / (60 * 60 * 24);
-	sec %= (60 * 60 * 24);
-	
-	
-	int hours = sec / (60 * 60);
-	sec %= (60 * 60);
-	
-	int mins = sec / 60;
-	sec %= 60;
-	
-	if (days)
-		[text appendFormat:@"%dd ", days];
-	if (hours)
-		[text appendFormat:@"%dh ", hours];
-	if (mins)
-		[text appendFormat:@"%dm ", mins];
-	[text appendFormat:@"%ds", sec];
-	return text;*/
 	return [self stringWithTimeLeft:timeLeft componentsLimit:4];
 }
 

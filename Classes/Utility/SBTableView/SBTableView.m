@@ -8,7 +8,7 @@
 
 #import "SBTableView.h"
 
-@interface SBTableView(Private)
+@interface SBTableView()
 
 - (void) scrollToNearest;
 
@@ -16,12 +16,11 @@
 
 
 @implementation SBTableView
-@synthesize topView;
-@synthesize visibleTopPartHeight;
+@synthesize delegate;
 
 - (void) awakeFromNib {
 	self.delegate = self;
-	topView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - topView.frame.size.height, topView.frame.size.width, topView.frame.size.height);
+	self.topView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - self.topView.frame.size.height, self.topView.frame.size.width, self.topView.frame.size.height);
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -29,11 +28,6 @@
 		self.delegate = self;
     }
     return self;
-}
-
-- (void)dealloc {
-	[topView release];
-    [super dealloc];
 }
 
 - (void) setDelegate:(id <UITableViewDelegate>) value {
@@ -66,31 +60,31 @@
 }
 
 - (void) setVisibleTopPartHeight:(float)value {
-	float dif = value - visibleTopPartHeight;
-	visibleTopPartHeight = value;
-	if (topView.frame.origin.y < visibleTopPartHeight - topView.frame.size.height) {
-		topView.frame = CGRectMake(topView.frame.origin.x, visibleTopPartHeight - topView.frame.size.height, topView.frame.size.width, topView.frame.size.height);
-		self.frame = CGRectMake(self.frame.origin.x, visibleTopPartHeight, self.frame.size.width, self.frame.size.height - dif);
+	float dif = value - _visibleTopPartHeight;
+	_visibleTopPartHeight = value;
+	if (self.topView.frame.origin.y < _visibleTopPartHeight - self.topView.frame.size.height) {
+		self.topView.frame = CGRectMake(self.topView.frame.origin.x, _visibleTopPartHeight - self.topView.frame.size.height, self.topView.frame.size.width, self.topView.frame.size.height);
+		self.frame = CGRectMake(self.frame.origin.x, _visibleTopPartHeight, self.frame.size.width, self.frame.size.height - dif);
 	}
 }
 
 #pragma mark UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if (topView) {
+	if (self.topView) {
 		CGPoint p = scrollView.contentOffset;
 		p.y = - p.y;
-		if (scrollView.frame.origin.y + p.y >= topView.frame.size.height) {
-			scrollView.frame = CGRectMake(scrollView.frame.origin.x, topView.frame.size.height, scrollView.frame.size.width, scrollView.frame.size.height);
-			topView.frame = CGRectMake(topView.frame.origin.x, 0, topView.frame.size.width, topView.frame.size.height);
+		if (scrollView.frame.origin.y + p.y >= self.topView.frame.size.height) {
+			scrollView.frame = CGRectMake(scrollView.frame.origin.x, self.topView.frame.size.height, scrollView.frame.size.width, scrollView.frame.size.height);
+			self.topView.frame = CGRectMake(self.topView.frame.origin.x, 0, self.topView.frame.size.width, self.topView.frame.size.height);
 		}
-		else if (scrollView.frame.origin.y + p.y < visibleTopPartHeight) {
-			scrollView.frame = CGRectMake(scrollView.frame.origin.x, visibleTopPartHeight, scrollView.frame.size.width, scrollView.frame.size.height);
-			topView.frame = CGRectMake(topView.frame.origin.x, -topView.frame.size.height + visibleTopPartHeight, topView.frame.size.width, topView.frame.size.height);
+		else if (scrollView.frame.origin.y + p.y < self.visibleTopPartHeight) {
+			scrollView.frame = CGRectMake(scrollView.frame.origin.x, self.visibleTopPartHeight, scrollView.frame.size.width, scrollView.frame.size.height);
+			self.topView.frame = CGRectMake(self.topView.frame.origin.x, -self.topView.frame.size.height + self.visibleTopPartHeight, self.topView.frame.size.width, self.topView.frame.size.height);
 		}
 		else {
 			scrollView.frame = CGRectMake(scrollView.frame.origin.x, scrollView.frame.origin.y + p.y, scrollView.frame.size.width, scrollView.frame.size.height);
-			topView.frame = CGRectMake(topView.frame.origin.x, topView.frame.origin.y + p.y, topView.frame.size.width, topView.frame.size.height);
+			self.topView.frame = CGRectMake(self.topView.frame.origin.x, self.topView.frame.origin.y + p.y, self.topView.frame.size.width, self.topView.frame.size.height);
 			scrollView.contentOffset = CGPointMake(0, 0);
 		}
 	}
@@ -114,27 +108,25 @@
 		[delegate scrollViewDidEndDecelerating:scrollView];
 }
 
-@end
-
-@implementation SBTableView(Private)
+#pragma mark -Private
 
 - (void) scrollToNearest {
-	if (!topView)
+	if (!self.topView)
 		return;
-	if (self.frame.origin.y > (topView.frame.size.height + visibleTopPartHeight) / 2) {
+	if (self.frame.origin.y > (self.topView.frame.size.height + self.visibleTopPartHeight) / 2) {
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 		[UIView setAnimationDuration:0.3];
-		self.frame = CGRectMake(self.frame.origin.x, topView.frame.size.height, self.frame.size.width, self.frame.size.height);
-		topView.frame = CGRectMake(topView.frame.origin.x, 0, topView.frame.size.width, topView.frame.size.height);
+		self.frame = CGRectMake(self.frame.origin.x, self.topView.frame.size.height, self.frame.size.width, self.frame.size.height);
+		self.topView.frame = CGRectMake(self.topView.frame.origin.x, 0, self.topView.frame.size.width, self.self.topView.frame.size.height);
 		[UIView commitAnimations];
 	}
 	else {
 		[UIView beginAnimations:nil context:nil];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 		[UIView setAnimationDuration:0.3];
-		self.frame = CGRectMake(self.frame.origin.x, visibleTopPartHeight, self.frame.size.width, self.frame.size.height);
-		topView.frame = CGRectMake(topView.frame.origin.x, -topView.frame.size.height + visibleTopPartHeight, topView.frame.size.width, topView.frame.size.height);
+		self.frame = CGRectMake(self.frame.origin.x, self.visibleTopPartHeight, self.frame.size.width, self.frame.size.height);
+		self.topView.frame = CGRectMake(self.topView.frame.origin.x, -self.topView.frame.size.height + self.visibleTopPartHeight, self.topView.frame.size.width, self.topView.frame.size.height);
 		[UIView commitAnimations];
 	}
 }

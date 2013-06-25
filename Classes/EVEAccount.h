@@ -14,28 +14,7 @@
 #import "EUMailBox.h"
 #import "CharacterAttributes.h"
 
-@interface EVEAccount : NSObject {
-	NSInteger charKeyID;
-	NSString *charVCode;
-	NSInteger charAccessMask;
-	NSInteger corpKeyID;
-	NSString *corpVCode;
-	NSInteger corpAccessMask;
-	
-	NSInteger characterID;
-	NSString *characterName;
-	NSInteger corporationID;
-	NSString *corporationName;
-	SkillPlan* skillPlan;
-
-	EVECharacterSheet *characterSheet;
-	EVESkillQueue *skillQueue;
-	EUMailBox *mailBox;
-	NSMutableDictionary *properties;
-	
-	CharacterAttributes* characterAttributes;
-	
-}
+@interface EVEAccount : NSObject
 @property (nonatomic) NSInteger charKeyID;
 @property (nonatomic, retain) NSString *charVCode;
 @property (nonatomic) NSInteger charAccessMask;

@@ -9,9 +9,7 @@
 #import "EUFilterItemValue.h"
 
 @implementation EUFilterItemValue
-@synthesize title;
-@synthesize value;
-@synthesize enabled;
+
 
 - (id)init
 {
@@ -23,18 +21,13 @@
     return self;
 }
 
-- (void) dealloc {
-	[title release];
-	[value release];
-	[super dealloc];
-}
 
 - (NSUInteger) hash {
-	return [value hash];
+	return [self.value hash];
 }
 
 - (BOOL) isEqual:(id)object {
-	return [value isEqual:[(EUFilterItemValue*) object value]];
+	return [self.value isEqual:[(EUFilterItemValue*) object value]];
 }
 
 @end

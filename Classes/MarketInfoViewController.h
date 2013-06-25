@@ -10,24 +10,8 @@
 #import "EVEDBAPI.h"
 #import "EVECentralAPI.h"
 
-@interface MarketInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate> {
-	UITableView *ordersTableView;
-	UISegmentedControl *reportTypeSegment;
-	UISearchBar *searchBar;
-	UISearchDisplayController *searchDisplayController;
-	UIViewController *parentViewController;
-	EVEDBInvType *type;
-	NSArray *sellOrdersRegions;
-	NSArray *buyOrdersRegions;
-	NSArray *sellSummary;
-	NSArray *buySummary;
-	
-@private
-	NSMutableArray *filteredSellOrdersRegions;
-	NSMutableArray *filteredBuyOrdersRegions;
-	NSMutableArray *filteredSellSummary;
-	NSMutableArray *filteredBuySummary;
-}
+@interface MarketInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+
 @property (nonatomic, retain) IBOutlet UITableView *ordersTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *reportTypeSegment;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;

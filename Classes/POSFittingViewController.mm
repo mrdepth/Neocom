@@ -28,7 +28,12 @@
 #define ActionButtonSetDamagePattern NSLocalizedString(@"Set Damage Pattern", nil)
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
-@interface POSFittingViewController(Private)
+@interface POSFittingViewController()
+@property(nonatomic, strong) UIViewController<FittingSection> *currentSection;
+@property(nonatomic, assign) NSInteger currentSectionIndex;
+@property(nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, readwrite) eufe::Engine* fittingEngine;
+
 
 - (void) keyboardWillShow: (NSNotification*) notification;
 - (void) keyboardWillHide: (NSNotification*) notification;
@@ -37,27 +42,7 @@
 @end
 
 @implementation POSFittingViewController
-@synthesize sectionsView;
-@synthesize sectionSegmentControl;
-@synthesize modalController;
-@synthesize areaEffectsModalController;
-@synthesize areaEffectsViewController;
-@synthesize structuresViewController;
-@synthesize assemblyLinesViewController;
-@synthesize posStatsViewController;
-@synthesize shadeView;
-@synthesize fitNameView;
-@synthesize fitNameTextField;
-@synthesize statsSectionView;
 @synthesize popoverController;
-@synthesize areaEffectsPopoverController;
-@synthesize fit;
-
-@synthesize fittingEngine;
-@synthesize damagePattern;
-
-@synthesize posFuelRequirements;
-@synthesize priceManager;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -73,39 +58,36 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)];
 	
-	self.fitNameTextField.text = fit.fitName;
+	self.fitNameTextField.text = self.fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
 	
-	if (currentSectionIndex == 0)
-		currentSection = structuresViewController;
-	else if (currentSectionIndex == 1)
-		currentSection = assemblyLinesViewController;
+	if (self.currentSectionIndex == 0)
+		self.currentSection = self.structuresViewController;
+	else if (self.currentSectionIndex == 1)
+		self.currentSection = self.assemblyLinesViewController;
 	else
-		currentSection = posStatsViewController;
+		self.currentSection = self.posStatsViewController;
 	
-	[self.sectionsView addSubview:currentSection.view];
-	currentSection.view.frame = self.sectionsView.bounds;
-	[currentSection viewWillAppear:NO];
+	[self.sectionsView addSubview:self.currentSection.view];
+	self.currentSection.view.frame = self.sectionsView.bounds;
+	[self.currentSection viewWillAppear:NO];
 	
-	sectionSegmentControl.selectedSegmentIndex = currentSectionIndex;
+	self.sectionSegmentControl.selectedSegmentIndex = self.currentSectionIndex;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.statsSectionView addSubview:posStatsViewController.view];
-		posStatsViewController.view.frame = self.statsSectionView.bounds;
-		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
+		[self.statsSectionView addSubview:self.posStatsViewController.view];
+		self.posStatsViewController.view.frame = self.statsSectionView.bounds;
+		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 		
-//		self.areaEffectsPopoverController = [[[UIPopoverController alloc] initWithContentViewController:areaEffectsModalController] autorelease];
-//		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
-		
-		structuresViewController.popoverController = self.popoverController;
+		self.structuresViewController.popoverController = self.popoverController;
 	}
 	
-	priceManager = [[PriceManager alloc] init];
+	self.priceManager = [[PriceManager alloc] init];
 	
-	[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)] autorelease]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)]];
 	[self update];
 }
 
@@ -126,10 +108,9 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	if (actionSheet) {
-		[actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:YES];
-		[actionSheet release];
-		actionSheet = nil;
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
+		self.actionSheet = nil;
 	}
 	
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
@@ -142,7 +123,7 @@
 }
 
 - (void) viewDidLayoutSubviews {
-	currentSection.view.frame = self.sectionsView.bounds;
+	self.currentSection.view.frame = self.sectionsView.bounds;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -168,39 +149,14 @@
 	self.statsSectionView = nil;
 	self.popoverController = nil;
 	self.areaEffectsPopoverController = nil;
-	currentSection = nil;
+	self.currentSection = nil;
 	self.posFuelRequirements = nil;
 	self.priceManager = nil;
 }
 
 
 - (void)dealloc {
-	
-	[sectionsView release];
-	[sectionSegmentControl release];
-	[modalController release];
-	[areaEffectsModalController release];
-	[areaEffectsViewController release];
-	[structuresViewController release];
-	[assemblyLinesViewController release];
-	[posStatsViewController release];
-	[shadeView release];
-	[fitNameView release];
-	[fitNameTextField release];
-	[statsSectionView release];
-	[popoverController release];
-	[areaEffectsPopoverController release];
-	
-	[fit release];
-	
-	[actionSheet release];
-	[damagePattern release];
-	
-	[posFuelRequirements release];
-	[priceManager release];
-
-	delete fittingEngine;
-    [super dealloc];
+	delete self.fittingEngine;
 }
 
 - (IBAction) didCloseModalViewController:(id) sender {
@@ -209,30 +165,29 @@
 
 - (IBAction) didChangeSection:(id) sender {
 	UIViewController<FittingSection> *newSection = nil;
-	if (sectionSegmentControl.selectedSegmentIndex == 0)
-		newSection = structuresViewController;
-	else if (sectionSegmentControl.selectedSegmentIndex == 1)
-		newSection = assemblyLinesViewController;
+	if (self.sectionSegmentControl.selectedSegmentIndex == 0)
+		newSection = self.structuresViewController;
+	else if (self.sectionSegmentControl.selectedSegmentIndex == 1)
+		newSection = self.assemblyLinesViewController;
 	else
-		newSection = posStatsViewController;
-	if (newSection == currentSection)
+		newSection = self.posStatsViewController;
+	if (newSection == self.currentSection)
 		return;
 	
-	currentSectionIndex = sectionSegmentControl.selectedSegmentIndex;
+	self.currentSectionIndex = self.sectionSegmentControl.selectedSegmentIndex;
 	
-	[currentSection.view removeFromSuperview];
+	[self.currentSection.view removeFromSuperview];
 	[self.sectionsView addSubview:newSection.view];
 	newSection.view.frame = self.sectionsView.bounds;
 	[newSection viewWillAppear:NO];
-	currentSection = newSection;
+	self.currentSection = newSection;
 }
 
 - (IBAction) onMenu:(id) sender {
-	if (actionSheet) {
-		[actionSheet dismissWithClickedButtonIndex:actionSheet.cancelButtonIndex animated:YES];
-		[actionSheet release];
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 	}
-	actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 											  delegate:self
 									 cancelButtonTitle:nil
 								destructiveButtonTitle:nil
@@ -243,26 +198,26 @@
 		actionSheet.destructiveButtonIndex = actionSheet.numberOfButtons - 1;
 	}*/
 	
-	[actionSheet addButtonWithTitle:ActionButtonSetName];
-	if (!fit.managedObjectContext)
-		[actionSheet addButtonWithTitle:ActionButtonSave];
+	[self.actionSheet addButtonWithTitle:ActionButtonSetName];
+	if (!self.fit.managedObjectContext)
+		[self.actionSheet addButtonWithTitle:ActionButtonSave];
 	//[actionSheet addButtonWithTitle:ActionButtonAreaEffect];
 	
-	[actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
-	[actionSheet addButtonWithTitle:ActionButtonCancel];
+	[self.actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
+	[self.actionSheet addButtonWithTitle:ActionButtonCancel];
 	
-	actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+	self.actionSheet.cancelButtonIndex = self.actionSheet.numberOfButtons - 1;
 	
-	[actionSheet showFromBarButtonItem:sender animated:YES];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 - (IBAction) onDone:(id) sender {
-	[fitNameTextField resignFirstResponder];
-	fit.fitName = fitNameTextField.text;
+	[self.fitNameTextField resignFirstResponder];
+	self.fit.fitName = self.fitNameTextField.text;
 	
 //	boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
 //	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:controlTower error:nil];
-	self.title = [NSString stringWithFormat:@"%@ - %@", fit.typeName, fit.fitName ? fit.fitName : fit.typeName];
+	self.title = [NSString stringWithFormat:@"%@ - %@", self.fit.typeName, self.fit.fitName ? self.fit.fitName : self.fit.typeName];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[UIView beginAnimations:nil context:nil];
@@ -282,49 +237,45 @@
 }
 
 - (eufe::Engine*) fittingEngine {
-	if (!fittingEngine)
-		fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
-	return fittingEngine;
+	if (!_fittingEngine)
+		_fittingEngine = new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
+	return _fittingEngine;
 }
 
 - (void) update {
-	[currentSection update];
+	[self.currentSection update];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[posStatsViewController update];
+		[self.posStatsViewController update];
 }
 
 - (void) setFit:(POSFit*) value {
-	[value retain];
-	[fit release];
-	fit = value;
+	_fit = value;
 	//boost::shared_ptr<eufe::ControlTower> controlTower = fit.controlTower;
 //	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
-	self.title = [NSString stringWithFormat:@"%@ - %@", fit.typeName, fit.fitName ? fit.fitName : fit.typeName];
-	self.fitNameTextField.text = fit.fitName;
+	self.title = [NSString stringWithFormat:@"%@ - %@", _fit.typeName, _fit.fitName ? _fit.fitName : _fit.typeName];
+	self.fitNameTextField.text = _fit.fitName;
 }
 
 - (void) setDamagePattern:(DamagePattern *)value {
-	[value retain];
-	[damagePattern release];
-	damagePattern = value;
+	_damagePattern = value;
 	eufe::DamagePattern eufeDamagePattern;
-	eufeDamagePattern.emAmount = damagePattern.emAmount;
-	eufeDamagePattern.thermalAmount = damagePattern.thermalAmount;
-	eufeDamagePattern.kineticAmount = damagePattern.kineticAmount;
-	eufeDamagePattern.explosiveAmount = damagePattern.explosiveAmount;
-	fit.controlTower->setDamagePattern(eufeDamagePattern);
+	eufeDamagePattern.emAmount = _damagePattern.emAmount;
+	eufeDamagePattern.thermalAmount = _damagePattern.thermalAmount;
+	eufeDamagePattern.kineticAmount = _damagePattern.kineticAmount;
+	eufeDamagePattern.explosiveAmount = _damagePattern.explosiveAmount;
+	self.fit.controlTower->setDamagePattern(eufeDamagePattern);
 }
 
 - (EVEDBInvControlTowerResource*) posFuelRequirements {
-	if (!posFuelRequirements) {
-		for (EVEDBInvControlTowerResource* resource in fit.type.resources) {
+	if (!_posFuelRequirements) {
+		for (EVEDBInvControlTowerResource* resource in self.fit.type.resources) {
 			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
-				posFuelRequirements = [resource retain];
+				_posFuelRequirements = resource;
 				break;
 			}
 		}
 	}
-	return posFuelRequirements;
+	return _posFuelRequirements;
 }
 
 #pragma mark UIActionSheetDelegate
@@ -336,7 +287,7 @@
 		[self.navigationController popViewControllerAnimated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonSetName]) {
-		[fitNameTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.2];
+		[self.fitNameTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.2];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			[UIView beginAnimations:nil context:nil];
 			[UIView setAnimationDuration:0.3];
@@ -350,18 +301,18 @@
 		}
 	}
 	else if ([button isEqualToString:ActionButtonSave]) {
-		[fit save];
+		[self.fit save];
 	}
 	else if ([button isEqualToString:ActionButtonAreaEffect]) {
-		eufe::Item* area = fittingEngine->getArea();
-		areaEffectsViewController.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
+		eufe::Item* area = self.fittingEngine->getArea();
+		self.areaEffectsViewController.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[areaEffectsPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.areaEffectsPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self presentModalViewController:areaEffectsModalController animated:YES];
+			[self presentModalViewController:self.areaEffectsModalController animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonClearAreaEffect]) {
-		fittingEngine->clearArea();
+		self.fittingEngine->clearArea();
 		[self update];
 	}
 	else if ([button isEqualToString:ActionButtonSetDamagePattern]) {
@@ -376,11 +327,8 @@
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
-		[damagePatternsViewController release];
 	}
-	[actionSheet release];
-	actionSheet = nil;
+	self.actionSheet = nil;
 }
 
 #pragma mark UITextFieldDelegate
@@ -394,7 +342,7 @@
 #pragma mark AreaEffectsViewControllerDelegate
 
 - (void) areaEffectsViewController:(AreaEffectsViewController*) controller didSelectAreaEffect:(EVEDBInvType*) areaEffect {
-	fittingEngine->setArea(areaEffect.typeID);
+	self.fittingEngine->setArea(areaEffect.typeID);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.areaEffectsPopoverController dismissPopoverAnimated:YES];
 	else
@@ -416,7 +364,7 @@
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[aController dismissModalViewControllerAnimated:YES];
 	
-	eufe::ControlTower* controlTower = fit.controlTower;
+	eufe::ControlTower* controlTower = self.fit.controlTower;
 	
 	if (type.group.categoryID == 8) {// Charge
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -438,10 +386,7 @@
 	[self update];
 }
 
-@end
-
-
-@implementation POSFittingViewController(Private)
+#pragma mark - Private
 
 - (void) keyboardWillShow: (NSNotification*) notification {
 	CGRect r = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -468,8 +413,8 @@
 }
 
 - (void) save {
-	if (fit.managedObjectContext)
-		[fit save];
+	if (self.fit.managedObjectContext)
+		[self.fit save];
 }
 
 @end

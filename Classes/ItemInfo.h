@@ -9,10 +9,8 @@
 #import "EVEDBAPI.h"
 #include "eufe.h"
 
-@interface ItemInfo: EVEDBInvType {
-	eufe::Item* item;
-}
-@property (nonatomic, readonly) eufe::Item* item;
+@interface ItemInfo: EVEDBInvType
+@property (nonatomic, readonly, assign) eufe::Item* item;
 
 + (id) itemInfoWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr;
 - (id) initWithItem:(eufe::Item*) aItem error:(NSError **)errorPtr;

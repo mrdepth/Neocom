@@ -24,8 +24,13 @@
 #import "NSString+UUID.h"
 #import "UIActionSheet+Block.h"
 #import "EUStorage.h"
+#import "NAPISearchViewController.h"
+#import "NeocomAPI.h"
 
-@interface FittingServiceMenuViewController(Private)
+@interface FittingServiceMenuViewController()
+@property (nonatomic, strong) NSMutableArray *fits;
+@property (nonatomic, assign) BOOL needsConvert;
+
 - (void) reload;
 - (void) convertFits;
 - (void) save;
@@ -34,9 +39,6 @@
 @end
 
 @implementation FittingServiceMenuViewController
-@synthesize menuTableView;
-@synthesize fittingItemsViewController;
-@synthesize modalController;
 @synthesize popoverController;
 
 
@@ -59,7 +61,7 @@
 	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[[UIPopoverController alloc] initWithContentViewController:modalController] autorelease];
+		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
@@ -91,25 +93,13 @@
 	self.fittingItemsViewController = nil;
 	self.modalController = nil;
 	self.popoverController = nil;
-	[fits release];
-	fits = nil;
+	self.fits = nil;
 }
 
-
-- (void)dealloc {
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
-	[menuTableView release];
-	[fittingItemsViewController release];
-	[modalController release];
-	[popoverController release];
-	[fits release];
-
-    [super dealloc];
-}
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[menuTableView setEditing:editing animated:animated];
+	[self.menuTableView setEditing:editing animated:animated];
 	if (!editing) {
 	}
 }
@@ -124,12 +114,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return [fits count] + 1;
+	return [self.fits count] + 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 4 : [[fits objectAtIndex:section - 1] count];
+	return section == 0 ? 5 : [[self.fits objectAtIndex:section - 1] count];
 }
 
 // Customize the appearance of table view cells.
@@ -146,10 +136,14 @@
 			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
 		else if (indexPath.row == 1) {
+			cell.titleLabel.text = NSLocalizedString(@"Browse Community Fits", nil);
+			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon26_02.png"];
+		}
+		else if (indexPath.row == 2) {
 			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
-		else if (indexPath.row == 2) {
+		else if (indexPath.row == 3) {
 			cell.titleLabel.text = NSLocalizedString(@"New POS Fit", nil);
 			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
 		}
@@ -167,7 +161,7 @@
 			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		//NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		Fit* fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		cell.shipNameLabel.text = fit.typeName;//[fit valueForKey:@"shipName"];
 		cell.fitNameLabel.text = fit.fitName;//[fit valueForKey:@"fitName"];
 		cell.iconView.image = [UIImage imageNamed:fit.imageName];
@@ -179,7 +173,7 @@
 	if (section == 0)
 		return NSLocalizedString(@"Menu", nil);
 	else {
-		NSArray* rows = [fits objectAtIndex:section - 1];
+		NSArray* rows = [self.fits objectAtIndex:section - 1];
 		if (rows.count > 0)
 			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
 		else
@@ -189,7 +183,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UITableViewCellEditingStyleDelete) {
-		NSMutableArray* rows = [fits objectAtIndex:indexPath.section - 1];
+		NSMutableArray* rows = [self.fits objectAtIndex:indexPath.section - 1];
 		Fit* fit = [rows objectAtIndex:indexPath.row];
 		
 		EUStorage* storage = [EUStorage sharedStorage];
@@ -199,11 +193,11 @@
 		[rows removeObjectAtIndex:indexPath.row];
 
 		if (rows.count == 0) {
-			[fits removeObjectAtIndex:indexPath.section - 1];
-			[menuTableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+			[self.fits removeObjectAtIndex:indexPath.section - 1];
+			[self.menuTableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		else {
-			[menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		[self save];
 	}
@@ -217,11 +211,11 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -246,34 +240,36 @@
 		if (indexPath.row == 0) {
 			BCSearchViewController *controller = [[BCSearchViewController alloc] initWithNibName:@"BCSearchViewController" bundle:nil];
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 		}
 		else if (indexPath.row == 1) {
-			fittingItemsViewController.marketGroupID = 4;
-			fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-			else
-				[self presentModalViewController:modalController animated:YES];
-
+			NAPISearchViewController *controller = [[NAPISearchViewController alloc] initWithNibName:@"NAPISearchViewController" bundle:nil];
+			[self.navigationController pushViewController:controller animated:YES];
 		}
 		else if (indexPath.row == 2) {
-			fittingItemsViewController.marketGroupID = 478;
-			fittingItemsViewController.title = NSLocalizedString(@"Control Towers", nil);
+			self.fittingItemsViewController.marketGroupID = 4;
+			self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+				[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
-				[self presentModalViewController:modalController animated:YES];
+				[self presentModalViewController:self.modalController animated:YES];
+
+		}
+		else if (indexPath.row == 3) {
+			self.fittingItemsViewController.marketGroupID = 478;
+			self.fittingItemsViewController.title = NSLocalizedString(@"Control Towers", nil);
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			else
+				[self presentModalViewController:self.modalController animated:YES];
 		}
 		else {
-			if (needsConvert) {
+			if (self.needsConvert) {
 				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Export", nil)
 																	message:NSLocalizedString(@"To continue, Neocom must convert the loadouts database to its new format. This may take a few minutes.", nil)
 																   delegate:self
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 														  otherButtonTitles:NSLocalizedString(@"Convert", nil), nil];
 				[alertView show];
-				[alertView release];
 			}
 			else {
 				[self exportFits];
@@ -282,37 +278,34 @@
 	}
 	else {
 		//NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		Fit* fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 
 		if ([fit isKindOfClass:[POSFit class]]) {
 			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading POS Fit", nil)];
+			__weak EUOperation* weakOperation = operation;
 			__block POSFit* posFit = (POSFit*)(fit);
 			[operation addExecutionBlock:^{
-				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 				posFit.controlTower = posFittingViewController.fittingEngine->setControlTower(posFit.typeID);
 				[posFit load];
-				//fit = [[POSFit posFitWithDictionary:row engine:posFittingViewController.fittingEngine] retain];
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^{
-				if (![operation isCancelled]) {
+				if (![weakOperation isCancelled]) {
 					posFittingViewController.fit = posFit;
 					[self.navigationController pushViewController:posFittingViewController animated:YES];
 				}
-				[posFittingViewController release];
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else {
 			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+			__weak EUOperation* weakOperation = operation;
 			__block ShipFit* shipFit = (ShipFit*)(fit);
 			
 			__block eufe::Character* character = NULL;
 			[operation addExecutionBlock:^{
-				NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 				character = new eufe::Character(fittingViewController.fittingEngine);
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
@@ -323,17 +316,16 @@
 				}
 				else
 					character->setCharacterName("All Skills 0");
-				operation.progress = 0.5;
+				weakOperation.progress = 0.5;
 
 				shipFit.character = character;
 				[shipFit load];
 
-				operation.progress = 1.0;
-				[pool release];
+				weakOperation.progress = 1.0;
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^{
-				if (![operation isCancelled]) {
+				if (![weakOperation isCancelled]) {
 					fittingViewController.fittingEngine->getGang()->addPilot(character);
 					fittingViewController.fit = shipFit;
 					[fittingViewController.fits addObject:shipFit];
@@ -343,7 +335,6 @@
 					if (character)
 						delete character;
 				}
-				[fittingViewController release];
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
@@ -369,20 +360,19 @@
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating POS Fit", nil)];
+		__weak EUOperation* weakOperation = operation;
 		__block POSFit* posFit = nil;
 		__block eufe::ControlTower* controlTower = NULL;
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			controlTower = new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID);
 
-			operation.progress = 0.5;
-			posFit = [[POSFit posFitWithFitName:type.typeName controlTower:controlTower] retain];
-			operation.progress = 1.0;
-			[pool release];
+			weakOperation.progress = 0.5;
+			posFit = [POSFit posFitWithFitName:type.typeName controlTower:controlTower];
+			weakOperation.progress = 1.0;
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				[posFit save];
 				posFittingViewController.fittingEngine->setControlTower(controlTower);
 				posFittingViewController.fit = posFit;
@@ -392,18 +382,16 @@
 				if (controlTower)
 					delete controlTower;
 			}
-			[posFittingViewController release];
-			[posFit release];
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
+		__weak EUOperation* weakOperation = operation;
 		__block ShipFit* fit = nil;
 		__block eufe::Character* character = NULL;
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			character = new eufe::Character(fittingViewController.fittingEngine);
 			character->setShip(type.typeID);
 			
@@ -416,14 +404,13 @@
 			else
 				character->setCharacterName("All Skills 0");
 
-			operation.progress = 0.5;
-			fit = [[ShipFit shipFitWithFitName:type.typeName character:character] retain];
-			operation.progress = 1.0;
-			[pool release];
+			weakOperation.progress = 0.5;
+			fit = [ShipFit shipFitWithFitName:type.typeName character:character];
+			weakOperation.progress = 1.0;
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				[fit save];
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
@@ -434,8 +421,6 @@
 				if (character)
 					delete character;
 			}
-			[fittingViewController release];
-			[fit release];
 		}];
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
@@ -454,12 +439,11 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 	
-@end
-
-@implementation FittingServiceMenuViewController(Private)
+#pragma mark - Private
 
 - (void) reload {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block BOOL needsConvertTmp = NO;
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -468,33 +452,32 @@
 			EUStorage* storage = [EUStorage sharedStorage];
 			[storage.managedObjectContext performBlockAndWait:^{
 				NSArray* shipFits = [ShipFit allFits];
-				operation.progress = 0.25;
+				weakOperation.progress = 0.25;
 				
 				[fitsTmp addObjectsFromArray:[shipFits arrayGroupedByKey:@"type.groupID"]];
-				operation.progress = 0.5;
+				weakOperation.progress = 0.5;
 				[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					Fit* a = [obj1 objectAtIndex:0];
 					Fit* b = [obj2 objectAtIndex:0];
 					return [a.type.group.groupName compare:b.type.group.groupName];
 				}];
 				
-				operation.progress = 0.75;
+				weakOperation.progress = 0.75;
 				
 				NSMutableArray* posFits = [NSMutableArray arrayWithArray:[POSFit allFits]];
 				if (posFits.count > 0)
 					[fitsTmp addObject:posFits];
 				
-				operation.progress = 1.0;
+				weakOperation.progress = 1.0;
 			}];
 		}
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled]) {
-			needsConvert = needsConvertTmp;
-			[fits release];
-			fits = [fitsTmp retain];
-			[menuTableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.needsConvert = needsConvertTmp;
+			self.fits = fitsTmp;
+			[self.menuTableView reloadData];
 		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -602,8 +585,6 @@
 									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
 								 
 								 [self presentModalViewController:navController animated:YES];
-								 [navController release];
-								 [fittingExportViewController release];
 							 }
 							 else if (selectedButtonIndex == 1) {
 								 NSString* xml = [ShipFit allFitsEveXML];
@@ -616,7 +597,6 @@
 								 [controller setSubject:NSLocalizedString(@"Neocom fits", nil)];
 								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
 								 [self presentModalViewController:controller animated:YES];
-								 [controller release];
 								 
 							 }
 						 }

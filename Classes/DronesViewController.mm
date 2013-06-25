@@ -29,17 +29,16 @@
 #define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 
+@interface DronesViewController()
+@property (nonatomic, strong) NSMutableArray *rows;
+@property (nonatomic, strong) NSIndexPath *modifiedIndexPath;
+
+
+@end
+
 
 @implementation DronesViewController
-@synthesize fittingViewController;
-@synthesize tableView;
-@synthesize droneBayLabel;
-@synthesize droneBandwidthLabel;
-@synthesize dronesCountLabel;
-@synthesize fittingItemsViewController;
-@synthesize targetsViewController;
 @synthesize popoverController;
-
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -83,25 +82,6 @@
 	self.droneBayLabel = nil;
 	self.droneBandwidthLabel = nil;
 	self.dronesCountLabel = nil;
-	
-/*	[rows release];
-	[modifiedIndexPath release];
-	rows = nil;
-	modifiedIndexPath = nil;*/
-}
-
-
-- (void)dealloc {
-	[tableView release];
-	[droneBayLabel release];
-	[droneBandwidthLabel release];
-	[dronesCountLabel release];
-	[fittingItemsViewController release];
-	[targetsViewController release];
-	[popoverController release];
-	[rows release];
-	[modifiedIndexPath release];
-    [super dealloc];
 }
 
 #pragma mark -
@@ -115,14 +95,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return rows.count + 1;
+    return self.rows.count + 1;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	if (indexPath.row >= rows.count) {
+	if (indexPath.row >= self.rows.count) {
 		NSString *cellIdentifier = @"ModuleCellView";
 		ModuleCellView *cell = (ModuleCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
@@ -136,7 +116,7 @@
 	}
 	else {
 		//EVEFittingDrone *drone = [rows objectAtIndex:indexPath.row];
-		NSArray* array = [rows objectAtIndex:indexPath.row];
+		NSArray* array = [self.rows objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		
@@ -195,21 +175,21 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	if (indexPath.row >= rows.count) {
+	if (indexPath.row >= self.rows.count) {
 /*		fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,1159) ORDER BY groupName;";
 		fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (97,100,101,299,470,544,545,549,639,640,641,1023,97,100,101,299,470,544,545,549,639,640,641,1023,1159) %@ %@ ORDER BY invTypes.typeName;";
 		fittingItemsViewController.group = nil;
 		fittingItemsViewController.modifiedItem = nil;*/
-		fittingItemsViewController.marketGroupID = 157;
-		fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
+		self.fittingItemsViewController.marketGroupID = 157;
+		self.fittingItemsViewController.title = NSLocalizedString(@"Drones", nil);
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.fittingViewController presentModalViewController:fittingItemsViewController.navigationController animated:YES];
+			[self.self.fittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
 	}
 	else {
 		//EVEFittingDrone *drone = [rows objectAtIndex:indexPath.row];
-		NSArray* array = [rows objectAtIndex:indexPath.row];
+		NSArray* array = [self.rows objectAtIndex:indexPath.row];
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
 		
@@ -226,7 +206,7 @@
 			[actionSheet addButtonWithTitle:ActionButtonActivate];
 		[actionSheet addButtonWithTitle:ActionButtonAmount];
 		
-		if (fittingViewController.fits.count > 1) {
+		if (self.fittingViewController.fits.count > 1) {
 			[actionSheet addButtonWithTitle:ActionButtonSetTarget];
 			if (drone->getTarget() != NULL)
 				[actionSheet addButtonWithTitle:ActionButtonClearTarget];
@@ -238,16 +218,14 @@
 		actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 		
 		[actionSheet showFromRect:[aTableView rectForRowAtIndexPath:indexPath] inView:aTableView animated:YES];
-		[actionSheet autorelease];
-		[modifiedIndexPath release];
-		modifiedIndexPath = [indexPath retain];
+		self.modifiedIndexPath = indexPath;
 	}
 }
 
 #pragma mark FittingItemsViewControllerDelegate
 
 - (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-	eufe::Ship* ship = fittingViewController.fit.character->getShip();
+	eufe::Ship* ship = self.fittingViewController.fit.character->getShip();
 	eufe::Drone* drone = ship->addDrone(type.typeID);
 	
 	int dronesLeft = ship->getMaxActiveDrones() - 1;
@@ -258,14 +236,14 @@
 		[popoverController dismissPopoverAnimated:YES];
 	else
 		[self.fittingViewController dismissModalViewControllerAnimated:YES];
-	[fittingViewController update];
+	[self.fittingViewController update];
 }
 
 #pragma mark DronesAmountViewControllerDelegate
 
 - (void) dronesAmountViewController:(DronesAmountViewController*) aController didSelectAmount:(NSInteger) amount {
-	eufe::Ship* ship = fittingViewController.fit.character->getShip();
-	NSMutableArray* drones = [rows objectAtIndex:modifiedIndexPath.row];
+	eufe::Ship* ship = self.fittingViewController.fit.character->getShip();
+	NSMutableArray* drones = [self.rows objectAtIndex:self.modifiedIndexPath.row];
 	int left = drones.count - amount;
 	if (left < 0) {
 		ItemInfo* itemInfo = [drones objectAtIndex:0];
@@ -281,7 +259,7 @@
 			ship->removeDrone(drone);
 		}
 	}
-	[fittingViewController update];
+	[self.fittingViewController update];
 }
 
 - (void) dronesAmountViewControllerDidCancel:(DronesAmountViewController*) controller {
@@ -290,23 +268,23 @@
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSArray* array = [rows objectAtIndex:modifiedIndexPath.row];
-	eufe::Ship* ship = fittingViewController.fit.character->getShip();
+	NSArray* array = [self.rows objectAtIndex:self.modifiedIndexPath.row];
+	eufe::Ship* ship = self.fittingViewController.fit.character->getShip();
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonDelete]) {
 		for (ItemInfo* itemInfo in array)
 			ship->removeDrone(dynamic_cast<eufe::Drone*>(itemInfo.item));
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonActivate]) {
 		for (ItemInfo* itemInfo in array)
 			dynamic_cast<eufe::Drone*>(itemInfo.item)->setActive(true);
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonDeactivate]) {
 		for (ItemInfo* itemInfo in array)
 			dynamic_cast<eufe::Drone*>(itemInfo.item)->setActive(false);
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
 		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
@@ -315,25 +293,24 @@
 		dronesAmountViewController.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
 		dronesAmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[dronesAmountViewController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[dronesAmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
 			[dronesAmountViewController presentAnimated:YES];
-		[dronesAmountViewController release];
 	}
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];
 		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
-		targetsViewController.modifiedItem = itemInfo;
-		targetsViewController.currentTarget = drone->getTarget();
+		self.targetsViewController.modifiedItem = itemInfo;
+		self.targetsViewController.currentTarget = drone->getTarget();
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[fittingViewController.targetsPopoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:modifiedIndexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.fittingViewController.targetsPopoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.fittingViewController presentModalViewController:targetsViewController.navigationController animated:YES];
+			[self.fittingViewController presentModalViewController:self.targetsViewController.navigationController animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonClearTarget]) {
 		for (ItemInfo* itemInfo in array)
 			dynamic_cast<eufe::Drone*>(itemInfo.item)->clearTarget();
-		[fittingViewController update];
+		[self.fittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonShowInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -346,12 +323,10 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[fittingViewController presentModalViewController:navController animated:YES];
-			[navController release];
+			[self.fittingViewController presentModalViewController:navController animated:YES];
 		}
 		else
-			[fittingViewController.navigationController pushViewController:itemViewController animated:YES];
-		[itemViewController release];
+			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 }
 
@@ -365,14 +340,13 @@
 	__block int maxActiveDrones;
 	__block int activeDrones;
 	NSMutableArray *rowsTmp = [NSMutableArray array];
-	FittingViewController* aFittingViewController = fittingViewController;
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"DronesViewController+Update" name:NSLocalizedString(@"Updating Drones", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		@synchronized(fittingViewController) {
+		@synchronized(self.fittingViewController) {
 			
-			eufe::Ship* ship = aFittingViewController.fit.character->getShip();
+			eufe::Ship* ship = self.fittingViewController.fit.character->getShip();
 			NSMutableDictionary* dronesDic = [NSMutableDictionary dictionary];
 			
 			const eufe::DronesList& drones = ship->getDrones();
@@ -381,7 +355,7 @@
 			float n = drones.size();
 			float j = 0;
 			for (i = drones.begin(); i != end; i++) {
-				operation.progress = j++ / n;
+				weakOperation.progress = j++ / n;
 
 				NSString* key = [NSString stringWithFormat:@"%d", (*i)->getTypeID()];
 				NSMutableArray* array = [dronesDic valueForKey:key];
@@ -402,25 +376,22 @@
 			maxActiveDrones = ship->getMaxActiveDrones();
 			activeDrones = ship->getActiveDrones();
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			if (rows)
-				[rows release];
-			rows = [rowsTmp retain];
-			droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-			droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-			droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-			droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-			dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+		if (![weakOperation isCancelled]) {
+			self.rows = rowsTmp;
+			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+			self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+			self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+			self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+			self.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
 			if (activeDrones > maxActiveDrones)
-				dronesCountLabel.textColor = [UIColor redColor];
+				self.dronesCountLabel.textColor = [UIColor redColor];
 			else
-				dronesCountLabel.textColor = [UIColor whiteColor];
+				self.dronesCountLabel.textColor = [UIColor whiteColor];
 			
-			[tableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	

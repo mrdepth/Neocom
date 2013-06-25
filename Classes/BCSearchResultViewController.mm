@@ -19,10 +19,12 @@
 #import "CharacterEVE.h"
 #import "EVEAccount.h"
 
+@interface BCSearchResultViewController()
+@property (nonatomic, strong) UIImage *shipImage;
+
+@end
+
 @implementation BCSearchResultViewController
-@synthesize resultsTableView;
-@synthesize ship;
-@synthesize loadouts;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -41,7 +43,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Search Results", nil);
-	shipImage = [[UIImage imageNamed:[ship typeSmallImageName]] retain];
+	self.shipImage = [UIImage imageNamed:[self.ship typeSmallImageName]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -61,18 +63,9 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	self.resultsTableView = nil;
-	[shipImage release];
-	shipImage = nil;
+	self.shipImage = nil;
 }
 
-
-- (void)dealloc {
-	[resultsTableView release];
-	[ship release];
-	[loadouts release];
-	[shipImage release];
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -84,7 +77,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return loadouts.count;
+	return self.loadouts.count;
 }
 
 // Customize the appearance of table view cells.
@@ -95,9 +88,9 @@
 	if (cell == nil) {
 		cell = [LoadoutCellView cellWithNibName:@"LoadoutCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	BCEveLoadoutsListItem *loadout = [loadouts objectAtIndex:indexPath.row];
+	BCEveLoadoutsListItem *loadout = [self.loadouts objectAtIndex:indexPath.row];
 	cell.titleLabel.text = loadout.subject;
-	cell.iconImageView.image = shipImage;
+	cell.iconImageView.image = self.shipImage;
 	cell.thumbsUpLabel.text = [NSString stringWithFormat:@"%d,", loadout.thumbsUp];
 	cell.thumbsDownLabel.text = [NSString stringWithFormat:@"%d", loadout.thumbsDown];
 	return cell;
@@ -115,28 +108,27 @@
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Loadout", nil)];
+	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
 
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
 		NSError *error = nil;
-		BCEveLoadoutsListItem *loadout = [loadouts objectAtIndex:indexPath.row];
-		operation.progress = 0.2;
-		BCEveLoadout *loadoutDetails = [BCEveLoadout eveLoadoutsWithAPIKey:BattleClinicAPIKey loadoutID:loadout.loadoutID error:&error];
-		operation.progress = 0.4;
+		BCEveLoadoutsListItem *loadout = [self.loadouts objectAtIndex:indexPath.row];
+		weakOperation.progress = 0.2;
+		BCEveLoadout *loadoutDetails = [BCEveLoadout eveLoadoutsWithAPIKey:BattleClinicAPIKey loadoutID:loadout.loadoutID error:&error progressHandler:nil];
+		weakOperation.progress = 0.4;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			if (!loadoutDetails.fitting) {
-				UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Unknown error", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil] autorelease];
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Unknown error", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Close", nil) otherButtonTitles:nil];
 				[alertView performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
 			else {
 				character = new eufe::Character(fittingViewController.fittingEngine);
-				operation.progress = 0.6;
+				weakOperation.progress = 0.6;
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
 				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
@@ -146,20 +138,18 @@
 				}
 				else
 					character->setCharacterName("All Skills 0");
-				operation.progress = 0.8;
+				weakOperation.progress = 0.8;
 				
-				fit = [[ShipFit shipFitWithBCString:loadoutDetails.fitting character:character] retain];
+				fit = [ShipFit shipFitWithBCString:loadoutDetails.fitting character:character];
 				fit.fitName = loadoutDetails.title;
 				fit.url =[NSString stringWithFormat:@"http://eve.battleclinic.com/loadout/%d.html", loadoutDetails.loadoutID];
-				operation.progress = 1;
+				weakOperation.progress = 1;
 			}
 		}
-		
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		if (![operation isCancelled] && fit && character) {
+		if (![weakOperation isCancelled] && fit && character) {
 			fittingViewController.fittingEngine->getGang()->addPilot(character);
 			fittingViewController.fit = fit;
 			[fittingViewController.fits addObject:fit];
@@ -169,8 +159,6 @@
 			if (character)
 				delete character;
 		}
-		[fittingViewController release];
-		[fit release];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

@@ -13,8 +13,12 @@
 #import "EUOperationQueue.h"
 #import "CertificatesViewController.h"
 
+@interface CertificateCategoriesViewController()
+@property (nonatomic, strong) NSMutableArray* rows;
+
+@end
+
 @implementation CertificateCategoriesViewController
-@synthesize categoriesTableView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,12 +37,6 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void) dealloc {
-	[categoriesTableView release];
-	[rows release];
-	[super dealloc];
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -48,23 +46,20 @@
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Categories", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
-		[[EVEDBDatabase sharedDatabase] execWithSQLRequest:@"SELECT * FROM crtCategories ORDER BY categoryName;"
-											   resultBlock:^(NSDictionary *record, BOOL *needsMore) {
-												   [rowsTmp addObject:[EVEDBCrtCategory crtCategoryWithDictionary:record]];
-												   if ([operation isCancelled])
+		[[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM crtCategories ORDER BY categoryName;"
+											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+												   [rowsTmp addObject:[[EVEDBCrtCategory alloc] initWithStatement:stmt]];
+												   if ([weakOperation isCancelled])
 													   *needsMore = NO;
 											   }];
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[rows release];
-			rows = [rowsTmp retain];
-			[categoriesTableView reloadData];
+		if (![weakOperation isCancelled]) {
+			self.rows = rowsTmp;
+			[self.categoriesTableView reloadData];
 		}
 	}];
 	
@@ -83,8 +78,7 @@
 {
     [super viewDidUnload];
 	self.categoriesTableView = nil;
-	[rows release];
-	rows = nil;
+	self.rows = nil;
 }
 
 #pragma mark -
@@ -96,7 +90,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return rows.count;
+	return self.rows.count;
 }
 
 
@@ -109,7 +103,7 @@
     if (cell == nil) {
         cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	EVEDBCrtCategory *row = [rows objectAtIndex:indexPath.row];
+	EVEDBCrtCategory *row = [self.rows objectAtIndex:indexPath.row];
 	cell.titleLabel.text = row.categoryName;
 	cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon79_06.png"];
     return cell;
@@ -125,9 +119,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	CertificatesViewController *controller = [[CertificatesViewController alloc] initWithNibName:@"CertificatesViewController" bundle:nil];
-	controller.category = [rows objectAtIndex:indexPath.row];
+	controller.category = [self.rows objectAtIndex:indexPath.row];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 @end

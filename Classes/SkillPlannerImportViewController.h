@@ -10,14 +10,7 @@
 #import "SkillPlannerImportViewControllerDelegate.h"
 #import "EUHTTPServer.h"
 
-@interface SkillPlannerImportViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, EUHTTPServerDelegate> {
-	UITableView* plansTableView;
-	id<SkillPlannerImportViewControllerDelegate> delegate;
-@private
-	NSMutableArray* rows;
-	NSArray* addresses;
-	EUHTTPServer* server;
-}
+@interface SkillPlannerImportViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, EUHTTPServerDelegate>
 @property (nonatomic, retain) IBOutlet UITableView* plansTableView;
 @property (nonatomic, assign) id<SkillPlannerImportViewControllerDelegate> delegate;
 

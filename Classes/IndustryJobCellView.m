@@ -10,14 +10,7 @@
 
 
 @implementation IndustryJobCellView
-@synthesize remainsLabel;
-@synthesize activityLabel;
-@synthesize typeNameLabel;
-@synthesize locationLabel;
-@synthesize startTimeLabel;
-@synthesize characterLabel;
-@synthesize iconImageView;
-@synthesize activityImageView;
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
@@ -35,19 +28,5 @@
     
     // Configure the view for the selected state.
 }
-
-
-- (void)dealloc {
-	[remainsLabel release];
-	[activityLabel release];
-	[typeNameLabel release];
-	[locationLabel release];
-	[startTimeLabel release];
-	[characterLabel release];
-	[iconImageView release];
-	[activityImageView release];
-    [super dealloc];
-}
-
 
 @end

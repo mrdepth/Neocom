@@ -9,16 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface IndustryJobCellView : UITableViewCell {
-	UILabel *remainsLabel;
-	UILabel *activityLabel;
-	UILabel *typeNameLabel;
-	UILabel *locationLabel;
-	UILabel *startTimeLabel;
-	UILabel *characterLabel;
-	UIImageView *iconImageView;
-	UIImageView *activityImageView;
-}
+@interface IndustryJobCellView : UITableViewCell
+
 @property (nonatomic, retain) IBOutlet UILabel *remainsLabel;
 @property (nonatomic, retain) IBOutlet UILabel *activityLabel;
 @property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;

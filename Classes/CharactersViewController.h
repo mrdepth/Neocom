@@ -11,13 +11,7 @@
 #import "Character.h"
 
 @class ShipFit;
-@interface CharactersViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *charactersTableView;
-	id<CharactersViewControllerDelegate> delegate;
-	ShipFit* modifiedFit;
-@private
-	NSMutableArray *sections;
-}
+@interface CharactersViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (retain, nonatomic) IBOutlet UITableView *charactersTableView;
 @property (nonatomic, assign) IBOutlet id<CharactersViewControllerDelegate> delegate;
 @property (retain, nonatomic) ShipFit* modifiedFit;

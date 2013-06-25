@@ -9,13 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface RSSFeedViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *rssTableView;
-	UILabel *feedTitleLabel;
-	NSURL *url;
-@private
-	NSMutableArray *rows;
-}
+@interface RSSFeedViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet UITableView *rssTableView;
 @property (nonatomic, retain) IBOutlet UILabel *feedTitleLabel;
 @property (nonatomic, retain) NSURL *url;

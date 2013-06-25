@@ -20,7 +20,10 @@
 #import "UIImageView+URL.h"
 #import "EUStorage.h"
 
-@interface EVEAccountsViewController(Private)
+@interface EVEAccountsViewController()
+@property (nonatomic, strong) NSMutableArray *sections;
+@property (nonatomic, strong) NSOperation *loadingOperation;
+
 - (void) loadSection:(NSMutableDictionary*) section;
 - (void) accountStorageDidChange:(NSNotification*) notification;
 - (void) reload;
@@ -61,15 +64,13 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	self.accountsTableView = nil;
 	self.logoffButton = nil;
-	[sections release];
-	sections = nil;
-	loadingOperation = nil;
+	self.sections = nil;
+	self.loadingOperation = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -79,7 +80,7 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	[loadingOperation cancel];
+	[self.loadingOperation cancel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,18 +91,12 @@
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationAccountStoargeDidChange object:nil];
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
-	[accountsTableView release];
-	[logoffButton release];
-	[sections release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onAddAccount: (id) sender {
 	AddEVEAccountViewController *controller = [[AddEVEAccountViewController alloc] initWithNibName:@"AddEVEAccountViewController" bundle:nil];
 	[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 - (IBAction) onLogoff: (id) sender {
@@ -114,7 +109,7 @@
 	[accountsTableView setEditing:editing animated:animated];
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	int sectionIndex = 0;
-	for (NSDictionary *section in sections) {
+	for (NSDictionary *section in self.sections) {
 		EVEAccountStorageCharacter *character = [section valueForKey:@"character"];
 		if (character && !character.enabled) {
 			[indexes addIndex:sectionIndex]; 
@@ -133,12 +128,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return sections.count;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSDictionary *sectionDic = [sections objectAtIndex:section];
+	NSDictionary *sectionDic = [self.sections objectAtIndex:section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character) {
 		if (self.editing || character.enabled)
@@ -152,7 +147,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *section = [sections objectAtIndex:indexPath.section];
+	NSDictionary *section = [self.sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [section valueForKey:@"character"];
 	if (character && indexPath.row == 0) {
 		static NSString *cellIdentifier = @"EVEAccountsCharacterCellView";
@@ -221,7 +216,6 @@
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 				[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 				cell.expiredLabel.text = [dateFormatter stringFromDate:apiKey.apiKeyInfo.key.expires];
-				[dateFormatter release];
 			}
 			else
 				cell.expiredLabel.text = @"-";
@@ -232,20 +226,20 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UITableViewCellEditingStyleDelete) {
-		NSDictionary *sectionDic = [sections objectAtIndex:indexPath.section];
+		NSDictionary *sectionDic = [self.sections objectAtIndex:indexPath.section];
 		EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 		EVEAccountStorageAPIKey *apiKey = [[sectionDic valueForKey:@"apiKeys"] objectAtIndex:indexPath.row - (character ? 1 : 0)];
 		[tableView beginUpdates];
 		
 		NSInteger sectionIndex = 0;
-		for (NSDictionary *section in [NSArray arrayWithArray:sections]) {
+		for (NSDictionary *section in [NSArray arrayWithArray:self.sections]) {
 			NSMutableArray *apiKeys = [section valueForKey:@"apiKeys"];
 			NSInteger index = [apiKeys indexOfObject:apiKey];
 			if (index != NSNotFound) {
 				[apiKeys removeObjectAtIndex:index];
 				if (apiKeys.count == 0) {
 					[tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-					[sections removeObject:section];
+					[self.sections removeObject:section];
 				}
 				else {
 					NSInteger rowIndex = index + ([section valueForKey:@"character"] ? 1 : 0);
@@ -268,7 +262,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *sectionDic = [sections objectAtIndex:indexPath.section];
+	NSDictionary *sectionDic = [self.sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character && indexPath.row == 0)
 		return 128;
@@ -277,7 +271,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *section = [sections objectAtIndex:indexPath.section];
+	NSDictionary *section = [self.sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [section valueForKey:@"character"];
 	if (character && indexPath.row == 0) {
 		[[EVEAccount accountWithCharacter:character] login];
@@ -290,13 +284,12 @@
 			controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
 			controller.corporate = apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
 			[self.navigationController pushViewController:controller animated:YES];
-			[controller release];
 		}
 	}
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *sectionDic = [sections objectAtIndex:indexPath.section];
+	NSDictionary *sectionDic = [self.sections objectAtIndex:indexPath.section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character && indexPath.row == 0)
 		return UITableViewCellEditingStyleNone;
@@ -305,14 +298,14 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	UIView *footer = [[UIView alloc] initWithFrame:CGRectZero];
 	footer.opaque = NO;
 	footer.backgroundColor = [UIColor clearColor];
 	return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	NSDictionary *sectionDic = [sections objectAtIndex:section];
+	NSDictionary *sectionDic = [self.sections objectAtIndex:section];
 	EVEAccountStorageCharacter *character = [sectionDic valueForKey:@"character"];
 	if (character) {
 		if (self.editing || character.enabled)
@@ -324,9 +317,7 @@
 		return [[sectionDic valueForKey:@"apiKeys"] count] > 0 ? 10 : 0;
 }
 
-@end
-
-@implementation EVEAccountsViewController(Private)
+#pragma mark - Private
 
 - (void) loadSection:(NSMutableDictionary*) section {
 	EVEAccountStorageCharacter *character = [section valueForKey:@"character"];
@@ -337,7 +328,7 @@
 		}
 		else {
 			NSError *error = nil;
-			EVEAccountStatus *accountStatus = [EVEAccountStatus accountStatusWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error];
+			EVEAccountStatus *accountStatus = [EVEAccountStatus accountStatusWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error progressHandler:nil];
 			if (error) {
 				[section setValue:[error localizedDescription] forKey:@"paidUntil"];
 				[section setValue:[UIColor whiteColor] forKey:@"paidUntilColor"];
@@ -358,10 +349,9 @@
 				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"%@ (%d days remaining)", nil), [dateFormatter stringFromDate:accountStatus.paidUntil], days]
 						   forKey:@"paidUntil"];
 				[section setValue:color forKey:@"paidUntilColor"];
-				[dateFormatter release];
 			}
 			
-			EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error];
+			EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error progressHandler:nil];
 			if (error) {
 				[section setValue:[error localizedDescription] forKey:@"trainingTime"];
 				[section setValue:[UIColor whiteColor] forKey:@"trainingTimeColor"];
@@ -386,12 +376,12 @@
 				[section setValue:color forKeyPath:@"trainingTimeColor"];
 			}
 			
-			EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error];
+			EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID error:&error progressHandler:nil];
 			if (characterInfo.lastKnownLocation) {
 				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Location: %@", nil), characterInfo.lastKnownLocation]
 						   forKey:@"location"];
 			}
-			EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID corporate:NO error:&error];
+			EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:character.characterID corporate:NO error:&error progressHandler:nil];
 			if (accountBalance && accountBalance.accounts.count > 0) {
 				float balance = [[accountBalance.accounts objectAtIndex:0] balance];
 				NSString* wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:@(balance) numberStyle:NSNumberFormatterDecimalStyle]];
@@ -413,23 +403,22 @@
 	NSMutableArray *emptyKeysTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEAccountsViewController+Load" name:NSLocalizedString(@"Loading Accounts", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if ([operation isCancelled]) {
-			[pool release];
+		if ([weakOperation isCancelled]) {
 			return;
 		}
 		
-		loadingOperation = operation;
+		self.loadingOperation = weakOperation;
 		
 		EVEAccountStorage *accountStorage = [EVEAccountStorage sharedAccountStorage];
 		[accountStorage reload];
-		operation.progress = 0.3;
+		weakOperation.progress = 0.3;
 		
 		NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 		
 		for (EVEAccountStorageCharacter *character in [accountStorage.characters allValues]) {
-			if ([operation isCancelled])
+			if ([weakOperation isCancelled])
 				break;
 			
 			NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObject:character forKey:@"character"];
@@ -439,13 +428,13 @@
 			
 			[sectionsTmp addObject:section];
 			[queue addOperationWithBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-				[self loadSection:section];
-				[pool release];
+				@autoreleasepool {
+					[self loadSection:section];
+				}
 			}];
 		}
 
-		operation.progress = 0.6;
+		weakOperation.progress = 0.6;
 		
 		for (EVEAccountStorageAPIKey *apiKey in [accountStorage.apiKeys allValues])
 			if (apiKey.assignedCharacters.count == 0)
@@ -455,15 +444,15 @@
 			NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObject:emptyKeysTmp forKey:@"apiKeys"];
 			[sectionsTmp addObject:section];
 			[queue addOperationWithBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-				[self loadSection:section];
-				[pool release];
+				@autoreleasepool {
+					[self loadSection:section];
+				}
 			}];
 		}
 		
 		
 		[queue waitUntilAllOperationsAreFinished];
-		operation.progress = 0.9;
+		weakOperation.progress = 0.9;
 		[sectionsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 			EVEAccountStorageCharacter *character1 = [obj1 valueForKey:@"character"];
 			EVEAccountStorageCharacter *character2 = [obj2 valueForKey:@"character"];
@@ -474,18 +463,14 @@
 			else
 				return [character1.characterName compare:character2.characterName ? character2.characterName : @""];
 		}];
-		[queue release];
-		operation.progress = 1.0;
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (loadingOperation == operation)
-			loadingOperation = nil;
-		if (![operation isCancelled]) {
-			[sections release];
-			sections = [sectionsTmp retain];
-		}
+		if (self.loadingOperation == weakOperation)
+			self.loadingOperation = nil;
+		if (![weakOperation isCancelled])
+			self.sections = sectionsTmp;
 		[accountsTableView reloadData];
 	}];
 	

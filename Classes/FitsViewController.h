@@ -11,16 +11,7 @@
 #import "FitsViewControllerDelegate.h"
 #include "eufe.h"
 
-@interface FitsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate> {
-	UITableView *menuTableView;
-	FittingItemsViewController *fittingItemsViewController;
-	UINavigationController *modalController;
-	UIPopoverController *popoverController;
-	id<FitsViewControllerDelegate> delegate;
-	eufe::Engine* engine;
-@private
-	NSMutableArray *fits;
-}
+@interface FitsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate>
 @property (nonatomic, retain) IBOutlet UITableView *menuTableView;
 @property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalController;

@@ -10,22 +10,7 @@
 #import "FilterViewController.h"
 #import "EUFilter.h"
 
-@interface IndustryJobsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
-	UITableView *jobsTableView;
-	UISegmentedControl *ownerSegmentControl;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *filteredValues;
-	NSMutableArray *jobs;
-	NSMutableArray *charJobs;
-	NSMutableArray *corpJobs;
-	NSMutableDictionary *conquerableStations;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-}
+@interface IndustryJobsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, retain) IBOutlet UITableView *jobsTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;

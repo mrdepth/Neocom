@@ -18,9 +18,16 @@
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
 
-@interface IndustryJobsViewController(Private)
+@interface IndustryJobsViewController()
+@property(nonatomic, strong) NSMutableArray *filteredValues;
+@property(nonatomic, strong) NSMutableArray *jobs;
+@property(nonatomic, strong) NSMutableArray *charJobs;
+@property(nonatomic, strong) NSMutableArray *corpJobs;
+@property(nonatomic, strong) NSMutableDictionary *conquerableStations;
+@property(nonatomic, strong) EUFilter *charFilter;
+@property(nonatomic, strong) EUFilter *corpFilter;
+
 - (void) reloadJobs;
-- (NSDictionary*) conquerableStations;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
 @end
@@ -51,10 +58,10 @@
 	self.title = NSLocalizedString(@"Industry Jobs", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:searchBar]];
 		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
 		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController] autorelease];
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
@@ -82,42 +89,25 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.jobsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
 	self.filterNavigationViewController = nil;
-	[jobs release];
-	[charJobs release];
-	[corpJobs release];
-	[filteredValues release];
-	[conquerableStations release];
-	[charFilter release];
-	[corpFilter release];
-	jobs = charJobs = corpJobs = filteredValues = nil;
-	conquerableStations = nil;
-	charFilter = corpFilter = nil;
+	self.jobs = nil;
+	self.charJobs = nil;
+	self.corpJobs = nil;
+	self.filteredValues = nil;
+	self.conquerableStations = nil;
+	self.charFilter = nil;
+	self.corpFilter = nil;
 }
 
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[jobsTableView release];
-	[ownerSegmentControl release];
-	[searchBar release];
-	[filteredValues release];
-	[jobs release];
-	[charJobs release];
-	[corpJobs release];
-	[conquerableStations release];
-	[filterViewController release];
-	[filterNavigationViewController release];
-	[filterPopoverController release];
-	[charFilter release];
-	[corpFilter release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction) onChangeOwner:(id) sender {
@@ -137,9 +127,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		return filteredValues.count;
+		return self.filteredValues.count;
 	else {
-		return jobs.count;
+		return self.jobs.count;
 	}
 }
 
@@ -161,9 +151,9 @@
 	NSDictionary *job;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		job = [filteredValues objectAtIndex:indexPath.row];
+		job = [self.filteredValues objectAtIndex:indexPath.row];
 	else {
-		job = [jobs objectAtIndex:indexPath.row];
+		job = [self.jobs objectAtIndex:indexPath.row];
 	}
 	
 	cell.remainsLabel.text = [job valueForKey:@"remains"];
@@ -235,20 +225,18 @@
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.type = [[filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
 	else
-		controller.type = [[jobs objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = [[self.jobs objectAtIndex:indexPath.row] valueForKey:@"type"];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self presentModalViewController:navController animated:YES];
-		[navController release];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-	[controller release];
 }
 
 
@@ -269,9 +257,9 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
 	else {
-		tableView.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]] autorelease];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -279,7 +267,7 @@
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	EUFilter *filter = corporate ? corpFilter : charFilter;
+	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 	filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -299,47 +287,41 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-@end
-
-@implementation IndustryJobsViewController(Private)
+#pragma mark - Private
 
 - (void) reloadJobs {
 	
 	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentJobs = corporate ? corpJobs : charJobs;
+	NSMutableArray *currentJobs = corporate ? self.corpJobs : self.charJobs;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"industryJobsFilter" ofType:@"plist"]]];
 	
-	[jobs release];
-	jobs = nil;
+	self.jobs = nil;
 	if (!currentJobs) {
 		if (corporate) {
-			corpJobs = [[NSMutableArray alloc] init];
-			currentJobs = corpJobs;
+			self.corpJobs = [[NSMutableArray alloc] init];
+			currentJobs = self.corpJobs;
 		}
 		else {
-			charJobs = [[NSMutableArray alloc] init];
-			currentJobs = charJobs;
+			self.charJobs = [[NSMutableArray alloc] init];
+			currentJobs = self.charJobs;
 		}
 		
 		EVEAccount *account = [EVEAccount currentAccount];
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"IndustryJobsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Industry Jobs", nil)];
+		__weak EUOperation* weakOperation = operation;
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			NSError *error = nil;
 			
-			if (!account) {
-				[pool release];
+			if (!account)
 				return;
-			}
 			
-			//EVEIndustryJobs *industryJobs = [EVEIndustryJobs industryJobsWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID corporate:corporate error:&error];
 			EVEIndustryJobs *industryJobs;
 			if (corporate)
-				industryJobs = [EVEIndustryJobs industryJobsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error];
+				industryJobs = [EVEIndustryJobs industryJobsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 			else
-				industryJobs = [EVEIndustryJobs industryJobsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error];
+				industryJobs = [EVEIndustryJobs industryJobsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
 
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -355,7 +337,7 @@
 				float n = industryJobs.jobs.count;
 				float i = 0;
 				for (EVEIndustryJobsItem *job in industryJobs.jobs) {
-					operation.progress = i++ / n / 2;
+					weakOperation.progress = i++ / n / 2;
 					NSString *remains;
 					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:job.outputTypeID error:nil];
 					NSString *location = nil;
@@ -372,11 +354,11 @@
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (66014934 < job.installedItemLocationID && job.installedItemLocationID < 67999999) { //staStations
 						int locationID = job.installedItemLocationID - 6000000;
-						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", locationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -385,10 +367,10 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (60014861 < job.installedItemLocationID && job.installedItemLocationID < 60014928) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(job.installedItemLocationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -397,17 +379,17 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (60000000 < job.installedItemLocationID && job.installedItemLocationID < 61000000) { //staStations
 						EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:job.installedItemLocationID error:nil];
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (61000000 <= job.installedItemLocationID) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [[conquerableStations self] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(job.installedItemLocationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -416,7 +398,7 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else { //mapDenormalize
 						EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:job.installedItemLocationID error:nil];
@@ -427,7 +409,7 @@
 								location = denormalize.itemName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					
 					NSString *status;
@@ -478,9 +460,9 @@
 							status = NSLocalizedString(@"Destroyed", nil);
 						}
 						else {
-							remains = NSLocalizedString(@"Unknown", nil);
+							remains = NSLocalizedString(@"Unknown Location", nil);
 							remainsColor = [UIColor redColor];
-							status = NSLocalizedString(@"Unknown", nil);
+							status = NSLocalizedString(@"Unknown Status", nil);
 						}
 					}
 					[charIDs addObject:charID];
@@ -502,13 +484,12 @@
 										status, @"status",
 										nil]];
 				}
-				[dateFormatter release];
 				
 				[jobsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:NO]]];
-				operation.progress = 0.75;
+				weakOperation.progress = 0.75;
 				if (charIDs.count > 0) {
 					NSError *error = nil;
-					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error];
+					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
 						for (NSMutableDictionary *job in jobsTmp) {
 							NSString *charID = [job valueForKey:@"charID"];
@@ -519,21 +500,18 @@
 						}
 					}
 				}
-				operation.progress = 1.0;
+				weakOperation.progress = 1.0;
 				[filterTmp updateWithValues:jobsTmp];
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^(void) {
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (corporate) {
-					[corpFilter release];
-					corpFilter = [filterTmp retain];
+					self.corpFilter = filterTmp;
 				}
 				else {
-					[charFilter release];
-					charFilter = [filterTmp retain];
+					self.charFilter = filterTmp;
 				}
 				[currentJobs addObjectsFromArray:jobsTmp];
 				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
@@ -544,21 +522,19 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	else {
-		EUFilter *filter = corporate ? corpFilter : charFilter;
+		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
 		NSMutableArray *jobsTmp = [NSMutableArray array];
 		if (filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 				[jobsTmp addObjectsFromArray:[filter applyToValues:currentJobs]];
-				[pool release];
 			}];
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
-				if (![operation isCancelled]) {
+				if (![weakOperation isCancelled]) {
 					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						[jobs release];
-						jobs = [jobsTmp retain];
+						self.jobs = jobsTmp;
 						[self searchWithSearchString:self.searchBar.text];
 						[jobsTableView reloadData];
 					}
@@ -567,73 +543,69 @@
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
 		else
-			jobs = [currentJobs retain];
+			self.jobs = currentJobs;
 	}
 	[jobsTableView reloadData];
 }
 
 - (NSDictionary*) conquerableStations {
-	if (!conquerableStations) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (conquerableStations)
-			[conquerableStations release];
-		conquerableStations = [[NSMutableDictionary alloc] init];
-		
-		NSError *error = nil;
-		EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error];
-		
-		if (!error) {
-			for (EVEConquerableStationListItem *station in stationsList.outposts)
-				[conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+	if (!_conquerableStations) {
+		@autoreleasepool {
+			_conquerableStations = [[NSMutableDictionary alloc] init];
+			
+			NSError *error = nil;
+			EVEConquerableStationList *stationsList = [EVEConquerableStationList conquerableStationListWithError:&error progressHandler:nil];
+			
+			if (!error) {
+				for (EVEConquerableStationListItem *station in stationsList.outposts)
+					_conquerableStations[@(station.stationID)] = station;
+			}
 		}
-		[pool release];
 	}
-	return conquerableStations;
+	return _conquerableStations;
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[jobs release];
-			[charJobs release];
-			[corpJobs release];
-			jobs = charJobs = corpJobs = nil;
-			[filteredValues release];
-			filteredValues = nil;
-			[charFilter release];
-			[corpFilter release];
-			charFilter = corpFilter = nil;
+			self.jobs = nil;
+			self.charJobs = nil;
+			self.corpJobs = nil;
+			self.filteredValues = nil;
+			self.conquerableStations = nil;
+			self.charFilter = nil;
+			self.corpFilter = nil;
 			[self reloadJobs];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
-		[jobs release];
-		[charJobs release];
-		[corpJobs release];
-		jobs = charJobs = corpJobs = nil;
-		[filteredValues release];
-		filteredValues = nil;
-		[charFilter release];
-		[corpFilter release];
-		charFilter = corpFilter = nil;
+		self.jobs = nil;
+		self.charJobs = nil;
+		self.corpJobs = nil;
+		self.filteredValues = nil;
+		self.conquerableStations = nil;
+		self.charFilter = nil;
+		self.corpFilter = nil;
 		[self reloadJobs];
 	}
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (jobs.count == 0 || !aSearchString)
+	if (self.jobs.count == 0 || !aSearchString)
 		return;
 	
-	NSString *searchString = [[aSearchString copy] autorelease];
+	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"IndustryJobsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		for (NSDictionary *job in jobs) {
+		for (NSDictionary *job in self.jobs) {
+			if ([weakOperation isCancelled])
+				break;
 			if (([job valueForKey:@"remains"] && [[job valueForKey:@"remains"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([job valueForKey:@"typeName"] && [[job valueForKey:@"typeName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 				([job valueForKey:@"location"] && [[job valueForKey:@"location"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
@@ -642,13 +614,11 @@
 				([job valueForKey:@"startTime"] && [[job valueForKey:@"startTime"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound))
 				[filteredValuesTmp addObject:job];
 		}
-		[pool release];
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![operation isCancelled]) {
-			[filteredValues release];
-			filteredValues = [filteredValuesTmp retain];
+		if (![weakOperation isCancelled]) {
+			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}
 	}];

@@ -8,11 +8,20 @@
 
 #import "EUSearchDisplayController.h"
 
-@interface EUSearchDisplayController(Private)
+@interface EUSearchDisplayController()
+@property (nonatomic, readwrite, strong) UIPopoverController *popoverController;
+@property (nonatomic, readwrite, strong) UITableViewController *tableViewController;
+@property (nonatomic, readwrite, strong) UILabel *noResultsLabel;
+@property(nonatomic, strong) NSMutableArray *sections;
+@property(nonatomic, strong) UISegmentedControl *scopeSegmentControler;
+
 - (void) updateNoResultsLabel;
+
 @end
 
 @implementation EUSearchDisplayController
+@synthesize popoverController;
+@synthesize noResultsLabel;
 
 - (void) awakeFromNib {
 	[super awakeFromNib];
@@ -24,18 +33,12 @@
 	NSUInteger newValue = [[change valueForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
 	if (oldValue == newValue)
 		return;
-	if (scopeSegmentControler.selectedSegmentIndex != newValue)
-		scopeSegmentControler.selectedSegmentIndex = newValue;
+	if (self.scopeSegmentControler.selectedSegmentIndex != newValue)
+		self.scopeSegmentControler.selectedSegmentIndex = newValue;
 }
 
 - (void) dealloc {
-	[self.searchBar removeObserver:self forKeyPath:@"selectedScopeButtonIndex"];
-	[popoverController release];
-	[tableViewController release];
-	[noResultsLabel release];
-	[sections release];
-	[scopeSegmentControler release];
-	[super dealloc];
+	[self.searchBar removeObserver:self forKeyPath:@"selectedScopeButtonIndex" context:nil];
 }
 
 - (UIPopoverController*) popoverController {
@@ -45,35 +48,32 @@
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.searchBar];
 		popoverController.popoverContentSize = CGSizeMake(320, 1100);
-		[navigationController release];
 	}
 	return popoverController;
 }
 
 - (UITableViewController*) tableViewController {
-	if (!tableViewController) {
-		tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-		tableViewController.tableView.dataSource = self;
-		tableViewController.tableView.delegate = self;
-		tableViewController.contentSizeForViewInPopover = CGSizeMake(320, 1100);
+	if (!_tableViewController) {
+		_tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+		_tableViewController.tableView.dataSource = self;
+		_tableViewController.tableView.delegate = self;
+		_tableViewController.contentSizeForViewInPopover = CGSizeMake(320, 1100);
 		NSArray *titles = self.searchBar.scopeButtonTitles;
 		if (titles.count > 0) {
-			if (scopeSegmentControler)
-				[scopeSegmentControler release];
-			scopeSegmentControler = [[UISegmentedControl alloc] initWithItems:titles];
-			scopeSegmentControler.segmentedControlStyle = UISegmentedControlStyleBar;
-			scopeSegmentControler.selectedSegmentIndex = self.searchBar.selectedScopeButtonIndex;
-			[scopeSegmentControler addTarget:self action:@selector(onChangePublishedFilterSegment:) forControlEvents:UIControlEventValueChanged];
-			[tableViewController.navigationItem setTitleView:scopeSegmentControler];
+			_scopeSegmentControler = [[UISegmentedControl alloc] initWithItems:titles];
+			_scopeSegmentControler.segmentedControlStyle = UISegmentedControlStyleBar;
+			_scopeSegmentControler.selectedSegmentIndex = self.searchBar.selectedScopeButtonIndex;
+			[_scopeSegmentControler addTarget:self action:@selector(onChangePublishedFilterSegment:) forControlEvents:UIControlEventValueChanged];
+			[_tableViewController.navigationItem setTitleView:_scopeSegmentControler];
 		}
 		else
-			tableViewController.title = NSLocalizedString(@"Results", nil);
+			_tableViewController.title = NSLocalizedString(@"Results", nil);
 		
-		self.noResultsLabel.frame = tableViewController.tableView.bounds;
-		[tableViewController.tableView addSubview:self.noResultsLabel];
-		[self.delegate searchDisplayController:self didLoadSearchResultsTableView:tableViewController.tableView];
+		self.noResultsLabel.frame = _tableViewController.tableView.bounds;
+		[_tableViewController.tableView addSubview:self.noResultsLabel];
+		[self.delegate searchDisplayController:self didLoadSearchResultsTableView:_tableViewController.tableView];
 	}
-	return tableViewController;
+	return _tableViewController;
 }
 
 - (UITableView*) searchResultsTableView {
@@ -83,12 +83,12 @@
 - (void)setActive:(BOOL)visible animated:(BOOL)animated {
 	if (visible) {
 		if (![self.popoverController isPopoverVisible])
-			[popoverController presentPopoverFromRect:self.searchBar.frame inView:self.searchBar.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+			[self.popoverController presentPopoverFromRect:self.searchBar.frame inView:self.searchBar.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
 	}
 	else {
 		if ([self.popoverController isPopoverVisible]) {
 			[self.searchBar resignFirstResponder];
-			[popoverController dismissPopoverAnimated:animated];
+			[self.popoverController dismissPopoverAnimated:animated];
 		}
 	}
 }
@@ -107,12 +107,12 @@
 }
 
 - (IBAction) onChangePublishedFilterSegment: (id) sender {
-	self.searchBar.selectedScopeButtonIndex = scopeSegmentControler.selectedSegmentIndex;
+	self.searchBar.selectedScopeButtonIndex = _scopeSegmentControler.selectedSegmentIndex;
 	if ([self.searchBar.delegate respondsToSelector:@selector(searchBar:selectedScopeButtonIndexDidChange:)])
-		[self.searchBar.delegate searchBar:self.searchBar selectedScopeButtonIndexDidChange:scopeSegmentControler.selectedSegmentIndex];
+		[self.searchBar.delegate searchBar:self.searchBar selectedScopeButtonIndexDidChange:self.scopeSegmentControler.selectedSegmentIndex];
 
 	if ([self.delegate respondsToSelector:@selector(searchDisplayController:shouldReloadTableForSearchScope:)]) {
-		if ([self.delegate searchDisplayController:self shouldReloadTableForSearchScope:scopeSegmentControler.selectedSegmentIndex])
+		if ([self.delegate searchDisplayController:self shouldReloadTableForSearchScope:self.scopeSegmentControler.selectedSegmentIndex])
 			[self.searchResultsTableView reloadData];
 	}
 	else
@@ -182,19 +182,19 @@
 		n = [self.searchResultsDataSource numberOfSectionsInTableView:tableView];
 	else
 		n = 1;
-	if (!sections) {
-		sections = [[NSMutableArray alloc] init];
+	if (!self.sections) {
+		self.sections = [[NSMutableArray alloc] init];
 	}
 	else
-		[sections removeAllObjects];
+		[self.sections removeAllObjects];
 	for (int i = 0; i < n; i++)
-		[sections addObject:[NSNull null]];
+		[self.sections addObject:[NSNull null]];
 	return n;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger n = [self.searchResultsDataSource tableView:tableView numberOfRowsInSection:section];
-	[sections replaceObjectAtIndex:section withObject:[NSNumber numberWithInteger:n]];
+	[self.sections replaceObjectAtIndex:section withObject:[NSNumber numberWithInteger:n]];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateNoResultsLabel) object:nil];
 	[self performSelector:@selector(updateNoResultsLabel) withObject:nil afterDelay:0];
 	return n;
@@ -209,17 +209,15 @@
 	[self.searchResultsDelegate tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
-@end
-
-@implementation EUSearchDisplayController(Private)
+#pragma mark - Private
 
 - (void) updateNoResultsLabel {
 	int n = 0;
-	for (NSNumber *number in sections) {
+	for (NSNumber *number in self.sections) {
 		if ([number isKindOfClass:[NSNumber class]])
 			n += [number integerValue];
 	}
-	noResultsLabel.hidden = n > 0;
+	self.noResultsLabel.hidden = n > 0;
 }
 
 @end

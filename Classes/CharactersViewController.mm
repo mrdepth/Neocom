@@ -16,10 +16,13 @@
 #import "UITableViewCell+Nib.h"
 #import "CharacterSkillsEditorViewController.h"
 
+@interface CharactersViewController()
+@property(nonatomic, strong) NSMutableArray *sections;
+
+
+@end
+
 @implementation CharactersViewController
-@synthesize charactersTableView;
-@synthesize delegate;
-@synthesize modifiedFit;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,7 +48,7 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Characters", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
-	[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)] autorelease]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -59,21 +62,18 @@
 {
     [super viewDidUnload];
 	[self setCharactersTableView:nil];
-/*	[sections release];
-	sections = nil;*/
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	NSMutableArray* sectionsTmp = [NSMutableArray array];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+load" name:NSLocalizedString(@"Loading Characters", nil)];
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
 		NSMutableArray* staticCharacters = [NSMutableArray array];
 		for (int i = 0; i <= 5; i++)
 			[staticCharacters addObject:[CharacterEqualSkills characterWithSkillsLevel:i]];
-		operation.progress = 0.3;
+		weakOperation.progress = 0.3;
 		NSMutableDictionary* eveCharactersDic = [NSMutableDictionary dictionary];
 		NSMutableArray* customCharacters = [NSMutableArray array];
 		NSString* path = [Character charactersDirectory];
@@ -86,7 +86,7 @@
 			else if ([character isKindOfClass:[CharacterCustom class]])
 				[customCharacters addObject:character];
 		}
-		operation.progress = 0.6;
+		weakOperation.progress = 0.6;
 		[[EVEAccountStorage sharedAccountStorage] reload];
 		for (EVEAccountStorageCharacter* accountCharacter in [[[EVEAccountStorage sharedAccountStorage] characters] allValues]) {
 			if (accountCharacter.enabled) {
@@ -94,7 +94,7 @@
 				[eveCharactersDic setValue:character forKey:[NSString stringWithFormat:@"%d", character.characterID]];
 			}
 		}
-		operation.progress = 0.9;
+		weakOperation.progress = 0.9;
 		NSArray* sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
 		[customCharacters sortUsingDescriptors:sortDescriptors];
 		NSMutableArray* eveCharacters = [NSMutableArray arrayWithArray:[eveCharactersDic allValues]];
@@ -103,36 +103,27 @@
 		[sectionsTmp addObject:eveCharacters];
 		[sectionsTmp addObject:customCharacters];
 		[sectionsTmp addObject:staticCharacters];
-		operation.progress = 1.0;
-		
-		[pool release];
+		weakOperation.progress = 1.0;
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^{
-		[sections release];
-		sections = [sectionsTmp retain];
-		[charactersTableView reloadData];
+		self.sections = sectionsTmp;
+		[self.charactersTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
-- (void)dealloc {
-	[charactersTableView release];
-	[sections release];
-	[modifiedFit release];
-	[super dealloc];
-}
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[charactersTableView setEditing:editing animated:animated];
+	[self.charactersTableView setEditing:editing animated:animated];
 
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[sections objectAtIndex:1] count] inSection:1];
+	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[self.sections objectAtIndex:1] count] inSection:1];
 	NSArray* array = [NSArray arrayWithObject:indexPath];
 	if (editing)
-		[charactersTableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.charactersTableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 	else
-		[charactersTableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.charactersTableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (IBAction) onClose:(id)sender {
@@ -143,20 +134,20 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return sections.count;
+	return self.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (self.editing) {
-		NSInteger number = [[sections objectAtIndex:section] count];
+		NSInteger number = [[self.sections objectAtIndex:section] count];
 		if (section == 1)
 			return number + 1;
 		else
 			return number;
 	}
 	else
-		return [[sections objectAtIndex:section] count];
+		return [[self.sections objectAtIndex:section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -176,10 +167,10 @@
     if (cell == nil) {
         cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
     }
-	if (indexPath.row == [[sections objectAtIndex:indexPath.section] count])
+	if (indexPath.row == [[self.sections objectAtIndex:indexPath.section] count])
 		cell.characterNameLabel.text = NSLocalizedString(@"Add Character", nil);
 	else
-		cell.characterNameLabel.text = [[[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
+		cell.characterNameLabel.text = [[[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
     return cell;
 }
 
@@ -189,25 +180,23 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		Character* character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		Character* character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		NSString* path = [[[Character charactersDirectory] stringByAppendingPathComponent:character.guid] stringByAppendingPathExtension:@"plist"];
 		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 
-		[[sections objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+		[[self.sections objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		CharacterCustom* character = [[[CharacterCustom alloc] init] autorelease];
+		CharacterCustom* character = [[CharacterCustom alloc] init];
 		character.name = NSLocalizedString(@"Custom Character", nil);
 		[character save];
-		[[sections objectAtIndex:1] addObject:character];
+		[[self.sections objectAtIndex:1] addObject:character];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
 		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
 		controller.character = character;
 		[self.navigationController pushViewController:controller animated:YES];
-		[controller release];
-
 	}
 }
 
@@ -215,18 +204,18 @@
 #pragma mark Table view delegate
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == [[sections objectAtIndex:indexPath.section] count])
+	if (indexPath.row == [[self.sections objectAtIndex:indexPath.section] count])
 		return UITableViewCellEditingStyleInsert;
 	else
 		return indexPath.section == 0 || indexPath.section == 1 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)] autorelease];
+	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
 	header.opaque = NO;
 	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
 	
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
 	label.opaque = NO;
 	label.backgroundColor = [UIColor clearColor];
 	label.text = [self tableView:tableView titleForHeaderInSection:section];
@@ -244,32 +233,30 @@
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	if (indexPath.row == [[sections objectAtIndex:indexPath.section] count]) {
+	if (indexPath.row == [[self.sections objectAtIndex:indexPath.section] count]) {
 		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
 	else {
-		Character* character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		Character* character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+LoadSkills" name:NSLocalizedString(@"Loading Skills", nil)];
+		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^{
-			NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 			if (character.skills && [character isKindOfClass:[CharacterEVE class]]) {
 				[[NSFileManager defaultManager] createDirectoryAtPath:[Character charactersDirectory] withIntermediateDirectories:YES attributes:nil error:nil];
 				[character save];
 			}
-			[pool release];
 		}];
 		
 		[operation setCompletionBlockInCurrentThread:^{
-			if (![operation isCancelled]) {
+			if (![weakOperation isCancelled]) {
 				if (self.editing) {
 					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
-					controller.character = [[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+					controller.character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 					[self.navigationController pushViewController:controller animated:YES];
-					[controller release];
 				}
 				else {
-					[delegate charactersViewController:self didSelectCharacter:character];
+					[self.delegate charactersViewController:self didSelectCharacter:character];
 				}
 			}
 		}];

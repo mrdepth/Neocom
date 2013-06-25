@@ -11,22 +11,8 @@
 #import "EUFilter.h"
 
 
-@interface MarketOrdersViewController : UIViewController {
-	UITableView *marketOrdersTableView;
-	UISegmentedControl *ownerSegmentControl;
-	UISearchBar *searchBar;
-	FilterViewController *filterViewController;
-	UINavigationController *filterNavigationViewController;
-	UIPopoverController *filterPopoverController;
-@private
-	NSMutableArray *filteredValues;
-	NSMutableArray *orders;
-	NSMutableArray *charOrders;
-	NSMutableArray *corpOrders;
-	NSMutableDictionary *conquerableStations;
-	EUFilter *charFilter;
-	EUFilter *corpFilter;
-}
+@interface MarketOrdersViewController : UIViewController
+
 @property (nonatomic, retain) IBOutlet UITableView *marketOrdersTableView;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;

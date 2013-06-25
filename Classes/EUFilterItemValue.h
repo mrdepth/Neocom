@@ -8,11 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface EUFilterItemValue : NSObject {
-	NSString *title;
-	NSObject *value;
-	BOOL enabled;
-}
+@interface EUFilterItemValue : NSObject
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSObject *value;
 @property (nonatomic) BOOL enabled;

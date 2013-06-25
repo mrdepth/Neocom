@@ -55,7 +55,7 @@
 		string = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ (%d items)", nil), name, self.contents.count];
 	else {
 		if (!name)
-			NSLog(@"%@", name);
+			name = @"";
 		string = [NSMutableString stringWithString:name];
 	}
 	

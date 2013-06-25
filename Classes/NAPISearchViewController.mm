@@ -76,7 +76,6 @@
 								 else {
 									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 6] forKey:SettingsNeocomAPINextSyncDate];
 								 }
-								 NSLog(@"%d", selectedButtonIndex);
 							 } cancelBlock:^{
 							 }] show];
 		}
@@ -173,7 +172,7 @@
 			}
 			else if (self.flags & NeocomAPIFlagMissileLaunchers) {
 				cell.titleLabel.text = NSLocalizedString(@"Missile Launcher", nil);
-				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon04_01.png"];
+				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
 				cell.clearButton.hidden = NO;
 			}
 			else {
@@ -260,7 +259,7 @@
 			controller.title = NSLocalizedString(@"Weapon Type", nil);
 			controller.titles = @[NSLocalizedString(@"Hybrid Weapon", nil), NSLocalizedString(@"Energy Weapon", nil), NSLocalizedString(@"Projectile Weapon", nil), NSLocalizedString(@"Missile Launcher", nil)];
 			controller.values = @[@(NeocomAPIFlagHybridTurrets), @(NeocomAPIFlagLaserTurrets), @(NeocomAPIFlagProjectileTurrets), @(NeocomAPIFlagMissileLaunchers)];
-			controller.icons = @[@"Icons/icon13_06.png", @"Icons/icon13_10.png", @"Icons/icon12_14.png", @"Icons/icon04_01.png"];
+			controller.icons = @[@"Icons/icon13_06.png", @"Icons/icon13_10.png", @"Icons/icon12_14.png", @"Icons/icon12_12.png"];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
 		}
 		else {

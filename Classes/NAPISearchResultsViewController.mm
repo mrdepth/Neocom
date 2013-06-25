@@ -94,7 +94,7 @@
 	else if (item.flags & NeocomAPIFlagProjectileTurrets)
 		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon12_14.png"];
 	else if (item.flags & NeocomAPIFlagMissileLaunchers)
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon04_01.png"];
+		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
 	else
 		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets.png"];
 	

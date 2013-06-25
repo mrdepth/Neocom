@@ -119,7 +119,7 @@
 - (void) loadData {
 	NSMutableArray *values = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"RSSFeedViewController+loadData" name:NSLocalizedString(@"Loading RSS Feed", nil)];
-	__block EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		NSError *error = nil;
 		RSS *rss = [RSS rssWithContentsOfURL:self.url error:&error progressHandler:nil];

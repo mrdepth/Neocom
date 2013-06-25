@@ -224,7 +224,7 @@
 - (void) reload {
 	NSMutableArray *values = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
-	__block EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		if (self.category == nil)
 			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories%@ ORDER BY categoryName;",

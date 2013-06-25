@@ -145,7 +145,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	EVEDBInvType* skill = self.sections[indexPath.section][@"rows"][indexPath.row][@"type"];
+	EVEDBInvType* skill = self.filteredSections[indexPath.section][@"rows"][indexPath.row][@"type"];
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	controller.type = skill;

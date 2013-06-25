@@ -409,7 +409,7 @@
 	NSString *stationName = nil;
 	
 	if (!station) {
-		EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", self.contract.startStationID]];
+		EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(self.contract.startStationID)];
 		if (conquerableStation) {
 			EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 			if (solarSystem)
@@ -418,7 +418,7 @@
 				stationName = conquerableStation.stationName;
 		}
 		else
-			stationName = NSLocalizedString(@"Unknown", nil);
+			stationName = NSLocalizedString(@"Unknown Location", nil);
 	}
 	else
 		stationName = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
@@ -435,7 +435,7 @@
 			
 			if (!error) {
 				for (EVEConquerableStationListItem *station in stationsList.outposts)
-					[_conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+					_conquerableStations[@(station.stationID)] = station;
 			}
 		}
 	}

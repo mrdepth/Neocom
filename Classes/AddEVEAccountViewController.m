@@ -112,7 +112,7 @@
 		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 	}];
 	
-	EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![weakOperation isCancelled]) {

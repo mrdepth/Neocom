@@ -248,7 +248,7 @@
 	NSMutableArray *subGroupValues = [NSMutableArray array];
 	NSMutableArray *itemValues = [NSMutableArray array];
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
-	__block EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	
 	[operation addExecutionBlock:^(void) {
 		if (self.parentGroup == nil) {
@@ -319,9 +319,9 @@
 	NSMutableArray *values = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
-	__block EUOperation* weakOperatoin = operation;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if ([weakOperatoin isCancelled])
+		if ([weakOperation isCancelled])
 			return;
 		if (searchString.length >= 2) {
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
@@ -344,7 +344,7 @@
 													   else
 														   [[section valueForKey:@"rows"] addObject:type];
 													   
-													   if ([weakOperatoin isCancelled])
+													   if ([weakOperation isCancelled])
 														   *needsMore = NO;
 												   }];
 			[values addObjectsFromArray:[[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]]];
@@ -352,7 +352,7 @@
 	}];
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![weakOperatoin isCancelled]) {
+		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];
 		}

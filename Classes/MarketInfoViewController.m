@@ -301,7 +301,7 @@
 	NSMutableArray *buySummaryTmp = [NSMutableArray array];
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+loadData" name:NSLocalizedString(@"Loading Market Info", nil)];
-	__block EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		NSError *error = nil;
 		EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:self.type.typeID regionIDs:nil systemID:0 hours:0 minQ:0 error:&error progressHandler:nil];
@@ -372,7 +372,7 @@
 	NSMutableArray *filteredBuySummaryTmp = [NSMutableArray array];
 
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketInfoViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
-	__block EUOperation* weakOperation = operation;
+	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		if ([weakOperation isCancelled])
 			return;

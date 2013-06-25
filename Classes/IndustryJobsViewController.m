@@ -353,11 +353,11 @@
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (66014934 < job.installedItemLocationID && job.installedItemLocationID < 67999999) { //staStations
 						int locationID = job.installedItemLocationID - 6000000;
-						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%d", locationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -366,10 +366,10 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (60014861 < job.installedItemLocationID && job.installedItemLocationID < 60014928) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [[self conquerableStations] valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(job.installedItemLocationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -378,17 +378,17 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (60000000 < job.installedItemLocationID && job.installedItemLocationID < 61000000) { //staStations
 						EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:job.installedItemLocationID error:nil];
 						if (station)
 							location = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else if (61000000 <= job.installedItemLocationID) { //ConqStations
-						EVEConquerableStationListItem *conquerableStation = [self.conquerableStations valueForKey:[NSString stringWithFormat:@"%lld", job.installedItemLocationID]];
+						EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(job.installedItemLocationID)];
 						if (conquerableStation) {
 							EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 							if (solarSystem)
@@ -397,7 +397,7 @@
 								location = conquerableStation.stationName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					else { //mapDenormalize
 						EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:job.installedItemLocationID error:nil];
@@ -408,7 +408,7 @@
 								location = denormalize.itemName;
 						}
 						else
-							location = NSLocalizedString(@"Unknown", nil);
+							location = NSLocalizedString(@"Unknown Location", nil);
 					}
 					
 					NSString *status;
@@ -459,9 +459,9 @@
 							status = NSLocalizedString(@"Destroyed", nil);
 						}
 						else {
-							remains = NSLocalizedString(@"Unknown", nil);
+							remains = NSLocalizedString(@"Unknown Location", nil);
 							remainsColor = [UIColor redColor];
-							status = NSLocalizedString(@"Unknown", nil);
+							status = NSLocalizedString(@"Unknown Status", nil);
 						}
 					}
 					[charIDs addObject:charID];
@@ -557,7 +557,7 @@
 			
 			if (!error) {
 				for (EVEConquerableStationListItem *station in stationsList.outposts)
-					[_conquerableStations setValue:station forKey:[NSString stringWithFormat:@"%d", station.stationID]];
+					_conquerableStations[@(station.stationID)] = station;
 			}
 		}
 	}

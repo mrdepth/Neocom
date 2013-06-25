@@ -23,8 +23,8 @@
 
 - (void) dealloc {
 	[self.inputStream close];
-	if (self.message)
-		CFRelease(self.message);
+	if (_message)
+		CFRelease(_message);
 }
 
 - (void) run {

@@ -101,7 +101,6 @@
 	//[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	
     // Override point for customization after application launch.
-	[[NSURLCache sharedURLCache] setDiskCapacity:NSURLCacheDiskCapacity];
 	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:SettingsUDID])
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:SettingsUDID];

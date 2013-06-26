@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS eufe.invGroups;
 CREATE TABLE eufe.invGroups (
   "groupID" smallint(6) NOT NULL,
   "categoryID" tinyint(3) default NULL,
+  "groupName" varchar(100) DEFAULT NULL,
   PRIMARY KEY  ("groupID")
 );
 DROP TABLE IF EXISTS eufe.invTypes;
@@ -43,9 +44,22 @@ CREATE TABLE eufe.dgmTypeEffects (
   "isDefault" tinyint(1) default NULL,
   PRIMARY KEY  ("typeID","effectID")
 );
+DROP TABLE IF EXISTS eufe.invCategories;
+CREATE TABLE eufe.invCategories (
+"categoryID"  INTEGER NOT NULL,
+"categoryName"  TEXT(100),
+"description"  TEXT(3000),
+"published"  INTEGER,
+"iconID" smallint(6) default NULL,
+"categoryNameID" smallint(6) default NULL,
+"dataID" smallint(6) default NULL,
+PRIMARY KEY ("categoryID")
+);
 
-INSERT INTO eufe.invGroups SELECT groupID, categoryID  FROM invGroups;
+
+INSERT INTO eufe.invGroups SELECT groupID, categoryID, groupName  FROM invGroups;
 INSERT INTO eufe.invTypes SELECT typeID, groupID, typeName, radius, mass, volume, capacity, portionSize, raceID, published FROM invTypes;
 INSERT INTO eufe.dgmAttributeTypes SELECT attributeID, attributeName, maxAttributeID, defaultValue, stackable, highIsGood, categoryID FROM dgmAttributeTypes;
 INSERT INTO eufe.dgmTypeAttributes SELECT * FROM dgmTypeAttributes;
 INSERT INTO eufe.dgmTypeEffects SELECT * FROM dgmTypeEffects;
+INSERT INTO eufe.invCategories SELECT * FROM invCategories;

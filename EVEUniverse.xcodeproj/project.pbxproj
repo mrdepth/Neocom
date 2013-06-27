@@ -33,9 +33,6 @@
 		1213C0FF16C902DE006E504E /* VariationsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0FE16C902DE006E504E /* VariationsViewController~ipad.xib */; };
 		1213C10216C90373006E504E /* FittingVariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C10016C90373006E504E /* FittingVariationsViewController.xib */; };
 		1213C10316C90373006E504E /* FittingVariationsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C10116C90373006E504E /* FittingVariationsViewController~ipad.xib */; };
-		121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121D8D2C15F498DA0003CAA5 /* Mutex.cpp */; };
-		121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */; };
-		121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */; };
 		121F3E671679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */; };
 		1224EBDE1647E698004401C5 /* CollapsableTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */; };
 		1224EBE01647E6B4004401C5 /* CollapsableTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */; };
@@ -293,6 +290,7 @@
 		129DC5BD1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129DC5BC1403FCF700FEB342 /* MarketGroupsViewController~ipad.xib */; };
 		12A3B9A7140E4DF500E5A00C /* AccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */; };
 		12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */; };
+		12A3C72A177C312F0067E00C /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A3C6ED177C299F0067E00C /* libeufe.a */; };
 		12B06EC61772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B06EC41772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m */; };
 		12B06EC71772E1A400966669 /* SkillPlannerSkillsBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B06EC51772E1A400966669 /* SkillPlannerSkillsBrowserViewController.xib */; };
 		12B06ECA1772ECA000966669 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */; };
@@ -338,13 +336,6 @@
 		12D5F8D31770999F0061D57C /* NAPISearchTitleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D5F8D21770999F0061D57C /* NAPISearchTitleCellView.xib */; };
 		12D5F8D61770A2120061D57C /* NAPISearchSwitchCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */; };
 		12D5F8D81770A22A0061D57C /* NAPISearchSwitchCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */; };
-		12D6EDEF176F42B000F45382 /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE1176F42B000F45382 /* Blob.cpp */; };
-		12D6EDF0176F42B000F45382 /* Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE3176F42B000F45382 /* Decoder.cpp */; };
-		12D6EDF1176F42B000F45382 /* Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE5176F42B000F45382 /* Encoder.cpp */; };
-		12D6EDF2176F42B000F45382 /* FetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE7176F42B000F45382 /* FetchResult.cpp */; };
-		12D6EDF3176F42B000F45382 /* SqlConnector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDE9176F42B000F45382 /* SqlConnector.cpp */; };
-		12D6EDF4176F42B000F45382 /* SqliteConnector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDEB176F42B000F45382 /* SqliteConnector.cpp */; };
-		12D6EDF5176F42B000F45382 /* SqliteFetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12D6EDED176F42B000F45382 /* SqliteFetchResult.cpp */; };
 		12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */; };
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
 		12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31221651047C00C69C5D /* KillMailItemCellView.m */; };
@@ -430,34 +421,6 @@
 		37A815E914E2CACB00C38F73 /* EVEMonLogoBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */; };
 		37A815EA14E2CACB00C38F73 /* EVEMonLogoBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */; };
 		37A815F214E2D20900C38F73 /* ImportingTutorial in Resources */ = {isa = PBXBuildFile; fileRef = 37A815F114E2D20900C38F73 /* ImportingTutorial */; };
-		37AB468A14F521A5007B4C33 /* Area.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464514F521A4007B4C33 /* Area.cpp */; };
-		37AB468B14F521A5007B4C33 /* Attribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464714F521A4007B4C33 /* Attribute.cpp */; };
-		37AB468C14F521A5007B4C33 /* Booster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464914F521A4007B4C33 /* Booster.cpp */; };
-		37AB468D14F521A5007B4C33 /* CapacitorSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464B14F521A4007B4C33 /* CapacitorSimulator.cpp */; };
-		37AB468E14F521A5007B4C33 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464D14F521A4007B4C33 /* Character.cpp */; };
-		37AB468F14F521A5007B4C33 /* Charge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB464F14F521A4007B4C33 /* Charge.cpp */; };
-		37AB469014F521A5007B4C33 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465114F521A4007B4C33 /* Compiler.cpp */; };
-		37AB469114F521A5007B4C33 /* DamagePattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465314F521A4007B4C33 /* DamagePattern.cpp */; };
-		37AB469214F521A5007B4C33 /* Drone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465514F521A4007B4C33 /* Drone.cpp */; };
-		37AB469314F521A5007B4C33 /* Effect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465714F521A4007B4C33 /* Effect.cpp */; };
-		37AB469414F521A5007B4C33 /* EffectArmorRepairInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465914F521A4007B4C33 /* EffectArmorRepairInterpreter.cpp */; };
-		37AB469514F521A5007B4C33 /* EffectByteCodeInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465B14F521A4007B4C33 /* EffectByteCodeInterpreter.cpp */; };
-		37AB469614F521A5007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465D14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp */; };
-		37AB469714F521A5007B4C33 /* EffectEnergyTransferInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */; };
-		37AB469914F521A5007B4C33 /* EffectHullRepairInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */; };
-		37AB469A14F521A5007B4C33 /* EffectLeechInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466614F521A4007B4C33 /* EffectLeechInterpreter.cpp */; };
-		37AB469B14F521A5007B4C33 /* EffectShieldBoostingInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466814F521A4007B4C33 /* EffectShieldBoostingInterpreter.cpp */; };
-		37AB469C14F521A5007B4C33 /* EffectSlotModifierInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466A14F521A4007B4C33 /* EffectSlotModifierInterpreter.cpp */; };
-		37AB469D14F521A5007B4C33 /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB466C14F521A5007B4C33 /* Engine.cpp */; };
-		37AB46A114F521A5007B4C33 /* Gang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467214F521A5007B4C33 /* Gang.cpp */; };
-		37AB46A214F521A5007B4C33 /* Implant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467414F521A5007B4C33 /* Implant.cpp */; };
-		37AB46A314F521A5007B4C33 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467614F521A5007B4C33 /* Item.cpp */; };
-		37AB46A414F521A5007B4C33 /* LocationGroupModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467814F521A5007B4C33 /* LocationGroupModifier.cpp */; };
-		37AB46A514F521A5007B4C33 /* LocationRequiredSkillModifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467A14F521A5007B4C33 /* LocationRequiredSkillModifier.cpp */; };
-		37AB46A714F521A5007B4C33 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467D14F521A5007B4C33 /* Modifier.cpp */; };
-		37AB46A814F521A5007B4C33 /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB467F14F521A5007B4C33 /* Module.cpp */; };
-		37AB46A914F521A5007B4C33 /* Ship.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB468114F521A5007B4C33 /* Ship.cpp */; };
-		37AB46AA14F521A5007B4C33 /* Skill.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37AB468314F521A5007B4C33 /* Skill.cpp */; };
 		37AC5E14149A71EB005DEAEB /* ItemInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37AC5E13149A71E9005DEAEB /* ItemInfo.mm */; };
 		37AE95B414E3EA9C007F7A25 /* EUMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AE95B314E3EA9C007F7A25 /* EUMailBox.m */; };
 		37AE99C714E418E7007F7A25 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37AE99C514E418E7007F7A25 /* MessagesViewController.m */; };
@@ -488,9 +451,6 @@
 		37B967BE14D9C060003F3900 /* DamagePatternsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967BD14D9C05C003F3900 /* DamagePatternsViewController~ipad.xib */; };
 		37B967C014D9C0B3003F3900 /* DamagePatternCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967BF14D9C0B2003F3900 /* DamagePatternCellView~ipad.xib */; };
 		37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C314D9C478003F3900 /* damagePatterns.plist */; };
-		37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BA2E3714F66015004C4538 /* HeatSimulator.cpp */; };
-		37BBC5A51512373700EDE204 /* ControlTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A11512373700EDE204 /* ControlTower.cpp */; };
-		37BBC5A61512373700EDE204 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A31512373700EDE204 /* Structure.cpp */; };
 		37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */; };
 		37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */; };
 		37BE978714DC3C4300575642 /* SkillPlannerViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BE978614DC3C4300575642 /* SkillPlannerViewController~ipad.xib */; };
@@ -816,6 +776,30 @@
 		71CBDC99141044D3003A50CE /* BidCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC98141044D3003A50CE /* BidCellView.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		12A3C6EA177C299F0067E00C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12A3C6E5177C299F0067E00C /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 37B33D3D1473CA0D006B18D7;
+			remoteInfo = compiler;
+		};
+		12A3C6EC177C299F0067E00C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12A3C6E5177C299F0067E00C /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12A3C6AF177C283E0067E00C;
+			remoteInfo = eufe;
+		};
+		12A3C6EE177C29B20067E00C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12A3C6E5177C299F0067E00C /* eufe.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 12A3C6AE177C283E0067E00C;
+			remoteInfo = eufe;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1203570616B68A3E0015706B /* ShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipFit.h; sourceTree = "<group>"; };
 		1203570716B68A3E0015706B /* ShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShipFit.mm; sourceTree = "<group>"; };
@@ -863,12 +847,6 @@
 		1213C0FE16C902DE006E504E /* VariationsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "VariationsViewController~ipad.xib"; sourceTree = "<group>"; };
 		1213C10016C90373006E504E /* FittingVariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingVariationsViewController.xib; sourceTree = "<group>"; };
 		1213C10116C90373006E504E /* FittingVariationsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FittingVariationsViewController~ipad.xib"; sourceTree = "<group>"; };
-		121D8D2C15F498DA0003CAA5 /* Mutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mutex.cpp; sourceTree = "<group>"; };
-		121D8D2D15F498DA0003CAA5 /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
-		121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHardPointModifierEffectInterpreter.cpp; sourceTree = "<group>"; };
-		121E07E31578C146000D1480 /* EffectHardPointModifierEffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHardPointModifierEffectInterpreter.h; sourceTree = "<group>"; };
-		121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectAdaptiveArmorHardener.cpp; sourceTree = "<group>"; };
-		121E07ED1578C3EB000D1480 /* EffectAdaptiveArmorHardener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectAdaptiveArmorHardener.h; sourceTree = "<group>"; };
 		121F3E681679E5A20007CE03 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/DamagePatternEditViewController~ipad.xib"; sourceTree = "<group>"; };
 		1224EBDC1647E698004401C5 /* CollapsableTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableHeaderView.h; sourceTree = "<group>"; };
 		1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableHeaderView.m; sourceTree = "<group>"; };
@@ -1287,6 +1265,7 @@
 		12A3B9A4140E4DF500E5A00C /* AccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessMaskViewController.h; sourceTree = "<group>"; };
 		12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessMaskViewController.m; sourceTree = "<group>"; };
 		12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccessMaskViewController.xib; sourceTree = "<group>"; };
+		12A3C6E5177C299F0067E00C /* eufe.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = eufe.xcodeproj; path = eufe/eufe.xcodeproj; sourceTree = SOURCE_ROOT; };
 		12AFBC7516C1375D0098C5BB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		12B06EC31772E1A400966669 /* SkillPlannerSkillsBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlannerSkillsBrowserViewController.h; sourceTree = "<group>"; };
 		12B06EC41772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlannerSkillsBrowserViewController.m; sourceTree = "<group>"; };
@@ -1361,20 +1340,6 @@
 		12D5F8D41770A2120061D57C /* NAPISearchSwitchCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearchSwitchCellView.h; sourceTree = "<group>"; };
 		12D5F8D51770A2120061D57C /* NAPISearchSwitchCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearchSwitchCellView.m; sourceTree = "<group>"; };
 		12D5F8D71770A22A0061D57C /* NAPISearchSwitchCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NAPISearchSwitchCellView.xib; sourceTree = "<group>"; };
-		12D6EDE1176F42B000F45382 /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blob.cpp; sourceTree = "<group>"; };
-		12D6EDE2176F42B000F45382 /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blob.h; sourceTree = "<group>"; };
-		12D6EDE3176F42B000F45382 /* Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Decoder.cpp; sourceTree = "<group>"; };
-		12D6EDE4176F42B000F45382 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
-		12D6EDE5176F42B000F45382 /* Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Encoder.cpp; sourceTree = "<group>"; };
-		12D6EDE6176F42B000F45382 /* Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoder.h; sourceTree = "<group>"; };
-		12D6EDE7176F42B000F45382 /* FetchResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FetchResult.cpp; sourceTree = "<group>"; };
-		12D6EDE8176F42B000F45382 /* FetchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchResult.h; sourceTree = "<group>"; };
-		12D6EDE9176F42B000F45382 /* SqlConnector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlConnector.cpp; sourceTree = "<group>"; };
-		12D6EDEA176F42B000F45382 /* SqlConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlConnector.h; sourceTree = "<group>"; };
-		12D6EDEB176F42B000F45382 /* SqliteConnector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqliteConnector.cpp; sourceTree = "<group>"; };
-		12D6EDEC176F42B000F45382 /* SqliteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqliteConnector.h; sourceTree = "<group>"; };
-		12D6EDED176F42B000F45382 /* SqliteFetchResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqliteFetchResult.cpp; sourceTree = "<group>"; };
-		12D6EDEE176F42B000F45382 /* SqliteFetchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqliteFetchResult.h; sourceTree = "<group>"; };
 		12DED91616BF8C0200C560E5 /* EUMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUMigrationManager.h; sourceTree = "<group>"; };
 		12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUMigrationManager.mm; sourceTree = "<group>"; };
 		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
@@ -1502,65 +1467,6 @@
 		37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EVEMonLogoBlue.png; sourceTree = "<group>"; };
 		37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EVEMonLogoBlue@2x.png"; sourceTree = "<group>"; };
 		37A815F114E2D20900C38F73 /* ImportingTutorial */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ImportingTutorial; sourceTree = "<group>"; };
-		37AB464514F521A4007B4C33 /* Area.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Area.cpp; sourceTree = "<group>"; };
-		37AB464614F521A4007B4C33 /* Area.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Area.h; sourceTree = "<group>"; };
-		37AB464714F521A4007B4C33 /* Attribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Attribute.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB464814F521A4007B4C33 /* Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attribute.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		37AB464914F521A4007B4C33 /* Booster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Booster.cpp; sourceTree = "<group>"; };
-		37AB464A14F521A4007B4C33 /* Booster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Booster.h; sourceTree = "<group>"; };
-		37AB464B14F521A4007B4C33 /* CapacitorSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CapacitorSimulator.cpp; sourceTree = "<group>"; };
-		37AB464C14F521A4007B4C33 /* CapacitorSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CapacitorSimulator.h; sourceTree = "<group>"; };
-		37AB464D14F521A4007B4C33 /* Character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
-		37AB464E14F521A4007B4C33 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		37AB464F14F521A4007B4C33 /* Charge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Charge.cpp; sourceTree = "<group>"; };
-		37AB465014F521A4007B4C33 /* Charge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Charge.h; sourceTree = "<group>"; };
-		37AB465114F521A4007B4C33 /* Compiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Compiler.cpp; sourceTree = "<group>"; };
-		37AB465214F521A4007B4C33 /* Compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Compiler.h; sourceTree = "<group>"; };
-		37AB465314F521A4007B4C33 /* DamagePattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DamagePattern.cpp; sourceTree = "<group>"; };
-		37AB465414F521A4007B4C33 /* DamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DamagePattern.h; sourceTree = "<group>"; };
-		37AB465514F521A4007B4C33 /* Drone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drone.cpp; sourceTree = "<group>"; };
-		37AB465614F521A4007B4C33 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drone.h; sourceTree = "<group>"; };
-		37AB465714F521A4007B4C33 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB465814F521A4007B4C33 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		37AB465914F521A4007B4C33 /* EffectArmorRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectArmorRepairInterpreter.cpp; sourceTree = "<group>"; };
-		37AB465A14F521A4007B4C33 /* EffectArmorRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectArmorRepairInterpreter.h; sourceTree = "<group>"; };
-		37AB465B14F521A4007B4C33 /* EffectByteCodeInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectByteCodeInterpreter.cpp; sourceTree = "<group>"; };
-		37AB465C14F521A4007B4C33 /* EffectByteCodeInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectByteCodeInterpreter.h; sourceTree = "<group>"; };
-		37AB465D14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectEnergyDestabilizationNewInterpreter.cpp; sourceTree = "<group>"; };
-		37AB465E14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyDestabilizationNewInterpreter.h; sourceTree = "<group>"; };
-		37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectEnergyTransferInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466014F521A4007B4C33 /* EffectEnergyTransferInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectEnergyTransferInterpreter.h; sourceTree = "<group>"; };
-		37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectHullRepairInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466414F521A4007B4C33 /* EffectHullRepairInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectHullRepairInterpreter.h; sourceTree = "<group>"; };
-		37AB466514F521A4007B4C33 /* EffectInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectInterpreter.h; sourceTree = "<group>"; };
-		37AB466614F521A4007B4C33 /* EffectLeechInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectLeechInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466714F521A4007B4C33 /* EffectLeechInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectLeechInterpreter.h; sourceTree = "<group>"; };
-		37AB466814F521A4007B4C33 /* EffectShieldBoostingInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectShieldBoostingInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466914F521A4007B4C33 /* EffectShieldBoostingInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectShieldBoostingInterpreter.h; sourceTree = "<group>"; };
-		37AB466A14F521A4007B4C33 /* EffectSlotModifierInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectSlotModifierInterpreter.cpp; sourceTree = "<group>"; };
-		37AB466B14F521A4007B4C33 /* EffectSlotModifierInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectSlotModifierInterpreter.h; sourceTree = "<group>"; };
-		37AB466C14F521A5007B4C33 /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB466D14F521A5007B4C33 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
-		37AB466F14F521A5007B4C33 /* eufe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eufe.h; sourceTree = "<group>"; };
-		37AB467214F521A5007B4C33 /* Gang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gang.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB467314F521A5007B4C33 /* Gang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gang.h; sourceTree = "<group>"; };
-		37AB467414F521A5007B4C33 /* Implant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Implant.cpp; sourceTree = "<group>"; };
-		37AB467514F521A5007B4C33 /* Implant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Implant.h; sourceTree = "<group>"; };
-		37AB467614F521A5007B4C33 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB467714F521A5007B4C33 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		37AB467814F521A5007B4C33 /* LocationGroupModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocationGroupModifier.cpp; sourceTree = "<group>"; };
-		37AB467914F521A5007B4C33 /* LocationGroupModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationGroupModifier.h; sourceTree = "<group>"; };
-		37AB467A14F521A5007B4C33 /* LocationRequiredSkillModifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocationRequiredSkillModifier.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB467B14F521A5007B4C33 /* LocationRequiredSkillModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationRequiredSkillModifier.h; sourceTree = "<group>"; };
-		37AB467D14F521A5007B4C33 /* Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifier.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB467E14F521A5007B4C33 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		37AB467F14F521A5007B4C33 /* Module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 2; path = Module.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37AB468014F521A5007B4C33 /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 2; path = Module.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		37AB468114F521A5007B4C33 /* Ship.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ship.cpp; sourceTree = "<group>"; };
-		37AB468214F521A5007B4C33 /* Ship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ship.h; sourceTree = "<group>"; };
-		37AB468314F521A5007B4C33 /* Skill.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Skill.cpp; sourceTree = "<group>"; };
-		37AB468414F521A5007B4C33 /* Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skill.h; sourceTree = "<group>"; };
-		37AB468914F521A5007B4C33 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		37AC5E12149A71E6005DEAEB /* ItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemInfo.h; sourceTree = "<group>"; };
 		37AC5E13149A71E9005DEAEB /* ItemInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ItemInfo.mm; sourceTree = "<group>"; };
 		37AE95B214E3EA9C007F7A25 /* EUMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUMailBox.h; sourceTree = "<group>"; };
@@ -1609,12 +1515,6 @@
 		37B967BD14D9C05C003F3900 /* DamagePatternsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DamagePatternsViewController~ipad.xib"; sourceTree = "<group>"; };
 		37B967BF14D9C0B2003F3900 /* DamagePatternCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DamagePatternCellView~ipad.xib"; sourceTree = "<group>"; };
 		37B967C314D9C478003F3900 /* damagePatterns.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = damagePatterns.plist; sourceTree = "<group>"; };
-		37BA2E3714F66015004C4538 /* HeatSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = HeatSimulator.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
-		37BA2E3814F66015004C4538 /* HeatSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeatSimulator.h; sourceTree = "<group>"; };
-		37BBC5A11512373700EDE204 /* ControlTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ControlTower.cpp; sourceTree = "<group>"; };
-		37BBC5A21512373700EDE204 /* ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlTower.h; sourceTree = "<group>"; };
-		37BBC5A31512373700EDE204 /* Structure.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Structure.cpp; sourceTree = "<group>"; };
-		37BBC5A41512373700EDE204 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
 		37BBC5A815125D7600EDE204 /* POSFittingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFittingViewController.h; sourceTree = "<group>"; };
 		37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFittingViewController.mm; sourceTree = "<group>"; };
 		37BBC5AC1512640E00EDE204 /* StructuresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StructuresViewController.h; sourceTree = "<group>"; };
@@ -2049,6 +1949,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12A3C72A177C312F0067E00C /* libeufe.a in Frameworks */,
 				12582F0C16B2523200445581 /* CoreData.framework in Frameworks */,
 				12F17D7516707C6A0070B97C /* AdSupport.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -2079,11 +1980,11 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				12A3C6E5177C299F0067E00C /* eufe.xcodeproj */,
 				12F17D4816707BC30070B97C /* admob_iphone_sdk */,
 				718DD66213F9AC8800FFDFEB /* 3rd Party */,
 				7185DDA612EB51730091CB0F /* Utility */,
 				37AB449914F52173007B4C33 /* EVEOnlineAPI */,
-				37AB464414F521A4007B4C33 /* eufe */,
 				120B466B164B9995000C33CE /* tools */,
 				718B88BA122FCF3D00622C04 /* Globals */,
 				12BEA849140EA0D600D85E88 /* EVEAccountStorage */,
@@ -2938,6 +2839,15 @@
 			name = AccessMaskViewController;
 			sourceTree = "<group>";
 		};
+		12A3C6E6177C299F0067E00C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				12A3C6EB177C299F0067E00C /* compiler */,
+				12A3C6ED177C299F0067E00C /* libeufe.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		12B06EC21772E18300966669 /* SkillPlannerSkillsBrowserViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3518,136 +3428,6 @@
 			path = EVEOnlineAPI/Classes;
 			sourceTree = SOURCE_ROOT;
 		};
-		37AB464414F521A4007B4C33 /* eufe */ = {
-			isa = PBXGroup;
-			children = (
-				37AB46AC14F521DE007B4C33 /* Compiler */,
-				37AB46AD14F521F3007B4C33 /* Effects */,
-				37AB46AE14F52222007B4C33 /* Modifiers */,
-				37AB46AF14F5223C007B4C33 /* Character */,
-				37AB46B014F52261007B4C33 /* Ship */,
-				37BBC59F1512372200EDE204 /* ControlTower */,
-				37AB464514F521A4007B4C33 /* Area.cpp */,
-				12D6EDE1176F42B000F45382 /* Blob.cpp */,
-				12D6EDE2176F42B000F45382 /* Blob.h */,
-				12D6EDE3176F42B000F45382 /* Decoder.cpp */,
-				12D6EDE4176F42B000F45382 /* Decoder.h */,
-				12D6EDE5176F42B000F45382 /* Encoder.cpp */,
-				12D6EDE6176F42B000F45382 /* Encoder.h */,
-				12D6EDE7176F42B000F45382 /* FetchResult.cpp */,
-				12D6EDE8176F42B000F45382 /* FetchResult.h */,
-				12D6EDE9176F42B000F45382 /* SqlConnector.cpp */,
-				12D6EDEA176F42B000F45382 /* SqlConnector.h */,
-				12D6EDEB176F42B000F45382 /* SqliteConnector.cpp */,
-				12D6EDEC176F42B000F45382 /* SqliteConnector.h */,
-				12D6EDED176F42B000F45382 /* SqliteFetchResult.cpp */,
-				12D6EDEE176F42B000F45382 /* SqliteFetchResult.h */,
-				121D8D2C15F498DA0003CAA5 /* Mutex.cpp */,
-				121D8D2D15F498DA0003CAA5 /* Mutex.h */,
-				37AB464614F521A4007B4C33 /* Area.h */,
-				37AB464714F521A4007B4C33 /* Attribute.cpp */,
-				37AB464814F521A4007B4C33 /* Attribute.h */,
-				37AB466C14F521A5007B4C33 /* Engine.cpp */,
-				37AB466D14F521A5007B4C33 /* Engine.h */,
-				37AB466F14F521A5007B4C33 /* eufe.h */,
-				37AB467214F521A5007B4C33 /* Gang.cpp */,
-				37AB467314F521A5007B4C33 /* Gang.h */,
-				37AB467614F521A5007B4C33 /* Item.cpp */,
-				37AB467714F521A5007B4C33 /* Item.h */,
-				37AB468914F521A5007B4C33 /* types.h */,
-			);
-			name = eufe;
-			path = eufe/eufe;
-			sourceTree = SOURCE_ROOT;
-		};
-		37AB46AC14F521DE007B4C33 /* Compiler */ = {
-			isa = PBXGroup;
-			children = (
-				37AB465114F521A4007B4C33 /* Compiler.cpp */,
-				37AB465214F521A4007B4C33 /* Compiler.h */,
-			);
-			name = Compiler;
-			sourceTree = "<group>";
-		};
-		37AB46AD14F521F3007B4C33 /* Effects */ = {
-			isa = PBXGroup;
-			children = (
-				37AB465714F521A4007B4C33 /* Effect.cpp */,
-				37AB465814F521A4007B4C33 /* Effect.h */,
-				37AB465914F521A4007B4C33 /* EffectArmorRepairInterpreter.cpp */,
-				37AB465A14F521A4007B4C33 /* EffectArmorRepairInterpreter.h */,
-				37AB465B14F521A4007B4C33 /* EffectByteCodeInterpreter.cpp */,
-				37AB465C14F521A4007B4C33 /* EffectByteCodeInterpreter.h */,
-				37AB465D14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp */,
-				37AB465E14F521A4007B4C33 /* EffectEnergyDestabilizationNewInterpreter.h */,
-				37AB465F14F521A4007B4C33 /* EffectEnergyTransferInterpreter.cpp */,
-				37AB466014F521A4007B4C33 /* EffectEnergyTransferInterpreter.h */,
-				121E07E21578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp */,
-				121E07E31578C146000D1480 /* EffectHardPointModifierEffectInterpreter.h */,
-				37AB466314F521A4007B4C33 /* EffectHullRepairInterpreter.cpp */,
-				37AB466414F521A4007B4C33 /* EffectHullRepairInterpreter.h */,
-				37AB466514F521A4007B4C33 /* EffectInterpreter.h */,
-				37AB466614F521A4007B4C33 /* EffectLeechInterpreter.cpp */,
-				37AB466714F521A4007B4C33 /* EffectLeechInterpreter.h */,
-				37AB466814F521A4007B4C33 /* EffectShieldBoostingInterpreter.cpp */,
-				37AB466914F521A4007B4C33 /* EffectShieldBoostingInterpreter.h */,
-				37AB466A14F521A4007B4C33 /* EffectSlotModifierInterpreter.cpp */,
-				37AB466B14F521A4007B4C33 /* EffectSlotModifierInterpreter.h */,
-				121E07EC1578C3EB000D1480 /* EffectAdaptiveArmorHardener.cpp */,
-				121E07ED1578C3EB000D1480 /* EffectAdaptiveArmorHardener.h */,
-			);
-			name = Effects;
-			sourceTree = "<group>";
-		};
-		37AB46AE14F52222007B4C33 /* Modifiers */ = {
-			isa = PBXGroup;
-			children = (
-				37AB467814F521A5007B4C33 /* LocationGroupModifier.cpp */,
-				37AB467914F521A5007B4C33 /* LocationGroupModifier.h */,
-				37AB467A14F521A5007B4C33 /* LocationRequiredSkillModifier.cpp */,
-				37AB467B14F521A5007B4C33 /* LocationRequiredSkillModifier.h */,
-				37AB467D14F521A5007B4C33 /* Modifier.cpp */,
-				37AB467E14F521A5007B4C33 /* Modifier.h */,
-			);
-			name = Modifiers;
-			sourceTree = "<group>";
-		};
-		37AB46AF14F5223C007B4C33 /* Character */ = {
-			isa = PBXGroup;
-			children = (
-				37AB464914F521A4007B4C33 /* Booster.cpp */,
-				37AB464A14F521A4007B4C33 /* Booster.h */,
-				37AB464D14F521A4007B4C33 /* Character.cpp */,
-				37AB464E14F521A4007B4C33 /* Character.h */,
-				37AB467414F521A5007B4C33 /* Implant.cpp */,
-				37AB467514F521A5007B4C33 /* Implant.h */,
-				37AB468314F521A5007B4C33 /* Skill.cpp */,
-				37AB468414F521A5007B4C33 /* Skill.h */,
-			);
-			name = Character;
-			sourceTree = "<group>";
-		};
-		37AB46B014F52261007B4C33 /* Ship */ = {
-			isa = PBXGroup;
-			children = (
-				37AB464B14F521A4007B4C33 /* CapacitorSimulator.cpp */,
-				37AB464C14F521A4007B4C33 /* CapacitorSimulator.h */,
-				37BA2E3714F66015004C4538 /* HeatSimulator.cpp */,
-				37BA2E3814F66015004C4538 /* HeatSimulator.h */,
-				37AB464F14F521A4007B4C33 /* Charge.cpp */,
-				37AB465014F521A4007B4C33 /* Charge.h */,
-				37AB465314F521A4007B4C33 /* DamagePattern.cpp */,
-				37AB465414F521A4007B4C33 /* DamagePattern.h */,
-				37AB465514F521A4007B4C33 /* Drone.cpp */,
-				37AB465614F521A4007B4C33 /* Drone.h */,
-				37AB467F14F521A5007B4C33 /* Module.cpp */,
-				37AB468014F521A5007B4C33 /* Module.h */,
-				37AB468114F521A5007B4C33 /* Ship.cpp */,
-				37AB468214F521A5007B4C33 /* Ship.h */,
-			);
-			name = Ship;
-			sourceTree = "<group>";
-		};
 		37AE95B014E3EA7B007F7A25 /* MailBox */ = {
 			isa = PBXGroup;
 			children = (
@@ -3790,17 +3570,6 @@
 				121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */,
 			);
 			name = DamagePatternEditViewController;
-			sourceTree = "<group>";
-		};
-		37BBC59F1512372200EDE204 /* ControlTower */ = {
-			isa = PBXGroup;
-			children = (
-				37BBC5A11512373700EDE204 /* ControlTower.cpp */,
-				37BBC5A21512373700EDE204 /* ControlTower.h */,
-				37BBC5A31512373700EDE204 /* Structure.cpp */,
-				37BBC5A41512373700EDE204 /* Structure.h */,
-			);
-			name = ControlTower;
 			sourceTree = "<group>";
 		};
 		37BBC5A715125D4F00EDE204 /* POSFittingViewController */ = {
@@ -5036,6 +4805,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				12A3C6EF177C29B20067E00C /* PBXTargetDependency */,
 			);
 			name = EVEUniverse;
 			productName = EVEUniverse;
@@ -5062,12 +4832,35 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 12A3C6E6177C299F0067E00C /* Products */;
+					ProjectRef = 12A3C6E5177C299F0067E00C /* eufe.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* EVEUniverse */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		12A3C6EB177C299F0067E00C /* compiler */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = compiler;
+			remoteRef = 12A3C6EA177C299F0067E00C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12A3C6ED177C299F0067E00C /* libeufe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libeufe.a;
+			remoteRef = 12A3C6EC177C299F0067E00C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -5630,42 +5423,11 @@
 				37C355BA14EBEA2D0009B590 /* EVEAssetListItem+AssetsViewController.m in Sources */,
 				370CCEAA14ED467100605A42 /* AssetContentsViewController.mm in Sources */,
 				37B063E814EEC2500040D9FC /* DonationViewController.m in Sources */,
-				37AB468A14F521A5007B4C33 /* Area.cpp in Sources */,
-				37AB468B14F521A5007B4C33 /* Attribute.cpp in Sources */,
-				37AB468C14F521A5007B4C33 /* Booster.cpp in Sources */,
-				37AB468D14F521A5007B4C33 /* CapacitorSimulator.cpp in Sources */,
-				37AB468E14F521A5007B4C33 /* Character.cpp in Sources */,
-				37AB468F14F521A5007B4C33 /* Charge.cpp in Sources */,
-				37AB469014F521A5007B4C33 /* Compiler.cpp in Sources */,
-				37AB469114F521A5007B4C33 /* DamagePattern.cpp in Sources */,
-				37AB469214F521A5007B4C33 /* Drone.cpp in Sources */,
-				37AB469314F521A5007B4C33 /* Effect.cpp in Sources */,
-				37AB469414F521A5007B4C33 /* EffectArmorRepairInterpreter.cpp in Sources */,
-				37AB469514F521A5007B4C33 /* EffectByteCodeInterpreter.cpp in Sources */,
-				37AB469614F521A5007B4C33 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */,
-				37AB469714F521A5007B4C33 /* EffectEnergyTransferInterpreter.cpp in Sources */,
-				37AB469914F521A5007B4C33 /* EffectHullRepairInterpreter.cpp in Sources */,
-				37AB469A14F521A5007B4C33 /* EffectLeechInterpreter.cpp in Sources */,
-				37AB469B14F521A5007B4C33 /* EffectShieldBoostingInterpreter.cpp in Sources */,
-				37AB469C14F521A5007B4C33 /* EffectSlotModifierInterpreter.cpp in Sources */,
-				37AB469D14F521A5007B4C33 /* Engine.cpp in Sources */,
-				37AB46A114F521A5007B4C33 /* Gang.cpp in Sources */,
-				37AB46A214F521A5007B4C33 /* Implant.cpp in Sources */,
-				37AB46A314F521A5007B4C33 /* Item.cpp in Sources */,
-				37AB46A414F521A5007B4C33 /* LocationGroupModifier.cpp in Sources */,
-				37AB46A514F521A5007B4C33 /* LocationRequiredSkillModifier.cpp in Sources */,
-				37AB46A714F521A5007B4C33 /* Modifier.cpp in Sources */,
-				37AB46A814F521A5007B4C33 /* Module.cpp in Sources */,
-				37AB46A914F521A5007B4C33 /* Ship.cpp in Sources */,
-				37AB46AA14F521A5007B4C33 /* Skill.cpp in Sources */,
-				37BA2E3914F66015004C4538 /* HeatSimulator.cpp in Sources */,
 				371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */,
 				37C0FB2514FD0E6E006A153D /* WalletJournalCellView.m in Sources */,
 				379B8DA21507A9E300326B5D /* NPCGroupsViewController.m in Sources */,
 				37763D27150E15D50096A467 /* FittingNPCGroupsViewController.m in Sources */,
 				37763D2C150E1A5B0096A467 /* FittingNPCItemViewController.m in Sources */,
-				37BBC5A51512373700EDE204 /* ControlTower.cpp in Sources */,
-				37BBC5A61512373700EDE204 /* Structure.cpp in Sources */,
 				37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */,
 				37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */,
 				37CE795515135CA800621D52 /* POSStatsViewController.mm in Sources */,
@@ -5673,9 +5435,6 @@
 				37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */,
 				12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */,
 				12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */,
-				121E07E41578C146000D1480 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */,
-				121E07EE1578C3EC000D1480 /* EffectAdaptiveArmorHardener.cpp in Sources */,
-				121D8D2E15F498DA0003CAA5 /* Mutex.cpp in Sources */,
 				127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */,
 				1224EBDE1647E698004401C5 /* CollapsableTableHeaderView.m in Sources */,
 				1224EBED1648E79B004401C5 /* KillboardCellView.m in Sources */,
@@ -5723,13 +5482,6 @@
 				12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */,
 				1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */,
 				1213C0FD16C8FD07006E504E /* FittingVariationsViewController.m in Sources */,
-				12D6EDEF176F42B000F45382 /* Blob.cpp in Sources */,
-				12D6EDF0176F42B000F45382 /* Decoder.cpp in Sources */,
-				12D6EDF1176F42B000F45382 /* Encoder.cpp in Sources */,
-				12D6EDF2176F42B000F45382 /* FetchResult.cpp in Sources */,
-				12D6EDF3176F42B000F45382 /* SqlConnector.cpp in Sources */,
-				12D6EDF4176F42B000F45382 /* SqliteConnector.cpp in Sources */,
-				12D6EDF5176F42B000F45382 /* SqliteFetchResult.cpp in Sources */,
 				12774D95177032C100E98F8C /* BCEveLoadout.m in Sources */,
 				12774D96177032C100E98F8C /* BCEveLoadoutsList.m in Sources */,
 				12774D97177032C100E98F8C /* BCEveLoadoutsTags.m in Sources */,
@@ -5874,6 +5626,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		12A3C6EF177C29B20067E00C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = eufe;
+			targetProxy = 12A3C6EE177C29B20067E00C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */ = {
@@ -6628,6 +6388,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4B07F058-D066-4A31-8905-BD2F05199CE3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/eufe/eufe/**";
 				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
@@ -6659,6 +6420,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C234F5F7-8AA7-4BD2-9E86-D670A771AACA";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/eufe/eufe/**";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
 			};

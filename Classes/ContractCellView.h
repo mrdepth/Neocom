@@ -10,14 +10,14 @@
 
 
 @interface ContractCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *statusLabel;
-@property (nonatomic, retain) IBOutlet UILabel *typeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *locationLabel;
-@property (nonatomic, retain) IBOutlet UILabel *startTimeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *characterLabel;
-@property (nonatomic, retain) IBOutlet UILabel *priceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *priceTitleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *buyoutLabel;
+@property (nonatomic, weak) IBOutlet UILabel *statusLabel;
+@property (nonatomic, weak) IBOutlet UILabel *typeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *startTimeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *characterLabel;
+@property (nonatomic, weak) IBOutlet UILabel *priceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *priceTitleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *buyoutLabel;
 
 @end

@@ -12,13 +12,13 @@
 
 @interface APIKey : NSManagedObject
 
-@property (nonatomic, retain) EVEAPIKeyInfo *apiKeyInfo;
-@property (nonatomic, retain) NSError *error;
-@property (nonatomic, retain) NSMutableArray *assignedCharacters;
+@property (nonatomic, strong) EVEAPIKeyInfo *apiKeyInfo;
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong) NSMutableArray *assignedCharacters;
 
 //CoreData
 @property (nonatomic) int32_t keyID;
-@property (nonatomic, retain) NSString * vCode;
+@property (nonatomic, strong) NSString * vCode;
 
 
 @end

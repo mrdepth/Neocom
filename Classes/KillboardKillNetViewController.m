@@ -19,7 +19,7 @@
 #import "UIAlertView+Error.h"
 
 @interface KillboardKillNetViewController ()
-@property (nonatomic, retain) NSMutableArray* sections;
+@property (nonatomic, strong) NSMutableArray* sections;
 
 - (void) reload;
 @end

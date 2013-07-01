@@ -17,7 +17,7 @@
 
 
 @interface EUHTTPRequest : NSObject<NSStreamDelegate>
-@property (nonatomic, retain) NSInputStream *inputStream;
+@property (nonatomic, strong) NSInputStream *inputStream;
 @property (nonatomic, assign, readonly) CFHTTPMessageRef message;
 @property (nonatomic, weak) id <EUHTTPRequestDelegate> delegate;
 @property (nonatomic, readonly) NSURL* url;

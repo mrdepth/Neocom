@@ -16,13 +16,13 @@
 @class FittingViewController;
 @class EVEFittingFit;
 @interface DronesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate>
-@property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet ProgressLabel *droneBayLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *droneBandwidthLabel;
-@property (nonatomic, retain) IBOutlet UILabel *dronesCountLabel;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) IBOutlet TargetsViewController* targetsViewController;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, weak) IBOutlet FittingViewController *fittingViewController;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet ProgressLabel *droneBayLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *droneBandwidthLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dronesCountLabel;
+@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (nonatomic, weak) IBOutlet TargetsViewController* targetsViewController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 @end

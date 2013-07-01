@@ -20,17 +20,17 @@
 
 @interface SkillPlan : NSManagedObject<NSXMLParserDelegate>
 
-@property (nonatomic, retain) NSMutableArray* skills;
+@property (nonatomic, strong) NSMutableArray* skills;
 @property (nonatomic, readonly) NSTimeInterval trainingTime;
-@property (nonatomic, retain) CharacterAttributes* characterAttributes;
-@property (nonatomic, retain) NSDictionary* characterSkills;
-@property (nonatomic, retain) NSString* name;
+@property (nonatomic, strong) CharacterAttributes* characterAttributes;
+@property (nonatomic, strong) NSDictionary* characterSkills;
+@property (nonatomic, strong) NSString* name;
 
 //CoreData
-@property (nonatomic, retain) NSString * attributes;
+@property (nonatomic, strong) NSString * attributes;
 @property (nonatomic) int32_t characterID;
-@property (nonatomic, retain) NSString * skillPlanName;
-@property (nonatomic, retain) NSString * skillPlanSkills;
+@property (nonatomic, strong) NSString * skillPlanName;
+@property (nonatomic, strong) NSString * skillPlanSkills;
 
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount name:(NSString*) name;
 + (id) skillPlanWithAccount:(EVEAccount*) aAccount eveMonSkillPlanPath:(NSString*) skillPlanPath;

@@ -21,9 +21,9 @@
 
 
 @interface KillboardKillNetFilterViewController ()
-@property (nonatomic, retain) NSMutableArray* filters;
-@property (nonatomic, retain) NSIndexPath* modifiedIndexPath;
-@property (nonatomic, retain) UIPopoverController* popover;
+@property (nonatomic, strong) NSMutableArray* filters;
+@property (nonatomic, strong) NSIndexPath* modifiedIndexPath;
+@property (nonatomic, strong) UIPopoverController* popover;
 
 - (IBAction)onClose:(id)sender;
 - (IBAction)onSearch:(id)sender;

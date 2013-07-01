@@ -11,8 +11,8 @@
 #import "EUHTTPServer.h"
 
 @interface SkillPlannerImportViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, EUHTTPServerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView* plansTableView;
-@property (nonatomic, assign) id<SkillPlannerImportViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UITableView* plansTableView;
+@property (nonatomic, weak) id<SkillPlannerImportViewControllerDelegate> delegate;
 
 - (IBAction)onClose:(id)sender;
 

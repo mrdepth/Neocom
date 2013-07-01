@@ -19,15 +19,15 @@
 @property (nonatomic, assign) eufe::Character* character;
 
 //CoreData
-@property (nonatomic, retain) NSString * boosters;
-@property (nonatomic, retain) NSString * drones;
-@property (nonatomic, retain) NSString * implants;
-@property (nonatomic, retain) NSString * hiSlots;
-@property (nonatomic, retain) NSString * medSlots;
-@property (nonatomic, retain) NSString * lowSlots;
-@property (nonatomic, retain) NSString * rigSlots;
-@property (nonatomic, retain) NSString * subsystems;
-@property (nonatomic, retain) NSString * cargo;
+@property (nonatomic, strong) NSString * boosters;
+@property (nonatomic, strong) NSString * drones;
+@property (nonatomic, strong) NSString * implants;
+@property (nonatomic, strong) NSString * hiSlots;
+@property (nonatomic, strong) NSString * medSlots;
+@property (nonatomic, strong) NSString * lowSlots;
+@property (nonatomic, strong) NSString * rigSlots;
+@property (nonatomic, strong) NSString * subsystems;
+@property (nonatomic, strong) NSString * cargo;
 
 + (id) shipFitWithFitName:(NSString*) fitName character:(eufe::Character*) character;
 + (id) shipFitWithBCString:(NSString*) string character:(eufe::Character*) character;

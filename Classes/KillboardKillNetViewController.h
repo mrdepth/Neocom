@@ -11,7 +11,7 @@
 
 @class EVEKillNetLog;
 @interface KillboardKillNetViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) EVEKillNetLog* killLog;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) EVEKillNetLog* killLog;
 
 @end

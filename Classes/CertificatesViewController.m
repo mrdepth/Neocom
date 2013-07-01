@@ -23,8 +23,6 @@
 @end
 
 @implementation CertificatesViewController
-@synthesize certificatesTableView;
-@synthesize category;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.title = category.categoryName;
+	self.title = self.category.categoryName;
 	[self reload];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 }
@@ -164,7 +162,7 @@
 	[operation addExecutionBlock:^(void) {
 		NSMutableArray* certificates = [NSMutableArray array];
 		
-		[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM crtCertificates WHERE categoryID = %d", category.categoryID]
+		[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM crtCertificates WHERE categoryID = %d", self.category.categoryID]
 											   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 												   [certificates addObject:[[EVEDBCrtCertificate alloc] initWithStatement:stmt]];
 												   if ([weakOperation isCancelled])
@@ -184,7 +182,7 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
-			[certificatesTableView reloadData];
+			[self.certificatesTableView reloadData];
 		}
 	}];
 	

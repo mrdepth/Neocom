@@ -35,7 +35,7 @@ typedef enum {
 @property (nonatomic, strong) NSNetService * netService;
 @property (nonatomic, strong) NSMutableSet * connections;
 @property (assign) CFSocketRef ipv4socket;
-@property (nonatomic, assign) id<EUHTTPServerDelegate> delegate;
+@property (nonatomic, weak) id<EUHTTPServerDelegate> delegate;
 
 - (id)initWithDelegate:(id<EUHTTPServerDelegate>) anObject;
 - (BOOL) setupServer:(NSError **)error;

@@ -26,7 +26,7 @@
 #import "SplashScreenViewController.h"
 
 @interface MainMenuViewController()
-@property (nonatomic, retain) UIPopoverController* masterPopover;
+@property (nonatomic, strong) UIPopoverController* masterPopover;
 @property (nonatomic, assign) NSInteger numberOfUnreadMessages;
 
 

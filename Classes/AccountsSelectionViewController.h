@@ -14,7 +14,7 @@
 @end
 
 @interface AccountsSelectionViewController : UITableViewController
-@property (nonatomic, retain) NSArray* selectedAccounts;
-@property (nonatomic, assign) id<AccountsSelectionViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSArray* selectedAccounts;
+@property (nonatomic, weak) id<AccountsSelectionViewControllerDelegate> delegate;
 
 @end

@@ -10,8 +10,8 @@
 
 
 @interface ItemInfoSkillCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconView;
-@property (nonatomic, retain) IBOutlet UILabel *skillLabel;
-@property (nonatomic, retain) IBOutlet UIView *hierarchyView;
+@property (nonatomic, weak) IBOutlet UIImageView *iconView;
+@property (nonatomic, weak) IBOutlet UILabel *skillLabel;
+@property (nonatomic, weak) IBOutlet UIView *hierarchyView;
 
 @end

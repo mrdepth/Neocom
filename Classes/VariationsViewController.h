@@ -10,8 +10,8 @@
 
 @class EVEDBInvType;
 @interface VariationsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) EVEDBInvType* type;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) EVEDBInvType* type;
 
 - (void) didSelectType:(EVEDBInvType*) type;
 

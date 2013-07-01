@@ -18,12 +18,12 @@ typedef enum {
 @class MarketInfoViewController;
 @class EVEDBInvType;
 @interface ItemViewController : UIViewController
-@property (nonatomic, retain) IBOutlet ItemInfoViewController *itemInfoViewController;
-@property (nonatomic, retain) IBOutlet MarketInfoViewController *marketInfoViewController;
-@property (nonatomic, retain) IBOutlet UIView *parentView;
-@property (nonatomic, retain) EVEDBInvType *type;
+@property (nonatomic, strong) IBOutlet ItemInfoViewController *itemInfoViewController;
+@property (nonatomic, strong) IBOutlet MarketInfoViewController *marketInfoViewController;
+@property (nonatomic, weak) IBOutlet UIView *parentView;
+@property (nonatomic, strong) EVEDBInvType *type;
 @property (nonatomic, assign) ItemViewControllerActivePage activePage;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *pageSegmentControl;
+@property (nonatomic, strong) IBOutlet UISegmentedControl *pageSegmentControl;
 
 - (void) setActivePage:(ItemViewControllerActivePage) value animated:(BOOL) animated;
 

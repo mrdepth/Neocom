@@ -10,8 +10,8 @@
 
 
 @interface AttributeCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconView;
-@property (nonatomic, retain) IBOutlet UILabel *attributeNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *attributeValueLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconView;
+@property (nonatomic, weak) IBOutlet UILabel *attributeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *attributeValueLabel;
 
 @end

@@ -20,10 +20,10 @@
 
 
 @interface EUHTTPConnection: NSObject<EUHTTPRequestDelegate, EUHTTPResponseDelegate>
-@property (nonatomic, retain) NSString *peerName;
-@property (nonatomic, assign) id <EUHTTPConnectionDelegate> delegate;
-@property (nonatomic, retain) EUHTTPRequest *request;
-@property (nonatomic, retain) EUHTTPResponse *response;
+@property (nonatomic, strong) NSString *peerName;
+@property (nonatomic, weak) id <EUHTTPConnectionDelegate> delegate;
+@property (nonatomic, strong) EUHTTPRequest *request;
+@property (nonatomic, strong) EUHTTPResponse *response;
 
 - (id)initWithInputStream:(NSInputStream *)readStream 
 			 outputStream:(NSOutputStream *) writeStream 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1536</int>
+		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">11G63</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1930</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -107,7 +107,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 36}, {275, 17}}</string>
 								<reference key="NSSuperview" ref="837500320"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -151,54 +150,34 @@
 				<string key="IBUIReuseIdentifier">MessageCellView</string>
 			</object>
 			<object class="IBUIImageView" id="268242496">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
+				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="IBUIContentStretch">{{0, 0}, {1, 0.5}}</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<object class="NSCustomResource" key="IBUIImage" id="1070653372">
+				<object class="NSCustomResource" key="IBUIImage">
 					<string key="NSClassName">NSImage</string>
 					<string key="NSResourceName">cellBackgroundSelected.png</string>
 				</object>
 			</object>
 			<object class="IBUIImageView" id="689894364">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
+				<reference key="NSSuperview"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
 				<string key="IBUIContentStretch">{{0, 0}, {1, 0.5}}</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<object class="NSCustomResource" key="IBUIImage" id="164465940">
+				<object class="NSCustomResource" key="IBUIImage">
 					<string key="NSClassName">NSImage</string>
 					<string key="NSResourceName">cellBackground.png</string>
 				</object>
-			</object>
-			<object class="IBUIImageView" id="315607016">
-				<nil key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
-				<string key="NSFrameSize">{2, 4}</string>
-				<bool key="IBUIOpaque">NO</bool>
-				<bool key="IBUIClipsSubviews">YES</bool>
-				<bool key="IBUIMultipleTouchEnabled">YES</bool>
-				<string key="IBUIContentStretch">{{0, 0}, {1, 0.5}}</string>
-				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<reference key="IBUIImage" ref="164465940"/>
-			</object>
-			<object class="IBUIImageView" id="647918784">
-				<nil key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
-				<string key="NSFrameSize">{2, 4}</string>
-				<bool key="IBUIOpaque">NO</bool>
-				<bool key="IBUIClipsSubviews">YES</bool>
-				<bool key="IBUIMultipleTouchEnabled">YES</bool>
-				<string key="IBUIContentStretch">{{0, 0}, {1, 0.5}}</string>
-				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<reference key="IBUIImage" ref="1070653372"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -298,16 +277,6 @@
 						<reference key="object" ref="825798641"/>
 						<reference key="parent" ref="32168874"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">52</int>
-						<reference key="object" ref="315607016"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">53</int>
-						<reference key="object" ref="647918784"/>
-						<reference key="parent" ref="0"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -321,8 +290,6 @@
 				<string key="3.CustomClassName">MessageCellView</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -339,6 +306,6 @@
 			<string key="cellBackground.png">{2, 4}</string>
 			<string key="cellBackgroundSelected.png">{2, 4}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1930</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

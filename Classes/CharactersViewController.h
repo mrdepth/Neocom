@@ -12,9 +12,9 @@
 
 @class ShipFit;
 @interface CharactersViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (retain, nonatomic) IBOutlet UITableView *charactersTableView;
-@property (nonatomic, assign) IBOutlet id<CharactersViewControllerDelegate> delegate;
-@property (retain, nonatomic) ShipFit* modifiedFit;
+@property (weak, nonatomic) IBOutlet UITableView *charactersTableView;
+@property (nonatomic, weak) IBOutlet id<CharactersViewControllerDelegate> delegate;
+@property (strong, nonatomic) ShipFit* modifiedFit;
 
 - (IBAction) onClose:(id)sender;
 

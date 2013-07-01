@@ -10,7 +10,7 @@
 
 
 @interface TagCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *checkmarkImageView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *checkmarkImageView;
 
 @end

@@ -10,10 +10,10 @@
 #import "EVEOnlineAPI.h"
 
 @interface EVEAccountStorageAPIKey: NSObject
-@property (nonatomic, retain) EVEAPIKeyInfo *apiKeyInfo;
+@property (nonatomic, strong) EVEAPIKeyInfo *apiKeyInfo;
 @property (nonatomic) NSInteger keyID;
 @property (nonatomic, copy) NSString *vCode;
-@property (nonatomic, retain) NSError *error;
-@property (nonatomic, retain) NSMutableArray *assignedCharacters;
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong) NSMutableArray *assignedCharacters;
 
 @end

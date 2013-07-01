@@ -10,12 +10,12 @@
 #import "FilterViewController.h"
 
 @interface KillboardApiViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *ownerSegmentControl;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *killboardTypeSegmentControl;
-@property (retain, nonatomic) IBOutlet UINavigationController *filterNavigationViewController;
-@property (retain, nonatomic) IBOutlet FilterViewController *filterViewController;
-@property (nonatomic, retain) UIPopoverController *filterPopoverController;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *ownerSegmentControl;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *killboardTypeSegmentControl;
+@property (strong, nonatomic) IBOutlet UINavigationController *filterNavigationViewController;
+@property (weak, nonatomic) IBOutlet FilterViewController *filterViewController;
+@property (nonatomic, strong) UIPopoverController *filterPopoverController;
 
 - (IBAction) onChangeOwner:(id) sender;
 - (IBAction) onChangeKillboardType:(id) sender;

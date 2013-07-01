@@ -10,7 +10,7 @@
 #import "EVEOnlineAPI.h"
 
 @interface AccessMaskViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *accessMaskTableView;
+@property (nonatomic, weak) IBOutlet UITableView *accessMaskTableView;
 @property (nonatomic, assign) NSInteger accessMask;
 @property (nonatomic, assign, getter=isCorporate) BOOL corporate;
 

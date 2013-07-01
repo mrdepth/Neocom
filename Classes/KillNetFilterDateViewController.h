@@ -14,13 +14,13 @@
 @end
 
 @interface KillNetFilterDateViewController : UIViewController
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *valueLabel;
-@property (retain, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (retain, nonatomic) NSDate* minimumDate;
-@property (retain, nonatomic) NSDate* maximumDate;
-@property (retain, nonatomic) NSDate* date;
-@property (assign, nonatomic) id<KillNetFilterDateViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (strong, nonatomic) NSDate* minimumDate;
+@property (strong, nonatomic) NSDate* maximumDate;
+@property (strong, nonatomic) NSDate* date;
+@property (weak, nonatomic) id<KillNetFilterDateViewControllerDelegate> delegate;
 - (IBAction)onChangeDate:(id)sender;
 
 @end

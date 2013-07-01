@@ -10,17 +10,11 @@
 #import "CharacterInfoViewController.h"
 #import "CollapsableTableView.h"
 
-@interface SkillsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate> {
-	CollapsableTableView *skillsTableView;
-	CollapsableTableView *skillsQueueTableView;
-	UISegmentedControl *segmentedControl;
-	CharacterInfoViewController *characterInfoViewController;
-@private
-}
-@property (nonatomic, retain) IBOutlet CollapsableTableView *skillsTableView;
-@property (nonatomic, retain) IBOutlet CollapsableTableView *skillsQueueTableView;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *segmentedControl;
-@property (nonatomic, retain) IBOutlet CharacterInfoViewController *characterInfoViewController;
+@interface SkillsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
+@property (nonatomic, weak) IBOutlet CollapsableTableView *skillsTableView;
+@property (nonatomic, weak) IBOutlet CollapsableTableView *skillsQueueTableView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) IBOutlet CharacterInfoViewController *characterInfoViewController;
 
 - (IBAction) onChangeSegmentedControl:(id) sender;
 

@@ -18,7 +18,7 @@
 
 
 @interface AccountsSelectionViewController ()
-@property (nonatomic, retain) NSArray* accounts;
+@property (nonatomic, strong) NSArray* accounts;
 @end
 
 @implementation AccountsSelectionViewController

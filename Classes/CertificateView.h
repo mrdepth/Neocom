@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface CertificateView : UIView
-@property (retain, nonatomic) IBOutlet UIImageView *iconView;
-@property (retain, nonatomic) IBOutlet UIImageView *statusView;
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (retain, nonatomic) UIColor* color;
+@property (weak, nonatomic) IBOutlet UIImageView *iconView;
+@property (weak, nonatomic) IBOutlet UIImageView *statusView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (strong, nonatomic) UIColor* color;
 
 @end
 

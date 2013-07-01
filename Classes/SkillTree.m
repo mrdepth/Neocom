@@ -12,12 +12,9 @@
 #import "EVEOnlineAPI.h"
 
 @implementation SkillTreeItem
-@synthesize skillLevel;
-@synthesize hierarchyLevel;
-@synthesize skillAvailability;
 
 - (NSString*) romanSkillLevel {
-	switch (skillLevel) {
+	switch (self.skillLevel) {
 		case 1:
 			return @"I";
 		case 2:
@@ -46,7 +43,6 @@
 
 
 @implementation SkillTree
-@synthesize skills;
 
 
 + (id) skillTreeWithRootSkill: (EVEDBInvType*) skill skillLevel:(NSInteger) skillLevel {

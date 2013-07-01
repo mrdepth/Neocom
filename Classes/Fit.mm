@@ -9,7 +9,7 @@
 #import "Fit.h"
 
 @interface Fit()
-@property (nonatomic, readwrite, retain) EVEDBInvType* type;
+@property (nonatomic, readwrite, strong) EVEDBInvType* type;
 @end
 
 @implementation Fit

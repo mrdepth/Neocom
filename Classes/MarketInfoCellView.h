@@ -10,11 +10,11 @@
 
 
 @interface MarketInfoCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *systemLabel;
-@property (nonatomic, retain) IBOutlet UILabel *stationLabel;
-@property (nonatomic, retain) IBOutlet UILabel *securityLabel;
-@property (nonatomic, retain) IBOutlet UILabel *priceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *qtyLabel;
-@property (nonatomic, retain) IBOutlet UILabel *reportedLabel;
+@property (nonatomic, weak) IBOutlet UILabel *systemLabel;
+@property (nonatomic, weak) IBOutlet UILabel *stationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *securityLabel;
+@property (nonatomic, weak) IBOutlet UILabel *priceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *qtyLabel;
+@property (nonatomic, weak) IBOutlet UILabel *reportedLabel;
 
 @end

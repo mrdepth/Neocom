@@ -36,9 +36,6 @@
 @end
 
 @implementation RequiredSkillsViewController
-@synthesize skillsTableView;
-@synthesize trainingTimeLabel;
-@synthesize fit;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -198,7 +195,7 @@
 			skillPlanTmp.characterAttributes = account.characterAttributes;
 		}
 		
-		eufe::Character* character = fit.character;
+		eufe::Character* character = self.fit.character;
 
 		[skillPlanTmp addType:[ItemInfo itemInfoWithItem:character->getShip() error:nil]];
 		weakOperation.progress = 0.25;
@@ -246,7 +243,7 @@
 		if (![operation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 			
-			[skillsTableView reloadData];
+			[self.skillsTableView reloadData];
 			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 		}
 		else {

@@ -33,8 +33,6 @@
 @end
 
 @implementation POSesViewController
-@synthesize posesTableView;
-@synthesize searchBar;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -132,7 +130,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == posesTableView ? @"POSCellView" : @"POSCellViewCompact";
+			nibName = tableView == self.posesTableView ? @"POSCellView" : @"POSCellViewCompact";
 		else
 			nibName = @"POSCellView";
 
@@ -191,7 +189,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == posesTableView ? 37 : 73;
+		return tableView == self.posesTableView ? 37 : 73;
 	else
 		return 73;
 }
@@ -388,7 +386,7 @@
 		if (![weakOperation isCancelled]) {
 			self.poses = posesTmp;
 			self.sections = sectionsTmp;
-			[posesTableView reloadData];
+			[self.posesTableView reloadData];
 		}
 	}];
 	
@@ -488,7 +486,7 @@
 
 		if (indexPath) {
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
-				[posesTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+				[self.posesTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			}];
 		}
 		

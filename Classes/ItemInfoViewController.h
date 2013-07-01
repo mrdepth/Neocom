@@ -10,17 +10,17 @@
 #import "EVEDBAPI.h"
 
 @interface ItemInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *attributesTable;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *volumeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *massLabel;
-@property (nonatomic, retain) IBOutlet UILabel *capacityLabel;
-@property (nonatomic, retain) IBOutlet UILabel *radiusLabel;
-@property (nonatomic, retain) IBOutlet UILabel *descriptionLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UIImageView *techLevelImageView;
-@property (nonatomic, retain) IBOutlet UIView *typeInfoView;
-@property (nonatomic, assign) IBOutlet UIViewController *containerViewController;
-@property (nonatomic, retain) EVEDBInvType *type;
+@property (nonatomic, weak) IBOutlet UITableView *attributesTable;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *volumeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *massLabel;
+@property (nonatomic, weak) IBOutlet UILabel *capacityLabel;
+@property (nonatomic, weak) IBOutlet UILabel *radiusLabel;
+@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIImageView *techLevelImageView;
+@property (nonatomic, weak) IBOutlet UIView *typeInfoView;
+@property (nonatomic, weak) IBOutlet UIViewController *containerViewController;
+@property (nonatomic, strong) EVEDBInvType *type;
 
 @end

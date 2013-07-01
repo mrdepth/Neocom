@@ -10,9 +10,9 @@
 
 @class EVEDBInvType;
 @interface BCSearchResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *resultsTableView;
-@property (nonatomic, retain) EVEDBInvType *ship;
-@property (nonatomic, retain) NSArray *loadouts;
+@property (nonatomic, weak) IBOutlet UITableView *resultsTableView;
+@property (nonatomic, strong) EVEDBInvType *ship;
+@property (nonatomic, strong) NSArray *loadouts;
 
 
 @end

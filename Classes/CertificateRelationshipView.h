@@ -13,12 +13,12 @@
 @class EVEDBInvTypeRequiredSkill;
 @interface CertificateRelationshipView : UIView
 
-@property (retain, nonatomic) IBOutlet UIImageView *iconView;
-@property (retain, nonatomic) IBOutlet UIImageView *statusView;
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) UIColor* color;
-@property (retain, nonatomic) EVEDBCrtCertificate* certificate;
-@property (retain, nonatomic) EVEDBInvTypeRequiredSkill* type;
-@property (assign, nonatomic) id<CertificateRelationshipViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIImageView *iconView;
+@property (weak, nonatomic) IBOutlet UIImageView *statusView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) UIColor* color;
+@property (strong, nonatomic) EVEDBCrtCertificate* certificate;
+@property (strong, nonatomic) EVEDBInvTypeRequiredSkill* type;
+@property (weak, nonatomic) id<CertificateRelationshipViewDelegate> delegate;
 
 @end

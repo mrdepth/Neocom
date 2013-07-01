@@ -12,44 +12,44 @@
 
 @class POSFittingViewController;
 @interface POSStatsViewController : UIViewController<FittingSection>
-@property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, weak) IBOutlet POSFittingViewController *posFittingViewController;
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIView *contentView;
 
-@property (nonatomic, retain) IBOutlet ProgressLabel *powerGridLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *cpuLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *powerGridLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *cpuLabel;
 
-@property (nonatomic, retain) IBOutlet ProgressLabel *shieldEMLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *shieldThermalLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *shieldKineticLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *shieldExplosiveLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *armorEMLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *armorThermalLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *armorKineticLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *armorExplosiveLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *hullEMLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *hullThermalLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *hullKineticLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *hullExplosiveLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternEMLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternThermalLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternKineticLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *damagePatternExplosiveLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *shieldEMLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *shieldThermalLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *shieldKineticLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *shieldExplosiveLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *armorEMLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *armorThermalLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *armorKineticLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *armorExplosiveLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *hullEMLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *hullThermalLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *hullKineticLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *hullExplosiveLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *damagePatternEMLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *damagePatternThermalLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *damagePatternKineticLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *damagePatternExplosiveLabel;
 
-@property (nonatomic, retain) IBOutlet UILabel *shieldHPLabel;
-@property (nonatomic, retain) IBOutlet UILabel *armorHPLabel;
-@property (nonatomic, retain) IBOutlet UILabel *hullHPLabel;
-@property (nonatomic, retain) IBOutlet UILabel *ehpLabel;
+@property (nonatomic, weak) IBOutlet UILabel *shieldHPLabel;
+@property (nonatomic, weak) IBOutlet UILabel *armorHPLabel;
+@property (nonatomic, weak) IBOutlet UILabel *hullHPLabel;
+@property (nonatomic, weak) IBOutlet UILabel *ehpLabel;
 
-@property (nonatomic, retain) IBOutlet UILabel *shieldRecharge;
+@property (nonatomic, weak) IBOutlet UILabel *shieldRecharge;
 
-@property (nonatomic, retain) IBOutlet UILabel *weaponDPSLabel;
+@property (nonatomic, weak) IBOutlet UILabel *weaponDPSLabel;
 
-@property (nonatomic, retain) IBOutlet UILabel *fuelTypeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *fuelCostLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *fuelImageView;
-@property (nonatomic, retain) IBOutlet UILabel *infrastructureUpgradesCostLabel;
-@property (nonatomic, retain) IBOutlet UILabel *posCostLabel;
+@property (nonatomic, weak) IBOutlet UILabel *fuelTypeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *fuelCostLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *fuelImageView;
+@property (nonatomic, weak) IBOutlet UILabel *infrastructureUpgradesCostLabel;
+@property (nonatomic, weak) IBOutlet UILabel *posCostLabel;
 
 
 @end

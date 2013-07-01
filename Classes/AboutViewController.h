@@ -10,17 +10,17 @@
 
 
 @interface AboutViewController : UIViewController<UIAlertViewDelegate>
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet UIView *cacheView;
-@property (nonatomic, retain) IBOutlet UIView *databaseView;
-@property (nonatomic, retain) IBOutlet UIView *marketView;
-@property (nonatomic, retain) IBOutlet UIView *versionView;
-@property (nonatomic, retain) IBOutlet UIView *specialThanksView;
-@property (nonatomic, retain) IBOutlet UILabel *apiCacheSizeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *imagesCacheSizeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *databaseVersionLabel;
-@property (nonatomic, retain) IBOutlet UILabel *imagesVersionLabel;
-@property (nonatomic, retain) IBOutlet UILabel *applicationVersionLabel;
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIView *cacheView;
+@property (nonatomic, strong) IBOutlet UIView *databaseView;
+@property (nonatomic, strong) IBOutlet UIView *marketView;
+@property (nonatomic, strong) IBOutlet UIView *versionView;
+@property (nonatomic, strong) IBOutlet UIView *specialThanksView;
+@property (nonatomic, strong) IBOutlet UILabel *apiCacheSizeLabel;
+@property (nonatomic, strong) IBOutlet UILabel *imagesCacheSizeLabel;
+@property (nonatomic, strong) IBOutlet UILabel *databaseVersionLabel;
+@property (nonatomic, strong) IBOutlet UILabel *imagesVersionLabel;
+@property (nonatomic, strong) IBOutlet UILabel *applicationVersionLabel;
 
 - (IBAction) onClearCache:(id) sender;
 - (IBAction) onHomepage:(id) sender;

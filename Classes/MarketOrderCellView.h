@@ -10,14 +10,14 @@
 
 
 @interface MarketOrderCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *expireInLabel;
-@property (nonatomic, retain) IBOutlet UILabel *stateLabel;
-@property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *locationLabel;
-@property (nonatomic, retain) IBOutlet UILabel *priceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *qtyLabel;
-@property (nonatomic, retain) IBOutlet UILabel *issuedLabel;
-@property (nonatomic, retain) IBOutlet UILabel *characterLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *expireInLabel;
+@property (nonatomic, weak) IBOutlet UILabel *stateLabel;
+@property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *priceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *qtyLabel;
+@property (nonatomic, weak) IBOutlet UILabel *issuedLabel;
+@property (nonatomic, weak) IBOutlet UILabel *characterLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 
 @end

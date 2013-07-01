@@ -10,12 +10,12 @@
 
 
 @interface WalletTransactionCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *dateLabel;
-@property (nonatomic, retain) IBOutlet UILabel *transactionAmmountLabel;
-@property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *locationLabel;
-@property (nonatomic, retain) IBOutlet UILabel *priceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *characterLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UILabel *transactionAmmountLabel;
+@property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *priceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *characterLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 
 @end

@@ -103,6 +103,25 @@
 	</dict>
 	<dict>
 		<key>title</key>
+		<string>Russian</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>EVE NEWS | Новости EVE online (evenews.ru)</string>
+				<key>url</key>
+				<string>http://www.evenews.ru/index.php?format=feed&amp;type=rss</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>EVE-RU | Лента новостей (eve-ru.com)</string>
+				<key>url</key>
+				<string>http://eve-ru.com/rss/indexfeed</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
 		<string>Official Blog</string>
 		<key>feeds</key>
 		<array>

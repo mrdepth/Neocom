@@ -14,9 +14,9 @@
 @end
 
 @interface KillNetFilterTextCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UITextField *textField;
-@property (nonatomic, assign) id<KillNetFilterTextCellViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (nonatomic, weak) id<KillNetFilterTextCellViewDelegate> delegate;
 
 - (IBAction)onDefaultValue:(id)sender;
 

@@ -23,12 +23,12 @@
 
 @interface Skill : NSObject
 
-@property (nonatomic, retain) NSString *skillName;
-@property (nonatomic, retain) NSString *skillPoints;
-@property (nonatomic, retain) NSString *level;
-@property (nonatomic, retain) NSString *iconImageName;
-@property (nonatomic, retain) NSString *levelImageName;
-@property (nonatomic, retain) NSString *remainingTime;
+@property (nonatomic, strong) NSString *skillName;
+@property (nonatomic, strong) NSString *skillPoints;
+@property (nonatomic, strong) NSString *level;
+@property (nonatomic, strong) NSString *iconImageName;
+@property (nonatomic, strong) NSString *levelImageName;
+@property (nonatomic, strong) NSString *remainingTime;
 @property (nonatomic, assign) NSInteger typeID;
 @property (nonatomic, assign) NSInteger targetLevel;
 @property (nonatomic, assign) NSInteger startSkillPoints;
@@ -60,11 +60,6 @@
 
 
 @implementation SkillsViewController
-@synthesize skillsTableView;
-@synthesize skillsQueueTableView;
-
-@synthesize segmentedControl;
-@synthesize characterInfoViewController;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -127,7 +122,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
 	self.skillsTableView = nil;
 	self.skillsQueueTableView = nil;
 	self.segmentedControl = nil;
@@ -140,11 +135,11 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:characterInfoViewController];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
 }
 
 - (IBAction) onChangeSegmentedControl:(id) sender {
-	[skillsTableView reloadData];
+	[self.skillsTableView reloadData];
 }
 
 #pragma mark -
@@ -153,13 +148,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			return self.skillGroups.count;
 		else
 			return self.skillQueue.count > 0 ? 1 : 0;
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			return self.skillGroups.count;
 		else
 			return self.skillQueue.count > 0 ? 1 : 0;
@@ -169,13 +164,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			return [[[self.skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
 		else
 			return self.skillQueue.count;
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			return [[[self.skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
 		else
 			return self.skillQueue.count;
@@ -184,13 +179,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			return [[self.skillGroups objectAtIndex:section] valueForKey:@"groupName"];
 		else
 			return self.skillQueueTitle;
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			return [[self.skillGroups objectAtIndex:section] valueForKey:@"groupName"];
 		else
 			return self.skillQueueTitle;
@@ -208,13 +203,13 @@
     }
 	Skill *skill;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
 			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
 			skill = [self.skillQueue objectAtIndex:indexPath.row];
@@ -245,10 +240,10 @@
 
 		BOOL canCollaps = NO;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			if (tableView == skillsTableView)
+			if (tableView == self.skillsTableView)
 				canCollaps = YES;
 		}
-		else if (segmentedControl.selectedSegmentIndex == 1)
+		else if (self.segmentedControl.selectedSegmentIndex == 1)
 				canCollaps = YES;
 
 		if (canCollaps)
@@ -266,13 +261,13 @@
 	Skill *skill;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
 			skill = [self.skillQueue objectAtIndex:indexPath.row];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			skill = [[[self.skillGroups objectAtIndex:indexPath.section] valueForKey:@"skills"] objectAtIndex:indexPath.row];
 		else
 			skill = [self.skillQueue objectAtIndex:indexPath.row];
@@ -297,11 +292,11 @@
 - (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 
@@ -311,11 +306,11 @@
 - (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	return dic != nil;
@@ -324,11 +319,11 @@
 - (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 
@@ -338,11 +333,11 @@
 - (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
 	NSMutableDictionary* dic = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (tableView == skillsTableView)
+		if (tableView == self.skillsTableView)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	else {
-		if (segmentedControl.selectedSegmentIndex == 1)
+		if (self.segmentedControl.selectedSegmentIndex == 1)
 			dic = [self.skillGroups objectAtIndex:section];
 	}
 	
@@ -488,8 +483,8 @@
 		self.skillQueueTitle = skillQueueTitleTmp;
 		self.skillGroups = skillGroupsTmp;
 		self.skillQueue = skillQueueTmp;
-		[skillsTableView reloadData];
-		[skillsQueueTableView reloadData];
+		[self.skillsTableView reloadData];
+		[self.skillsQueueTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

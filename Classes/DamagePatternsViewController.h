@@ -11,9 +11,9 @@
 #import "DamagePattern.h"
 
 @interface DamagePatternsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) IBOutlet id<DamagePatternsViewControllerDelegate> delegate;
-@property (nonatomic, retain) DamagePattern* currentDamagePattern;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet id<DamagePatternsViewControllerDelegate> delegate;
+@property (nonatomic, strong) DamagePattern* currentDamagePattern;
 
 - (IBAction)onClose:(id)sender;
 

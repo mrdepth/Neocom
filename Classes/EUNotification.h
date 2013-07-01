@@ -12,10 +12,10 @@
 @class EVENotificationTextsItem;
 @class EVENotificationsItem;
 @interface EUNotification : NSObject
-@property (nonatomic, assign) EUMailBox* mailBox;
-@property (nonatomic, retain) EVENotificationsItem* header;
-@property (nonatomic, retain) EVENotificationTextsItem* details;
-@property (nonatomic, retain) NSString* sender;
+@property (nonatomic, weak) EUMailBox* mailBox;
+@property (nonatomic, strong) EVENotificationsItem* header;
+@property (nonatomic, strong) EVENotificationTextsItem* details;
+@property (nonatomic, strong) NSString* sender;
 @property (nonatomic, assign, getter = isRead) BOOL read;
 
 + (id) notificationWithMailBox:(EUMailBox*) mailBox;

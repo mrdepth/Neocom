@@ -12,15 +12,15 @@
 @class EVEDBInvGroup;
 @class ItemInfo;
 @interface FittingItemsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UIPopoverControllerDelegate, FittingItemsViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) IBOutlet UIViewController *mainViewController;
-@property (nonatomic, assign) IBOutlet id<FittingItemsViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIViewController *mainViewController;
+@property (nonatomic, weak) IBOutlet id<FittingItemsViewControllerDelegate> delegate;
 @property (nonatomic, assign) NSInteger marketGroupID;
-@property (nonatomic, retain) NSArray* except;
+@property (nonatomic, strong) NSArray* except;
 
-@property (nonatomic, retain) NSString *groupsRequest;
-@property (nonatomic, retain) NSString *typesRequest;
-@property (nonatomic, retain) NSString *searchRequest;
-@property (nonatomic, retain) ItemInfo* modifiedItem;
+@property (nonatomic, strong) NSString *groupsRequest;
+@property (nonatomic, strong) NSString *typesRequest;
+@property (nonatomic, strong) NSString *searchRequest;
+@property (nonatomic, strong) ItemInfo* modifiedItem;
 
 @end

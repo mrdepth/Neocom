@@ -10,8 +10,8 @@
 
 
 @interface POSFuelCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *remainsLabel;
-@property (nonatomic, retain) IBOutlet UILabel *consumptionLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *remainsLabel;
+@property (nonatomic, weak) IBOutlet UILabel *consumptionLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 @end

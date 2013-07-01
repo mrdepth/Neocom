@@ -12,10 +12,10 @@
 #import "CollapsableTableView.h"
 
 @interface FilterViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, UIPopoverControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) IBOutlet id<FilterViewControllerDelegate> delegate;
-@property (nonatomic, retain) EUFilter *filter;
-@property (nonatomic, retain) NSMutableArray *values;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet id<FilterViewControllerDelegate> delegate;
+@property (nonatomic, strong) EUFilter *filter;
+@property (nonatomic, strong) NSMutableArray *values;
 
 - (IBAction) onDone:(id)sender;
 - (IBAction) onCancel:(id)sender;

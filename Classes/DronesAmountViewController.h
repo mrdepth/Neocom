@@ -11,12 +11,12 @@
 
 
 @interface DronesAmountViewController : UIViewController<UIPickerViewDataSource, UIPopoverControllerDelegate>
-@property (nonatomic, retain) IBOutlet UIPickerView *pickerView;
-@property (nonatomic, retain) IBOutlet UIView *backgroundView;
-@property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, weak) IBOutlet UIPickerView *pickerView;
+@property (nonatomic, weak) IBOutlet UIView *backgroundView;
+@property (nonatomic, weak) IBOutlet UIView *contentView;
 @property (nonatomic, assign) NSInteger maxAmount;
 @property (nonatomic, assign) NSInteger amount;
-@property (nonatomic, assign) id<DronesAmountViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<DronesAmountViewControllerDelegate> delegate;
 
 - (void) presentAnimated:(BOOL) animated;
 - (void) dismissAnimated:(BOOL) animated;

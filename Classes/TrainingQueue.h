@@ -21,7 +21,7 @@
 @class EVEAccount;
 @interface TrainingQueue : NSObject
 
-@property (nonatomic, retain) NSMutableArray *skills;
+@property (nonatomic, strong) NSMutableArray *skills;
 @property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
 
 + (id) trainingQueueWithType: (EVEDBInvType*) type;

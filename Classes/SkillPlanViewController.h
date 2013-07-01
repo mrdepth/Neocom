@@ -12,11 +12,11 @@
 @class SkillPlan;
 @class SkillPlannerImportViewController;
 @interface SkillPlanViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
-@property (nonatomic, retain) IBOutlet UILabel *trainingTimeLabel;
-@property (nonatomic, retain) NSString* skillPlanPath;
-@property (nonatomic, assign) SkillPlannerImportViewController* skillPlannerImportViewController;
-@property (nonatomic, retain) SkillPlan* skillPlan;
+@property (nonatomic, weak) IBOutlet UITableView* skillsTableView;
+@property (nonatomic, weak) IBOutlet UILabel *trainingTimeLabel;
+@property (nonatomic, strong) NSString* skillPlanPath;
+@property (nonatomic, weak) SkillPlannerImportViewController* skillPlannerImportViewController;
+@property (nonatomic, strong) SkillPlan* skillPlan;
 
 
 - (IBAction)onImport:(id)sender;

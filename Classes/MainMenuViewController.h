@@ -14,7 +14,7 @@
 @property (nonatomic, weak) IBOutlet SBTableView *menuTableView;
 @property (nonatomic, weak) IBOutlet CharacterInfoViewController *characterInfoViewController;
 @property (nonatomic, weak) IBOutlet UIView *characterInfoView;
-@property (nonatomic, retain) NSArray *menuItems;
+@property (nonatomic, strong) NSArray *menuItems;
 
 - (IBAction)onFacebook:(id)sender;
 @end

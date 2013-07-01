@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface KillboardCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UIImageView *shipImageView;
-@property (retain, nonatomic) IBOutlet UILabel *shipLabel;
-@property (retain, nonatomic) IBOutlet UILabel *systemNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *piratesLabel;
-@property (retain, nonatomic) IBOutlet UILabel *characterNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *allianceNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *corporationNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *shipImageView;
+@property (weak, nonatomic) IBOutlet UILabel *shipLabel;
+@property (weak, nonatomic) IBOutlet UILabel *systemNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *piratesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *allianceNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *corporationNameLabel;
 
 @end

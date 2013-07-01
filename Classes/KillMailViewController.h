@@ -11,22 +11,22 @@
 #import "CollapsableTableView.h"
 
 @interface KillMailViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
-@property (retain, nonatomic) IBOutlet UILabel *characterNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *allianceNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *corporationNameLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *characterImageView;
-@property (retain, nonatomic) IBOutlet UIImageView *allianceImageView;
-@property (retain, nonatomic) IBOutlet UIImageView *corporationImageView;
-@property (retain, nonatomic) IBOutlet UILabel *killTimeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *shipNameLabel;
-@property (retain, nonatomic) IBOutlet UIImageView *shipImageView;
-@property (retain, nonatomic) IBOutlet UILabel *solarSystemNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *securityStatusLabel;
-@property (retain, nonatomic) IBOutlet UILabel *regionNameLabel;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControler;
-@property (retain, nonatomic) IBOutlet CollapsableTableView *tableView;
-@property (retain, nonatomic) IBOutlet UILabel *damageTakenLabel;
-@property (retain, nonatomic) KillMail* killMail;
+@property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *allianceNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *corporationNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *characterImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *corporationImageView;
+@property (weak, nonatomic) IBOutlet UILabel *killTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *shipNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *shipImageView;
+@property (weak, nonatomic) IBOutlet UILabel *solarSystemNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *securityStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *regionNameLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControler;
+@property (weak, nonatomic) IBOutlet CollapsableTableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *damageTakenLabel;
+@property (strong, nonatomic) KillMail* killMail;
 
 - (IBAction)onChangeSection:(id)sender;
 

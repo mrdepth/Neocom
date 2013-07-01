@@ -11,10 +11,10 @@
 
 
 @interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *menuTableView;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalController;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, weak) IBOutlet UITableView *menuTableView;
+@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 

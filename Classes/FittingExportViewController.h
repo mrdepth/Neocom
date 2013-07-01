@@ -10,7 +10,7 @@
 #import "EUHTTPServer.h"
 
 @interface FittingExportViewController : UIViewController<EUHTTPServerDelegate>
-@property (nonatomic, retain) IBOutlet UILabel *addressLabel;
+@property (nonatomic, weak) IBOutlet UILabel *addressLabel;
 
 - (IBAction) onClose:(id)sender;
 

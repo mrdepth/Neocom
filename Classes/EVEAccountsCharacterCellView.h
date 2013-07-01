@@ -17,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *paidUntilLabel;
 @property (nonatomic, weak) IBOutlet UISwitch *enableSwitch;
-@property (nonatomic, retain) EVEAccountStorageCharacter *character;
+@property (nonatomic, strong) EVEAccountStorageCharacter *character;
 @property (weak, nonatomic) IBOutlet UILabel *wealthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 

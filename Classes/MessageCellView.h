@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MessageCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel* subjectLabel;
-@property (nonatomic, retain) IBOutlet UILabel* fromLabel;
-@property (nonatomic, retain) IBOutlet UILabel* dateLabel;
+@property (nonatomic, weak) IBOutlet UILabel* subjectLabel;
+@property (nonatomic, weak) IBOutlet UILabel* fromLabel;
+@property (nonatomic, weak) IBOutlet UILabel* dateLabel;
 
 @end

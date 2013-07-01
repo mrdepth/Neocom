@@ -14,7 +14,7 @@
 @property (nonatomic, copy) NSString *allValue;
 @property (nonatomic, copy) NSString *valuePropertyKey;
 @property (nonatomic, copy) NSString *titlePropertyKey;
-@property (nonatomic, retain) NSMutableSet *values;
+@property (nonatomic, strong) NSMutableSet *values;
 
 + (id) filterItem;
 - (void) updateWithValue:(id) value;

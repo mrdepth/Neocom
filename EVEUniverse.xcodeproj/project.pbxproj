@@ -1981,7 +1981,6 @@
 			isa = PBXGroup;
 			children = (
 				12A3C6E5177C299F0067E00C /* eufe.xcodeproj */,
-				12F17D4816707BC30070B97C /* admob_iphone_sdk */,
 				718DD66213F9AC8800FFDFEB /* 3rd Party */,
 				7185DDA612EB51730091CB0F /* Utility */,
 				37AB449914F52173007B4C33 /* EVEOnlineAPI */,
@@ -4407,6 +4406,7 @@
 		718DD66213F9AC8800FFDFEB /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
+				12F17D4816707BC30070B97C /* admob_iphone_sdk */,
 			);
 			name = "3rd Party";
 			sourceTree = "<group>";

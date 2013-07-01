@@ -11,13 +11,13 @@
 
 @class Character;
 @interface CharacterSkillsEditorViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, SkillLevelsViewControllerDelegate, UITextFieldDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *skillsTableView;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalController;
-@property (nonatomic, retain) IBOutlet UIView *shadowView;
-@property (nonatomic, retain) IBOutlet UIToolbar *characterNameToolbar;
-@property (nonatomic, retain) IBOutlet UITextField *characterNameTextField;
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) Character *character;
+@property (nonatomic, weak) IBOutlet UITableView *skillsTableView;
+@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
+@property (nonatomic, weak) IBOutlet UIView *shadowView;
+@property (nonatomic, weak) IBOutlet UIToolbar *characterNameToolbar;
+@property (nonatomic, weak) IBOutlet UITextField *characterNameTextField;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) Character *character;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) onOptions:(id) sender;

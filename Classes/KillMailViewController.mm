@@ -21,7 +21,7 @@
 #import "ItemViewController.h"
 
 @interface KillMailViewController ()
-@property (nonatomic, retain) NSMutableArray* itemsSections;
+@property (nonatomic, strong) NSMutableArray* itemsSections;
 - (IBAction)onOpenFit:(id)sender;
 @end
 

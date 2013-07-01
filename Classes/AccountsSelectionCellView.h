@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface AccountsSelectionCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UIImageView *portraitImageView;
-@property (retain, nonatomic) IBOutlet UIImageView *corpImageView;
-@property (retain, nonatomic) IBOutlet UILabel *characterNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *corpNameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *corpImageView;
+@property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *corpNameLabel;
 
 @end

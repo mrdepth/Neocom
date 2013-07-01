@@ -40,18 +40,6 @@
 
 
 @implementation ItemInfoViewController
-@synthesize attributesTable;
-@synthesize titleLabel;
-@synthesize volumeLabel;
-@synthesize massLabel;
-@synthesize capacityLabel;
-@synthesize radiusLabel;
-@synthesize descriptionLabel;
-@synthesize imageView;
-@synthesize techLevelImageView;
-@synthesize typeInfoView;
-@synthesize containerViewController;
-@synthesize type;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -67,40 +55,40 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.titleLabel.text = type.typeName;
+	self.titleLabel.text = self.type.typeName;
 	self.title = NSLocalizedString(@"Info", nil);
-	volumeLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.volume] numberStyle:NSNumberFormatterDecimalStyle]];
-	massLabel.text = [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.mass] numberStyle:NSNumberFormatterDecimalStyle]];
-	capacityLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.capacity] numberStyle:NSNumberFormatterDecimalStyle]];
-	radiusLabel.text = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:type.radius] numberStyle:NSNumberFormatterDecimalStyle]];
-	NSString* s = [[type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+	self.volumeLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.type.volume] numberStyle:NSNumberFormatterDecimalStyle]];
+	self.massLabel.text = [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.type.mass] numberStyle:NSNumberFormatterDecimalStyle]];
+	self.capacityLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.type.capacity] numberStyle:NSNumberFormatterDecimalStyle]];
+	self.radiusLabel.text = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.type.radius] numberStyle:NSNumberFormatterDecimalStyle]];
+	NSString* s = [[self.type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
 	NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
 	[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
 	[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
 	[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
-	descriptionLabel.text = description;
-	imageView.image = [UIImage imageNamed:[type typeLargeImageName]];
-	CGRect r = [descriptionLabel textRectForBounds:CGRectMake(0, 0, descriptionLabel.frame.size.width, 1024) limitedToNumberOfLines:0];
-	descriptionLabel.frame = CGRectMake(descriptionLabel.frame.origin.x, descriptionLabel.frame.origin.y, descriptionLabel.frame.size.width, r.size.height);
-	typeInfoView.frame = CGRectMake(typeInfoView.frame.origin.x, typeInfoView.frame.origin.y, typeInfoView.frame.size.width, descriptionLabel.frame.origin.y + descriptionLabel.frame.size.height + 5);
-	attributesTable.tableHeaderView.frame = typeInfoView.frame;
+	self.descriptionLabel.text = description;
+	self.imageView.image = [UIImage imageNamed:[self.type typeLargeImageName]];
+	CGRect r = [self.descriptionLabel textRectForBounds:CGRectMake(0, 0, self.descriptionLabel.frame.size.width, 1024) limitedToNumberOfLines:0];
+	self.descriptionLabel.frame = CGRectMake(self.descriptionLabel.frame.origin.x, self.descriptionLabel.frame.origin.y, self.descriptionLabel.frame.size.width, r.size.height);
+	self.typeInfoView.frame = CGRectMake(self.typeInfoView.frame.origin.x, self.typeInfoView.frame.origin.y, self.typeInfoView.frame.size.width, self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + 5);
+	self.attributesTable.tableHeaderView.frame = self.typeInfoView.frame;
 	
-	EVEDBDgmTypeAttribute *attribute = [type.attributesDictionary valueForKey:@"422"];
+	EVEDBDgmTypeAttribute *attribute = [self.type.attributesDictionary valueForKey:@"422"];
 	int techLevel = attribute.value;
 	if (techLevel == 1)
-		techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_140.png"];
+		self.techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_140.png"];
 	else if (techLevel == 2)
-		techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_141.png"];
+		self.techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_141.png"];
 	else if (techLevel == 3)
-		techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_142.png"];
+		self.techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_142.png"];
 	else
-		techLevelImageView.image = nil;
+		self.techLevelImageView.image = nil;
 	
 	self.trainingTime = 0;
 	self.sections = [[NSMutableArray alloc] init];
-	if (type.group.categoryID == 11)
+	if (self.type.group.categoryID == 11)
 		[self loadNPCAttributes];
-	else if (type.group.categoryID == 9)
+	else if (self.type.group.categoryID == 9)
 		[self loadBlueprintAttributes];
 	else
 		[self loadAttributes];
@@ -317,7 +305,7 @@
 - (void) loadAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:NSLocalizedString(@"Loading Attributes", nil)];
 	[operation addExecutionBlock:^{
-		self.trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
+		self.trainingTime = [[TrainingQueue trainingQueueWithType:self.type] trainingTime];
 		NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 		EVEAccount *account = [EVEAccount currentAccount];
 		[account updateSkillpoints];
@@ -354,27 +342,27 @@
 		
 		TrainingQueue* requiredSkillsQueue = nil;
 		TrainingQueue* certificateRecommendationsQueue = nil;
-		if (account && account.skillPlan && (type.requiredSkills.count > 0 || type.certificateRecommendations.count > 0 || type.group.categoryID == 16)) {
+		if (account && account.skillPlan && (self.type.requiredSkills.count > 0 || self.type.certificateRecommendations.count > 0 || self.type.group.categoryID == 16)) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			[section setValue:NSLocalizedString(@"Skill Plan", nil) forKey:@"name"];
 			NSMutableArray* rows = [NSMutableArray array];
 			[section setValue:rows forKey:@"rows"];
 
-			requiredSkillsQueue = [[TrainingQueue alloc] initWithType:type];
+			requiredSkillsQueue = [[TrainingQueue alloc] initWithType:self.type];
 			certificateRecommendationsQueue = [[TrainingQueue alloc] init];
 			
-			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
+			for (EVEDBCrtRecommendation* recommendation in self.type.certificateRecommendations) {
 				for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
 					[certificateRecommendationsQueue addSkill:skill];
 			}
 			
-			if (type.group.categoryID == 16) {
-				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", type.typeID]];
+			if (self.type.group.categoryID == 16) {
+				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", self.type.typeID]];
 				NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
 				for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
 					TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
 					[trainingQueue.skills addObjectsFromArray:requiredSkillsQueue.skills];
-					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:type];
+					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:self.type];
 					skill.requiredLevel = level;
 					skill.currentLevel = characterSkill.level;
 					[trainingQueue addSkill:skill];
@@ -415,7 +403,7 @@
 				[self.sections addObject:section];
 		}
 		
-		if (type.blueprint) {
+		if (self.type.blueprint) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Manufacturing", nil) forKey:@"name"];
@@ -430,7 +418,7 @@
 			[self.sections addObject:section];
 		}
 		
-		for (EVEDBInvTypeAttributeCategory *category in type.attributeCategories) {
+		for (EVEDBInvTypeAttributeCategory *category in self.type.attributeCategories) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			
@@ -463,7 +451,7 @@
 					if (skill) {
 						for (NSDictionary *requirementMap in skillRequirementsMap) {
 							if ([[requirementMap valueForKey:SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
-								EVEDBDgmTypeAttribute *level = [type.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
+								EVEDBDgmTypeAttribute *level = [self.type.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
 								SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:level.value];
 								for (SkillTreeItem *skill in skillTree.skills) {
 									NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -529,7 +517,7 @@
 												nil];
 					if (attribute.attributeID == 280) {
 						NSInteger level = 0;
-						EVECharacterSheetSkill *skill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", type.typeID]];
+						EVECharacterSheetSkill *skill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", self.type.typeID]];
 						if (skill)
 							level = skill.level;
 						[row setValue:[NSString stringWithFormat:@"%d", level] forKey:@"value"];
@@ -539,7 +527,7 @@
 						NSString *unit;
 						
 						if (attribute.attributeID == 1281) {
-							float v = [(EVEDBDgmTypeAttribute*) [type.attributesDictionary valueForKey:@"600"] value];
+							float v = [(EVEDBDgmTypeAttribute*) [self.type.attributesDictionary valueForKey:@"600"] value];
 							if (v == 0.0)
 								v = 1.0;
 							value = [NSNumber numberWithFloat:3 * v];
@@ -587,7 +575,7 @@
 			if (rows.count > 0)
 				[self.sections addObject:section];
 		}
-		if (type.group.category.categoryID == 16) { //Skill
+		if (self.type.group.category.categoryID == 16) { //Skill
 			EVEAccount *account = [EVEAccount currentAccount];
 			if (!account || account.characterSheet == nil)
 				account = [EVEAccount dummyAccount];
@@ -598,8 +586,8 @@
 			float startSP = 0;
 			float endSP;
 			for (int i = 1; i <= 5; i++) {
-				endSP = [type skillpointsAtLevel:i];
-				NSTimeInterval needsTime = (endSP - startSP) / [account.characterAttributes skillpointsPerSecondForSkill:type];
+				endSP = [self.type skillpointsAtLevel:i];
+				NSTimeInterval needsTime = (endSP - startSP) / [account.characterAttributes skillpointsPerSecondForSkill:self.type];
 				NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
 								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:endSP] numberStyle:NSNumberFormatterDecimalStyle],
 								  [NSString stringWithTimeLeft:needsTime]];
@@ -617,13 +605,13 @@
 			[section setValue:rows forKey:@"rows"];
 		}
 		
-		if (type.certificateRecommendations.count > 0) {
+		if (self.type.certificateRecommendations.count > 0) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
 			[self.sections addObject:section];
 
-			for (EVEDBCrtRecommendation* recommendation in type.certificateRecommendations) {
+			for (EVEDBCrtRecommendation* recommendation in self.type.certificateRecommendations) {
 				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 											[NSNumber numberWithInteger:3], @"cellType",
 											recommendation.certificate, @"certificate",
@@ -655,42 +643,42 @@
 - (void) loadNPCAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:NSLocalizedString(@"Loading Attributes", nil)];
 	[operation addExecutionBlock:^{
-		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
-		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [type.attributesDictionary valueForKey:@"116"];
-		EVEDBDgmTypeAttribute* kineticDamageAttribute = [type.attributesDictionary valueForKey:@"117"];
-		EVEDBDgmTypeAttribute* thermalDamageAttribute = [type.attributesDictionary valueForKey:@"118"];
-		EVEDBDgmTypeAttribute* damageMultiplierAttribute = [type.attributesDictionary valueForKey:@"64"];
-		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = [type.attributesDictionary valueForKey:@"212"];
-		EVEDBDgmTypeAttribute* missileTypeIDAttribute = [type.attributesDictionary valueForKey:@"507"];
-		EVEDBDgmTypeAttribute* missileVelocityMultiplierAttribute = [type.attributesDictionary valueForKey:@"645"];
-		EVEDBDgmTypeAttribute* missileFlightTimeMultiplierAttribute = [type.attributesDictionary valueForKey:@"646"];
+		EVEDBDgmTypeAttribute* emDamageAttribute = [self.type.attributesDictionary valueForKey:@"114"];
+		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [self.type.attributesDictionary valueForKey:@"116"];
+		EVEDBDgmTypeAttribute* kineticDamageAttribute = [self.type.attributesDictionary valueForKey:@"117"];
+		EVEDBDgmTypeAttribute* thermalDamageAttribute = [self.type.attributesDictionary valueForKey:@"118"];
+		EVEDBDgmTypeAttribute* damageMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"64"];
+		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"212"];
+		EVEDBDgmTypeAttribute* missileTypeIDAttribute = [self.type.attributesDictionary valueForKey:@"507"];
+		EVEDBDgmTypeAttribute* missileVelocityMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"645"];
+		EVEDBDgmTypeAttribute* missileFlightTimeMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"646"];
 		
-		EVEDBDgmTypeAttribute* armorEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"267"];
-		EVEDBDgmTypeAttribute* armorExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"268"];
-		EVEDBDgmTypeAttribute* armorKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"269"];
-		EVEDBDgmTypeAttribute* armorThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"270"];
+		EVEDBDgmTypeAttribute* armorEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"267"];
+		EVEDBDgmTypeAttribute* armorExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"268"];
+		EVEDBDgmTypeAttribute* armorKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"269"];
+		EVEDBDgmTypeAttribute* armorThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"270"];
 
-		EVEDBDgmTypeAttribute* shieldEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"271"];
-		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"272"];
-		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"273"];
-		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"274"];
+		EVEDBDgmTypeAttribute* shieldEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"271"];
+		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"272"];
+		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"273"];
+		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"274"];
 
-		EVEDBDgmTypeAttribute* structureEmDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"113"];
-		EVEDBDgmTypeAttribute* structureExplosiveDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"111"];
-		EVEDBDgmTypeAttribute* structureKineticDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"109"];
-		EVEDBDgmTypeAttribute* structureThermalDamageResonanceAttribute = [type.attributesDictionary valueForKey:@"110"];
+		EVEDBDgmTypeAttribute* structureEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"113"];
+		EVEDBDgmTypeAttribute* structureExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"111"];
+		EVEDBDgmTypeAttribute* structureKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"109"];
+		EVEDBDgmTypeAttribute* structureThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"110"];
 
-		EVEDBDgmTypeAttribute* armorHPAttribute = [type.attributesDictionary valueForKey:@"265"];
-		EVEDBDgmTypeAttribute* hpAttribute = [type.attributesDictionary valueForKey:@"9"];
-		EVEDBDgmTypeAttribute* shieldCapacityAttribute = [type.attributesDictionary valueForKey:@"263"];
-		EVEDBDgmTypeAttribute* shieldRechargeRate = [type.attributesDictionary valueForKey:@"479"];
+		EVEDBDgmTypeAttribute* armorHPAttribute = [self.type.attributesDictionary valueForKey:@"265"];
+		EVEDBDgmTypeAttribute* hpAttribute = [self.type.attributesDictionary valueForKey:@"9"];
+		EVEDBDgmTypeAttribute* shieldCapacityAttribute = [self.type.attributesDictionary valueForKey:@"263"];
+		EVEDBDgmTypeAttribute* shieldRechargeRate = [self.type.attributesDictionary valueForKey:@"479"];
 
-		EVEDBDgmTypeAttribute* optimalAttribute = [type.attributesDictionary valueForKey:@"54"];
-		EVEDBDgmTypeAttribute* falloffAttribute = [type.attributesDictionary valueForKey:@"158"];
-		EVEDBDgmTypeAttribute* trackingSpeedAttribute = [type.attributesDictionary valueForKey:@"160"];
+		EVEDBDgmTypeAttribute* optimalAttribute = [self.type.attributesDictionary valueForKey:@"54"];
+		EVEDBDgmTypeAttribute* falloffAttribute = [self.type.attributesDictionary valueForKey:@"158"];
+		EVEDBDgmTypeAttribute* trackingSpeedAttribute = [self.type.attributesDictionary valueForKey:@"160"];
 
-		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [type.attributesDictionary valueForKey:@"51"];
-		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [type.attributesDictionary valueForKey:@"506"];
+		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [self.type.attributesDictionary valueForKey:@"51"];
+		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [self.type.attributesDictionary valueForKey:@"506"];
 		
 
 		NSMutableDictionary *section;
@@ -703,7 +691,7 @@
 			[section setValue:NSLocalizedString(@"NPC Info", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* bountyAttribute = [type.attributesDictionary valueForKey:@"481"];
+			EVEDBDgmTypeAttribute* bountyAttribute = [self.type.attributesDictionary valueForKey:@"481"];
 			if (bountyAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -713,7 +701,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* securityStatusBonusAttribute = [type.attributesDictionary valueForKey:@"252"];
+			EVEDBDgmTypeAttribute* securityStatusBonusAttribute = [self.type.attributesDictionary valueForKey:@"252"];
 			if (securityStatusBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -724,7 +712,7 @@
 			}
 			
 			
-			EVEDBDgmTypeAttribute* factionLossAttribute = [type.attributesDictionary valueForKey:@"562"];
+			EVEDBDgmTypeAttribute* factionLossAttribute = [self.type.attributesDictionary valueForKey:@"562"];
 			if (factionLossAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -748,7 +736,7 @@
 		float intervalTurret = 0;
 		float totalDamageTurret = 0;
 
-		if ([type.effectsDictionary valueForKey:@"10"] || [type.effectsDictionary valueForKey:@"1086"]) {
+		if ([self.type.effectsDictionary valueForKey:@"10"] || [self.type.effectsDictionary valueForKey:@"1086"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Turrets Damage", nil) forKey:@"name"];
@@ -803,7 +791,7 @@
 		float intervalMissile = 0;
 		float totalDamageMissile = 0;
 
-		if ([type.effectsDictionary valueForKey:@"569"]) {
+		if ([self.type.effectsDictionary valueForKey:@"569"]) {
 			EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
 			if (missile) {
 				section = [NSMutableDictionary dictionary];
@@ -973,17 +961,17 @@
 								 nil]];
 			}
 			
-			if ([type.effectsDictionary valueForKey:@"2192"] || [type.effectsDictionary valueForKey:@"2193"] || [type.effectsDictionary valueForKey:@"2194"] || [type.effectsDictionary valueForKey:@"876"]) {
-				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = [type.attributesDictionary valueForKey:@"637"];
-				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = [type.attributesDictionary valueForKey:@"636"];
-				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"639"];
+			if ([self.type.effectsDictionary valueForKey:@"2192"] || [self.type.effectsDictionary valueForKey:@"2193"] || [self.type.effectsDictionary valueForKey:@"2194"] || [self.type.effectsDictionary valueForKey:@"876"]) {
+				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = [self.type.attributesDictionary valueForKey:@"637"];
+				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = [self.type.attributesDictionary valueForKey:@"636"];
+				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"639"];
 				
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1006"];
+					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1006"];
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1007"];
+					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1007"];
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1008"];
+					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1008"];
 				
 				float shieldBoostAmount = shieldBoostAmountAttribute.value;
 				float shieldBoostDuration = shieldBoostDurationAttribute.value;
@@ -1038,17 +1026,17 @@
 								 nil]];
 			}
 			
-			if ([type.effectsDictionary valueForKey:@"2195"] || [type.effectsDictionary valueForKey:@"2196"] || [type.effectsDictionary valueForKey:@"2197"] || [type.effectsDictionary valueForKey:@"878"]) {
-				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = [type.attributesDictionary valueForKey:@"631"];
-				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = [type.attributesDictionary valueForKey:@"630"];
-				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"638"];
+			if ([self.type.effectsDictionary valueForKey:@"2195"] || [self.type.effectsDictionary valueForKey:@"2196"] || [self.type.effectsDictionary valueForKey:@"2197"] || [self.type.effectsDictionary valueForKey:@"878"]) {
+				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = [self.type.attributesDictionary valueForKey:@"631"];
+				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = [self.type.attributesDictionary valueForKey:@"630"];
+				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"638"];
 				
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1009"];
+					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1009"];
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1010"];
+					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1010"];
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [type.attributesDictionary valueForKey:@"1011"];
+					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1011"];
 				
 				float armorRepairAmount = armorRepairAmountAttribute.value;
 				float armorRepairDuration = armorRepairDurationAttribute.value;
@@ -1114,7 +1102,7 @@
 			[section setValue:NSLocalizedString(@"Targeting", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* attackRangeAttribute = [type.attributesDictionary valueForKey:@"247"];
+			EVEDBDgmTypeAttribute* attackRangeAttribute = [self.type.attributesDictionary valueForKey:@"247"];
 			if (attackRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1124,7 +1112,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* signatureRadiusAttribute = [type.attributesDictionary valueForKey:@"552"];
+			EVEDBDgmTypeAttribute* signatureRadiusAttribute = [self.type.attributesDictionary valueForKey:@"552"];
 			if (signatureRadiusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1135,7 +1123,7 @@
 			}
 
 			
-			EVEDBDgmTypeAttribute* scanResolutionAttribute = [type.attributesDictionary valueForKey:@"564"];
+			EVEDBDgmTypeAttribute* scanResolutionAttribute = [self.type.attributesDictionary valueForKey:@"564"];
 			if (scanResolutionAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1145,13 +1133,13 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"208"];
+			EVEDBDgmTypeAttribute* sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"208"];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"209"];
+				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"209"];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"210"];
+				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"210"];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [type.attributesDictionary valueForKey:@"211"];
+				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"211"];
 			if (sensorStrengthAttribute.value > 0) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1172,7 +1160,7 @@
 			[section setValue:NSLocalizedString(@"Movement", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* maxVelocityAttribute = [type.attributesDictionary valueForKey:@"37"];
+			EVEDBDgmTypeAttribute* maxVelocityAttribute = [self.type.attributesDictionary valueForKey:@"37"];
 			if (maxVelocityAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1182,7 +1170,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* orbitVelocityAttribute = [type.attributesDictionary valueForKey:@"508"];
+			EVEDBDgmTypeAttribute* orbitVelocityAttribute = [self.type.attributesDictionary valueForKey:@"508"];
 			if (orbitVelocityAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1193,7 +1181,7 @@
 			}
 			
 			
-			EVEDBDgmTypeAttribute* entityFlyRangeAttribute = [type.attributesDictionary valueForKey:@"416"];
+			EVEDBDgmTypeAttribute* entityFlyRangeAttribute = [self.type.attributesDictionary valueForKey:@"416"];
 			if (entityFlyRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1208,13 +1196,13 @@
 		}
 		
 		//Stasis Webifying
-		if ([type.effectsDictionary valueForKey:@"575"] || [type.effectsDictionary valueForKey:@"3714"]) {
+		if ([self.type.effectsDictionary valueForKey:@"575"] || [self.type.effectsDictionary valueForKey:@"3714"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Stasis Webifying", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 
-			EVEDBDgmTypeAttribute* speedFactorAttribute = [type.attributesDictionary valueForKey:@"20"];
+			EVEDBDgmTypeAttribute* speedFactorAttribute = [self.type.attributesDictionary valueForKey:@"20"];
 			if (speedFactorAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1224,7 +1212,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedRangeAttribute = [type.attributesDictionary valueForKey:@"514"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedRangeAttribute = [self.type.attributesDictionary valueForKey:@"514"];
 			if (modifyTargetSpeedRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1234,7 +1222,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedDurationAttribute = [type.attributesDictionary valueForKey:@"513"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedDurationAttribute = [self.type.attributesDictionary valueForKey:@"513"];
 			if (modifyTargetSpeedDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1244,7 +1232,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedChanceAttribute = [type.attributesDictionary valueForKey:@"512"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedChanceAttribute = [self.type.attributesDictionary valueForKey:@"512"];
 			if (modifyTargetSpeedChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1259,13 +1247,13 @@
 		}
 		
 		//Warp Scramble
-		if ([type.effectsDictionary valueForKey:@"39"] || [type.effectsDictionary valueForKey:@"563"] || [type.effectsDictionary valueForKey:@"3713"]) {
+		if ([self.type.effectsDictionary valueForKey:@"39"] || [self.type.effectsDictionary valueForKey:@"563"] || [self.type.effectsDictionary valueForKey:@"3713"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Warp Scramble", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* warpScrambleStrengthAttribute = [type.attributesDictionary valueForKey:@"105"];
+			EVEDBDgmTypeAttribute* warpScrambleStrengthAttribute = [self.type.attributesDictionary valueForKey:@"105"];
 			if (warpScrambleStrengthAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1275,7 +1263,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleRangeAttribute = [type.attributesDictionary valueForKey:@"103"];
+			EVEDBDgmTypeAttribute* warpScrambleRangeAttribute = [self.type.attributesDictionary valueForKey:@"103"];
 			if (warpScrambleRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1285,7 +1273,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleDurationAttribute = [type.attributesDictionary valueForKey:@"505"];
+			EVEDBDgmTypeAttribute* warpScrambleDurationAttribute = [self.type.attributesDictionary valueForKey:@"505"];
 			if (warpScrambleDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1295,7 +1283,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleChanceAttribute = [type.attributesDictionary valueForKey:@"504"];
+			EVEDBDgmTypeAttribute* warpScrambleChanceAttribute = [self.type.attributesDictionary valueForKey:@"504"];
 			if (warpScrambleChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1310,13 +1298,13 @@
 		}
 
 		//Target Painting
-		if ([type.effectsDictionary valueForKey:@"1879"]) {
+		if ([self.type.effectsDictionary valueForKey:@"1879"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Target Painting", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* signatureRadiusBonusAttribute = [type.attributesDictionary valueForKey:@"554"];
+			EVEDBDgmTypeAttribute* signatureRadiusBonusAttribute = [self.type.attributesDictionary valueForKey:@"554"];
 			if (signatureRadiusBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1326,7 +1314,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* targetPaintRangeAttribute = [type.attributesDictionary valueForKey:@"941"];
+			EVEDBDgmTypeAttribute* targetPaintRangeAttribute = [self.type.attributesDictionary valueForKey:@"941"];
 			if (targetPaintRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1336,7 +1324,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* targetPaintFalloffAttribute = [type.attributesDictionary valueForKey:@"954"];
+			EVEDBDgmTypeAttribute* targetPaintFalloffAttribute = [self.type.attributesDictionary valueForKey:@"954"];
 			if (targetPaintFalloffAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1346,7 +1334,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* targetPaintDurationAttribute = [type.attributesDictionary valueForKey:@"945"];
+			EVEDBDgmTypeAttribute* targetPaintDurationAttribute = [self.type.attributesDictionary valueForKey:@"945"];
 			if (targetPaintDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1356,7 +1344,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* targetPaintChanceAttribute = [type.attributesDictionary valueForKey:@"935"];
+			EVEDBDgmTypeAttribute* targetPaintChanceAttribute = [self.type.attributesDictionary valueForKey:@"935"];
 			if (targetPaintChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1371,13 +1359,13 @@
 		}
 		
 		//Tracking Disruption
-		if ([type.effectsDictionary valueForKey:@"1877"]) {
+		if ([self.type.effectsDictionary valueForKey:@"1877"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Tracking Disruption", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* trackingDisruptMultiplierAttribute = [type.attributesDictionary valueForKey:@"948"];
+			EVEDBDgmTypeAttribute* trackingDisruptMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"948"];
 			if (trackingDisruptMultiplierAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1387,7 +1375,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptRangeAttribute = [type.attributesDictionary valueForKey:@"940"];
+			EVEDBDgmTypeAttribute* trackingDisruptRangeAttribute = [self.type.attributesDictionary valueForKey:@"940"];
 			if (trackingDisruptRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1397,7 +1385,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptFalloffAttribute = [type.attributesDictionary valueForKey:@"951"];
+			EVEDBDgmTypeAttribute* trackingDisruptFalloffAttribute = [self.type.attributesDictionary valueForKey:@"951"];
 			if (trackingDisruptFalloffAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1407,7 +1395,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptDurationAttribute = [type.attributesDictionary valueForKey:@"944"];
+			EVEDBDgmTypeAttribute* trackingDisruptDurationAttribute = [self.type.attributesDictionary valueForKey:@"944"];
 			if (trackingDisruptDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1417,7 +1405,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptChanceAttribute = [type.attributesDictionary valueForKey:@"933"];
+			EVEDBDgmTypeAttribute* trackingDisruptChanceAttribute = [self.type.attributesDictionary valueForKey:@"933"];
 			if (trackingDisruptChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1432,13 +1420,13 @@
 		}		
 		
 		//Sensor Dampening
-		if ([type.effectsDictionary valueForKey:@"1878"]) {
+		if ([self.type.effectsDictionary valueForKey:@"1878"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Sensor Dampening", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* maxTargetRangeMultiplierAttribute = [type.attributesDictionary valueForKey:@"237"];
+			EVEDBDgmTypeAttribute* maxTargetRangeMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"237"];
 			if (maxTargetRangeMultiplierAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1448,7 +1436,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* scanResolutionMultiplierAttribute = [type.attributesDictionary valueForKey:@"565"];
+			EVEDBDgmTypeAttribute* scanResolutionMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"565"];
 			if (scanResolutionMultiplierAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1458,7 +1446,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* sensorDampenRangeAttribute = [type.attributesDictionary valueForKey:@"938"];
+			EVEDBDgmTypeAttribute* sensorDampenRangeAttribute = [self.type.attributesDictionary valueForKey:@"938"];
 			if (sensorDampenRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1468,7 +1456,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenFalloffAttribute = [type.attributesDictionary valueForKey:@"950"];
+			EVEDBDgmTypeAttribute* sensorDampenFalloffAttribute = [self.type.attributesDictionary valueForKey:@"950"];
 			if (sensorDampenFalloffAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1478,7 +1466,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenDurationAttribute = [type.attributesDictionary valueForKey:@"943"];
+			EVEDBDgmTypeAttribute* sensorDampenDurationAttribute = [self.type.attributesDictionary valueForKey:@"943"];
 			if (sensorDampenDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1488,7 +1476,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenChanceAttribute = [type.attributesDictionary valueForKey:@"932"];
+			EVEDBDgmTypeAttribute* sensorDampenChanceAttribute = [self.type.attributesDictionary valueForKey:@"932"];
 			if (sensorDampenChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1503,13 +1491,13 @@
 		}
 		
 		//ECM Jamming
-		if ([type.effectsDictionary valueForKey:@"1871"] || [type.effectsDictionary valueForKey:@"1752"] || [type.effectsDictionary valueForKey:@"3710"] || [type.effectsDictionary valueForKey:@"4656"]) {
+		if ([self.type.effectsDictionary valueForKey:@"1871"] || [self.type.effectsDictionary valueForKey:@"1752"] || [self.type.effectsDictionary valueForKey:@"3710"] || [self.type.effectsDictionary valueForKey:@"4656"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"ECM Jamming", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* scanGravimetricStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"238"];
+			EVEDBDgmTypeAttribute* scanGravimetricStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"238"];
 			if (scanGravimetricStrengthBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1519,7 +1507,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* scanLadarStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"239"];
+			EVEDBDgmTypeAttribute* scanLadarStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"239"];
 			if (scanLadarStrengthBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1529,7 +1517,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* scanMagnetometricStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"240"];
+			EVEDBDgmTypeAttribute* scanMagnetometricStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"240"];
 			if (scanMagnetometricStrengthBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1539,7 +1527,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* scanRadarStrengthBonusAttribute = [type.attributesDictionary valueForKey:@"241"];
+			EVEDBDgmTypeAttribute* scanRadarStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"241"];
 			if (scanLadarStrengthBonusAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1549,7 +1537,7 @@
 								 nil]];
 			}
 
-			EVEDBDgmTypeAttribute* targetJamRangeAttribute = [type.attributesDictionary valueForKey:@"936"];
+			EVEDBDgmTypeAttribute* targetJamRangeAttribute = [self.type.attributesDictionary valueForKey:@"936"];
 			if (targetJamRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1559,7 +1547,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamFalloffAttribute = [type.attributesDictionary valueForKey:@"953"];
+			EVEDBDgmTypeAttribute* targetJamFalloffAttribute = [self.type.attributesDictionary valueForKey:@"953"];
 			if (targetJamFalloffAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1569,7 +1557,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamDurationAttribute = [type.attributesDictionary valueForKey:@"929"];
+			EVEDBDgmTypeAttribute* targetJamDurationAttribute = [self.type.attributesDictionary valueForKey:@"929"];
 			if (targetJamDurationAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1579,7 +1567,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamChanceAttribute = [type.attributesDictionary valueForKey:@"930"];
+			EVEDBDgmTypeAttribute* targetJamChanceAttribute = [self.type.attributesDictionary valueForKey:@"930"];
 			if (targetJamChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1594,17 +1582,17 @@
 		}
 
 		//Energy Vampire
-		if ([type.effectsDictionary valueForKey:@"1872"]) {
+		if ([self.type.effectsDictionary valueForKey:@"1872"]) {
 			section = [NSMutableDictionary dictionary];
 			rows = [NSMutableArray array];
 			[section setValue:NSLocalizedString(@"Energy Vampire", nil) forKey:@"name"];
 			[section setValue:rows forKey:@"rows"];
 			
-			EVEDBDgmTypeAttribute* capacitorDrainAmountAttribute = [type.attributesDictionary valueForKey:@"946"];
+			EVEDBDgmTypeAttribute* capacitorDrainAmountAttribute = [self.type.attributesDictionary valueForKey:@"946"];
 			if (!capacitorDrainAmountAttribute)
-				capacitorDrainAmountAttribute = [type.attributesDictionary valueForKey:@"90"];
+				capacitorDrainAmountAttribute = [self.type.attributesDictionary valueForKey:@"90"];
 			
-			EVEDBDgmTypeAttribute* capacitorDrainDurationAttribute = [type.attributesDictionary valueForKey:@"942"];
+			EVEDBDgmTypeAttribute* capacitorDrainDurationAttribute = [self.type.attributesDictionary valueForKey:@"942"];
 			if (capacitorDrainAmountAttribute.value > 0) {
 				NSString* value;
 				if (capacitorDrainDurationAttribute) {
@@ -1624,7 +1612,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* capacitorDrainRangeAttribute = [type.attributesDictionary valueForKey:@"937"];
+			EVEDBDgmTypeAttribute* capacitorDrainRangeAttribute = [self.type.attributesDictionary valueForKey:@"937"];
 			if (capacitorDrainRangeAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1643,7 +1631,7 @@
 								 nil]];
 			}
 			
-			EVEDBDgmTypeAttribute* capacitorDrainChanceAttribute = [type.attributesDictionary valueForKey:@"931"];
+			EVEDBDgmTypeAttribute* capacitorDrainChanceAttribute = [self.type.attributesDictionary valueForKey:@"931"];
 			if (capacitorDrainChanceAttribute) {
 				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithInteger:0], @"cellType", 
@@ -1728,7 +1716,7 @@
 
 
 		
-		for (EVEDBInvTypeAttributeCategory *category in type.attributeCategories) {
+		for (EVEDBInvTypeAttributeCategory *category in self.type.attributeCategories) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
 			

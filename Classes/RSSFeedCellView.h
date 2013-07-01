@@ -10,8 +10,8 @@
 
 
 @interface RSSFeedCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *dateLabel;
-@property (nonatomic, retain) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
 @end

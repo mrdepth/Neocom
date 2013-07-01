@@ -16,13 +16,13 @@
 @class EVESkillTree;
 @interface EVEUniverseAppDelegate : NSObject <UIApplicationDelegate, SKPaymentTransactionObserver, GADBannerViewDelegate>
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UIViewController *controller;
-@property (nonatomic, retain) IBOutlet UIViewController *loadingViewController;
-@property (nonatomic, retain) EVEAccount *currentAccount;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
+@property (nonatomic, strong) IBOutlet UIViewController *controller;
+@property (nonatomic, strong) IBOutlet UIViewController *loadingViewController;
+@property (nonatomic, strong) EVEAccount *currentAccount;
 @property (nonatomic, getter = isInAppStatus) BOOL inAppStatus;
-@property (nonatomic, retain) EUOperationQueue *sharedQueue;
-@property (nonatomic, retain) EVEAccountStorage *sharedAccountStorage;
+@property (nonatomic, strong) EUOperationQueue *sharedQueue;
+@property (nonatomic, strong) EVEAccountStorage *sharedAccountStorage;
 
 @end
 

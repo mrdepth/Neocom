@@ -38,34 +38,34 @@
 													MFMailComposeViewControllerDelegate,
 													FittingVariationsViewControllerDelegate>
 
-@property (nonatomic, retain) IBOutlet UIView *sectionsView;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *sectionSegmentControl;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalController;
-@property (nonatomic, retain) IBOutlet UINavigationController *targetsModalController;
-@property (nonatomic, retain) IBOutlet UINavigationController *areaEffectsModalController;
-@property (nonatomic, retain) IBOutlet TargetsViewController* targetsViewController;
-@property (nonatomic, retain) IBOutlet AreaEffectsViewController* areaEffectsViewController;
-@property (nonatomic, retain) IBOutlet ModulesViewController *modulesViewController;
-@property (nonatomic, retain) IBOutlet DronesViewController *dronesViewController;
-@property (nonatomic, retain) IBOutlet ImplantsViewController *implantsViewController;
-@property (nonatomic, retain) IBOutlet StatsViewController *statsViewController;
-@property (nonatomic, retain) IBOutlet FleetViewController *fleetViewController;
+@property (nonatomic, weak) IBOutlet UIView *sectionsView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *sectionSegmentControl;
+@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
+@property (nonatomic, strong) IBOutlet UINavigationController *targetsModalController;
+@property (nonatomic, strong) IBOutlet UINavigationController *areaEffectsModalController;
+@property (nonatomic, strong) IBOutlet TargetsViewController* targetsViewController;
+@property (nonatomic, strong) IBOutlet AreaEffectsViewController* areaEffectsViewController;
+@property (nonatomic, strong) IBOutlet ModulesViewController *modulesViewController;
+@property (nonatomic, strong) IBOutlet DronesViewController *dronesViewController;
+@property (nonatomic, strong) IBOutlet ImplantsViewController *implantsViewController;
+@property (nonatomic, strong) IBOutlet StatsViewController *statsViewController;
+@property (nonatomic, strong) IBOutlet FleetViewController *fleetViewController;
 
-@property (nonatomic, retain) IBOutlet UIView *shadeView;
-@property (nonatomic, retain) IBOutlet UIToolbar *fitNameView;
-@property (nonatomic, retain) IBOutlet UITextField *fitNameTextField;
-@property (nonatomic, retain) IBOutlet UIView *statsSectionView;
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) UIPopoverController *targetsPopoverController;
-@property (nonatomic, retain) UIPopoverController *areaEffectsPopoverController;
-@property (nonatomic, retain) UIPopoverController *variationsPopoverController;
+@property (nonatomic, weak) IBOutlet UIView *shadeView;
+@property (nonatomic, weak) IBOutlet UIToolbar *fitNameView;
+@property (nonatomic, weak) IBOutlet UITextField *fitNameTextField;
+@property (nonatomic, weak) IBOutlet UIView *statsSectionView;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *targetsPopoverController;
+@property (nonatomic, strong) UIPopoverController *areaEffectsPopoverController;
+@property (nonatomic, strong) UIPopoverController *variationsPopoverController;
 
-@property (nonatomic, retain) ShipFit* fit;
+@property (nonatomic, strong) ShipFit* fit;
 
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
-@property (nonatomic, retain, readonly) NSMutableArray* fits;
-@property (nonatomic, retain) DamagePattern* damagePattern;
-@property (nonatomic, retain) PriceManager* priceManager;
+@property (nonatomic, strong, readonly) NSMutableArray* fits;
+@property (nonatomic, strong) DamagePattern* damagePattern;
+@property (nonatomic, strong) PriceManager* priceManager;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

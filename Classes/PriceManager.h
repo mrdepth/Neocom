@@ -11,7 +11,7 @@
 @class EVEDBInvType;
 @class EVEC0rporationFaction;
 @interface PriceManager : NSObject
-@property (nonatomic, retain) EVEC0rporationFaction* faction;
+@property (nonatomic, strong) EVEC0rporationFaction* faction;
 
 - (float) priceWithType:(EVEDBInvType*) type;
 - (NSDictionary*) pricesWithTypes:(NSArray*) types;

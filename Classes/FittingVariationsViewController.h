@@ -15,6 +15,6 @@
 @end
 
 @interface FittingVariationsViewController : VariationsViewController
-@property (nonatomic, assign) id<FittingVariationsViewControllerDelegate> delegate;
-@property (nonatomic, retain) ItemInfo* modifiedItem;
+@property (nonatomic, weak) id<FittingVariationsViewControllerDelegate> delegate;
+@property (nonatomic, strong) ItemInfo* modifiedItem;
 @end

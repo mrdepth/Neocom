@@ -10,8 +10,8 @@
 
 
 @interface SBTableView : UITableView<UITableViewDelegate>
-@property (nonatomic, retain) IBOutlet UIView *topView;
-@property (nonatomic, assign) id <UITableViewDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UIView *topView;
+@property (nonatomic, weak) id <UITableViewDelegate> delegate;
 @property (nonatomic, assign) float visibleTopPartHeight;
 
 @end

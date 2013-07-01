@@ -19,7 +19,7 @@
 @property (nonatomic, assign) eufe::ControlTower* controlTower;
 
 //CoreData
-@property (nonatomic, retain) NSString * structures;
+@property (nonatomic, strong) NSString * structures;
 
 + (id) posFitWithFitName:(NSString*) fitName controlTower:(eufe::ControlTower*) aControlTower;
 + (id) posFitWithAsset:(EVEAssetListItem*) asset engine:(eufe::Engine*) engine;

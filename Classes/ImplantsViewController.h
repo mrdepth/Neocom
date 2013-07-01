@@ -15,11 +15,11 @@
 @class FittingViewController;
 @class EVEFittingFit;
 @interface ImplantsViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
-@property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIView *implantsHeaderView;
-@property (nonatomic, retain) IBOutlet UIView *boostersHeaderView;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, weak) IBOutlet FittingViewController *fittingViewController;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UIView *implantsHeaderView;
+@property (nonatomic, strong) IBOutlet UIView *boostersHeaderView;
+@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 @end

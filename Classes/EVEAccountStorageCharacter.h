@@ -11,8 +11,8 @@
 
 @class EVEAccountStorageAPIKey;
 @interface EVEAccountStorageCharacter: EVEAPIKeyInfoCharactersItem
-@property (nonatomic, retain) NSMutableArray *assignedCharAPIKeys;
-@property (nonatomic, retain) NSMutableArray *assignedCorpAPIKeys;
+@property (nonatomic, strong) NSMutableArray *assignedCharAPIKeys;
+@property (nonatomic, strong) NSMutableArray *assignedCorpAPIKeys;
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, readonly) EVEAccountStorageAPIKey *anyCharAPIKey;
 @property (nonatomic, readonly) EVEAccountStorageAPIKey *anyCorpAPIKey;

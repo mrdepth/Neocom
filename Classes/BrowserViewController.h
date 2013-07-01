@@ -19,7 +19,7 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
-@property (nonatomic, retain) NSURL *startPageURL;
+@property (nonatomic, strong) NSURL *startPageURL;
 @property (nonatomic, weak) id<BrowserViewControllerDelegate> delegate;
 
 - (IBAction) onClose:(id) sender;

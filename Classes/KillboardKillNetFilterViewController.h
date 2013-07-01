@@ -15,7 +15,7 @@
 #import "KillNetFilterDateViewController.h"
 
 @interface KillboardKillNetFilterViewController : UITableViewController<KillNetFiltersViewControllerDelegate, KillNetFilterTextCellViewDelegate, FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate, UITextFieldDelegate>
-@property (retain, nonatomic) IBOutlet UIView *sectionFooterView;
-@property (retain, nonatomic) IBOutlet UILabel *searchResultsCountLabel;
+@property (strong, nonatomic) IBOutlet UIView *sectionFooterView;
+@property (weak, nonatomic) IBOutlet UILabel *searchResultsCountLabel;
 
 @end

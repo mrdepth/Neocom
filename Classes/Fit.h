@@ -13,14 +13,14 @@
 
 @interface Fit : NSManagedObject
 
-@property (nonatomic, readonly, retain) EVEDBInvType* type;
+@property (nonatomic, readonly, strong) EVEDBInvType* type;
 
 //CoreData
-@property (nonatomic, retain) NSString * fitName;
-@property (nonatomic, retain) NSString * imageName;
+@property (nonatomic, strong) NSString * fitName;
+@property (nonatomic, strong) NSString * imageName;
 @property (nonatomic) eufe::TypeID typeID;
-@property (nonatomic, retain) NSString * typeName;
-@property (nonatomic, retain) NSString * url;
+@property (nonatomic, strong) NSString * typeName;
+@property (nonatomic, strong) NSString * url;
 
 - (void) save;
 - (void) load;

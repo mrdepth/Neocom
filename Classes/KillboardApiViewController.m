@@ -21,12 +21,12 @@
 #import "Globals.h"
 
 @interface KillboardApiViewController ()
-@property (nonatomic, retain) NSMutableDictionary *charFilter;
-@property (nonatomic, retain) NSMutableDictionary *corpFilter;
-@property (nonatomic, retain) NSMutableDictionary* charKillLog;
-@property (nonatomic, retain) NSMutableDictionary* corpKillLog;
-@property (nonatomic, retain) NSArray* killLog;
-@property (nonatomic, retain) NSArray* filteredValues;
+@property (nonatomic, strong) NSMutableDictionary *charFilter;
+@property (nonatomic, strong) NSMutableDictionary *corpFilter;
+@property (nonatomic, strong) NSMutableDictionary* charKillLog;
+@property (nonatomic, strong) NSMutableDictionary* corpKillLog;
+@property (nonatomic, strong) NSArray* killLog;
+@property (nonatomic, strong) NSArray* filteredValues;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) BOOL charEnd;
 @property (nonatomic, assign) BOOL corpEnd;

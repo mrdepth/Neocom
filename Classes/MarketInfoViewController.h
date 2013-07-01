@@ -12,16 +12,16 @@
 
 @interface MarketInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, retain) IBOutlet UITableView *ordersTableView;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *reportTypeSegment;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) IBOutlet UISearchDisplayController *searchDisplayController;
-@property (nonatomic, assign) IBOutlet UIViewController *parentViewController;
-@property (nonatomic, retain) EVEDBInvType *type;
-@property (nonatomic, retain) NSArray *sellOrdersRegions;
-@property (nonatomic, retain) NSArray *buyOrdersRegions;
-@property (nonatomic, retain) NSArray *sellSummary;
-@property (nonatomic, retain) NSArray *buySummary;
+@property (nonatomic, weak) IBOutlet UITableView *ordersTableView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *reportTypeSegment;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet UISearchDisplayController *searchDisplayController;
+@property (nonatomic, weak) IBOutlet UIViewController *parentViewController;
+@property (nonatomic, strong) EVEDBInvType *type;
+@property (nonatomic, strong) NSArray *sellOrdersRegions;
+@property (nonatomic, strong) NSArray *buyOrdersRegions;
+@property (nonatomic, strong) NSArray *sellSummary;
+@property (nonatomic, strong) NSArray *buySummary;
 
 - (IBAction) onChangeReportTypeSegment: (id) sender;
 @end

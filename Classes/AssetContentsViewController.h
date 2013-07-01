@@ -13,12 +13,12 @@
 
 @class EVEAssetListItem;
 @interface AssetContentsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
-@property (nonatomic, retain) IBOutlet CollapsableTableView *assetsTableView;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *filterNavigationViewController;
-@property (nonatomic, retain) UIPopoverController *filterPopoverController;
-@property (nonatomic, retain) EVEAssetListItem *asset;
+@property (nonatomic, strong) IBOutlet CollapsableTableView *assetsTableView;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet FilterViewController *filterViewController;
+@property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
+@property (nonatomic, strong) UIPopoverController *filterPopoverController;
+@property (nonatomic, strong) EVEAssetListItem *asset;
 @property (nonatomic, assign, getter = isCorporate) BOOL corporate;
 
 - (IBAction)onOpenFit:(id)sender;

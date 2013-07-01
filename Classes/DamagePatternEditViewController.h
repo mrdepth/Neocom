@@ -12,16 +12,16 @@
 
 @class DamagePattern;
 @interface DamagePatternEditViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
-@property (retain, nonatomic) IBOutlet UITableViewCell *damageAmountsCellView;
-@property (retain, nonatomic) IBOutlet UITableViewCell *titleCellView;
-@property (retain, nonatomic) IBOutlet UITextField *titleTextField;
-@property (retain, nonatomic) IBOutlet ProgressTextField *emTextField;
-@property (retain, nonatomic) IBOutlet ProgressTextField *thermalTextField;
-@property (retain, nonatomic) IBOutlet ProgressTextField *kineticTextField;
-@property (retain, nonatomic) IBOutlet ProgressTextField *explosiveTextField;
-@property (retain, nonatomic) IBOutlet ProgressLabel *totalDamageLabel;
-@property (retain, nonatomic) DamagePattern* damagePattern;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableViewCell *damageAmountsCellView;
+@property (strong, nonatomic) IBOutlet UITableViewCell *titleCellView;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (weak, nonatomic) IBOutlet ProgressTextField *emTextField;
+@property (weak, nonatomic) IBOutlet ProgressTextField *thermalTextField;
+@property (weak, nonatomic) IBOutlet ProgressTextField *kineticTextField;
+@property (weak, nonatomic) IBOutlet ProgressTextField *explosiveTextField;
+@property (weak, nonatomic) IBOutlet ProgressLabel *totalDamageLabel;
+@property (strong, nonatomic) DamagePattern* damagePattern;
 
 - (IBAction)onSave:(id)sender;
 

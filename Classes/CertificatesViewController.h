@@ -10,7 +10,7 @@
 
 @class EVEDBCrtCategory;
 @interface CertificatesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView* certificatesTableView;
-@property (nonatomic, retain) EVEDBCrtCategory* category;
+@property (nonatomic, weak) IBOutlet UITableView* certificatesTableView;
+@property (nonatomic, strong) EVEDBCrtCategory* category;
 
 @end

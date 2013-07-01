@@ -16,13 +16,13 @@ typedef enum {
 } ItemsDBViewControllerMode;
 
 @interface ItemsDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *itemsTable;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *publishedFilterSegment;
-@property (nonatomic, retain) EVEDBInvCategory *category;
-@property (nonatomic, retain) EVEDBInvGroup *group;
-@property (nonatomic, retain) NSMutableArray *rows;
-@property (nonatomic, retain) NSArray *filteredValues;
+@property (nonatomic, weak) IBOutlet UITableView *itemsTable;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *publishedFilterSegment;
+@property (nonatomic, strong) EVEDBInvCategory *category;
+@property (nonatomic, strong) EVEDBInvGroup *group;
+@property (nonatomic, strong) NSMutableArray *rows;
+@property (nonatomic, strong) NSArray *filteredValues;
 @property (nonatomic, getter=isModalMode) BOOL modalMode;
 @property (nonatomic, readonly) ItemsDBViewControllerMode mode;
 

@@ -16,24 +16,24 @@
 
 @interface EVEAccount : NSObject
 @property (nonatomic) NSInteger charKeyID;
-@property (nonatomic, retain) NSString *charVCode;
+@property (nonatomic, strong) NSString *charVCode;
 @property (nonatomic) NSInteger charAccessMask;
 @property (nonatomic) NSInteger corpKeyID;
-@property (nonatomic, retain) NSString *corpVCode;
+@property (nonatomic, strong) NSString *corpVCode;
 @property (nonatomic) NSInteger corpAccessMask;
 
 @property (nonatomic) NSInteger characterID;
-@property (nonatomic, retain) NSString *characterName;
+@property (nonatomic, strong) NSString *characterName;
 @property (nonatomic) NSInteger corporationID;
-@property (nonatomic, retain) NSString *corporationName;
+@property (nonatomic, strong) NSString *corporationName;
 
-@property (nonatomic, retain) EVECharacterSheet *characterSheet;
-@property (nonatomic, retain) EVESkillQueue *skillQueue;
-@property (nonatomic, retain) NSMutableDictionary *properties;
-@property (nonatomic, retain) SkillPlan* skillPlan;
-@property (nonatomic, retain) EUMailBox *mailBox;
+@property (nonatomic, strong) EVECharacterSheet *characterSheet;
+@property (nonatomic, strong) EVESkillQueue *skillQueue;
+@property (nonatomic, strong) NSMutableDictionary *properties;
+@property (nonatomic, strong) SkillPlan* skillPlan;
+@property (nonatomic, strong) EUMailBox *mailBox;
 
-@property (nonatomic, retain) CharacterAttributes* characterAttributes;
+@property (nonatomic, strong) CharacterAttributes* characterAttributes;
 
 
 + (EVEAccount*) accountWithCharacter:(EVEAccountStorageCharacter*) account;

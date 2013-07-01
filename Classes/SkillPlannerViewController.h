@@ -11,7 +11,7 @@
 
 @class SkillPlan;
 @interface SkillPlannerViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, SkillPlannerImportViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView* skillsTableView;
-@property (retain, nonatomic) IBOutlet UILabel *trainingTimeLabel;
+@property (nonatomic, weak) IBOutlet UITableView* skillsTableView;
+@property (weak, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 
 @end

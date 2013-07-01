@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface KillMailAttackerCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UIImageView *portraitImageView;
-@property (retain, nonatomic) IBOutlet UIImageView *shipImageView;
-@property (retain, nonatomic) IBOutlet UIImageView *weaponImageView;
-@property (retain, nonatomic) IBOutlet UILabel *characterNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *corporationNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *damageDoneLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *shipImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *weaponImageView;
+@property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *corporationNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *damageDoneLabel;
 
 @end

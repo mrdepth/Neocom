@@ -15,8 +15,8 @@
 
 
 @interface APIKeysViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *keysTableView;
-@property (nonatomic, retain) NSMutableArray *apiKeys;
-@property (nonatomic, assign) id<APIKeysViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UITableView *keysTableView;
+@property (nonatomic, strong) NSMutableArray *apiKeys;
+@property (nonatomic, weak) id<APIKeysViewControllerDelegate> delegate;
 
 @end

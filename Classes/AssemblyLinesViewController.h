@@ -12,7 +12,7 @@
 @class POSFittingViewController;
 @interface AssemblyLinesViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet POSFittingViewController *posFittingViewController;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end

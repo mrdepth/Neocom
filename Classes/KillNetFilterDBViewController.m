@@ -13,9 +13,9 @@
 #import "UITableViewCell+Nib.h"
 
 @interface KillNetFilterDBViewController ()
-@property (nonatomic, retain) NSArray* rows;
-@property (nonatomic, retain) NSArray* filteredRows;
-@property (nonatomic, assign) KillNetFilterDBViewController* parent;
+@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NSArray* filteredRows;
+@property (nonatomic, weak) KillNetFilterDBViewController* parent;
 
 - (void) reload;
 - (void) searchWithSearchString:(NSString*) searchString;

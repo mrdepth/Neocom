@@ -49,7 +49,7 @@
 }
 
 - (void) setProgress:(float)value {
-	self.progress = value;
+	progress = value;
 	[self setNeedsDisplay];
 }
 

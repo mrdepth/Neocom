@@ -11,11 +11,11 @@
 
 @class EVEDBInvType;
 @interface BCSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *menuTableView;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalController;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *searchButton;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, weak) IBOutlet UITableView *menuTableView;
+@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *searchButton;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) onSearch:(id) sender;

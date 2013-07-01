@@ -10,5 +10,5 @@
 
 
 @interface RSSCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @end

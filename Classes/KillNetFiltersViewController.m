@@ -13,8 +13,8 @@
 #import "EVEDBAPI.h"
 
 @interface KillNetFiltersViewController ()
-@property (nonatomic, retain) NSMutableArray* filters;
-@property (nonatomic, retain) NSMutableDictionary* filter;
+@property (nonatomic, strong) NSMutableArray* filters;
+@property (nonatomic, strong) NSMutableDictionary* filter;
 @end
 
 @implementation KillNetFiltersViewController

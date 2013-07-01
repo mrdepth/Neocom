@@ -17,11 +17,11 @@
 @class POSFittingViewController;
 @interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate>
 
-@property (nonatomic, assign) IBOutlet POSFittingViewController *posFittingViewController;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet ProgressLabel *powerGridLabel;
-@property (nonatomic, retain) IBOutlet ProgressLabel *cpuLabel;
-@property (nonatomic, retain) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, weak) IBOutlet POSFittingViewController *posFittingViewController;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet ProgressLabel *powerGridLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *cpuLabel;
+@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 @end

@@ -10,7 +10,7 @@
 
 
 @interface ContractInfoCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *valueLabel;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 
 @end

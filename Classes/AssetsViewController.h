@@ -14,12 +14,12 @@
 #import "AccountsSelectionViewController.h"
 
 @interface AssetsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, AccountsSelectionViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet CollapsableTableView *assetsTableView;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *ownerSegmentControl;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *filterNavigationViewController;
-@property (nonatomic, retain) UIPopoverController *filterPopoverController;
+@property (nonatomic, weak) IBOutlet CollapsableTableView *assetsTableView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *ownerSegmentControl;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet FilterViewController *filterViewController;
+@property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
+@property (nonatomic, strong) UIPopoverController *filterPopoverController;
 
 - (IBAction) onChangeOwner:(id) sender;
 

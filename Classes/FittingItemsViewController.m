@@ -17,17 +17,14 @@
 #import "ItemViewController.h"
 
 @interface FittingItemsViewController ()
-@property (nonatomic, retain) NSMutableArray *subGroups;
-@property (nonatomic, retain) NSMutableArray *groupItems;
-@property (nonatomic, retain) NSMutableArray *filteredValues;
+@property (nonatomic, strong) NSMutableArray *subGroups;
+@property (nonatomic, strong) NSMutableArray *groupItems;
+@property (nonatomic, strong) NSMutableArray *filteredValues;
 
 - (void) reload;
 @end
 
 @implementation FittingItemsViewController
-
-//@synthesize group;
-@synthesize modifiedItem;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

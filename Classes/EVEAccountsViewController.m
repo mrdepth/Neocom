@@ -32,8 +32,6 @@
 
 
 @implementation EVEAccountsViewController
-@synthesize accountsTableView;
-@synthesize logoffButton;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -106,7 +104,7 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[accountsTableView setEditing:editing animated:animated];
+	[self.accountsTableView setEditing:editing animated:animated];
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	int sectionIndex = 0;
 	for (NSDictionary *section in self.sections) {
@@ -116,7 +114,7 @@
 		}
 		sectionIndex++;
 	}
-	[accountsTableView reloadSections:indexes withRowAnimation:UITableViewRowAnimationFade];
+	[self.accountsTableView reloadSections:indexes withRowAnimation:UITableViewRowAnimationFade];
 	if (!self.editing) {
 		EUStorage* storage = [EUStorage sharedStorage];
 		[storage saveContext];
@@ -471,7 +469,7 @@
 			self.loadingOperation = nil;
 		if (![weakOperation isCancelled])
 			self.sections = sectionsTmp;
-		[accountsTableView reloadData];
+		[self.accountsTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

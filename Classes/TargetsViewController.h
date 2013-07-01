@@ -13,10 +13,10 @@
 @class FittingViewController;
 @class ItemInfo;
 @interface TargetsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) IBOutlet FittingViewController* fittingViewController;
-@property (nonatomic, assign) IBOutlet id<TargetsViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet FittingViewController* fittingViewController;
+@property (nonatomic, weak) IBOutlet id<TargetsViewControllerDelegate> delegate;
 @property (nonatomic, assign) eufe::Ship* currentTarget;
-@property (nonatomic, retain) ItemInfo* modifiedItem;
+@property (nonatomic, strong) ItemInfo* modifiedItem;
 
 @end

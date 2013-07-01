@@ -11,11 +11,11 @@
 #import "CollapsableTableView.h"
 
 @interface MarketGroupsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
-@property (nonatomic, retain) IBOutlet CollapsableTableView *itemsTable;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) EVEDBInvMarketGroup *parentGroup;
-@property (nonatomic, retain) NSMutableArray *subGroups;
-@property (nonatomic, retain) NSMutableArray *groupItems;
-@property (nonatomic, retain) NSMutableArray *filteredValues;
+@property (nonatomic, weak) IBOutlet CollapsableTableView *itemsTable;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) EVEDBInvMarketGroup *parentGroup;
+@property (nonatomic, strong) NSMutableArray *subGroups;
+@property (nonatomic, strong) NSMutableArray *groupItems;
+@property (nonatomic, strong) NSMutableArray *filteredValues;
 
 @end

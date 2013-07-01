@@ -10,7 +10,7 @@
 
 
 @interface RSSFeedViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, retain) IBOutlet UITableView *rssTableView;
-@property (nonatomic, retain) IBOutlet UILabel *feedTitleLabel;
-@property (nonatomic, retain) NSURL *url;
+@property (nonatomic, weak) IBOutlet UITableView *rssTableView;
+@property (nonatomic, weak) IBOutlet UILabel *feedTitleLabel;
+@property (nonatomic, strong) NSURL *url;
 @end

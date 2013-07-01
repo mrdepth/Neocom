@@ -10,7 +10,7 @@
 
 @class EUMailMessage;
 @interface MessageViewController : UIViewController<UIWebViewDelegate>
-@property (retain, nonatomic) IBOutlet UIWebView *webView;
-@property (retain, nonatomic) EUMailMessage* message;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (strong, nonatomic) EUMailMessage* message;
 
 @end

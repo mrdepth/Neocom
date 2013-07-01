@@ -10,9 +10,9 @@
 
 
 @interface APIKeysKeyCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *keyIDLabel;
-@property (nonatomic, retain) IBOutlet UILabel *vCodeLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *checkmarkImageView;
+@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *keyIDLabel;
+@property (nonatomic, weak) IBOutlet UILabel *vCodeLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *checkmarkImageView;
 
 @end

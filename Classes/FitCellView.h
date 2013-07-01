@@ -10,8 +10,8 @@
 
 
 @interface FitCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconView;
-@property (nonatomic, retain) IBOutlet UILabel *shipNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *fitNameLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconView;
+@property (nonatomic, weak) IBOutlet UILabel *shipNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *fitNameLabel;
 
 @end

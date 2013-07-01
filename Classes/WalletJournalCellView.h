@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface WalletJournalCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UILabel *dateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *amountLabel;
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *nameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *balanceLabel;
-@property (retain, nonatomic) IBOutlet UILabel *taxLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *amountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *taxLabel;
 
 @end

@@ -63,7 +63,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -150,7 +149,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 42}, {280, 42}}</string>
 						<reference key="NSSuperview" ref="856672288"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -274,7 +272,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{104, 63}, {196, 21}}</string>
 						<reference key="NSSuperview" ref="20715802"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -384,7 +381,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{108, 42}, {192, 21}}</string>
 						<reference key="NSSuperview" ref="699267118"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -635,7 +631,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{104, 105}, {196, 21}}</string>
 						<reference key="NSSuperview" ref="605781241"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -702,7 +697,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 42}, {280, 90}}</string>
 						<reference key="NSSuperview" ref="239380787"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>

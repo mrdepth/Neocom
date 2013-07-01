@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface KillMailItemCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *qualityLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *qualityLabel;
 @property (nonatomic, assign) BOOL destroyed;
 
 @end

@@ -11,13 +11,13 @@
 
 @interface IndustryJobCellView : UITableViewCell
 
-@property (nonatomic, retain) IBOutlet UILabel *remainsLabel;
-@property (nonatomic, retain) IBOutlet UILabel *activityLabel;
-@property (nonatomic, retain) IBOutlet UILabel *typeNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *locationLabel;
-@property (nonatomic, retain) IBOutlet UILabel *startTimeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *characterLabel;
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
-@property (nonatomic, retain) IBOutlet UIImageView *activityImageView;
+@property (nonatomic, weak) IBOutlet UILabel *remainsLabel;
+@property (nonatomic, weak) IBOutlet UILabel *activityLabel;
+@property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel *startTimeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *characterLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *activityImageView;
 
 @end

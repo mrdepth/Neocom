@@ -33,12 +33,6 @@
 @end
 
 @implementation IndustryJobsViewController
-@synthesize jobsTableView;
-@synthesize ownerSegmentControl;
-@synthesize searchBar;
-@synthesize filterViewController;
-@synthesize filterNavigationViewController;
-@synthesize filterPopoverController;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -58,16 +52,16 @@
 	self.title = NSLocalizedString(@"Industry Jobs", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:searchBar]];
+		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = ownerSegmentControl;
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:filterNavigationViewController];
+		self.navigationItem.titleView = self.ownerSegmentControl;
+		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 
-	ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsIndustryJobsOwner];
+	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsIndustryJobsOwner];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[self reloadJobs];
@@ -111,7 +105,7 @@
 }
 
 - (IBAction) onChangeOwner:(id) sender {
-	[[NSUserDefaults standardUserDefaults] setInteger:ownerSegmentControl.selectedSegmentIndex forKey:SettingsIndustryJobsOwner];
+	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsIndustryJobsOwner];
 	[self reloadJobs];
 }
 
@@ -142,7 +136,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == jobsTableView ? @"IndustryJobCellView" : @"IndustryJobCellViewCompact";
+			nibName = tableView == self.jobsTableView ? @"IndustryJobCellView" : @"IndustryJobCellViewCompact";
 		else
 			nibName = @"IndustryJobCellView";
 
@@ -215,7 +209,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == jobsTableView ? 53 : 72;
+		return tableView == self.jobsTableView ? 53 : 72;
 	else
 		return 72;
 }
@@ -266,14 +260,14 @@
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
 	EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
-	filterViewController.filter = filter;
+	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[filterPopoverController presentPopoverFromRect:searchBar.frame inView:[searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:filterNavigationViewController animated:YES];
+		[self presentModalViewController:self.filterNavigationViewController animated:YES];
 }
 
 #pragma mark FilterViewControllerDelegate
@@ -291,7 +285,7 @@
 
 - (void) reloadJobs {
 	
-	BOOL corporate = (ownerSegmentControl.selectedSegmentIndex == 1);
+	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
 	NSMutableArray *currentJobs = corporate ? self.corpJobs : self.charJobs;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"industryJobsFilter" ofType:@"plist"]]];
 	
@@ -514,7 +508,7 @@
 					self.charFilter = filterTmp;
 				}
 				[currentJobs addObjectsFromArray:jobsTmp];
-				if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
+				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadJobs];
 			}
 		}];
@@ -533,10 +527,10 @@
 			
 			[operation setCompletionBlockInCurrentThread:^(void) {
 				if (![weakOperation isCancelled]) {
-					if ((ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
+					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.jobs = jobsTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[jobsTableView reloadData];
+						[self.jobsTableView reloadData];
 					}
 				}
 			}];
@@ -545,7 +539,7 @@
 		else
 			self.jobs = currentJobs;
 	}
-	[jobsTableView reloadData];
+	[self.jobsTableView reloadData];
 }
 
 - (NSDictionary*) conquerableStations {

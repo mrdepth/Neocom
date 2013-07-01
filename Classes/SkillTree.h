@@ -29,7 +29,7 @@ typedef enum {
 
 @interface SkillTree : NSObject
 
-@property (nonatomic, retain) NSArray *skills;
+@property (nonatomic, strong) NSArray *skills;
 
 + (id) skillTreeWithRootSkill: (EVEDBInvType*) skill skillLevel:(NSInteger) skillLevel;
 - (id) initWithRootSkill: (EVEDBInvType*) skill skillLevel:(NSInteger) skillLevel;

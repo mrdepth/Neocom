@@ -14,7 +14,7 @@
 @class FittingViewController;
 @class EVEFittingFit;
 @interface FleetViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
-@property (nonatomic, assign) IBOutlet FittingViewController *fittingViewController;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet FittingViewController *fittingViewController;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end

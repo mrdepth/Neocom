@@ -15,11 +15,11 @@
 
 
 @interface KillNetFilterDBViewController : UITableViewController
-@property (nonatomic, retain) NSString* groupsRequest;
-@property (nonatomic, retain) NSString* itemsRequest;
-@property (nonatomic, retain) NSString* searchRequest;
+@property (nonatomic, strong) NSString* groupsRequest;
+@property (nonatomic, strong) NSString* itemsRequest;
+@property (nonatomic, strong) NSString* searchRequest;
 @property (nonatomic, assign) NSInteger groupID;
-@property (nonatomic, assign) NSString* groupName;
-@property (nonatomic, assign) id<KillNetFilterDBViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSString* groupName;
+@property (nonatomic, weak) id<KillNetFilterDBViewControllerDelegate> delegate;
 
 @end

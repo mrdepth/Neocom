@@ -12,12 +12,12 @@
 
 @class EUMailBox;
 @interface MessagesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, retain) IBOutlet UITableView *messagesTableView;
-@property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
-@property (nonatomic, retain) IBOutlet FilterViewController *filterViewController;
-@property (nonatomic, retain) IBOutlet UINavigationController *filterNavigationViewController;
-@property (nonatomic, retain) UIPopoverController *filterPopoverController;
-@property (retain, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UITableView *messagesTableView;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, weak) IBOutlet FilterViewController *filterViewController;
+@property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
+@property (nonatomic, strong) UIPopoverController *filterPopoverController;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 - (IBAction)markAsRead:(id)sender;
 

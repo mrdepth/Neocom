@@ -10,8 +10,8 @@
 #import "EVEDBInvType.h"
 
 @interface EVEAssetListItem (AssetsViewController)
-@property (nonatomic, retain) EVEDBInvType* type;
-@property (nonatomic, retain) EVELocationsItem* location;
-@property (nonatomic, retain) NSString* characterName;
+@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) EVELocationsItem* location;
+@property (nonatomic, strong) NSString* characterName;
 @property (nonatomic, copy) NSString* name;
 @end

@@ -10,13 +10,15 @@
 
 @class RSSItem;
 @interface RSSViewController : UIViewController
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicatorView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *reloadButton;
-@property (nonatomic, retain) RSSItem *rss;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *forwardButton;
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *reloadButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *safariButton;
+@property (nonatomic, strong) RSSItem *rss;
 
 - (IBAction) onClose:(id) sender;
+- (IBAction)onSafari:(id)sender;
 
 @end

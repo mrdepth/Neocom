@@ -11,10 +11,10 @@
 @class EVEDBInvType;
 @class EVEDBMapSolarSystem;
 @interface POSViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, retain) IBOutlet UITableView *posTableView;
-@property (nonatomic, retain) EVEDBInvType *controlTowerType;
-@property (nonatomic, retain) EVEDBMapSolarSystem *solarSystem;
-@property (nonatomic, retain) NSString *location;
+@property (nonatomic, weak) IBOutlet UITableView *posTableView;
+@property (nonatomic, strong) EVEDBInvType *controlTowerType;
+@property (nonatomic, strong) EVEDBMapSolarSystem *solarSystem;
+@property (nonatomic, strong) NSString *location;
 @property (nonatomic) long long posID;
 @property (nonatomic) float sovereigntyBonus;
 @end

@@ -41,7 +41,7 @@
 	}
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 		[htmlString appendString:@"<br><br>"];
-	[self.webView loadHTMLString:htmlString baseURL:nil];
+	[self.webView loadHTMLString:htmlString baseURL:self.rss.link];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -59,6 +59,7 @@
 }
 
 - (void)viewDidUnload {
+	[self setSafariButton:nil];
     [super viewDidUnload];
 	self.webView = nil;
 	self.activityIndicatorView = nil;
@@ -72,11 +73,16 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)onSafari:(id)sender {
+	[[UIApplication sharedApplication] openURL:self.webView.request.URL];
+}
+
 #pragma mark UIWebViewDelegate
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
 	self.backButton.enabled = self.webView.canGoBack;
 	self.forwardButton.enabled = self.webView.canGoForward;
+	self.safariButton.enabled = self.webView.canGoBack;
 	[self.activityIndicatorView startAnimating];
 }
 

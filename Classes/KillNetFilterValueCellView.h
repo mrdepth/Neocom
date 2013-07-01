@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface KillNetFilterValueCellView : UITableViewCell
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *valueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
 
 @end

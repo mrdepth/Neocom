@@ -10,7 +10,7 @@
 #import "EVEOnlineAPI.h"
 
 @interface ContractViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, retain) IBOutlet UITableView *contractTableView;
-@property (nonatomic, retain) IBOutlet EVEContractsItem *contract;
+@property (nonatomic, weak) IBOutlet UITableView *contractTableView;
+@property (nonatomic, weak) IBOutlet EVEContractsItem *contract;
 @property (nonatomic) BOOL corporate;
 @end

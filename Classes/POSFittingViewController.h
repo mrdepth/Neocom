@@ -22,29 +22,29 @@
 @class EVEDBInvControlTowerResource;
 @class PriceManager;
 @interface POSFittingViewController : UIViewController<UIActionSheetDelegate,UITextFieldDelegate, AreaEffectsViewControllerDelegate, DamagePatternsViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UIView *sectionsView;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *sectionSegmentControl;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalController;
-@property (nonatomic, retain) IBOutlet UINavigationController *areaEffectsModalController;
-@property (nonatomic, retain) IBOutlet AreaEffectsViewController* areaEffectsViewController;
-@property (nonatomic, retain) IBOutlet StructuresViewController *structuresViewController;
-@property (nonatomic, retain) IBOutlet AssemblyLinesViewController* assemblyLinesViewController;
-@property (nonatomic, retain) IBOutlet POSStatsViewController *posStatsViewController;
+@property (nonatomic, weak) IBOutlet UIView *sectionsView;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *sectionSegmentControl;
+@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
+@property (nonatomic, strong) IBOutlet UINavigationController *areaEffectsModalController;
+@property (nonatomic, strong) IBOutlet AreaEffectsViewController* areaEffectsViewController;
+@property (nonatomic, strong) IBOutlet StructuresViewController *structuresViewController;
+@property (nonatomic, strong) IBOutlet AssemblyLinesViewController* assemblyLinesViewController;
+@property (nonatomic, strong) IBOutlet POSStatsViewController *posStatsViewController;
 
-@property (nonatomic, retain) IBOutlet UIView *shadeView;
-@property (nonatomic, retain) IBOutlet UIToolbar *fitNameView;
-@property (nonatomic, retain) IBOutlet UITextField *fitNameTextField;
-@property (nonatomic, retain) IBOutlet UIView *statsSectionView;
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) UIPopoverController *areaEffectsPopoverController;
+@property (nonatomic, weak) IBOutlet UIView *shadeView;
+@property (nonatomic, weak) IBOutlet UIToolbar *fitNameView;
+@property (nonatomic, weak) IBOutlet UITextField *fitNameTextField;
+@property (nonatomic, weak) IBOutlet UIView *statsSectionView;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *areaEffectsPopoverController;
 
-@property (nonatomic, retain) POSFit* fit;
+@property (nonatomic, strong) POSFit* fit;
 
 @property (nonatomic, readonly) eufe::Engine* fittingEngine;
-@property (nonatomic, retain) DamagePattern* damagePattern;
+@property (nonatomic, strong) DamagePattern* damagePattern;
 
-@property (nonatomic, retain) EVEDBInvControlTowerResource* posFuelRequirements;
-@property (nonatomic, retain) PriceManager* priceManager;
+@property (nonatomic, strong) EVEDBInvControlTowerResource* posFuelRequirements;
+@property (nonatomic, strong) PriceManager* priceManager;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

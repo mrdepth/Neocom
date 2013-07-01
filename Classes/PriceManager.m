@@ -17,7 +17,6 @@
 @end
 
 @implementation PriceManager
-@synthesize faction;
 
 - (id) init {
 	if (self = [super init]) {
@@ -98,10 +97,10 @@
 
 - (EVEC0rporationFaction*) faction {
 	@synchronized(self) {
-		if (!faction) {
-			faction = [EVEC0rporationFaction factionWithError:nil progressHandler:nil];
+		if (!_faction) {
+			_faction = [EVEC0rporationFaction factionWithError:nil progressHandler:nil];
 		}
-		return faction;
+		return _faction;
 	}
 }
 

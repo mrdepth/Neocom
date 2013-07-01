@@ -11,12 +11,12 @@
 
 @class EVEDBCrtCertificate;
 @interface CertificateViewController : UIViewController<UIScrollViewDelegate, CertificateTreeViewDelegate, UITableViewDelegate, UITableViewDataSource>
-@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (retain, nonatomic) IBOutlet CertificateTreeView *certificateTreeView;
-@property (retain, nonatomic) IBOutlet UITableView *recommendationsTableView;
-@property (retain, nonatomic) IBOutlet UIView *contentView;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *pageSegmentControl;
-@property (retain, nonatomic) EVEDBCrtCertificate* certificate;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet CertificateTreeView *certificateTreeView;
+@property (strong, nonatomic) IBOutlet UITableView *recommendationsTableView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *pageSegmentControl;
+@property (strong, nonatomic) EVEDBCrtCertificate* certificate;
 
 - (IBAction) dismissModalViewController:(id) sender;
 - (IBAction) onSwitchScreens:(id)sender;

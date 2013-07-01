@@ -40,7 +40,7 @@
 @property (nonatomic, assign) NSInteger currentSectionIndex;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, readwrite) eufe::Engine* fittingEngine;
-@property (nonatomic, retain, readwrite) NSMutableArray* fits;
+@property (nonatomic, strong, readwrite) NSMutableArray* fits;
 
 
 - (void) keyboardWillShow: (NSNotification*) notification;

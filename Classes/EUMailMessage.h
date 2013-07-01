@@ -11,12 +11,12 @@
 @class EVEMailMessagesItem;
 @class EUMailBox;
 @interface EUMailMessage : NSObject
-@property(nonatomic, assign) EUMailBox* mailBox;
-@property(nonatomic, retain) NSString* to;
-@property(nonatomic, retain) NSString* from;
-@property(nonatomic, retain) NSString* text;
-@property(nonatomic, retain) NSString* date;
-@property(nonatomic, retain) EVEMailMessagesItem* header;
+@property(nonatomic, weak) EUMailBox* mailBox;
+@property(nonatomic, strong) NSString* to;
+@property(nonatomic, strong) NSString* from;
+@property(nonatomic, strong) NSString* text;
+@property(nonatomic, strong) NSString* date;
+@property(nonatomic, strong) EVEMailMessagesItem* header;
 @property(nonatomic, assign, getter = isRead) BOOL read;
 
 + (id) mailMessageWithMailBox:(EUMailBox*) mailBox;

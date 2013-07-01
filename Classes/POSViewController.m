@@ -24,12 +24,7 @@
 @end
 
 @implementation POSViewController
-@synthesize posTableView;
-@synthesize controlTowerType;
-@synthesize solarSystem;
-@synthesize location;
-@synthesize posID;
-@synthesize sovereigntyBonus;
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -46,7 +41,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = location;
+	self.title = self.location;
 	[self loadData];
 }
 
@@ -194,7 +189,7 @@
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		NSError *error = nil;
-		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:posID error:&error progressHandler:nil];
+		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:self.posID error:&error progressHandler:nil];
 
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -204,12 +199,12 @@
 			float hours = [[starbaseDetail serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:starbaseDetail.currentTime] / 3600.0;
 			if (hours < 0)
 				hours = 0;
-			float n = [[controlTowerType resources] count];
+			float n = [[self.controlTowerType resources] count];
 			float i = 0;
-			for (EVEDBInvControlTowerResource *resource in [controlTowerType resources]) {
+			for (EVEDBInvControlTowerResource *resource in [self.controlTowerType resources]) {
 				weakOperation.progress = i++ / n;
-				if ((resource.minSecurityLevel > 0 && solarSystem.security < resource.minSecurityLevel) ||
-					(resource.factionID > 0 && solarSystem.region.factionID != resource.factionID))
+				if ((resource.minSecurityLevel > 0 && self.solarSystem.security < resource.minSecurityLevel) ||
+					(resource.factionID > 0 && self.solarSystem.region.factionID != resource.factionID))
 					continue;
 				NSMutableDictionary *section = [sectionsDictionary valueForKey:[NSString stringWithFormat:@"%d", resource.purposeID]];
 				if (!section) {
@@ -225,7 +220,7 @@
 				int quantity = 0;
 				for (EVEStarbaseDetailFuelItem *item in starbaseDetail.fuel) {
 					if (item.typeID == resource.resourceTypeID) {
-						quantity = item.quantity - hours * round(resource.quantity * sovereigntyBonus);
+						quantity = item.quantity - hours * round(resource.quantity * self.sovereigntyBonus);
 						break;
 					}
 				}
@@ -234,7 +229,7 @@
 				NSMutableString *remains = [NSMutableString stringWithString:[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:quantity] numberStyle:NSNumberFormatterDecimalStyle]];
 				if (quantity > 0) {
 					if (resource.purposeID != 2 && resource.purposeID != 3) {
-						NSTimeInterval remainsTime = quantity / round(resource.quantity * sovereigntyBonus) * 3600;
+						NSTimeInterval remainsTime = quantity / round(resource.quantity * self.sovereigntyBonus) * 3600;
 						if (remainsTime > 3600 * 24)
 							remainsColor = [UIColor greenColor];
 						else if (remainsTime > 3600)
@@ -255,7 +250,7 @@
 				if (resource.purposeID == 2 || resource.purposeID == 3)
 					consumption = NSLocalizedString(@"n/a", nil);
 				else
-					consumption = [NSString stringWithFormat:NSLocalizedString(@"%@/h", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:round(resource.quantity * sovereigntyBonus)] numberStyle:NSNumberFormatterDecimalStyle]];
+					consumption = [NSString stringWithFormat:NSLocalizedString(@"%@/h", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:round(resource.quantity * self.sovereigntyBonus)] numberStyle:NSNumberFormatterDecimalStyle]];
 				
 				NSDictionary *row = [NSDictionary dictionaryWithObjectsAndKeys:
 									 resource.resourceType, @"type",

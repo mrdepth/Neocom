@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CharacterCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel* characterNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel* characterNameLabel;
 @end

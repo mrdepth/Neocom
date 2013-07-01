@@ -10,8 +10,8 @@
 
 
 @interface BidCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UILabel *characterNameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *dateLabel;
-@property (nonatomic, retain) IBOutlet UILabel *amountLabel;
+@property (nonatomic, weak) IBOutlet UILabel *characterNameLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UILabel *amountLabel;
 
 @end

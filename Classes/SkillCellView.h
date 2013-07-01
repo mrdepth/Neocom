@@ -10,11 +10,11 @@
 
 
 @interface SkillCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconImageView;
-@property (nonatomic, retain) IBOutlet UIImageView *levelImageView;
-@property (nonatomic, retain) IBOutlet UILabel *skillLabel;
-@property (nonatomic, retain) IBOutlet UILabel *skillPointsLabel;
-@property (nonatomic, retain) IBOutlet UILabel *levelLabel;
-@property (nonatomic, retain) IBOutlet UILabel *remainingLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *levelImageView;
+@property (nonatomic, weak) IBOutlet UILabel *skillLabel;
+@property (nonatomic, weak) IBOutlet UILabel *skillPointsLabel;
+@property (nonatomic, weak) IBOutlet UILabel *levelLabel;
+@property (nonatomic, weak) IBOutlet UILabel *remainingLabel;
 
 @end

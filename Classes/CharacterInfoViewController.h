@@ -26,5 +26,5 @@
 @property (nonatomic, weak) IBOutlet UILabel *wealthLabel;
 @property (nonatomic, weak) IBOutlet UILabel *serverStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *onlineLabel;
-@property (nonatomic, assign) id<CharacterInfoViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<CharacterInfoViewControllerDelegate> delegate;
 @end

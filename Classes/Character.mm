@@ -14,9 +14,6 @@
 @end
 
 @implementation Character
-@synthesize characterID;
-@synthesize name;
-@synthesize skills;
 
 + (NSString*) charactersDirectory {
 	return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"FittingCharacters"];
@@ -36,13 +33,13 @@
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeObject:name forKey:@"name"];
-	[aCoder encodeInteger:characterID forKey:@"characterID"];
+	[aCoder encodeObject:self.name forKey:@"name"];
+	[aCoder encodeInteger:self.characterID forKey:@"characterID"];
 	[aCoder encodeObject:self.skills forKey:@"skills"];
 }
 
 - (BOOL) isEqual:(id)object {
-	return [object isMemberOfClass:[self class]] && [object characterID] == characterID;
+	return [object isMemberOfClass:[self class]] && [object characterID] == self.characterID;
 }
 
 - (void) save {

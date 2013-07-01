@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface FleetMemberCellView : UITableViewCell
-@property (nonatomic, retain) IBOutlet UIImageView *iconView;
-@property (nonatomic, retain) IBOutlet UIImageView *stateView;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *fitNameLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *iconView;
+@property (nonatomic, weak) IBOutlet UIImageView *stateView;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *fitNameLabel;
 
 @end

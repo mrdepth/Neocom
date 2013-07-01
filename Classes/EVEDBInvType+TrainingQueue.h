@@ -11,6 +11,6 @@
 @class TrainingQueue;
 @interface EVEDBInvType (TrainingQueue)
 
-@property (nonatomic, retain, readonly) TrainingQueue* trainingQueue;
+@property (nonatomic, strong, readonly) TrainingQueue* trainingQueue;
 
 @end

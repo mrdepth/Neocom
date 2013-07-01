@@ -11,9 +11,9 @@
 #import "APIKeysViewController.h"
 
 @interface AddEVEAccountViewController : UIViewController<UITextFieldDelegate, BrowserViewControllerDelegate, UIAlertViewDelegate, APIKeysViewControllerDelegate>
-@property (nonatomic, retain) IBOutlet UITextField *keyIDTextField;
-@property (nonatomic, retain) IBOutlet UITextField *vCodeTextField;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *saveButton;
+@property (nonatomic, weak) IBOutlet UITextField *keyIDTextField;
+@property (nonatomic, weak) IBOutlet UITextField *vCodeTextField;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *saveButton;
 
 - (IBAction) onBrowser: (id) sender;
 - (IBAction) onSafari: (id) sender;

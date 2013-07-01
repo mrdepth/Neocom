@@ -11,8 +11,8 @@
 
 @interface EVEAccountsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) IBOutlet UITableView *accountsTableView;
-@property (nonatomic, retain) IBOutlet UIButton *logoffButton;
+@property (nonatomic, weak) IBOutlet UITableView *accountsTableView;
+@property (nonatomic, weak) IBOutlet UIButton *logoffButton;
 
 - (IBAction) onAddAccount: (id) sender;
 - (IBAction) onLogoff: (id) sender;

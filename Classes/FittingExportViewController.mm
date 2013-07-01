@@ -30,7 +30,6 @@
 @end
 
 @implementation FittingExportViewController
-@synthesize addressLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

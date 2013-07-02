@@ -55,16 +55,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Wallet Journal", nil);
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	
+	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	self.corpWalletJournal  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
@@ -72,6 +70,7 @@
 	[self.ownerSegmentControl setNeedsLayout];
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletJournalOwner];
 	self.accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletJournalCorpAccount];
+	self.accountSegmentControl.enabled = self.ownerSegmentControl.selectedSegmentIndex == 1;
 	
 	[self reloadJournal];
 	[self downloadAccountBalance];
@@ -94,7 +93,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.walletJournalTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.accountSegmentControl = nil;
 	self.accountsView = nil;
@@ -124,41 +122,16 @@
 - (IBAction) onChangeOwner:(id) sender {
 	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletJournalOwner];
 	
-	[self.walletJournalTableView reloadData];
+	[self.tableView reloadData];
 	[self reloadJournal];
 	
-	[UIView beginAnimations:0 context:0];
-	[UIView setAnimationDuration:0.5];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
-			self.accountToolbar.frame = CGRectMake(0, 0, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
-			self.walletJournalTableView.frame = CGRectMake(0, self.accountToolbar.frame.size.height, self.walletJournalTableView.frame.size.width, self.walletJournalTableView.frame.size.height);
-		}
-		else {
-			self.accountToolbar.frame = CGRectMake(0, -self.accountToolbar.frame.size.height, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
-			self.walletJournalTableView.frame = CGRectMake(0, 0, self.walletJournalTableView.frame.size.width, self.walletJournalTableView.frame.size.height);
-		}
-	}
-	else {
-		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
-			self.accountsView.frame = CGRectMake(0, 88, 320, 44);
-			self.walletJournalTableView.frame = CGRectMake(0, 132, 320, self.view.frame.size.height);
-			self.walletJournalTableView.topView.frame = CGRectMake(0, 0, 320, 132);
-		}
-		else {
-			self.accountsView.frame = CGRectMake(0, 44, 320, 44);
-			self.walletJournalTableView.frame = CGRectMake(0, 88, 320, self.view.frame.size.height);
-			self.walletJournalTableView.topView.frame = CGRectMake(0, 0, 320, 88);
-		}
-	}
-	[UIView commitAnimations];
+	self.accountSegmentControl.enabled = self.ownerSegmentControl.selectedSegmentIndex == 1;
 }
 
 - (IBAction) onChangeAccount:(id) sender {
 	[[NSUserDefaults standardUserDefaults] setInteger:self.accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletJournalCorpAccount];
 	
-	[self.walletJournalTableView reloadData];
+	[self.tableView reloadData];
 	[self reloadJournal];
 }
 
@@ -201,7 +174,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.walletJournalTableView ? @"WalletJournalCellView" : @"WalletJournalCellViewCompact";
+			nibName = tableView == self.tableView ? @"WalletJournalCellView" : @"WalletJournalCellViewCompact";
 		else
 			nibName = @"WalletJournalCellView";
 		
@@ -270,9 +243,9 @@
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tax)
-			return tableView == self.walletJournalTableView ? 36 : 91;
+			return tableView == self.tableView ? 36 : 91;
 		else
-			return tableView == self.walletJournalTableView ? 36 : 73;
+			return tableView == self.tableView ? 36 : 73;
 	}
 	else {
 		return tax ? 91 : 73;
@@ -301,13 +274,12 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -431,7 +403,7 @@
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletJournal = journalTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[self.walletJournalTableView reloadData];
+							[self.tableView reloadData];
 						}
 					}
 				}];
@@ -520,7 +492,7 @@
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletJournal = journalTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[self.walletJournalTableView reloadData];
+							[self.tableView reloadData];
 						}
 					}
 				}];
@@ -530,7 +502,7 @@
 				self.walletJournal = [self.corpWalletJournal objectAtIndex:self.accountSegmentControl.selectedSegmentIndex];
 		}
 	}
-	[self.walletJournalTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (NSMutableArray*) downloadWalletJournalWithAccountIndex:(NSInteger) accountIndex {
@@ -637,7 +609,7 @@
 				self.charFilter = nil;
 				self.corpFilter = nil;
 			}
-			[self.walletJournalTableView reloadData];
+			[self.tableView reloadData];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
@@ -652,7 +624,7 @@
 			self.charFilter = nil;
 			self.corpFilter = nil;
 		}
-		[self.walletJournalTableView reloadData];
+		[self.tableView reloadData];
 		[self reloadJournal];
 		[self downloadAccountBalance];
 	}

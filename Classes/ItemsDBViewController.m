@@ -24,6 +24,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.rows = [NSMutableArray array];
 	self.filteredValues = [NSMutableArray array];
 	
@@ -55,7 +56,6 @@
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
-	self.itemsTable = nil;
 	self.searchBar = nil;
 	self.publishedFilterSegment = nil;
 	self.rows = nil;
@@ -203,19 +203,19 @@
 - (void) searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
 	self.publishedFilterSegment.selectedSegmentIndex = selectedScope;
 	[[NSUserDefaults standardUserDefaults] setInteger:selectedScope forKey:SettingsPublishedFilterKey];
-	[self.itemsTable reloadData];
+	[self.tableView reloadData];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.modalMode ? @"background3.png" : @"background4.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.modalMode ? @"background.png" : @"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
 	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -258,7 +258,9 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.rows = values;
-			[self.itemsTable reloadData];
+			[self.tableView reloadData];
+			if (self.searchBar.text.length > 0)
+				[self searchWithSearchString:self.searchBar.text];
 		}
 	}];
 	

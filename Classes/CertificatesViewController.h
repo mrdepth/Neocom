@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EVEDBCrtCategory;
-@interface CertificatesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView* certificatesTableView;
+@interface CertificatesViewController : UITableViewController
 @property (nonatomic, strong) EVEDBCrtCategory* category;
 
 @end

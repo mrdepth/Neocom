@@ -45,6 +45,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+	else
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = @"Select Target";
     // Do any additional setup after loading the view from its nib.
 }
@@ -59,7 +65,6 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-	[self setTableView:nil];
 	self.targets = nil;
 }
 

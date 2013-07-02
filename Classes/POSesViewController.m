@@ -49,12 +49,13 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	self.title = NSLocalizedString(@"POS'es", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+		self.tableView.tableHeaderView = self.searchBar;
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[self loadData];
@@ -77,7 +78,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.posesTableView = nil;
 	self.searchBar = nil;
 	@synchronized(self) {
 		self.poses = nil;
@@ -130,7 +130,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.posesTableView ? @"POSCellView" : @"POSCellViewCompact";
+			nibName = tableView == self.tableView ? @"POSCellView" : @"POSCellViewCompact";
 		else
 			nibName = @"POSCellView";
 
@@ -189,7 +189,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.posesTableView ? 37 : 73;
+		return tableView == self.tableView ? 37 : 73;
 	else
 		return 73;
 }
@@ -240,13 +240,12 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -386,7 +385,7 @@
 		if (![weakOperation isCancelled]) {
 			self.poses = posesTmp;
 			self.sections = sectionsTmp;
-			[self.posesTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	
@@ -486,7 +485,7 @@
 
 		if (indexPath) {
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^(void) {
-				[self.posesTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+				[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			}];
 		}
 		

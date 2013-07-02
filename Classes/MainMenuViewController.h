@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "CharacterInfoViewController.h"
 
-@class SBTableView;
-@interface MainMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet SBTableView *menuTableView;
+@interface MainMenuViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet CharacterInfoViewController *characterInfoViewController;
 @property (nonatomic, weak) IBOutlet UIView *characterInfoView;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *onlineModeSegmentedControl;
 @property (nonatomic, strong) NSArray *menuItems;
 
 - (IBAction)onFacebook:(id)sender;
+- (IBAction)onChangeOnlineMode:(id)sender;
 @end

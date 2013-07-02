@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EVEDBAPI.h"
 
-@interface ItemInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *attributesTable;
+@interface ItemInfoViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *volumeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *massLabel;

@@ -41,14 +41,9 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Community Fits", nil);
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.navigationItem.titleView = self.orderSegmentedControl;
-	}
-	else {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
 	[self reload];
 }
 

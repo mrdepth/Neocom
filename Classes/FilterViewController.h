@@ -11,8 +11,7 @@
 #import "EUFilter.h"
 #import "CollapsableTableView.h"
 
-@interface FilterViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate, UIPopoverControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@interface FilterViewController : UITableViewController<CollapsableTableViewDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, weak) IBOutlet id<FilterViewControllerDelegate> delegate;
 @property (nonatomic, strong) EUFilter *filter;
 @property (nonatomic, strong) NSMutableArray *values;

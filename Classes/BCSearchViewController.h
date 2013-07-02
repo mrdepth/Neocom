@@ -10,8 +10,7 @@
 #import "FittingItemsViewController.h"
 
 @class EVEDBInvType;
-@interface BCSearchViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *menuTableView;
+@interface BCSearchViewController : UITableViewController<FittingItemsViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *modalController;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *searchButton;

@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EVEDBInvType;
-@interface VariationsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface VariationsViewController : UITableViewController
 @property (nonatomic, strong) EVEDBInvType* type;
 
 - (void) didSelectType:(EVEDBInvType*) type;

@@ -11,15 +11,12 @@
 #import "EVEOnlineAPI.h"
 #import "TutorialViewController.h"
 #import "PCViewController.h"
-#import "APIKeysViewController.h"
 #import "UIAlertView+Error.h"
 
 @interface AddEVEAccountViewController()
 
-- (void) loadAccountFromPasteboard;
 - (void) saveAccount;
 - (void) testForSave;
-- (void) applicationDidBecomeActive:(NSNotification*) notification;
 
 @end
 
@@ -49,7 +46,6 @@
 		[userDefaults setBool:YES forKey:SettingsTipsAddAccount];
 	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -58,11 +54,6 @@
 	else
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
-
-- (void) viewDidAppear:(BOOL)animated {
-	[self loadAccountFromPasteboard];
-}
-
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -73,7 +64,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.
 	self.keyIDTextField = nil;
 	self.vCodeTextField = nil;
@@ -81,10 +71,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (IBAction) onBrowser: (id) sender {
 	BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
@@ -169,95 +155,7 @@
 		[self saveAccount];
 }
 
-#pragma mark APIKeysViewControllerDelegate
-
-- (void) apiKeysViewController:(APIKeysViewController*) controller didSelectAPIKeys:(NSArray*) apiKeys {
-	if (apiKeys.count == 0)
-		return;
-	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+MultipleSave" name:NSLocalizedString(@"Checking API Keys", nil)];
-	__weak EUOperation* weakOperation = operation;
-	
-	NSMutableArray *errors = [NSMutableArray array];
-	[operation addExecutionBlock:^(void) {
-		float n = apiKeys.count;
-		float i = 0;
-		for (NSDictionary *apiKey in apiKeys) {
-			weakOperation.progress = i++ / n;
-			NSError *error = nil;
-			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[apiKey valueForKey:@"keyID"] integerValue] vCode:[apiKey valueForKey:@"vCode"] error:&error];
-			if (error)
-				[errors addObject:[apiKey valueForKey:@"keyID"]];
-		}
-	}];
-	
-	[operation setCompletionBlockInCurrentThread:^(void) {
-		if (![weakOperation isCancelled]) {
-			if (errors.count > 0) {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
-																	message:[NSString stringWithFormat:NSLocalizedString(@"Unable to import keys: %@.", nil), [errors componentsJoinedByString:@","]]
-																   delegate:nil
-														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-														  otherButtonTitles:nil];
-				[alertView show];
-			}
-			else {
-				if ([self.navigationController visibleViewController] == self)
-					[self.navigationController popViewControllerAnimated:YES];
-			}
-		}
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
 #pragma mark - Private
-
-- (void) loadAccountFromPasteboard {
-	UIPasteboard *pb = [UIPasteboard generalPasteboard];
-	NSArray *types = [pb pasteboardTypes];
-	if (types.count > 0) {
-		NSCharacterSet *keyIDCharactersSet = [NSCharacterSet decimalDigitCharacterSet];
-		NSCharacterSet *vCodeCharactersSet = [NSCharacterSet alphanumericCharacterSet];
-		for (NSString *type in types) {
-			NSString *text = [pb valueForPasteboardType:type];
-			if ([text isKindOfClass:[NSString class]]) {
-				NSMutableArray *apiKeys = [NSMutableArray array];
-				NSArray *lines = [text componentsSeparatedByString:@"\n"];
-				for (NSString *line in lines) {
-					NSArray *columns = [line componentsSeparatedByString:@"\t"];
-					if (columns.count >= 3) {
-						NSCharacterSet *characterSet1 = [NSCharacterSet characterSetWithCharactersInString:[columns objectAtIndex:0]];
-						NSCharacterSet *characterSet2 = [NSCharacterSet characterSetWithCharactersInString:[columns objectAtIndex:2]];
-						if ([keyIDCharactersSet isSupersetOfSet:characterSet1] && [vCodeCharactersSet isSupersetOfSet:characterSet2]) {
-							[apiKeys addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[columns objectAtIndex:0], @"keyID",
-												[columns objectAtIndex:1], @"name",
-												[columns objectAtIndex:2], @"vCode",
-												[NSNumber numberWithBool:NO], @"selected",
-												nil]];
-						}
-					}
-				}
-				if (apiKeys.count == 1) {
-					[pb setValue:@"" forPasteboardType:type];
-					NSDictionary *apiKey = [apiKeys objectAtIndex:0];
-					self.keyIDTextField.text = [apiKey valueForKey:@"keyID"];
-					self.vCodeTextField.text = [apiKey valueForKey:@"vCode"];
-					break;
-				}
-				else if (apiKeys.count > 1 && [self.navigationController visibleViewController] == self) {
-					[pb setValue:@"" forPasteboardType:type];
-					APIKeysViewController *controller = [[APIKeysViewController alloc] initWithNibName:@"APIKeysViewController" bundle:nil];
-					controller.apiKeys = apiKeys;
-					controller.delegate = self;
-					[self.navigationController pushViewController:controller animated:YES];
-					break;
-				}
-			}
-		}
-	}
-	[self testForSave];
-}
 
 - (void) saveAccount {
 	NSString *path = [Globals accountsFilePath];
@@ -278,10 +176,6 @@
 		self.saveButton.enabled = NO;
 	else
 		self.saveButton.enabled = YES;
-}
-
-- (void) applicationDidBecomeActive:(NSNotification*) notification {
-	[self loadAccountFromPasteboard];
 }
 
 @end

@@ -45,6 +45,7 @@
 								<int key="NSvFlags">294</int>
 								<string key="NSFrame">{{20, 0}, {286, 32}}</string>
 								<reference key="NSSuperview" ref="837500320"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="825798641"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -86,6 +87,7 @@
 								<int key="NSvFlags">291</int>
 								<string key="NSFrame">{{314, 0}, {252, 32}}</string>
 								<reference key="NSSuperview" ref="837500320"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="484970276"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -107,6 +109,7 @@
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{574, 0}, {100, 32}}</string>
 								<reference key="NSSuperview" ref="837500320"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -125,6 +128,7 @@
 						</array>
 						<string key="NSFrameSize">{683, 31}</string>
 						<reference key="NSSuperview" ref="32168874"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="580471431"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -139,6 +143,7 @@
 				</array>
 				<string key="NSFrameSize">{703, 32}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="837500320"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -155,6 +160,7 @@
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -170,6 +176,7 @@
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>

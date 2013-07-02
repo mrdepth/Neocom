@@ -22,6 +22,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+	else
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	self.title = NSLocalizedString(@"Search Criteria", nil);
 	self.filters = [NSMutableArray arrayWithObjects:
 					@{@"title" : NSLocalizedString(@"Start Date", nil), @"filterType" : @(KillNetFilterTypeStartDate), @"key" : EVEKillNetLogFilterStartDate},
@@ -188,7 +195,6 @@
 }
 
 - (void)viewDidUnload {
-	[self setTableView:nil];
 	[super viewDidUnload];
 }
 

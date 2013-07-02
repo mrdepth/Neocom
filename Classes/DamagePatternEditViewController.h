@@ -11,8 +11,7 @@
 #import "ProgressLabel.h"
 
 @class DamagePattern;
-@interface DamagePatternEditViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface DamagePatternEditViewController : UITableViewController <UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableViewCell *damageAmountsCellView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *titleCellView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;

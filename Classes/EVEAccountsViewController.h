@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface EVEAccountsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface EVEAccountsViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView *accountsTableView;
 @property (nonatomic, weak) IBOutlet UIButton *logoffButton;
 
 - (IBAction) onAddAccount: (id) sender;

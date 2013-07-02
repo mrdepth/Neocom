@@ -57,6 +57,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 
 	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
@@ -64,6 +65,11 @@
 		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
+	else
+		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+																											style:UIBarButtonItemStyleBordered
+																										   target:self
+																										   action:@selector(didCloseModalViewController:)];
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
@@ -89,7 +95,6 @@
 - (void)viewDidUnload {
 //	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
     [super viewDidUnload];
-	self.menuTableView = nil;
 	self.fittingItemsViewController = nil;
 	self.modalController = nil;
 	self.popoverController = nil;
@@ -99,7 +104,7 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[self.menuTableView setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
 	if (!editing) {
 	}
 }
@@ -194,10 +199,10 @@
 
 		if (rows.count == 0) {
 			[self.fits removeObjectAtIndex:indexPath.section - 1];
-			[self.menuTableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		else {
-			[self.menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		[self save];
 	}
@@ -477,7 +482,7 @@
 		if (![weakOperation isCancelled]) {
 			self.needsConvert = needsConvertTmp;
 			self.fits = fitsTmp;
-			[self.menuTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -600,7 +605,7 @@
 								 
 							 }
 						 }
-							 cancelBlock:nil] showFromRect:[self.menuTableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.menuTableView animated:YES];
+							 cancelBlock:nil] showFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.tableView animated:YES];
 	
 }
 

@@ -55,6 +55,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Assets", nil);
 	
 	if (!self.accounts) {
@@ -63,15 +64,13 @@
 			self.accounts = [NSArray arrayWithObject:account];
 	}
 	
+	self.navigationItem.titleView = self.ownerSegmentControl;
+
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-//	else
-//		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Combined", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCombined:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onCombined:)];
 	
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
@@ -90,7 +89,7 @@
 
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
 	if (motion == UIEventSubtypeMotionShake)
-		[self.assetsTableView handleShake];
+		[(CollapsableTableView*) self.tableView handleShake];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -110,7 +109,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.assetsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
@@ -313,12 +311,8 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
+	tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -628,7 +622,7 @@
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.assets = assetsTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[self.assetsTableView reloadData];
+						[self.tableView reloadData];
 					}
 				}
 			}];
@@ -641,7 +635,7 @@
 			}
 		}
 	}
-	[self.assetsTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {

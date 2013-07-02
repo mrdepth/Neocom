@@ -11,8 +11,7 @@
 #import "FitsViewControllerDelegate.h"
 #include "eufe.h"
 
-@interface FitsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *menuTableView;
+@interface FitsViewController : UITableViewController<FittingItemsViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *modalController;
 @property (nonatomic, strong) UIPopoverController *popoverController;

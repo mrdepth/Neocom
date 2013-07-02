@@ -46,6 +46,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	NSMutableArray *tagsTmp = [NSMutableArray array];
 	self.title = NSLocalizedString(@"Search", nil);
 	[self.navigationItem setRightBarButtonItem:self.searchButton];
@@ -53,6 +55,11 @@
 		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
+	else
+		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+																											style:UIBarButtonItemStyleBordered
+																										   target:self
+																										   action:@selector(didCloseModalViewController:)];
 
 	if (!self.selectedTags)
 		self.selectedTags = [[NSMutableArray alloc] init];
@@ -71,7 +78,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.tags = tagsTmp;
-		[self.menuTableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 	[self testInputData];
@@ -93,7 +100,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.menuTableView = nil;
 	self.fittingItemsViewController = nil;
 	self.modalController = nil;
 	self.searchButton = nil;
@@ -248,7 +254,7 @@
 - (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
 	self.ship = type;
 	[self testInputData];
-	[self.menuTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+	[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.popoverController dismissPopoverAnimated:YES];

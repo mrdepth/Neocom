@@ -38,6 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"EVE-Kill", nil);
 	[self reload];
     // Do any additional setup after loading the view from its nib.
@@ -57,7 +58,6 @@
 }
 
 - (void)viewDidUnload {
-    [self setTableView:nil];
 	[self setSections:nil];
     [super viewDidUnload];
 }

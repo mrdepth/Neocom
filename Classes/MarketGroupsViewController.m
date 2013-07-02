@@ -27,6 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	if (!self.parentGroup)
 		self.title = NSLocalizedString(@"Market", nil);
 	else
@@ -34,6 +36,8 @@
 	[self reload];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+	else
+		self.tableView.tableHeaderView = self.searchBar;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -49,7 +53,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.itemsTable = nil;
 	self.searchBar = nil;
 	self.parentGroup = nil;
 	self.subGroups = nil;
@@ -232,13 +235,12 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -306,7 +308,7 @@
 			self.subGroups = subGroupValues;
 			if (itemValues.count > 0)
 				self.groupItems = itemValues;
-			[self.itemsTable reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	
@@ -325,7 +327,7 @@
 			return;
 		if (searchString.length >= 2) {
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%@%%\" AND marketGroupID IS NOT NULL ORDER BY d.value, typeName;", searchString]
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%@%%\" AND marketGroupID > 0 ORDER BY d.value, typeName;", searchString]
 												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 													   EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 													   int metaGroupID = sqlite3_column_int(stmt, 1);

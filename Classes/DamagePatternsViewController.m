@@ -42,6 +42,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	self.title = NSLocalizedString(@"Damage Patterns", nil);
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
@@ -64,7 +66,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.tableView = nil;
 	self.sections = nil;
 }
 

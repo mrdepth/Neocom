@@ -15,9 +15,8 @@ typedef enum {
 	ItemsDBViewControllerModeAll
 } ItemsDBViewControllerMode;
 
-@interface ItemsDBViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *itemsTable;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@interface ItemsDBViewController : UITableViewController<UISearchBarDelegate>
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *publishedFilterSegment;
 @property (nonatomic, strong) EVEDBInvCategory *category;
 @property (nonatomic, strong) EVEDBInvGroup *group;

@@ -72,7 +72,6 @@
 
 - (void)viewDidUnload
 {
-	[self setTableView:nil];
 	[self setDamageAmountsCellView:nil];
 	[self setTitleCellView:nil];
 	[self setTitleTextField:nil];

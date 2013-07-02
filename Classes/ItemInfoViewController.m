@@ -68,10 +68,6 @@
 	[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
 	self.descriptionLabel.text = description;
 	self.imageView.image = [UIImage imageNamed:[self.type typeLargeImageName]];
-	CGRect r = [self.descriptionLabel textRectForBounds:CGRectMake(0, 0, self.descriptionLabel.frame.size.width, 1024) limitedToNumberOfLines:0];
-	self.descriptionLabel.frame = CGRectMake(self.descriptionLabel.frame.origin.x, self.descriptionLabel.frame.origin.y, self.descriptionLabel.frame.size.width, r.size.height);
-	self.typeInfoView.frame = CGRectMake(self.typeInfoView.frame.origin.x, self.typeInfoView.frame.origin.y, self.typeInfoView.frame.size.width, self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + 5);
-	self.attributesTable.tableHeaderView.frame = self.typeInfoView.frame;
 	
 	EVEDBDgmTypeAttribute *attribute = [self.type.attributesDictionary valueForKey:@"422"];
 	int techLevel = attribute.value;
@@ -96,6 +92,18 @@
 //	attributesTable.frame = CGRectMake(attributesTable.frame.origin.x, typeInfoView.frame.size.height, attributesTable.frame.size.width, self.view.frame.size.height);
 }
 
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	CGRect r = [self.descriptionLabel textRectForBounds:CGRectMake(0, 0, self.descriptionLabel.frame.size.width, 1024) limitedToNumberOfLines:0];
+	self.descriptionLabel.frame = CGRectMake(self.descriptionLabel.frame.origin.x, self.descriptionLabel.frame.origin.y, self.descriptionLabel.frame.size.width, r.size.height);
+	
+	r = CGRectMake(self.typeInfoView.frame.origin.x, self.typeInfoView.frame.origin.y, self.typeInfoView.frame.size.width, self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + 5);
+	if (!CGRectEqualToRect(r, self.typeInfoView.frame)) {
+		self.typeInfoView.frame = r;
+		self.tableView.tableHeaderView = self.typeInfoView;
+	}
+}
+
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		return YES;
@@ -112,7 +120,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.attributesTable = nil;
 	self.titleLabel = nil;
 	self.volumeLabel = nil;
 	self.massLabel = nil;
@@ -634,7 +641,7 @@
 			[section setValue:rows forKey:@"rows"];
 		}
 		
-		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -1645,7 +1652,7 @@
 				[self.sections addObject:section];
 		}
 		
-		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
@@ -1851,7 +1858,7 @@
 				[self.sections addObject:section];
 		}
 		
-		[self.attributesTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }

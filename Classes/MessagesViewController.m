@@ -48,6 +48,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Mail", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -88,7 +89,6 @@
 	[self setToolbar:nil];
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.messagesTableView = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
@@ -107,7 +107,7 @@
 	for (EUMailMessage* message in [self.messages objectAtIndex:0])
 		message.read = YES;
 	[self.mailBox save];
-	[self.messagesTableView reloadData];
+	[self.tableView reloadData];
 	[self.searchDisplayController.searchResultsTableView reloadData];
 	[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
 }
@@ -139,7 +139,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.messagesTableView ? @"MessageCellView" : @"MessageCellViewCompact";
+			nibName = tableView == self.tableView ? @"MessageCellView" : @"MessageCellViewCompact";
 		else
 			nibName = @"MessageCellView";
 		
@@ -235,7 +235,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.messagesTableView ? 32 : 54;
+		return tableView == self.tableView ? 32 : 54;
 	else
 		return 54;
 }
@@ -264,7 +264,7 @@
 			if (!message.read && message.text) {
 				message.read = YES;
 				[self.mailBox save];
-				[self.messagesTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+				[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 				[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 				[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
 			}
@@ -302,13 +302,13 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
+	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {
@@ -378,7 +378,7 @@
 				if (![weakOperation isCancelled]) {
 					self.messages = messagesTmp;
 					[self searchWithSearchString:self.searchBar.text];
-					[self.messagesTableView reloadData];
+					[self.tableView reloadData];
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -387,7 +387,7 @@
 			self.messages = [[NSArray alloc] initWithObjects:self.mailBox.inbox, self.mailBox.sent, nil];
 		}
 	}
-	[self.messagesTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {

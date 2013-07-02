@@ -50,6 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = self.category.categoryName;
 	[self reload];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
@@ -66,7 +67,6 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
-	self.certificatesTableView = nil;
 	self.sections = nil;
 }
 
@@ -182,7 +182,7 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
-			[self.certificatesTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	

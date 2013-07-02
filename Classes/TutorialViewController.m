@@ -8,6 +8,11 @@
 
 #import "TutorialViewController.h"
 
+@interface TutorialViewController()
+@property (nonatomic, strong) NSMutableArray* pages;
+
+@end
+
 
 @implementation TutorialViewController
 
@@ -17,6 +22,7 @@
 	self.title = NSLocalizedString(@"Tutorial", nil);
 	NSArray *images = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"tutorial" ofType:@"plist"]]];
 	int x = 20;
+	self.pages = [[NSMutableArray alloc] init];
 	for (NSString *imageName in images) {
 		UIImageView *imageView = [[UIImageView alloc]  initWithImage:[UIImage imageNamed:imageName]];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -26,6 +32,7 @@
 		imageView.frame = CGRectMake(x, 0, self.scrollView.frame.size.width - 40, self.scrollView.frame.size.height);
 		[self.scrollView addSubview:imageView];
 		x += self.scrollView.frame.size.width;
+		[self.pages addObject:imageView];
 	}
 	self.scrollView.contentSize = CGSizeMake(x - 20, self.scrollView.frame.size.height);
 	self.pageControl.numberOfPages = images.count;
@@ -51,6 +58,17 @@
 	self.pageControl = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	int x = 20;
+	for (UIImageView *imageView in self.pages) {
+		imageView.frame = CGRectMake(x, 0, self.scrollView.frame.size.width - 40, self.scrollView.frame.size.height);
+		[self.scrollView addSubview:imageView];
+		x += self.scrollView.frame.size.width;
+	}
+	self.scrollView.contentSize = CGSizeMake(x - 20, self.scrollView.frame.size.height);
 }
 
 - (IBAction) onPageChanged:(id) sender {

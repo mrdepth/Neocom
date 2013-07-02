@@ -43,6 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	[self loadData];
 }
 
@@ -62,7 +63,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.rssTableView = nil;
 	self.feedTitleLabel = nil;
 	self.rows = nil;
 }
@@ -152,7 +152,6 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.rows = values;
-		[self.rssTableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

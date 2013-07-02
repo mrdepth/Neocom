@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EVEDBInvType;
-@interface BCSearchResultViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *resultsTableView;
+@interface BCSearchResultViewController : UITableViewController
 @property (nonatomic, strong) EVEDBInvType *ship;
 @property (nonatomic, strong) NSArray *loadouts;
 

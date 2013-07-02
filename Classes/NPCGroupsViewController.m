@@ -47,6 +47,10 @@
 	}
 	else
 		[super viewDidLoad];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		self.tableView.tableHeaderView = self.searchBar;
+
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

@@ -38,12 +38,7 @@
 	self.title = NSLocalizedString(@"Select Characters", nil);
 	self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-	else {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	
 	NSMutableArray* accountsTmp = [NSMutableArray array];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AccountsSelectionViewController+Load" name:NSLocalizedString(@"Loading...", nil)];

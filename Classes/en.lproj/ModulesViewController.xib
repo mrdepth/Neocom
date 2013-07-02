@@ -226,7 +226,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 297}, {320, 50}}</string>
 								<reference key="NSSuperview" ref="25940676"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>
@@ -294,7 +293,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="344144706"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -360,7 +358,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="1027613936"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -417,7 +414,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="116017686"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -540,7 +536,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{261, 0}, {50, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -613,7 +608,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="282131515"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>

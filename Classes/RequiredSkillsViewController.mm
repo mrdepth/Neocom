@@ -60,6 +60,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Required Skills", nil);
 	[self loadData];
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
@@ -82,7 +83,6 @@
 {
 	[self setTrainingTimeLabel:nil];
     [super viewDidUnload];
-	self.skillsTableView = nil;
 	self.skillPlan = nil;
 }
 
@@ -243,7 +243,7 @@
 		if (![operation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 			
-			[self.skillsTableView reloadData];
+			[self.tableView reloadData];
 			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 		}
 		else {

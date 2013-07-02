@@ -52,6 +52,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Import", nil);
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 
@@ -76,7 +77,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
-	self.plansTableView = nil;
 	self.rows = nil;
 	
 	[self.server shutdown];
@@ -258,7 +258,7 @@
 		[self performSelector:@selector(updateAddress) withObject:nil afterDelay:1];
 	}
 	else {
-		[self.plansTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 

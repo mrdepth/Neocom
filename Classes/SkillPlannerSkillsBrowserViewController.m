@@ -41,17 +41,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Skills", nil);
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
 																			 style:UIBarButtonItemStyleBordered
 																			target:self
 																			action:@selector(onClose:)];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background3.png"]];
-	else {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
 	[self reload];
 	self.navigationItem.titleView = self.filterSegmentedControl;
     // Uncomment the following line to preserve selection between presentations.

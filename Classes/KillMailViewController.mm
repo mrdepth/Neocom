@@ -39,6 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	
 	self.title = self.killMail.victim.characterName;
 
@@ -161,7 +162,6 @@
 	[self setSecurityStatusLabel:nil];
 	[self setRegionNameLabel:nil];
 	[self setSectionSegmentedControler:nil];
-	[self setTableView:nil];
 	[self setDamageTakenLabel:nil];
 	[self setShipImageView:nil];
 	[self setItemsSections:nil];

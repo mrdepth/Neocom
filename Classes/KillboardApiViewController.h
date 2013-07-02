@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FilterViewController.h"
 
-@interface KillboardApiViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *ownerSegmentControl;
+@interface KillboardApiViewController : UITableViewController
+@property (strong, nonatomic) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *killboardTypeSegmentControl;
 @property (strong, nonatomic) IBOutlet UINavigationController *filterNavigationViewController;
 @property (weak, nonatomic) IBOutlet FilterViewController *filterViewController;

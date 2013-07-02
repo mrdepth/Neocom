@@ -42,6 +42,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+	else
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	self.title = NSLocalizedString(@"Filter", nil);
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
 		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onCancel:)]];
@@ -60,7 +67,6 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-	self.tableView = nil;
 	self.values = nil;
 	self.collapsedSections = nil;
     // Release any retained subviews of the main view.

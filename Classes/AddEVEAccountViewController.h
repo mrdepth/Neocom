@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "BrowserViewController.h"
-#import "APIKeysViewController.h"
 
-@interface AddEVEAccountViewController : UIViewController<UITextFieldDelegate, BrowserViewControllerDelegate, UIAlertViewDelegate, APIKeysViewControllerDelegate>
+@interface AddEVEAccountViewController : UIViewController<UITextFieldDelegate, BrowserViewControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet UITextField *keyIDTextField;
 @property (nonatomic, weak) IBOutlet UITextField *vCodeTextField;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *saveButton;

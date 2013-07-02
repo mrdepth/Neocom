@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SkillLevelsViewControllerDelegate.h"
 
-@interface SkillLevelsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UITableView *skillLevelsTableView;
+@interface SkillLevelsViewController : UITableViewController
 @property (weak, nonatomic) IBOutlet id<SkillLevelsViewControllerDelegate> delegate;
 @property (assign, nonatomic) NSInteger currentLevel;
 

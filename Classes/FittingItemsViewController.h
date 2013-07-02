@@ -11,8 +11,7 @@
 
 @class EVEDBInvGroup;
 @class ItemInfo;
-@interface FittingItemsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate, UIPopoverControllerDelegate, FittingItemsViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@interface FittingItemsViewController : UITableViewController<UISearchDisplayDelegate, UIPopoverControllerDelegate, FittingItemsViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet UIViewController *mainViewController;
 @property (nonatomic, weak) IBOutlet id<FittingItemsViewControllerDelegate> delegate;
 @property (nonatomic, assign) NSInteger marketGroupID;

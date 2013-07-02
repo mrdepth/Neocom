@@ -39,6 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Access Mask", nil);
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	
 	__block NSArray *sectionsTmp = nil;
 	NSMutableDictionary *groupsTmp = [NSMutableDictionary dictionary];
@@ -74,7 +75,7 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.sections = sectionsTmp;
 		self.groups = groupsTmp;
-		[self.accessMaskTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -96,7 +97,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.accessMaskTableView = nil;
 	self.sections = nil;
 	self.groups = nil;
     // Release any retained subviews of the main view.

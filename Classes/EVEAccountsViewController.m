@@ -46,11 +46,11 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	self.title = NSLocalizedString(@"Accounts", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	self.logoffButton.hidden = [EVEAccount currentAccount] == nil;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountStorageDidChange:) name:NotificationAccountStoargeDidChange object:nil];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -65,7 +65,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	self.accountsTableView = nil;
 	self.logoffButton = nil;
 	self.sections = nil;
 	self.loadingOperation = nil;
@@ -104,7 +103,7 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[self.accountsTableView setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
 	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 	int sectionIndex = 0;
 	for (NSDictionary *section in self.sections) {
@@ -114,7 +113,7 @@
 		}
 		sectionIndex++;
 	}
-	[self.accountsTableView reloadSections:indexes withRowAnimation:UITableViewRowAnimationFade];
+	[self.tableView reloadSections:indexes withRowAnimation:UITableViewRowAnimationFade];
 	if (!self.editing) {
 		EUStorage* storage = [EUStorage sharedStorage];
 		[storage saveContext];
@@ -469,7 +468,7 @@
 			self.loadingOperation = nil;
 		if (![weakOperation isCancelled])
 			self.sections = sectionsTmp;
-		[self.accountsTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

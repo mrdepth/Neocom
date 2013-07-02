@@ -11,13 +11,12 @@
 #import "EUFilter.h"
 
 @class EUMailBox;
-@interface MessagesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, weak) IBOutlet UITableView *messagesTableView;
+@interface MessagesViewController : UITableViewController
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet FilterViewController *filterViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
 @property (nonatomic, strong) UIPopoverController *filterPopoverController;
-@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 
 - (IBAction)markAsRead:(id)sender;
 

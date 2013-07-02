@@ -36,6 +36,13 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
+		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
+	}
+	else
+		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	self.title = NSLocalizedString(@"Area Effects", nil);
 	[self reload];
 }
@@ -56,7 +63,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.tableView = nil;
 	self.sections = nil;
 }
 

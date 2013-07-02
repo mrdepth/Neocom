@@ -42,6 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Certificates", nil);
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
@@ -59,7 +60,7 @@
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.rows = rowsTmp;
-			[self.categoriesTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	
@@ -77,7 +78,6 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-	self.categoriesTableView = nil;
 	self.rows = nil;
 }
 

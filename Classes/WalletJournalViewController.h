@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SBTableView.h"
 #import "FilterViewController.h"
 #import "EUFilter.h"
 
-@interface WalletJournalViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
+@interface WalletJournalViewController : UITableViewController {
 }
-@property (nonatomic, weak) IBOutlet SBTableView *walletJournalTableView;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *ownerSegmentControl;
+@property (nonatomic, strong) IBOutlet UISegmentedControl *ownerSegmentControl;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *accountSegmentControl;
 @property (nonatomic, weak) IBOutlet UIView *accountsView;
 @property (nonatomic, weak) IBOutlet UIToolbar *ownerToolbar;

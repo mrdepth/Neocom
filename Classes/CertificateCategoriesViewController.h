@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CertificateCategoriesViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView* categoriesTableView;
+@interface CertificateCategoriesViewController : UITableViewController
 
 @end

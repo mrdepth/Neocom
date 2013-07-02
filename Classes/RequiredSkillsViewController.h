@@ -10,8 +10,7 @@
 
 @class ShipFit;
 @class SkillPlan;
-@interface RequiredSkillsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView* skillsTableView;
+@interface RequiredSkillsViewController : UITableViewController<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, strong) ShipFit* fit;
 

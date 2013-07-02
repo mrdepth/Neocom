@@ -55,19 +55,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Home", nil);
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self.splitViewController]];
-	else
+		[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundMenu~ipad.png"]]];
+	}
+	else {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+		[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	}
+	
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
-	self.menuTableView.visibleTopPartHeight = 24;
 	[self.characterInfoView addSubview:self.characterInfoViewController.view];
 	self.characterInfoViewController.view.frame = self.characterInfoView.bounds;
-	self.menuTableView.backgroundColor = [UIColor clearColor];
+	
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReadMail:) name:NotificationReadMail object:nil];
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
+	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -85,10 +91,10 @@
 }
 
 - (void)viewDidUnload {
+	[self setOnlineModeSegmentedControl:nil];
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
-	self.menuTableView = nil;
 	self.characterInfoViewController = nil;
 	self.menuItems = nil;
 	self.characterInfoView = nil;
@@ -106,6 +112,11 @@
 - (IBAction)onFacebook:(id)sender {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com/groups/Neocom/"]];
 }
+
+- (IBAction)onChangeOnlineMode:(id)sender {
+	[EVECachedURLRequest setOfflineMode:self.onlineModeSegmentedControl.selectedSegmentIndex == 1];
+}
+
 
 #pragma mark -
 #pragma mark Table view data source
@@ -209,6 +220,19 @@
 	return;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	CGRect frame = self.characterInfoView.frame;
+	if (scrollView.contentOffset.y < 0)
+		frame.origin.y = scrollView.contentOffset.y;
+	else if (scrollView.contentOffset.y < self.characterInfoView.frame.size.height - 24)
+		frame.origin.y = 0;
+	else
+		frame.origin.y = scrollView.contentOffset.y - self.characterInfoView.frame.size.height + 24;
+	self.characterInfoView.frame = frame;
+}
+
 #pragma mark CharacterInfoViewControllerDelegate
 
 - (void) characterInfoViewController:(CharacterInfoViewController*) controller willChangeContentSize:(CGSize) size animated:(BOOL) animated{
@@ -217,11 +241,14 @@
 		[UIView setAnimationDuration:0.5];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
+	self.tableView.tableHeaderView.frame = CGRectMake(0, 0, size.width, size.height + 40);
+	self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+
 	self.characterInfoView.frame = CGRectMake(0, 0, size.width, size.height);
-	self.menuTableView.frame = CGRectMake(0, size.height, self.menuTableView.frame.size.width, self.menuTableView.superview.frame.size.height - self.menuTableView.visibleTopPartHeight);
+	[self scrollViewDidScroll:self.tableView];
+
 	if (animated)
 		[UIView commitAnimations];
-	[self.menuTableView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
 #pragma mark ADBannerViewDelegate
@@ -258,7 +285,7 @@
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	self.numberOfUnreadMessages = 0;
-	[self.menuTableView reloadData];
+	[self.tableView reloadData];
 	[self loadMail];
 }
 
@@ -283,7 +310,7 @@
 		__weak EUOperation* weakOperation = operation;
 		[operation setCompletionBlockInCurrentThread:^(void) {
 			if (![weakOperation isCancelled])
-				[self.menuTableView reloadData];
+				[self.tableView reloadData];
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];

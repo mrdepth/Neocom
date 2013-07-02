@@ -52,17 +52,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Wallet Transactions", nil);
-	
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+
+	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
-	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	self.corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
@@ -70,6 +67,8 @@
 	[self.ownerSegmentControl layoutSubviews];
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsOwner];
 	self.accountSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsWalletTransactionsCorpAccount];
+	self.accountSegmentControl.enabled = self.ownerSegmentControl.selectedSegmentIndex == 1;
+
 	
 	[self reloadTransactions];
 	[self downloadAccountBalance];
@@ -92,12 +91,8 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.walletTransactionsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.accountSegmentControl = nil;
-	self.accountsView = nil;
-	self.ownerToolbar = nil;
-	self.accountToolbar = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
@@ -121,41 +116,16 @@
 - (IBAction) onChangeOwner:(id) sender {
 	[[NSUserDefaults standardUserDefaults] setInteger:self.ownerSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsOwner];
 	
-	[self.walletTransactionsTableView reloadData];
+	[self.tableView reloadData];
 	[self reloadTransactions];
 	
-	[UIView beginAnimations:0 context:0];
-	[UIView setAnimationDuration:0.5];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
-			self.accountToolbar.frame = CGRectMake(0, 0, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
-			self.walletTransactionsTableView.frame = CGRectMake(0, self.accountToolbar.frame.size.height, self.walletTransactionsTableView.frame.size.width, self.walletTransactionsTableView.frame.size.height);
-		}
-		else {
-			self.accountToolbar.frame = CGRectMake(0, -self.accountToolbar.frame.size.height, self.accountToolbar.frame.size.width, self.accountToolbar.frame.size.height);
-			self.walletTransactionsTableView.frame = CGRectMake(0, 0, self.walletTransactionsTableView.frame.size.width, self.walletTransactionsTableView.frame.size.height);
-		}
-	}
-	else {
-		if (self.ownerSegmentControl.selectedSegmentIndex == 1) {
-			self.accountsView.frame = CGRectMake(0, 88, 320, 44);
-			self.walletTransactionsTableView.frame = CGRectMake(0, 132, 320, self.view.frame.size.height);
-			self.walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 132);
-		}
-		else {
-			self.accountsView.frame = CGRectMake(0, 44, 320, 44);
-			self.walletTransactionsTableView.frame = CGRectMake(0, 88, 320, self.view.frame.size.height);
-			self.walletTransactionsTableView.topView.frame = CGRectMake(0, 0, 320, 88);
-		}
-	}
-	[UIView commitAnimations];
+	self.accountSegmentControl.enabled = self.ownerSegmentControl.selectedSegmentIndex == 1;
 }
 
 - (IBAction) onChangeAccount:(id) sender {
 	[[NSUserDefaults standardUserDefaults] setInteger:self.accountSegmentControl.selectedSegmentIndex forKey:SettingsWalletTransactionsCorpAccount];
 
-	[self.walletTransactionsTableView reloadData];
+	[self.tableView reloadData];
 	[self reloadTransactions];
 }
 		 
@@ -188,7 +158,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.walletTransactionsTableView ? @"WalletTransactionCellView" : @"WalletTransactionCellViewCompact";
+			nibName = tableView == self.tableView ? @"WalletTransactionCellView" : @"WalletTransactionCellViewCompact";
 		else
 			nibName = @"WalletTransactionCellView";
 		
@@ -261,7 +231,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.walletTransactionsTableView ? 53 : 72;
+		return tableView == self.tableView ? 53 : 72;
 	else
 		return 72;
 }
@@ -302,13 +272,12 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -413,7 +382,7 @@
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletTransactions = transactionsTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[self.walletTransactionsTableView reloadData];
+							[self.tableView reloadData];
 						}
 					}
 				}];
@@ -503,7 +472,7 @@
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletTransactions = transactionsTmp;
 							[self searchWithSearchString:self.searchBar.text];
-							[self.walletTransactionsTableView reloadData];
+							[self.tableView reloadData];
 						}
 					}
 				}];
@@ -513,7 +482,7 @@
 				self.walletTransactions = [self.corpWalletTransactions objectAtIndex:self.accountSegmentControl.selectedSegmentIndex];
 		}
 	}
-	[self.walletTransactionsTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (NSMutableArray*) downloadWalletTransactionsWithAccountIndex:(NSInteger) accountIndex {
@@ -589,7 +558,7 @@
 		if (![weakOperation isCancelled]) {
 			self.characterBalance = characterBalanceTmp;
 			self.corpAccounts = corpAccountsTmp;
-			[self.walletTransactionsTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	
@@ -610,7 +579,7 @@
 				self.charFilter = nil;
 				self.corpFilter = nil;
 			}
-			[self.walletTransactionsTableView reloadData];
+			[self.tableView reloadData];
 		}
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
@@ -625,7 +594,7 @@
 			self.charFilter = nil;
 			self.corpFilter = nil;
 		}
-		[self.walletTransactionsTableView reloadData];
+		[self.tableView reloadData];
 		[self reloadTransactions];
 		[self downloadAccountBalance];
 	}

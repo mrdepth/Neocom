@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface RSSFeedsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface RSSFeedsViewController : UITableViewController
 
 @end

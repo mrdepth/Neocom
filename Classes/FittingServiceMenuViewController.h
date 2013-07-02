@@ -10,8 +10,7 @@
 #import "FittingItemsViewController.h"
 
 
-@interface FittingServiceMenuViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView *menuTableView;
+@interface FittingServiceMenuViewController : UITableViewController<FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *modalController;
 @property (nonatomic, strong) UIPopoverController *popoverController;

@@ -55,7 +55,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">background1.png</string>
+							<string key="NSResourceName">background.png</string>
 						</object>
 					</object>
 					<object class="IBUIScrollView" id="581865528">
@@ -63,6 +63,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -149,6 +150,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 42}, {280, 42}}</string>
 						<reference key="NSSuperview" ref="856672288"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -272,6 +274,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{104, 63}, {196, 21}}</string>
 						<reference key="NSSuperview" ref="20715802"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -381,6 +384,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{108, 42}, {192, 21}}</string>
 						<reference key="NSSuperview" ref="699267118"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -631,6 +635,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{104, 105}, {196, 21}}</string>
 						<reference key="NSSuperview" ref="605781241"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -697,6 +702,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 42}, {280, 90}}</string>
 						<reference key="NSSuperview" ref="239380787"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -1215,7 +1221,7 @@ dGVzcwpLdXJ0IE90dG8KVG9ieSBSYXlmaWVsZApKaW0gTmFzdGlrA</string>
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>background1.png</string>
+				<string>background.png</string>
 				<string>buttonBackground.png</string>
 				<string>cellAccountBackground.png</string>
 			</object>

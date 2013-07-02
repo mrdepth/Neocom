@@ -10,9 +10,8 @@
 #import "EVEDBAPI.h"
 #import "EVECentralAPI.h"
 
-@interface MarketInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface MarketInfoViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView *ordersTableView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *reportTypeSegment;
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) IBOutlet UISearchDisplayController *searchDisplayController;

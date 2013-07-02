@@ -49,17 +49,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Industry Jobs", nil);
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	
+	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		//[self.navigationItem setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:ownerSegmentControl] autorelease]];
-		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+		self.tableView.tableHeaderView = self.searchBar;
 
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsIndustryJobsOwner];
 
@@ -84,7 +83,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.jobsTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
@@ -136,7 +134,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.jobsTableView ? @"IndustryJobCellView" : @"IndustryJobCellViewCompact";
+			nibName = tableView == self.tableView ? @"IndustryJobCellView" : @"IndustryJobCellViewCompact";
 		else
 			nibName = @"IndustryJobCellView";
 
@@ -209,7 +207,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.jobsTableView ? 53 : 72;
+		return tableView == self.tableView ? 53 : 72;
 	else
 		return 72;
 }
@@ -250,12 +248,13 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -530,7 +529,7 @@
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.jobs = jobsTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[self.jobsTableView reloadData];
+						[self.tableView reloadData];
 					}
 				}
 			}];
@@ -539,7 +538,7 @@
 		else
 			self.jobs = currentJobs;
 	}
-	[self.jobsTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (NSDictionary*) conquerableStations {

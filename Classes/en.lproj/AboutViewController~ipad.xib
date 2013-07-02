@@ -56,7 +56,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">background3.png</string>
+							<string key="NSResourceName">background~ipad.png</string>
 						</object>
 					</object>
 					<object class="IBUIScrollView" id="581865528">
@@ -102,9 +102,9 @@
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage" id="1061010014">
+						<object class="NSCustomResource" key="IBUIImage" id="1003152409">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">cellAccountBackground-iPad.png</string>
+							<string key="NSResourceName">cellAccountBackground~ipad.png</string>
 						</object>
 					</object>
 					<object class="IBUILabel" id="349070888">
@@ -207,7 +207,7 @@
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<reference key="IBUIImage" ref="1061010014"/>
+						<reference key="IBUIImage" ref="1003152409"/>
 					</object>
 					<object class="IBUILabel" id="940090945">
 						<reference key="NSNextResponder" ref="20715802"/>
@@ -345,7 +345,7 @@
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<reference key="IBUIImage" ref="1061010014"/>
+						<reference key="IBUIImage" ref="1003152409"/>
 					</object>
 					<object class="IBUILabel" id="247942389">
 						<reference key="NSNextResponder" ref="699267118"/>
@@ -472,7 +472,7 @@
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<reference key="IBUIImage" ref="1061010014"/>
+						<reference key="IBUIImage" ref="1003152409"/>
 					</object>
 					<object class="IBUILabel" id="275389133">
 						<reference key="NSNextResponder" ref="605781241"/>
@@ -692,7 +692,7 @@
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<reference key="IBUIImage" ref="1061010014"/>
+						<reference key="IBUIImage" ref="1003152409"/>
 					</object>
 					<object class="IBUILabel" id="169629870">
 						<reference key="NSNextResponder" ref="260377808"/>
@@ -1400,9 +1400,9 @@ dGVzcwpLdXJ0IE90dG8KVG9ieSBSYXlmaWVsZApKaW0gTmFzdGlrA</string>
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>background3.png</string>
+				<string>background~ipad.png</string>
 				<string>buttonBackground.png</string>
-				<string>cellAccountBackground-iPad.png</string>
+				<string>cellAccountBackground~ipad.png</string>
 			</object>
 			<object class="NSArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>

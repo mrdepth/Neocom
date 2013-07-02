@@ -46,6 +46,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	self.title = NSLocalizedString(@"Contract", nil);
 	[self loadData];
 }
@@ -66,7 +67,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.contractTableView = nil;
 	self.sections = nil;
 	self.conquerableStations = nil;
 }
@@ -399,7 +399,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.sections = sectionsTmp;
-		[self.contractTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

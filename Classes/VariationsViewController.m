@@ -33,6 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	self.title = self.type.typeName;
 	NSMutableArray* values = [NSMutableArray array];
 	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"VariationsViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
@@ -94,7 +96,6 @@
 }
 
 - (void)viewDidUnload {
-    [self setTableView:nil];
 	self.sections = nil;
     [super viewDidUnload];
 }

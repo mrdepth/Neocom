@@ -597,7 +597,7 @@
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	}
 	else if ([button isEqualToString:ActionButtonVariations]) {
-		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"FittingVariationsViewController" bundle:nil];
+		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
 		controller.type = itemInfo;
 		controller.modifiedItem = itemInfo;
 		controller.delegate = self.fittingViewController;

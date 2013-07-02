@@ -46,12 +46,19 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+
 	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
 		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
 	}
+	else
+		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+																											style:UIBarButtonItemStyleBordered
+																										   target:self
+																										   action:@selector(didCloseModalViewController:)];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -96,7 +103,7 @@
 	[operation setCompletionBlockInCurrentThread:^{
 		if (![weakOperation isCancelled]) {
 			self.fits = fitsTmp;
-			[self.menuTableView reloadData];
+			[self.tableView reloadData];
 		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -111,7 +118,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.menuTableView = nil;
 	self.fittingItemsViewController = nil;
 	self.modalController = nil;
 	self.popoverController = nil;

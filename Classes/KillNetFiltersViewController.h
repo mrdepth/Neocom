@@ -42,8 +42,7 @@ typedef enum {
 
 @end
 
-@interface KillNetFiltersViewController : UIViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface KillNetFiltersViewController : UITableViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate>
 @property (strong, nonatomic) NSArray* usedFilters;
 @property (nonatomic, weak) id<KillNetFiltersViewControllerDelegate> delegate;
 

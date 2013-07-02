@@ -48,15 +48,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Market Orders", nil);
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	
+	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		self.navigationItem.titleView = self.ownerSegmentControl;
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+		self.tableView.tableHeaderView = self.searchBar;
 	
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsMarketOrdersOwner];
 
@@ -81,7 +82,6 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.marketOrdersTableView = nil;
 	self.ownerSegmentControl = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
@@ -137,7 +137,7 @@
     if (cell == nil) {
 		NSString *nibName;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.marketOrdersTableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
+			nibName = tableView == self.tableView ? @"MarketOrderCellView" : @"MarketOrderCellViewCompact";
 		else
 			nibName = @"MarketOrderCellView";
 		
@@ -211,7 +211,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.marketOrdersTableView ? 70 : 104;
+		return tableView == self.tableView ? 70 : 104;
 	else
 		return 104;
 }
@@ -252,14 +252,12 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundColor = [UIColor clearColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background4.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1.png"]];
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
 		tableView.backgroundView.contentMode = UIViewContentModeTop;
 	}
-		
+	else
+		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -478,7 +476,7 @@
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.orders = ordersTmp;
 						[self searchWithSearchString:self.searchBar.text];
-						[self.marketOrdersTableView reloadData];
+						[self.tableView reloadData];
 					}
 				}
 			}];
@@ -487,7 +485,7 @@
 		else
 			self.orders = currentOrders;
 	}
-	[self.marketOrdersTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (NSMutableDictionary*) conquerableStations {

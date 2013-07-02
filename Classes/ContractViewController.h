@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EVEOnlineAPI.h"
 
-@interface ContractViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, weak) IBOutlet UITableView *contractTableView;
-@property (nonatomic, weak) IBOutlet EVEContractsItem *contract;
+@interface ContractViewController : UITableViewController
+@property (nonatomic, strong) EVEContractsItem *contract;
 @property (nonatomic) BOOL corporate;
 @end

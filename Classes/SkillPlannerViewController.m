@@ -73,6 +73,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Skill Planner", nil);
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
     // Do any additional setup after loading the view from its nib.
@@ -100,7 +101,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self setTrainingTimeLabel:nil];
     [super viewDidUnload];
-	self.skillsTableView = nil;
 	self.skillPlan = nil;
 	self.modifiedIndexPath = nil;
     // Release any retained subviews of the main view.
@@ -109,13 +109,13 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[self.skillsTableView setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
 	//NSArray* clearRow = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:skillPlan.skills.count inSection:0]];
 	NSIndexSet* section = [NSIndexSet indexSetWithIndex:1];
 	if (editing)
-		[self.skillsTableView insertSections:section withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView insertSections:section withRowAnimation:UITableViewRowAnimationFade];
 	else {
-		[self.skillsTableView deleteSections:section withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView deleteSections:section withRowAnimation:UITableViewRowAnimationFade];
 		[self.skillPlan save];
 	}
 }
@@ -296,7 +296,7 @@
 			
 			[self presentModalViewController:navController animated:YES];
 		}
-		else if (indexPath.row == 1) {
+		else if (indexPath.row == 2) {
 			BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
 			NSString* path = [[NSBundle mainBundle] pathForResource:@"ImportingTutorial/index" ofType:@"html"];
 			controller.title = NSLocalizedString(@"Importing tutorial", nil);
@@ -364,7 +364,7 @@
 	}
 	else if (skillToInsert) {
 		NSInteger index = [self.skillPlan.skills indexOfObject:skillToInsert];
-		[self.skillsTableView beginUpdates];
+		[self.tableView beginUpdates];
 		EVECharacterSheetSkill *characterSkill = [self.skillPlan.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
 		for (NSInteger level = skillToInsert.requiredLevel + 1; level <= requiredLevel; level++) {
 			if (characterSkill.level >= skill.requiredLevel)
@@ -376,10 +376,10 @@
 			float sp = [requiredSkill skillpointsAtLevel:level - 1];
 			requiredSkill.currentSP = MAX(sp, characterSkill.skillpoints);
 			[self.skillPlan.skills insertObject:requiredSkill atIndex:++index];
-			[self.skillsTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		[self.skillPlan resetTrainingTime];
-		[self.skillsTableView endUpdates];
+		[self.tableView endUpdates];
 		[self reloadTrainingTime];
 	}
 }
@@ -409,7 +409,7 @@
 	__weak EUOperation* weakOperation = operation;
 	__block SkillPlan* skillPlanTmp = nil;
 	self.skillPlan = nil;
-	[self.skillsTableView reloadData];
+	[self.tableView reloadData];
 	[operation addExecutionBlock:^(void) {
 		EVEAccount *account = [EVEAccount currentAccount];
 		if (!account)
@@ -427,7 +427,7 @@
 		if (![weakOperation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 
-			[self.skillsTableView reloadData];
+			[self.tableView reloadData];
 			[self reloadTrainingTime];
 		}
 		else {
@@ -442,7 +442,7 @@
 	if (notification.object == self.skillPlan) {
 		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadTrainingTime) object:nil];
 		[self performSelector:@selector(reloadTrainingTime) withObject:nil afterDelay:0];
-		[self.skillsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.skillPlan.skills.count - 1 inSection:0]]
+		[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:self.skillPlan.skills.count - 1 inSection:0]]
 									withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
@@ -451,7 +451,7 @@
 	if (notification.object == self.skillPlan) {
 		[self reloadTrainingTime];
 		EVEDBInvTypeRequiredSkill* skill = [notification.userInfo valueForKey:@"skill"];
-		[self.skillsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.skillPlan.skills indexOfObject:skill] inSection:0]]
+		[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.skillPlan.skills indexOfObject:skill] inSection:0]]
 									withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
@@ -464,7 +464,7 @@
 		[indexesSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 			[indexes addObject:[NSIndexPath indexPathForRow:idx inSection:0]];
 		}];
-		[self.skillsTableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView deleteRowsAtIndexPaths:indexes withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 

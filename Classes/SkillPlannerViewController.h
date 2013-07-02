@@ -10,8 +10,7 @@
 #import "SkillPlannerImportViewController.h"
 
 @class SkillPlan;
-@interface SkillPlannerViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UIAlertViewDelegate, SkillPlannerImportViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet UITableView* skillsTableView;
+@interface SkillPlannerViewController : UITableViewController<UIActionSheetDelegate, UIAlertViewDelegate, SkillPlannerImportViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 
 @end

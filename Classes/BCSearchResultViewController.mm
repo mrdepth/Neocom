@@ -42,6 +42,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Search Results", nil);
 	self.shipImage = [UIImage imageNamed:[self.ship typeSmallImageName]];
 }
@@ -62,7 +63,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.resultsTableView = nil;
 	self.shipImage = nil;
 }
 

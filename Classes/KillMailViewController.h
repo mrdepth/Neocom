@@ -10,7 +10,7 @@
 #import "KillMail.h"
 #import "CollapsableTableView.h"
 
-@interface KillMailViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
+@interface KillMailViewController : UITableViewController<CollapsableTableViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *allianceNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *corporationNameLabel;
@@ -23,8 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *solarSystemNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *securityStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *regionNameLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControler;
-@property (weak, nonatomic) IBOutlet CollapsableTableView *tableView;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControler;
 @property (weak, nonatomic) IBOutlet UILabel *damageTakenLabel;
 @property (strong, nonatomic) KillMail* killMail;
 

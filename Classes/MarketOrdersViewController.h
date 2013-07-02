@@ -11,11 +11,10 @@
 #import "EUFilter.h"
 
 
-@interface MarketOrdersViewController : UIViewController
+@interface MarketOrdersViewController : UITableViewController
 
-@property (nonatomic, weak) IBOutlet UITableView *marketOrdersTableView;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *ownerSegmentControl;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet UISegmentedControl *ownerSegmentControl;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet FilterViewController *filterViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
 @property (nonatomic, strong) UIPopoverController *filterPopoverController;

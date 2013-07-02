@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface POSesViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, weak) IBOutlet UITableView *posesTableView;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@interface POSesViewController : UITableViewController
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @end

@@ -280,7 +280,6 @@
 		12B06ECA1772ECA000966669 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */; };
 		12B06ECC177308ED00966669 /* NAPISearchResultsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B06ECB177308ED00966669 /* NAPISearchResultsViewController~ipad.xib */; };
 		12B06ECE177309CF00966669 /* NAPISearchFitCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B06ECD177309CF00966669 /* NAPISearchFitCellView~ipad.xib */; };
-		12B3E60814055D9E00FC6B5B /* POSViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B3E60714055D9E00FC6B5B /* POSViewController~ipad.xib */; };
 		12B3E6661405662F00FC6B5B /* NSArray+GroupBy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */; };
 		12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F1216B25A4500445581 /* SkillPlan.m */; };
 		12B8CD2516BB993000C5104E /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B8CD2416BB993000C5104E /* Fit.mm */; };
@@ -463,7 +462,6 @@
 		37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */; };
 		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
 		37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */; };
-		37E352E814B4ADF6004367AB /* CharactersViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E714B4ADF6004367AB /* CharactersViewController~ipad.xib */; };
 		37E352EA14B4AEEB004367AB /* CharacterSkillsEditorViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E914B4AEEA004367AB /* CharacterSkillsEditorViewController~ipad.xib */; };
 		37EBCDBA14D30FB00085D1CB /* graphButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCDB914D30FB00085D1CB /* graphButton.png */; };
 		37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */; };
@@ -1211,7 +1209,6 @@
 		12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+Neocom.m"; sourceTree = "<group>"; };
 		12B06ECB177308ED00966669 /* NAPISearchResultsViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NAPISearchResultsViewController~ipad.xib"; sourceTree = "<group>"; };
 		12B06ECD177309CF00966669 /* NAPISearchFitCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NAPISearchFitCellView~ipad.xib"; sourceTree = "<group>"; };
-		12B3E60714055D9E00FC6B5B /* POSViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "POSViewController~ipad.xib"; sourceTree = "<group>"; };
 		12B3E6641405662F00FC6B5B /* NSArray+GroupBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+GroupBy.h"; sourceTree = "<group>"; };
 		12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+GroupBy.m"; sourceTree = "<group>"; };
 		12B8CD2316BB993000C5104E /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
@@ -1500,7 +1497,6 @@
 		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
 		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
 		37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController~ipad.xib"; sourceTree = "<group>"; };
-		37E352E714B4ADF6004367AB /* CharactersViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharactersViewController~ipad.xib"; sourceTree = "<group>"; };
 		37E352E914B4AEEA004367AB /* CharacterSkillsEditorViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharacterSkillsEditorViewController~ipad.xib"; sourceTree = "<group>"; };
 		37EBCDB914D30FB00085D1CB /* graphButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphButton.png; sourceTree = "<group>"; };
 		37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graphButton@2x.png"; sourceTree = "<group>"; };
@@ -3557,7 +3553,6 @@
 				37DDFD9014A2031600BCDEBB /* CharactersViewController.h */,
 				37DDFD9114A2031600BCDEBB /* CharactersViewController.mm */,
 				37DDFD9214A2031600BCDEBB /* CharactersViewController.xib */,
-				37E352E714B4ADF6004367AB /* CharactersViewController~ipad.xib */,
 			);
 			name = CharactersViewController;
 			sourceTree = "<group>";
@@ -4514,7 +4509,6 @@
 				71A6540B131DB62D0082FFAC /* POSViewController.h */,
 				71A6540C131DB62D0082FFAC /* POSViewController.m */,
 				71A6540D131DB62D0082FFAC /* POSViewController.xib */,
-				12B3E60714055D9E00FC6B5B /* POSViewController~ipad.xib */,
 			);
 			name = POSViewController;
 			sourceTree = "<group>";
@@ -4903,7 +4897,6 @@
 				1259B5221679C9AF00EA49B5 /* IndustryJobCellView~ipad.xib in Resources */,
 				1259B4D71679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib in Resources */,
 				1259B5311679C9F000EA49B5 /* POSCellView~ipad.xib in Resources */,
-				12B3E60814055D9E00FC6B5B /* POSViewController~ipad.xib in Resources */,
 				719405FC1405895F009E05FF /* RSSFeedCellView~ipad.xib in Resources */,
 				12448F181679CFC300DC90AC /* FittingViewController~ipad.xib in Resources */,
 				12448F091679CEB500DC90AC /* StatsViewController~ipad.xib in Resources */,
@@ -4948,7 +4941,6 @@
 				37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */,
 				37A0C26B14B37476008ACDB4 /* AreaEffectCellView.xib in Resources */,
 				37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */,
-				37E352E814B4ADF6004367AB /* CharactersViewController~ipad.xib in Resources */,
 				37E352EA14B4AEEB004367AB /* CharacterSkillsEditorViewController~ipad.xib in Resources */,
 				37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */,
 				37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */,

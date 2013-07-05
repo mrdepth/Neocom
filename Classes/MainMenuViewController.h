@@ -12,7 +12,7 @@
 @interface MainMenuViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, CharacterInfoViewControllerDelegate, UISplitViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet CharacterInfoViewController *characterInfoViewController;
 @property (nonatomic, weak) IBOutlet UIView *characterInfoView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *onlineModeSegmentedControl;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *onlineModeSegmentedControl;
 @property (nonatomic, strong) NSArray *menuItems;
 
 - (IBAction)onFacebook:(id)sender;

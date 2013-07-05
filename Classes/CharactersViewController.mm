@@ -46,6 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = NSLocalizedString(@"Characters", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
@@ -61,7 +62,6 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-	[self setCharactersTableView:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -108,7 +108,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^{
 		self.sections = sectionsTmp;
-		[self.charactersTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -116,14 +116,14 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[self.charactersTableView setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
 
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[self.sections objectAtIndex:1] count] inSection:1];
 	NSArray* array = [NSArray arrayWithObject:indexPath];
 	if (editing)
-		[self.charactersTableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 	else
-		[self.charactersTableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (IBAction) onClose:(id)sender {

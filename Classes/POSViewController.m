@@ -41,6 +41,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
 	self.title = self.location;
 	[self loadData];
 }
@@ -61,7 +62,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.posTableView = nil;
 	self.sections = nil;
 }
 
@@ -266,7 +266,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.sections = sectionsTmp;
-		[self.posTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

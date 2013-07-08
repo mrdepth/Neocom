@@ -77,7 +77,7 @@
 
 
 - (IBAction) onClearCache:(id) sender {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Some features may be temporarily unavailable.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Some features may be temporarily unavailable.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Clear", nil), nil];
 	[alertView show];
 }
 

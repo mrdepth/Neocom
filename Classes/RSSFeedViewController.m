@@ -152,6 +152,7 @@
 	
 	[operation setCompletionBlockInCurrentThread:^(void) {
 		self.rows = values;
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

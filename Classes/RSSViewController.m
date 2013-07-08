@@ -74,7 +74,7 @@
 }
 
 - (IBAction)onSafari:(id)sender {
-	[[UIApplication sharedApplication] openURL:self.webView.request.URL];
+	[[UIApplication sharedApplication] openURL:self.rss.link];
 }
 
 #pragma mark UIWebViewDelegate
@@ -82,7 +82,6 @@
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
 	self.backButton.enabled = self.webView.canGoBack;
 	self.forwardButton.enabled = self.webView.canGoForward;
-	self.safariButton.enabled = self.webView.canGoBack;
 	[self.activityIndicatorView startAnimating];
 }
 

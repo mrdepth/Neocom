@@ -131,7 +131,7 @@
 
 - (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
 	if (motion == UIEventSubtypeMotionShake)
-		[self.assetsTableView handleShake];
+		[(CollapsableTableView*) self.tableView handleShake];
 }
 
 
@@ -144,7 +144,6 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	self.assetsTableView = nil;
 	self.searchBar = nil;
 	self.filterPopoverController = nil;
 	self.filterViewController = nil;
@@ -610,7 +609,7 @@
 				if (![weakOperation isCancelled]) {
 					self.sections = sectionsTmp;
 					[self searchWithSearchString:self.searchBar.text];
-					[self.assetsTableView reloadData];
+					[self.tableView reloadData];
 				}
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -620,7 +619,7 @@
 			[self searchWithSearchString:self.searchBar.text];
 		}
 	}
-	[self.assetsTableView reloadData];
+	[self.tableView reloadData];
 }
 
 

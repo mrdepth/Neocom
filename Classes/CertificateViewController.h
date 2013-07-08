@@ -11,7 +11,7 @@
 
 @class EVEDBCrtCertificate;
 @interface CertificateViewController : UIViewController<UIScrollViewDelegate, CertificateTreeViewDelegate, UITableViewDelegate, UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet CertificateTreeView *certificateTreeView;
 @property (strong, nonatomic) IBOutlet UITableView *recommendationsTableView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;

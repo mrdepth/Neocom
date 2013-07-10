@@ -15,6 +15,7 @@
 #import "UIImageView+URL.h"
 
 @interface CharacterInfoViewController()
+@property (nonatomic, strong) NSURL* portraitURL;
 - (void) update;
 - (void) updateCharacterInfo:(EVEAccount*) account;
 - (void) updateSkillInfoWithAccount:(EVEAccount*) account;
@@ -67,6 +68,11 @@
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
+- (IBAction)onReloadPortrait:(id)sender {
+	float scale = [[UIScreen mainScreen] scale];
+	[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale ignoreCacheData:YES completion:nil failureBlock:nil];
+}
+
 #pragma mark - Private
 
 - (void) update {
@@ -83,22 +89,21 @@
 
 - (void) updateCharacterInfo:(EVEAccount*) account {
 	if (account) {
-		NSURL *portraitURL;
 		NSURL *corpURL;
 		float scale;
 		if (RETINA_DISPLAY) {
-			portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize128 error:nil];
+			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize128 error:nil];
 			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize64 error:nil];
 			scale = 2;
 		}
 		else {
-			portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil];
+			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil];
 			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize32 error:nil];
 			scale = 1;
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.portraitImageView setImageWithContentsOfURL:portraitURL scale:scale completion:nil failureBlock:nil];
+			[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale completion:nil failureBlock:nil];
 			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
 			self.corpLabel.text = account.corporationName;
 		});

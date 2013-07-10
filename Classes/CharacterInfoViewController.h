@@ -27,4 +27,5 @@
 @property (nonatomic, weak) IBOutlet UILabel *serverStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *onlineLabel;
 @property (nonatomic, weak) id<CharacterInfoViewControllerDelegate> delegate;
+- (IBAction)onReloadPortrait:(id)sender;
 @end

@@ -44,7 +44,6 @@
 		12448F031679CEA400DC90AC /* ImplantsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F051679CEA400DC90AC /* ImplantsViewController~ipad.xib */; };
 		12448F061679CEAE00DC90AC /* StatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F081679CEAE00DC90AC /* StatsViewController.xib */; };
 		12448F091679CEB500DC90AC /* StatsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F0B1679CEB500DC90AC /* StatsViewController~ipad.xib */; };
-		12448F0C1679CED000DC90AC /* FitsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F0E1679CED000DC90AC /* FitsViewController.xib */; };
 		12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */; };
 		12448F121679CF7500DC90AC /* DamagePatternEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F141679CF7500DC90AC /* DamagePatternEditViewController.xib */; };
 		12448F151679CFBC00DC90AC /* FittingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F171679CFBC00DC90AC /* FittingViewController.xib */; };
@@ -83,6 +82,8 @@
 		124DFA3C178E969200ACF7A2 /* POSStatsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA3E178E969200ACF7A2 /* POSStatsViewController~ipad.xib */; };
 		124DFA3F178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA41178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib */; };
 		124DFA42178E971200ACF7A2 /* MessagesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA44178E971200ACF7A2 /* MessagesViewController~ipad.xib */; };
+		124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */; };
+		124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA47178E98C900ACF7A2 /* FitsViewController.xib */; };
 		125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125147DC165223D70008AC6B /* KillboardKillNetViewController.m */; };
 		125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125147E0165224300008AC6B /* KillboardKillNetViewController.xib */; };
 		12582F0A16B251C300445581 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F0916B251C300445581 /* EUStorage.m */; };
@@ -130,7 +131,6 @@
 		1259B53D1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B53F1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib */; };
 		1259B5401679CBA400EA49B5 /* BidCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5421679CBA400EA49B5 /* BidCellView.xib */; };
 		1259B5431679CBBB00EA49B5 /* ContractsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5451679CBBB00EA49B5 /* ContractsViewController.xib */; };
-		1259B54C1679CCF100EA49B5 /* FittingServiceMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B54E1679CCF100EA49B5 /* FittingServiceMenuViewController.xib */; };
 		1259B54F1679CD1200EA49B5 /* ModulesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5511679CD1200EA49B5 /* ModulesViewController.xib */; };
 		1259B5521679CD1A00EA49B5 /* ModulesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5541679CD1A00EA49B5 /* ModulesViewController~ipad.xib */; };
 		1259B5551679CD2500EA49B5 /* DronesAmountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5571679CD2500EA49B5 /* DronesAmountViewController.xib */; };
@@ -810,7 +810,6 @@
 		12448F041679CEA400DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ImplantsViewController~ipad.xib"; sourceTree = "<group>"; };
 		12448F071679CEAE00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/StatsViewController.xib; sourceTree = "<group>"; };
 		12448F0A1679CEB500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/StatsViewController~ipad.xib"; sourceTree = "<group>"; };
-		12448F0D1679CED000DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FitsViewController.xib; sourceTree = "<group>"; };
 		12448F101679CF0900DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CharacterSkillsEditorViewController.xib; sourceTree = "<group>"; };
 		12448F131679CF7500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DamagePatternEditViewController.xib; sourceTree = "<group>"; };
 		12448F161679CFBC00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FittingViewController.xib; sourceTree = "<group>"; };
@@ -853,6 +852,8 @@
 		124DFA3D178E969200ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = "en.lproj/POSStatsViewController~ipad.xib"; sourceTree = "<group>"; };
 		124DFA40178E96CD00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/SkillPlannerSkillsBrowserViewController.xib; sourceTree = "<group>"; };
 		124DFA43178E971200ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = "en.lproj/MessagesViewController~ipad.xib"; sourceTree = "<group>"; };
+		124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingServiceMenuViewController.xib; sourceTree = "<group>"; };
+		124DFA47178E98C900ACF7A2 /* FitsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FitsViewController.xib; sourceTree = "<group>"; };
 		125147DB165223D70008AC6B /* KillboardKillNetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetViewController.h; sourceTree = "<group>"; };
 		125147DC165223D70008AC6B /* KillboardKillNetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetViewController.m; sourceTree = "<group>"; };
 		125147E0165224300008AC6B /* KillboardKillNetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetViewController.xib; sourceTree = "<group>"; };
@@ -907,7 +908,6 @@
 		1259B53E1679CA9000EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ContractCellViewCompact~ipad.xib"; sourceTree = "<group>"; };
 		1259B5411679CBA400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BidCellView.xib; sourceTree = "<group>"; };
 		1259B5441679CBBB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ContractsViewController.xib; sourceTree = "<group>"; };
-		1259B54D1679CCF100EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FittingServiceMenuViewController.xib; sourceTree = "<group>"; };
 		1259B5501679CD1200EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ModulesViewController.xib; sourceTree = "<group>"; };
 		1259B5531679CD1A00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ModulesViewController~ipad.xib"; sourceTree = "<group>"; };
 		1259B5561679CD2500EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DronesAmountViewController.xib; sourceTree = "<group>"; };
@@ -3362,9 +3362,9 @@
 		37B1B5F514ACC5C80037579C /* FitsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				124DFA47178E98C900ACF7A2 /* FitsViewController.xib */,
 				37B1B5FE14ACD8490037579C /* FitsViewController.h */,
 				37B1B5FF14ACD8490037579C /* FitsViewController.mm */,
-				12448F0E1679CED000DC90AC /* FitsViewController.xib */,
 				37B1B60314ACDF750037579C /* FitsViewControllerDelegate.h */,
 			);
 			name = FitsViewController;
@@ -4555,7 +4555,7 @@
 				7189AC48137DF8A30006B2D1 /* FitCellView */,
 				71B978C3137DDC7600301218 /* FittingServiceMenuViewController.h */,
 				71B978C4137DDC7600301218 /* FittingServiceMenuViewController.mm */,
-				1259B54E1679CCF100EA49B5 /* FittingServiceMenuViewController.xib */,
+				124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */,
 			);
 			name = FittingServiceMenuViewController;
 			sourceTree = "<group>";
@@ -4870,7 +4870,6 @@
 				718803C9137C8FD2004060CC /* add.png in Resources */,
 				718803CA137C8FD2004060CC /* booster.png in Resources */,
 				718803CB137C8FD2004060CC /* implant.png in Resources */,
-				1259B54C1679CCF100EA49B5 /* FittingServiceMenuViewController.xib in Resources */,
 				7189AC4D137DF8B80006B2D1 /* FitCellView.xib in Resources */,
 				7189ACB1137E077C0006B2D1 /* battleclinic.png in Resources */,
 				7197DBC0137F5E2600C3B3F4 /* TagCellView.xib in Resources */,
@@ -4929,7 +4928,6 @@
 				12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */,
 				718B99E614AA18420012520F /* SkillEditingCellView.xib in Resources */,
 				71CAEF2314AB670D00512451 /* SkillLevelsViewController.xib in Resources */,
-				12448F0C1679CED000DC90AC /* FitsViewController.xib in Resources */,
 				71B0C32014B13DA20022E9FE /* FleetMemberCellView.xib in Resources */,
 				71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */,
 				37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */,
@@ -5062,6 +5060,8 @@
 				128A63741782AD7C00229BB0 /* backgroundPopover~ipad.png in Resources */,
 				124DFA2D178E938E00ACF7A2 /* BrowserViewController.xib in Resources */,
 				124DFA3B178E952700ACF7A2 /* BCSearchViewController.xib in Resources */,
+				124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */,
+				124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5458,14 +5458,6 @@
 				12448F0A1679CEB500DC90AC /* en */,
 			);
 			name = "StatsViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
-		12448F0E1679CED000DC90AC /* FitsViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F0D1679CED000DC90AC /* en */,
-			);
-			name = FitsViewController.xib;
 			sourceTree = "<group>";
 		};
 		12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */ = {
@@ -6018,14 +6010,6 @@
 				1259B5441679CBBB00EA49B5 /* en */,
 			);
 			name = ContractsViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B54E1679CCF100EA49B5 /* FittingServiceMenuViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B54D1679CCF100EA49B5 /* en */,
-			);
-			name = FittingServiceMenuViewController.xib;
 			sourceTree = "<group>";
 		};
 		1259B5511679CD1200EA49B5 /* ModulesViewController.xib */ = {

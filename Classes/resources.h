@@ -26,16 +26,19 @@ NSLocalizedString(@"Industry Jobs", nil);
 NSLocalizedString(@"POS'es", nil);
 NSLocalizedString(@"News", nil);
 NSLocalizedString(@"About", nil);
-NSLocalizedString(@"Donate", nil);
+NSLocalizedString(@"Remove Ads", nil);
 
 //rssFeeds.plist
 NSLocalizedString(@"News", nil);
 NSLocalizedString(@"Miscellaneous", nil);
 NSLocalizedString(@"Patch Notes", nil);
 NSLocalizedString(@"Dev Blog", nil);
+NSLocalizedString(@"Partner's feeds", nil);
 NSLocalizedString(@"Notalotofnews", nil);
 NSLocalizedString(@"reddit.com/r/eve", nil);
 NSLocalizedString(@"Official Blog", nil);
+NSLocalizedString(@"Partner's feeds", nil);
+NSLocalizedString(@"Russian", nil);
 
 //contractsFilter.plist
 NSLocalizedString(@"Contract Type", nil);

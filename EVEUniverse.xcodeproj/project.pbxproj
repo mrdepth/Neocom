@@ -84,6 +84,16 @@
 		124DFA42178E971200ACF7A2 /* MessagesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA44178E971200ACF7A2 /* MessagesViewController~ipad.xib */; };
 		124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */; };
 		124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA47178E98C900ACF7A2 /* FitsViewController.xib */; };
+		124DFA5C178EA88300ACF7A2 /* LUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA4D178EA88300ACF7A2 /* LUIBarButtonItem.m */; };
+		124DFA5D178EA88300ACF7A2 /* LUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA4F178EA88300ACF7A2 /* LUIButton.m */; };
+		124DFA5E178EA88300ACF7A2 /* LUILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA51178EA88300ACF7A2 /* LUILabel.m */; };
+		124DFA5F178EA88300ACF7A2 /* LUISearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA53178EA88300ACF7A2 /* LUISearchBar.m */; };
+		124DFA60178EA88300ACF7A2 /* LUISegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA55178EA88300ACF7A2 /* LUISegmentedControl.m */; };
+		124DFA61178EA88300ACF7A2 /* LUITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA57178EA88300ACF7A2 /* LUITextField.m */; };
+		124DFA62178EA88300ACF7A2 /* LUITextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA59178EA88300ACF7A2 /* LUITextView.m */; };
+		124DFA63178EA88300ACF7A2 /* LUIToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA5B178EA88300ACF7A2 /* LUIToolbar.m */; };
+		124DFA68178EA8AC00ACF7A2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA64178EA8AB00ACF7A2 /* Localizable.strings */; };
+		124DFA69178EA8AC00ACF7A2 /* Xib.strings in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA66178EA8AB00ACF7A2 /* Xib.strings */; };
 		125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125147DC165223D70008AC6B /* KillboardKillNetViewController.m */; };
 		125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 125147E0165224300008AC6B /* KillboardKillNetViewController.xib */; };
 		12582F0A16B251C300445581 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F0916B251C300445581 /* EUStorage.m */; };
@@ -854,6 +864,25 @@
 		124DFA43178E971200ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = "en.lproj/MessagesViewController~ipad.xib"; sourceTree = "<group>"; };
 		124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingServiceMenuViewController.xib; sourceTree = "<group>"; };
 		124DFA47178E98C900ACF7A2 /* FitsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FitsViewController.xib; sourceTree = "<group>"; };
+		124DFA4A178EA79000ACF7A2 /* resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
+		124DFA4C178EA88300ACF7A2 /* LUIBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUIBarButtonItem.h; sourceTree = "<group>"; };
+		124DFA4D178EA88300ACF7A2 /* LUIBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUIBarButtonItem.m; sourceTree = "<group>"; };
+		124DFA4E178EA88300ACF7A2 /* LUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUIButton.h; sourceTree = "<group>"; };
+		124DFA4F178EA88300ACF7A2 /* LUIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUIButton.m; sourceTree = "<group>"; };
+		124DFA50178EA88300ACF7A2 /* LUILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUILabel.h; sourceTree = "<group>"; };
+		124DFA51178EA88300ACF7A2 /* LUILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUILabel.m; sourceTree = "<group>"; };
+		124DFA52178EA88300ACF7A2 /* LUISearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUISearchBar.h; sourceTree = "<group>"; };
+		124DFA53178EA88300ACF7A2 /* LUISearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUISearchBar.m; sourceTree = "<group>"; };
+		124DFA54178EA88300ACF7A2 /* LUISegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUISegmentedControl.h; sourceTree = "<group>"; };
+		124DFA55178EA88300ACF7A2 /* LUISegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUISegmentedControl.m; sourceTree = "<group>"; };
+		124DFA56178EA88300ACF7A2 /* LUITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUITextField.h; sourceTree = "<group>"; };
+		124DFA57178EA88300ACF7A2 /* LUITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUITextField.m; sourceTree = "<group>"; };
+		124DFA58178EA88300ACF7A2 /* LUITextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUITextView.h; sourceTree = "<group>"; };
+		124DFA59178EA88300ACF7A2 /* LUITextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUITextView.m; sourceTree = "<group>"; };
+		124DFA5A178EA88300ACF7A2 /* LUIToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LUIToolbar.h; sourceTree = "<group>"; };
+		124DFA5B178EA88300ACF7A2 /* LUIToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LUIToolbar.m; sourceTree = "<group>"; };
+		124DFA65178EA8AB00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Classes/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		124DFA67178EA8AC00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Classes/en.lproj/Xib.strings; sourceTree = "<group>"; };
 		125147DB165223D70008AC6B /* KillboardKillNetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardKillNetViewController.h; sourceTree = "<group>"; };
 		125147DC165223D70008AC6B /* KillboardKillNetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardKillNetViewController.m; sourceTree = "<group>"; };
 		125147E0165224300008AC6B /* KillboardKillNetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillboardKillNetViewController.xib; sourceTree = "<group>"; };
@@ -1925,6 +1954,7 @@
 				1213C0F416C8EEDC006E504E /* VariationsViewController */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
+				124DFA4A178EA79000ACF7A2 /* resources.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1978,6 +2008,7 @@
 				120B4694164B9995000C33CE /* UIAlertView */,
 				120B4699164B9995000C33CE /* UIColor+NSNumber */,
 				120B469C164B9995000C33CE /* UIImageView+URL */,
+				124DFA4B178EA88300ACF7A2 /* LocalizableUI */,
 			);
 			path = tools;
 			sourceTree = SOURCE_ROOT;
@@ -2160,6 +2191,29 @@
 				124DFA36178E94A100ACF7A2 /* NAPISearchResultsViewController~ipad.xib */,
 			);
 			name = NAPISearchResultsViewController;
+			sourceTree = "<group>";
+		};
+		124DFA4B178EA88300ACF7A2 /* LocalizableUI */ = {
+			isa = PBXGroup;
+			children = (
+				124DFA4C178EA88300ACF7A2 /* LUIBarButtonItem.h */,
+				124DFA4D178EA88300ACF7A2 /* LUIBarButtonItem.m */,
+				124DFA4E178EA88300ACF7A2 /* LUIButton.h */,
+				124DFA4F178EA88300ACF7A2 /* LUIButton.m */,
+				124DFA50178EA88300ACF7A2 /* LUILabel.h */,
+				124DFA51178EA88300ACF7A2 /* LUILabel.m */,
+				124DFA52178EA88300ACF7A2 /* LUISearchBar.h */,
+				124DFA53178EA88300ACF7A2 /* LUISearchBar.m */,
+				124DFA54178EA88300ACF7A2 /* LUISegmentedControl.h */,
+				124DFA55178EA88300ACF7A2 /* LUISegmentedControl.m */,
+				124DFA56178EA88300ACF7A2 /* LUITextField.h */,
+				124DFA57178EA88300ACF7A2 /* LUITextField.m */,
+				124DFA58178EA88300ACF7A2 /* LUITextView.h */,
+				124DFA59178EA88300ACF7A2 /* LUITextView.m */,
+				124DFA5A178EA88300ACF7A2 /* LUIToolbar.h */,
+				124DFA5B178EA88300ACF7A2 /* LUIToolbar.m */,
+			);
+			path = LocalizableUI;
 			sourceTree = "<group>";
 		};
 		125147D9165223B40008AC6B /* KillboardKillNetViewController */ = {
@@ -3028,6 +3082,8 @@
 			children = (
 				71800EEE12EB9B2400F0B471 /* Graphics */,
 				37A815F114E2D20900C38F73 /* ImportingTutorial */,
+				124DFA64178EA8AB00ACF7A2 /* Localizable.strings */,
+				124DFA66178EA8AB00ACF7A2 /* Xib.strings */,
 				718BA5D1122BF65200148015 /* evedb.sqlite */,
 				37DBE020149F95EB00C17AF4 /* eufe.sqlite */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
@@ -4665,6 +4721,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -5062,6 +5119,8 @@
 				124DFA3B178E952700ACF7A2 /* BCSearchViewController.xib in Resources */,
 				124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */,
 				124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */,
+				124DFA68178EA8AC00ACF7A2 /* Localizable.strings in Resources */,
+				124DFA69178EA8AC00ACF7A2 /* Xib.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5406,6 +5465,14 @@
 				12B06ECA1772ECA000966669 /* NSNumberFormatter+Neocom.m in Sources */,
 				128A637A1782ADCA00229BB0 /* NSBundle+Retina4.m in Sources */,
 				128A637B1782ADCA00229BB0 /* UIImage+Retina4.m in Sources */,
+				124DFA5C178EA88300ACF7A2 /* LUIBarButtonItem.m in Sources */,
+				124DFA5D178EA88300ACF7A2 /* LUIButton.m in Sources */,
+				124DFA5E178EA88300ACF7A2 /* LUILabel.m in Sources */,
+				124DFA5F178EA88300ACF7A2 /* LUISearchBar.m in Sources */,
+				124DFA60178EA88300ACF7A2 /* LUISegmentedControl.m in Sources */,
+				124DFA61178EA88300ACF7A2 /* LUITextField.m in Sources */,
+				124DFA62178EA88300ACF7A2 /* LUITextView.m in Sources */,
+				124DFA63178EA88300ACF7A2 /* LUIToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5698,6 +5765,22 @@
 				124DFA43178E971200ACF7A2 /* en */,
 			);
 			name = "MessagesViewController~ipad.xib";
+			sourceTree = "<group>";
+		};
+		124DFA64178EA8AB00ACF7A2 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				124DFA65178EA8AB00ACF7A2 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		124DFA66178EA8AB00ACF7A2 /* Xib.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				124DFA67178EA8AC00ACF7A2 /* en */,
+			);
+			name = Xib.strings;
 			sourceTree = "<group>";
 		};
 		1259B4A31679C56F00EA49B5 /* CharacterInfoViewController.xib */ = {

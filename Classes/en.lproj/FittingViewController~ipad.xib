@@ -52,6 +52,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{703, 704}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="19348903"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -73,6 +74,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{10, 7}, {361, 30}}</string>
 								<reference key="NSSuperview" ref="19348903"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="444717549"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -118,6 +120,7 @@
 						</object>
 						<string key="NSFrameSize">{381, 44}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="532607947"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -147,6 +150,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 44}, {381, 660}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="912071785"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="635929864">
 							<int key="NSColorSpace">3</int>
@@ -160,6 +164,7 @@
 						<int key="NSvFlags">273</int>
 						<string key="NSFrame">{{383, 0}, {320, 704}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="509237442"/>
 						<reference key="IBUIBackgroundColor" ref="635929864"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -170,6 +175,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{703, 704}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="879009833"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -192,7 +198,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{12, 7}, {235, 31}}</string>
 								<reference key="NSSuperview" ref="509237442"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -226,6 +232,7 @@
 						</object>
 						<string key="NSFrame">{{703, 0}, {322, 44}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="610528195"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -249,6 +256,7 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {703, 704}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="620924483"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -311,6 +319,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="528767570">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="990606328">
+							<reference key="IBUINavigationBar"/>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="481132829"/>
@@ -348,6 +357,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="469267482">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="881094164">
+							<reference key="IBUINavigationBar"/>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="970172073"/>
@@ -383,6 +393,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="340039084">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="1072808854">
+							<reference key="IBUINavigationBar"/>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="685569187"/>

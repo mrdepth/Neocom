@@ -45,6 +45,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 2}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="737641693"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -57,6 +58,7 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{40, 2}, {643, 18}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="250927849"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -94,6 +96,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{72, 24}, {183, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="871783925"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -133,6 +136,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 21}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="154057502"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -149,6 +153,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 49}, {90, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="382330305"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -174,6 +179,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{8, 46}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="196136502"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -190,6 +196,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{573, 49}, {110, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -214,6 +221,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{541, 46}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="877560199"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -230,6 +238,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{290, 49}, {110, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="193513914"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -255,6 +264,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{258, 46}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="485763253"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -271,6 +281,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{435, 49}, {103, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="542285198"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -296,6 +307,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{403, 46}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="309656542"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -312,6 +324,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{290, 24}, {110, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="105588068"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -337,6 +350,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{258, 21}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="730630423"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -353,6 +367,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{165, 49}, {90, 17}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="572970151"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -378,6 +393,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{133, 46}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572115419"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="219410387"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -392,6 +408,7 @@
 						</array>
 						<string key="NSFrameSize">{703, 74}</string>
 						<reference key="NSSuperview" ref="783593839"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="636189578"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -406,6 +423,7 @@
 				</array>
 				<string key="NSFrameSize">{703, 75}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="572115419"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>

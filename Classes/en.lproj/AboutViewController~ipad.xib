@@ -65,7 +65,6 @@
 						<string key="NSFrameSize">{540, 576}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -151,7 +150,6 @@
 						<string key="NSFrame">{{20, 42}, {500, 42}}</string>
 						<reference key="NSSuperview" ref="856672288"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -281,7 +279,6 @@
 						<string key="NSFrame">{{104, 63}, {416, 21}}</string>
 						<reference key="NSSuperview" ref="20715802"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -397,7 +394,6 @@
 						<string key="NSFrame">{{108, 42}, {412, 21}}</string>
 						<reference key="NSSuperview" ref="699267118"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -651,7 +647,6 @@
 						<string key="NSFrame">{{104, 105}, {416, 21}}</string>
 						<reference key="NSSuperview" ref="605781241"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -722,7 +717,6 @@
 						<string key="NSFrame">{{20, 42}, {500, 90}}</string>
 						<reference key="NSSuperview" ref="260377808"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>

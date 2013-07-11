@@ -662,9 +662,12 @@
 					<string>113.CustomClassName</string>
 					<string>113.IBPluginDependency</string>
 					<string>116.IBPluginDependency</string>
+					<string>117.CustomClassName</string>
 					<string>117.IBPluginDependency</string>
 					<string>118.IBPluginDependency</string>
+					<string>121.CustomClassName</string>
 					<string>121.IBPluginDependency</string>
+					<string>136.CustomClassName</string>
 					<string>136.IBPluginDependency</string>
 					<string>142.IBPluginDependency</string>
 					<string>143.IBPluginDependency</string>
@@ -673,10 +676,13 @@
 					<string>49.CustomClassName</string>
 					<string>49.IBPluginDependency</string>
 					<string>51.IBPluginDependency</string>
+					<string>52.CustomClassName</string>
 					<string>52.IBPluginDependency</string>
 					<string>54.IBPluginDependency</string>
+					<string>70.CustomClassName</string>
 					<string>70.IBPluginDependency</string>
 					<string>71.IBPluginDependency</string>
+					<string>74.CustomClassName</string>
 					<string>74.IBPluginDependency</string>
 					<string>75.IBPluginDependency</string>
 				</object>
@@ -688,9 +694,12 @@
 					<string>EVEAccountsAPIKeyCellView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -699,10 +708,13 @@
 					<string>EVEAccountsAPIKeyCellView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>

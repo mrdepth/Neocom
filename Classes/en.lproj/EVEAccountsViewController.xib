@@ -50,6 +50,7 @@
 								<int key="NSvFlags">297</int>
 								<string key="NSFrame">{{236, 20}, {64, 28}}</string>
 								<reference key="NSSuperview" ref="299483536"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="IBUIContentStretch">{{0.5, 0}, {1, 1}}</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -88,6 +89,7 @@
 								<int key="NSvFlags">300</int>
 								<string key="NSFrame">{{20, 20}, {64, 28}}</string>
 								<reference key="NSSuperview" ref="299483536"/>
+								<reference key="NSNextKeyView" ref="14149062"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="IBUIContentStretch">{{0.5, 0}, {1, 1}}</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -105,6 +107,7 @@
 						</object>
 						<string key="NSFrame">{{0, 298}, {320, 118}}</string>
 						<reference key="NSSuperview" ref="133400236"/>
+						<reference key="NSNextKeyView" ref="467875072"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="249722805">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -115,6 +118,7 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSNextKeyView" ref="299483536"/>
 				<reference key="IBUIBackgroundColor" ref="249722805"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
@@ -270,7 +274,9 @@
 					<string>-2.CustomClassName</string>
 					<string>-2.IBPluginDependency</string>
 					<string>10.IBPluginDependency</string>
+					<string>11.CustomClassName</string>
 					<string>11.IBPluginDependency</string>
+					<string>25.CustomClassName</string>
 					<string>25.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 				</object>
@@ -281,7 +287,9 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUIButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUIButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>

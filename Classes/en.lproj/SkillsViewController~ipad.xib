@@ -133,6 +133,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{350, 20}</string>
 								<reference key="NSSuperview" ref="577398182"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="10015966"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -357,7 +358,9 @@
 					<string>4.IBPluginDependency</string>
 					<string>41.CustomClassName</string>
 					<string>41.IBPluginDependency</string>
+					<string>54.CustomClassName</string>
 					<string>54.IBPluginDependency</string>
+					<string>55.CustomClassName</string>
 					<string>55.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
@@ -376,7 +379,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>CollapsableTableView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LUILabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>

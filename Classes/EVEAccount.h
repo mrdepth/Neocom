@@ -13,6 +13,7 @@
 #import "SkillPlan.h"
 #import "EUMailBox.h"
 #import "CharacterAttributes.h"
+#import "APIKey.h"
 
 @interface EVEAccount : NSObject
 @property (nonatomic) NSInteger charKeyID;
@@ -35,6 +36,11 @@
 
 @property (nonatomic, strong) CharacterAttributes* characterAttributes;
 
+@property (nonatomic, strong) NSMutableArray* apiKeys;
+@property (nonatomic, strong) APIKey* charAPIKey;
+@property (nonatomic, strong) APIKey* corpAPIKey;
+@property (nonatomic, strong) EVEAPIKeyInfoCharactersItem* character;
+@property (nonatomic, assign, getter = isIgnored) BOOL ignored;
 
 + (EVEAccount*) accountWithCharacter:(EVEAccountStorageCharacter*) account;
 + (EVEAccount*) accountWithDictionary:(NSDictionary*) dictionary;

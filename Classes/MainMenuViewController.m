@@ -62,13 +62,16 @@
 	}
 	else {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-		[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+		UIImage* image = [UIImage imageNamed:@"background.png"];
+		image = [image resizableImageWithCapInsets:UIEdgeInsetsZero];
+		//[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:image]];
 	}
 	
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	[self.characterInfoView addSubview:self.characterInfoViewController.view];
 	self.characterInfoViewController.view.frame = self.characterInfoView.bounds;
-	
+	self.characterInfoViewController.account = [EVEAccount currentAccount];
+
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReadMail:) name:NotificationReadMail object:nil];
@@ -93,6 +96,9 @@
 
 - (void)viewDidUnload {
 	[self setOnlineModeSegmentedControl:nil];
+    [self setTableHeaderContentView:nil];
+    [self setOnlineLabel:nil];
+    [self setServerTimeLabel:nil];
     [super viewDidUnload];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
@@ -116,6 +122,7 @@
 
 - (IBAction)onChangeOnlineMode:(id)sender {
 	[EVECachedURLRequest setOfflineMode:self.onlineModeSegmentedControl.selectedSegmentIndex == 1];
+	[[NSUserDefaults standardUserDefaults] setBool:self.onlineModeSegmentedControl.selectedSegmentIndex == 1 forKey:SettingsOfflineMode];
 }
 
 
@@ -135,18 +142,18 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString *cellIdentifier;
+    static NSString *cellIdentifier = @"MainMenuCellView";
 	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
 	NSInteger corpAccessMask = [[item valueForKey:@"corpAccessMask"] integerValue];
 	
-	if ((account.charAccessMask & charAccessMask) == charAccessMask ||
-		(account.corpAccessMask & corpAccessMask) == corpAccessMask)
-		cellIdentifier = @"MainMenuCellView";
-	else
-		cellIdentifier = @"MainMenuCellViewLimited";
+//	if ((account.charAccessMask & charAccessMask) == charAccessMask ||
+//		(account.corpAccessMask & corpAccessMask) == corpAccessMask)
+//		cellIdentifier = @"MainMenuCellView";
+//	else
+//		cellIdentifier = @"MainMenuCellViewLimited";
     
     MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -168,6 +175,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
@@ -224,32 +232,10 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-	CGRect frame = self.characterInfoView.frame;
+	CGRect frame = self.tableHeaderContentView.frame;
 	if (scrollView.contentOffset.y < 0)
 		frame.origin.y = scrollView.contentOffset.y;
-	else if (scrollView.contentOffset.y < self.characterInfoView.frame.size.height - 24)
-		frame.origin.y = 0;
-	else
-		frame.origin.y = scrollView.contentOffset.y - self.characterInfoView.frame.size.height + 24;
-	self.characterInfoView.frame = frame;
-}
-
-#pragma mark CharacterInfoViewControllerDelegate
-
-- (void) characterInfoViewController:(CharacterInfoViewController*) controller willChangeContentSize:(CGSize) size animated:(BOOL) animated{
-	if (animated) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.5];
-		[UIView setAnimationBeginsFromCurrentState:YES];
-	}
-	self.tableView.tableHeaderView.frame = CGRectMake(0, 0, size.width, size.height + 40);
-	self.tableView.tableHeaderView = self.tableView.tableHeaderView;
-
-	self.characterInfoView.frame = CGRectMake(0, 0, size.width, size.height);
-	[self scrollViewDidScroll:self.tableView];
-
-	if (animated)
-		[UIView commitAnimations];
+	self.tableHeaderContentView.frame = frame;
 }
 
 #pragma mark ADBannerViewDelegate
@@ -285,6 +271,7 @@
 #pragma mark - Private
 
 - (void) didSelectAccount:(NSNotification*) notification {
+	self.characterInfoViewController.account = [EVEAccount currentAccount];
 	self.numberOfUnreadMessages = 0;
 	[self.tableView reloadData];
 	[self loadMail];

@@ -21,6 +21,7 @@
 #import "EUMigrationManager.h"
 #import "UIAlertView+Block.h"
 #import "NSString+UUID.h"
+#import "UIColor+NSNumber.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 
@@ -37,7 +38,7 @@
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
 - (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler;
-
+- (void) setupAppearance;
 @end
 
 @implementation EVEUniverseAppDelegate
@@ -48,6 +49,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[self setupAppearance];
+	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
 	//[[EUStorage sharedStorage] managedObjectContext];
 	
 	/*NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
@@ -599,6 +602,11 @@
 	}
 	else*/
 		completionHandler();
+}
+
+- (void) setupAppearance {
+	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
+	//[[UINavigationBar appearance] setTintColor:[UIColor colorWithNumber:@(0x1c1b20ff)]];
 }
 
 @end

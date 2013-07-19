@@ -8,24 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@class CharacterInfoViewController;
-@protocol CharacterInfoViewControllerDelegate
-
-- (void) characterInfoViewController:(CharacterInfoViewController*) controller willChangeContentSize:(CGSize) size animated:(BOOL) animated;
-
-@end
-
-@class EVECharacterSheet;
+@class EVEAccount;
 @interface CharacterInfoViewController : UIViewController
 @property (nonatomic, weak) IBOutlet UIImageView *portraitImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *corpImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *allianceImageView;
-@property (nonatomic, weak) IBOutlet UILabel *corpLabel;
-@property (nonatomic, weak) IBOutlet UILabel *allianceLabel;
-@property (nonatomic, weak) IBOutlet UILabel *skillsLabel;
-@property (nonatomic, weak) IBOutlet UILabel *wealthLabel;
-@property (nonatomic, weak) IBOutlet UILabel *serverStatusLabel;
-@property (nonatomic, weak) IBOutlet UILabel *onlineLabel;
-@property (nonatomic, weak) id<CharacterInfoViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *corpLabel;
+@property (weak, nonatomic) IBOutlet UILabel *allianceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *wealthLabel;
+@property (weak, nonatomic) IBOutlet UILabel *skillsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *selectCharacterLabel;
+@property (nonatomic, strong) EVEAccount* account;
 - (IBAction)onReloadPortrait:(id)sender;
 @end

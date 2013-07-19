@@ -20,5 +20,6 @@
 @property (nonatomic) int32_t keyID;
 @property (nonatomic, strong) NSString * vCode;
 
++ (NSArray*) allAPIKeys;
 
 @end

@@ -14,4 +14,6 @@
 
 @property (nonatomic) int32_t characterID;
 
++ (NSArray*) allIgnoredCharacters;
+
 @end

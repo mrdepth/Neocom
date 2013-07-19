@@ -9,6 +9,9 @@
 #import "EVEAccount.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEOnlineAPI.h"
+#import "EUStorage.h"
+#import "APIKey.h"
+#import "IgnoredCharacter.h"
 
 @implementation EVEAccount
 @synthesize characterSheet = _characterSheet;

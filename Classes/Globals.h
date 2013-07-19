@@ -32,6 +32,7 @@
 #define SettingsCloudToken @"SettingsCloudToken"
 #define SettingsNeocomAPINextSyncDate @"SettingsNeocomAPINextSyncDate"
 #define SettingsNeocomAPIAlwaysUploadFits @"SettingsNeocomAPIAlwaysUploadFits"
+#define SettingsOfflineMode @"SettingsOfflineMode"
 #define SettingsUDID @"SettingsUDID"
 
 #define SkillTreeRequirementIDKey @"requirementID"

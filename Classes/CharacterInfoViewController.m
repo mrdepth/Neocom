@@ -17,11 +17,6 @@
 @interface CharacterInfoViewController()
 @property (nonatomic, strong) NSURL* portraitURL;
 - (void) update;
-- (void) updateCharacterInfo:(EVEAccount*) account;
-- (void) updateSkillInfoWithAccount:(EVEAccount*) account;
-- (void) show;
-- (void) didSelectAccount:(NSNotification*) notification;
-- (void) checkServerStatus;
 @end
 
 @implementation CharacterInfoViewController
@@ -29,11 +24,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:NO];
-	[self checkServerStatus];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
-	[self update];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -48,70 +38,73 @@
 }
 
 - (void)viewDidUnload {
+	[self setSelectCharacterLabel:nil];
     [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[self setContentView:nil];
+	[self setCharacterNameLabel:nil];
+	[self setCorpLabel:nil];
+	[self setAllianceLabel:nil];
+	[self setWealthLabel:nil];
+	[self setSkillsLabel:nil];
 	self.portraitImageView = nil;
 	self.corpImageView = nil;
 	self.allianceImageView = nil;
-	self.corpLabel = nil;
-	self.allianceLabel = nil;
-	self.skillsLabel = nil;
-	self.wealthLabel = nil;
-	self.serverStatusLabel = nil;
-	self.onlineLabel = nil;
 }
 
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-}
 
 - (IBAction)onReloadPortrait:(id)sender {
 	float scale = [[UIScreen mainScreen] scale];
 	[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale ignoreCacheData:YES completion:nil failureBlock:nil];
 }
 
+- (void) setAccount:(EVEAccount *)account {
+	_account = account;
+	if (account) {
+		[self update];
+	}
+	else {
+		[UIView animateWithDuration:0.5
+							  delay:0
+							options:UIViewAnimationOptionBeginFromCurrentState
+						 animations:^{
+							 CGRect frame = self.contentView.frame;
+							 frame.size.height = 0;
+							 //self.contentView.frame = frame;
+						 } completion:nil];
+		self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
+		self.characterNameLabel.text = nil;
+		self.selectCharacterLabel.hidden = NO;
+		self.corpImageView.image = nil;
+		self.allianceImageView.image = nil;
+		self.corpLabel.text = nil;
+		self.allianceLabel.text = nil;
+		self.wealthLabel.text = nil;
+		self.skillsLabel.text = nil;
+	}
+}
+
 #pragma mark - Private
 
 - (void) update {
-	EVEAccount *account = [EVEAccount currentAccount];
-	[self checkServerStatus];
+	float scale = [[UIScreen mainScreen] scale];
+	__block NSURL *corpURL = nil;
+	__block NSString* wealth = nil;
+	__block NSInteger allianceID = 0;
+	__block NSString *allianceName = nil;
+	__block NSMutableString *skillsText = nil;
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"CharacterInfoViewController+Update+%p", self] name:NSLocalizedString(@"Loading Character Info", nil)];
+	EVEAccount* account = self.account;
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"CharacterInfoViewController+Update" name:NSLocalizedString(@"Loading Character Info", nil)];
 	[operation addExecutionBlock:^(void) {
-		[self updateCharacterInfo:account];
-	}];
-
-	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
-- (void) updateCharacterInfo:(EVEAccount*) account {
-	if (account) {
-		NSURL *corpURL;
-		float scale;
-		if (RETINA_DISPLAY) {
+		if (scale == 2.0) {
 			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize128 error:nil];
 			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize64 error:nil];
-			scale = 2;
 		}
 		else {
 			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil];
 			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize32 error:nil];
-			scale = 1;
 		}
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale completion:nil failureBlock:nil];
-			[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
-			self.corpLabel.text = account.corporationName;
-		});
-
-		NSInteger allianceID = 0;
-		NSString *allianceName = nil;
 		
-		NSString* wealth = nil;
 		
 		if (account.characterSheet) {
 			allianceID = account.characterSheet.allianceID;
@@ -127,105 +120,54 @@
 				allianceName = corporationSheet.allianceName;
 			}
 		}
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.wealthLabel.text = wealth;
-		});
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (allianceID) {
-				NSURL *allianceUrl = nil;
-				if (RETINA_DISPLAY)
-					allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize64 error:nil];
-				else
-					allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize32 error:nil];
-				
-				//[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale];
-				[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale completion:nil failureBlock:nil];
-				self.allianceLabel.text = allianceName;
-			}
-			else {
-				self.allianceImageView.image = nil;
-				self.allianceLabel.text = @"";
-			}
-		});
-
-		[self updateSkillInfoWithAccount:account];
-		[self performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-	}
-	else {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			self.corpLabel.text = NSLocalizedString(@"No Character Selected", nil);
-		});
-		if (self.view.frame.size.height != 24) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 24) animated:YES];
-			});
-		}
-	}
-}
-
-- (void) updateSkillInfoWithAccount:(EVEAccount*) account {
-	int skillpoints = 0;
-	for (EVECharacterSheetSkill *skill in account.characterSheet.skills)
-		skillpoints += skill.skillpoints;
-	NSMutableString *text = nil;
-	if (account.skillQueue) {
-		text = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ points (%d skills)\n", nil),
-				[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
-				account.characterSheet.skills.count];
-
-		if (account.skillQueue.skillQueue.count > 0) {
-			NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
-			NSTimeInterval timeLeft = [endTime timeIntervalSinceDate:[account.skillQueue serverTimeWithLocalTime:[NSDate date]]];
-			[text appendFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], account.skillQueue.skillQueue.count];
+		
+		int skillpoints = 0;
+		for (EVECharacterSheetSkill *skill in account.characterSheet.skills)
+			skillpoints += skill.skillpoints;
+		if (account.skillQueue) {
+			skillsText = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ points (%d skills)\n", nil),
+					[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
+					account.characterSheet.skills.count];
 			
+			if (account.skillQueue.skillQueue.count > 0) {
+				NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
+				NSTimeInterval timeLeft = [endTime timeIntervalSinceDate:[account.skillQueue serverTimeWithLocalTime:[NSDate date]]];
+				[skillsText appendFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], account.skillQueue.skillQueue.count];
+				
+			}
+			else
+				[skillsText appendString:NSLocalizedString(@"Training queue is inactive", nil)];
 		}
-		else
-			[text appendString:NSLocalizedString(@"Training queue is inactive", nil)];
-	}
+
+	}];
 	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		self.skillsLabel.text = text;
-	});
-}
-
-- (void) show {
-	if (self.view.frame.size.height != 142)
-		[self.delegate characterInfoViewController:self willChangeContentSize:CGSizeMake(320, 142) animated:YES];
-}
-
-- (void) didSelectAccount:(NSNotification*) notification {
-	[self update];
-}
-
-- (void) checkServerStatus {
-	NSOperationQueue* queue = [[NSOperationQueue alloc] init];
-	
-	[queue addOperationWithBlock:^{
-		@autoreleasepool {
-			NSError* error = nil;
-			EVEServerStatus *serverStatus = [EVEServerStatus serverStatusWithError:&error progressHandler:nil];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				if (error) {
-					self.serverStatusLabel.text = NSLocalizedString(@"Error", nil);
-					self.onlineLabel.text = @"";
-				}
-				else {
-					self.serverStatusLabel.text = serverStatus.serverOpen ? NSLocalizedString(@"Online", nil) : NSLocalizedString(@"Offline", nil);
-					self.onlineLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:serverStatus.onlinePlayers] numberStyle:NSNumberFormatterDecimalStyle];
-					
-					NSDate* cachedUntil = [serverStatus localTimeWithServerTime:serverStatus.cachedUntil];
-					NSTimeInterval timeInterval = [cachedUntil timeIntervalSinceNow];
-					if (timeInterval < 30 * 60)
-						timeInterval = 30 * 60;
-					
-					[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(checkServerStatus) object:nil];
-					[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:timeInterval];
-				}
-			});
+	[operation setCompletionBlockInCurrentThread:^{
+		[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale completion:nil failureBlock:nil];
+		[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
+		self.characterNameLabel.text = account.characterName;
+		self.corpLabel.text = account.corporationName;
+		self.wealthLabel.text = wealth;
+		self.skillsLabel.text = skillsText;
+		self.selectCharacterLabel.hidden = YES;
+		
+		if (allianceID) {
+			NSURL *allianceUrl = nil;
+			if (RETINA_DISPLAY)
+				allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize64 error:nil];
+			else
+				allianceUrl = [EVEImage allianceLogoURLWithAllianceID:allianceID size:EVEImageSize32 error:nil];
+			
+			[self.allianceImageView setImageWithContentsOfURL:allianceUrl scale:scale completion:nil failureBlock:nil];
+			self.allianceLabel.text = allianceName;
+		}
+		else {
+			self.allianceImageView.image = nil;
+			self.allianceLabel.text = @"";
 		}
 	}];
+
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end
+

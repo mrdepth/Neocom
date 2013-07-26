@@ -9,13 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "EVEUniverseAppDelegate.h"
 
-#define NotificationSelectAccount @"NotificationSelectAccount"
+#define EVEAccountDidSelectNotification @"EVEAccountDidSelectNotification"
+#define EVEAccountDidUpdateNotification @"EVEAccountDidUpdateNotification"
 #define NotificationAccountStoargeDidChange @"NotificationAccountStoargeDidChange"
 #define NotificationReadMail @"NotificationReadMail"
 #define RETINA_DISPLAY ([[UIScreen mainScreen] scale] == 2.0)
 
 #define SettingsPublishedFilterKey @"SettingsPublishedFilterKey"
 #define SettingsCurrentAccount @"SettingsCurrentAccount"
+#define SettingsCurrentCharacterID @"SettingsCurrentCharacterID"
 #define SettingsNoAds @"SettingsNoAds"
 #define SettingsWalletTransactionsOwner @"SettingsWalletTransactionsOwner"
 #define SettingsWalletTransactionsCorpAccount @"SettingsWalletTransactionsCorpAccount"

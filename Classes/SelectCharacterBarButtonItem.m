@@ -30,7 +30,7 @@
 		EVEAccount *account = [EVEAccount currentAccount];
 		[self setCharacterName:account.characterName];
 		self.parentViewController = controller;
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	}
 	return self;
 }
@@ -39,11 +39,6 @@
 	EVEAccountsViewController *controller = [[EVEAccountsViewController alloc] initWithNibName:@"EVEAccountsViewController" bundle:nil];
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-	navigationController.navigationBar.barStyle = UIBarStyleBlack;
-	[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
-																					 style:UIBarButtonItemStyleBordered
-																					target:self
-																					action:@selector(onBack:)]];
 	self.modalViewController = navigationController;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -51,12 +46,8 @@
 	[self.parentViewController presentModalViewController:navigationController animated:YES];
 }
 
-- (IBAction) onBack: (id) sender {
-	[self.modalViewController dismissModalViewControllerAnimated:YES];
-}
-
 - (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) setCharacterName:(NSString*) name {

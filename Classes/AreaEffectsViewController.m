@@ -230,7 +230,7 @@
 		[sectionsTmp addObject:other];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
 			[self.tableView reloadData];

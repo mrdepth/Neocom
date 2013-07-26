@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-
-@interface EVEAccountsViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, weak) IBOutlet UIButton *logoffButton;
+@class EVEAccountsDataSource;
+@interface EVEAccountsViewController : UIViewController<UICollectionViewDelegate>
+@property (nonatomic, strong) IBOutlet EVEAccountsDataSource* dataSource;
+@property (nonatomic, weak) IBOutlet UICollectionView* collectionView;
 
 - (IBAction) onAddAccount: (id) sender;
 - (IBAction) onLogoff: (id) sender;
+- (IBAction) onClose:(id)sender;
 @end
+

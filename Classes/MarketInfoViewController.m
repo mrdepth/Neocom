@@ -345,7 +345,7 @@
 		weakOperation.progress = 1;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.sellOrdersRegions = sellOrdersRegionsTmp;
 		self.buyOrdersRegions = buyOrdersRegionsTmp;
 		self.sellSummary = sellSummaryTmp;
@@ -422,7 +422,7 @@
 		weakOperation.progress = 1;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredSellOrdersRegions = filteredSellOrdersRegionsTmp;
 			self.filteredBuyOrdersRegions = filteredBuyOrdersRegionsTmp;

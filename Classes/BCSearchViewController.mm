@@ -76,7 +76,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.tags = tagsTmp;
 		[self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 	}];
@@ -134,7 +134,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (loadouts.count > 0 && ![weakOperation isCancelled]) {
 			BCSearchResultViewController *controller = [[BCSearchResultViewController alloc] initWithNibName:@"BCSearchResultViewController" bundle:nil];
 			controller.loadouts = loadouts;

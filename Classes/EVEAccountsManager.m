@@ -16,6 +16,7 @@ static EVEAccountsManager* sharedManager = nil;
 @interface EVEAccountsManager()
 @property (nonatomic, strong) NSMutableDictionary* accounts;
 @property (nonatomic, strong) NSMutableDictionary* ignored;
+@property (nonatomic, strong) NSMutableDictionary* reusedAccounts;
 
 - (void) manageAPIKey:(APIKey*) apiKey;
 @end
@@ -23,11 +24,11 @@ static EVEAccountsManager* sharedManager = nil;
 @implementation EVEAccountsManager
 
 + (EVEAccountsManager*) sharedManager {
-	@synchronized(self) {
-		if (!sharedManager)
-			sharedManager = [[EVEAccountsManager alloc] init];
-		return sharedManager;
-	}
+	return sharedManager;
+}
+
++ (void) setSharedManager:(EVEAccountsManager*) manager {
+	sharedManager = manager;
 }
 
 - (void) reload {
@@ -36,20 +37,26 @@ static EVEAccountsManager* sharedManager = nil;
 		for (IgnoredCharacter* character in [IgnoredCharacter allIgnoredCharacters])
 			self.ignored[@(character.characterID)] = character;
 		
+		self.reusedAccounts = self.accounts;
 		self.accounts = [[NSMutableDictionary alloc] init];
 		for (APIKey* apiKey in [APIKey allAPIKeys]) {
-			NSError* error = nil;
-			apiKey.apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error progressHandler:nil];
-			apiKey.error = error;
+			apiKey.apiKeyInfo = nil;
+			[apiKey apiKeyInfo];
 			[self manageAPIKey:apiKey];
 		}
-		self.allAccounts = [[self.accounts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"characterName" ascending:YES]]];
+		self.allAccounts = [self.accounts allValues];
+		self.reusedAccounts = nil;
 	}
+}
+
+- (EVEAccount*) accountWithCharacterID:(NSInteger) characterID {
+	return self.accounts[@(characterID)];
 }
 
 - (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
 	NSError *error = nil;
 	EVEAPIKeyInfo *apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:keyID vCode:vCode error:&error progressHandler:nil];
+
 	if (error) {
 		if (errorPtr)
 			*errorPtr = error;
@@ -57,23 +64,81 @@ static EVEAccountsManager* sharedManager = nil;
 	}
 	else {
 		@synchronized(self) {
+			NSMutableSet* inserted = [[NSMutableSet alloc] init];
+			NSMutableSet* updated = [[NSMutableSet alloc] init];
+			NSMutableSet* deleted = [[NSMutableSet alloc] init];
+
 			NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
 			[context performBlockAndWait:^{
 				APIKey* apiKey = nil;
 				for (apiKey in [APIKey allAPIKeys])
 					if (apiKey.keyID == keyID)
 						break;
+				
 				if (!apiKey) {
 					apiKey = [[APIKey alloc] initWithEntity:[NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 					apiKey.keyID = keyID;
+					[inserted addObject:apiKey];
 				}
+				else {
+					for (EVEAccount* account in self.allAccounts) {
+						if ([account.apiKeys containsObject:apiKey]) {
+							NSMutableArray* apiKeys = [[NSMutableArray alloc] initWithArray:account.apiKeys];
+							[apiKeys removeObject:apiKey];
+							account.apiKeys = apiKeys;
+
+							account.charAPIKey = nil;
+							account.corpAPIKey = nil;
+							[updated addObject:account];
+						}
+					}
+					[updated addObject:apiKey];
+				}
+				
 				apiKey.vCode = vCode;
 				apiKey.apiKeyInfo = apiKeyInfo;
 				[[EUStorage sharedStorage] saveContext];
 				
+				NSMutableSet* accounts0 = [NSMutableSet setWithArray:self.allAccounts];
+				
 				[self manageAPIKey:apiKey];
-				self.allAccounts = [[self.accounts allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"characterName" ascending:YES]]];
+				self.allAccounts = [self.accounts allValues];
+				
+				for (EVEAccount* account in self.allAccounts) {
+					if ([account.apiKeys containsObject:apiKey]) {
+						[updated addObject:account];
+					}
+				}
+
+				
+				NSMutableSet* accounts1 = [NSMutableSet setWithArray:self.allAccounts];
+				NSMutableSet* accounts2 = [NSMutableSet setWithSet:accounts0];
+				
+				[accounts2 minusSet:accounts1];
+				[accounts1 minusSet:accounts0];
+
+				[inserted unionSet:accounts1];
+				[deleted unionSet:accounts2];
+				[updated minusSet:deleted];
+				[updated minusSet:inserted];
 			}];
+			
+			void (^notify)() = ^() {
+				NSMutableDictionary* userInfo = [[NSMutableDictionary alloc] init];
+				if (inserted.count > 0)
+					userInfo[EVEAccountsManagerInsertedObjectsKey] = inserted;
+				if (deleted.count > 0)
+					userInfo[EVEAccountsManagerDeletedObjectsKey] = deleted;
+				if (updated.count > 0)
+					userInfo[EVEAccountsManagerUpdatedObjectsKey] = updated;
+				[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountsManagerDidChangeNotification object:self userInfo:userInfo];
+			};
+			
+			if (dispatch_get_current_queue() == dispatch_get_main_queue())
+				notify();
+			else
+				dispatch_async(dispatch_get_main_queue(), notify);
+
 		}
 	}
 	return YES;
@@ -81,6 +146,9 @@ static EVEAccountsManager* sharedManager = nil;
 
 - (void) removeAPIKeyWithKeyID:(NSInteger) keyID {
 	@synchronized(self) {
+		NSMutableSet* deleted = [[NSMutableSet alloc] init];
+		NSMutableSet* updated = [[NSMutableSet alloc] init];
+
 		NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
 		[context performBlockAndWait:^{
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -94,18 +162,42 @@ static EVEAccountsManager* sharedManager = nil;
 			if (fetchedObjects.count > 0) {
 				APIKey* apiKey = fetchedObjects[0];
 				for (EVEAccount* account in [self.accounts allValues]) {
-					[account.apiKeys removeObject:apiKey];
-					if (account.charAPIKey == apiKey)
+					if ([account.apiKeys containsObject:apiKey]) {
+						NSMutableArray* apiKeys = [[NSMutableArray alloc] initWithArray:account.apiKeys];
+						[apiKeys removeObject:apiKey];
+						account.apiKeys = apiKeys;
+						
 						account.charAPIKey = nil;
-					else if (account.corpAPIKey == apiKey)
 						account.corpAPIKey = nil;
-					if (account.apiKeys.count == 0)
-						[self.accounts removeObjectForKey:@(account.character.characterID)];
+						if (account.apiKeys.count == 0) {
+							[deleted addObject:account];
+							[self.accounts removeObjectForKey:@(account.character.characterID)];
+						}
+						else
+							[updated addObject:account];
+					}
 				}
+				[deleted addObject:apiKey];
 				[context deleteObject:apiKey];
-				[[EUStorage sharedStorage] saveContext];
+				
+				self.allAccounts = [self.accounts allValues];
 			}
 		}];
+		
+		void (^notify)() = ^() {
+			NSMutableDictionary* userInfo = [[NSMutableDictionary alloc] init];
+			userInfo[EVEAccountsManagerDeletedObjectsKey] = deleted;
+			if (updated.count > 0)
+				userInfo[EVEAccountsManagerUpdatedObjectsKey] = updated;
+			[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountsManagerDidChangeNotification object:self userInfo:userInfo];
+			[[EUStorage sharedStorage] saveContext];
+		};
+		
+		if ([NSThread isMainThread])
+			notify();
+		else
+			dispatch_async(dispatch_get_main_queue(), notify);
+
 	}
 }
 
@@ -115,16 +207,22 @@ static EVEAccountsManager* sharedManager = nil;
 	for (EVEAPIKeyInfoCharactersItem* character in apiKey.apiKeyInfo.characters) {
 		EVEAccount* account = self.accounts[@(character.characterID)];
 		if (!account) {
-			account = [[EVEAccount alloc] init];
+			account = self.reusedAccounts[@(character.characterID)];
+			if (account) {
+				account.apiKeys = nil;
+				account.charAPIKey = nil;
+				account.corpAPIKey = nil;
+			}
+			else {
+				account = [[EVEAccount alloc] init];
+			}
 			account.character = character;
 			self.accounts[@(character.characterID)] = account;
 		}
-		[account.apiKeys addObject:apiKey];
-		if (apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation && !account.corpAPIKey)
-			account.corpAPIKey = apiKey;
-		else if (apiKey.apiKeyInfo.key.type != EVEAPIKeyTypeCorporation && !account.charAPIKey)
-			account.charAPIKey = apiKey;
-		
+		if (account.apiKeys)
+			account.apiKeys = [account.apiKeys arrayByAddingObject:apiKey];
+		else
+			account.apiKeys = @[apiKey];
 		account.ignored = self.ignored[@(character.characterID)] != nil;
 	}
 }

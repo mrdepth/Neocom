@@ -53,7 +53,7 @@
 	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	self.title = self.category.categoryName;
 	[self reload];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -179,7 +179,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
 			[self.tableView reloadData];

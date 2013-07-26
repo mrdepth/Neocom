@@ -15,6 +15,14 @@
 #define NotificationSkillPlanDidRemoveSkill @"NotificationSkillPlanDidRemoveSkill"
 #define NotificationSkillPlanDidImportFromCloud @"NotificationSkillPlanDidImportFromCloud"
 
+@interface SkillPlanSkill : EVEDBInvType
+@property (nonatomic, assign) NSInteger currentLevel;
+@property (nonatomic, assign) NSInteger taretLevel;
+@property (nonatomic, assign) float currentSkillPoints;
+@property (nonatomic, assign) float targetSkillPoints;
+@end
+
+
 @class EVEAccount;
 @class CharacterAttributes;
 

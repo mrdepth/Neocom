@@ -139,7 +139,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			if (error)
 				[[UIAlertView alertViewWithError:error] show];
@@ -233,7 +233,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
 			[self.tableView reloadData];

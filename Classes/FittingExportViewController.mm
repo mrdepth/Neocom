@@ -92,7 +92,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 //		[eveXML appendString:@"</fittings>"];
 		NSString* path = [[Globals documentsDirectory] stringByAppendingPathComponent:@"exportedFits.xml"];
 		[eveXML writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:nil];

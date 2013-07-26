@@ -258,7 +258,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.implants = implantsTmp;
 			self.boosters = boostersTmp;

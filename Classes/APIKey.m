@@ -35,12 +35,16 @@
 }*/
 
 - (EVEAPIKeyInfo*) apiKeyInfo {
-	if (!_apiKeyInfo) {
-		NSError* error = nil;
-		self.apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:self.keyID vCode:self.vCode error:&error progressHandler:nil];
-		self.error = error;
+	@synchronized(self) {
+		if (!_apiKeyInfo) {
+			NSError* error = nil;
+			_apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:self.keyID vCode:self.vCode error:&error progressHandler:nil];
+			if (!_apiKeyInfo)
+				_apiKeyInfo = (EVEAPIKeyInfo*) [NSNull null];
+			self.error = error;
+		}
+		return [_apiKeyInfo isKindOfClass:[EVEAPIKeyInfo class]] ? _apiKeyInfo : nil;
 	}
-	return _apiKeyInfo;
 }
 
 + (NSArray*) allAPIKeys {

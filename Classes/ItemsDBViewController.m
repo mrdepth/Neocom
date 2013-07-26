@@ -12,6 +12,7 @@
 #import "ItemCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "ItemViewController.h"
+#import "appearance.h"
 
 @interface ItemsDBViewController()
 - (void) reload;
@@ -24,7 +25,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	
+	self.tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.rows = [NSMutableArray array];
 	self.filteredValues = [NSMutableArray array];
 	
@@ -135,6 +137,12 @@
 	else
 		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
 
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
 	return cell;
 }
 
@@ -142,7 +150,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+	return 40;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -255,7 +263,7 @@
 											   }];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.rows = values;
 			[self.tableView reloadData];
@@ -306,7 +314,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];

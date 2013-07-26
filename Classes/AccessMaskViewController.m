@@ -10,8 +10,11 @@
 #import "UIAlertView+Error.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
-#import "UITableViewCell+Nib.h"
-#import "AccessMaskCellView.h"
+#import "GroupedCell.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "APIKey.h"
 
 @interface AccessMaskViewController()
 
@@ -38,8 +41,21 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Access Mask", nil);
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	
+	NSString* keyType = nil;
+	if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeAccount)
+		keyType = @"Account";
+	else if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCharacter)
+		keyType = @"Char";
+	else if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation)
+		keyType = @"Corp";
+	else
+		keyType = @"Unknown";
+	
+	self.title = [NSString stringWithFormat:@"%@ key: %d", keyType, self.apiKey.keyID];
+
+	
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	__block NSArray *sectionsTmp = nil;
 	NSMutableDictionary *groupsTmp = [NSMutableDictionary dictionary];
@@ -53,11 +69,13 @@
 		}
 		else {
 			for (EVECalllistCallGroupsItem *callGroup in calllist.callGroups) {
-				[groupsTmp setObject:callGroup.name forKey:[NSString stringWithFormat:@"%d", callGroup.groupID]];
+				groupsTmp[@(callGroup.groupID)] = callGroup.name;
 			}
+			
+			BOOL corporate = self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
 
 			NSIndexSet *indexes = [calllist.calls indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-				return self.corporate ^ ([(EVECalllistCallsItem*) obj type] == EVECallTypeCharacter);
+				return corporate ^ ([(EVECalllistCallsItem*) obj type] == EVECallTypeCharacter);
 			}];
 			
 			sectionsTmp = [[calllist.calls objectsAtIndexes:indexes] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
@@ -65,14 +83,14 @@
 			sectionsTmp = [sectionsTmp sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 				NSInteger groupID1 = [[obj1 objectAtIndex:0] groupID];
 				NSInteger groupID2 = [[obj2 objectAtIndex:0] groupID];
-				NSString *name1 = [groupsTmp valueForKey:[NSString stringWithFormat:@"%d", groupID1]];
-				NSString *name2 = [groupsTmp valueForKey:[NSString stringWithFormat:@"%d", groupID2]];
+				NSString *name1 = groupsTmp[@(groupID1)];
+				NSString *name2 = groupsTmp[@(groupID2)];
 				return [name1 compare:name2];
 			}];
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.sections = sectionsTmp;
 		self.groups = groupsTmp;
 		[self.tableView reloadData];
@@ -112,55 +130,61 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[self.sections objectAtIndex:section] count];
+	return [self.sections[section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [self.groups valueForKeyPath:[NSString stringWithFormat:@"%d", [[[self.sections objectAtIndex:section] objectAtIndex:0] groupID]]];
+	return self.groups[@([self.sections[section][0] groupID])];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifier = @"AccessMaskCellView";
+    static NSString *cellIdentifier = @"Cell";
     
-    AccessMaskCellView *cell = (AccessMaskCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-		cell = [AccessMaskCellView cellWithNibName:@"AccessMaskCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		cell.textLabel.textColor = [UIColor whiteColor];
-		cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.textLabel.backgroundColor = [UIColor clearColor];
+		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.textLabel.shadowColor = [UIColor blackColor];
-		cell.textLabel.shadowOffset = CGSizeMake(1, 1);
+		cell.textLabel.textColor = [UIColor whiteColor];
     }
-	EVECalllistCallsItem *call = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVECalllistCallsItem *call = self.sections[indexPath.section][indexPath.row];
 	cell.textLabel.text = call.name;
-	UISwitch *switchView = (UISwitch*) cell.accessoryView;
-	switchView.on = (self.accessMask & call.accessMask) > 0;
+	cell.accessoryView = (self.apiKey.apiKeyInfo.key.accessMask & call.accessMask) ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+
     return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+	return view;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
 }
 
 @end

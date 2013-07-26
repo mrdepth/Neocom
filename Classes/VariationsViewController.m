@@ -78,7 +78,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			self.sections = values;
 			[self.tableView reloadData];

@@ -465,7 +465,7 @@
 			count = killNetLog.killLog.count;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled])
 				self.searchResultsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d Search Results", nil), count];
 		}];
@@ -490,7 +490,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				if (error)
 					[[UIAlertView alertViewWithError:error] show];

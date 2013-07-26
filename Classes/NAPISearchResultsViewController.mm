@@ -198,7 +198,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled] && fit && character) {
 			if (error) {
 				[[UIAlertView alertViewWithError:error] show];
@@ -257,7 +257,7 @@
 		[rowsTmp addObjectsFromArray:search.loadouts];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			if (error) {
 				[[UIAlertView alertViewWithError:error] show];

@@ -16,10 +16,8 @@
 @property (nonatomic, readonly, strong) NSArray* inbox;
 @property (nonatomic, readonly, strong) NSArray* sent;
 @property (nonatomic, readonly, strong) NSArray* notifications;
-@property (nonatomic, readonly) NSInteger keyID;
-@property (nonatomic, readonly, strong) NSString* vCode;
-@property (nonatomic, readonly) NSInteger characterID;
 @property (nonatomic, readonly, strong) NSError* error;
+@property (nonatomic, weak, readonly) EVEAccount* account;
 
 + (id) mailBoxWithAccount:(EVEAccount*) account;
 - (id) initWithAccount:(EVEAccount*) account;

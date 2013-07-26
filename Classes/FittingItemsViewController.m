@@ -386,7 +386,7 @@
 
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			if (marketGroupsTmp.count > 0)
 				self.searchRequest = [NSString stringWithFormat:@"SELECT a.*, c.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%%%%@%%%%\" AND marketGroupID IN (%@) ORDER BY d.value, typeName;", [marketGroupsTmp componentsJoinedByString:@","]];
@@ -438,7 +438,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];

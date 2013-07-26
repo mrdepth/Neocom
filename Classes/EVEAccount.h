@@ -36,11 +36,13 @@
 
 @property (nonatomic, strong) CharacterAttributes* characterAttributes;
 
-@property (nonatomic, strong) NSMutableArray* apiKeys;
+@property (nonatomic, strong) NSArray* apiKeys;
 @property (nonatomic, strong) APIKey* charAPIKey;
 @property (nonatomic, strong) APIKey* corpAPIKey;
 @property (nonatomic, strong) EVEAPIKeyInfoCharactersItem* character;
 @property (nonatomic, assign, getter = isIgnored) BOOL ignored;
+@property (nonatomic, strong) EVEAccountStatus* accountStatus;
+@property (nonatomic, strong) EVECharacterInfo* characterInfo;
 
 + (EVEAccount*) accountWithCharacter:(EVEAccountStorageCharacter*) account;
 + (EVEAccount*) accountWithDictionary:(NSDictionary*) dictionary;
@@ -49,11 +51,12 @@
 
 + (EVEAccount*) dummyAccount;
 + (EVEAccount*) currentAccount;
++ (void) setCurrentAccount:(EVEAccount*) account;
 
 - (void) login;
 - (void) logoff;
 
-+ (void) reload;
+- (void) reload;
 
 - (NSDictionary*) dictionary;
 

@@ -57,7 +57,7 @@
 	else
 		self.tableView.tableHeaderView = self.searchBar;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	[self loadData];
 }
 
@@ -381,7 +381,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			self.poses = posesTmp;
 			self.sections = sectionsTmp;
@@ -548,7 +548,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

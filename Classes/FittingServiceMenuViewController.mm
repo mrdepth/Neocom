@@ -295,7 +295,7 @@
 				[posFit load];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^{
+			[operation setCompletionBlockInMainThread:^{
 				if (![weakOperation isCancelled]) {
 					posFittingViewController.fit = posFit;
 					[self.navigationController pushViewController:posFittingViewController animated:YES];
@@ -329,7 +329,7 @@
 				weakOperation.progress = 1.0;
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^{
+			[operation setCompletionBlockInMainThread:^{
 				if (![weakOperation isCancelled]) {
 					fittingViewController.fittingEngine->getGang()->addPilot(character);
 					fittingViewController.fit = shipFit;
@@ -376,7 +376,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				[posFit save];
 				posFittingViewController.fittingEngine->setControlTower(controlTower);
@@ -414,7 +414,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				[fit save];
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
@@ -478,7 +478,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			self.needsConvert = needsConvertTmp;
 			self.fits = fitsTmp;
@@ -522,7 +522,7 @@
 		[pool release];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![operation isCancelled]) {
 			needsConvert = NO;
 			[fits release];

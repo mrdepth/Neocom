@@ -303,7 +303,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.subGroups = subGroupValues;
 			if (itemValues.count > 0)
@@ -353,7 +353,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = values;
 			[self.searchDisplayController.searchResultsTableView reloadData];

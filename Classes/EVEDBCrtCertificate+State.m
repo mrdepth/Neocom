@@ -26,7 +26,7 @@
 			BOOL notLearned = YES;
 			for (EVEDBCrtRelationship* relationship in self.prerequisites) {
 				if (relationship.parentTypeID) {
-					EVECharacterSheetSkill* skill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", relationship.parentTypeID]];
+					EVECharacterSheetSkill* skill = account.characterSheet.skillsMap[@(relationship.parentTypeID)];
 					if (!skill)
 						learned = NO;
 					else if (skill.level < relationship.parentLevel) {

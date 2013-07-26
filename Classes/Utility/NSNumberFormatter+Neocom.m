@@ -23,4 +23,15 @@ static NSNumberFormatter* sharedIntegerNumberFormatter;
 	}
 }
 
++ (NSString *)neocomLocalizedStringFromNumber:(NSNumber*)value {
+	@synchronized(self) {
+		if (!sharedIntegerNumberFormatter) {
+			sharedIntegerNumberFormatter = [[NSNumberFormatter alloc] init];
+			[sharedIntegerNumberFormatter setPositiveFormat:@"#,##0"];
+			[sharedIntegerNumberFormatter setGroupingSeparator:@" "];
+		}
+		return [sharedIntegerNumberFormatter stringFromNumber:value];
+	}
+}
+
 @end

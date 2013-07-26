@@ -178,7 +178,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled]) {
 				[self.skillPlannerImportViewController.delegate skillPlannerImportViewController:self.skillPlannerImportViewController didSelectSkillPlan:skillPlanTmp];
 				[self dismissModalViewControllerAnimated:YES];
@@ -205,7 +205,7 @@
 		//[skillPlan trainingTime];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);

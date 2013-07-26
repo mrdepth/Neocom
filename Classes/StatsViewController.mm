@@ -282,7 +282,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
@@ -424,7 +424,7 @@
 		totalPrice = shipPrice + fittingsPrice;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:shipPrice unit:nil]];
 			self.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:fittingsPrice unit:nil]];

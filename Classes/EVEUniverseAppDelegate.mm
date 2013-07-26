@@ -22,14 +22,38 @@
 #import "UIAlertView+Block.h"
 #import "NSString+UUID.h"
 #import "UIColor+NSNumber.h"
+#import "EVEAccountsManager.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 
-@interface EVEUniverseAppDelegate()
+@interface UISearchBar(Neocom)
+@property (nonatomic, strong) UIColor* textColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, readonly) UITextField* searchField;
+@end
+
+@implementation UISearchBar(Neocom)
+
+- (UITextField*) searchField {
+	return [self valueForKey:@"_searchField"];
+}
+
+- (void) setTextColor:(UIColor *)textColor {
+	self.searchField.textColor = textColor;
+}
+
+- (UIColor*) textColor {
+	return self.searchField.textColor;
+}
+
+@end
+
+
+@interface EVEUniverseAppDelegate()<GADBannerViewDelegate>
 @property (nonatomic, strong) GADBannerView *adView;
 @property (nonatomic, strong) NSOperationQueue *updateNotificationsQueue;
 @property (nonatomic, strong) NSOperation *updateNotificationsOperation;
-@property (nonatomic, assign) BOOL launchingFinished;
+@property (nonatomic, assign, getter = isInitializationFinished) BOOL initializationFinished;
+@property (nonatomic, strong) NSDate* resignActiveTime;
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
@@ -39,6 +63,7 @@
 - (void) openFitWithURL:(NSURL*) url;
 - (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler;
 - (void) setupAppearance;
+- (void) accountDidSelect:(NSNotification*) notification;
 @end
 
 @implementation EVEUniverseAppDelegate
@@ -51,6 +76,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[self setupAppearance];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
+	
+	
 	//[[EUStorage sharedStorage] managedObjectContext];
 	
 	/*NSPersistentStoreCoordinator *coordinator = [[EUStorage sharedStorage] persistentStoreCoordinator];
@@ -144,41 +171,60 @@
 			frame.size.height = gadSize.height;
 			self.adView = [[GADBannerView alloc] initWithFrame:frame];
 			self.adView.rootViewController = self.controller;
-			[self.controller.view addSubview:self.adView];
+			//[self.controller.view addSubview:self.adView];
 		}
-		
 		self.adView.adUnitID = @"a14d501062a8c09";
+		self.adView.delegate = self;
 		GADRequest *request = [GADRequest request];
 		[self.adView loadRequest:request];
 		
 	}
 	[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 
-	[self configureCloudWithCompletionHandler:^{
-		self.window.userInteractionEnabled = NO;
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+migrate" name:NSLocalizedString(@"Initializing storage.", nil)];
-		[operation addExecutionBlock:^{
-			@autoreleasepool {
-				EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
-				[migrationManager migrateIfNeeded];
-			}
-		}];
-		[operation setCompletionBlockInCurrentThread:^{
-			self.launchingFinished = YES;
-			
-			EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
-			self.currentAccount = account;
-			[self updateNotifications];
-			self.window.userInteractionEnabled = YES;
-		}];
-		[[EUOperationQueue sharedQueue] addOperation:operation];
+	
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+migrate" name:NSLocalizedString(@"Initializing storage", nil)];
+	[operation addExecutionBlock:^{
+		EUMigrationManager* migrationManager = [[EUMigrationManager alloc] init];
+		[migrationManager migrateIfNeeded];
 	}];
+	
+	[operation setCompletionBlockInMainThread:^{
+		self.initializationFinished = YES;
+	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+	
+	
+	NSInteger characterID = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsCurrentCharacterID];
+	__block EVEAccount* account = nil;
+	EVEAccountsManager* manager = [[EVEAccountsManager alloc] init];
+	EUOperation* loadingAccountsOperation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+loadingAccounts" name:NSLocalizedString(@"Loading Accounts", nil)];
+	[loadingAccountsOperation addExecutionBlock:^{
+		[manager reload];
+		account = [manager accountWithCharacterID:characterID];
+		[account reload];
+	}];
+	
+	[loadingAccountsOperation setCompletionBlockInMainThread:^{
+		[EVEAccountsManager setSharedManager:manager];
+		if (account)
+			[EVEAccount setCurrentAccount:account];
+	}];
+	
+	[loadingAccountsOperation addDependency:operation];
+	[[EUOperationQueue sharedQueue] addOperation:loadingAccountsOperation];
+
+	
+	[self configureCloudWithCompletionHandler:^{
+	}];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountDidSelect:) name:EVEAccountDidSelectNotification object:nil];
 
 	return YES;
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+	self.resignActiveTime = [NSDate date];
 }
 
 
@@ -191,10 +237,16 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	if (self.launchingFinished) {
-		EVEAccount *account = [EVEAccount accountWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:SettingsCurrentAccount]];
-		self.currentAccount = account;
-		[self updateNotifications];
+	EVEAccount* account = [EVEAccount currentAccount];
+	if (account) {// && [self.resignActiveTime timeIntervalSinceNow] < -60 * 60 * 30) {
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+applicationDidBecomeActive" name:NSLocalizedString(@"Updating Account Information", nil)];
+		[operation addExecutionBlock:^{
+			[account reload];
+		}];
+		
+		[operation setCompletionBlockInMainThread:^{
+		}];
+		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 }
 
@@ -230,10 +282,10 @@
 		_currentAccount = value;
 	}
 	if (_currentAccount) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:_currentAccount];
+		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:_currentAccount];
 	}
 	else
-		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSelectAccount object:_currentAccount];
+		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:_currentAccount];
 	if (!_currentAccount)
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentAccount];
 	else
@@ -269,7 +321,7 @@
 			[mailBox save];
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (wars.count > 0) {
 				NSString* s = [wars componentsJoinedByString:@", "];
 				BOOL multiple = wars.count > 1;
@@ -415,8 +467,36 @@
 	}
 }
 
+#pragma mark - GADBannerViewDelegate
+
+- (void)adViewDidReceiveAd:(GADBannerView *)view {
+	if (!view.superview) {
+		UIView* contentView = [self.window.rootViewController valueForKey:@"navigationTransitionView"];
+		CGRect frame = contentView.frame;
+		frame.size.height -= view.frame.size.height;
+		contentView.frame = frame;
+		view.frame = CGRectMake(0, frame.size.height, view.frame.size.width, view.frame.size.height);
+		[self.window.rootViewController.view addSubview:view];
+	}
+}
+
+- (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
+	
+}
+
+- (void)adViewWillPresentScreen:(GADBannerView *)adView {
+	adView.hidden = YES;
+}
+
+- (void)adViewWillDismissScreen:(GADBannerView *)adView {
+	adView.hidden = NO;
+}
 
 #pragma mark - Private
+
+- (void) loadAccounts {
+	
+}
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
@@ -486,7 +566,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (self.updateNotificationsOperation == weakOperation)
 			self.updateNotificationsOperation = nil;
 	}];
@@ -511,20 +591,20 @@
 			}
 		}
 	}
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:NSLocalizedString(@"Adding API Key", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+AddAPIKey" name:NSLocalizedString(@"Adding API Key", nil)];
 	__block NSError *error = nil;
 	[operation addExecutionBlock:^(void) {
-		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:[[properties valueForKey:@"keyid"] integerValue] vCode:[properties valueForKey:@"vcode"] error:&error];
+		[[EVEAccountsManager sharedManager] addAPIKeyWithKeyID:[properties[@"keyid"] integerValue] vCode:properties[@"vcode"] error:&error];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (error) {
 			[[UIAlertView alertViewWithError:error] show];
 		}
 		else {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"API Key added", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 			[alertView show];
-			[[NSNotificationCenter defaultCenter] postNotificationName:NotificationAccountStoargeDidChange object:nil];
+			//[[NSNotificationCenter defaultCenter] postNotificationName:NotificationAccountStoargeDidChange object:nil];
 		}
 	}];
 	
@@ -559,7 +639,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			if (fit) {
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
@@ -606,7 +686,63 @@
 
 - (void) setupAppearance {
 	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
+	
+	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											forState:UIControlStateNormal
+										  barMetrics:UIBarMetricsDefault];
+	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											forState:UIControlStateHighlighted
+										  barMetrics:UIBarMetricsDefault];
+	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDone.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											forState:UIControlStateNormal
+											   style:UIBarButtonItemStyleDone
+										  barMetrics:UIBarMetricsDefault];
+	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDoneSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											forState:UIControlStateHighlighted
+											   style:UIBarButtonItemStyleDone
+										  barMetrics:UIBarMetricsDefault];
+	[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+													  forState:UIControlStateNormal
+													barMetrics:UIBarMetricsDefault];
+	[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+													  forState:UIControlStateHighlighted
+													barMetrics:UIBarMetricsDefault];
+	
+	[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											   forState:UIControlStateNormal
+											 barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundBlack.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+											forState:UIControlStateSelected
+										  barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+								 forLeftSegmentState:UIControlStateNormal
+								   rightSegmentState:UIControlStateSelected
+										  barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+								 forLeftSegmentState:UIControlStateSelected
+								   rightSegmentState:UIControlStateNormal
+										  barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+								 forLeftSegmentState:UIControlStateNormal
+								   rightSegmentState:UIControlStateNormal
+										  barMetrics:UIBarMetricsDefault];
+	
+	[[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
+	[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
+	[[UISearchBar appearance] setTextColor:[UIColor whiteColor]];
+	
+	//[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)]];
+	
 	//[[UINavigationBar appearance] setTintColor:[UIColor colorWithNumber:@(0x1c1b20ff)]];
+}
+
+- (void) accountDidSelect:(NSNotification*) notification {
+	EVEAccount* account = notification.object;
+	if (account)
+		[[NSUserDefaults standardUserDefaults] setInteger:account.character.characterID forKey:SettingsCurrentCharacterID];
+	else
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentCharacterID];
 }
 
 @end

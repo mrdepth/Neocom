@@ -39,8 +39,7 @@
 
 - (void) layoutSubviews {
 	[super layoutSubviews];
-	self.titleLabel.frame = CGRectMake(10, 0, self.frame.size.width - 40, self.frame.size.height);
-	self.collapsImageView.frame = CGRectMake(self.frame.size.width - 26, 0, 22, 22);
+	self.titleLabel.frame = CGRectMake(30, 0, self.frame.size.width - 40, self.frame.size.height);
 }
 
 @end

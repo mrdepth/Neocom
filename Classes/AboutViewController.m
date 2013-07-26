@@ -101,7 +101,7 @@
 		self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), @(0)];
 
 //		[self reload];
-		[EVEAccount reload];
+		//[EVEAccount reload];
 		
 	}
 }

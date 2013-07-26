@@ -64,7 +64,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		self.accounts = accountsTmp;
 		[self.tableView reloadData];
 	}];

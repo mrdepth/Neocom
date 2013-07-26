@@ -80,7 +80,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddSkill:) name:NotificationSkillPlanDidAddSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeSkill:) name:NotificationSkillPlanDidChangeSkill object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveSkill:) name:NotificationSkillPlanDidRemoveSkill object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NotificationSkillPlanDidImportFromCloud object:nil];
 }
 
@@ -373,7 +373,7 @@
 			EVEDBInvTypeRequiredSkill* requiredSkill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:skill.typeID error:nil];
 			requiredSkill.requiredLevel = level;
 			requiredSkill.currentLevel = characterSkill.level;
-			float sp = [requiredSkill skillpointsAtLevel:level - 1];
+			float sp = [requiredSkill skillPointsAtLevel:level - 1];
 			requiredSkill.currentSP = MAX(sp, characterSkill.skillpoints);
 			[self.skillPlan.skills insertObject:requiredSkill atIndex:++index];
 			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -423,7 +423,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 

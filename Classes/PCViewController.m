@@ -10,6 +10,7 @@
 #import "EVEOnlineAPI.h"
 #import "UIDevice+IP.h"
 #import "Globals.h"
+#import "appearance.h"
 
 @interface PCViewController()
 @property (nonatomic, strong) EUHTTPServer *server;
@@ -25,6 +26,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.view setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
 	self.title = NSLocalizedString(@"Add API Key", nil);
 	
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:NSLocalizedString(@"Loading Accounts", nil)];
@@ -34,7 +36,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.server = [[EUHTTPServer alloc] initWithDelegate:self];
 		[self.server run];
 	}];
@@ -128,7 +130,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
 			CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
 			CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);
@@ -154,12 +156,6 @@
 		for (NSString *ip in addresses)
 			[text appendFormat:@"http://%@:8080\n", ip];
 		self.addressLabel.text = text;
-		CGRect r = CGRectMake(self.addressLabel.frame.origin.x, self.addressLabel.frame.origin.y, self.addressLabel.frame.size.width, 100);
-		r = [self.addressLabel textRectForBounds:r limitedToNumberOfLines:0];
-		r.origin = self.addressLabel.frame.origin;
-		r.size.width = self.addressLabel.frame.size.width;
-		r.size.height += 20;
-		self.addressLabel.frame = r;
 	}
 }
 

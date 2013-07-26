@@ -226,7 +226,7 @@
 				EVEDBInvType* type = skill[@"type"];
 				skill[@"targetLevel"] = @(item.level);
 				if (!skill[@"startSkillPoints"])
-					skill[@"startSkillPoints"] = @([type skillpointsAtLevel:item.level - 1]);
+					skill[@"startSkillPoints"] = @([type skillPointsAtLevel:item.level - 1]);
 				skill[@"targetSkillPoints"] = @(item.endSP);
 				
 				skill[@"iconImageName"] = @"Icons/icon50_12.png";
@@ -286,7 +286,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			if (error) {
 				[UIAlertView alertViewWithError:error];
@@ -329,7 +329,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 		}
 		self.filteredSections = filteredSectionsTmp;

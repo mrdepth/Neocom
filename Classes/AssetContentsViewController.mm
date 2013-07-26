@@ -95,7 +95,7 @@
 				self.asset.location = [locations.locations objectAtIndex:0];
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled]) {
 				if (self.asset.location)
 					self.title = self.asset.location.itemName;
@@ -177,7 +177,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
@@ -201,7 +201,7 @@
 			fit = [POSFit posFitWithAsset:self.asset engine:posFittingViewController.fittingEngine];
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				posFittingViewController.fit = fit;
 				[self.navigationController pushViewController:posFittingViewController animated:YES];
@@ -551,7 +551,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				self.assets = assetsTmp;
 				if (self.assets)
@@ -605,7 +605,7 @@
 				}
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					self.sections = sectionsTmp;
 					[self searchWithSearchString:self.searchBar.text];
@@ -692,7 +692,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

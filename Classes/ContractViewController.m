@@ -397,7 +397,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.sections = sectionsTmp;
 		[self.tableView reloadData];
 	}];

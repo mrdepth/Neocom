@@ -61,7 +61,7 @@
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl];
 	//[self loadKillLogBeforeKillID:0 corporate:self.ownerSegmentControl.selectedSegmentIndex == 1];
 	[self reload];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -203,7 +203,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			KillMailViewController* controller = [[KillMailViewController alloc] initWithNibName:@"KillMailViewController" bundle:nil];
 			controller.killMail = killMail;
@@ -404,7 +404,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				if (corporate)
 					self.corpFilter = filterTmp;
@@ -435,7 +435,7 @@
 				}
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.killLog = sections;
@@ -488,7 +488,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];
@@ -576,7 +576,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![operation isCancelled]) {
 			if (kills.count == 0 && losses.count == 0) {
 				if (corporate)
@@ -631,7 +631,7 @@
 					operation.progress = 1.0;
 				}];
 				
-				[operation setCompletionBlockInCurrentThread:^{
+				[operation setCompletionBlockInMainThread:^{
 					if (![operation isCancelled]) {
 						if (currentKillLog) {
 							[currentKillLog removeAllObjects];
@@ -684,7 +684,7 @@
 				[pool release];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![operation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.killLog = sections;

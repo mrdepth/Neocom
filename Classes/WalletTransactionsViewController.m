@@ -61,7 +61,7 @@
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	self.corpWalletTransactions  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
 
 	[self.ownerSegmentControl layoutSubviews];
@@ -356,7 +356,7 @@
 				}
 				[charWalletTransactionsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
 			}];
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					self.charFilter = filterTmp;
 					[self.charWalletTransactions addObjectsFromArray:charWalletTransactionsTmp];
@@ -377,7 +377,7 @@
 					[transactionsTmp addObjectsFromArray:[self.charFilter applyToValues:charWalletTransactionsLocal]];
 				}];
 				
-				[operation setCompletionBlockInCurrentThread:^(void) {
+				[operation setCompletionBlockInMainThread:^(void) {
 					if (![weakOperation isCancelled]) {
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletTransactions = transactionsTmp;
@@ -432,7 +432,7 @@
 						}
 					}];
 					
-					[loadingOperation setCompletionBlockInCurrentThread:^(void) {
+					[loadingOperation setCompletionBlockInMainThread:^(void) {
 						weakOperation.progress = i++ / n;
 						[filter updateWithValues:account];
 						[corpWalletTransactionsTmp replaceObjectAtIndex:idx withObject:account];
@@ -447,7 +447,7 @@
 				[corpWalletTransactionsTmp replaceObjectAtIndex:0 withObject:account0];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				self.corpWalletTransactions = corpWalletTransactionsTmp;
 				self.corpFilter = filter;
 				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
@@ -467,7 +467,7 @@
 					[transactionsTmp addObjectsFromArray:[self.corpFilter applyToValues:[corpWalletTransactionsLocal objectAtIndex:self.accountSegmentControl.selectedSegmentIndex]]];
 				}];
 				
-				[operation setCompletionBlockInCurrentThread:^(void) {
+				[operation setCompletionBlockInMainThread:^(void) {
 					if (![weakOperation isCancelled]) {
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletTransactions = transactionsTmp;
@@ -554,7 +554,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.characterBalance = characterBalanceTmp;
 			self.corpAccounts = corpAccountsTmp;
@@ -622,7 +622,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

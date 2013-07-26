@@ -61,7 +61,7 @@
 	
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsMarketOrdersOwner];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	[self reloadOrders];
 }
 
@@ -445,7 +445,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled]) {
 				if (corporate) {
 					self.corpFilter = filterTmp;
@@ -471,7 +471,7 @@
 				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 						self.orders = ordersTmp;
@@ -552,7 +552,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

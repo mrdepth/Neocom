@@ -165,7 +165,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled]) {
 				SkillPlanViewController* controller = [[SkillPlanViewController alloc] initWithNibName:@"SkillPlanViewController" bundle:nil];
 				controller.skillPlan = skillPlan;
@@ -228,7 +228,7 @@
 			weakOperation.progress = 1.0;
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			NSData* bodyData = [page dataUsingEncoding:NSUTF8StringEncoding];
 			CFHTTPMessageSetBody(connection.response.message, (__bridge CFDataRef) bodyData);
 			CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef) @"Content-Length", (__bridge CFStringRef) [NSString stringWithFormat:@"%d", bodyData.length]);

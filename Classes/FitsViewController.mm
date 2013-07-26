@@ -100,7 +100,7 @@
 
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			self.fits = fitsTmp;
 			[self.tableView reloadData];
@@ -252,7 +252,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				[fit save];
 				[self.delegate fitsViewController:self didSelectFit:fit];
@@ -295,7 +295,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			[fit save];
 			[self.delegate fitsViewController:self didSelectFit:fit];

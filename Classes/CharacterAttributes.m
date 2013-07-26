@@ -26,8 +26,8 @@
 }
 
 - (float) skillpointsPerSecondForSkill:(EVEDBInvType*) skill {
-	EVEDBDgmTypeAttribute *primaryAttribute = [skill.attributesDictionary valueForKey:@"180"];
-	EVEDBDgmTypeAttribute *secondaryAttribute = [skill.attributesDictionary valueForKey:@"181"];
+	EVEDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
+	EVEDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
 	NSInteger effectivePrimaryAttribute = [self effectiveAttributeValueWithAttributeID:primaryAttribute.value];
 	NSInteger effectiveSecondaryAttribute = [self effectiveAttributeValueWithAttributeID:secondaryAttribute.value];
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;

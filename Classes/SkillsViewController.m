@@ -20,8 +20,11 @@
 #import "NSString+TimeLeft.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
+#import "RoundRectButton.h"
+#import "UIActionSheet+Block.h"
 
-@interface Skill : NSObject
+/*@interface Skill : NSObject
 
 @property (nonatomic, strong) NSString *skillName;
 @property (nonatomic, strong) NSString *skillPoints;
@@ -43,7 +46,7 @@
 	return [self.skillName compare:other.skillName];
 }
 
-@end
+@end*/
 
 /*NSComparisonResult compare(NSArray *a, NSArray *b, void* context) {
  return [[[[[a objectAtIndex:0] skill] group] groupName] compare:[[[[b objectAtIndex:0] skill] group] groupName]];
@@ -73,18 +76,34 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Skills", nil);
 	
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
+	self.navigationItem.rightBarButtonItems = @[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
+
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.navigationItem.titleView = self.segmentedControl;
+		self.skillsDataSource.account = [EVEAccount currentAccount];
+		self.skillsDataSource.mode = SkillsDataSourceModeKnownSkills;
+		[self.skillsDataSource reload];
+		
+		self.skillQueueDataSource.account = [EVEAccount currentAccount];
+		self.skillQueueDataSource.mode = SkillsDataSourceModeSkillPlanner;
+		[self.skillQueueDataSource reload];
+
+	}
+	else {
+		self.navigationItem.titleView = self.modeButton;
+		self.skillsDataSource.account = [EVEAccount currentAccount];
+		self.skillsDataSource.mode = SkillsDataSourceModeSkillPlanner;
+		[self.skillsDataSource reload];
 	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	
+	
 
-	[self loadData];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.navigationItem setHidesBackButton:YES];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -94,58 +113,188 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	[self becomeFirstResponder];
-}
-
-- (BOOL) canBecomeFirstResponder {
-	return YES;
-}
-
-- (void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-	if (motion == UIEventSubtypeMotionShake)
-		[self.skillsTableView handleShake];
-}
-
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
-	self.skillsTableView = nil;
-	self.skillsQueueTableView = nil;
-	self.segmentedControl = nil;
-	self.characterInfoViewController = nil;
-	self.skillGroups = nil;
-	self.skillQueue = nil;
-	self.skillQueueTitle = nil;
 }
 
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
 }
 
-- (IBAction) onChangeSegmentedControl:(id) sender {
-	[self.skillsTableView reloadData];
+- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
+	[super setEditing:editing animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.skillsQueueTableView setEditing:editing animated:animated];
+	else
+		[self.skillsTableView setEditing:editing animated:animated];
+}
+
+- (IBAction) onMode:(id)sender {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		switch (self.segmentedControl.selectedSegmentIndex) {
+			case 0:
+				self.skillsDataSource.mode = SkillsDataSourceModeKnownSkills;
+				break;
+			case 1:
+				self.skillsDataSource.mode = SkillsDataSourceModeAllSkills;
+				break;
+			case 2:
+				self.skillsDataSource.mode = SkillsDataSourceModeNotKnownSkills;
+				break;
+			case 3:
+				self.skillsDataSource.mode = SkillsDataSourceModeCanTrain;
+				break;
+			default:
+				break;
+		}
+	}
+	else {
+		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+									   title:nil
+						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+					  destructiveButtonTitle:nil
+						   otherButtonTitles:@[NSLocalizedString(@"Skill Queue", nil), NSLocalizedString(@"My Skills", nil), NSLocalizedString(@"All Skills", nil), NSLocalizedString(@"Not Known", nil), NSLocalizedString(@"Can Train", nil)]
+							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+								 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
+									 return;
+								 
+								 [self.modeButton setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
+								 [self.modeButton setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateHighlighted];
+								 switch (selectedButtonIndex) {
+									 case 0:
+										 self.skillsDataSource.mode = SkillsDataSourceModeSkillPlanner;
+										 [self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
+																			animated:YES];
+										 break;
+									 case 1:
+										 self.skillsDataSource.mode = SkillsDataSourceModeKnownSkills;
+										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+										 break;
+									 case 2:
+										 self.skillsDataSource.mode = SkillsDataSourceModeAllSkills;
+										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+										 break;
+									 case 3:
+										 self.skillsDataSource.mode = SkillsDataSourceModeNotKnownSkills;
+										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+										 break;
+									 case 4:
+										 self.skillsDataSource.mode = SkillsDataSourceModeCanTrain;
+										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+										 break;
+									 default:
+										 break;
+								 }
+							 } cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
+	}
+}
+
+- (IBAction) onAction:(id)sender {
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:NSLocalizedString(@"Clear Skill Plan", nil)
+					   otherButtonTitles:@[NSLocalizedString(@"Import Skill Plan", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
+								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+									 [self.skillQueueDataSource.account.skillPlan clear];
+									 [self.skillQueueDataSource.account.skillPlan save];
+									 [self.skillQueueDataSource reload];
+								 }
+								 else {
+									 [self.skillsDataSource.account.skillPlan clear];
+									 [self.skillsDataSource.account.skillPlan save];
+									 [self.skillsDataSource reload];
+								 }
+							 }
+							 else if (selectedButtonIndex == 1) {
+								 SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
+								 controller.delegate = self;
+								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+								 
+								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
+								 
+								 [self presentModalViewController:navController animated:YES];
+							 }
+						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
+	return view;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	EVEDBInvType* skill = [(SkillsDataSource*) tableView.dataSource skillAtIndexPath:indexPath];
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+	
+	controller.type = [EVEDBInvType invTypeWithTypeID:skill.typeID error:nil];
+	[controller setActivePage:ItemViewControllerActivePageInfo];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentModalViewController:navController animated:YES];
+	}
+	else
+		[self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
+}
+
+#pragma mark SkillPlannerImportViewControllerDelegate
+- (void) skillPlannerImportViewController:(SkillPlannerImportViewController*) controller didSelectSkillPlan:(SkillPlan*) aSkillPlan {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.skillQueueDataSource.account.skillPlan.skills = aSkillPlan.skills;
+		[self.skillQueueDataSource reload];
+	}
+	else {
+		self.skillsDataSource.account.skillPlan.skills = aSkillPlan.skills;
+		[self.skillsDataSource reload];
+	}
+}
+
+#pragma mark - Private
+
+- (void) didSelectAccount:(NSNotification*) notification {
+	EVEAccount* account = [EVEAccount currentAccount];
+	self.skillsDataSource.account = account;
+	self.skillQueueDataSource.account = account;
+	[self.skillsDataSource reload];
+	[self.skillQueueDataSource reload];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (!account)
+			[self.navigationItem setRightBarButtonItems:nil animated:YES];
+		else if (!self.navigationItem.rightBarButtonItems)
+			[self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
+											   animated:YES];
+	}
+	else
+		[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+/*- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == self.skillsTableView)
@@ -163,6 +312,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 0;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tableView == self.skillsTableView)
 			return [[[self.skillGroups objectAtIndex:section] valueForKey:@"skills"] count];
@@ -193,7 +343,7 @@
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+/*- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *cellIdentifier = @"SkillCellView";
     
@@ -227,10 +377,10 @@
 	
     return cell;
 }
-
+*/
 #pragma mark -
 #pragma mark Table view delegate
-
+/*
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
@@ -256,7 +406,7 @@
 		return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	Skill *skill;
 	
@@ -479,7 +629,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.skillQueueTitle = skillQueueTitleTmp;
 		self.skillGroups = skillGroupsTmp;
 		self.skillQueue = skillQueueTmp;
@@ -490,17 +640,6 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
-- (void) didSelectAccount:(NSNotification*) notification {
-	EVEAccount *account = [EVEAccount currentAccount];
-	if (!account) {
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self loadData];
-		else
-			[self.navigationController popToRootViewControllerAnimated:YES];
-	}
-	else {
-		[self loadData];
-	}
-}
 
+*/
 @end

@@ -17,6 +17,7 @@
 @interface CharacterInfoViewController()
 @property (nonatomic, strong) NSURL* portraitURL;
 - (void) update;
+- (void) accountDidUpdate:(NSNotification*) notification;
 @end
 
 @implementation CharacterInfoViewController
@@ -24,6 +25,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountDidUpdate:) name:EVEAccountDidUpdateNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -71,7 +73,7 @@
 							 frame.size.height = 0;
 							 //self.contentView.frame = frame;
 						 } completion:nil];
-		self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
+		self.portraitImageView.image = nil;
 		self.characterNameLabel.text = nil;
 		self.selectCharacterLabel.hidden = NO;
 		self.corpImageView.image = nil;
@@ -97,12 +99,12 @@
 	EUOperation *operation = [EUOperation operationWithIdentifier:@"CharacterInfoViewController+Update" name:NSLocalizedString(@"Loading Character Info", nil)];
 	[operation addExecutionBlock:^(void) {
 		if (scale == 2.0) {
-			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize128 error:nil];
-			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize64 error:nil];
+			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.character.characterID size:EVEImageSize128 error:nil];
+			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.character.corporationID size:EVEImageSize64 error:nil];
 		}
 		else {
-			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil];
-			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize32 error:nil];
+			self.portraitURL = [EVEImage characterPortraitURLWithCharacterID:account.character.characterID size:EVEImageSize64 error:nil];
+			corpURL = [EVEImage corporationLogoURLWithCorporationID:account.character.corporationID size:EVEImageSize32 error:nil];
 		}
 		
 		
@@ -125,9 +127,7 @@
 		for (EVECharacterSheetSkill *skill in account.characterSheet.skills)
 			skillpoints += skill.skillpoints;
 		if (account.skillQueue) {
-			skillsText = [NSMutableString stringWithFormat:NSLocalizedString(@"%@ points (%d skills)\n", nil),
-					[NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:skillpoints] numberStyle:NSNumberFormatterDecimalStyle],
-					account.characterSheet.skills.count];
+			skillsText = [NSMutableString string];
 			
 			if (account.skillQueue.skillQueue.count > 0) {
 				NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
@@ -141,11 +141,12 @@
 
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
+		self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
 		[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale completion:nil failureBlock:nil];
 		[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
-		self.characterNameLabel.text = account.characterName;
-		self.corpLabel.text = account.corporationName;
+		self.characterNameLabel.text = account.character.characterName;
+		self.corpLabel.text = account.character.corporationName;
 		self.wealthLabel.text = wealth;
 		self.skillsLabel.text = skillsText;
 		self.selectCharacterLabel.hidden = YES;
@@ -167,6 +168,11 @@
 	}];
 
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) accountDidUpdate:(NSNotification*) notification {
+	if (notification.object == self.account)
+		[self update];
 }
 
 @end

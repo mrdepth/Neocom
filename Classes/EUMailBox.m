@@ -16,9 +16,7 @@
 @property (nonatomic, readwrite, strong) NSArray* inbox;
 @property (nonatomic, readwrite, strong) NSArray* sent;
 @property (nonatomic, readwrite, strong) NSArray* notifications;
-@property (nonatomic, readwrite) NSInteger keyID;
-@property (nonatomic, readwrite, strong) NSString* vCode;
-@property (nonatomic, readwrite) NSInteger characterID;
+@property (nonatomic, weak, readwrite) EVEAccount* account;
 @property (nonatomic, readwrite, strong) NSError* error;
 
 + (NSString*) mailBoxDirectory;
@@ -36,12 +34,9 @@
 
 - (id) initWithAccount:(EVEAccount*) account {
 	if (self = [super init]) {
-		if (!account.charKeyID || !account.charVCode) {
+		if (!account.charAPIKey)
 			return nil;
-		}
-		self.characterID = account.characterID;
-		self.vCode = account.charVCode;
-		self.keyID = account.charKeyID;
+		self.account = account;
 	}
 	return self;
 }
@@ -96,11 +91,11 @@
 }
 
 - (NSString*) messagesFilePath {
-	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"m%d.plist", self.characterID]];
+	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"m%d.plist", self.account.character.characterID]];
 }
 
 - (NSString*) notificationsFilePath {
-	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"n%d.plist", self.characterID]];
+	return [[EUMailBox mailBoxDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"n%d.plist", self.account.character.characterID]];
 }
 
 - (void) reload {
@@ -111,13 +106,13 @@
 	self.error = nil;
 	NSError *error = nil;
 	
-	EVEMailMessages* mailMessages = [EVEMailMessages mailMessagesWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
-	EVENotifications* eveNotifications = [EVENotifications notificationsWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
+	EVEMailMessages* mailMessages = [EVEMailMessages mailMessagesWithKeyID:self.account.charAPIKey.keyID vCode:self.account.charAPIKey.vCode characterID:self.account.character.characterID error:&error progressHandler:nil];
+	EVENotifications* eveNotifications = [EVENotifications notificationsWithKeyID:self.account.charAPIKey.keyID vCode:self.account.charAPIKey.vCode characterID:self.account.character.characterID error:&error progressHandler:nil];
 	if (error) {
 		self.error = error;
 	}
 	else {
-		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:nil progressHandler:nil];
+		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:self.account.charAPIKey.keyID vCode:self.account.charAPIKey.vCode characterID:self.account.character.characterID error:nil progressHandler:nil];
 		NSArray* readMessages = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[self messagesFilePath]]];
 		NSArray* readNotifications = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[self notificationsFilePath]]];
 		
@@ -156,7 +151,7 @@
 				[ids addObject:charID];
 			EUMailMessage* message = [EUMailMessage mailMessageWithMailBox:self];
 			message.header = item;
-			if (item.senderID == self.characterID) {
+			if (item.senderID == self.account.character.characterID) {
 				[(NSMutableArray*) self.sent addObject:message];
 				message.read = YES;
 			}

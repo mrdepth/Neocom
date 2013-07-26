@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "EVEOnlineAPI.h"
 
-@interface AccessMaskViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, assign) NSInteger accessMask;
-@property (nonatomic, assign, getter=isCorporate) BOOL corporate;
+@class APIKey;
+@interface AccessMaskViewController : UITableViewController
+@property (nonatomic, strong) APIKey* apiKey;
 
 @end

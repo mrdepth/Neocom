@@ -11,5 +11,6 @@
 @interface NSNumberFormatter (Neocom)
 
 + (NSString *)neocomLocalizedStringFromInteger:(NSInteger)value;
++ (NSString *)neocomLocalizedStringFromNumber:(NSNumber*)value;
 
 @end

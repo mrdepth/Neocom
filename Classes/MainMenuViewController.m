@@ -24,13 +24,14 @@
 #import "MarketOrdersViewController.h"
 #import "IndustryJobsViewController.h"
 #import "SplashScreenViewController.h"
+#import "UIColor+NSNumber.h"
 
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
 @property (nonatomic, assign) NSInteger numberOfUnreadMessages;
 
 
-- (void) didSelectAccount:(NSNotification*) notification;
+- (void) accountDidSelect:(NSNotification*) notification;
 - (IBAction) dismissModalViewController;
 - (void) didReadMail:(NSNotification*) notification;
 - (void) loadMail;
@@ -66,6 +67,7 @@
 		image = [image resizableImageWithCapInsets:UIEdgeInsetsZero];
 		//[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:image]];
 	}
+	[self.tableView setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
 	
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	[self.characterInfoView addSubview:self.characterInfoViewController.view];
@@ -73,7 +75,7 @@
 	self.characterInfoViewController.account = [EVEAccount currentAccount];
 
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountDidSelect:) name:EVEAccountDidSelectNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReadMail:) name:NotificationReadMail object:nil];
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
@@ -168,6 +170,14 @@
 		cell.titleLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
 	}
 	cell.iconImageView.image = [UIImage imageNamed:[item valueForKey:@"image"]];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	
     return cell;
 }
 
@@ -184,8 +194,8 @@
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
 	NSInteger corpAccessMask = [[item valueForKey:@"corpAccessMask"] integerValue];
 	
-	if ((account.charAccessMask & charAccessMask) != charAccessMask &&
-		(account.corpAccessMask & corpAccessMask) != corpAccessMask)
+	if ((account.charAPIKey.apiKeyInfo.key.accessMask & charAccessMask) != charAccessMask &&
+		(account.corpAPIKey.apiKeyInfo.key.accessMask & corpAccessMask) != corpAccessMask)
 		return;
 
 	NSString *className = [item valueForKey:@"className"];
@@ -270,7 +280,7 @@
 
 #pragma mark - Private
 
-- (void) didSelectAccount:(NSNotification*) notification {
+- (void) accountDidSelect:(NSNotification*) notification {
 	self.characterInfoViewController.account = [EVEAccount currentAccount];
 	self.numberOfUnreadMessages = 0;
 	[self.tableView reloadData];
@@ -296,7 +306,7 @@
 		}];
 		
 		__weak EUOperation* weakOperation = operation;
-		[operation setCompletionBlockInCurrentThread:^(void) {
+		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled])
 				[self.tableView reloadData];
 		}];

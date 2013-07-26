@@ -12,6 +12,7 @@
 #import "TutorialViewController.h"
 #import "PCViewController.h"
 #import "UIAlertView+Error.h"
+#import "appearance.h"
 
 @interface AddEVEAccountViewController()
 
@@ -36,6 +37,8 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.view setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
+
 	[self.navigationItem setRightBarButtonItem:self.saveButton];
 	self.title = NSLocalizedString(@"Add API Key", nil);
 	
@@ -100,7 +103,7 @@
 	
 	__weak EUOperation* weakOperation = operation;
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			if (error) {
 				[[UIAlertView alertViewWithError:error] show];

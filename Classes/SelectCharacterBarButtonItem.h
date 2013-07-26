@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 @interface SelectCharacterBarButtonItem : UIBarButtonItem
@@ -17,6 +17,5 @@
 - (id) initWithParentViewController: (UIViewController*) controller;
 
 - (IBAction) onSelect: (id) sender;
-- (IBAction) onBack: (id) sender;
 - (void) setCharacterName:(NSString*) name;
 @end

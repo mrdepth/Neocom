@@ -251,7 +251,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		self.certificateView = [CertificateView viewWithNibName:@"CertificateView" bundle:nil];
 		self.certificateView.iconView.image = [UIImage imageNamed:[self.certificate iconImageName]];
 		self.certificateView.statusView.image = [UIImage imageNamed:self.certificate.stateIconImageName];

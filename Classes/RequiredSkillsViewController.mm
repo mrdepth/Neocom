@@ -239,7 +239,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[weakOperation setCompletionBlockInCurrentThread:^(void) {
+	[weakOperation setCompletionBlockInMainThread:^(void) {
 		if (![operation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 			

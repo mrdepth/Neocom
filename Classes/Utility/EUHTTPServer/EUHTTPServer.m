@@ -55,6 +55,10 @@ static void httpServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType ty
 	return self;
 }
 
+- (void) dealloc {
+	[self shutdown];
+}
+
 - (void)handleConnection:(NSString *)peerName inputStream:(NSInputStream *)readStream outputStream:(NSOutputStream *)writeStream {
 	
 	if (peerName != nil && readStream != nil && writeStream != nil) {

@@ -211,7 +211,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.rows = rowsTmp;
 		[self.tableView reloadData];
 	}];
@@ -244,7 +244,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredRows = rowsTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

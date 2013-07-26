@@ -29,7 +29,7 @@
 @synthesize name = _name;
 
 + (id) skillPlanWithAccount:(EVEAccount*) account name:(NSString*) name {
-	if (!account || !account.characterID)
+	if (!account || !account.character)
 		return nil;
 	
 	EUStorage* storage = [EUStorage sharedStorage];
@@ -37,7 +37,7 @@
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext];
 	[fetchRequest setEntity:entity];
 	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"characterID = %d AND skillPlanName == %@", account.characterID, name];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"characterID = %d AND skillPlanName == %@", account.character.characterID, name];
 	[fetchRequest setPredicate:predicate];
 	
 	NSError *error = nil;
@@ -127,7 +127,7 @@
 }
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {
-	EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+	EVECharacterSheetSkill *characterSkill = self.characterSkills[@(skill.typeID)];
 	if (characterSkill.level >= skill.requiredLevel)
 		return;
 	
@@ -148,7 +148,7 @@
 			EVEDBInvTypeRequiredSkill* requiredSkill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:skill.typeID error:nil];
 			requiredSkill.requiredLevel = level;
 			requiredSkill.currentLevel = characterSkill.level;
-			float sp = [requiredSkill skillpointsAtLevel:level - 1];
+			float sp = [requiredSkill skillPointsAtLevel:level - 1];
 			requiredSkill.currentSP = MAX(sp, characterSkill.skillpoints);
 			[self.skills addObject:requiredSkill];
 			[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidAddSkill object:self userInfo:[NSDictionary dictionaryWithObject:requiredSkill forKey:@"skill"]];
@@ -176,12 +176,10 @@
 	NSInteger level = skill.requiredLevel;
 	NSInteger index = 0;
 	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
-	for (EVEDBInvTypeRequiredSkill* requiredSkill in [NSArray arrayWithArray:self.skills]) {
+	for (EVEDBInvTypeRequiredSkill* requiredSkill in self.skills) {
 		if (requiredSkill.typeID == typeID && requiredSkill.requiredLevel >= level) {
 			_trainingTime -= (requiredSkill.requiredSP - requiredSkill.currentSP) / [self.characterAttributes skillpointsPerSecondForSkill:requiredSkill];
-			//[skills removeObject:requiredSkill];
 			[indexes addIndex:index];
-			//[[NSNotificationCenter defaultCenter] postNotificationName:NotificationSkillPlanDidRemoveSkill object:self userInfo:@{@"skill" : requiredSkill, @"index" : @(index)}];
 		}
 		index++;
 	}
@@ -208,6 +206,11 @@
 
 - (void) resetTrainingTime {
 	_trainingTime = -1;
+	for (EVEDBInvTypeRequiredSkill* skill in self.skills) {
+		EVECharacterSheetSkill *characterSkill = self.characterSkills[@(skill.typeID)];
+		float sp = [skill skillPointsAtLevel:skill.requiredLevel - 1];
+		skill.currentSP = MAX(sp, characterSkill.skillpoints);
+	}
 }
 
 - (void) save {
@@ -250,12 +253,12 @@
 			if (components.count == 2) {
 				NSInteger typeID = [[components objectAtIndex:0] integerValue];
 				NSInteger requiredLevel = [[components objectAtIndex:1] integerValue];
-				EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", typeID]];
+				EVECharacterSheetSkill *characterSkill = self.characterSkills[@(typeID)];
 				if (characterSkill.level < requiredLevel) {
 					EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithTypeID:typeID error:nil];
 					skill.requiredLevel = requiredLevel;
 					skill.currentLevel = characterSkill.level;
-					float sp = [skill skillpointsAtLevel:requiredLevel - 1];
+					float sp = [skill skillPointsAtLevel:requiredLevel - 1];
 					skill.currentSP = MAX(sp, characterSkill.skillpoints);
 					[self.skills addObject:skill];
 				}

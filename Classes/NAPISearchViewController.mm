@@ -376,7 +376,7 @@
 		count = lookup.count;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.fitsCountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d loadouts", nil), count];
 			self.navigationItem.rightBarButtonItem.enabled = count > 0;
@@ -402,7 +402,7 @@
 									  progressHandler:nil];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled] && !error) {
 			[[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:SettingsNeocomAPINextSyncDate];
 		}

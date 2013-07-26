@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EVEDBAPI.h"
 
-@interface EVEDBInvTypeRequiredSkill(TrainingQueueSkill)
+@interface EVEDBInvTypeRequiredSkill(TrainingQueue)
 
 @property (nonatomic) NSInteger currentLevel;
 @property (nonatomic) float currentSP;

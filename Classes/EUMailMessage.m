@@ -10,6 +10,7 @@
 #import "EUMailBox.h"
 #import "EVEOnlineAPI.h"
 #import "NSMutableString+HTML.h"
+#import "EVEAccount.h"
 
 @implementation EUMailMessage
 
@@ -27,9 +28,9 @@
 - (NSString*) text {
 	if (!_text) {
 		NSError* error = nil;
-		EVEMailBodies* bodies = [EVEMailBodies mailBodiesWithKeyID:self.mailBox.keyID
-															 vCode:self.mailBox.vCode
-													   characterID:self.mailBox.characterID
+		EVEMailBodies* bodies = [EVEMailBodies mailBodiesWithKeyID:self.mailBox.account.charAPIKey.keyID
+															 vCode:self.mailBox.account.charAPIKey.vCode
+													   characterID:self.mailBox.account.character.characterID
 															   ids:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", self.header.messageID]]
 															 error:&error
 												   progressHandler:nil];

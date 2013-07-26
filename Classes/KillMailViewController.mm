@@ -372,7 +372,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			fittingViewController.fittingEngine->getGang()->addPilot(character);
 			fittingViewController.fit = fit;

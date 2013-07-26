@@ -364,7 +364,7 @@
 			}
 			
 			if (self.type.group.categoryID == 16) {
-				EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", self.type.typeID]];
+				EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(self.type.typeID)];
 				NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
 				for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
 					TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
@@ -524,7 +524,7 @@
 												nil];
 					if (attribute.attributeID == 280) {
 						NSInteger level = 0;
-						EVECharacterSheetSkill *skill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", self.type.typeID]];
+						EVECharacterSheetSkill *skill = account.characterSheet.skillsMap[@(self.type.typeID)];
 						if (skill)
 							level = skill.level;
 						[row setValue:[NSString stringWithFormat:@"%d", level] forKey:@"value"];
@@ -593,7 +593,7 @@
 			float startSP = 0;
 			float endSP;
 			for (int i = 1; i <= 5; i++) {
-				endSP = [self.type skillpointsAtLevel:i];
+				endSP = [self.type skillPointsAtLevel:i];
 				NSTimeInterval needsTime = (endSP - startSP) / [account.characterAttributes skillpointsPerSecondForSkill:self.type];
 				NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
 								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:endSP] numberStyle:NSNumberFormatterDecimalStyle],

@@ -106,7 +106,7 @@
 		weakOperation.progress = 1.0;
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		self.sections = sectionsTmp;
 		[self.tableView reloadData];
 	}];
@@ -248,7 +248,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				if (self.editing) {
 					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];

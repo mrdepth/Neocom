@@ -7,15 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CharacterInfoViewController.h"
 #import "CollapsableTableView.h"
+#import "SkillsDataSource.h"
+#import "SkillPlannerImportViewController.h"
 
-@interface SkillsViewController : UIViewController<UITableViewDataSource, CollapsableTableViewDelegate>
+@interface SkillsViewController : UIViewController<CollapsableTableViewDelegate, SkillPlannerImportViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet CollapsableTableView *skillsTableView;
 @property (nonatomic, weak) IBOutlet CollapsableTableView *skillsQueueTableView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
-@property (nonatomic, strong) IBOutlet CharacterInfoViewController *characterInfoViewController;
+@property (strong, nonatomic) IBOutlet SkillsDataSource *skillsDataSource;
+@property (strong, nonatomic) IBOutlet SkillsDataSource *skillQueueDataSource;
+@property (strong, nonatomic) IBOutlet UIButton *modeButton;
 
-- (IBAction) onChangeSegmentedControl:(id) sender;
+- (IBAction) onMode:(id)sender;
+- (IBAction) onAction:(id)sender;
 
 @end

@@ -63,7 +63,7 @@
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	[self reloadMessages];
 }
 
@@ -256,7 +256,7 @@
 		[message text];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			MessageViewController *controller = [[MessageViewController alloc] initWithNibName:@"MessageViewController" bundle:nil];
 			controller.message = message;
@@ -353,7 +353,7 @@
 			}
 		}];
 		
-		[operation setCompletionBlockInCurrentThread:^{
+		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				self.mailBox = mailBoxTmp;
 				if (self.mailBox)
@@ -374,7 +374,7 @@
 				[messagesTmp addObject:[self.filter applyToValues:self.mailBox.sent]];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					self.messages = messagesTmp;
 					[self searchWithSearchString:self.searchBar.text];
@@ -438,7 +438,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

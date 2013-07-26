@@ -100,7 +100,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		self.sections = sectionsTmp;
 		self.groups = nil;
 		[self.skillsTableView reloadData];

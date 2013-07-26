@@ -150,7 +150,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		self.rows = values;
 		[self.tableView reloadData];
 	}];

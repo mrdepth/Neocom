@@ -130,7 +130,7 @@
 		}];
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
 			self.sections = sectionsTmp;
 			[self.recommendationsTableView reloadData];

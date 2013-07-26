@@ -64,7 +64,7 @@
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:NotificationSelectAccount object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	self.corpWalletJournal  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
 	
 	[self.ownerSegmentControl setNeedsLayout];
@@ -378,7 +378,7 @@
 					[charWalletJournalTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
 				}
 			}];
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					self.charFilter = filterTmp;
 					[self.charWalletJournal addObjectsFromArray:charWalletJournalTmp];
@@ -398,7 +398,7 @@
 					[journalTmp addObjectsFromArray:[self.charFilter applyToValues:self.charWalletJournal]];
 				}];
 				
-				[operation setCompletionBlockInCurrentThread:^(void) {
+				[operation setCompletionBlockInMainThread:^(void) {
 					if (![weakOperation isCancelled]) {
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletJournal = journalTmp;
@@ -453,7 +453,7 @@
 						}
 					}];
 					
-					[loadingOperation setCompletionBlockInCurrentThread:^(void) {
+					[loadingOperation setCompletionBlockInMainThread:^(void) {
 						weakOperation.progress = i++ / n;
 						[filter updateWithValues:account];
 						[corpWalletTransactionsTmp replaceObjectAtIndex:idx withObject:account];
@@ -468,7 +468,7 @@
 				[corpWalletTransactionsTmp replaceObjectAtIndex:0 withObject:account0];
 			}];
 			
-			[operation setCompletionBlockInCurrentThread:^(void) {
+			[operation setCompletionBlockInMainThread:^(void) {
 				self.corpWalletJournal = corpWalletTransactionsTmp;
 				self.corpFilter = filter;
 				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
@@ -487,7 +487,7 @@
 					[journalTmp addObjectsFromArray:[self.corpFilter applyToValues:[self.corpWalletJournal objectAtIndex:self.accountSegmentControl.selectedSegmentIndex]]];
 				}];
 				
-				[operation setCompletionBlockInCurrentThread:^(void) {
+				[operation setCompletionBlockInMainThread:^(void) {
 					if (![weakOperation isCancelled]) {
 						if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
 							self.walletJournal = journalTmp;
@@ -585,7 +585,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.characterBalance = characterBalanceTmp;
 			self.corpAccounts = corpAccountsTmp;
@@ -652,7 +652,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^(void) {
+	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.filteredValues = filteredValuesTmp;
 			[self.searchDisplayController.searchResultsTableView reloadData];

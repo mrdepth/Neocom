@@ -148,7 +148,7 @@
 		}
 	}];
 	
-	[operation setCompletionBlockInCurrentThread:^{
+	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled] && fit && character) {
 			fittingViewController.fittingEngine->getGang()->addPilot(character);
 			fittingViewController.fit = fit;

@@ -15,7 +15,7 @@
 #import "EVEDBInvType+TrainingQueue.h"
 #import <objc/runtime.h>
 
-@implementation EVEDBInvTypeRequiredSkill(TrainingQueueSkill)
+@implementation EVEDBInvTypeRequiredSkill(TrainingQueue)
 
 - (NSInteger) currentLevel {
 	NSNumber* currentLevel = objc_getAssociatedObject(self, @"currentLevel");
@@ -23,8 +23,8 @@
 }
 
 - (void) setCurrentLevel:(NSInteger) value {
-	objc_setAssociatedObject(self, @"currentLevel", [NSNumber numberWithInteger:value], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self setCurrentSP:[self skillpointsAtLevel:value]];
+	objc_setAssociatedObject(self, @"currentLevel", @(value), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	[self setCurrentSP:[self skillPointsAtLevel:value]];
 }
 
 - (float) currentSP {
@@ -33,7 +33,7 @@
 }
 
 - (void) setCurrentSP:(float) value {
-	objc_setAssociatedObject(self, @"currentSP", [NSNumber numberWithInteger:value], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, @"currentSP", @(value), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end
@@ -63,12 +63,9 @@
 - (id) init {
 	if (self = [super init]) {
 		self.account = [EVEAccount currentAccount];
-		self.characterSkills = [NSMutableDictionary dictionary];
+		self.characterSkills = self.account.characterSheet.skillsMap;
 		self.trainingTime = -1;
 		if (self.account && self.account.characterSheet) {
-			for (EVECharacterSheetSkill *skill in self.account.characterSheet.skills) {
-				[self.characterSkills setValue:skill forKey:[NSString stringWithFormat:@"%d", skill.typeID]];
-			}
 		}
 		else {
 			self.account = [EVEAccount dummyAccount];
@@ -124,7 +121,7 @@
 
 - (void) addSkill:(EVEDBInvTypeRequiredSkill*) skill {
 	int i = 0;
-	EVECharacterSheetSkill *characterSkill = [self.characterSkills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+	EVECharacterSheetSkill *characterSkill = self.characterSkills[@(skill.typeID)];
 	skill.currentLevel = characterSkill.level;
 	skill.currentSP = characterSkill.skillpoints;
 	if (skill.currentLevel >= skill.requiredLevel)

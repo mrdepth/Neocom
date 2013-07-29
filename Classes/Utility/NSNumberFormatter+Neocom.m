@@ -27,7 +27,10 @@ static NSNumberFormatter* sharedIntegerNumberFormatter;
 	@synchronized(self) {
 		if (!sharedIntegerNumberFormatter) {
 			sharedIntegerNumberFormatter = [[NSNumberFormatter alloc] init];
-			[sharedIntegerNumberFormatter setPositiveFormat:@"#,##0"];
+			if (fabs([value floatValue]) < 10.0)
+				[sharedIntegerNumberFormatter setPositiveFormat:@"#,##1"];
+			else
+				[sharedIntegerNumberFormatter setPositiveFormat:@"#,##0"];
 			[sharedIntegerNumberFormatter setGroupingSeparator:@" "];
 		}
 		return [sharedIntegerNumberFormatter stringFromNumber:value];

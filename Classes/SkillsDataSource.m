@@ -63,6 +63,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveSkill:) name:NotificationSkillPlanDidRemoveSkill object:nil];
 }
 
+- (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void) reload {
 	[self.account updateSkillpoints];
 	self.currentTime = [self.account.skillQueue serverTimeWithLocalTime:[NSDate date]];

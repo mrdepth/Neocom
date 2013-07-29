@@ -29,8 +29,10 @@
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
 @property (nonatomic, assign) NSInteger numberOfUnreadMessages;
+@property (nonatomic, strong) EVECalllist* callist;
 
 
+- (void) reload;
 - (void) accountDidSelect:(NSNotification*) notification;
 - (IBAction) dismissModalViewController;
 - (void) didReadMail:(NSNotification*) notification;
@@ -80,6 +82,9 @@
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
 	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
+	
+	if (!self.callist)
+		[self reload];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -133,19 +138,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-	return 1;
+	return self.menuItems.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return self.menuItems.count;
+	return [self.menuItems[section] count];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *cellIdentifier = @"MainMenuCellView";
-	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
+	NSDictionary *item = self.menuItems[indexPath.section][indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
@@ -157,19 +162,23 @@
 //	else
 //		cellIdentifier = @"MainMenuCellViewLimited";
     
-    MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
+        //cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 	NSString *className = [item valueForKey:@"className"];
 
 	if (self.numberOfUnreadMessages > 0 && [className isEqualToString:@"MessagesViewController"]) {
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString([item valueForKey:@"title"], nil), self.numberOfUnreadMessages];
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString([item valueForKey:@"title"], nil), self.numberOfUnreadMessages];
 	}
 	else {
-		cell.titleLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
+		cell.textLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
 	}
-	cell.iconImageView.image = [UIImage imageNamed:[item valueForKey:@"image"]];
+	cell.detailTextLabel.text = @"Details";
+	cell.imageView.image = [UIImage imageNamed:[item valueForKey:@"image"]];
 	
 	GroupedCellGroupStyle groupStyle = 0;
 	if (indexPath.row == 0)
@@ -188,7 +197,7 @@
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	NSDictionary *item = [self.menuItems objectAtIndex:indexPath.row];
+	NSDictionary *item = self.menuItems[indexPath.section][indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
@@ -280,7 +289,28 @@
 
 #pragma mark - Private
 
+- (void) reload {
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+reload" name:NSLocalizedString(@"Loading Menu Items", nil)];
+	__block EVECalllist* calllist = nil;
+	[operation addExecutionBlock:^(void) {
+		calllist = [EVECalllist calllistWithError:nil progressHandler:nil];
+	}];
+	
+	__weak EUOperation* weakOperation = operation;
+	[operation setCompletionBlockInMainThread:^(void) {
+		if (![weakOperation isCancelled] && calllist) {
+			self.callist = calllist;
+			[self.tableView reloadData];
+		}
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
 - (void) accountDidSelect:(NSNotification*) notification {
+	if (!self.callist)
+		[self reload];
+	
 	self.characterInfoViewController.account = [EVEAccount currentAccount];
 	self.numberOfUnreadMessages = 0;
 	[self.tableView reloadData];

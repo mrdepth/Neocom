@@ -13,6 +13,9 @@
 #import "UITableViewCell+Nib.h"
 #import "EVEUniverseAppDelegate.h"
 #import "UIAlertView+Error.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface MarketInfoViewController()
 @property (nonatomic, strong) NSMutableArray *filteredSellOrdersRegions;
@@ -33,6 +36,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.type.typeName;
 	
 	self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self.parentViewController];
@@ -219,8 +223,13 @@
 		cell.securityLabel.textColor = [UIColor redColor];
 	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]];
 	cell.qtyLabel.text = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.volRemain] numberStyle:NSNumberFormatterDecimalStyle];
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", order.price];
-    // Configure the cell...
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
     
     return cell;
 }
@@ -233,20 +242,13 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:14];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+	return view;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -310,12 +312,10 @@
 			[quickLook.buyOrders sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
 			
 			for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
-				NSString *regionID = [NSString stringWithFormat:@"%d", order.regionID];
-				NSDictionary *region = [sellOrdersRegionsDic valueForKey:regionID];
+				NSDictionary *region = sellOrdersRegionsDic[@(order.regionID)];
 				if (!region) {
 					EVEDBMapRegion *mapRegion = [EVEDBMapRegion mapRegionWithRegionID:order.regionID error:nil];
-					region = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableArray array], @"orders", mapRegion.regionName, @"region", nil];
-					[sellOrdersRegionsDic setValue:region forKey:regionID];
+					sellOrdersRegionsDic[@(order.regionID)] = @{@"orders": [NSMutableArray array], @"region": mapRegion.regionName};
 				}
 				NSMutableArray *orders = [region valueForKey:@"orders"];
 				[orders addObject:order];
@@ -324,12 +324,10 @@
 			weakOperation.progress = 0.75;
 			
 			for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
-				NSString *regionID = [NSString stringWithFormat:@"%d", order.regionID];
-				NSDictionary *region = [buyOrdersRegionsDic valueForKey:regionID];
+				NSDictionary *region = buyOrdersRegionsDic[@(order.regionID)];
 				if (!region) {
 					EVEDBMapRegion *mapRegion = [EVEDBMapRegion mapRegionWithRegionID:order.regionID error:nil];
-					region = [NSDictionary dictionaryWithObjectsAndKeys:[NSMutableArray array], @"orders", mapRegion.regionName, @"region", nil];
-					[buyOrdersRegionsDic setValue:region forKey:regionID];
+					buyOrdersRegionsDic[@(order.regionID)] = @{@"orders": [NSMutableArray array], @"region": mapRegion.regionName};
 				}
 				NSMutableArray *orders = [region valueForKey:@"orders"];
 				[orders addObject:order];

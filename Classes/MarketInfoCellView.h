@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-
-@interface MarketInfoCellView : UITableViewCell
+@interface MarketInfoCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel *systemLabel;
 @property (nonatomic, weak) IBOutlet UILabel *stationLabel;
 @property (nonatomic, weak) IBOutlet UILabel *securityLabel;

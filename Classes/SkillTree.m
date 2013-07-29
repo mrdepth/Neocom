@@ -80,9 +80,9 @@
 	skill.skillAvailability = [self skillAvailability:skill];
 	
 	for (NSDictionary *requirementMap in self.skillRequirementsMap) {
-		EVEDBDgmTypeAttribute *attribute = [skill.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeRequirementIDKey]];
+		EVEDBDgmTypeAttribute *attribute = skill.attributesDictionary[requirementMap[SkillTreeRequirementIDKey]];
 		if (attribute) {
-			EVEDBDgmTypeAttribute *level = [skill.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
+			EVEDBDgmTypeAttribute *level = skill.attributesDictionary[requirementMap[SkillTreeSkillLevelIDKey]];
 			NSInteger typeID = (NSInteger) attribute.value;
 			if (typeID && skill.hierarchyLevel < 6 && typeID != skill.typeID) {
 				SkillTreeItem *item = [[SkillTreeItem alloc] initWithTypeID:typeID error:nil];

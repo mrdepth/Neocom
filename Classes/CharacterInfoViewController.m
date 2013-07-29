@@ -142,7 +142,7 @@
 	}];
 	
 	[operation setCompletionBlockInMainThread:^{
-		self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
+		//self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
 		[self.portraitImageView setImageWithContentsOfURL:self.portraitURL scale:scale completion:nil failureBlock:nil];
 		[self.corpImageView setImageWithContentsOfURL:corpURL scale:scale completion:nil failureBlock:nil];
 		self.characterNameLabel.text = account.character.characterName;

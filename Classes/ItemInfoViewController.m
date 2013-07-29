@@ -7,11 +7,9 @@
 //
 
 #import "ItemInfoViewController.h"
-#import "AttributeCellView.h"
-#import "ItemInfoSkillCellView.h"
 #import "ItemsDBViewController.h"
 #import "ItemViewController.h"
-#import "UITableViewCell+Nib.h"
+#import "UIView+Nib.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
 #import "SkillTree.h"
@@ -21,11 +19,43 @@
 #import "TrainingQueue.h"
 #import "NSString+TimeLeft.h"
 #import "EVEDBCrtCertificate+TrainingQueue.h"
-#import "CertificateCellView.h"
 #import "EVEDBCrtCertificate+State.h"
 #import "CertificateViewController.h"
-#import "ItemCellView.h"
 #import "VariationsViewController.h"
+#import "appearance.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIAlertView+Block.h"
+#import "GroupedCell.h"
+
+#define EVEDBUnitIDMillisecondsID 101
+#define EVEDBUnitIDInverseAbsolutePercentID 108
+#define EVEDBUnitIDModifierPercentID 109
+#define EVEDBUnitIDInversedModifierPercentID 111
+#define EVEDBUnitIDGroupID 115
+#define EVEDBUnitIDTypeID 116
+#define EVEDBUnitIDSizeClass 117
+#define EVEDBUnitIDAttributeID 119
+#define EVEDBUnitIDAbsolutePercentID 127
+
+#define EVEDBAttributeIDSKillLevel 280
+#define EVEDBAttributeIDBaseWarpSpeed 1281
+#define EVEDBAttributeIDWarpSpeedMultiplier 600
+
+#define EVEDBCategoryIDSkill 16
+
+@interface ItemInfoCellData : NSObject
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* value;
+@property (nonatomic, copy) NSString* icon;
+@property (nonatomic, copy) NSString* accessoryImage;
+@property (nonatomic, assign) SEL selector;
+@property (nonatomic, strong) id object;
+@property (nonatomic, assign) NSInteger indentationLevel;
+@end
+
+@implementation ItemInfoCellData
+@end
 
 
 @interface ItemInfoViewController()
@@ -36,6 +66,10 @@
 - (void) loadAttributes;
 - (void) loadNPCAttributes;
 - (void) loadBlueprintAttributes;
+- (void) onTypeInfo:(EVEDBInvType*) type;
+- (void) onGroupInfo:(EVEDBInvGroup*) group;
+- (void) onTrain:(TrainingQueue*) trainingQueue;
+- (void) onVariations:(EVEDBInvType*) type;
 @end
 
 
@@ -55,6 +89,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.clearsSelectionOnViewWillAppear = YES;
+	
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.titleLabel.text = self.type.typeName;
 	self.title = NSLocalizedString(@"Info", nil);
 	self.volumeLabel.text = [NSString stringWithFormat:@"%@ m3", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.type.volume] numberStyle:NSNumberFormatterDecimalStyle]];
@@ -69,7 +106,7 @@
 	self.descriptionLabel.text = description;
 	self.imageView.image = [UIImage imageNamed:[self.type typeLargeImageName]];
 	
-	EVEDBDgmTypeAttribute *attribute = [self.type.attributesDictionary valueForKey:@"422"];
+	EVEDBDgmTypeAttribute *attribute = self.type.attributesDictionary[@(422)];
 	int techLevel = attribute.value;
 	if (techLevel == 1)
 		self.techLevelImageView.image = [UIImage imageNamed:@"Icons/icon38_140.png"];
@@ -112,27 +149,12 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+	if ([self isViewLoaded] && [self.view window] == nil) {
+		self.view = nil;
+		self.sections = nil;
+	}
 }
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.titleLabel = nil;
-	self.volumeLabel = nil;
-	self.massLabel = nil;
-	self.capacityLabel = nil;
-	self.radiusLabel = nil;
-	self.descriptionLabel = nil;
-	self.imageView = nil;
-	self.techLevelImageView = nil;
-	self.typeInfoView = nil;
-	self.sections = nil;
-	self.modifiedIndexPath = nil;
-}
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -144,167 +166,61 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[[self.sections objectAtIndex:section] valueForKey:@"rows"] count];
+	return [self.sections[section][@"rows"] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[self.sections objectAtIndex:section] valueForKey:@"name"];
+	return self.sections[section][@"title"];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
-	if (cellType == 0 || cellType == 2 || cellType == 4 || cellType == 5) {
-		static NSString *cellIdentifier = @"AttributeCellView";
-		
-		AttributeCellView *cell = (AttributeCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [AttributeCellView cellWithNibName:@"AttributeCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.attributeNameLabel.text = [row valueForKey:@"title"];
-		cell.attributeValueLabel.text = [row valueForKey:@"value"];
-		NSString *icon = [row valueForKey:@"icon"];
-		if (icon)
-			cell.iconView.image = [UIImage imageNamed:icon];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon105_32.png"];
-		
-		cell.accessoryType = (cellType == 2 || cellType == 5) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
-		
-		return cell;
-	}
-	else if (cellType == 3) {
-		NSString* value = [row valueForKeyPath:@"value"];
-		NSString *cellIdentifier = value ? @"CertificateCellViewDetailed" : @"CertificateCellView";
-		
-		CertificateCellView *cell = (CertificateCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [CertificateCellView cellWithNibName:@"CertificateCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.iconView.image = [UIImage imageNamed:[row valueForKey:@"icon"]];
-		cell.titleLabel.text = [row valueForKey:@"title"];
-		if (value)
-			cell.detailLabel.text = value;
-		cell.stateView.image = [UIImage imageNamed:[row valueForKey:@"stateIcon"]];
-		
-		return cell;
-	}
-	else if (cellType == 6) {
-		NSString *cellIdentifier = @"ItemCellView";
-		
-		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		
-		cell.titleLabel.text = [row valueForKey:@"title"];
-		cell.iconImageView.image = [UIImage imageNamed:[row valueForKey:@"icon"]];
-		
-		return cell;
-	}
-	else {
-		static NSString *cellIdentifier = @"ItemInfoSkillCellView";
-		
-		ItemInfoSkillCellView *cell = (ItemInfoSkillCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ItemInfoSkillCellView cellWithNibName:@"ItemInfoSkillCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.skillLabel.text = [row valueForKey:@"value"];
-		NSString *icon = [row valueForKey:@"icon"];
-
-		if (icon)
-			cell.iconView.image = [UIImage imageNamed:icon];
-		else
-			cell.iconView.image = nil;
-
-		NSInteger hierarchyLevel = [[row valueForKey:@"type"] hierarchyLevel];
-		float rightBorder = cell.hierarchyView.frame.origin.x + cell.hierarchyView.frame.size.width;
-		cell.hierarchyView.frame = CGRectMake(hierarchyLevel * 16, cell.hierarchyView.frame.origin.y, rightBorder - (hierarchyLevel * 16), cell.hierarchyView.frame.size.height);
-		return cell;
-	}
+	static NSString *cellIdentifier = @"Cell";
+	ItemInfoCellData* cellData = self.sections[indexPath.section][@"rows"][indexPath.row];
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+	cell.textLabel.text = cellData.title;
+	cell.detailTextLabel.text = cellData.value;
+	cell.imageView.image = [UIImage imageNamed:cellData.icon ? cellData.icon : @"Icons/icon105_32.png"];
+	//cell.imageView.image = cellData.icon ? [UIImage imageNamed:cellData.icon] : nil;
+	
+	cell.accessoryView = cellData.accessoryImage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:cellData.accessoryImage]] : nil;
+	if (!cell.accessoryView)
+		cell.accessoryType = [cellData.object isKindOfClass:[EVEDBObject class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+	
+	cell.indentationLevel = cellData.indentationLevel;
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	
+	return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:14];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+	return view;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-	
-	NSInteger cellType = [[row valueForKey:@"cellType"] integerValue];
-	if (cellType == 1 || cellType == 5) {
-		ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		controller.type = [row valueForKey:@"type"];
-		[controller setActivePage:ItemViewControllerActivePageInfo];
-		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-	}
-	else if (cellType == 2) {
-		ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal" : @"ItemsDBViewController")
-																					bundle:nil];
-		controller.modalMode = YES;
-		controller.group = [row valueForKey:@"group"];
-		controller.category = controller.group.category;
-		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-	}
-	else if (cellType == 3) {
-		CertificateViewController* controller = [[CertificateViewController alloc] initWithNibName:@"CertificateViewController" bundle:nil];
-		controller.certificate = [row valueForKey:@"certificate"];
-		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-	}
-	else if (cellType == 4) {
-		self.modifiedIndexPath = indexPath;
-
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		TrainingQueue* trainingQueue = [row valueForKey:@"trainingQueue"];
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
-															message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
-														   delegate:self
-												  cancelButtonTitle:NSLocalizedString(@"No", nil)
-												  otherButtonTitles:NSLocalizedString(@"Yes", nil), nil];
-		[alertView show];
-	}
-	else if (cellType == 6) {
-		VariationsViewController* controller = [[VariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
-		controller.type = self.type;
-		[self.containerViewController.navigationController pushViewController:controller animated:YES];
-	}
-}
-
-#pragma mark UIAlertViewDelegate
-
-- (void) alertView:(UIAlertView *)aAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == 1) {
-		NSDictionary *row = [[[self.sections objectAtIndex:self.modifiedIndexPath.section] valueForKey:@"rows"] objectAtIndex:self.modifiedIndexPath.row];
-		TrainingQueue* trainingQueue = [row valueForKey:@"trainingQueue"];
-		SkillPlan* skillPlan = [[EVEAccount currentAccount] skillPlan];
-		for (EVEDBInvTypeRequiredSkill* skill in trainingQueue.skills)
-			[skillPlan addSkill:skill];
-		[skillPlan save];
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Skill plan updated", nil)
-															message:[NSString stringWithFormat:NSLocalizedString(@"Total training time: %@", nil), [NSString stringWithTimeLeft:skillPlan.trainingTime]]
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-												  otherButtonTitles:nil];
-		[alertView show];
-	}
+	ItemInfoCellData* cellData = self.sections[indexPath.section][@"rows"][indexPath.row];
+	if (cellData.selector)
+		SuppressPerformSelectorLeakWarning(
+										   [self performSelector:cellData.selector withObject:cellData.object];
+		);
 }
 
 #pragma mark - Private
@@ -322,7 +238,9 @@
 			__block NSInteger parentTypeID = self.type.typeID;
 			[database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
 						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-							 parentTypeID = sqlite3_column_int(stmt, 0);
+							 NSInteger typeID = sqlite3_column_int(stmt, 0);
+							 if (typeID)
+								 parentTypeID = typeID;
 							 *needsMore = NO;
 						 }];
 			
@@ -332,17 +250,19 @@
 								 count = sqlite3_column_int(stmt, 0);
 							 }];
 			
-			if (count > 1) {
+			if (count > 0) {
 				NSMutableDictionary *section = [NSMutableDictionary dictionary];
-				[section setValue:NSLocalizedString(@"Variations", nil) forKey:@"name"];
+				section[@"title"] = NSLocalizedString(@"Variations", nil);
 				NSMutableArray* rows = [NSMutableArray array];
-				[section setValue:rows forKey:@"rows"];
-				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithInteger:6], @"cellType",
-											NSLocalizedString(@"Variations", nil), @"title",
-											@"Icons/icon09_07.png", @"icon",
-											nil];
-				[rows addObject:row];
+				section[@"rows"] = rows;
+				
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Variations", nil);
+				cellData.value = [NSString stringWithFormat:@"%d", count + 1];
+				cellData.icon = @"Icons/icon09_07.png";
+				cellData.selector = @selector(onVariations:);
+				cellData.object = self.type;
+				[rows addObject:cellData];
 				[self.sections addObject:section];
 			}
 		}
@@ -351,9 +271,9 @@
 		TrainingQueue* certificateRecommendationsQueue = nil;
 		if (account && account.skillPlan && (self.type.requiredSkills.count > 0 || self.type.certificateRecommendations.count > 0 || self.type.group.categoryID == 16)) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
-			[section setValue:NSLocalizedString(@"Skill Plan", nil) forKey:@"name"];
+			section[@"title"] = NSLocalizedString(@"Skill Plan", nil);
 			NSMutableArray* rows = [NSMutableArray array];
-			[section setValue:rows forKey:@"rows"];
+			section[@"rows"] = rows;
 
 			requiredSkillsQueue = [[TrainingQueue alloc] initWithType:self.type];
 			certificateRecommendationsQueue = [[TrainingQueue alloc] init];
@@ -374,36 +294,34 @@
 					skill.currentLevel = characterSkill.level;
 					[trainingQueue addSkill:skill];
 					
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType", 
-												[NSString stringWithFormat:NSLocalizedString(@"Train to level %@", nil), romanNumbers[level]], @"title",
-												[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]], @"value",
-												trainingQueue, @"trainingQueue",
-												@"Icons/icon50_13.png", @"icon",
-												nil];
-					[rows addObject:row];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = [NSString stringWithFormat:NSLocalizedString(@"Train to level %@", nil), romanNumbers[level]];
+					cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+					cellData.icon = @"Icons/icon50_13.png";
+					cellData.selector = @selector(onTrain:);
+					cellData.object = trainingQueue;
+					
+					[rows addObject:cellData];
 				}
 			}
 			else {
 				if (requiredSkillsQueue.skills.count) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType", 
-												NSLocalizedString(@"Add required skills to training plan", nil), @"title",
-												[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]], @"value",
-												requiredSkillsQueue, @"trainingQueue",
-												@"Icons/icon50_13.png", @"icon",
-												nil];
-					[rows addObject:row];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = NSLocalizedString(@"Add required skills to training plan", nil);
+					cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
+					cellData.icon = @"Icons/icon50_13.png";
+					cellData.selector = @selector(onTrain:);
+					cellData.object = requiredSkillsQueue;
+					[rows addObject:cellData];
 				}
 				if (certificateRecommendationsQueue.skills.count) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:4], @"cellType", 
-												NSLocalizedString(@"Add recommended certificates to training plan", nil), @"title",
-												[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:certificateRecommendationsQueue.trainingTime]], @"value",
-												certificateRecommendationsQueue, @"trainingQueue",
-												@"Icons/icon79_06.png", @"icon",
-												nil];
-					[rows addObject:row];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = NSLocalizedString(@"Add recommended certificates to training plan", nil);
+					cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:certificateRecommendationsQueue.trainingTime]];
+					cellData.icon = @"Icons/icon79_06.png";
+					cellData.selector = @selector(onTrain:);
+					cellData.object = certificateRecommendationsQueue;
+					[rows addObject:cellData];
 				}
 			}
 			if (rows.count > 0)
@@ -413,15 +331,17 @@
 		if (self.type.blueprint) {
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Manufacturing", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-							 [NSNumber numberWithInteger:5], @"cellType",
-							 NSLocalizedString(@"Blueprint", nil), @"title",
-							 [self.type.blueprint typeName], @"value",
-							 [self.type.blueprint typeSmallImageName], @"icon",
-							 self.type.blueprint, @"type",
-							 nil]];
+			
+			ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+			cellData.title = NSLocalizedString(@"Blueprint", nil);
+			cellData.value = [self.type.blueprint typeName];
+			cellData.icon = [self.type.blueprint typeSmallImageName];
+			cellData.selector = @selector(onTypeInfo:);
+			cellData.object = self.type.blueprint;
+			[rows addObject:cellData];
+			
+			section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
+			section[@"rows"] = rows;
 			[self.sections addObject:section];
 		}
 		
@@ -430,183 +350,166 @@
 			NSMutableArray *rows = [NSMutableArray array];
 			
 			if (category.categoryID == 8 && self.trainingTime > 0) {
-				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
-				[section setValue:name forKey:@"name"];
+				NSString *title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
+				section[@"title"] = title;
 			}
 			else
-				[section setValue:category.categoryID == 9 ? @"Other" : category.categoryName
-						   forKey:@"name"];
+				section[@"title"] = category.categoryID == 9 ? @"Other" : category.categoryName;
 			
-			[section setValue:rows forKey:@"rows"];
+			section[@"rows"] = rows;
 			
 			for (EVEDBDgmTypeAttribute *attribute in category.publishedAttributes) {
-				if (attribute.attribute.unitID == 119) {
-					int attributeID = attribute.value;
-					EVEDBDgmAttributeType *dgmAttribute = [EVEDBDgmAttributeType dgmAttributeTypeWithAttributeTypeID:attributeID error:nil];
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:0], @"cellType", 
-												attribute.attribute.displayName, @"title",
-												dgmAttribute.displayName, @"value",
-												nil];
-					if (dgmAttribute.icon.iconImageName)
-						[row setValue:dgmAttribute.icon.iconImageName forKey:@"icon"];
-					[rows addObject:row];
+				if (attribute.attribute.unitID == EVEDBUnitIDAttributeID) {
+					EVEDBDgmAttributeType *dgmAttribute = [EVEDBDgmAttributeType dgmAttributeTypeWithAttributeTypeID:attribute.value error:nil];
+					
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = attribute.attribute.displayName;
+					cellData.value = dgmAttribute.displayName;
+					cellData.icon = dgmAttribute.icon.iconImageName;
+					[rows addObject:cellData];
 				}
-				else if (attribute.attribute.unitID == 116) {
+				else if (attribute.attribute.unitID == EVEDBUnitIDTypeID) {
 					int typeID = attribute.value;
 					EVEDBInvType *skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 					if (skill) {
 						for (NSDictionary *requirementMap in skillRequirementsMap) {
-							if ([[requirementMap valueForKey:SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
-								EVEDBDgmTypeAttribute *level = [self.type.attributesDictionary valueForKey:[requirementMap valueForKey:SkillTreeSkillLevelIDKey]];
+							if ([requirementMap[SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
+								EVEDBDgmTypeAttribute *level = self.type.attributesDictionary[requirementMap[SkillTreeSkillLevelIDKey]];
 								SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:level.value];
 								for (SkillTreeItem *skill in skillTree.skills) {
-									NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																[NSNumber numberWithInteger:1], @"cellType", 
-																[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
-																skill, @"type",
-																nil];
+									ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+									cellData.title = [NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]];
+									cellData.selector = @selector(onTypeInfo:);
+									cellData.object = skill;
+									cellData.indentationLevel = skill.hierarchyLevel;
+
 									switch (skill.skillAvailability) {
 										case SkillTreeItemAvailabilityLearned:
-											[row setValue:@"Icons/icon38_193.png" forKey:@"icon"];
+											cellData.icon = @"Icons/icon50_11.png";
+											cellData.accessoryImage = @"Icons/icon38_193.png";
 											break;
 										case SkillTreeItemAvailabilityNotLearned:
-											[row setValue:@"Icons/icon38_194.png" forKey:@"icon"];
+											cellData.icon = @"Icons/icon50_11.png";
+											cellData.accessoryImage = @"Icons/icon38_194.png";
 											break;
 										case SkillTreeItemAvailabilityLowLevel:
-											[row setValue:@"Icons/icon38_195.png" forKey:@"icon"];
+											cellData.icon = @"Icons/icon50_11.png";
+											cellData.accessoryImage = @"Icons/icon38_195.png";
 											break;
 										default:
 											break;
 									}
-									[rows addObject:row];
+									[rows addObject:cellData];
 								}
 								break;
 							}
 						}
 					}
 				}
-				else if (attribute.attribute.unitID == 115) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:2], @"cellType", 
-												attribute.attribute.displayName, @"title",
-												nil];
-					int groupID = attribute.value;
-					EVEDBInvGroup *group = [EVEDBInvGroup invGroupWithGroupID:groupID error:nil];
-					[row setValue:group.groupName forKey:@"value"];
-					[row setValue:group forKey:@"group"];
-					if (attribute.attribute.icon.iconImageName)
-						[row setValue:attribute.attribute.icon.iconImageName forKey:@"icon"];
-					else if (group.icon.iconImageName)
-						[row setValue:group.icon.iconImageName forKey:@"icon"];
-					[rows addObject:row];
+				else if (attribute.attribute.unitID == EVEDBUnitIDGroupID) {
+					EVEDBInvGroup *group = [EVEDBInvGroup invGroupWithGroupID:attribute.value error:nil];
+
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = attribute.attribute.displayName;
+					cellData.value = group.groupName;
+					cellData.icon = attribute.attribute.icon.iconImageName ? attribute.attribute.icon.iconImageName : group.icon.iconImageName;
+					cellData.selector = @selector(onGroupInfo:);
+					cellData.object = group;
+					[rows addObject:cellData];
 				}
-				else if (attribute.attribute.unitID == 117) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:0], @"cellType", 
-												attribute.attribute.displayName, @"title",
-												nil];
+				else if (attribute.attribute.unitID == EVEDBUnitIDSizeClass) {
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = attribute.attribute.displayName;
+					cellData.icon = attribute.attribute.icon.iconImageName;
+
 					int size = attribute.value;
 					if (size == 1)
-						[row setValue:NSLocalizedString(@"Small", nil) forKey:@"value"];
+						cellData.value = NSLocalizedString(@"Small", nil);
 					else if (size == 2)
-						[row setValue:NSLocalizedString(@"Medium", nil) forKey:@"value"];
+						cellData.value = NSLocalizedString(@"Medium", nil);
 					else
-						[row setValue:NSLocalizedString(@"Large", nil) forKey:@"value"];
-					if (attribute.attribute.icon.iconImageName)
-						[row setValue:attribute.attribute.icon.iconImageName forKey:@"icon"];
-					[rows addObject:row];
+						cellData.value = NSLocalizedString(@"Large", nil);
+
+					[rows addObject:cellData];
 				}
 				else {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:0], @"cellType", 
-												attribute.attribute.displayName, @"title",
-												nil];
-					if (attribute.attributeID == 280) {
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = attribute.attribute.displayName;
+					cellData.icon = attribute.attribute.icon.iconImageName;
+
+					if (attribute.attributeID == EVEDBAttributeIDSKillLevel) {
 						NSInteger level = 0;
 						EVECharacterSheetSkill *skill = account.characterSheet.skillsMap[@(self.type.typeID)];
 						if (skill)
 							level = skill.level;
-						[row setValue:[NSString stringWithFormat:@"%d", level] forKey:@"value"];
+						cellData.value = [NSString stringWithFormat:@"%d", level];
 					}
 					else {
-						NSNumber *value;
+						float value = 0;
 						NSString *unit;
 						
-						if (attribute.attributeID == 1281) {
-							float v = [(EVEDBDgmTypeAttribute*) [self.type.attributesDictionary valueForKey:@"600"] value];
-							if (v == 0.0)
-								v = 1.0;
-							value = [NSNumber numberWithFloat:3 * v];
-							unit = @"AU/sec";
+						if (attribute.attributeID == EVEDBAttributeIDBaseWarpSpeed) {
+							value = [(EVEDBDgmTypeAttribute*) self.type.attributesDictionary[@(EVEDBAttributeIDWarpSpeedMultiplier)] value];
+							if (value == 0.0)
+								value = 1.0;
+							value *= 3;
+							unit = NSLocalizedString(@"AU/sec", nil);
 						}
-						else if (attribute.attribute.unit.unitID == 108 || attribute.attribute.unit.unitID == 111) {
-							float v = attribute.value;
-							v = (1 - v) * 100;
-							value = [NSNumber numberWithFloat:v];
+						else if (attribute.attribute.unit.unitID == EVEDBUnitIDInverseAbsolutePercentID || attribute.attribute.unit.unitID == EVEDBUnitIDInversedModifierPercentID) {
+							value = (1 - attribute.value) * 100;
 							unit = attribute.attribute.unit.displayName;
 						}
-						else if (attribute.attribute.unit.unitID == 109) {
-							float v = attribute.value;
-							v = (v - 1) * 100;
-							value = [NSNumber numberWithFloat:v];
+						else if (attribute.attribute.unit.unitID == EVEDBUnitIDModifierPercentID) {
+							value = (attribute.value - 1) * 100;
 							unit = attribute.attribute.unit.displayName;
 						}
-						else if (attribute.attribute.unit.unitID == 127) {
-							float v = attribute.value;
-							v *= 100;
-							value = [NSNumber numberWithFloat:v];
+						else if (attribute.attribute.unit.unitID == EVEDBUnitIDAbsolutePercentID) {
+							value = attribute.value * 100;
 							unit = attribute.attribute.unit.displayName;
 						}
-						else if (attribute.attribute.unit.unitID == 101) {
-							float v = attribute.value;
-							v /= 1000.0;
-							value = [NSNumber numberWithFloat:v];
+						else if (attribute.attribute.unit.unitID == EVEDBUnitIDMillisecondsID) {
+							value = attribute.value / 1000.0;
 							unit = attribute.attribute.unit.displayName;
 						}
 						else {
-							value = [NSNumber numberWithFloat:attribute.value];
+							value = attribute.value;
 							unit = attribute.attribute.unit.displayName;
 						}
-						
-						[row setValue:[NSString stringWithFormat:@"%@ %@",
-									   [NSNumberFormatter localizedStringFromNumber:value numberStyle:NSNumberFormatterDecimalStyle],
-									   unit ? unit : @""]
-							   forKey:@"value"];
+						cellData.value = [NSString stringWithFormat:@"%@ %@",
+										  [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)],
+										  unit ? unit : @""];
 					}
-					if (attribute.attribute.icon.iconImageName)
-						[row setValue:attribute.attribute.icon.iconImageName forKey:@"icon"];
-					[rows addObject:row];
+					[rows addObject:cellData];
 				}
 			}
 			if (rows.count > 0)
 				[self.sections addObject:section];
 		}
-		if (self.type.group.category.categoryID == 16) { //Skill
+		if (self.type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
 			EVEAccount *account = [EVEAccount currentAccount];
 			if (!account || account.characterSheet == nil)
 				account = [EVEAccount dummyAccount];
 			NSMutableDictionary *section = [NSMutableDictionary dictionary];
 			NSMutableArray *rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Training time", nil) forKey:@"name"];
+			section[@"title"] = NSLocalizedString(@"Training time", nil);
 			[self.sections addObject:section];
+			
 			float startSP = 0;
 			float endSP;
 			for (int i = 1; i <= 5; i++) {
 				endSP = [self.type skillPointsAtLevel:i];
 				NSTimeInterval needsTime = (endSP - startSP) / [account.characterAttributes skillpointsPerSecondForSkill:self.type];
 				NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
-								  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInt:endSP] numberStyle:NSNumberFormatterDecimalStyle],
+								  [NSNumberFormatter neocomLocalizedStringFromInteger:endSP],
 								  [NSString stringWithTimeLeft:needsTime]];
-
+				
 				NSString *rank = (i == 1 ? NSLocalizedString(@"Level I", nil) : (i == 2 ? NSLocalizedString(@"Level II", nil) : (i == 3 ? NSLocalizedString(@"Level III", nil) : (i == 4 ? NSLocalizedString(@"Level IV", nil) : NSLocalizedString(@"Level V", nil)))));
 				
-				NSDictionary *row = [NSDictionary dictionaryWithObjectsAndKeys:
-									 [NSNumber numberWithInteger:0], @"cellType", 
-									 rank, @"title",
-									 text, @"value",
-									 @"Icons/icon50_13.png", @"icon", nil];
-				[rows addObject:row];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = rank;
+				cellData.value = text;
+				cellData.icon = @"Icons/icon50_13.png";
+				[rows addObject:cellData];
 				startSP = endSP;
 			}
 			[section setValue:rows forKey:@"rows"];
@@ -619,29 +522,32 @@
 			[self.sections addObject:section];
 
 			for (EVEDBCrtRecommendation* recommendation in self.type.certificateRecommendations) {
-				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithInteger:3], @"cellType",
-											recommendation.certificate, @"certificate",
-											[NSString stringWithFormat:@"%@ - %@", recommendation.certificate.certificateClass.className, recommendation.certificate.gradeText], @"title",
-											recommendation.certificate.iconImageName, @"icon", nil];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = [NSString stringWithFormat:@"%@ - %@", recommendation.certificate.certificateClass.className, recommendation.certificate.gradeText];
+				cellData.icon = recommendation.certificate.iconImageName;
+				cellData.selector = @selector(onTrain:);
+				cellData.object = recommendation.certificate.trainingQueue;
+				
 				if (recommendation.certificate.trainingQueue.trainingTime > 0)
-					[row setValue:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil),
-								   [NSString stringWithTimeLeft:recommendation.certificate.trainingQueue.trainingTime]]
-						   forKey:@"value"];
-				[row setValue:recommendation.certificate.stateIconImageName forKey:@"stateIcon"];
+					cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil),
+									  [NSString stringWithTimeLeft:recommendation.certificate.trainingQueue.trainingTime]];
+				cellData.accessoryImage = recommendation.certificate.stateIconImageName;
+				
 				for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
 					[trainingQueue addSkill:skill];
-				[rows addObject:row];
+				[rows addObject:cellData];
 			}
 			
 			if (trainingQueue.trainingTime > 0)
-				[section setValue:[NSString stringWithFormat:NSLocalizedString(@"Recommended certificates (%@)", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]] forKey:@"name"];
+				section[@"title"] = [NSString stringWithFormat:NSLocalizedString(@"Recommended certificates (%@)", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
 			else
-				[section setValue:NSLocalizedString(@"Recommended certificates", nil) forKey:@"name"];
+				section[@"title"] = NSLocalizedString(@"Recommended certificates", nil);
 			[section setValue:rows forKey:@"rows"];
 		}
-		
-		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	}];
+	
+	[operation setCompletionBlockInMainThread:^{
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -650,87 +556,78 @@
 - (void) loadNPCAttributes {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"ItemInfoViewController+load" name:NSLocalizedString(@"Loading Attributes", nil)];
 	[operation addExecutionBlock:^{
-		EVEDBDgmTypeAttribute* emDamageAttribute = [self.type.attributesDictionary valueForKey:@"114"];
-		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [self.type.attributesDictionary valueForKey:@"116"];
-		EVEDBDgmTypeAttribute* kineticDamageAttribute = [self.type.attributesDictionary valueForKey:@"117"];
-		EVEDBDgmTypeAttribute* thermalDamageAttribute = [self.type.attributesDictionary valueForKey:@"118"];
-		EVEDBDgmTypeAttribute* damageMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"64"];
-		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"212"];
-		EVEDBDgmTypeAttribute* missileTypeIDAttribute = [self.type.attributesDictionary valueForKey:@"507"];
-		EVEDBDgmTypeAttribute* missileVelocityMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"645"];
-		EVEDBDgmTypeAttribute* missileFlightTimeMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"646"];
+		EVEDBDgmTypeAttribute* emDamageAttribute = self.type.attributesDictionary[@(114)];
+		EVEDBDgmTypeAttribute* explosiveDamageAttribute = self.type.attributesDictionary[@(116)];
+		EVEDBDgmTypeAttribute* kineticDamageAttribute = self.type.attributesDictionary[@(117)];
+		EVEDBDgmTypeAttribute* thermalDamageAttribute = self.type.attributesDictionary[@(118)];
+		EVEDBDgmTypeAttribute* damageMultiplierAttribute = self.type.attributesDictionary[@(64)];
+		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = self.type.attributesDictionary[@(212)];
+		EVEDBDgmTypeAttribute* missileTypeIDAttribute = self.type.attributesDictionary[@(507)];
+		EVEDBDgmTypeAttribute* missileVelocityMultiplierAttribute = self.type.attributesDictionary[@(645)];
+		EVEDBDgmTypeAttribute* missileFlightTimeMultiplierAttribute = self.type.attributesDictionary[@(646)];
 		
-		EVEDBDgmTypeAttribute* armorEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"267"];
-		EVEDBDgmTypeAttribute* armorExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"268"];
-		EVEDBDgmTypeAttribute* armorKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"269"];
-		EVEDBDgmTypeAttribute* armorThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"270"];
+		EVEDBDgmTypeAttribute* armorEmDamageResonanceAttribute = self.type.attributesDictionary[@(267)];
+		EVEDBDgmTypeAttribute* armorExplosiveDamageResonanceAttribute = self.type.attributesDictionary[@(268)];
+		EVEDBDgmTypeAttribute* armorKineticDamageResonanceAttribute = self.type.attributesDictionary[@(269)];
+		EVEDBDgmTypeAttribute* armorThermalDamageResonanceAttribute = self.type.attributesDictionary[@(270)];
 
-		EVEDBDgmTypeAttribute* shieldEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"271"];
-		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"272"];
-		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"273"];
-		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"274"];
+		EVEDBDgmTypeAttribute* shieldEmDamageResonanceAttribute = self.type.attributesDictionary[@(271)];
+		EVEDBDgmTypeAttribute* shieldExplosiveDamageResonanceAttribute = self.type.attributesDictionary[@(272)];
+		EVEDBDgmTypeAttribute* shieldKineticDamageResonanceAttribute = self.type.attributesDictionary[@(273)];
+		EVEDBDgmTypeAttribute* shieldThermalDamageResonanceAttribute = self.type.attributesDictionary[@(274)];
 
-		EVEDBDgmTypeAttribute* structureEmDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"113"];
-		EVEDBDgmTypeAttribute* structureExplosiveDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"111"];
-		EVEDBDgmTypeAttribute* structureKineticDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"109"];
-		EVEDBDgmTypeAttribute* structureThermalDamageResonanceAttribute = [self.type.attributesDictionary valueForKey:@"110"];
+		EVEDBDgmTypeAttribute* structureEmDamageResonanceAttribute = self.type.attributesDictionary[@(113)];
+		EVEDBDgmTypeAttribute* structureExplosiveDamageResonanceAttribute = self.type.attributesDictionary[@(111)];
+		EVEDBDgmTypeAttribute* structureKineticDamageResonanceAttribute = self.type.attributesDictionary[@(109)];
+		EVEDBDgmTypeAttribute* structureThermalDamageResonanceAttribute = self.type.attributesDictionary[@(110)];
 
-		EVEDBDgmTypeAttribute* armorHPAttribute = [self.type.attributesDictionary valueForKey:@"265"];
-		EVEDBDgmTypeAttribute* hpAttribute = [self.type.attributesDictionary valueForKey:@"9"];
-		EVEDBDgmTypeAttribute* shieldCapacityAttribute = [self.type.attributesDictionary valueForKey:@"263"];
-		EVEDBDgmTypeAttribute* shieldRechargeRate = [self.type.attributesDictionary valueForKey:@"479"];
+		EVEDBDgmTypeAttribute* armorHPAttribute = self.type.attributesDictionary[@(265)];
+		EVEDBDgmTypeAttribute* hpAttribute = self.type.attributesDictionary[@(9)];
+		EVEDBDgmTypeAttribute* shieldCapacityAttribute = self.type.attributesDictionary[@(263)];
+		EVEDBDgmTypeAttribute* shieldRechargeRate = self.type.attributesDictionary[@(479)];
 
-		EVEDBDgmTypeAttribute* optimalAttribute = [self.type.attributesDictionary valueForKey:@"54"];
-		EVEDBDgmTypeAttribute* falloffAttribute = [self.type.attributesDictionary valueForKey:@"158"];
-		EVEDBDgmTypeAttribute* trackingSpeedAttribute = [self.type.attributesDictionary valueForKey:@"160"];
+		EVEDBDgmTypeAttribute* optimalAttribute = self.type.attributesDictionary[@(54)];
+		EVEDBDgmTypeAttribute* falloffAttribute = self.type.attributesDictionary[@(158)];
+		EVEDBDgmTypeAttribute* trackingSpeedAttribute = self.type.attributesDictionary[@(160)];
 
-		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [self.type.attributesDictionary valueForKey:@"51"];
-		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [self.type.attributesDictionary valueForKey:@"506"];
+		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = self.type.attributesDictionary[@(51)];
+		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = self.type.attributesDictionary[@(506)];
 		
-
-		NSMutableDictionary *section;
-		NSMutableArray *rows;
 
 		//NPC Info
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"NPC Info", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* bountyAttribute = [self.type.attributesDictionary valueForKey:@"481"];
+			EVEDBDgmTypeAttribute* bountyAttribute = self.type.attributesDictionary[@(481)];
 			if (bountyAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 bountyAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) bountyAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 bountyAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = bountyAttribute.attribute.displayName;
+				cellData.icon = bountyAttribute.attribute.icon.iconImageName;
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(bountyAttribute.value)]];
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* securityStatusBonusAttribute = [self.type.attributesDictionary valueForKey:@"252"];
+			EVEDBDgmTypeAttribute* securityStatusBonusAttribute = self.type.attributesDictionary[@(252)];
 			if (securityStatusBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Security Increase", nil), @"title",
-								 [NSString stringWithFormat:@"%f", securityStatusBonusAttribute.value], @"value",
-								 securityStatusBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Security Increase", nil);
+				cellData.icon = securityStatusBonusAttribute.attribute.icon.iconImageName;
+				cellData.value = [NSString stringWithFormat:@"%f", securityStatusBonusAttribute.value];
+				[rows addObject:cellData];
 			}
 			
 			
-			EVEDBDgmTypeAttribute* factionLossAttribute = [self.type.attributesDictionary valueForKey:@"562"];
+			EVEDBDgmTypeAttribute* factionLossAttribute = self.type.attributesDictionary[@(562)];
 			if (factionLossAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Faction Stading Loss", nil), @"title",
-								 [NSString stringWithFormat:@"%f", factionLossAttribute.value], @"value",
-								 factionLossAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Faction Stading Loss", nil);
+				cellData.icon = factionLossAttribute.attribute.icon.iconImageName;
+				cellData.value = [NSString stringWithFormat:@"%f", factionLossAttribute.value];
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"NPC Info", nil), @"rows" : rows}];
 		}
 
 		
@@ -743,11 +640,8 @@
 		float intervalTurret = 0;
 		float totalDamageTurret = 0;
 
-		if ([self.type.effectsDictionary valueForKey:@"10"] || [self.type.effectsDictionary valueForKey:@"1086"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Turrets Damage", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(10)] || self.type.effectsDictionary[@(1086)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
 			float damageMultiplier = [damageMultiplierAttribute value];
 			if (damageMultiplier == 0)
@@ -774,20 +668,19 @@
 				[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", thermalDamageTurret, thermalDamageTurret / tmpInterval, totalDamageTurret > 0 ? thermalDamageTurret / totalDamageTurret * 100 : 0.0],
 				[NSString stringWithFormat:@"%.2f (%.2f/s)", totalDamageTurret, totalDamageTurret / tmpInterval],
 				[NSString stringWithFormat:@"%.2f s", intervalTurret],
-				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]],
-				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:fallof] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:optimal]],
+				[NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:fallof]],
 				[NSString stringWithFormat:@"%f rad/sec", trackingSpeed]
 			};
 			
 			for (int i = 0; i < 9; i++) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 titles[i], @"title",
-								 values[i], @"value",
-								 icons[i], @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = titles[i];
+				cellData.icon = icons[i];
+				cellData.value = values[i];
+				[rows addObject:cellData];
 			}
-			[self.sections addObject:section];
+			[self.sections addObject:@{@"title" : NSLocalizedString(@"Turrets Damage", nil), @"rows" : rows}];
 		}
 		
 		//Missiles damage
@@ -798,21 +691,18 @@
 		float intervalMissile = 0;
 		float totalDamageMissile = 0;
 
-		if ([self.type.effectsDictionary valueForKey:@"569"]) {
+		if (self.type.effectsDictionary[@(569)]) {
 			EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
 			if (missile) {
-				section = [NSMutableDictionary dictionary];
-				rows = [NSMutableArray array];
-				[section setValue:NSLocalizedString(@"Missiles Damage", nil) forKey:@"name"];
-				[section setValue:rows forKey:@"rows"];
+				NSMutableArray* rows = [[NSMutableArray alloc] init];
 				
-				EVEDBDgmTypeAttribute* emDamageAttribute = [missile.attributesDictionary valueForKey:@"114"];
-				EVEDBDgmTypeAttribute* explosiveDamageAttribute = [missile.attributesDictionary valueForKey:@"116"];
-				EVEDBDgmTypeAttribute* kineticDamageAttribute = [missile.attributesDictionary valueForKey:@"117"];
-				EVEDBDgmTypeAttribute* thermalDamageAttribute = [missile.attributesDictionary valueForKey:@"118"];
-				EVEDBDgmTypeAttribute* maxVelocityAttribute = [missile.attributesDictionary valueForKey:@"37"];
-				EVEDBDgmTypeAttribute* explosionDelayAttribute = [missile.attributesDictionary valueForKey:@"281"];
-				EVEDBDgmTypeAttribute* agilityAttribute = [missile.attributesDictionary valueForKey:@"70"];
+				EVEDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
+				EVEDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];
+				EVEDBDgmTypeAttribute* kineticDamageAttribute = missile.attributesDictionary[@(117)];
+				EVEDBDgmTypeAttribute* thermalDamageAttribute = missile.attributesDictionary[@(118)];
+				EVEDBDgmTypeAttribute* maxVelocityAttribute = missile.attributesDictionary[@(37)];
+				EVEDBDgmTypeAttribute* explosionDelayAttribute = missile.attributesDictionary[@(281)];
+				EVEDBDgmTypeAttribute* agilityAttribute = missile.attributesDictionary[@(70)];
 				
 				float missileDamageMultiplier = [missileDamageMultiplierAttribute value];
 				if (missileDamageMultiplier == 0)
@@ -853,35 +743,31 @@
 					[NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", thermalDamageMissile, thermalDamageMissile / tmpInterval, totalDamageMissile > 0 ? thermalDamageMissile / totalDamageMissile * 100 : 0.0],
 					[NSString stringWithFormat:@"%.2f (%.2f/s)", totalDamageMissile, totalDamageMissile / tmpInterval],
 					[NSString stringWithFormat:@"%.2f s", intervalMissile],
-					[NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:optimal] numberStyle:NSNumberFormatterDecimalStyle]]
+					[NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:optimal]]
 				};
 				
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:5], @"cellType", 
-								 NSLocalizedString(@"Missile Type", nil), @"title",
-								 missile.typeName, @"value",
-								 [missile typeSmallImageName], @"icon",
-								 missile, @"type",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Missile Type", nil);
+				cellData.value = missile.typeName;
+				cellData.icon = [missile typeSmallImageName];
+				cellData.selector = @selector(onTypeInfo:);
+				cellData.object = missile;
+				[rows addObject:cellData];
 				
 				for (int i = 0; i < 7; i++) {
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-									 [NSNumber numberWithInteger:0], @"cellType", 
-									 titles[i], @"title",
-									 values[i], @"value",
-									 icons[i], @"icon",
-									 nil]];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = titles[i];
+					cellData.icon = icons[i];
+					cellData.value = values[i];
+					[rows addObject:cellData];
 				}
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Missiles Damage", nil), @"rows" : rows}];
 			}
 		}
 		
 		//Total damage
 		if (totalDamageTurret > 0 && totalDamageMissile > 0) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Total Damage", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
 			float emDPSTurret = emDamageTurret / intervalTurret;
 			float explosiveDPSTurret = explosiveDamageTurret / intervalTurret;
@@ -916,22 +802,18 @@
 			};
 			
 			for (int i = 0; i < 5; i++) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 titles[i], @"title",
-								 values[i], @"value",
-								 icons[i], @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = titles[i];
+				cellData.icon = icons[i];
+				cellData.value = values[i];
+				[rows addObject:cellData];
 			}
-			[self.sections addObject:section];
+			[self.sections addObject:@{@"title" : NSLocalizedString(@"Total Damage", nil), @"rows" : rows}];
 		}
 		
 		//Shield
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Shield", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 
 			float passiveRechargeRate = shieldRechargeRate.value > 0 ? 10.0 / (shieldRechargeRate.value / 1000.0) * 0.5 * (1 - 0.5) * shieldCapacityAttribute.value : 0;
 			float em = shieldEmDamageResonanceAttribute ? shieldEmDamageResonanceAttribute.value : 1;
@@ -950,58 +832,52 @@
 				NSLocalizedString(@"Passive Recharge Rate", nil)};
 			NSString* icons[] = {@"shield.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"Icons/icon22_16.png", @"shieldRecharge.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) shieldCapacityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:shieldCapacityAttribute.value]],
 				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - thermal) * 100],
-				[NSString stringWithFormat:@"%@ s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) shieldRechargeRate.value / 1000.0] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ s", [NSNumberFormatter neocomLocalizedStringFromInteger:shieldRechargeRate.value / 1000.0]],
 				[NSString stringWithFormat:@"%.2f HP/s", passiveRechargeRate],
 			};
 			
 			for (int i = 0; i < 7; i++) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 titles[i], @"title",
-								 values[i], @"value",
-								 icons[i], @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = titles[i];
+				cellData.value = values[i];
+				cellData.icon = icons[i];
+				[rows addObject:cellData];
 			}
 			
-			if ([self.type.effectsDictionary valueForKey:@"2192"] || [self.type.effectsDictionary valueForKey:@"2193"] || [self.type.effectsDictionary valueForKey:@"2194"] || [self.type.effectsDictionary valueForKey:@"876"]) {
-				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = [self.type.attributesDictionary valueForKey:@"637"];
-				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = [self.type.attributesDictionary valueForKey:@"636"];
-				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"639"];
+			if (self.type.effectsDictionary[@(2192)] || self.type.effectsDictionary[@(2193)] || self.type.effectsDictionary[@(2194)] || self.type.effectsDictionary[@(876)]) {
+				EVEDBDgmTypeAttribute* shieldBoostAmountAttribute = self.type.attributesDictionary[@(637)];
+				EVEDBDgmTypeAttribute* shieldBoostDurationAttribute = self.type.attributesDictionary[@(636)];
+				EVEDBDgmTypeAttribute* shieldBoostDelayChanceAttribute = self.type.attributesDictionary[@(639)];
 				
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1006"];
+					shieldBoostDelayChanceAttribute = self.type.attributesDictionary[@(1006)];
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1007"];
+					shieldBoostDelayChanceAttribute = self.type.attributesDictionary[@(1007)];
 				if (!shieldBoostDelayChanceAttribute)
-					shieldBoostDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1008"];
+					shieldBoostDelayChanceAttribute = self.type.attributesDictionary[@(1008)];
 				
 				float shieldBoostAmount = shieldBoostAmountAttribute.value;
 				float shieldBoostDuration = shieldBoostDurationAttribute.value;
 				float shieldBoostDelayChance = shieldBoostDelayChanceAttribute.value;
 				float repairRate = shieldBoostDuration > 0 ? shieldBoostAmount * shieldBoostDelayChance / (shieldBoostDuration / 1000.0) : 0;
 				
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Repair Rate", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f HP/s", repairRate + passiveRechargeRate], @"value",
-								 @"shieldBooster.png", @"icon",
-								 nil]];
-
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Repair Rate", nil);
+				cellData.value = [NSString stringWithFormat:@"%.2f HP/s", repairRate + passiveRechargeRate];
+				cellData.icon = @"shieldBooster.png";
+				[rows addObject:cellData];
 			}
-			[self.sections addObject:section];
+			[self.sections addObject:@{@"title" : NSLocalizedString(@"Shield", nil), @"rows" : rows}];
 		}
 		
 		//Armor
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:@"Armor" forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
 			float em = armorEmDamageResonanceAttribute ? armorEmDamageResonanceAttribute.value : 1;
 			float explosive = armorExplosiveDamageResonanceAttribute ? armorExplosiveDamageResonanceAttribute.value : 1;
@@ -1017,7 +893,7 @@
 				NSLocalizedString(@"Armor Thermal Damage Resistance", nil)};
 			NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) armorHPAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:armorHPAttribute.value]],
 				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
@@ -1025,25 +901,24 @@
 			};
 			
 			for (int i = 0; i < 5; i++) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 titles[i], @"title",
-								 values[i], @"value",
-								 icons[i], @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = titles[i];
+				cellData.value = values[i];
+				cellData.icon = icons[i];
+				[rows addObject:cellData];
 			}
 			
-			if ([self.type.effectsDictionary valueForKey:@"2195"] || [self.type.effectsDictionary valueForKey:@"2196"] || [self.type.effectsDictionary valueForKey:@"2197"] || [self.type.effectsDictionary valueForKey:@"878"]) {
-				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = [self.type.attributesDictionary valueForKey:@"631"];
-				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = [self.type.attributesDictionary valueForKey:@"630"];
-				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"638"];
+			if (self.type.effectsDictionary[@(2195)] || self.type.effectsDictionary[@(2196)] || self.type.effectsDictionary[@(2197)] || self.type.effectsDictionary[@(878)]) {
+				EVEDBDgmTypeAttribute* armorRepairAmountAttribute = self.type.attributesDictionary[@(631)];
+				EVEDBDgmTypeAttribute* armorRepairDurationAttribute = self.type.attributesDictionary[@(630)];
+				EVEDBDgmTypeAttribute* armorRepairDelayChanceAttribute = self.type.attributesDictionary[@(638)];
 				
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1009"];
+					armorRepairDelayChanceAttribute = self.type.attributesDictionary[@(1009)];
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1010"];
+					armorRepairDelayChanceAttribute = self.type.attributesDictionary[@(1010)];
 				if (!armorRepairDelayChanceAttribute)
-					armorRepairDelayChanceAttribute = [self.type.attributesDictionary valueForKey:@"1011"];
+					armorRepairDelayChanceAttribute = self.type.attributesDictionary[@(1011)];
 				
 				float armorRepairAmount = armorRepairAmountAttribute.value;
 				float armorRepairDuration = armorRepairDurationAttribute.value;
@@ -1052,23 +927,18 @@
 					armorRepairDelayChance = 1.0;
 				float repairRate = armorRepairDuration > 0 ? armorRepairAmount * armorRepairDelayChance / (armorRepairDuration / 1000.0) : 0;
 				
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Repair Rate", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f HP/s", repairRate], @"value",
-								 @"armorRepairer.png", @"icon",
-								 nil]];
-				
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Repair Rate", nil);
+				cellData.value = [NSString stringWithFormat:@"%.2f HP/s", repairRate];
+				cellData.icon = @"armorRepairer.png";
+				[rows addObject:cellData];
 			}
-			[self.sections addObject:section];
+			[self.sections addObject:@{@"title" : NSLocalizedString(@"Armor", nil), @"rows" : rows}];
 		}
 		
 		//Structure
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Structure", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 
 			float em = structureEmDamageResonanceAttribute ? structureEmDamageResonanceAttribute.value : 1;
 			float explosive = structureExplosiveDamageResonanceAttribute ? structureExplosiveDamageResonanceAttribute.value : 1;
@@ -1084,7 +954,7 @@
 				NSLocalizedString(@"Structure Thermal Damage Resistance", nil)};
 			NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
 			NSString* values[] = {
-				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) hpAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]],
+				[NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:hpAttribute.value]],
 				[NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - explosive) * 100],
 				[NSString stringWithFormat:@"%.0f %%", (1 - kinetic) * 100],
@@ -1092,564 +962,494 @@
 			};
 			
 			for (int i = 0; i < 5; i++) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 titles[i], @"title",
-								 values[i], @"value",
-								 icons[i], @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = titles[i];
+				cellData.value = values[i];
+				cellData.icon = icons[i];
+				[rows addObject:cellData];
 			}
-			[self.sections addObject:section];
+			[self.sections addObject:@{@"title" : NSLocalizedString(@"Structure", nil), @"rows" : rows}];
 		}
 		
 		//Targeting
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Targeting", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* attackRangeAttribute = [self.type.attributesDictionary valueForKey:@"247"];
+			EVEDBDgmTypeAttribute* attackRangeAttribute = self.type.attributesDictionary[@(247)];
 			if (attackRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Attack Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) attackRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 attackRangeAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Attack Range", nil);
+				cellData.value = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:attackRangeAttribute.value]];
+				cellData.icon = attackRangeAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* signatureRadiusAttribute = [self.type.attributesDictionary valueForKey:@"552"];
+			EVEDBDgmTypeAttribute* signatureRadiusAttribute = self.type.attributesDictionary[@(552)];
 			if (signatureRadiusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 signatureRadiusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) signatureRadiusAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 signatureRadiusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = signatureRadiusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:signatureRadiusAttribute.value]];
+				cellData.icon = signatureRadiusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
 			
-			EVEDBDgmTypeAttribute* scanResolutionAttribute = [self.type.attributesDictionary valueForKey:@"564"];
+			EVEDBDgmTypeAttribute* scanResolutionAttribute = self.type.attributesDictionary[@(564)];
 			if (scanResolutionAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 scanResolutionAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0f mm", scanResolutionAttribute.value], @"value",
-								 scanResolutionAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = scanResolutionAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:scanResolutionAttribute.value]];
+				cellData.icon = scanResolutionAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"208"];
+			EVEDBDgmTypeAttribute* sensorStrengthAttribute = self.type.attributesDictionary[@(208)];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"209"];
+				sensorStrengthAttribute = self.type.attributesDictionary[@(209)];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"210"];
+				sensorStrengthAttribute = self.type.attributesDictionary[@(210)];
 			if (sensorStrengthAttribute.value == 0)
-				sensorStrengthAttribute = [self.type.attributesDictionary valueForKey:@"211"];
+				sensorStrengthAttribute = self.type.attributesDictionary[@(211)];
 			if (sensorStrengthAttribute.value > 0) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 sensorStrengthAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0f", sensorStrengthAttribute.value], @"value",
-								 sensorStrengthAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = sensorStrengthAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.0f", sensorStrengthAttribute.value];
+				cellData.icon = sensorStrengthAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Targeting", nil), @"rows" : rows}];
 		}
 
 		//Movement
 		{
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Movement", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* maxVelocityAttribute = [self.type.attributesDictionary valueForKey:@"37"];
+			EVEDBDgmTypeAttribute* maxVelocityAttribute = self.type.attributesDictionary[@(37)];
 			if (maxVelocityAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 maxVelocityAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%@ m/s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) maxVelocityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 maxVelocityAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = maxVelocityAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:maxVelocityAttribute.value]];
+				cellData.icon = maxVelocityAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* orbitVelocityAttribute = [self.type.attributesDictionary valueForKey:@"508"];
+			EVEDBDgmTypeAttribute* orbitVelocityAttribute = self.type.attributesDictionary[@(508)];
 			if (orbitVelocityAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 orbitVelocityAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%@ m/s", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) orbitVelocityAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_13.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = orbitVelocityAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:orbitVelocityAttribute.value]];
+				cellData.icon = @"Icons/icon22_13.png";
+				[rows addObject:cellData];
 			}
 			
 			
-			EVEDBDgmTypeAttribute* entityFlyRangeAttribute = [self.type.attributesDictionary valueForKey:@"416"];
+			EVEDBDgmTypeAttribute* entityFlyRangeAttribute = self.type.attributesDictionary[@(416)];
 			if (entityFlyRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Orbit Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) entityFlyRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Orbit Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:entityFlyRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Movement", nil), @"rows" : rows}];
 		}
 		
 		//Stasis Webifying
-		if ([self.type.effectsDictionary valueForKey:@"575"] || [self.type.effectsDictionary valueForKey:@"3714"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Stasis Webifying", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(575)] || self.type.effectsDictionary[@(3714)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 
-			EVEDBDgmTypeAttribute* speedFactorAttribute = [self.type.attributesDictionary valueForKey:@"20"];
+			EVEDBDgmTypeAttribute* speedFactorAttribute = self.type.attributesDictionary[@(20)];
 			if (speedFactorAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 speedFactorAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0f %%", speedFactorAttribute.value], @"value",
-								 speedFactorAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = speedFactorAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", speedFactorAttribute.value];
+				cellData.icon = speedFactorAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedRangeAttribute = [self.type.attributesDictionary valueForKey:@"514"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedRangeAttribute = self.type.attributesDictionary[@(514)];
 			if (modifyTargetSpeedRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) modifyTargetSpeedRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"targetingRange.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:modifyTargetSpeedRangeAttribute.value]];
+				cellData.icon = @"targetingRange.png";
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedDurationAttribute = [self.type.attributesDictionary valueForKey:@"513"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedDurationAttribute = self.type.attributesDictionary[@(513)];
 			if (modifyTargetSpeedDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", modifyTargetSpeedDurationAttribute.value / 1000.0], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), modifyTargetSpeedDurationAttribute.value / 1000.0];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* modifyTargetSpeedChanceAttribute = [self.type.attributesDictionary valueForKey:@"512"];
+			EVEDBDgmTypeAttribute* modifyTargetSpeedChanceAttribute = self.type.attributesDictionary[@(512)];
 			if (modifyTargetSpeedChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Webbing Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", modifyTargetSpeedChanceAttribute.value * 100], @"value",
-								 modifyTargetSpeedChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Webbing Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", modifyTargetSpeedChanceAttribute.value * 100];
+				cellData.icon = modifyTargetSpeedChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Stasis Webifying", nil), @"rows" : rows}];
 		}
 		
 		//Warp Scramble
-		if ([self.type.effectsDictionary valueForKey:@"39"] || [self.type.effectsDictionary valueForKey:@"563"] || [self.type.effectsDictionary valueForKey:@"3713"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Warp Scramble", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(39)] || self.type.effectsDictionary[@(563)] || self.type.effectsDictionary[@(3713)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* warpScrambleStrengthAttribute = [self.type.attributesDictionary valueForKey:@"105"];
+			EVEDBDgmTypeAttribute* warpScrambleStrengthAttribute = self.type.attributesDictionary[@(105)];
 			if (warpScrambleStrengthAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 warpScrambleStrengthAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0f", warpScrambleStrengthAttribute.value], @"value",
-								 warpScrambleStrengthAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = warpScrambleStrengthAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.0f", warpScrambleStrengthAttribute.value];
+				cellData.icon = warpScrambleStrengthAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleRangeAttribute = [self.type.attributesDictionary valueForKey:@"103"];
+			EVEDBDgmTypeAttribute* warpScrambleRangeAttribute = self.type.attributesDictionary[@(103)];
 			if (warpScrambleRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 warpScrambleRangeAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) warpScrambleRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 warpScrambleRangeAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = warpScrambleRangeAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:warpScrambleRangeAttribute.value]];
+				cellData.icon = warpScrambleRangeAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleDurationAttribute = [self.type.attributesDictionary valueForKey:@"505"];
+			EVEDBDgmTypeAttribute* warpScrambleDurationAttribute = self.type.attributesDictionary[@(505)];
 			if (warpScrambleDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 warpScrambleDurationAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.2f s", warpScrambleDurationAttribute.value / 1000], @"value",
-								 warpScrambleDurationAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = warpScrambleDurationAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), warpScrambleDurationAttribute.value / 1000];
+				cellData.icon = warpScrambleDurationAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* warpScrambleChanceAttribute = [self.type.attributesDictionary valueForKey:@"504"];
+			EVEDBDgmTypeAttribute* warpScrambleChanceAttribute = self.type.attributesDictionary[@(504)];
 			if (warpScrambleChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Scrambling Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", warpScrambleChanceAttribute.value * 100], @"value",
-								 warpScrambleChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Scrambling Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", warpScrambleChanceAttribute.value * 100];
+				cellData.icon = warpScrambleChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Warp Scramble", nil), @"rows" : rows}];
 		}
 
 		//Target Painting
-		if ([self.type.effectsDictionary valueForKey:@"1879"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Target Painting", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(1879)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* signatureRadiusBonusAttribute = [self.type.attributesDictionary valueForKey:@"554"];
+			EVEDBDgmTypeAttribute* signatureRadiusBonusAttribute = self.type.attributesDictionary[@(554)];
 			if (signatureRadiusBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 signatureRadiusBonusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.0f %%", signatureRadiusBonusAttribute.value], @"value",
-								 signatureRadiusBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = signatureRadiusBonusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", signatureRadiusBonusAttribute.value];
+				cellData.icon = signatureRadiusBonusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* targetPaintRangeAttribute = [self.type.attributesDictionary valueForKey:@"941"];
+			EVEDBDgmTypeAttribute* targetPaintRangeAttribute = self.type.attributesDictionary[@(941)];
 			if (targetPaintRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Optimal Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetPaintRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Optimal Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetPaintRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* targetPaintFalloffAttribute = [self.type.attributesDictionary valueForKey:@"954"];
+			EVEDBDgmTypeAttribute* targetPaintFalloffAttribute = self.type.attributesDictionary[@(954)];
 			if (targetPaintFalloffAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Accuracy Falloff", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetPaintFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_23.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Accuracy Falloff", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetPaintFalloffAttribute.value]];
+				cellData.icon = @"Icons/icon22_23.png";
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* targetPaintDurationAttribute = [self.type.attributesDictionary valueForKey:@"945"];
+			EVEDBDgmTypeAttribute* targetPaintDurationAttribute = self.type.attributesDictionary[@(945)];
 			if (targetPaintDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", targetPaintDurationAttribute.value / 1000], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), targetPaintDurationAttribute.value / 1000];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* targetPaintChanceAttribute = [self.type.attributesDictionary valueForKey:@"935"];
+			EVEDBDgmTypeAttribute* targetPaintChanceAttribute = self.type.attributesDictionary[@(935)];
 			if (targetPaintChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", targetPaintChanceAttribute.value * 100], @"value",
-								 targetPaintChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", targetPaintChanceAttribute.value * 100];
+				cellData.icon = targetPaintChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Target Painting", nil), @"rows" : rows}];
 		}
 		
 		//Tracking Disruption
-		if ([self.type.effectsDictionary valueForKey:@"1877"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Tracking Disruption", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(1877)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* trackingDisruptMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"948"];
+			EVEDBDgmTypeAttribute* trackingDisruptMultiplierAttribute = self.type.attributesDictionary[@(948)];
 			if (trackingDisruptMultiplierAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Tracking Speed Bonus", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", (trackingDisruptMultiplierAttribute.value - 1) * 100], @"value",
-								 @"Icons/icon22_22.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Tracking Speed Bonus", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", (trackingDisruptMultiplierAttribute.value - 1) * 100];
+				cellData.icon = @"Icons/icon22_22.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptRangeAttribute = [self.type.attributesDictionary valueForKey:@"940"];
+			EVEDBDgmTypeAttribute* trackingDisruptRangeAttribute = self.type.attributesDictionary[@(940)];
 			if (trackingDisruptRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Optimal Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) trackingDisruptRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Optimal Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:trackingDisruptRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptFalloffAttribute = [self.type.attributesDictionary valueForKey:@"951"];
+			EVEDBDgmTypeAttribute* trackingDisruptFalloffAttribute = self.type.attributesDictionary[@(951)];
 			if (trackingDisruptFalloffAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Accuracy Falloff", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) trackingDisruptFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_23.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Accuracy Falloff", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:trackingDisruptFalloffAttribute.value]];
+				cellData.icon = @"Icons/icon22_23.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptDurationAttribute = [self.type.attributesDictionary valueForKey:@"944"];
+			EVEDBDgmTypeAttribute* trackingDisruptDurationAttribute = self.type.attributesDictionary[@(944)];
 			if (trackingDisruptDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", trackingDisruptDurationAttribute.value / 1000], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), trackingDisruptDurationAttribute.value / 1000];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* trackingDisruptChanceAttribute = [self.type.attributesDictionary valueForKey:@"933"];
+			EVEDBDgmTypeAttribute* trackingDisruptChanceAttribute = self.type.attributesDictionary[@(933)];
 			if (trackingDisruptChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", trackingDisruptChanceAttribute.value * 100], @"value",
-								 trackingDisruptChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", trackingDisruptChanceAttribute.value * 100];
+				cellData.icon = trackingDisruptChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
-		}		
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Tracking Disruption", nil), @"rows" : rows}];
+		}
 		
 		//Sensor Dampening
-		if ([self.type.effectsDictionary valueForKey:@"1878"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Sensor Dampening", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(1878)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* maxTargetRangeMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"237"];
+			EVEDBDgmTypeAttribute* maxTargetRangeMultiplierAttribute = self.type.attributesDictionary[@(237)];
 			if (maxTargetRangeMultiplierAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Max Targeting Range Bonus", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", (maxTargetRangeMultiplierAttribute.value - 1) * 100], @"value",
-								 maxTargetRangeMultiplierAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Max Targeting Range Bonus", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", (maxTargetRangeMultiplierAttribute.value - 1) * 100];
+				cellData.icon = maxTargetRangeMultiplierAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* scanResolutionMultiplierAttribute = [self.type.attributesDictionary valueForKey:@"565"];
+			EVEDBDgmTypeAttribute* scanResolutionMultiplierAttribute = self.type.attributesDictionary[@(565)];
 			if (scanResolutionMultiplierAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Scan Resolution Bonus", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", (scanResolutionMultiplierAttribute.value - 1) * 100], @"value",
-								 scanResolutionMultiplierAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Scan Resolution Bonus", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", (scanResolutionMultiplierAttribute.value - 1) * 100];
+				cellData.icon = scanResolutionMultiplierAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* sensorDampenRangeAttribute = [self.type.attributesDictionary valueForKey:@"938"];
+			EVEDBDgmTypeAttribute* sensorDampenRangeAttribute = self.type.attributesDictionary[@(938)];
 			if (sensorDampenRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Optimal Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) sensorDampenRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Optimal Range", nil);
+				cellData.value = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:sensorDampenRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenFalloffAttribute = [self.type.attributesDictionary valueForKey:@"950"];
+			EVEDBDgmTypeAttribute* sensorDampenFalloffAttribute = self.type.attributesDictionary[@(950)];
 			if (sensorDampenFalloffAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Accuracy Falloff", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) sensorDampenFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_23.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Accuracy Falloff", nil);
+				cellData.value = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:sensorDampenFalloffAttribute.value]];
+				cellData.icon = @"Icons/icon22_23.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenDurationAttribute = [self.type.attributesDictionary valueForKey:@"943"];
+			EVEDBDgmTypeAttribute* sensorDampenDurationAttribute = self.type.attributesDictionary[@(943)];
 			if (sensorDampenDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", sensorDampenDurationAttribute.value / 1000], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), sensorDampenDurationAttribute.value / 1000];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* sensorDampenChanceAttribute = [self.type.attributesDictionary valueForKey:@"932"];
+			EVEDBDgmTypeAttribute* sensorDampenChanceAttribute = self.type.attributesDictionary[@(932)];
 			if (sensorDampenChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", sensorDampenChanceAttribute.value * 100], @"value",
-								 sensorDampenChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", sensorDampenChanceAttribute.value * 100];
+				cellData.icon = sensorDampenChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Sensor Dampening", nil), @"rows" : rows}];
 		}
 		
 		//ECM Jamming
-		if ([self.type.effectsDictionary valueForKey:@"1871"] || [self.type.effectsDictionary valueForKey:@"1752"] || [self.type.effectsDictionary valueForKey:@"3710"] || [self.type.effectsDictionary valueForKey:@"4656"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"ECM Jamming", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(1871)] || self.type.effectsDictionary[@(1752)] || self.type.effectsDictionary[@(3710)] || self.type.effectsDictionary[@(4656)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* scanGravimetricStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"238"];
+			EVEDBDgmTypeAttribute* scanGravimetricStrengthBonusAttribute = self.type.attributesDictionary[@(238)];
 			if (scanGravimetricStrengthBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 scanGravimetricStrengthBonusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.2f", scanGravimetricStrengthBonusAttribute.value], @"value",
-								 scanGravimetricStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = scanGravimetricStrengthBonusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.2f", scanGravimetricStrengthBonusAttribute.value];
+				cellData.icon = scanGravimetricStrengthBonusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* scanLadarStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"239"];
+			EVEDBDgmTypeAttribute* scanLadarStrengthBonusAttribute = self.type.attributesDictionary[@(239)];
 			if (scanLadarStrengthBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 scanLadarStrengthBonusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.2f", scanLadarStrengthBonusAttribute.value], @"value",
-								 scanLadarStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = scanLadarStrengthBonusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.2f", scanLadarStrengthBonusAttribute.value];
+				cellData.icon = scanLadarStrengthBonusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* scanMagnetometricStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"240"];
+			EVEDBDgmTypeAttribute* scanMagnetometricStrengthBonusAttribute = self.type.attributesDictionary[@(240)];
 			if (scanMagnetometricStrengthBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 scanMagnetometricStrengthBonusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.2f", scanMagnetometricStrengthBonusAttribute.value], @"value",
-								 scanMagnetometricStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = scanMagnetometricStrengthBonusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.2f", scanMagnetometricStrengthBonusAttribute.value];
+				cellData.icon = scanMagnetometricStrengthBonusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* scanRadarStrengthBonusAttribute = [self.type.attributesDictionary valueForKey:@"241"];
+			EVEDBDgmTypeAttribute* scanRadarStrengthBonusAttribute = self.type.attributesDictionary[@(241)];
 			if (scanLadarStrengthBonusAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 scanRadarStrengthBonusAttribute.attribute.displayName, @"title",
-								 [NSString stringWithFormat:@"%.2f", scanRadarStrengthBonusAttribute.value], @"value",
-								 scanRadarStrengthBonusAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = scanRadarStrengthBonusAttribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%.2f", scanRadarStrengthBonusAttribute.value];
+				cellData.icon = scanRadarStrengthBonusAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 
-			EVEDBDgmTypeAttribute* targetJamRangeAttribute = [self.type.attributesDictionary valueForKey:@"936"];
+			EVEDBDgmTypeAttribute* targetJamRangeAttribute = self.type.attributesDictionary[@(936)];
 			if (targetJamRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Optimal Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetJamRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Optimal Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetJamRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamFalloffAttribute = [self.type.attributesDictionary valueForKey:@"953"];
+			EVEDBDgmTypeAttribute* targetJamFalloffAttribute = self.type.attributesDictionary[@(953)];
 			if (targetJamFalloffAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Accuracy Falloff", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) targetJamFalloffAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_23.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Accuracy Falloff", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetJamFalloffAttribute.value]];
+				cellData.icon = @"Icons/icon22_23.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamDurationAttribute = [self.type.attributesDictionary valueForKey:@"929"];
+			EVEDBDgmTypeAttribute* targetJamDurationAttribute = self.type.attributesDictionary[@(929)];
 			if (targetJamDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", targetJamDurationAttribute.value / 1000], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), targetJamDurationAttribute.value / 1000];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* targetJamChanceAttribute = [self.type.attributesDictionary valueForKey:@"930"];
+			EVEDBDgmTypeAttribute* targetJamChanceAttribute = self.type.attributesDictionary[@(930)];
 			if (targetJamChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", targetJamChanceAttribute.value * 100], @"value",
-								 targetJamChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", targetJamChanceAttribute.value * 100];
+				cellData.icon = targetJamChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"ECM Jamming", nil), @"rows" : rows}];
 		}
 
 		//Energy Vampire
-		if ([self.type.effectsDictionary valueForKey:@"1872"]) {
-			section = [NSMutableDictionary dictionary];
-			rows = [NSMutableArray array];
-			[section setValue:NSLocalizedString(@"Energy Vampire", nil) forKey:@"name"];
-			[section setValue:rows forKey:@"rows"];
+		if (self.type.effectsDictionary[@(1872)]) {
+			NSMutableArray* rows = [[NSMutableArray alloc] init];
 			
-			EVEDBDgmTypeAttribute* capacitorDrainAmountAttribute = [self.type.attributesDictionary valueForKey:@"946"];
+			EVEDBDgmTypeAttribute* capacitorDrainAmountAttribute = self.type.attributesDictionary[@(946)];
 			if (!capacitorDrainAmountAttribute)
-				capacitorDrainAmountAttribute = [self.type.attributesDictionary valueForKey:@"90"];
+				capacitorDrainAmountAttribute = self.type.attributesDictionary[@(90)];
 			
-			EVEDBDgmTypeAttribute* capacitorDrainDurationAttribute = [self.type.attributesDictionary valueForKey:@"942"];
+			EVEDBDgmTypeAttribute* capacitorDrainDurationAttribute = self.type.attributesDictionary[@(942)];
 			if (capacitorDrainAmountAttribute.value > 0) {
 				NSString* value;
 				if (capacitorDrainDurationAttribute) {
 					value = [NSString stringWithFormat:@"%@ GJ (%.2f GJ/s)",
-							 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:(NSInteger) capacitorDrainAmountAttribute.value] numberStyle:NSNumberFormatterDecimalStyle],
+							 [NSNumberFormatter neocomLocalizedStringFromInteger:capacitorDrainAmountAttribute.value],
 							 capacitorDrainAmountAttribute.value / (capacitorDrainDurationAttribute.value / 1000)];
 
 				}
 				else {
-					value = [NSString stringWithFormat:@"%@ GJ", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:(NSInteger) capacitorDrainAmountAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]];
+					value = [NSString stringWithFormat:@"%@ GJ", [NSNumberFormatter neocomLocalizedStringFromInteger:capacitorDrainAmountAttribute.value]];
 				}
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Amount", nil), @"title",
-								 value, @"value",
-								 @"Icons/icon22_08.png", @"icon",
-								 nil]];
+				
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Amount", nil);
+				cellData.value = value;
+				cellData.icon = @"Icons/icon22_08.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* capacitorDrainRangeAttribute = [self.type.attributesDictionary valueForKey:@"937"];
+			EVEDBDgmTypeAttribute* capacitorDrainRangeAttribute = self.type.attributesDictionary[@(937)];
 			if (capacitorDrainRangeAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Optimal Range", nil), @"title",
-								 [NSString stringWithFormat:@"%@ m", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:(NSInteger) capacitorDrainRangeAttribute.value] numberStyle:NSNumberFormatterDecimalStyle]], @"value",
-								 @"Icons/icon22_15.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Optimal Range", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:capacitorDrainRangeAttribute.value]];
+				cellData.icon = @"Icons/icon22_15.png";
+				[rows addObject:cellData];
 			}
 			
 			if (capacitorDrainDurationAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Duration", nil), @"title",
-								 [NSString stringWithFormat:@"%.2f s", capacitorDrainDurationAttribute.value / 1000], @"value",
-								 @"Icons/icon22_16.png", @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Duration", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), capacitorDrainDurationAttribute.value / 1000];
+				cellData.icon = @"Icons/icon22_16.png";
+				[rows addObject:cellData];
 			}
 			
-			EVEDBDgmTypeAttribute* capacitorDrainChanceAttribute = [self.type.attributesDictionary valueForKey:@"931"];
+			EVEDBDgmTypeAttribute* capacitorDrainChanceAttribute = self.type.attributesDictionary[@(931)];
 			if (capacitorDrainChanceAttribute) {
-				[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithInteger:0], @"cellType", 
-								 NSLocalizedString(@"Chance", nil), @"title",
-								 [NSString stringWithFormat:@"%.0f %%", capacitorDrainChanceAttribute.value * 100], @"value",
-								 capacitorDrainChanceAttribute.attribute.icon.iconImageName, @"icon",
-								 nil]];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Chance", nil);
+				cellData.value = [NSString stringWithFormat:@"%.0f %%", capacitorDrainChanceAttribute.value * 100];
+				cellData.icon = capacitorDrainChanceAttribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : NSLocalizedString(@"Energy Vampire", nil), @"rows" : rows}];
 		}
 		
 		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -1664,97 +1464,83 @@
 		[account updateSkillpoints];
 		
 		NSMutableArray *rows = [NSMutableArray array];
-		NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blueprint", nil), @"name", rows, @"rows", nil];
+		ItemInfoCellData* cellData;
+		
 		EVEDBInvType* productType = self.type.blueprintType.productType;
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:5], @"cellType",
-						 NSLocalizedString(@"Product", nil), @"title",
-						 [productType typeName], @"value",
-						 [productType typeSmallImageName], @"icon",
-						 productType, @"type",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Waste Factor", nil), @"title",
-						 [NSString stringWithFormat:@"%d %%", self.type.blueprintType.wasteFactor], @"value",
-						 productType, @"type",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Production Limit", nil), @"title",
-						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.maxProductionLimit] numberStyle:NSNumberFormatterDecimalStyle], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Productivity Modifier", nil), @"title",
-						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.productivityModifier] numberStyle:NSNumberFormatterDecimalStyle], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Material Modifier", nil), @"title",
-						 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:self.type.blueprintType.materialModifier] numberStyle:NSNumberFormatterDecimalStyle], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Manufacturing Time", nil), @"title",
-						 [NSString stringWithTimeLeft:self.type.blueprintType.productionTime], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Research Manufacturing Time", nil), @"title",
-						 [NSString stringWithTimeLeft:self.type.blueprintType.researchProductivityTime], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Research Material Time", nil), @"title",
-						 [NSString stringWithTimeLeft:self.type.blueprintType.researchMaterialTime], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Research Copy Time", nil), @"title",
-						 [NSString stringWithTimeLeft:self.type.blueprintType.researchCopyTime], @"value",
-						 nil]];
-		[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 [NSNumber numberWithInteger:0], @"cellType",
-						 NSLocalizedString(@"Research Tech Time", nil), @"title",
-						 [NSString stringWithTimeLeft:self.type.blueprintType.researchTechTime], @"value",
-						 nil]];
-		[self.sections addObject:section];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Product", nil);
+		cellData.value = productType.typeName;
+		cellData.icon = productType.typeSmallImageName;
+		cellData.selector = @selector(onTypeInfo:);
+		cellData.object = productType;
+		[rows addObject:cellData];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Waste Factor", nil);
+		cellData.value = [NSString stringWithFormat:@"%d %%", self.type.blueprintType.wasteFactor];
+		[rows addObject:cellData];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Production Limit", nil);
+		cellData.value = [NSNumberFormatter neocomLocalizedStringFromInteger:self.type.blueprintType.maxProductionLimit];
+		[rows addObject:cellData];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Productivity Modifier", nil);
+		cellData.value = [NSNumberFormatter neocomLocalizedStringFromInteger:self.type.blueprintType.productivityModifier];
+		[rows addObject:cellData];
+
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Manufacturing Time", nil);
+		cellData.value = [NSString stringWithTimeLeft:self.type.blueprintType.productionTime];
+		[rows addObject:cellData];
+
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Research Manufacturing Time", nil);
+		cellData.value = [NSString stringWithTimeLeft:self.type.blueprintType.researchProductivityTime];
+		[rows addObject:cellData];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Research Material Time", nil);
+		cellData.value = [NSString stringWithTimeLeft:self.type.blueprintType.researchMaterialTime];
+		[rows addObject:cellData];
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Research Copy Time", nil);
+		cellData.value = [NSString stringWithTimeLeft:self.type.blueprintType.researchCopyTime];
+		[rows addObject:cellData];
+
+		
+		cellData = [[ItemInfoCellData alloc] init];
+		cellData.title = NSLocalizedString(@"Research Tech Time", nil);
+		cellData.value = [NSString stringWithTimeLeft:self.type.blueprintType.researchTechTime];
+		[rows addObject:cellData];
+		
+		[self.sections addObject:@{@"title" : NSLocalizedString(@"Blueprint", nil), @"rows" : rows}];
 
 
 		
 		for (EVEDBInvTypeAttributeCategory *category in self.type.attributeCategories) {
-			NSMutableDictionary *section = [NSMutableDictionary dictionary];
+			NSString* title = nil;
 			NSMutableArray *rows = [NSMutableArray array];
 			
-			if (category.categoryID == 8 && self.trainingTime > 0) {
-				NSString *name = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
-				[section setValue:name forKey:@"name"];
-			}
+			if (category.categoryID == 8 && self.trainingTime > 0)
+				title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
 			else
-				[section setValue:category.categoryID == 9 ? @"Other" : category.categoryName
-						   forKey:@"name"];
-			
-			[section setValue:rows forKey:@"rows"];
+				title = category.categoryID == 9 ? @"Other" : category.categoryName;
 			
 			for (EVEDBDgmTypeAttribute *attribute in category.publishedAttributes) {
-				
-				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithInteger:0], @"cellType",
-											attribute.attribute.displayName, @"title",
-											nil];
-				NSNumber *value = [NSNumber numberWithFloat:attribute.value];
 				NSString *unit = attribute.attribute.unit.displayName;
-				[row setValue:[NSString stringWithFormat:@"%@ %@",
-							   [NSNumberFormatter localizedStringFromNumber:value numberStyle:NSNumberFormatterDecimalStyle],
-							   unit ? unit : @""]
-					   forKey:@"value"];
-				if (attribute.attribute.icon.iconImageName)
-					[row setValue:attribute.attribute.icon.iconImageName forKey:@"icon"];
-				[rows addObject:row];
+
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = attribute.attribute.displayName;
+				cellData.value = [NSString stringWithFormat:@"%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(attribute.value)], unit ? unit : @""];
+				cellData.icon = attribute.attribute.icon.iconImageName;
+				[rows addObject:cellData];
 			}
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : title, @"rows" : rows}];
 		}
 		
 		NSArray* activities = [[self.type.blueprintType activities] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
@@ -1764,70 +1550,67 @@
 			NSTimeInterval queueTrainingTime = [requiredSkillsQueue trainingTime];
 			
 			NSMutableArray *rows = [NSMutableArray array];
-			NSMutableDictionary *section = [NSMutableDictionary dictionaryWithObjectsAndKeys:rows, @"rows", nil];
+			NSString* title = nil;
 			
-			if (queueTrainingTime > 0) {
-				NSString *name = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills (%@)", nil), activity.activityName, [NSString stringWithTimeLeft:queueTrainingTime]];
-				[section setValue:name forKey:@"name"];
-			}
-			else {
-				NSString *name = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills", nil), activity.activityName];
-				[section setValue:name forKey:@"name"];
-			}
+			if (queueTrainingTime > 0)
+				title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills (%@)", nil), activity.activityName, [NSString stringWithTimeLeft:queueTrainingTime]];
+			else
+				title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills", nil), activity.activityName];
 
 												   
 			if (requiredSkillsQueue.skills.count && account && account.skillPlan) {
-				NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-											[NSNumber numberWithInteger:4], @"cellType",
-											NSLocalizedString(@"Add required skills to training plan", nil), @"title",
-											[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]], @"value",
-											requiredSkillsQueue, @"trainingQueue",
-											@"Icons/icon50_13.png", @"icon",
-											nil];
-				[rows addObject:row];
+				ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+				cellData.title = NSLocalizedString(@"Add required skills to training plan", nil);
+				cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
+				cellData.icon = @"Icons/icon50_13.png";
+				cellData.selector = @selector(onTrain:);
+				cellData.object = requiredSkillsQueue;
+				[rows addObject:cellData];
 			}
 
 
 			for (EVEDBInvTypeRequiredSkill* skill in requiredSkills) {
 				SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:skill.requiredLevel];
 				for (SkillTreeItem *skill in skillTree.skills) {
-					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-												[NSNumber numberWithInteger:1], @"cellType",
-												[NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]], @"value",
-												skill, @"type",
-												nil];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = [NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]];
+					cellData.selector = @selector(onTypeInfo:);
+					cellData.object = skill;
+					cellData.indentationLevel = skill.hierarchyLevel;
+					
 					switch (skill.skillAvailability) {
 						case SkillTreeItemAvailabilityLearned:
-							[row setValue:@"Icons/icon38_193.png" forKey:@"icon"];
+							cellData.icon = @"Icons/icon50_11.png";
+							cellData.accessoryImage = @"Icons/icon38_193.png";
 							break;
 						case SkillTreeItemAvailabilityNotLearned:
-							[row setValue:@"Icons/icon38_194.png" forKey:@"icon"];
+							cellData.icon = @"Icons/icon50_11.png";
+							cellData.accessoryImage = @"Icons/icon38_194.png";
 							break;
 						case SkillTreeItemAvailabilityLowLevel:
-							[row setValue:@"Icons/icon38_195.png" forKey:@"icon"];
+							cellData.icon = @"Icons/icon50_11.png";
+							cellData.accessoryImage = @"Icons/icon38_195.png";
 							break;
 						default:
 							break;
 					}
-					[rows addObject:row];
+					[rows addObject:cellData];
 				}
 			}
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : title, @"rows" : rows}];
 
 			rows = [NSMutableArray array];
-			section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-					   [NSString stringWithFormat:NSLocalizedString(@"%@ - Material / Mineral", nil), activity.activityName], @"name", rows, @"rows", nil];
 
 			for (id requirement in [self.type.blueprintType requiredMaterialsForActivity:activity.activityID]) {
 				if ([requirement isKindOfClass:[EVEDBRamTypeRequirement class]]) {
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-									 [NSNumber numberWithInteger:5], @"cellType",
-									 [requirement requiredType].typeName, @"title",
-									 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:[requirement quantity]] numberStyle:NSNumberFormatterDecimalStyle], @"value",
-									 [[requirement requiredType] typeSmallImageName], @"icon",
-									 [requirement requiredType], @"type",
-									 nil]];
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = [requirement requiredType].typeName;
+					cellData.value = [NSNumberFormatter neocomLocalizedStringFromInteger:[requirement quantity]];
+					cellData.icon = [[requirement requiredType] typeSmallImageName];
+					cellData.selector = @selector(onTypeInfo:);
+					cellData.object = [requirement requiredType];
+					[rows addObject:cellData];
 				}
 				else {
 					EVEDBInvTypeMaterial* material = requirement;
@@ -1839,28 +1622,67 @@
 					NSString* value;
 					if (materialLevel > 0)
 						value = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ at ME: %@)", nil),
-								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle],
-								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:perfect] numberStyle:NSNumberFormatterDecimalStyle],
-								 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:materialLevel] numberStyle:NSNumberFormatterDecimalStyle]];
+								 [NSNumberFormatter neocomLocalizedStringFromInteger:quantity],
+								 [NSNumberFormatter neocomLocalizedStringFromInteger:perfect],
+								 [NSNumberFormatter neocomLocalizedStringFromInteger:materialLevel]];
 					else
 						value = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle];
-					[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-									 [NSNumber numberWithInteger:5], @"cellType",
-									 material.materialType.typeName, @"title",
-									 value, @"value",
-									 [material.materialType typeSmallImageName], @"icon",
-									 material.materialType, @"type",
-									 nil]];
+					
+					ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
+					cellData.title = material.materialType.typeName;
+					cellData.value = value;
+					cellData.icon = [material.materialType typeSmallImageName];
+					cellData.selector = @selector(onTypeInfo:);
+					cellData.object = material.materialType;
+					[rows addObject:cellData];
 				}
 			}
 
 			if (rows.count > 0)
-				[self.sections addObject:section];
+				[self.sections addObject:@{@"title" : [NSString stringWithFormat:NSLocalizedString(@"%@ - Material / Mineral", nil), activity.activityName], @"rows" : rows}];
 		}
 		
 		[self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) onTypeInfo:(EVEDBInvType*) type {
+	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+	controller.type = type;
+	[controller setActivePage:ItemViewControllerActivePageInfo];
+	[self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void) onGroupInfo:(EVEDBInvGroup*) group {
+	ItemsDBViewController *controller = [[ItemsDBViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ItemsDBViewControllerModal" : @"ItemsDBViewController")
+																				bundle:nil];
+	controller.modalMode = YES;
+	controller.group = group;
+	controller.category = controller.group.category;
+	[self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void) onTrain:(TrainingQueue*) trainingQueue {
+	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+							 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
+				   cancelButtonTitle:NSLocalizedString(@"No", nil)
+				   otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
+					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+						 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+							 SkillPlan* skillPlan = [[EVEAccount currentAccount] skillPlan];
+							 for (EVEDBInvTypeRequiredSkill* skill in trainingQueue.skills)
+								 [skillPlan addSkill:skill];
+							 [skillPlan save];
+						 }
+					 }
+						 cancelBlock:nil] show];
+}
+
+- (void) onVariations:(EVEDBInvType*) type {
+	VariationsViewController* controller = [[VariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
+	controller.type = type;
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

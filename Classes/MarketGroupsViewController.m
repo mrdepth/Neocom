@@ -14,6 +14,7 @@
 #import "Globals.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface MarketGroupsViewController()
 
@@ -27,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	if (!self.parentGroup)
 		self.title = NSLocalizedString(@"Market", nil);
@@ -94,39 +95,41 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifier = @"ItemCellView";
+    static NSString *cellIdentifier = @"Cell";
     
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
 		EVEDBInvType *row = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-		cell.titleLabel.text = row.typeName;
-		cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.textLabel.text = row.typeName;
+		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 	}
 	else {
 		if (self.groupItems) {
 			EVEDBInvType *row = [[[self.groupItems objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+			cell.textLabel.text = row.typeName;
+			cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		}
 		else {
 			EVEDBInvMarketGroup *row = [self.subGroups objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.marketGroupName;
+			cell.textLabel.text = row.marketGroupName;
 			if (row.icon.iconImageName)
-				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
+				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
-				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+				cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		}
 	}
     
-	if (cell.iconImageView.image.size.width < cell.iconImageView.frame.size.width)
-		cell.iconImageView.contentMode = UIViewContentModeCenter;
-	else
-		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-    
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -145,7 +148,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+	return 40;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -185,37 +188,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-	view.collapsed = NO;
-	view.titleLabel.text = title;
-	if (tableView == self.searchDisplayController.searchResultsTableView || !self.groupItems)
-		view.collapsImageView.hidden = YES;
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
 	else
-		view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
-	return view;
+		return nil;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	if (self.groupItems)
-		return [[[self.groupItems objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-	else
-		return NO;
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return self.groupItems ? YES : NO;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	if (self.groupItems)
-		[[self.groupItems objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	if (self.groupItems)
-		[[self.groupItems objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
 }
 
 #pragma mark -
@@ -233,16 +216,11 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
+
 
 #pragma mark - Private
 
@@ -260,12 +238,6 @@
 												   if ([weakOperation isCancelled])
 													   *needsMore = NO;
 											   }];
-			[[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM invMarketGroups WHERE parentGroupID IS NULL ORDER BY marketGroupName;"
-												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-													   [subGroupValues addObject:[[EVEDBInvMarketGroup alloc] initWithStatement:stmt]];
-													   if ([weakOperation isCancelled])
-														   *needsMore = NO;
-												   }];
 		}
 		else {
 			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMarketGroups WHERE parentGroupID=%d ORDER BY marketGroupName;", self.parentGroup.marketGroupID]
@@ -276,21 +248,21 @@
 												   }];
 			if (subGroupValues.count == 0) {
 				NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-				[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d ORDER BY d.value, typeName;", self.parentGroup.marketGroupID]
+				[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.metaGroupID, c.metaGroupName, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d ORDER BY d.value, typeName;", self.parentGroup.marketGroupID]
 													   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 														   EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-														   int metaGroupID = sqlite3_column_int(stmt, 1);
+														   int metaGroupID = sqlite3_column_int(stmt, 0);
 														   NSNumber* key = @(metaGroupID);
-														   NSMutableDictionary* section = [sections objectForKey:key];
+														   NSMutableDictionary* section = sections[key];
 														   if (!section) {
-															   const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 0);
+															   const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 1);
 															   NSString* title = metaGroupName ? [NSString stringWithCString:metaGroupName encoding:NSUTF8StringEncoding] : @"";
 															   
 															   section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																		  title, @"title",
 																		  [NSMutableArray arrayWithObject:type], @"rows",
 																		  key, @"order", nil];
-															   [sections setObject:section forKey:key];
+															   sections[key] = section;
 														   }
 														   else
 															   [[section valueForKey:@"rows"] addObject:type];
@@ -327,14 +299,14 @@
 			return;
 		if (searchString.length >= 2) {
 			NSMutableDictionary* sections = [NSMutableDictionary dictionary];
-			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%@%%\" AND marketGroupID > 0 ORDER BY d.value, typeName;", searchString]
+			[[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.metaGroupID, c.metaGroupName, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE typeName LIKE \"%%%@%%\" AND marketGroupID > 0 ORDER BY d.value, typeName;", searchString]
 												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 													   EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-													   int metaGroupID = sqlite3_column_int(stmt, 1);
+													   int metaGroupID = sqlite3_column_int(stmt, 0);
 													   NSNumber* key = metaGroupID > 0 ? @(metaGroupID) : @(INT_MAX);
 													   NSMutableDictionary* section = [sections objectForKey:key];
 													   if (!section) {
-														   const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 0);
+														   const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 1);
 														   NSString* title = metaGroupName ? [NSString stringWithCString:metaGroupName encoding:NSUTF8StringEncoding] : @"";
 														   
 														   section = [NSMutableDictionary dictionaryWithObjectsAndKeys:

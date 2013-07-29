@@ -9,12 +9,13 @@
 #import "ItemsDBViewController.h"
 #import "ItemInfoViewController.h"
 #import "Globals.h"
-#import "ItemCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "ItemViewController.h"
 #import "appearance.h"
+#import "GroupedCell.h"
 
 @interface ItemsDBViewController()
+
 - (void) reload;
 - (void) searchWithSearchString:(NSString*) aSearchString;
 @end
@@ -54,14 +55,12 @@
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-	self.searchBar = nil;
-	self.publishedFilterSegment = nil;
-	self.rows = nil;
-	self.filteredValues = nil;
+	if ([self isViewLoaded] && [self.view window] == nil) {
+		self.view = nil;
+		self.searchBar = nil;
+		self.rows = nil;
+		self.filteredValues = nil;
+	}
 }
 
 
@@ -97,45 +96,47 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *cellIdentifier = @"ItemCellView";
+	static NSString *cellIdentifier = @"Cell";
 	
-	ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	//ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
-		cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
 		EVEDBInvType *row = [self.filteredValues objectAtIndex:indexPath.row];
-		cell.titleLabel.text = row.typeName;
-		cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.textLabel.text = row.typeName;
+		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 	}
 	else {
 		if (self.category == nil) {
 			EVEDBInvCategory *row = [self.rows objectAtIndex:indexPath.row];
-			cell.titleLabel.text = [row categoryName];
+			cell.textLabel.text = [row categoryName];
 			if (row.icon.iconImageName)
-				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
+				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
-				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+				cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		}
 		else if (self.group == nil) {
 			EVEDBInvGroup *row = [self.rows objectAtIndex:indexPath.row];
-			cell.titleLabel.text = [row groupName];
+			cell.textLabel.text = [row groupName];
 			if (row.icon.iconImageName)
-				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
+				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
-				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+				cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		}
 		else {
 			EVEDBInvType *row = [self.rows objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+			cell.textLabel.text = row.typeName;
+			cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		}
 	}
 	
-	if (cell.iconImageView.image.size.width < cell.iconImageView.frame.size.width)
+/*	if (cell.iconImageView.image.size.width < cell.iconImageView.frame.size.width)
 		cell.iconImageView.contentMode = UIViewContentModeCenter;
 	else
-		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;*/
 
 	GroupedCellGroupStyle groupStyle = 0;
 	if (indexPath.row == 0)
@@ -215,15 +216,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.modalMode ? @"background.png" : @"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTopLeft;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -231,7 +225,7 @@
 
 - (void) reload {
 	NSMutableArray *values = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		if (self.category == nil)
@@ -279,7 +273,7 @@
 	NSString *searchString = [aSearchString copy];
 	NSMutableArray *values = [NSMutableArray array];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"ItemsDBViewController+Filter" name:NSLocalizedString(@"Searching...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		if ([weakOperation isCancelled])

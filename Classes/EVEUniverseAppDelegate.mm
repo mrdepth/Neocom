@@ -731,6 +731,9 @@
 	[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
 	[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
 	[[UISearchBar appearance] setTextColor:[UIColor whiteColor]];
+	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClear.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClearSelected.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateHighlighted];
+	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconSearch.png"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
 	
 	//[[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)]];
 	

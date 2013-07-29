@@ -4,39 +4,39 @@
 <array>
 	<dict>
 		<key>requirementID</key>
-		<string>182</string>
+		<integer>182</integer>
 		<key>skillLevelID</key>
-		<string>277</string>
+		<integer>277</integer>
 	</dict>
 	<dict>
 		<key>requirementID</key>
-		<string>183</string>
+		<integer>183</integer>
 		<key>skillLevelID</key>
-		<string>278</string>
+		<integer>278</integer>
 	</dict>
 	<dict>
 		<key>requirementID</key>
-		<string>184</string>
+		<integer>184</integer>
 		<key>skillLevelID</key>
-		<string>279</string>
+		<integer>279</integer>
 	</dict>
 	<dict>
 		<key>requirementID</key>
-		<string>1285</string>
+		<integer>1285</integer>
 		<key>skillLevelID</key>
-		<string>1286</string>
+		<integer>1286</integer>
 	</dict>
 	<dict>
 		<key>requirementID</key>
-		<string>1289</string>
+		<integer>1289</integer>
 		<key>skillLevelID</key>
-		<string>1287</string>
+		<integer>1287</integer>
 	</dict>
 	<dict>
 		<key>requirementID</key>
-		<string>1290</string>
+		<integer>1290</integer>
 		<key>skillLevelID</key>
-		<string>1288</string>
+		<integer>1288</integer>
 	</dict>
 </array>
 </plist>

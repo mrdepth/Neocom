@@ -15,7 +15,6 @@
 @property (nonatomic, weak) IBOutlet UISegmentedControl *reportTypeSegment;
 @property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) IBOutlet UISearchDisplayController *searchDisplayController;
-@property (nonatomic, weak) IBOutlet UIViewController *parentViewController;
 @property (nonatomic, strong) EVEDBInvType *type;
 @property (nonatomic, strong) NSArray *sellOrdersRegions;
 @property (nonatomic, strong) NSArray *buyOrdersRegions;

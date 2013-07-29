@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EVEDBAPI.h"
 
-@interface ItemInfoViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface ItemInfoViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *volumeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *massLabel;
@@ -19,7 +19,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UIImageView *techLevelImageView;
 @property (nonatomic, weak) IBOutlet UIView *typeInfoView;
-@property (nonatomic, weak) IBOutlet UIViewController *containerViewController;
 @property (nonatomic, strong) EVEDBInvType *type;
 
 @end

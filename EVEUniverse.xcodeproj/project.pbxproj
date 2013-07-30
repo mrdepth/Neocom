@@ -762,6 +762,9 @@
 		71CBDC8314103E5A003A50CE /* ContractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC8114103E5A003A50CE /* ContractViewController.m */; };
 		71CBDC8414103E5A003A50CE /* ContractViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71CBDC8214103E5A003A50CE /* ContractViewController.xib */; };
 		71CBDC99141044D3003A50CE /* BidCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC98141044D3003A50CE /* BidCellView.m */; };
+		71CDAEFB17A84F3C00E58F22 /* xmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 71CDAEF917A84F3C00E58F22 /* xmark.png */; };
+		71CDAEFC17A84F3C00E58F22 /* xmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71CDAEFA17A84F3C00E58F22 /* xmark@2x.png */; };
+		71CDAF0217A853A000E58F22 /* UIViewController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CDAF0117A853A000E58F22 /* UIViewController+Neocom.m */; };
 		71D0CDE1179BE0EC00766D07 /* RoundRectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D0CDE0179BE0EC00766D07 /* RoundRectButton.m */; };
 		71D0CDE7179BEBEB00766D07 /* starOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D0CDE3179BEBEA00766D07 /* starOff.png */; };
 		71D0CDE8179BEBEB00766D07 /* starOff@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D0CDE4179BEBEA00766D07 /* starOff@2x.png */; };
@@ -780,7 +783,6 @@
 		71D3E0A7179B4C280016C69A /* buttonBackgroundBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D3E0A4179B4C270016C69A /* buttonBackgroundBlack.png */; };
 		71D3E0A8179B4C280016C69A /* buttonBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D3E0A5179B4C270016C69A /* buttonBackgroundSelected.png */; };
 		71D3E0AB179B4D980016C69A /* clearColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D3E0AA179B4D980016C69A /* clearColor.png */; };
-		71DE00F1179D7B1F00F49339 /* UIViewController+Popover.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DE00F0179D7B1F00F49339 /* UIViewController+Popover.m */; };
 		71DE00F6179D7D2300F49339 /* EVEAPIKeysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DE00F4179D7D2300F49339 /* EVEAPIKeysViewController.m */; };
 		71DE00F7179D7D2300F49339 /* EVEAPIKeysViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71DE00F5179D7D2300F49339 /* EVEAPIKeysViewController.xib */; };
 		71E9F8DB179E8BAD00065973 /* buttonBackNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 71E9F8D7179E8BAC00065973 /* buttonBackNormal.png */; };
@@ -1958,6 +1960,10 @@
 		71CBDC8214103E5A003A50CE /* ContractViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContractViewController.xib; sourceTree = "<group>"; };
 		71CBDC97141044D3003A50CE /* BidCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidCellView.h; sourceTree = "<group>"; };
 		71CBDC98141044D3003A50CE /* BidCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidCellView.m; sourceTree = "<group>"; };
+		71CDAEF917A84F3C00E58F22 /* xmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xmark.png; sourceTree = "<group>"; };
+		71CDAEFA17A84F3C00E58F22 /* xmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xmark@2x.png"; sourceTree = "<group>"; };
+		71CDAF0017A853A000E58F22 /* UIViewController+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Neocom.h"; sourceTree = "<group>"; };
+		71CDAF0117A853A000E58F22 /* UIViewController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Neocom.m"; sourceTree = "<group>"; };
 		71D0CDDF179BE0EC00766D07 /* RoundRectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundRectButton.h; sourceTree = "<group>"; };
 		71D0CDE0179BE0EC00766D07 /* RoundRectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoundRectButton.m; sourceTree = "<group>"; };
 		71D0CDE3179BEBEA00766D07 /* starOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starOff.png; sourceTree = "<group>"; };
@@ -1978,8 +1984,6 @@
 		71D3E0A4179B4C270016C69A /* buttonBackgroundBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundBlack.png; sourceTree = "<group>"; };
 		71D3E0A5179B4C270016C69A /* buttonBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundSelected.png; sourceTree = "<group>"; };
 		71D3E0AA179B4D980016C69A /* clearColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearColor.png; sourceTree = "<group>"; };
-		71DE00EF179D7B1F00F49339 /* UIViewController+Popover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popover.h"; sourceTree = "<group>"; };
-		71DE00F0179D7B1F00F49339 /* UIViewController+Popover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popover.m"; sourceTree = "<group>"; };
 		71DE00F3179D7D2300F49339 /* EVEAPIKeysViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAPIKeysViewController.h; sourceTree = "<group>"; };
 		71DE00F4179D7D2300F49339 /* EVEAPIKeysViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAPIKeysViewController.m; sourceTree = "<group>"; };
 		71DE00F5179D7D2300F49339 /* EVEAPIKeysViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EVEAPIKeysViewController.xib; sourceTree = "<group>"; };
@@ -4000,6 +4004,8 @@
 		71800EEE12EB9B2400F0B471 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				71CDAEF917A84F3C00E58F22 /* xmark.png */,
+				71CDAEFA17A84F3C00E58F22 /* xmark@2x.png */,
 				71C7D90F17A533D500266FA7 /* iconSearch@2x.png */,
 				71C7D90A17A530A800266FA7 /* iconClear@2x.png */,
 				71C7D90B17A530A900266FA7 /* iconClearSelected@2x.png */,
@@ -4255,8 +4261,8 @@
 				71A16E34140D754A00BD69F5 /* UIDevice+IP.m */,
 				12B06EC81772ECA000966669 /* NSNumberFormatter+Neocom.h */,
 				12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */,
-				71DE00EF179D7B1F00F49339 /* UIViewController+Popover.h */,
-				71DE00F0179D7B1F00F49339 /* UIViewController+Popover.m */,
+				71CDAF0017A853A000E58F22 /* UIViewController+Neocom.h */,
+				71CDAF0117A853A000E58F22 /* UIViewController+Neocom.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -5391,6 +5397,8 @@
 				71C7D90C17A530A900266FA7 /* iconClear@2x.png in Resources */,
 				71C7D90D17A530A900266FA7 /* iconClearSelected@2x.png in Resources */,
 				71C7D91017A533D500266FA7 /* iconSearch@2x.png in Resources */,
+				71CDAEFB17A84F3C00E58F22 /* xmark.png in Resources */,
+				71CDAEFC17A84F3C00E58F22 /* xmark@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5748,11 +5756,11 @@
 				71B10E76179AFBFA00D5214B /* GroupedCell.m in Sources */,
 				71D0CDE1179BE0EC00766D07 /* RoundRectButton.m in Sources */,
 				71D2772D179C351700C69353 /* EVEAPIKeyCell.m in Sources */,
-				71DE00F1179D7B1F00F49339 /* UIViewController+Popover.m in Sources */,
 				71DE00F6179D7D2300F49339 /* EVEAPIKeysViewController.m in Sources */,
 				71F3A1C2179DF2EF00ABD7F5 /* EUTextField.m in Sources */,
 				71F3A1C5179DF51500ABD7F5 /* LUIRoundRectButton.m in Sources */,
 				71C9959D179EAFA3008CA679 /* SkillsDataSource.m in Sources */,
+				71CDAF0217A853A000E58F22 /* UIViewController+Neocom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

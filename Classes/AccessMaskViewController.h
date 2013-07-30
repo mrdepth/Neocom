@@ -11,6 +11,8 @@
 
 @class APIKey;
 @interface AccessMaskViewController : UITableViewController
-@property (nonatomic, strong) APIKey* apiKey;
+@property (nonatomic, assign) NSInteger accessMask;
+@property (nonatomic, assign) NSInteger requiredAccessMask;
+@property (nonatomic, assign) EVEAPIKeyType apiKeyType;
 
 @end

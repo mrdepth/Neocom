@@ -155,7 +155,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	AccessMaskViewController* controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
-	controller.apiKey = self.apiKeys[indexPath.row];
+	APIKey* apiKey = self.apiKeys[indexPath.row];
+	controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
+	controller.apiKeyType = apiKey.apiKeyInfo.key.type;
 	[self.navigationController pushViewController:controller animated:YES];
 }
 

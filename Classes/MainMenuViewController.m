@@ -25,14 +25,14 @@
 #import "IndustryJobsViewController.h"
 #import "SplashScreenViewController.h"
 #import "UIColor+NSNumber.h"
+#import "AccessMaskViewController.h"
+#import "UIViewController+Neocom.h"
 
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
 @property (nonatomic, assign) NSInteger numberOfUnreadMessages;
-@property (nonatomic, strong) EVECalllist* callist;
 
 
-- (void) reload;
 - (void) accountDidSelect:(NSNotification*) notification;
 - (IBAction) dismissModalViewController;
 - (void) didReadMail:(NSNotification*) notification;
@@ -82,9 +82,6 @@
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
 	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
-	
-	if (!self.callist)
-		[self reload];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -149,22 +146,15 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifier = @"MainMenuCellView";
+    static NSString *cellIdentifier = @"Cell";
 	NSDictionary *item = self.menuItems[indexPath.section][indexPath.row];
 
 	EVEAccount *account = [EVEAccount currentAccount];
 	NSInteger charAccessMask = [[item valueForKey:@"charAccessMask"] integerValue];
 	NSInteger corpAccessMask = [[item valueForKey:@"corpAccessMask"] integerValue];
 	
-//	if ((account.charAccessMask & charAccessMask) == charAccessMask ||
-//		(account.corpAccessMask & corpAccessMask) == corpAccessMask)
-//		cellIdentifier = @"MainMenuCellView";
-//	else
-//		cellIdentifier = @"MainMenuCellViewLimited";
-    
     GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        //cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -177,7 +167,31 @@
 	else {
 		cell.textLabel.text = NSLocalizedString([item valueForKey:@"title"], nil);
 	}
-	cell.detailTextLabel.text = @"Details";
+	
+	if ((account.charAPIKey.apiKeyInfo.key.accessMask & charAccessMask) != charAccessMask &&
+		(account.corpAPIKey.apiKeyInfo.key.accessMask & corpAccessMask) != corpAccessMask) {
+		if (corpAccessMask > 0 && charAccessMask < 0 && !account.corpAPIKey)
+			cell.detailTextLabel.text = NSLocalizedString(@"Add corp API Key", nil);
+		else if (charAccessMask > 0 && corpAccessMask > 0 && !account.charAPIKey && !account.corpAPIKey)
+			cell.detailTextLabel.text = NSLocalizedString(@"Add char or corp API Key", nil);
+		else if (charAccessMask > 0 && corpAccessMask < 0 && !account.corpAPIKey)
+			cell.detailTextLabel.text = NSLocalizedString(@"Add char API Key", nil);
+		else {
+			if (charAccessMask > 0)
+				cell.detailTextLabel.text = NSLocalizedString(@"Invalid char access mask", nil);
+			else
+				cell.detailTextLabel.text = NSLocalizedString(@"Invalid corp access mask", nil);
+		}
+		cell.textLabel.textColor = [UIColor lightTextColor];
+	}
+	else {
+		cell.textLabel.textColor = [UIColor whiteColor];
+		cell.detailTextLabel.text = nil;
+	}
+
+	
+
+	//cell.detailTextLabel.text = @"Details";
 	cell.imageView.image = [UIImage imageNamed:[item valueForKey:@"image"]];
 	
 	GroupedCellGroupStyle groupStyle = 0;
@@ -204,8 +218,25 @@
 	NSInteger corpAccessMask = [[item valueForKey:@"corpAccessMask"] integerValue];
 	
 	if ((account.charAPIKey.apiKeyInfo.key.accessMask & charAccessMask) != charAccessMask &&
-		(account.corpAPIKey.apiKeyInfo.key.accessMask & corpAccessMask) != corpAccessMask)
+		(account.corpAPIKey.apiKeyInfo.key.accessMask & corpAccessMask) != corpAccessMask) {
+		AccessMaskViewController* controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
+		if (corpAccessMask > 0 && charAccessMask < 0) {
+			controller.accessMask = account.corpAPIKey.apiKeyInfo.key.accessMask;
+			controller.apiKeyType = EVEAPIKeyTypeCorporation;
+			controller.requiredAccessMask = corpAccessMask;
+		}
+		else {
+			controller.accessMask = account.charAPIKey.apiKeyInfo.key.accessMask;
+			controller.apiKeyType = EVEAPIKeyTypeCharacter;
+			controller.requiredAccessMask = charAccessMask;
+		}
+		[self.navigationController pushViewController:controller animated:YES];
+/*		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:controller action:@selector(dismiss)];
+		[self presentViewController:navigationController animated:YES completion:nil];*/
 		return;
+	}
 
 	NSString *className = [item valueForKey:@"className"];
 	NSString *nibName = [item valueForKey:@"nibName"];
@@ -289,28 +320,7 @@
 
 #pragma mark - Private
 
-- (void) reload {
-	EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+reload" name:NSLocalizedString(@"Loading Menu Items", nil)];
-	__block EVECalllist* calllist = nil;
-	[operation addExecutionBlock:^(void) {
-		calllist = [EVECalllist calllistWithError:nil progressHandler:nil];
-	}];
-	
-	__weak EUOperation* weakOperation = operation;
-	[operation setCompletionBlockInMainThread:^(void) {
-		if (![weakOperation isCancelled] && calllist) {
-			self.callist = calllist;
-			[self.tableView reloadData];
-		}
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
 - (void) accountDidSelect:(NSNotification*) notification {
-	if (!self.callist)
-		[self reload];
-	
 	self.characterInfoViewController.account = [EVEAccount currentAccount];
 	self.numberOfUnreadMessages = 0;
 	[self.tableView reloadData];

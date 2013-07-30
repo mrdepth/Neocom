@@ -42,17 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	NSString* keyType = nil;
-	if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeAccount)
-		keyType = @"Account";
-	else if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCharacter)
-		keyType = @"Char";
-	else if (self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation)
-		keyType = @"Corp";
-	else
-		keyType = @"Unknown";
-	
-	self.title = [NSString stringWithFormat:@"%@ key: %d", keyType, self.apiKey.keyID];
+	self.title = NSLocalizedString(@"Access Mask", nil);
 
 	
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
@@ -72,7 +62,7 @@
 				groupsTmp[@(callGroup.groupID)] = callGroup.name;
 			}
 			
-			BOOL corporate = self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation;
+			BOOL corporate = self.apiKeyType == EVEAPIKeyTypeCorporation;
 
 			NSIndexSet *indexes = [calllist.calls indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 				return corporate ^ ([(EVECalllistCallsItem*) obj type] == EVECallTypeCharacter);
@@ -152,7 +142,13 @@
     }
 	EVECalllistCallsItem *call = self.sections[indexPath.section][indexPath.row];
 	cell.textLabel.text = call.name;
-	cell.accessoryView = (self.apiKey.apiKeyInfo.key.accessMask & call.accessMask) ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	
+	UIImage* accessoryImage = nil;
+	if (self.accessMask & call.accessMask)
+		accessoryImage = [UIImage imageNamed:@"checkmark.png"];
+	else if (self.requiredAccessMask & call.accessMask)
+		accessoryImage = [UIImage imageNamed:@"xmark.png"];
+	cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
 	
 	GroupedCellGroupStyle groupStyle = 0;
 	if (indexPath.row == 0)

@@ -105,7 +105,8 @@
 		APIKey* apiKey = self.dataSource.apiKeys[indexPath.item];
 		if (apiKey.apiKeyInfo) {
 			AccessMaskViewController* controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
-			controller.apiKey = apiKey;
+			controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
+			controller.apiKeyType = apiKey.apiKeyInfo.key.type;
 			[self.navigationController pushViewController:controller animated:YES];
 		}
 	}

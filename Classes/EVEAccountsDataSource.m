@@ -178,7 +178,9 @@
 	}
 	else if (apiKeys.count == 1) {
 		AccessMaskViewController* controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
-		controller.apiKey = apiKeys[0];
+		APIKey* apiKey = apiKeys[0];
+		controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
+		controller.apiKeyType = apiKey.apiKeyInfo.key.type;
 		[self.viewController.navigationController pushViewController:controller animated:YES];
 	}
 	else {
@@ -197,7 +199,9 @@
 	}
 	else if (apiKeys.count == 1) {
 		AccessMaskViewController* controller = [[AccessMaskViewController alloc] initWithNibName:@"AccessMaskViewController" bundle:nil];
-		controller.apiKey = apiKeys[0];
+		APIKey* apiKey = apiKeys[0];
+		controller.accessMask = apiKey.apiKeyInfo.key.accessMask;
+		controller.apiKeyType = apiKey.apiKeyInfo.key.type;
 		[self.viewController.navigationController pushViewController:controller animated:YES];
 	}
 	else {

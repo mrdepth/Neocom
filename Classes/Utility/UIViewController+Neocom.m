@@ -1,12 +1,12 @@
 //
-//  UIViewController+Popover.m
+//  UIViewController+Neocom.m
 //  EVEUniverse
 //
-//  Created by mr_depth on 22.07.13.
+//  Created by mr_depth on 30.07.13.
 //
 //
 
-#import "UIViewController+Popover.h"
+#import "UIViewController+Neocom.h"
 #import <objc/runtime.h>
 
 @interface UIViewController()<UIPopoverControllerDelegate>
@@ -14,7 +14,11 @@
 
 @end
 
-@implementation UIViewController (Popover)
+@implementation UIViewController (Neocom)
+
+- (void) dismiss {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void) setPopover:(UIPopoverController *)popover {
 	objc_setAssociatedObject(self, @"popover", popover, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

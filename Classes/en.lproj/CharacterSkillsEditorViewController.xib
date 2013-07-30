@@ -48,6 +48,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="1070619091"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="354921361"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -68,6 +69,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 366}, {320, 50}}</string>
 								<reference key="NSSuperview" ref="354921361"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="93576766"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -82,6 +84,7 @@
 						</array>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="1070619091"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="94156874"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -105,6 +108,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="1070619091"/>
+						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwLjcAA</bytes>
@@ -122,6 +126,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{12, 7}, {240, 31}}</string>
 								<reference key="NSSuperview" ref="358603160"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="379839113"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -152,6 +157,7 @@
 						</array>
 						<string key="NSFrame">{{0, -44}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="1070619091"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="952709726"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -179,6 +185,7 @@
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="358603160"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -213,6 +220,7 @@
 				<array class="NSMutableArray" key="IBUIViewControllers">
 					<object class="IBUIViewController" id="488081981">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="551391589">
+							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle"/>
 							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="353286178">
 								<string key="IBUITitle">Close</string>

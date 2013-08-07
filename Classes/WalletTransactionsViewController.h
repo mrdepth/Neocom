@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SBTableView.h"
 #import "FilterViewController.h"
 #import "EUFilter.h"
 

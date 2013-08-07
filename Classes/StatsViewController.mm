@@ -416,8 +416,7 @@
 		for (ItemInfo* itemInfo in types) {
 			if (itemInfo != shipInfo) {
 				int count = [types countForObject:itemInfo];
-				NSString* key = [NSString stringWithFormat:@"%d", itemInfo.typeID];
-				fittingsPrice += [[prices valueForKey:key] floatValue] * count;
+				fittingsPrice += [prices[@(itemInfo.typeID)] floatValue] * count;
 			}
 		}
 		

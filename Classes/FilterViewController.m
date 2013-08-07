@@ -7,7 +7,7 @@
 //
 
 #import "FilterViewController.h"
-#import "TagCellView.h"
+//#import "TagCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
@@ -118,7 +118,7 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	NSString *cellIdentifier = @"TagCellView";
+	/*NSString *cellIdentifier = @"TagCellView";
 	
 	TagCellView *cell = (TagCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
@@ -136,7 +136,8 @@
 		//cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
 		cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
 	}
-    return cell;
+    return cell;*/
+	return nil;
 }
 
 #pragma mark -
@@ -163,7 +164,7 @@
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
+	/*[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	EUFilterItem *filterItem = [self.filter.filters objectAtIndex:indexPath.section];
 	if (indexPath.row == 0) {
 		NSInteger row = 1;
@@ -189,7 +190,7 @@
 	}
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.delegate filterViewController:self didApplyFilter:self.filter];
-	return;
+	return;*/
 }
 
 #pragma mark - CollapsableTableViewDelegate

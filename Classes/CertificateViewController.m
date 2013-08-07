@@ -9,10 +9,12 @@
 #import "CertificateViewController.h"
 #import "EVEDBAPI.h"
 #import "ItemViewController.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface CertificateViewController()
 @property (nonatomic, strong) NSMutableArray* sections;
@@ -43,6 +45,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		if ([[self.navigationController viewControllers] objectAtIndex:0] == self)
@@ -168,23 +171,6 @@
 #pragma mark -
 #pragma mark Table view data source
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = tableView == self.searchDisplayController.searchResultsTableView ? nil : [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return self.sections.count;
 }
@@ -197,28 +183,44 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *cellIdentifier = @"ItemCellView";
-    
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	
 	EVEDBInvType *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	cell.titleLabel.text = row.typeName;
-	cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	cell.textLabel.text = row.typeName;
+	cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
     return cell;
 }
-
-#pragma mark -
-#pragma mark Table view delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	return [[[self.sections objectAtIndex:section] objectAtIndex:0] valueForKeyPath:@"group.groupName"];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+#pragma mark -
+#pragma mark Table view delegate
+
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+	return view;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

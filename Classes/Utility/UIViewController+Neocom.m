@@ -17,7 +17,10 @@
 @implementation UIViewController (Neocom)
 
 - (void) dismiss {
-	[self dismissViewControllerAnimated:YES completion:nil];
+	if (self.popover)
+		[self.popover dismissPopoverAnimated:YES];
+	else
+		[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) setPopover:(UIPopoverController *)popover {

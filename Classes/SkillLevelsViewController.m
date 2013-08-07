@@ -7,7 +7,7 @@
 //
 
 #import "SkillLevelsViewController.h"
-#import "TagCellView.h"
+//#import "TagCellView.h"
 #import "UITableViewCell+Nib.h"
 
 @implementation SkillLevelsViewController
@@ -75,7 +75,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *cellIdentifier = @"TagCellView";
+/*	NSString *cellIdentifier = @"TagCellView";
 	
 	TagCellView *cell = (TagCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
@@ -83,7 +83,9 @@
 	}
 	cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), indexPath.row];;
 	cell.checkmarkImageView.image = self.currentLevel == indexPath.row ? [UIImage imageNamed:@"checkmark.png"] : nil;
-	return cell;
+	return cell;*/
+	
+	return nil;
 }
 
 #pragma mark -

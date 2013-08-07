@@ -16,9 +16,9 @@
 	NSNumber* state = objc_getAssociatedObject(self, @"state");
 	NSNumber* characterID = objc_getAssociatedObject(self, @"characterID");
 	EVEAccount* account = [EVEAccount currentAccount];
-	if (!state || [characterID integerValue] != account.characterID) {
+	if (!state || [characterID integerValue] != account.character.characterID) {
 		if (!account || !account.characterSheet) {
-			state = [NSNumber numberWithInteger:EVEDBCrtCertificateStateNotLearned];
+			state = @(EVEDBCrtCertificateStateNotLearned);
 			characterID = nil;
 		}
 		else {
@@ -54,11 +54,11 @@
 				}
 			}
 			if (learned && !notLearned)
-				state = [NSNumber numberWithInteger:EVEDBCrtCertificateStateLearned];
+				state = @(EVEDBCrtCertificateStateLearned);
 			else if (!learned && notLearned)
-				state = [NSNumber numberWithInteger:EVEDBCrtCertificateStateNotLearned];
+				state = @(EVEDBCrtCertificateStateNotLearned);
 			else
-				state = [NSNumber numberWithInteger:EVEDBCrtCertificateStateLowLevel];
+				state = @(EVEDBCrtCertificateStateLowLevel);
 		}
 		
 		objc_setAssociatedObject(self, @"state", state, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

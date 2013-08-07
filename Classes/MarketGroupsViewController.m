@@ -198,7 +198,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 22;
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 #pragma mark -

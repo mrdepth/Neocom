@@ -7,20 +7,16 @@
 //
 
 #import "DronesAmountViewController.h"
+#import "UIViewController+Neocom.h"
+#import "GroupedCell.h"
+#import "appearance.h"
 
-@interface DronesAmountViewController() {
-	id _strongSelf;
-}
-@property (nonatomic, strong) UIPopoverController *popoverController;
-
-- (void) remove;
-- (void) animationDidStop:(NSString*) animationID finished:(NSNumber*) finished context:(void*) context;
+@interface DronesAmountViewController()
 
 @end
 
 
 @implementation DronesAmountViewController
-@synthesize popoverController;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -38,9 +34,13 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.pickerView selectRow:self.amount - 1 inComponent:0 animated:NO];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		self.contentSizeForViewInPopover = self.view.frame.size;
+	self.title = NSLocalizedString(@"Amount", nil);
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.completionHandler = nil;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -57,106 +57,49 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.pickerView = nil;
-	self.backgroundView = nil;
-	self.contentView = nil;
-}
+#pragma mark -
+#pragma mark Table view data source
 
-- (void) presentAnimated:(BOOL) animated {
-	UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-	[window addSubview:self.view];
-	self.view.frame = CGRectMake(0, window.frame.size.height - self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height);
-	_strongSelf = self;
-	if (animated) {
-		self.backgroundView.alpha = 0;
-		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.3];
-		self.backgroundView.alpha = 1;
-		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height - self.contentView.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
-		[UIView commitAnimations];
-	}
-}
-
-- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)aView permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
-	if (!popoverController) {
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:self];
-		popoverController.delegate = self;
-	}
-	[popoverController presentPopoverFromRect:rect inView:aView permittedArrowDirections:arrowDirections animated:animated];
-}
-
-- (void) dismissAnimated:(BOOL) animated {
-	if (animated) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.3];
-		[UIView setAnimationDelegate:self];
-		[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-		self.backgroundView.alpha = 0;
-		self.contentView.frame = CGRectMake(self.contentView.frame.origin.x, self.view.frame.size.height, self.contentView.frame.size.width, self.contentView.frame.size.height);
-		[UIView commitAnimations];
-	}
-	else
-		[self remove];
-}
-
-- (IBAction) onCancel:(id) sender {
-	[self.delegate dronesAmountViewControllerDidCancel:self];
-	[self dismissAnimated:YES];
-}
-
-- (IBAction) onDone:(id) sender {
-	[self.delegate dronesAmountViewController:self didSelectAmount:[self.pickerView selectedRowInComponent:0] + 1];
-	[self dismissAnimated:YES];
-}
-
-
-#pragma mark UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)aPickerView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 1;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-	return self.maxAmount < self.amount ? self.amount : self.maxAmount;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return self.maxAmount;
 }
 
-- (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [NSString stringWithFormat:@"%d", row + 1];
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *cellIdentifier = @"Cell";
+    
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	
+	cell.textLabel.text = [NSString stringWithFormat:@"%d", indexPath.row + 1];
+	cell.accessoryView = indexPath.row == self.amount - 1 ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+    
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
-- (UIView *)pickerView:(UIPickerView *)aPickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
-	UILabel *label = (UILabel*) view;
-	if (!label) {
-		CGRect rect = CGRectMake(0, 0, 0, 0);
-		rect.size = [aPickerView rowSizeForComponent:component];
-		label = [[UILabel alloc] initWithFrame:rect];
-		label.backgroundColor = [UIColor clearColor];
-		label.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-		label.textAlignment = UITextAlignmentCenter;
-	}
-	label.text = [self pickerView:aPickerView titleForRow:row forComponent:component];
-	return label;
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.completionHandler)
+		self.completionHandler(indexPath.row + 1);
+	[self dismiss];
 }
 
-#pragma mark UIPopoverControllerDelegate
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)aPopoverController {
-	self.popoverController = nil;
-	[self.delegate dronesAmountViewController:self didSelectAmount:[self.pickerView selectedRowInComponent:0] + 1];
-}
-
-#pragma mark - Private
-
-- (void) remove {
-	[self.view removeFromSuperview];
-	_strongSelf = nil;
-}
-
-- (void) animationDidStop:(NSString*) animationID finished:(NSNumber*) finished context:(void*) contex {
-	[self remove];
-}
 
 @end

@@ -144,7 +144,7 @@
 #pragma mark - EVEAccountCellDelegate
 
 - (void) accountCell:(EVEAccountCell*) cell deleteButtonTapped:(UIButton*) button {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:NSLocalizedString(@"Delete", nil)
@@ -215,7 +215,7 @@
 #pragma mark - EVEAPIKeyCellDelegate
 
 - (void) apiKeyCell:(EVEAPIKeyCell*) cell deleteButtonTapped:(UIButton*) button {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:NSLocalizedString(@"Delete", nil)

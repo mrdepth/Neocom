@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -279,7 +279,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="344144706">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -288,7 +288,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{24, 24}</string>
 						<reference key="NSSuperview" ref="344144706"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="692555919"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -305,7 +304,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="344144706"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -336,8 +334,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 24}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="565335259"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -347,7 +343,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="1027613936">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -356,7 +352,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{24, 24}</string>
 						<reference key="NSSuperview" ref="1027613936"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="45569962"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -373,7 +368,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="1027613936"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -395,8 +389,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 24}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="693876101"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -406,7 +398,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="116017686">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -415,7 +407,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{24, 24}</string>
 						<reference key="NSSuperview" ref="116017686"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="272385098"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -432,7 +423,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="116017686"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -454,8 +444,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 24}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="802503088"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -465,7 +453,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="724762552">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -474,7 +462,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{24, 24}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="298324774"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -491,7 +478,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {72, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="361190357"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -517,7 +503,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{157, 0}, {50, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="478526248"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -543,7 +528,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{133, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="72467490"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -560,7 +544,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{261, 0}, {50, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -585,7 +568,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{237, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="724762552"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="552810559"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -599,8 +581,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 24}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="15217439"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -610,7 +590,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="282131515">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -619,7 +599,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{24, 24}</string>
 						<reference key="NSSuperview" ref="282131515"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="138482507"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -636,7 +615,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{24, 0}, {276, 24}}</string>
 						<reference key="NSSuperview" ref="282131515"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -658,8 +636,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 24}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="711183635"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -1118,6 +1094,474 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
+					<string key="className">AreaEffectsViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>mainViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>UIViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>mainViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">delegate</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">mainViewController</string>
+								<string key="candidateClassName">UIViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/AreaEffectsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">DronesViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>droneBandwidthLabel</string>
+							<string>droneBayLabel</string>
+							<string>dronesCountLabel</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>tableView</string>
+							<string>targetsViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>FittingItemsViewController</string>
+							<string>FittingViewController</string>
+							<string>UITableView</string>
+							<string>TargetsViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>droneBandwidthLabel</string>
+							<string>droneBayLabel</string>
+							<string>dronesCountLabel</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>tableView</string>
+							<string>targetsViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneBandwidthLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneBayLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">dronesCountLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingItemsViewController</string>
+								<string key="candidateClassName">FittingItemsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetsViewController</string>
+								<string key="candidateClassName">TargetsViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DronesViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">FittingItemsViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>mainViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>UIViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>mainViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">delegate</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">mainViewController</string>
+								<string key="candidateClassName">UIViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/FittingItemsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">FittingViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>didChangeSection:</string>
+							<string>didCloseModalViewController:</string>
+							<string>onBack:</string>
+							<string>onDone:</string>
+							<string>onMenu:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>didChangeSection:</string>
+							<string>didCloseModalViewController:</string>
+							<string>onBack:</string>
+							<string>onDone:</string>
+							<string>onMenu:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">didChangeSection:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">didCloseModalViewController:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">onBack:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">onDone:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">onMenu:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>areaEffectsModalController</string>
+							<string>areaEffectsViewController</string>
+							<string>dronesViewController</string>
+							<string>fitNameTextField</string>
+							<string>fitNameView</string>
+							<string>fittingItemsViewController</string>
+							<string>fleetViewController</string>
+							<string>implantsViewController</string>
+							<string>modalController</string>
+							<string>modulesDataSource</string>
+							<string>modulesViewController</string>
+							<string>sectionSegmentControl</string>
+							<string>sectionsView</string>
+							<string>shadeView</string>
+							<string>statsSectionView</string>
+							<string>statsViewController</string>
+							<string>tableView</string>
+							<string>targetsModalController</string>
+							<string>targetsViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UINavigationController</string>
+							<string>AreaEffectsViewController</string>
+							<string>DronesViewController</string>
+							<string>UITextField</string>
+							<string>UIToolbar</string>
+							<string>FittingItemsViewController</string>
+							<string>FleetViewController</string>
+							<string>ImplantsViewController</string>
+							<string>UINavigationController</string>
+							<string>ModulesDataSource</string>
+							<string>ModulesViewController</string>
+							<string>UISegmentedControl</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>StatsViewController</string>
+							<string>UITableView</string>
+							<string>UINavigationController</string>
+							<string>TargetsViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>areaEffectsModalController</string>
+							<string>areaEffectsViewController</string>
+							<string>dronesViewController</string>
+							<string>fitNameTextField</string>
+							<string>fitNameView</string>
+							<string>fittingItemsViewController</string>
+							<string>fleetViewController</string>
+							<string>implantsViewController</string>
+							<string>modalController</string>
+							<string>modulesDataSource</string>
+							<string>modulesViewController</string>
+							<string>sectionSegmentControl</string>
+							<string>sectionsView</string>
+							<string>shadeView</string>
+							<string>statsSectionView</string>
+							<string>statsViewController</string>
+							<string>tableView</string>
+							<string>targetsModalController</string>
+							<string>targetsViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">areaEffectsModalController</string>
+								<string key="candidateClassName">UINavigationController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">areaEffectsViewController</string>
+								<string key="candidateClassName">AreaEffectsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">dronesViewController</string>
+								<string key="candidateClassName">DronesViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fitNameTextField</string>
+								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fitNameView</string>
+								<string key="candidateClassName">UIToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingItemsViewController</string>
+								<string key="candidateClassName">FittingItemsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fleetViewController</string>
+								<string key="candidateClassName">FleetViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">implantsViewController</string>
+								<string key="candidateClassName">ImplantsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">modalController</string>
+								<string key="candidateClassName">UINavigationController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">modulesDataSource</string>
+								<string key="candidateClassName">ModulesDataSource</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">modulesViewController</string>
+								<string key="candidateClassName">ModulesViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">sectionSegmentControl</string>
+								<string key="candidateClassName">UISegmentedControl</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">sectionsView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shadeView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statsSectionView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statsViewController</string>
+								<string key="candidateClassName">StatsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetsModalController</string>
+								<string key="candidateClassName">UINavigationController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetsViewController</string>
+								<string key="candidateClassName">TargetsViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/FittingViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">FleetViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>fittingViewController</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>FittingViewController</string>
+							<string>UITableView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>fittingViewController</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/FleetViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ImplantsViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>boostersHeaderView</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>implantsHeaderView</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
+							<string>FittingItemsViewController</string>
+							<string>FittingViewController</string>
+							<string>UIView</string>
+							<string>UITableView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>boostersHeaderView</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>implantsHeaderView</string>
+							<string>tableView</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">boostersHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingItemsViewController</string>
+								<string key="candidateClassName">FittingItemsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">implantsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ImplantsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">LUILabel</string>
 					<string key="superclassName">UILabel</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -1126,8 +1570,234 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">ModulesDataSource</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>calibrationLabel</string>
+							<string>cpuLabel</string>
+							<string>fittingViewController</string>
+							<string>highSlotsHeaderView</string>
+							<string>launchersLabel</string>
+							<string>lowSlotsHeaderView</string>
+							<string>medSlotsHeaderView</string>
+							<string>powerGridLabel</string>
+							<string>rigsSlotsHeaderView</string>
+							<string>subsystemsSlotsHeaderView</string>
+							<string>tableView</string>
+							<string>turretsLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>FittingViewController</string>
+							<string>UIView</string>
+							<string>UILabel</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>ProgressLabel</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UITableView</string>
+							<string>UILabel</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>calibrationLabel</string>
+							<string>cpuLabel</string>
+							<string>fittingViewController</string>
+							<string>highSlotsHeaderView</string>
+							<string>launchersLabel</string>
+							<string>lowSlotsHeaderView</string>
+							<string>medSlotsHeaderView</string>
+							<string>powerGridLabel</string>
+							<string>rigsSlotsHeaderView</string>
+							<string>subsystemsSlotsHeaderView</string>
+							<string>tableView</string>
+							<string>turretsLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">calibrationLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cpuLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">highSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">launchersLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">lowSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">medSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">powerGridLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rigsSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">subsystemsSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">turretsLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ModulesDataSource.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">ModulesViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>calibrationLabel</string>
+							<string>cpuLabel</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>highSlotsHeaderView</string>
+							<string>launchersLabel</string>
+							<string>lowSlotsHeaderView</string>
+							<string>medSlotsHeaderView</string>
+							<string>powerGridLabel</string>
+							<string>rigsSlotsHeaderView</string>
+							<string>subsystemsSlotsHeaderView</string>
+							<string>tableView</string>
+							<string>targetsViewController</string>
+							<string>turretsLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>FittingItemsViewController</string>
+							<string>FittingViewController</string>
+							<string>UIView</string>
+							<string>UILabel</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>ProgressLabel</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UITableView</string>
+							<string>TargetsViewController</string>
+							<string>UILabel</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>calibrationLabel</string>
+							<string>cpuLabel</string>
+							<string>fittingItemsViewController</string>
+							<string>fittingViewController</string>
+							<string>highSlotsHeaderView</string>
+							<string>launchersLabel</string>
+							<string>lowSlotsHeaderView</string>
+							<string>medSlotsHeaderView</string>
+							<string>powerGridLabel</string>
+							<string>rigsSlotsHeaderView</string>
+							<string>subsystemsSlotsHeaderView</string>
+							<string>tableView</string>
+							<string>targetsViewController</string>
+							<string>turretsLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">calibrationLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cpuLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingItemsViewController</string>
+								<string key="candidateClassName">FittingItemsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">highSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">launchersLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">lowSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">medSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">powerGridLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rigsSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">subsystemsSlotsHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetsViewController</string>
+								<string key="candidateClassName">TargetsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">turretsLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/ModulesViewController.h</string>
@@ -1139,6 +1809,492 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/ProgressLabel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">StatsViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>alignTimeLabel</string>
+							<string>armorEMLabel</string>
+							<string>armorExplosiveLabel</string>
+							<string>armorHPLabel</string>
+							<string>armorKineticLabel</string>
+							<string>armorReinforcedRepair</string>
+							<string>armorSustainedRepair</string>
+							<string>armorThermalLabel</string>
+							<string>calibrationLabel</string>
+							<string>capacitorCapacityLabel</string>
+							<string>capacitorDeltaLabel</string>
+							<string>capacitorRechargeTimeLabel</string>
+							<string>capacitorStateLabel</string>
+							<string>cargoLabel</string>
+							<string>contentView</string>
+							<string>cpuLabel</string>
+							<string>damagePatternEMLabel</string>
+							<string>damagePatternExplosiveLabel</string>
+							<string>damagePatternKineticLabel</string>
+							<string>damagePatternThermalLabel</string>
+							<string>dpsLabel</string>
+							<string>droneBandwidthLabel</string>
+							<string>droneBayLabel</string>
+							<string>droneDPSLabel</string>
+							<string>droneRangeLabel</string>
+							<string>dronesLabel</string>
+							<string>ehpLabel</string>
+							<string>fittingViewController</string>
+							<string>fittingsPriceLabel</string>
+							<string>hullEMLabel</string>
+							<string>hullExplosiveLabel</string>
+							<string>hullHPLabel</string>
+							<string>hullKineticLabel</string>
+							<string>hullReinforcedRepair</string>
+							<string>hullSustainedRepair</string>
+							<string>hullThermalLabel</string>
+							<string>launchersLabel</string>
+							<string>powerGridLabel</string>
+							<string>scanResLabel</string>
+							<string>scrollView</string>
+							<string>sensorImageView</string>
+							<string>sensorStrLabel</string>
+							<string>shieldEMLabel</string>
+							<string>shieldExplosiveLabel</string>
+							<string>shieldHPLabel</string>
+							<string>shieldKineticLabel</string>
+							<string>shieldReinforcedBoost</string>
+							<string>shieldSustainedBoost</string>
+							<string>shieldSustainedRecharge</string>
+							<string>shieldThermalLabel</string>
+							<string>shipPriceLabel</string>
+							<string>signatureLabel</string>
+							<string>speedLabel</string>
+							<string>targetRangeLabel</string>
+							<string>targetsLabel</string>
+							<string>totalPriceLabel</string>
+							<string>turretsLabel</string>
+							<string>volleyDamageLabel</string>
+							<string>warpSpeedLabel</string>
+							<string>weaponDPSLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UIView</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>FittingViewController</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UIScrollView</string>
+							<string>UIImageView</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>ProgressLabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>alignTimeLabel</string>
+							<string>armorEMLabel</string>
+							<string>armorExplosiveLabel</string>
+							<string>armorHPLabel</string>
+							<string>armorKineticLabel</string>
+							<string>armorReinforcedRepair</string>
+							<string>armorSustainedRepair</string>
+							<string>armorThermalLabel</string>
+							<string>calibrationLabel</string>
+							<string>capacitorCapacityLabel</string>
+							<string>capacitorDeltaLabel</string>
+							<string>capacitorRechargeTimeLabel</string>
+							<string>capacitorStateLabel</string>
+							<string>cargoLabel</string>
+							<string>contentView</string>
+							<string>cpuLabel</string>
+							<string>damagePatternEMLabel</string>
+							<string>damagePatternExplosiveLabel</string>
+							<string>damagePatternKineticLabel</string>
+							<string>damagePatternThermalLabel</string>
+							<string>dpsLabel</string>
+							<string>droneBandwidthLabel</string>
+							<string>droneBayLabel</string>
+							<string>droneDPSLabel</string>
+							<string>droneRangeLabel</string>
+							<string>dronesLabel</string>
+							<string>ehpLabel</string>
+							<string>fittingViewController</string>
+							<string>fittingsPriceLabel</string>
+							<string>hullEMLabel</string>
+							<string>hullExplosiveLabel</string>
+							<string>hullHPLabel</string>
+							<string>hullKineticLabel</string>
+							<string>hullReinforcedRepair</string>
+							<string>hullSustainedRepair</string>
+							<string>hullThermalLabel</string>
+							<string>launchersLabel</string>
+							<string>powerGridLabel</string>
+							<string>scanResLabel</string>
+							<string>scrollView</string>
+							<string>sensorImageView</string>
+							<string>sensorStrLabel</string>
+							<string>shieldEMLabel</string>
+							<string>shieldExplosiveLabel</string>
+							<string>shieldHPLabel</string>
+							<string>shieldKineticLabel</string>
+							<string>shieldReinforcedBoost</string>
+							<string>shieldSustainedBoost</string>
+							<string>shieldSustainedRecharge</string>
+							<string>shieldThermalLabel</string>
+							<string>shipPriceLabel</string>
+							<string>signatureLabel</string>
+							<string>speedLabel</string>
+							<string>targetRangeLabel</string>
+							<string>targetsLabel</string>
+							<string>totalPriceLabel</string>
+							<string>turretsLabel</string>
+							<string>volleyDamageLabel</string>
+							<string>warpSpeedLabel</string>
+							<string>weaponDPSLabel</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">alignTimeLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorEMLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorExplosiveLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorHPLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorKineticLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorReinforcedRepair</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorSustainedRepair</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">armorThermalLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">calibrationLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">capacitorCapacityLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">capacitorDeltaLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">capacitorRechargeTimeLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">capacitorStateLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cargoLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">contentView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cpuLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternEMLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternExplosiveLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternKineticLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">damagePatternThermalLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">dpsLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneBandwidthLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneBayLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneDPSLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">droneRangeLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">dronesLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">ehpLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingsPriceLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullEMLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullExplosiveLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullHPLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullKineticLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullReinforcedRepair</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullSustainedRepair</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">hullThermalLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">launchersLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">powerGridLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scanResLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">sensorImageView</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">sensorStrLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldEMLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldExplosiveLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldHPLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldKineticLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldReinforcedBoost</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldSustainedBoost</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldSustainedRecharge</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shieldThermalLabel</string>
+								<string key="candidateClassName">ProgressLabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shipPriceLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">signatureLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">speedLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetRangeLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">targetsLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">totalPriceLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">turretsLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">volleyDamageLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">warpSpeedLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">weaponDPSLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/StatsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TargetsViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>fittingViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>FittingViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>delegate</string>
+							<string>fittingViewController</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">delegate</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">fittingViewController</string>
+								<string key="candidateClassName">FittingViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TargetsViewController.h</string>
 					</object>
 				</object>
 			</object>

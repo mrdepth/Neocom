@@ -291,11 +291,11 @@
 		dronesAmountViewController.amount = array.count;
 		int maxActiveDrones = ship->getMaxActiveDrones();
 		dronesAmountViewController.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
-		dronesAmountViewController.delegate = self;
+/*		dronesAmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 			[dronesAmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[dronesAmountViewController presentAnimated:YES];
+			[dronesAmountViewController presentAnimated:YES];*/
 	}
 	else if ([button isEqualToString:ActionButtonSetTarget]) {
 		ItemInfo* itemInfo = [array objectAtIndex:0];

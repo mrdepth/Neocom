@@ -7,14 +7,16 @@
 //
 
 #import "CertificatesViewController.h"
-#import "CertificateCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "EVEDBAPI.h"
 #import "EUOperationQueue.h"
 #import "NSArray+GroupBy.h"
 #import "EVEDBCrtCertificate+State.h"
 #import "CertificateViewController.h"
 #import "Globals.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface CertificatesViewController()
 @property (nonatomic, strong) NSMutableArray* sections;
@@ -50,7 +52,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.category.categoryName;
 	[self reload];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
@@ -85,17 +87,23 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *cellIdentifier = @"CertificateCellView";
-    
-    CertificateCellView *cell = (CertificateCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [CertificateCellView cellWithNibName:@"CertificateCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+	
 	EVEDBCrtCertificate *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	cell.titleLabel.text = row.certificateClass.className;
-	cell.iconView.image = [UIImage imageNamed:row.iconImageName];
-	cell.stateView.image = [UIImage imageNamed:row.stateIconImageName];
+	cell.textLabel.text = row.certificateClass.className;
+	cell.imageView.image = [UIImage imageNamed:row.iconImageName];
+	cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.stateIconImageName]];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
     return cell;
 }
 
@@ -118,24 +126,13 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = tableView == self.searchDisplayController.searchResultsTableView ? nil : [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+	view.titleLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+	return view;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 22;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

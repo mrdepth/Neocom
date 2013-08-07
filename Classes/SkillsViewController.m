@@ -150,7 +150,7 @@
 		}
 	}
 	else {
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 					  destructiveButtonTitle:nil
@@ -191,7 +191,7 @@
 }
 
 - (IBAction) onAction:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:NSLocalizedString(@"Clear Skill Plan", nil)

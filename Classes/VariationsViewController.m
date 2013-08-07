@@ -8,12 +8,12 @@
 
 #import "VariationsViewController.h"
 #import "EVEDBAPI.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "ItemViewController.h"
 #import "EUOperationQueue.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface VariationsViewController ()
 @property (nonatomic, strong) NSArray* sections;
@@ -33,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = self.type.typeName;
 	NSMutableArray* values = [NSMutableArray array];
@@ -126,17 +126,24 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *cellIdentifier = @"ItemCellView";
-	
-	ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *cellIdentifier = @"Cell";
+    
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
-		cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 
 	EVEDBInvType *type = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-	cell.titleLabel.text = type.typeName;
-	cell.iconImageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+	cell.textLabel.text = type.typeName;
+	cell.imageView.image = [UIImage imageNamed:[type typeSmallImageName]];
 	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
 	return cell;
 }
 
@@ -147,17 +154,19 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-	view.collapsed = NO;
-	view.titleLabel.text = title;
-	view.collapsImageView.hidden = YES;
-	return view;
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

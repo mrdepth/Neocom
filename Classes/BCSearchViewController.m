@@ -7,15 +7,16 @@
 //
 
 #import "BCSearchViewController.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "Globals.h"
 #import "EVEDBAPI.h"
-#import "TagCellView.h"
 #import "BattleClinicAPI.h"
 #import "Globals.h"
 #import "UIAlertView+Error.h"
 #import "BCSearchResultViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface BCSearchViewController()
 @property(nonatomic, strong) EVEDBInvType *ship;
@@ -46,7 +47,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	NSMutableArray *tagsTmp = [NSMutableArray array];
 	self.title = NSLocalizedString(@"Search", nil);
@@ -161,67 +162,63 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+	}
+	
     if (indexPath.section == 0) {
-		NSString *cellIdentifier = @"ItemCellView";
-		
-		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.accessoryView = nil;
 		if (!self.ship) {
-			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+			cell.textLabel.text = NSLocalizedString(@"Select Ship", nil);
+			cell.imageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 		}
 		else {
-			cell.titleLabel.text = self.ship.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[self.ship typeSmallImageName]];
+			cell.textLabel.text = self.ship.typeName;
+			cell.imageView.image = [UIImage imageNamed:[self.ship typeSmallImageName]];
 		}
-		return cell;
 	}
 	else {
-		NSString *cellIdentifier = @"TagCellView";
-		
-		TagCellView *cell = (TagCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
 		NSString *tag = [self.tags objectAtIndex:indexPath.row];
-		cell.titleLabel.text = tag;
-		cell.checkmarkImageView.image = [self.selectedTags containsObject:tag] ? [UIImage imageNamed:@"checkmark.png"] : nil;
-		return cell;
+		cell.textLabel.text = tag;
+		cell.imageView.image = nil;
+		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	}
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
-		return NSLocalizedString(@"Ship", nil);
-	else
+	if (section == 1)
 		return NSLocalizedString(@"Tags", nil);
+	else
+		return nil;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.collapsImageView.hidden = YES;
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -18,6 +18,7 @@
 #import "ShipFit.h"
 #import "CharacterEVE.h"
 #import "EVEAccount.h"
+#import "appearance.h"
 
 @interface BCSearchResultViewController()
 @property (nonatomic, strong) UIImage *shipImage;
@@ -42,7 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Search Results", nil);
 	self.shipImage = [UIImage imageNamed:[self.ship typeSmallImageName]];
 }
@@ -91,17 +92,20 @@
 	BCEveLoadoutsListItem *loadout = [self.loadouts objectAtIndex:indexPath.row];
 	cell.titleLabel.text = loadout.subject;
 	cell.iconImageView.image = self.shipImage;
-	cell.thumbsUpLabel.text = [NSString stringWithFormat:@"%d,", loadout.thumbsUp];
+	cell.thumbsUpLabel.text = [NSString stringWithFormat:@"%d", loadout.thumbsUp];
 	cell.thumbsDownLabel.text = [NSString stringWithFormat:@"%d", loadout.thumbsDown];
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle> (groupStyle);
 	return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 
-@interface LoadoutCellView : UITableViewCell
+@interface LoadoutCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *thumbsUpLabel;

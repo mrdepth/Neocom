@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-
-@interface ModuleCellView : UITableViewCell
+@interface ModuleCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UIImageView *iconView;
 @property (nonatomic, weak) IBOutlet UIImageView *stateView;
 @property (nonatomic, weak) IBOutlet UIImageView *targetView;

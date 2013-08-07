@@ -20,8 +20,16 @@
 #import "FitsViewController.h"
 #import "TargetsViewController.h"
 #import "FittingVariationsViewController.h"
+#import "ModulesDataSource.h"
+#import "DronesDataSource.h"
+#import "ImplantsDataSource.h"
+#import "FleetDataSource.h"
+#import "ShipStatsDataSource.h"
+#import "NCItemsViewController.h"
 
 #import "eufe.h"
+#import "ShipFit.h"
+#import "ItemInfo.h"
 
 @class EVEFittingFit;
 @class ShipFit;
@@ -50,6 +58,13 @@
 @property (nonatomic, strong) IBOutlet ImplantsViewController *implantsViewController;
 @property (nonatomic, strong) IBOutlet StatsViewController *statsViewController;
 @property (nonatomic, strong) IBOutlet FleetViewController *fleetViewController;
+@property (nonatomic, strong) IBOutlet FittingItemsViewController *fittingItemsViewController;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet ModulesDataSource *modulesDataSource;
+@property (strong, nonatomic) IBOutlet DronesDataSource *dronesDataSource;
+@property (strong, nonatomic) IBOutlet ImplantsDataSource *implantsDataSource;
+@property (strong, nonatomic) IBOutlet FleetDataSource *fleetDataSource;
+@property (strong, nonatomic) IBOutlet ShipStatsDataSource *shipStatsDataSource;
 
 @property (nonatomic, weak) IBOutlet UIView *shadeView;
 @property (nonatomic, weak) IBOutlet UIToolbar *fitNameView;
@@ -66,6 +81,8 @@
 @property (nonatomic, strong, readonly) NSMutableArray* fits;
 @property (nonatomic, strong) DamagePattern* damagePattern;
 @property (nonatomic, strong) PriceManager* priceManager;
+
+@property (nonatomic, strong, readonly) NCItemsViewController* itemsViewController;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;

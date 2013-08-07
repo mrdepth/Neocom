@@ -24,7 +24,7 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+/*- (void)drawRect:(CGRect)rect
 {
 	UIImage* mask = [UIImage imageNamed:@"certificateMaskBordered.png"];
 	UIImage* background = [UIImage imageNamed:@"certificateBackgroundBordered.png"];
@@ -42,7 +42,7 @@
 	//CGContextSetRGBFillColor(context, 38.0/255.0, 37.0/255.0, 15.0/255.0, 1);
 	CGContextSetFillColorWithColor(context, [self.color CGColor]);
 	CGContextFillRect(context, rect);
-}
+}*/
 
 
 - (CGSize) sizeThatFits:(CGSize)size {

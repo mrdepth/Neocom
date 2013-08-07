@@ -28,11 +28,12 @@
 @property (strong, nonatomic, readwrite) CertificateView* certificateView;
 
 - (UIImage*) imageForState:(EVEDBCrtCertificateState) state;
-- (UIColor*) colorForState:(EVEDBCrtCertificateState) state;
+- (UIImage*) backgroundImageForState:(EVEDBCrtCertificateState) state;
 - (CertificateRelationshipView*) relationshipViewWithCertificate:(EVEDBCrtCertificate*) certificate;
 - (CertificateRelationshipView*) relationshipViewWithRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill;
 - (void) loadCertificate;
 - (void) loadTrainingTimes;
+- (void) onTap:(UITapGestureRecognizer*) recognizer;
 @end
 
 @implementation CertificateTreeView
@@ -133,15 +134,6 @@
 	[alertView show];
 }
 
-#pragma mark CertificateRelationshipViewDelegate
-
-- (void) certificateRelationshipViewDidTap:(CertificateRelationshipView*) relationshipView {
-	if (relationshipView.certificate != NULL)
-		[self.delegate certificateTreeView:self didSelectCertificate:relationshipView.certificate];
-	else if (relationshipView.type != NULL)
-		[self.delegate certificateTreeView:self didSelectType:relationshipView.type];
-}
-
 #pragma mark UIAlertViewDelegate
 
 - (void) alertView:(UIAlertView *)aAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -172,33 +164,30 @@
 	}
 }
 
-- (UIColor*) colorForState:(EVEDBCrtCertificateState) state {
+- (UIImage*) backgroundImageForState:(EVEDBCrtCertificateState) state {
 	switch (state) {
 		case EVEDBCrtCertificateStateLearned:
-			return [UIColor colorWithRed:37.0/255.0 green:41.0/255.0 blue:36.0/255.0 alpha:1.0];
-		case EVEDBCrtCertificateStateNotLearned:
-			return [UIColor colorWithRed:28.0/255.0 green:17.0/255.0 blue:16.0/255.0 alpha:1.0];
+			return [UIImage imageNamed:@"cellGroupedSelected.png"];
 		default:
-			return [UIColor colorWithRed:27.0/255.0 green:27.0/255.0 blue:10.0/255.0 alpha:1.0];
+			return [UIImage imageNamed:@"cellGrouped.png"];
 	}
 }
 
 - (CertificateRelationshipView*) relationshipViewWithCertificate:(EVEDBCrtCertificate*) aCertificate {
 	CertificateRelationshipView* relationshipView = [CertificateRelationshipView viewWithNibName:@"CertificateRelationshipView" bundle:nil];
 	relationshipView.certificate = aCertificate;
-	relationshipView.delegate = self;
 	relationshipView.iconView.image = [UIImage imageNamed:[aCertificate iconImageName]];
 	relationshipView.statusView.image = [UIImage imageNamed:aCertificate.stateIconImageName];
-	relationshipView.color = [self colorForState:aCertificate.state];
+	relationshipView.backgroundView.image = [self backgroundImageForState:aCertificate.state];
 	relationshipView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", aCertificate.certificateClass.className, aCertificate.gradeText];
-
+	[relationshipView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)]];
 	return relationshipView;
 }
 
 - (CertificateRelationshipView*) relationshipViewWithRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill {
 	CertificateRelationshipView* relationshipView = [CertificateRelationshipView viewWithNibName:@"CertificateRelationshipView" bundle:nil];
 	relationshipView.type = skill;
-	relationshipView.delegate = self;
+	[relationshipView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)]];
 
 	EVEAccount* account = [EVEAccount currentAccount];
 	EVEDBCrtCertificateState state;
@@ -206,7 +195,7 @@
 	if (!account || !account.characterSheet)
 		state = EVEDBCrtCertificateStateNotLearned;
 	else {
-		EVECharacterSheetSkill* characterSkill = [account.characterSheet.skillsMap valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]];
+		EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(skill.typeID)];
 		if (!characterSkill)
 			state = EVEDBCrtCertificateStateNotLearned;
 		else if (characterSkill.level < skill.requiredLevel)
@@ -217,7 +206,7 @@
 	
 	relationshipView.iconView.image = [UIImage imageNamed:@"Icons/icon50_11.png"];
 	relationshipView.statusView.image = [self imageForState:state];
-	relationshipView.color = [self colorForState:state];
+	relationshipView.backgroundView.image = [self backgroundImageForState:state];
 	[skill.trainingQueue addSkill:skill];
 	relationshipView.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nLevel %d", nil), skill.typeName, skill.requiredLevel];
 
@@ -255,7 +244,7 @@
 		self.certificateView = [CertificateView viewWithNibName:@"CertificateView" bundle:nil];
 		self.certificateView.iconView.image = [UIImage imageNamed:[self.certificate iconImageName]];
 		self.certificateView.statusView.image = [UIImage imageNamed:self.certificate.stateIconImageName];
-		self.certificateView.color = [self colorForState:self.certificate.state];
+		self.certificateView.backgroundView.image = [self backgroundImageForState:self.certificate.state];
 		
 		if (self.certificate.state == EVEDBCrtCertificateStateLearned) {
 			self.certificateView.titleLabel.text = [NSString stringWithFormat:@"%@\n%@", self.certificate.certificateClass.className, self.certificate.gradeText];
@@ -378,6 +367,15 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) onTap:(UITapGestureRecognizer*) recognizer {
+	CertificateRelationshipView* relationshipView = (CertificateRelationshipView*) recognizer.view;
+	if (relationshipView.certificate != NULL)
+		[self.delegate certificateTreeView:self didSelectCertificate:relationshipView.certificate];
+	else if (relationshipView.type != NULL)
+		[self.delegate certificateTreeView:self didSelectType:relationshipView.type];
+
 }
 
 @end

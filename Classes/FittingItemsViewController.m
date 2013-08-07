@@ -9,12 +9,13 @@
 #import "FittingItemsViewController.h"
 #import "EUOperationQueue.h"
 #import "EVEDBAPI.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "Globals.h"
 #import "CollapsableTableHeaderView.h"
-#import "UIView+Nib.h"
 #import "ItemViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface FittingItemsViewController ()
 @property (nonatomic, strong) NSMutableArray *subGroups;
@@ -38,12 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	[self reload];
 	// Do any additional setup after loading the view.
 }
@@ -143,42 +139,43 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifier = @"ItemCellView";
+    static NSString *cellIdentifier = @"Cell";
     
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+	
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
 		EVEDBInvType *row = [[[self.filteredValues objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-		cell.titleLabel.text = row.typeName;
-		cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.textLabel.text = row.typeName;
+		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}
 	else {
 		if (self.groupItems) {
 			EVEDBInvType *row = [[[self.groupItems objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.typeName;
-			cell.iconImageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+			cell.textLabel.text = row.typeName;
+			cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
 		else {
 			EVEDBInvMarketGroup *row = [self.subGroups objectAtIndex:indexPath.row];
-			cell.titleLabel.text = row.marketGroupName;
+			cell.textLabel.text = row.marketGroupName;
 			if (row.icon.iconImageName)
-				cell.iconImageView.image = [UIImage imageNamed:row.icon.iconImageName];
+				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
-				cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+				cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 	}
     
-	if (cell.iconImageView.image.size.width < cell.iconImageView.frame.size.width)
-		cell.iconImageView.contentMode = UIViewContentModeCenter;
-	else
-		cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-    
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -197,7 +194,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+	return 40;
 }
 
 - (void)tableView:(UITableView *)aTableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -242,14 +239,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-	view.collapsed = NO;
-	view.titleLabel.text = title;
-	if (tableView == self.searchDisplayController.searchResultsTableView || !self.groupItems)
-		view.collapsImageView.hidden = YES;
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
 	else
-		view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
-	return view;
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 #pragma mark - CollapsableTableViewDelegate
@@ -290,14 +290,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

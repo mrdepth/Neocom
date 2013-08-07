@@ -7,11 +7,11 @@
 //
 
 #import "CertificateCategoriesViewController.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "EVEDBAPI.h"
 #import "EUOperationQueue.h"
 #import "CertificatesViewController.h"
+#import "appearance.h"
 
 @interface CertificateCategoriesViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -42,11 +42,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Certificates", nil);
 	
 	NSMutableArray *rowsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Categories", nil)];
+	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketGroupsViewController+Load" name:NSLocalizedString(@"Loading Certificates...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		[[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM crtCategories ORDER BY categoryName;"
@@ -96,25 +96,29 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *cellIdentifier = @"ItemCellView";
-    
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	
 	EVEDBCrtCategory *row = [self.rows objectAtIndex:indexPath.row];
-	cell.titleLabel.text = row.categoryName;
-	cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon79_06.png"];
+	cell.textLabel.text = row.categoryName;
+	cell.imageView.image = [UIImage imageNamed:@"Icons/icon79_06.png"];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
     return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

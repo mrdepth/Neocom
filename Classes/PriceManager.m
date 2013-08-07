@@ -54,39 +54,39 @@
 		NSMutableDictionary* result = [NSMutableDictionary dictionary];
 		NSMutableArray* typeIDs = [NSMutableArray array];
 		for (EVEDBInvType* type in types) {
-			NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-			NSNumber* price = [self.prices valueForKey:key];
+			NSNumber* key = @(type.typeID);
+			NSNumber* price = self.prices[key];
 			
 			if (!price) {
 				[typeIDs addObject:key];
-				[result setValue:[NSNull null] forKey:key];
+				result[key] = [NSNull null];
 			}
 			else
-				[result setValue:price forKey:key];
+				result[key] = price;
 		}
 		if (typeIDs.count > 0) {
 			EVECentralMarketStat* marketStat = [EVECentralMarketStat marketStatWithTypeIDs:typeIDs regionIDs:nil hours:0 minQ:0 error:nil progressHandler:nil];
 			for (EVECentralMarketStatType* type in marketStat.types) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
+				NSNumber* key = @(type.typeID);
 				if (type.sell.avg > 0) {
-					NSNumber* value = [NSNumber numberWithFloat:type.sell.median];
-					[result setValue:value forKey:key];
-					[self.prices setValue:value forKey:key];
+					NSNumber* value = @(type.sell.median);
+					result[key] = value;
+					self.prices[key] = value;
 				}
 			}
 			for (EVEDBInvType* type in types) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-				if ([result valueForKey:key] == [NSNull null]) {
-					EVEC0rporationFactionItem* item = [self.faction.types valueForKey:key];
+				NSNumber* key = @(type.typeID);
+				if (result[key] == [NSNull null]) {
+					EVEC0rporationFactionItem* item = self.faction.types[key];
 					if (item) {
-						NSNumber* value = [NSNumber numberWithFloat:item.median];
-						[result setValue:value forKey:key];
-						[self.prices setValue:value forKey:key];
+						NSNumber* value = @(item.median);
+						result[key] = value;
+						self.prices[key] = value;
 					}
 					else {
-						NSNumber* value = [NSNumber numberWithFloat:type.basePrice];
-						[result setValue:value forKey:key];
-						[self.prices setValue:value forKey:key];
+						NSNumber* value = @(type.basePrice);
+						result[key] = value;
+						self.prices[key] = value;
 					}
 				}
 			}

@@ -7,9 +7,10 @@
 //
 
 #import "FittingServiceMenuViewController.h"
-#import "MainMenuCellView.h"
-#import "FitCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "GroupedCell.h"
 #import "Globals.h"
 #import "FittingViewController.h"
 #import "POSFittingViewController.h"
@@ -23,9 +24,11 @@
 #import "FittingExportViewController.h"
 #import "NSString+UUID.h"
 #import "UIActionSheet+Block.h"
+#import "UIActionSheet+Neocom.h"
 #import "EUStorage.h"
 #import "NAPISearchViewController.h"
 #import "NeocomAPI.h"
+#import "appearance.h"
 
 @interface FittingServiceMenuViewController()
 @property (nonatomic, strong) NSMutableArray *fits;
@@ -57,7 +60,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
@@ -124,59 +127,61 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 5 : [[self.fits objectAtIndex:section - 1] count];
+	return section == 0 ? 5 : [self.fits[section - 1] count];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	
     if (indexPath.section == 0) {
-		NSString *cellIdentifier = @"MainMenuCellView";
-		
-		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
+		cell.detailTextLabel.text = nil;
 		if (indexPath.row == 0) {
-			cell.titleLabel.text = NSLocalizedString(@"Browse Fits on BattleClinic", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"battleclinic.png"];
+			cell.textLabel.text = NSLocalizedString(@"Browse Fits on BattleClinic", nil);
+			cell.imageView.image = [UIImage imageNamed:@"battleclinic.png"];
 		}
 		else if (indexPath.row == 1) {
-			cell.titleLabel.text = NSLocalizedString(@"Browse Community Fits", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon26_02.png"];
+			cell.textLabel.text = NSLocalizedString(@"Browse Community Fits", nil);
+			cell.imageView.image = [UIImage imageNamed:@"Icons/icon26_02.png"];
 		}
 		else if (indexPath.row == 2) {
-			cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+			cell.textLabel.text = NSLocalizedString(@"New Ship Fit", nil);
+			cell.imageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		}
 		else if (indexPath.row == 3) {
-			cell.titleLabel.text = NSLocalizedString(@"New POS Fit", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
+			cell.textLabel.text = NSLocalizedString(@"New POS Fit", nil);
+			cell.imageView.image = [UIImage imageNamed:@"Icons/icon07_06.png"];
 		}
 		else {
-			cell.titleLabel.text = NSLocalizedString(@"Export", nil);
-			cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon94_03.png"];
+			cell.textLabel.text = NSLocalizedString(@"Export", nil);
+			cell.imageView.image = [UIImage imageNamed:@"Icons/icon94_03.png"];
 		}
-		return cell;
 	}
 	else {
-		NSString *cellIdentifier = @"FitCellView";
-		
-		FitCellView *cell = (FitCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		//NSDictionary *fit = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		cell.shipNameLabel.text = fit.typeName;//[fit valueForKey:@"shipName"];
-		cell.fitNameLabel.text = fit.fitName;//[fit valueForKey:@"fitName"];
-		cell.iconView.image = [UIImage imageNamed:fit.imageName];
-		return cell;
+		cell.textLabel.text = fit.typeName;
+		cell.detailTextLabel.text = fit.fitName;
+		cell.imageView.image = [UIImage imageNamed:fit.imageName];
 	}
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return NSLocalizedString(@"Menu", nil);
+		return nil;
 	else {
 		NSArray* rows = [self.fits objectAtIndex:section - 1];
 		if (rows.count > 0)
@@ -216,27 +221,18 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 45;
-	else
-		return 36;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -573,7 +569,8 @@
 	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Browser", nil), NSLocalizedString(@"Clipboard", nil), nil];
 	if ([MFMailComposeViewController canSendMail])
 		[buttons addObject:NSLocalizedString(@"Email", nil)];
-	[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+								   title:NSLocalizedString(@"Export", nil)
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:nil
 					   otherButtonTitles:buttons
@@ -605,7 +602,8 @@
 								 
 							 }
 						 }
-							 cancelBlock:nil] showFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.tableView animated:YES];
+							 cancelBlock:nil] showInWindowFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.tableView animated:YES];
+	NSLog(@"%@", [NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]]]);
 	
 }
 

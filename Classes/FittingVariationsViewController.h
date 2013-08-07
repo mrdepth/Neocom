@@ -17,4 +17,5 @@
 @interface FittingVariationsViewController : VariationsViewController
 @property (nonatomic, weak) id<FittingVariationsViewControllerDelegate> delegate;
 @property (nonatomic, strong) ItemInfo* modifiedItem;
+@property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
 @end

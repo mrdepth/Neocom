@@ -7,6 +7,7 @@
 //
 
 #import "FittingVariationsViewController.h"
+#import "UIViewController+Neocom.h"
 
 @interface FittingVariationsViewController ()
 - (IBAction)onClose:(id)sender;
@@ -26,15 +27,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.completionHandler = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,7 +43,10 @@
 }
 
 - (void) didSelectType:(EVEDBInvType *)type {
-	[self.delegate fittingVariationsViewController:self didSelectType:type];
+	//[self.delegate fittingVariationsViewController:self didSelectType:type];
+	if (self.completionHandler)
+		self.completionHandler(type);
+	[self dismiss];
 }
 
 #pragma mark - Private

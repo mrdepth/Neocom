@@ -14,7 +14,6 @@
 #import "EVEAccount.h"
 #import "EVEOnlineAPI.h"
 #import "CharacterInfoViewController.h"
-#import "SBTableView.h"
 #import "RSSFeedsViewController.h"
 #import "MainMenuCellView.h"
 #import "UITableViewCell+Nib.h"

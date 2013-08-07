@@ -8,7 +8,6 @@
 
 #import "FitsViewController.h"
 #import "MainMenuCellView.h"
-#import "FitCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "FittingViewController.h"
@@ -147,7 +146,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    /*if (indexPath.section == 0) {
 		NSString *cellIdentifier = @"MainMenuCellView";
 		
 		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -170,7 +169,8 @@
 		cell.fitNameLabel.text = fit.fitName;
 		cell.iconView.image = [UIImage imageNamed:fit.imageName];
 		return cell;
-	}
+	}*/
+	return nil;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

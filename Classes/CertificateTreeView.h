@@ -12,7 +12,7 @@
 #import "CertificateTreeViewDelegate.h"
 
 @class EVEDBCrtCertificate;
-@interface CertificateTreeView : UIView<CertificateRelationshipViewDelegate, UIAlertViewDelegate>
+@interface CertificateTreeView : UIView<UIAlertViewDelegate>
 @property (strong, nonatomic) EVEDBCrtCertificate* certificate;
 @property (strong, nonatomic, readonly) NSMutableArray* prerequisites;
 @property (strong, nonatomic, readonly) NSMutableArray* derivations;

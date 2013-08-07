@@ -30,7 +30,7 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+/*- (void)drawRect:(CGRect)rect
 {
 	UIImage* mask = [UIImage imageNamed:@"certificateMask.png"];
 	UIImage* background = [UIImage imageNamed:@"certificateBackground.png"];
@@ -48,13 +48,6 @@
 	CGContextSetFillColorWithColor(context, [self.color CGColor]);
 	CGContextFillRect(context, rect);
 	[self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap)]];
-}
-
-
-#pragma mark - Private
-
-- (void) didTap {
-	[self.delegate certificateRelationshipViewDidTap:self];
-}
+}*/
 
 @end

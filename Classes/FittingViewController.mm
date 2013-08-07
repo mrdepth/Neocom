@@ -18,6 +18,7 @@
 #import "PriceManager.h"
 #import "UIActionSheet+Block.h"
 #import "ItemViewController.h"
+#import "appearance.h"
 
 #include "eufe.h"
 
@@ -41,7 +42,7 @@
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, readwrite) eufe::Engine* fittingEngine;
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
-
+@property (nonatomic, strong, readwrite) NCItemsViewController* itemsViewController;
 
 - (void) keyboardWillShow: (NSNotification*) notification;
 - (void) keyboardWillHide: (NSNotification*) notification;
@@ -66,6 +67,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)];
 	
 	self.fitNameTextField.text = self.fit.fitName;
@@ -189,16 +191,36 @@
 
 - (IBAction) didChangeSection:(id) sender {
 	UIViewController<FittingSection> *newSection = nil;
-	if (self.sectionSegmentControl.selectedSegmentIndex == 0)
+	if (self.sectionSegmentControl.selectedSegmentIndex == 0) {
+		self.tableView.dataSource = self.modulesDataSource;
+		self.tableView.delegate = self.modulesDataSource;
+		[self.modulesDataSource reload];
 		newSection = self.modulesViewController;
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 1)
+	}
+	else if (self.sectionSegmentControl.selectedSegmentIndex == 1) {
+		self.tableView.dataSource = self.dronesDataSource;
+		self.tableView.delegate = self.dronesDataSource;
+		[self.dronesDataSource reload];
 		newSection = self.dronesViewController;
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 2)
+	}
+	else if (self.sectionSegmentControl.selectedSegmentIndex == 2) {
+		self.tableView.dataSource = self.implantsDataSource;
+		self.tableView.delegate = self.implantsDataSource;
+		[self.implantsDataSource reload];
 		newSection = self.implantsViewController;
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 3)
+	}
+	else if (self.sectionSegmentControl.selectedSegmentIndex == 3) {
+		self.tableView.dataSource = self.fleetDataSource;
+		self.tableView.delegate = self.fleetDataSource;
+		[self.fleetDataSource reload];
 		newSection = self.fleetViewController;
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 4)
+	}
+	else if (self.sectionSegmentControl.selectedSegmentIndex == 4) {
+		self.tableView.dataSource = self.shipStatsDataSource;
+		self.tableView.delegate = self.shipStatsDataSource;
+		[self.shipStatsDataSource reload];
 		newSection = self.statsViewController;
+	}
 	if (newSection == self.currentSection)
 		return;
 	
@@ -293,7 +315,10 @@
 }
 
 - (void) update {
-	[self.currentSection update];
+	[(FittingDataSource*) self.tableView.dataSource reload];
+//	[self.modulesDataSource reload];
+//	[self.dronesDataSource reload];
+//	[self.currentSection update];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.statsViewController update];
 }
@@ -345,6 +370,13 @@
 		eufe::Character* character = item.character;
 		character->getShip()->setDamagePattern(eufeDamagePattern);
 	}
+}
+
+- (NCItemsViewController*) itemsViewController {
+	if (!_itemsViewController) {
+		_itemsViewController = [[NCItemsViewController alloc] init];
+	}
+	return _itemsViewController;
 }
 
 #pragma mark UIActionSheetDelegate

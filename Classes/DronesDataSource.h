@@ -7,7 +7,11 @@
 //
 
 #import "FittingDataSource.h"
+#import "ProgressLabel.h"
 
 @interface DronesDataSource : FittingDataSource
+@property (nonatomic, weak) IBOutlet ProgressLabel *droneBayLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel *droneBandwidthLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dronesCountLabel;
 
 @end

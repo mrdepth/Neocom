@@ -11,10 +11,10 @@
 #import "EVEAccountStorageAPIKey.h"
 #import "EVEOnlineAPI.h"
 #import "UIAlertView+Error.h"
+#import "EVEAccountsManager.h"
 
 @interface CharacterEVE()
-@property (nonatomic, assign) NSInteger keyID;
-@property (nonatomic, strong) NSString *vCode;
+@property (nonatomic, strong) EVEAccount* account;
 
 @end
 
@@ -28,32 +28,33 @@
 	return [[CharacterEVE alloc] initWithCharacterID:characterID keyID:keyID vCode:vCode name:name];
 }
 
++ (id) characterWithAccount:(EVEAccount*) account {
+	return [[CharacterEVE alloc] initWithAccount:account];
+}
+
 - (id) initWithCharacter:(EVEAccountStorageCharacter*) character {
 	if (self = [super init]) {
-		if (character && character.assignedCharAPIKeys.count > 0) {
-			EVEAccountStorageAPIKey* apiKey = [character.assignedCharAPIKeys objectAtIndex:0];
-			self.name = [character.characterName copy];
-			self.characterID = character.characterID;
-			self.keyID = apiKey.keyID;
-			self.vCode = [apiKey.vCode copy];
-		}
-		else {
-			return nil;
-		}
+		return nil;
 	}
 	return self;
 }
 
 - (id) initWithCharacterID:(NSInteger) characterID keyID:(NSInteger) keyID vCode:(NSString*) vCode name:(NSString*) name {
 	if (self = [super init]) {
-		if (!characterID || !keyID || !vCode) {
-			return nil;
+		return nil;
+	}
+	return self;
+}
+
+- (id) initWithAccount:(EVEAccount*) account {
+	if (self = [super init]) {
+		if (account.charAPIKey) {
+			self.account = account;
+			self.name = account.character.characterName;
+			self.characterID = account.character.characterID;
 		}
 		else {
-			self.characterID = characterID;
-			self.keyID = keyID;
-			self.vCode = [vCode copy];
-			self.name = [name copy];
+			return nil;
 		}
 	}
 	return self;
@@ -63,7 +64,7 @@
 	NSMutableDictionary* skills = [super skills];
 	if (!skills) {
 		NSError* error = nil;
-		EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.keyID vCode:self.vCode characterID:self.characterID error:&error progressHandler:nil];
+		EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.account.charAPIKey.keyID vCode:self.account.charAPIKey.vCode characterID:self.characterID error:&error progressHandler:nil];
 		
 		if (error) {
 			Character* cachedCharacter = [NSKeyedUnarchiver unarchiveObjectWithFile:[[[Character charactersDirectory] stringByAppendingPathComponent:self.guid] stringByAppendingPathExtension:@"plist"]];

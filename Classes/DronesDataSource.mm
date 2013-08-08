@@ -18,6 +18,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "ItemViewController.h"
 #import "DronesAmountViewController.h"
+#import "NSString+Fitting.h"
 
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
 #define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
@@ -86,7 +87,7 @@
 			self.rows = rowsTmp;
 			if (self.tableView.dataSource == self)
 				[self.tableView reloadData];
-/*			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
 			self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
 			self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
 			self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
@@ -95,8 +96,6 @@
 				self.dronesCountLabel.textColor = [UIColor redColor];
 			else
 				self.dronesCountLabel.textColor = [UIColor whiteColor];
-			
-			[self.tableView reloadData];*/
 		}
 	}];
 	

@@ -9,12 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "Character.h"
 
+@class EVEAccount;
 @class EVEAccountStorageCharacter;
 @interface CharacterEVE : Character
 
 
 + (id) characterWithCharacter:(EVEAccountStorageCharacter*) character;
 + (id) characterWithCharacterID:(NSInteger) characterID keyID:(NSInteger) keyID vCode:(NSString*) vCode name:(NSString*) name;
++ (id) characterWithAccount:(EVEAccount*) account;
+
 - (id) initWithCharacter:(EVEAccountStorageCharacter*) character;
 - (id) initWithCharacterID:(NSInteger) characterID keyID:(NSInteger) keyID vCode:(NSString*) vCode name:(NSString*) name;
+- (id) initWithAccount:(EVEAccount*) account;
 @end

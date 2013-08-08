@@ -9,7 +9,14 @@
 #import "CharacterEqualSkills.h"
 #import "EVEDBAPI.h"
 
+@interface CharacterEqualSkills()
+@property (nonatomic, assign) BOOL level;
+
+@end
+
 @implementation CharacterEqualSkills
+@synthesize name = _name;
+@synthesize skillsDictionary = _skillsDictionary;
 
 + (id) characterWithSkillsLevel:(NSInteger) level {
 	return [[CharacterEqualSkills alloc] initWithSkillsLevel:level];
@@ -17,38 +24,45 @@
 
 - (id) initWithSkillsLevel:(NSInteger) level {
 	if (self = [super init]) {
-		self.characterID = level;
+		self.level = level;
 		self.name = [[NSString alloc] initWithFormat:NSLocalizedString(@"All Skills %d", nil), level];
 	}
 	return self;
 }
 
-- (NSMutableDictionary*) skills {
-	NSMutableDictionary* skills = [super skills];
-	if (!skills) {
-		skills = [[NSMutableDictionary alloc] init];
-		if (self.characterID > 0) {
+- (NSMutableDictionary*) skillsDictionary {
+	if (!_skillsDictionary) {
+		_skillsDictionary = [NSMutableDictionary new];
+		if (self.level > 0) {
 			
 			EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
 			if (!database) {
 				return nil;
 			}
+			NSNumber* level = @(self.level);
 			NSError *error = [database execSQLRequest:@"SELECT A.typeID FROM invTypes AS A, invGroups AS B WHERE A.groupID=B.groupID AND B.categoryID=16 AND A.published=1;"
 										  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 											  NSInteger typeID = sqlite3_column_int(stmt, 0);
-											  [skills setValue:@(self.characterID) forKey:[NSString stringWithFormat:@"%d", typeID]];
+											  _skillsDictionary[@(typeID)] = level;
 										  }];
 			if (error) {
 				return nil;
 			}
 		}
-		self.skills = skills;
 	}
-	return skills;
+	return _skillsDictionary;
 }
 
-- (NSString*) guid {
-	return [NSString stringWithFormat:@"s%d", self.characterID];
+- (BOOL) isReadonly {
+	return YES;
+}
+
+- (boost::shared_ptr<std::map<eufe::TypeID, int> >) skillsMap {
+	boost::shared_ptr<std::map<eufe::TypeID, int> > levels(new std::map<eufe::TypeID, int>);
+	[self.skillsDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSNumber* level, BOOL *stop) {
+		(*levels)[static_cast<eufe::TypeID>([key intValue])] = [level intValue];
+	}];
+	return levels;
 }
 
 @end

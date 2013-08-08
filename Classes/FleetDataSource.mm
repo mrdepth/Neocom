@@ -14,6 +14,7 @@
 #import "UIActionSheet+Block.h"
 #import "UIActionSheet+Neocom.h"
 #import "ItemViewController.h"
+#import "CharactersViewController.h"
 
 #define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -221,7 +222,13 @@
 	};
 	
 	void (^setCharacter)() = ^(){
+		CharactersViewController *controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	};
 
 	

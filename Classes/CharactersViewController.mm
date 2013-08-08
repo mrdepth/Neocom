@@ -9,17 +9,21 @@
 #import "CharactersViewController.h"
 #import "CharacterEqualSkills.h"
 #import "CharacterEVE.h"
+#import "FitCharacter.h"
 #import "CharacterCustom.h"
-#import "EVEAccountStorage.h"
+#import "EVEAccountsManager.h"
 #import "EUOperationQueue.h"
-#import "CharacterCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "CharacterSkillsEditorViewController.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "EUStorage.h"
 
 @interface CharactersViewController()
 @property(nonatomic, strong) NSMutableArray *sections;
 
-
+- (void) reload;
 @end
 
 @implementation CharactersViewController
@@ -46,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Characters", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
@@ -66,52 +70,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	NSMutableArray* sectionsTmp = [NSMutableArray array];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+load" name:NSLocalizedString(@"Loading Characters", nil)];
-	__weak EUOperation* weakOperation = operation;
-	[operation addExecutionBlock:^{
-		NSMutableArray* staticCharacters = [NSMutableArray array];
-		for (int i = 0; i <= 5; i++)
-			[staticCharacters addObject:[CharacterEqualSkills characterWithSkillsLevel:i]];
-		weakOperation.progress = 0.3;
-		NSMutableDictionary* eveCharactersDic = [NSMutableDictionary dictionary];
-		NSMutableArray* customCharacters = [NSMutableArray array];
-		NSString* path = [Character charactersDirectory];
-		NSArray *items = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
-		
-		for (NSString* fileName in items) {
-			Character* character = [NSKeyedUnarchiver unarchiveObjectWithFile:[path stringByAppendingPathComponent:fileName]];
-			if ([character isKindOfClass:[CharacterEVE class]])
-				[eveCharactersDic setValue:character forKey:[NSString stringWithFormat:@"%d", character.characterID]];
-			else if ([character isKindOfClass:[CharacterCustom class]])
-				[customCharacters addObject:character];
-		}
-		weakOperation.progress = 0.6;
-		[[EVEAccountStorage sharedAccountStorage] reload];
-		for (EVEAccountStorageCharacter* accountCharacter in [[[EVEAccountStorage sharedAccountStorage] characters] allValues]) {
-			if (accountCharacter.enabled) {
-				CharacterEVE* character = [CharacterEVE characterWithCharacter:accountCharacter];
-				[eveCharactersDic setValue:character forKey:[NSString stringWithFormat:@"%d", character.characterID]];
-			}
-		}
-		weakOperation.progress = 0.9;
-		NSArray* sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-		[customCharacters sortUsingDescriptors:sortDescriptors];
-		NSMutableArray* eveCharacters = [NSMutableArray arrayWithArray:[eveCharactersDic allValues]];
-		[eveCharacters sortUsingDescriptors:sortDescriptors];
-		
-		[sectionsTmp addObject:eveCharacters];
-		[sectionsTmp addObject:customCharacters];
-		[sectionsTmp addObject:staticCharacters];
-		weakOperation.progress = 1.0;
-	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		self.sections = sectionsTmp;
-		[self.tableView reloadData];
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+	[self reload];
 }
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -161,18 +120,25 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *cellIdentifier = @"CharacterCellView";
+	NSString *cellIdentifier = @"Cell";
 	
-    CharacterCellView *cell = (CharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
+        cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 	if (indexPath.row == [[self.sections objectAtIndex:indexPath.section] count])
-		cell.characterNameLabel.text = NSLocalizedString(@"Add Character", nil);
+		cell.textLabel.text = NSLocalizedString(@"Add Character", nil);
 	else
-		cell.characterNameLabel.text = [[[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
-    return cell;
-}
+		cell.textLabel.text = [self.sections[indexPath.section][indexPath.row] name];
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
@@ -180,24 +146,26 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		Character* character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-		NSString* path = [[[Character charactersDirectory] stringByAppendingPathComponent:character.guid] stringByAppendingPathExtension:@"plist"];
-		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+		FitCharacter* character = self.sections[indexPath.section][indexPath.row];
+		[character.managedObjectContext deleteObject:character];
 
 		[[self.sections objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		CharacterCustom* character = [[CharacterCustom alloc] init];
+		NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
+		FitCharacter* character = [[FitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 		character.name = NSLocalizedString(@"Custom Character", nil);
 		[character save];
+
 		[[self.sections objectAtIndex:1] addObject:character];
 		[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
 		CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
-		controller.character = character;
+		//controller.character = character;
 		[self.navigationController pushViewController:controller animated:YES];
 	}
+	[[EUStorage sharedStorage] saveContext];
 }
 
 #pragma mark -
@@ -207,28 +175,22 @@
 	if (indexPath.row == [[self.sections objectAtIndex:indexPath.section] count])
 		return UITableViewCellEditingStyleInsert;
 	else
-		return indexPath.section == 0 || indexPath.section == 1 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
+		return indexPath.section == 1 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -263,6 +225,43 @@
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
+}
+
+#pragma mark - Private
+
+- (void) reload {
+	NSMutableArray* sectionsTmp = [NSMutableArray array];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+reload" name:NSLocalizedString(@"Loading Characters", nil)];
+	__weak EUOperation* weakOperation = operation;
+	[operation addExecutionBlock:^{
+		NSMutableArray* staticCharacters = [NSMutableArray new];
+		for (int i = 0; i <= 5; i++)
+			[staticCharacters addObject:[CharacterEqualSkills characterWithSkillsLevel:i]];
+		weakOperation.progress = 0.5;
+		
+		NSMutableArray* customCharacters = [[NSMutableArray alloc] initWithArray:[FitCharacter allCustomCharacters]];
+
+		NSMutableArray* eveCharacters = [NSMutableArray new];
+		
+		for (EVEAccount* account in [[EVEAccountsManager sharedManager] allAccounts]) {
+			FitCharacter* character = [FitCharacter fitCharacterWithAccount:account];
+			[eveCharacters addObject:character];
+		}
+		[eveCharacters sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+		weakOperation.progress = 0.9;
+
+		[sectionsTmp addObject:eveCharacters];
+		[sectionsTmp addObject:customCharacters];
+		[sectionsTmp addObject:staticCharacters];
+		weakOperation.progress = 1.0;
+	}];
+	
+	[operation setCompletionBlockInMainThread:^{
+		self.sections = sectionsTmp;
+		[self.tableView reloadData];
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 @end

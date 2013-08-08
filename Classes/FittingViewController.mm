@@ -109,6 +109,8 @@
 	self.priceManager = [[PriceManager alloc] init];
 	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)]];
 	[self update];
+	
+	self.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -194,30 +196,35 @@
 	if (self.sectionSegmentControl.selectedSegmentIndex == 0) {
 		self.tableView.dataSource = self.modulesDataSource;
 		self.tableView.delegate = self.modulesDataSource;
+		self.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
 		[self.modulesDataSource reload];
 		newSection = self.modulesViewController;
 	}
 	else if (self.sectionSegmentControl.selectedSegmentIndex == 1) {
 		self.tableView.dataSource = self.dronesDataSource;
 		self.tableView.delegate = self.dronesDataSource;
+		self.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
 		[self.dronesDataSource reload];
 		newSection = self.dronesViewController;
 	}
 	else if (self.sectionSegmentControl.selectedSegmentIndex == 2) {
 		self.tableView.dataSource = self.implantsDataSource;
 		self.tableView.delegate = self.implantsDataSource;
+		self.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
 		[self.implantsDataSource reload];
 		newSection = self.implantsViewController;
 	}
 	else if (self.sectionSegmentControl.selectedSegmentIndex == 3) {
 		self.tableView.dataSource = self.fleetDataSource;
 		self.tableView.delegate = self.fleetDataSource;
+		self.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
 		[self.fleetDataSource reload];
 		newSection = self.fleetViewController;
 	}
 	else if (self.sectionSegmentControl.selectedSegmentIndex == 4) {
 		self.tableView.dataSource = self.shipStatsDataSource;
 		self.tableView.delegate = self.shipStatsDataSource;
+		self.tableView.tableHeaderView = self.shipStatsDataSource.tableHeaderView;
 		[self.shipStatsDataSource reload];
 		newSection = self.statsViewController;
 	}

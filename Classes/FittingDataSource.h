@@ -12,7 +12,7 @@
 @interface FittingDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet FittingViewController *fittingViewController;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-
+@property (nonatomic, strong) IBOutlet UIView *tableHeaderView;
 - (void) reload;
 
 @end

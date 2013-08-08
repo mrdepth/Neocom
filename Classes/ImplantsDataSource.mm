@@ -113,6 +113,17 @@
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return self.implantsHeaderView;
+	else
+		return self.boostersHeaderView;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 25;
+}
+
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 40;
 }

@@ -9,6 +9,8 @@
 #import "FittingDataSource.h"
 
 @interface ImplantsDataSource : FittingDataSource
+@property (nonatomic, strong) IBOutlet UIView *implantsHeaderView;
+@property (nonatomic, strong) IBOutlet UIView *boostersHeaderView;
 
 
 @end

@@ -746,6 +746,7 @@
 		71B10E7F179B188F00D5214B /* buttonBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E7D179B188F00D5214B /* buttonBackgroundSelected@2x.png */; };
 		71B10E81179B1E3C00D5214B /* segmentedControlDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E80179B1E3C00D5214B /* segmentedControlDivider@2x.png */; };
 		71B10E83179B218D00D5214B /* buttonBackgroundBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E82179B218C00D5214B /* buttonBackgroundBlack@2x.png */; };
+		71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B2106917B4403100B1E0C0 /* FitCharacter.mm */; };
 		71B4989417AD052100B98B59 /* UIActionSheet+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */; };
 		71B4989B17AD06D400B98B59 /* DronesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989A17AD06D400B98B59 /* DronesDataSource.mm */; };
 		71B498A017AD440200B98B59 /* NCItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989E17AD440200B98B59 /* NCItemsViewController.m */; };
@@ -1958,6 +1959,8 @@
 		71B10E7D179B188F00D5214B /* buttonBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundSelected@2x.png"; sourceTree = "<group>"; };
 		71B10E80179B1E3C00D5214B /* segmentedControlDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmentedControlDivider@2x.png"; sourceTree = "<group>"; };
 		71B10E82179B218C00D5214B /* buttonBackgroundBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundBlack@2x.png"; sourceTree = "<group>"; };
+		71B2106817B4403100B1E0C0 /* FitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FitCharacter.h; sourceTree = "<group>"; };
+		71B2106917B4403100B1E0C0 /* FitCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FitCharacter.mm; sourceTree = "<group>"; };
 		71B4989217AD052100B98B59 /* UIActionSheet+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Neocom.h"; sourceTree = "<group>"; };
 		71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Neocom.m"; sourceTree = "<group>"; };
 		71B4989917AD06D400B98B59 /* DronesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesDataSource.h; sourceTree = "<group>"; };
@@ -2415,6 +2418,8 @@
 				12B8CD2416BB993000C5104E /* Fit.mm */,
 				1203570616B68A3E0015706B /* ShipFit.h */,
 				1203570716B68A3E0015706B /* ShipFit.mm */,
+				71B2106817B4403100B1E0C0 /* FitCharacter.h */,
+				71B2106917B4403100B1E0C0 /* FitCharacter.mm */,
 			);
 			name = EUStorage;
 			sourceTree = "<group>";
@@ -6053,6 +6058,7 @@
 				71B6DEC017B2DE41006A6E2E /* ShipStatsFirepowerCell.m in Sources */,
 				71B6DEC617B2DEB3006A6E2E /* ShipStatsMiscCell.m in Sources */,
 				71B6DECC17B2DF1B006A6E2E /* ShipStatsPriceCell.m in Sources */,
+				71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

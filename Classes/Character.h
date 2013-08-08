@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #include "eufe.h"
 
+@protocol Character
+@property (nonatomic, copy) NSString* name;
+@property (nonatomic, strong) NSMutableDictionary* skillsDictionary;
+@property (nonatomic, readonly, getter = isReadonly) BOOL readonly;
+
+- (boost::shared_ptr<std::map<eufe::TypeID, int> >) skillsMap;
+@end
+
 @interface Character : NSObject<NSCoding>
 @property (nonatomic, assign) NSInteger characterID;
 @property (nonatomic, copy) NSString* name;

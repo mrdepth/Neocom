@@ -224,10 +224,15 @@
 	void (^setCharacter)() = ^(){
 		CharactersViewController *controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
+
+		controller.completionHandler = ^(id<Character> character) {
+			eufe::Character* eufeCharacter = fit.character;
+			eufeCharacter->setSkillLevels(*[character skillsMap]);
+			eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			[self.fittingViewController update];
+		};
+
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	};
 
@@ -262,7 +267,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentModalViewController:navController animated:YES];
+			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];

@@ -473,14 +473,8 @@
 		37DDFD9314A2031600BCDEBB /* CharactersViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFD9114A2031600BCDEBB /* CharactersViewController.mm */; };
 		37DDFD9414A2031600BCDEBB /* CharactersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFD9214A2031600BCDEBB /* CharactersViewController.xib */; };
 		37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFD9914A204B600BCDEBB /* CharacterEqualSkills.mm */; };
-		37DDFD9E14A2164A00BCDEBB /* CharacterEVE.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFD9D14A2164900BCDEBB /* CharacterEVE.mm */; };
-		37DDFDA114A2261400BCDEBB /* Character.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA014A2261100BCDEBB /* Character.mm */; };
-		37DDFDA414A22BD600BCDEBB /* CharacterCustom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA314A22BD500BCDEBB /* CharacterCustom.mm */; };
-		37DDFDA914A23A9C00BCDEBB /* CharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */; };
-		37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */; };
 		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
 		37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */; };
-		37E352EA14B4AEEB004367AB /* CharacterSkillsEditorViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E914B4AEEA004367AB /* CharacterSkillsEditorViewController~ipad.xib */; };
 		37EBCDBA14D30FB00085D1CB /* graphButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCDB914D30FB00085D1CB /* graphButton.png */; };
 		37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */; };
 		37EBCE1514D31F8A0085D1CB /* linesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1214D31F8A0085D1CB /* linesButton.png */; };
@@ -605,8 +599,6 @@
 		718B8868122FC62B00622C04 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B8866122FC62B00622C04 /* BrowserViewController.m */; };
 		718B88BD122FCF5200622C04 /* Globals.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B88BC122FCF5200622C04 /* Globals.m */; };
 		718B99DF14AA15DE0012520F /* CharacterSkillsEditorViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 718B99DD14AA15DE0012520F /* CharacterSkillsEditorViewController.mm */; };
-		718B99E314AA182A0012520F /* SkillEditingCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B99E214AA182A0012520F /* SkillEditingCellView.m */; };
-		718B99E614AA18420012520F /* SkillEditingCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 718B99E514AA18420012520F /* SkillEditingCellView.xib */; };
 		718BA567122BF21C00148015 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 718BA566122BF21C00148015 /* libsqlite3.dylib */; };
 		718BA585122BF34A00148015 /* ItemsDBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718BA583122BF34A00148015 /* ItemsDBViewController.m */; };
 		718BA5D2122BF65200148015 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 718BA5D1122BF65200148015 /* evedb.sqlite */; };
@@ -1605,19 +1597,10 @@
 		37DDFD9214A2031600BCDEBB /* CharactersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharactersViewController.xib; sourceTree = "<group>"; };
 		37DDFD9814A204B500BCDEBB /* CharacterEqualSkills.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterEqualSkills.h; sourceTree = "<group>"; };
 		37DDFD9914A204B600BCDEBB /* CharacterEqualSkills.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CharacterEqualSkills.mm; sourceTree = "<group>"; };
-		37DDFD9C14A2164800BCDEBB /* CharacterEVE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterEVE.h; sourceTree = "<group>"; };
-		37DDFD9D14A2164900BCDEBB /* CharacterEVE.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CharacterEVE.mm; sourceTree = "<group>"; };
 		37DDFD9F14A2261000BCDEBB /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		37DDFDA014A2261100BCDEBB /* Character.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Character.mm; sourceTree = "<group>"; };
-		37DDFDA214A22BD300BCDEBB /* CharacterCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCustom.h; sourceTree = "<group>"; };
-		37DDFDA314A22BD500BCDEBB /* CharacterCustom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CharacterCustom.mm; sourceTree = "<group>"; };
-		37DDFDA714A23A9C00BCDEBB /* CharacterCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterCellView.h; sourceTree = "<group>"; };
-		37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterCellView.m; sourceTree = "<group>"; };
-		37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CharacterCellView.xib; sourceTree = "<group>"; };
 		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
 		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
 		37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController~ipad.xib"; sourceTree = "<group>"; };
-		37E352E914B4AEEA004367AB /* CharacterSkillsEditorViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "CharacterSkillsEditorViewController~ipad.xib"; sourceTree = "<group>"; };
 		37EBCDB914D30FB00085D1CB /* graphButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphButton.png; sourceTree = "<group>"; };
 		37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graphButton@2x.png"; sourceTree = "<group>"; };
 		37EBCE1214D31F8A0085D1CB /* linesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linesButton.png; sourceTree = "<group>"; };
@@ -1783,12 +1766,8 @@
 		718B8866122FC62B00622C04 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
 		718B88BB122FCF5200622C04 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		718B88BC122FCF5200622C04 /* Globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Globals.m; sourceTree = "<group>"; };
-		718B99D914AA14470012520F /* CharactersViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharactersViewControllerDelegate.h; sourceTree = "<group>"; };
 		718B99DC14AA15DE0012520F /* CharacterSkillsEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterSkillsEditorViewController.h; sourceTree = "<group>"; };
 		718B99DD14AA15DE0012520F /* CharacterSkillsEditorViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CharacterSkillsEditorViewController.mm; sourceTree = "<group>"; };
-		718B99E114AA182A0012520F /* SkillEditingCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillEditingCellView.h; sourceTree = "<group>"; };
-		718B99E214AA182A0012520F /* SkillEditingCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillEditingCellView.m; sourceTree = "<group>"; };
-		718B99E514AA18420012520F /* SkillEditingCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkillEditingCellView.xib; sourceTree = "<group>"; };
 		718BA566122BF21C00148015 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		718BA582122BF34A00148015 /* ItemsDBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsDBViewController.h; sourceTree = "<group>"; };
 		718BA583122BF34A00148015 /* ItemsDBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsDBViewController.m; sourceTree = "<group>"; };
@@ -2015,7 +1994,6 @@
 		71CAEF1F14AB670D00512451 /* SkillLevelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillLevelsViewController.h; sourceTree = "<group>"; };
 		71CAEF2014AB670D00512451 /* SkillLevelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillLevelsViewController.m; sourceTree = "<group>"; };
 		71CAEF2114AB670D00512451 /* SkillLevelsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkillLevelsViewController.xib; sourceTree = "<group>"; };
-		71CAEF2414AB69F700512451 /* SkillLevelsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillLevelsViewControllerDelegate.h; sourceTree = "<group>"; };
 		71CBDBE914102A9D003A50CE /* ContractsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContractsViewController.h; sourceTree = "<group>"; };
 		71CBDBEA14102A9D003A50CE /* ContractsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContractsViewController.m; sourceTree = "<group>"; };
 		71CBDC1914103629003A50CE /* ContractCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContractCellView.h; sourceTree = "<group>"; };
@@ -3764,9 +3742,7 @@
 			isa = PBXGroup;
 			children = (
 				37DDFDA514A22C7000BCDEBB /* Character */,
-				37DDFDA614A23A7D00BCDEBB /* CharacterCellView */,
 				718B99DB14AA15AE0012520F /* CharacterSkillsEditorViewController */,
-				718B99D914AA14470012520F /* CharactersViewControllerDelegate.h */,
 				37DDFD9014A2031600BCDEBB /* CharactersViewController.h */,
 				37DDFD9114A2031600BCDEBB /* CharactersViewController.mm */,
 				37DDFD9214A2031600BCDEBB /* CharactersViewController.xib */,
@@ -3778,25 +3754,10 @@
 			isa = PBXGroup;
 			children = (
 				37DDFD9F14A2261000BCDEBB /* Character.h */,
-				37DDFDA014A2261100BCDEBB /* Character.mm */,
 				37DDFD9814A204B500BCDEBB /* CharacterEqualSkills.h */,
 				37DDFD9914A204B600BCDEBB /* CharacterEqualSkills.mm */,
-				37DDFD9C14A2164800BCDEBB /* CharacterEVE.h */,
-				37DDFD9D14A2164900BCDEBB /* CharacterEVE.mm */,
-				37DDFDA214A22BD300BCDEBB /* CharacterCustom.h */,
-				37DDFDA314A22BD500BCDEBB /* CharacterCustom.mm */,
 			);
 			name = Character;
-			sourceTree = "<group>";
-		};
-		37DDFDA614A23A7D00BCDEBB /* CharacterCellView */ = {
-			isa = PBXGroup;
-			children = (
-				37DDFDA714A23A9C00BCDEBB /* CharacterCellView.h */,
-				37DDFDA814A23A9C00BCDEBB /* CharacterCellView.m */,
-				37DDFDAA14A23AAF00BCDEBB /* CharacterCellView.xib */,
-			);
-			name = CharacterCellView;
 			sourceTree = "<group>";
 		};
 		37DF48C4151C8D7300BC87A5 /* PriceManager */ = {
@@ -4411,24 +4372,12 @@
 		718B99DB14AA15AE0012520F /* CharacterSkillsEditorViewController */ = {
 			isa = PBXGroup;
 			children = (
-				718B99E414AA182F0012520F /* SkillEditingCellView */,
 				71CAEF1D14AB66C300512451 /* SkillLevelsViewController */,
 				718B99DC14AA15DE0012520F /* CharacterSkillsEditorViewController.h */,
 				718B99DD14AA15DE0012520F /* CharacterSkillsEditorViewController.mm */,
 				12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */,
-				37E352E914B4AEEA004367AB /* CharacterSkillsEditorViewController~ipad.xib */,
 			);
 			name = CharacterSkillsEditorViewController;
-			sourceTree = "<group>";
-		};
-		718B99E414AA182F0012520F /* SkillEditingCellView */ = {
-			isa = PBXGroup;
-			children = (
-				718B99E114AA182A0012520F /* SkillEditingCellView.h */,
-				718B99E214AA182A0012520F /* SkillEditingCellView.m */,
-				718B99E514AA18420012520F /* SkillEditingCellView.xib */,
-			);
-			name = SkillEditingCellView;
 			sourceTree = "<group>";
 		};
 		718BA587122BF34E00148015 /* ItemsDBViewController */ = {
@@ -4561,12 +4510,12 @@
 			children = (
 				71B4989717AD06A400B98B59 /* DataSources */,
 				1213C0FA16C8FCE3006E504E /* FittingVariationsViewController */,
+				37DDFD8F14A202E100BCDEBB /* CharactersViewController */,
 				71A0E8B01379DAC600CE4062 /* ModulesViewController */,
 				7187F1D5137B4A5E00EA8B86 /* DronesViewController */,
 				71880358137C7F57004060CC /* ImplantsViewController */,
 				71A0E8AF1379DA7500CE4062 /* StatsViewController */,
 				37A6718614A0D4EA00D3284E /* FleetViewController */,
-				37DDFD8F14A202E100BCDEBB /* CharactersViewController */,
 				71196C9314B1E75D00614711 /* TargetsViewController */,
 				37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */,
 				37B965AD14D981B0003F3900 /* DamagePatternsViewController */,
@@ -5111,7 +5060,6 @@
 				71CAEF1F14AB670D00512451 /* SkillLevelsViewController.h */,
 				71CAEF2014AB670D00512451 /* SkillLevelsViewController.m */,
 				71CAEF2114AB670D00512451 /* SkillLevelsViewController.xib */,
-				71CAEF2414AB69F700512451 /* SkillLevelsViewControllerDelegate.h */,
 			);
 			name = SkillLevelsViewController;
 			sourceTree = "<group>";
@@ -5473,16 +5421,13 @@
 				37DBE021149F95EB00C17AF4 /* eufe.sqlite in Resources */,
 				37A6718B14A0D52800D3284E /* FleetViewController.xib in Resources */,
 				37DDFD9414A2031600BCDEBB /* CharactersViewController.xib in Resources */,
-				37DDFDAB14A23AAF00BCDEBB /* CharacterCellView.xib in Resources */,
 				12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */,
-				718B99E614AA18420012520F /* SkillEditingCellView.xib in Resources */,
 				71CAEF2314AB670D00512451 /* SkillLevelsViewController.xib in Resources */,
 				71B0C32014B13DA20022E9FE /* FleetMemberCellView.xib in Resources */,
 				71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */,
 				37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */,
 				37A0C26B14B37476008ACDB4 /* AreaEffectCellView.xib in Resources */,
 				37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */,
-				37E352EA14B4AEEB004367AB /* CharacterSkillsEditorViewController~ipad.xib in Resources */,
 				37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */,
 				37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */,
 				37CFDEF314B5C61300BF148F /* cellBackgroundSelected.png in Resources */,
@@ -5775,12 +5720,7 @@
 				37A6718A14A0D52800D3284E /* FleetViewController.mm in Sources */,
 				37DDFD9314A2031600BCDEBB /* CharactersViewController.mm in Sources */,
 				37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */,
-				37DDFD9E14A2164A00BCDEBB /* CharacterEVE.mm in Sources */,
-				37DDFDA114A2261400BCDEBB /* Character.mm in Sources */,
-				37DDFDA414A22BD600BCDEBB /* CharacterCustom.mm in Sources */,
-				37DDFDA914A23A9C00BCDEBB /* CharacterCellView.m in Sources */,
 				718B99DF14AA15DE0012520F /* CharacterSkillsEditorViewController.mm in Sources */,
-				718B99E314AA182A0012520F /* SkillEditingCellView.m in Sources */,
 				71CAEF2214AB670D00512451 /* SkillLevelsViewController.m in Sources */,
 				37B1B60114ACD8490037579C /* FitsViewController.mm in Sources */,
 				71B0C31E14B13D940022E9FE /* FleetMemberCellView.m in Sources */,

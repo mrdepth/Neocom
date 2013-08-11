@@ -8,15 +8,17 @@
 
 #import "CharacterSkillsEditorViewController.h"
 #import "EUOperationQueue.h"
-#import "SkillEditingCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "Character.h"
 #import "CharacterEqualSkills.h"
-#import "CharacterEVE.h"
-#import "CharacterCustom.h"
 #import "EVEDBAPI.h"
-#import "UIImageView+GIF.h"
+#import "GroupedCell.h"
 #import "ItemViewController.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "FitCharacter.h"
+#import "EUStorage.h"
+#import "UIActionSheet+Block.h"
 
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate", nil)
 #define ActionButtonRename NSLocalizedString(@"Rename", nil)
@@ -58,8 +60,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.character.name;
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOptions:)]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onOptions:)]];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
@@ -77,10 +80,10 @@
 											  EVEDBInvType* skill = [[EVEDBInvType alloc] initWithStatement:stmt];
 											  NSNumber* key = @(skill.groupID);
 											  
-											  NSMutableArray* skills = [self.groups objectForKey:key];
+											  NSMutableArray* skills = self.groups[key];
 											  if (!skills) {
 												  skills = [NSMutableArray array];
-												  [self.groups setObject:skills forKey:key];
+												  self.groups[key] = skills;
 											  }
 											  
 											  [skills addObject:skill];
@@ -88,7 +91,7 @@
 			weakOperation.progress = 0.5;
 			if (!error) {
 				sectionsTmp = [[self.groups allValues] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-					return [[[[obj1 objectAtIndex:0] group] groupName] compare:[[[obj2 objectAtIndex:0] group] groupName]];
+					return [[[obj1[0] group] groupName] compare:[[obj2[0] group] groupName]];
 				}];
 				float n = sectionsTmp.count;
 				float i = 0;
@@ -103,7 +106,7 @@
 	[operation setCompletionBlockInMainThread:^{
 		self.sections = sectionsTmp;
 		self.groups = nil;
-		[self.skillsTableView reloadData];
+		[self.tableView reloadData];
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
@@ -116,56 +119,63 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void)viewDidUnload
-{
-    [self setShadowView:nil];
-    [self setCharacterNameToolbar:nil];
-    [self setCharacterNameTextField:nil];
-    [super viewDidUnload];
-	self.skillsTableView = nil;
-	self.modalController = nil;
-	self.popoverController = nil;
-	self.sections = nil;
-	self.groups = nil;
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
 - (IBAction) didCloseModalViewController:(id) sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) onOptions:(id) sender {
-	UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-	int cancelID = 1;
-	[actionSheet addButtonWithTitle:ActionButtonDuplicate];
-	if ([self.character isKindOfClass:[CharacterCustom class]]) {
-		[actionSheet addButtonWithTitle:ActionButtonRename];
-		cancelID++;
+	NSMutableArray* buttons = [NSMutableArray new];
+	NSMutableArray* actions = [NSMutableArray new];
+	
+	void (^deleteCharacter)() = ^() {
+		FitCharacter* character = (FitCharacter*) self.character;
+		[character.managedObjectContext deleteObject:character];
+		[[EUStorage sharedStorage] saveContext];
+		[self.navigationController popViewControllerAnimated:YES];
+	};
+
+	void (^rename)() = ^() {
+		self.characterNameTextField.text = self.character.name;
+		self.navigationItem.titleView = self.characterNameTextField;
+		[self.characterNameTextField becomeFirstResponder];
+	};
+	
+	void (^duplicate)() = ^() {
+		NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
+		FitCharacter* character = [[FitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+		character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
+		character.skillsDictionary = self.character.skillsDictionary;
+		self.title = character.name;
+		self.character = character;
+	};
+	
+	if (!self.character.readonly) {
+		[actions addObject:deleteCharacter];
+		[actions addObject:rename];
+		[buttons addObject:ActionButtonRename];
 	}
-	if (![self.character isKindOfClass:[CharacterEqualSkills class]]) {
-		[actionSheet addButtonWithTitle:ActionButtonDelete];
-		[actionSheet setDestructiveButtonIndex:cancelID];
-		cancelID++;
+	else {
 	}
-	[actionSheet addButtonWithTitle:ActionButtonCancel];
-	[actionSheet setCancelButtonIndex:cancelID];
-	[actionSheet showFromBarButtonItem:sender animated:YES];
+	[actions addObject:duplicate];
+	[buttons addObject:ActionButtonDuplicate];
+	
+	
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:!self.character.readonly ? NSLocalizedString(@"Delete", nil) : nil
+					   otherButtonTitles:buttons
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+								 void (^action)() = actions[selectedButtonIndex];
+								 action();
+							 }
+						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
 - (IBAction) onDone:(id)sender {
 	self.character.name = self.characterNameTextField.text;
-	[self.character save];
+//	[self.character save];
 	[self.characterNameTextField resignFirstResponder];
 }
 
@@ -178,75 +188,79 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [[self.sections objectAtIndex:section] count];
+	return [self.sections[section] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return [[[[self.sections objectAtIndex:section] objectAtIndex:0] group] groupName];
+	return [[self.sections[section][0] group] groupName];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *cellIdentifier = @"SkillEditingCellView";
+	NSString *cellIdentifier = @"Cell";
 	
-    SkillEditingCellView *cell = (SkillEditingCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [SkillEditingCellView cellWithNibName:@"SkillEditingCellView" bundle:nil reuseIdentifier:cellIdentifier];
+        cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     }
-	EVEDBInvType* skill = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	NSInteger level = [[self.character.skills valueForKey:[NSString stringWithFormat:@"%d", skill.typeID]] integerValue];
-	cell.skillLabel.text = skill.typeName;
-	cell.iconImageView.image = [UIImage imageNamed:level == 5 ? @"Icons/icon50_14.png" : @"Icons/icon50_13.png"];
+	EVEDBInvType* skill = self.sections[indexPath.section][indexPath.row];
+	NSInteger level = [self.character.skillsDictionary[@(skill.typeID)] integerValue];
+	cell.textLabel.text = skill.typeName;
+	cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), level];
+	cell.imageView.image = [UIImage imageNamed:level == 5 ? @"Icons/icon50_14.png" : @"Icons/icon50_13.png"];
 	
-	NSString* levelImageName = [NSString stringWithFormat:@"level_%d00.gif", level];
-	[cell.levelImageView setGIFImageWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:levelImageName ofType:nil]]];
-	
-	//(item.level == 5 ? @"Icons/icon50_14.png" : @"Icons/icon50_13.png")
-	//skill.levelImageName = [NSString stringWithFormat:@"level_%d%d%d.gif", item.level, targetLevel, isActive];
-	//[cell.levelImageView setGIFImageWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:skill.levelImageName ofType:nil]]];
-
-	//cell.characterNameLabel.text = [[[sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] name];
-    return cell;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0 || indexPath.section == 1;
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	EVEDBInvType* skill = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	NSString* key = [NSString stringWithFormat:@"%d", skill.typeID];
+	EVEDBInvType* skill = self.sections[indexPath.section][indexPath.row];
 
-	SkillLevelsViewController* controller = (SkillLevelsViewController*) [self.modalController topViewController];
-	controller.currentLevel = [[self.character.skills valueForKey:key] integerValue];
+	SkillLevelsViewController* controller = [[SkillLevelsViewController alloc] initWithNibName:@"SkillLevelsViewController" bundle:nil];
+	controller.currentLevel = [self.character.skillsDictionary[@(skill.typeID)] integerValue];
 	controller.title = skill.typeName;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	else
-		[self presentModalViewController:self.modalController animated:YES];
-
-	self.modifiedIndexPath = indexPath;
+	controller.completionHandler = ^(NSInteger level) {
+		if ([self.character isReadonly]) {
+			NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
+			FitCharacter* character = [[FitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
+			character.skillsDictionary = self.character.skillsDictionary;
+			self.title = character.name;
+			self.character = character;
+		}
+		self.character.skillsDictionary[@(skill.typeID)] = @(level);
+		[(FitCharacter*) self.character save];
+		[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	};
+	
+	UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+	
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -263,18 +277,18 @@
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	
 	if ([button isEqualToString:ActionButtonDuplicate]) {
-		self.character = [CharacterCustom characterWithCharacter:self.character];
+		//self.character = [CharacterCustom characterWithCharacter:self.character];
 		self.character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
 		self.title = self.character.name;
-		[self.character save];
+		//[self.character save];
 	}
 	else if ([button isEqualToString:ActionButtonRename]) {
 		self.characterNameTextField.text = self.character.name;
 		[self.characterNameTextField becomeFirstResponder];
 	}
 	else if ([button isEqualToString:ActionButtonDelete]) {
-		NSString* path = [[[Character charactersDirectory] stringByAppendingPathComponent:self.character.guid] stringByAppendingPathExtension:@"plist"];
-		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+		//NSString* path = [[[Character charactersDirectory] stringByAppendingPathComponent:self.character.guid] stringByAppendingPathExtension:@"plist"];
+		//[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 		[self.navigationController popViewControllerAnimated:YES];
 	}
 }
@@ -282,7 +296,7 @@
 #pragma mark SkillLevelsViewControllerDelegate
 
 - (void) skillLevelsViewController:(SkillLevelsViewController*) controller didSelectLevel:(NSInteger) level {
-	if ([self.character isKindOfClass:[CharacterEVE class]]) {
+	/*if ([self.character isKindOfClass:[CharacterEVE class]]) {
 		self.character = [CharacterCustom characterWithCharacter:self.character];
 		self.character.name = [self.character.name stringByAppendingString:NSLocalizedString(@" Copy", nil)];
 		self.title = self.character.name;
@@ -295,14 +309,16 @@
 	NSString* key = [NSString stringWithFormat:@"%d", skill.typeID];
 	[self.character.skills setValue:[NSNumber numberWithInteger:level] forKey:key];
 	[self.character save];
-	[self.skillsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.modifiedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+	[self.skillsTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.modifiedIndexPath] withRowAnimation:UITableViewRowAnimationFade];*/
 }
 
 #pragma mark UITextFieldDelegate
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
 	self.character.name = self.characterNameTextField.text;
-	[self.character save];
+	self.navigationItem.titleView = nil;
+	self.navigationItem.title = self.characterNameTextField.text;
+	[[EUStorage sharedStorage] saveContext];
 	[textField resignFirstResponder];
 	return YES;
 }

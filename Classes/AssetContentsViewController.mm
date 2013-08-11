@@ -20,7 +20,7 @@
 #import "ItemViewController.h"
 #import "FittingViewController.h"
 #import "POSFittingViewController.h"
-#import "CharacterEVE.h"
+#import "FitCharacter.h"
 #import "ShipFit.h"
 #import "POSFit.h"
 #import "CollapsableTableHeaderView.h"
@@ -165,13 +165,13 @@
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
 			weakOperation.progress = 0.3;
-			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				character->setSkillLevels(*[eveCharacter skillsMap]);
+			if (currentAccount.characterSheet) {
+				FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+				character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				character->setSkillLevels(*[fitCharacter skillsMap]);
 			}
 			else
-				character->setCharacterName("All Skills 0");
+				character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 			weakOperation.progress = 0.6;
 			fit = [ShipFit shipFitWithAsset:self.asset character:character];
 			weakOperation.progress = 1.0;

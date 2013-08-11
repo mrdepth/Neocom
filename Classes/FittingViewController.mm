@@ -346,8 +346,6 @@
 
 - (void) selectCharacterForFit:(ShipFit*) aFit {
 	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
-	charactersViewController.delegate = self;
-	charactersViewController.modifiedFit = aFit;
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
 	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -515,13 +513,13 @@
 
 #pragma mark CharactersViewControllerDelegate
 
-- (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
+/*- (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
 	eufe::Character* eufeCharacter = aController.modifiedFit.character;
 	eufeCharacter->setSkillLevels(*[character skillsMap]);
 	eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
 	[self update];
 	[self dismissModalViewControllerAnimated:YES];
-}
+}*/
 
 #pragma mark DamagePatternsViewControllerDelegate
 

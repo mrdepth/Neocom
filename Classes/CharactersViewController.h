@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CharactersViewControllerDelegate.h"
 #import "Character.h"
 
 @class ShipFit;
 @interface CharactersViewController : UITableViewController
-@property (nonatomic, weak) IBOutlet id<CharactersViewControllerDelegate> delegate;
-@property (strong, nonatomic) ShipFit* modifiedFit;
+@property (nonatomic, copy) void (^completionHandler)(id<Character> character);
 
 - (IBAction) onClose:(id)sender;
 

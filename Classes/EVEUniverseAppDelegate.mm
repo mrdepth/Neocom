@@ -15,7 +15,6 @@
 #import "EUMailBox.h"
 #import "EUActivityView.h"
 #import "FittingViewController.h"
-#import "CharacterEVE.h"
 #import "ShipFit.h"
 #import "EUStorage.h"
 #import "EUMigrationManager.h"
@@ -23,6 +22,7 @@
 #import "NSString+UUID.h"
 #import "UIColor+NSNumber.h"
 #import "EVEAccountsManager.h"
+#import "FitCharacter.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 
@@ -625,15 +625,15 @@
 	[operation addExecutionBlock:^{
 		character = new eufe::Character(fittingViewController.fittingEngine);
 		
-		EVEAccount* theCurrentAccount = [EVEAccount currentAccount];
+		EVEAccount* currentAccount = [EVEAccount currentAccount];
 		weakOperation.progress = 0.3;
-		if (theCurrentAccount && theCurrentAccount.charKeyID && theCurrentAccount.charVCode && theCurrentAccount.characterID) {
-			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:theCurrentAccount.characterID keyID:theCurrentAccount.charKeyID vCode:theCurrentAccount.charVCode name:theCurrentAccount.characterName];
-			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			character->setSkillLevels(*[eveCharacter skillsMap]);
+		if (currentAccount.characterSheet) {
+			FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+			character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setSkillLevels(*[fitCharacter skillsMap]);
 		}
 		else
-			character->setCharacterName("All Skills 0");
+			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 		weakOperation.progress = 0.6;
 		fit = [[ShipFit alloc] initWithDNA:dna character:character];
 		weakOperation.progress = 1.0;

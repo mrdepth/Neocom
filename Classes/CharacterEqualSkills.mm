@@ -10,7 +10,7 @@
 #import "EVEDBAPI.h"
 
 @interface CharacterEqualSkills()
-@property (nonatomic, assign) BOOL level;
+@property (nonatomic, assign) NSInteger level;
 
 @end
 

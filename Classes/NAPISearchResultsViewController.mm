@@ -14,7 +14,7 @@
 #import "UIAlertView+Error.h"
 #import "EVEDBAPI.h"
 #import "FittingViewController.h"
-#import "CharacterEVE.h"
+#import "FitCharacter.h"
 #import "EVEAccount.h"
 #import "ShipFit.h"
 #import "NSNumberFormatter+Neocom.h"
@@ -185,13 +185,13 @@
 		weakOperation.progress = 0.3;
 		
 		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			character->setSkillLevels(*[eveCharacter skillsMap]);
+		if (currentAccount.characterSheet) {
+			FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+			character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setSkillLevels(*[fitCharacter skillsMap]);
 		}
 		else
-			character->setCharacterName("All Skills 0");
+			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 		weakOperation.progress = 0.6;
 		
 		fit = [ShipFit shipFitWithCanonicalName:item.canonicalName character:character];

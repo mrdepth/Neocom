@@ -11,10 +11,7 @@
 #import "FitsViewControllerDelegate.h"
 #include "eufe.h"
 
-@interface FitsViewController : UITableViewController<FittingItemsViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
-@property (nonatomic, strong) UIPopoverController *popoverController;
+@interface FitsViewController : UITableViewController
 @property (nonatomic, weak) id<FitsViewControllerDelegate> delegate;
 @property (nonatomic, assign) eufe::Engine* engine;
 

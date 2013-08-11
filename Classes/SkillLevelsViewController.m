@@ -7,8 +7,10 @@
 //
 
 #import "SkillLevelsViewController.h"
-//#import "TagCellView.h"
 #import "UITableViewCell+Nib.h"
+#import "UIViewController+Neocom.h"
+#import "appearance.h"
+#import "GroupedCell.h"
 
 @implementation SkillLevelsViewController
 
@@ -34,12 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -56,9 +55,9 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[self.tableView reloadData];
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.completionHandler = nil;
 }
 
 #pragma mark -
@@ -75,17 +74,23 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-/*	NSString *cellIdentifier = @"TagCellView";
+	NSString *cellIdentifier = @"Cell";
 	
-	TagCellView *cell = (TagCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (cell == nil) {
-		cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
-	}
-	cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), indexPath.row];;
-	cell.checkmarkImageView.image = self.currentLevel == indexPath.row ? [UIImage imageNamed:@"checkmark.png"] : nil;
-	return cell;*/
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), indexPath.row];
+	cell.accessoryView = self.currentLevel == indexPath.row ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	
-	return nil;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 #pragma mark -
@@ -93,7 +98,9 @@
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	[self.delegate skillLevelsViewController:self didSelectLevel:indexPath.row];
+	self.completionHandler(indexPath.row);
+	self.completionHandler = nil;
+	[self dismiss];
 }
 
 

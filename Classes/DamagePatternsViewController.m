@@ -12,7 +12,7 @@
 #import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
-#import "CharacterCellView.h"
+#import "GroupedCell.h"
 #import "DamagePatternEditViewController.h"
 #import "ItemCellView.h"
 #import "FittingNPCGroupsViewController.h"
@@ -125,14 +125,14 @@
 		return cell;
 	}
 	else if ([[self.sections objectAtIndex:indexPath.section - 1] count] == indexPath.row) {
-		NSString *cellIdentifier = @"CharacterCellView";
+		/*NSString *cellIdentifier = @"CharacterCellView";
 		
 		CharacterCellView *cell = (CharacterCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
 		cell.characterNameLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
-		return cell;
+		return cell;*/
 	}
 	else {
 		static NSString *cellIdentifier = @"DamagePatternCellView";

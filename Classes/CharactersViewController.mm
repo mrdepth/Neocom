@@ -8,9 +8,7 @@
 
 #import "CharactersViewController.h"
 #import "CharacterEqualSkills.h"
-#import "CharacterEVE.h"
 #import "FitCharacter.h"
-#import "CharacterCustom.h"
 #import "EVEAccountsManager.h"
 #import "EUOperationQueue.h"
 #import "GroupedCell.h"
@@ -85,8 +83,9 @@
 		[self.tableView deleteRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (IBAction) onClose:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+- (IBAction) onClose:(id) sender {
+	self.completionHandler = nil;
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -
@@ -138,7 +137,8 @@
 	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
 		groupStyle |= GroupedCellGroupStyleBottom;
 	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
-	return cell;}
+	return cell;
+}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
@@ -199,26 +199,25 @@
 		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
 	else {
-		Character* character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		id<Character> character = self.sections[indexPath.section][indexPath.row];
 		
 		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"CharactersViewController+LoadSkills" name:NSLocalizedString(@"Loading Skills", nil)];
 		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^{
-			if (character.skills && [character isKindOfClass:[CharacterEVE class]]) {
-				[[NSFileManager defaultManager] createDirectoryAtPath:[Character charactersDirectory] withIntermediateDirectories:YES attributes:nil error:nil];
-				[character save];
-			}
+			[character skillsDictionary];
 		}];
 		
 		[operation setCompletionBlockInMainThread:^{
 			if (![weakOperation isCancelled]) {
 				if (self.editing) {
 					CharacterSkillsEditorViewController* controller = [[CharacterSkillsEditorViewController alloc] initWithNibName:@"CharacterSkillsEditorViewController" bundle:nil];
-					controller.character = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+					controller.character = character;
 					[self.navigationController pushViewController:controller animated:YES];
 				}
 				else {
-					[self.delegate charactersViewController:self didSelectCharacter:character];
+					self.completionHandler(character);
+					self.completionHandler = nil;
+					[self dismissViewControllerAnimated:YES completion:nil];
 				}
 			}
 		}];

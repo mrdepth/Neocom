@@ -8,12 +8,12 @@
 
 #import "SkillPlannerImportViewController.h"
 #import "Globals.h"
-#import "CharacterCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "SkillPlanViewController.h"
 #import "UIDevice+IP.h"
 #import "SkillPlan.h"
 #import "EVEAccount.h"
+#import "GroupedCell.h"
 
 @interface SkillPlannerImportViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -102,9 +102,9 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *cellIdentifier = @"CharacterCellView";
+	NSString *cellIdentifier = @"Cell";
 	
-	CharacterCellView *cell = (CharacterCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	/*GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
 		cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
@@ -116,7 +116,7 @@
 		cell.characterNameLabel.text = [[self.rows objectAtIndex:indexPath.row] stringByDeletingPathExtension];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-	return cell;
+	return cell;*/
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

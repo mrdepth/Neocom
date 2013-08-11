@@ -39,7 +39,6 @@
 													UITextFieldDelegate,
 													BrowserViewControllerDelegate,
 													AreaEffectsViewControllerDelegate,
-													CharactersViewControllerDelegate,
 													DamagePatternsViewControllerDelegate,
 													FitsViewControllerDelegate,
 													TargetsViewControllerDelegate,

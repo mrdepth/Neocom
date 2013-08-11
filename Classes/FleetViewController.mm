@@ -201,7 +201,16 @@
 	NSString *button = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([button isEqualToString:ActionButtonCharacter]) {
 		ShipFit* fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];
-		[self.fittingViewController selectCharacterForFit:fit];
+		CharactersViewController* controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
+		controller.completionHandler = ^(id<Character> character) {
+			eufe::Character* eufeCharacter = fit.character;
+			eufeCharacter->setSkillLevels(*[character skillsMap]);
+			eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			[self.fittingViewController update];
+		};
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	}
 	else if ([button isEqualToString:ActionButtonSelect]) {
 		self.fittingViewController.fit = [[self.pilots objectAtIndex:self.modifiedIndexPath.row] valueForKey:@"fit"];

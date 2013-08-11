@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewController.h"
+#import "NCItemsViewController.h"
 
 
-@interface FittingServiceMenuViewController : UITableViewController<FittingItemsViewControllerDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
-@property (nonatomic, strong) UIPopoverController *popoverController;
+@interface FittingServiceMenuViewController : UITableViewController<MFMailComposeViewControllerDelegate>
+@property (nonatomic, strong) IBOutlet NCItemsViewController *itemsViewController;
 
 - (IBAction) didCloseModalViewController:(id) sender;
 

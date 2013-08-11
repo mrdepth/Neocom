@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SkillLevelsViewControllerDelegate.h"
 
 @interface SkillLevelsViewController : UITableViewController
-@property (weak, nonatomic) IBOutlet id<SkillLevelsViewControllerDelegate> delegate;
 @property (assign, nonatomic) NSInteger currentLevel;
+@property (nonatomic, copy) void (^completionHandler)(NSInteger level);
 
 @end

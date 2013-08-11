@@ -19,7 +19,6 @@
 #import "ShipFit.h"
 #import "POSFit.h"
 #import "EVEAccount.h"
-#import "CharacterEVE.h"
 #import "NSArray+GroupBy.h"
 #import "FittingExportViewController.h"
 #import "NSString+UUID.h"
@@ -28,6 +27,7 @@
 #import "EUStorage.h"
 #import "NAPISearchViewController.h"
 #import "NeocomAPI.h"
+#import "FitCharacter.h"
 #import "appearance.h"
 
 @interface FittingServiceMenuViewController()
@@ -42,7 +42,6 @@
 @end
 
 @implementation FittingServiceMenuViewController
-@synthesize popoverController;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -64,15 +63,11 @@
 
 	self.title = NSLocalizedString(@"Fitting", nil);
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
-		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
-	}
-	else
-		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		self.itemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
 																											style:UIBarButtonItemStyleBordered
 																										   target:self
-																										   action:@selector(didCloseModalViewController:)];
+																										   action:@selector(dismiss)];
 //	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
@@ -95,27 +90,12 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
-    [super viewDidUnload];
-	self.fittingItemsViewController = nil;
-	self.modalController = nil;
-	self.popoverController = nil;
-	self.fits = nil;
-}
-
-
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
 	[self.tableView setEditing:editing animated:animated];
 	if (!editing) {
 	}
 }
-
-- (IBAction) didCloseModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -164,7 +144,7 @@
 		}
 	}
 	else {
-		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		Fit* fit = self.fits[indexPath.section - 1][indexPath.row];
 		cell.textLabel.text = fit.typeName;
 		cell.detailTextLabel.text = fit.fitName;
 		cell.imageView.image = [UIImage imageNamed:fit.imageName];
@@ -187,7 +167,7 @@
 		if (rows.count > 0)
 			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
 		else
-			return @"";
+			return nil;
 	}
 }
 
@@ -310,13 +290,13 @@
 				character = new eufe::Character(fittingViewController.fittingEngine);
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
-				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-					CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-					character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-					character->setSkillLevels(*[eveCharacter skillsMap]);
+				if (currentAccount.characterSheet) {
+					FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+					character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setSkillLevels(*[fitCharacter skillsMap]);
 				}
 				else
-					character->setCharacterName("All Skills 0");
+					character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 				weakOperation.progress = 0.5;
 
 				shipFit.character = character;
@@ -397,13 +377,13 @@
 			character->setShip(type.typeID);
 			
 			EVEAccount* currentAccount = [EVEAccount currentAccount];
-			if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-				CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-				character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-				character->setSkillLevels(*[eveCharacter skillsMap]);
+			if (currentAccount.characterSheet) {
+				FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+				character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+				character->setSkillLevels(*[fitCharacter skillsMap]);
 			}
 			else
-				character->setCharacterName("All Skills 0");
+				character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 
 			weakOperation.progress = 0.5;
 			fit = [ShipFit shipFitWithFitName:type.typeName character:character];

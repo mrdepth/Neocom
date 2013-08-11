@@ -8,7 +8,7 @@
 
 #import "FitsViewController.h"
 #import "MainMenuCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
 #import "Globals.h"
 #import "FittingViewController.h"
 #import "EVEDBAPI.h"
@@ -16,18 +16,21 @@
 #import "ShipFit.h"
 #import "EUOperationQueue.h"
 #import "EVEAccount.h"
-#import "CharacterEVE.h"
+#import "FitCharacter.h"
 #import "NSArray+GroupBy.h"
 #import "EUStorage.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "NCItemsViewController.h"
 
 @interface FitsViewController()
 @property(nonatomic, strong) NSMutableArray *fits;
 
-
+- (void) reload;
 @end
 
 @implementation FitsViewController
-@synthesize popoverController;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -45,19 +48,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = NSLocalizedString(@"Fitting", nil);
-	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
-		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
-	}
-	else
-		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
-																											style:UIBarButtonItemStyleBordered
-																										   target:self
-																										   action:@selector(didCloseModalViewController:)];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -69,43 +63,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
-	__weak EUOperation* weakOperation = operation;
-	NSMutableArray* fitsTmp = [NSMutableArray array];
-	[operation addExecutionBlock:^{
-		@autoreleasepool {
-			EUStorage* storage = [EUStorage sharedStorage];
-			[storage.managedObjectContext performBlockAndWait:^{
-				NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-				NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
-				[fetchRequest setEntity:entity];
-				
-				NSError *error = nil;
-				NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-				
-				weakOperation.progress = 0.5;
-				
-				[fitsTmp addObjectsFromArray:[fetchedObjects arrayGroupedByKey:@"type.groupID"]];
-				weakOperation.progress = 0.75;
-				[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-					Fit* a = [obj1 objectAtIndex:0];
-					Fit* b = [obj2 objectAtIndex:0];
-					return [a.type.group.groupName compare:b.type.group.groupName];
-				}];
-				weakOperation.progress = 1.0;
-			}];
-		}
-
-	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		if (![weakOperation isCancelled]) {
-			self.fits = fitsTmp;
-			[self.tableView reloadData];
-		}
-	}];
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,22 +71,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.fittingItemsViewController = nil;
-	self.modalController = nil;
-	self.popoverController = nil;
-	self.fits = nil;
-}
-
-- (IBAction) didCloseModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (IBAction) onClose:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
@@ -141,47 +83,48 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return section == 0 ? 1 : [[self.fits objectAtIndex:section - 1] count];
+	return section == 0 ? 1 : [self.fits[section - 1] count];
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*if (indexPath.section == 0) {
-		NSString *cellIdentifier = @"MainMenuCellView";
-		
-		MainMenuCellView *cell = (MainMenuCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [MainMenuCellView cellWithNibName:@"MainMenuCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		cell.titleLabel.text = NSLocalizedString(@"New Ship Fit", nil);
-		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
-		return cell;
+	static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	
+	if (indexPath.section == 0) {
+		cell.textLabel.text = NSLocalizedString(@"New Ship Fit", nil);
+		cell.imageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 	}
 	else {
-		NSString *cellIdentifier = @"FitCellView";
-		
-		FitCellView *cell = (FitCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [FitCellView cellWithNibName:@"FitCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		cell.shipNameLabel.text = fit.typeName;
-		cell.fitNameLabel.text = fit.fitName;
-		cell.iconView.image = [UIImage imageNamed:fit.imageName];
-		return cell;
-	}*/
-	return nil;
+		Fit* fit = self.fits[indexPath.section - 1][indexPath.row];
+		cell.textLabel.text = fit.typeName;
+		cell.detailTextLabel.text = fit.fitName;
+		cell.imageView.image = [UIImage imageNamed:fit.imageName];
+	}
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return NSLocalizedString(@"Menu", nil);
+		return nil;
 	else {
 		NSArray* rows = [self.fits objectAtIndex:section - 1];
 		if (rows.count > 0)
-			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
+			return [rows[0] valueForKeyPath:@"type.group.groupName"];
 		else
-			return @"";
+			return nil;
 	}
 }
 
@@ -189,44 +132,30 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 45;
-	else
-		return 36;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
-		//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) ORDER BY groupName;";
-		//fittingItemsViewController.typesRequest = @"SELECT * FROM invTypes WHERE published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName;";
-		//fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName";
-		self.fittingItemsViewController.marketGroupID = 4;
-		self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		else
-			[self presentModalViewController:self.modalController animated:YES];
+		NCItemsViewController* controller = [[NCItemsViewController alloc] init];
+		controller.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
+		controller.title = NSLocalizedString(@"Ships", nil);
+		[self presentViewController:controller animated:YES completion:nil];
 	}
 	else {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"FleetViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block ShipFit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block eufe::Character* character = NULL;
@@ -235,13 +164,13 @@
 				character = new eufe::Character(self.engine);
 				
 				EVEAccount* currentAccount = [EVEAccount currentAccount];
-				if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-					CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-					character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-					character->setSkillLevels(*[eveCharacter skillsMap]);
+				if (currentAccount.characterSheet) {
+					FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+					character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setSkillLevels(*[fitCharacter skillsMap]);
 				}
 				else
-					character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 				
 				weakOperation.progress = 0.5;
 				
@@ -270,10 +199,7 @@
 #pragma mark FittingItemsViewControllerDelegate
 
 - (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[popoverController dismissPopoverAnimated:YES];
-	
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;
@@ -282,13 +208,13 @@
 		character->setShip(type.typeID);
 
 		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		if (currentAccount && currentAccount.charKeyID && currentAccount.charVCode && currentAccount.characterID) {
-			CharacterEVE* eveCharacter = [CharacterEVE characterWithCharacterID:currentAccount.characterID keyID:currentAccount.charKeyID vCode:currentAccount.charVCode name:currentAccount.characterName];
-			character->setCharacterName([eveCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			character->setSkillLevels(*[eveCharacter skillsMap]);
+		if (currentAccount.characterSheet) {
+			FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+			character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setSkillLevels(*[fitCharacter skillsMap]);
 		}
 		else
-			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) cStringUsingEncoding:NSUTF8StringEncoding]);
+			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
 
 		weakOperation.progress = 0.5;
 		fit = [ShipFit shipFitWithFitName:type.typeName character:character];
@@ -303,6 +229,47 @@
 		else {
 			if (!character)
 				delete character;
+		}
+	}];
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+#pragma mark - Private
+
+- (void) reload {
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+reload" name:NSLocalizedString(@"Loading Fits", nil)];
+	__weak EUOperation* weakOperation = operation;
+	NSMutableArray* fitsTmp = [NSMutableArray array];
+	[operation addExecutionBlock:^{
+		@autoreleasepool {
+			EUStorage* storage = [EUStorage sharedStorage];
+			[storage.managedObjectContext performBlockAndWait:^{
+				NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+				NSEntityDescription *entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
+				[fetchRequest setEntity:entity];
+				
+				NSError *error = nil;
+				NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+				
+				weakOperation.progress = 0.5;
+				
+				[fitsTmp addObjectsFromArray:[fetchedObjects arrayGroupedByKey:@"type.groupID"]];
+				weakOperation.progress = 0.75;
+				[fitsTmp sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					Fit* a = [obj1 objectAtIndex:0];
+					Fit* b = [obj2 objectAtIndex:0];
+					return [a.type.group.groupName compare:b.type.group.groupName];
+				}];
+				weakOperation.progress = 1.0;
+			}];
+		}
+		
+	}];
+	
+	[operation setCompletionBlockInMainThread:^{
+		if (![weakOperation isCancelled]) {
+			self.fits = fitsTmp;
+			[self.tableView reloadData];
 		}
 	}];
 	[[EUOperationQueue sharedQueue] addOperation:operation];

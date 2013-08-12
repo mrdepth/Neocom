@@ -23,6 +23,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NCItemsViewController.h"
+#import "UIViewController+Neocom.h"
 
 @interface FitsViewController()
 @property(nonatomic, strong) NSMutableArray *fits;
@@ -152,10 +153,52 @@
 		NCItemsViewController* controller = [[NCItemsViewController alloc] init];
 		controller.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
 		controller.title = NSLocalizedString(@"Ships", nil);
-		[self presentViewController:controller animated:YES completion:nil];
+		controller.completionHandler = ^(EVEDBInvType* type) {
+			EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
+			__weak EUOperation* weakOperation = operation;
+			__block ShipFit* fit = nil;
+			__block eufe::Character* character = NULL;
+			[operation addExecutionBlock:^{
+				character = new eufe::Character(self.engine);
+				character->setShip(type.typeID);
+				
+				EVEAccount* currentAccount = [EVEAccount currentAccount];
+				if (currentAccount.characterSheet) {
+					FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+					character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+					character->setSkillLevels(*[fitCharacter skillsMap]);
+				}
+				else
+					character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
+				
+				weakOperation.progress = 0.5;
+				fit = [ShipFit shipFitWithFitName:type.typeName character:character];
+				weakOperation.progress = 1.0;
+			}];
+			
+			[operation setCompletionBlockInMainThread:^{
+				if (![weakOperation isCancelled]) {
+					[fit save];
+					[self.delegate fitsViewController:self didSelectFit:fit];
+				}
+				else {
+					if (!character)
+						delete character;
+				}
+			}];
+			[[EUOperationQueue sharedQueue] addOperation:operation];
+		};
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self presentViewControllerInPopover:controller
+										fromRect:[tableView rectForRowAtIndexPath:indexPath]
+										  inView:tableView
+						permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self presentViewController:controller animated:YES completion:nil];
 	}
 	else {
-		EUOperation* operation = [EUOperation operationWithIdentifier:@"FleetViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"FitsViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block ShipFit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
 		__block eufe::Character* character = NULL;

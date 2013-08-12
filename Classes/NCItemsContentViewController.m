@@ -21,13 +21,13 @@
 @end
 
 @interface NCItemsViewController()
-@property (nonatomic, strong) NSArray* marketGroups;
+@property (nonatomic, strong) NSArray* groups;
 @property (nonatomic, strong) NSSet* conditionsTables;
 @end
 
 @interface NCItemsContentViewController ()
-@property (nonatomic, strong) NSArray* marketGroups;
-@property (nonatomic, assign) NSInteger marketGroupID;
+@property (nonatomic, strong) NSArray* groups;
+@property (nonatomic, assign) NSInteger groupID;
 @property (nonatomic, strong) NSArray* sections;
 @property (nonatomic, strong) NSArray* searchResult;
 @property (nonatomic, strong) NSString* typesRequest;
@@ -55,7 +55,7 @@
 {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
-	if (!self.marketGroups)
+	if (!self.groups)
 		[self reload];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -78,7 +78,7 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return self.searchResult.count;
 	else
-		return self.marketGroupID ? self.sections.count : 1;
+		return self.groupID ? self.sections.count : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -86,7 +86,7 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return [self.searchResult[section][@"rows"] count];
 	else
-		return self.marketGroupID ? [self.sections[section][@"rows"] count] : self.marketGroups.count;
+		return self.groupID ? [self.sections[section][@"rows"] count] : self.groups.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -104,13 +104,13 @@
 		cell.imageView.image = [UIImage imageNamed:row.typeSmallImageName];
 	}
 	else {
-		if (self.marketGroupID) {
+		if (self.groupID) {
 			EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 			cell.textLabel.text = row.typeName;
 			cell.imageView.image = [UIImage imageNamed:row.typeSmallImageName];
 		}
 		else {
-			EVEDBInvMarketGroup* row = self.marketGroups[indexPath.row];
+			EVEDBInvMarketGroup* row = self.groups[indexPath.row];
 			cell.textLabel.text = row.marketGroupName;
 			if (row.icon.iconImageName)
 				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
@@ -132,7 +132,7 @@
 	if (tableView == self.searchDisplayController.searchResultsTableView)
 		return self.searchResult[section][@"title"];
 	else
-		return self.marketGroupID ? self.sections[section][@"title"] : nil;
+		return self.groupID ? self.sections[section][@"title"] : nil;
 }
 
 #pragma mark - Table view delegate
@@ -160,29 +160,29 @@
 			EVEDBInvType* type = self.searchResult[indexPath.section][@"rows"][indexPath.row];
 			itemsViewController.completionHandler(type);
 		}
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-			[self dismissViewControllerAnimated:YES completion:nil];
+//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//			[self dismissViewControllerAnimated:YES completion:nil];
 	}
-	else if (self.marketGroupID) {
+	else if (self.groupID) {
 		NCItemsViewController* itemsViewController = (NCItemsViewController*) self.navigationController;
 		if (itemsViewController.completionHandler) {
 			EVEDBInvType* type = self.sections[indexPath.section][@"rows"][indexPath.row];
 			itemsViewController.completionHandler(type);
 		}
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-			[self dismissViewControllerAnimated:YES completion:nil];
+//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//			[self dismissViewControllerAnimated:YES completion:nil];
 	}
 	else {
 		NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
 		
-		EVEDBInvMarketGroup* marketGroup = self.marketGroups[indexPath.row];
+		EVEDBInvMarketGroup* marketGroup = self.groups[indexPath.row];
 		while (marketGroup.subgroups.count == 1)
 			marketGroup = marketGroup.subgroups[0];
 		
 		if (marketGroup.subgroups.count > 0)
-			controller.marketGroups = marketGroup.subgroups;
+			controller.groups = marketGroup.subgroups;
 		else
-			controller.marketGroupID = marketGroup.marketGroupID;
+			controller.groupID = marketGroup.marketGroupID;
 		
 		controller.title = marketGroup.marketGroupName;
 		[self.navigationController pushViewController:controller animated:YES];
@@ -214,16 +214,16 @@
 - (void) reload {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"NCItemsContentViewController+reload" name:@"Loading..."];
 	__block NSArray* sections = nil;
-	__block NSArray* marketGroups = nil;
+	__block NSArray* groups = nil;
 	
 	[operation addExecutionBlock:^{
 		NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-		if (!self.marketGroups)
-			marketGroups = marketGroups = self.itemsViewController.marketGroups;
-		if (marketGroups.count == 1)
-			self.marketGroupID = [marketGroups[0] marketGroupID];
+		if (!self.groups)
+			groups = groups = self.itemsViewController.groups;
+		if (groups.count == 1)
+			self.groupID = [groups[0] marketGroupID];
 		
-		if (self.marketGroupID) {
+		if (self.groupID) {
 			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 			[database execSQLRequest:self.typesRequest resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 				EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
@@ -246,7 +246,7 @@
 	
 	[operation setCompletionBlockInMainThread:^{
 		self.sections = sections;
-		self.marketGroups = marketGroups;
+		self.groups = groups;
 		[self.tableView reloadData];
 	}];
 	
@@ -258,7 +258,7 @@
 	
 	if (!_typesRequest) {
 		NSMutableSet* fromTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
-		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:[NSString stringWithFormat:@"invTypes.marketGroupID = %d", self.marketGroupID], @"invTypes.published = 1", nil];
+		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:[NSString stringWithFormat:@"invTypes.marketGroupID = %d", self.groupID], @"invTypes.published = 1", nil];
 		
 		[fromTables unionSet:itemsViewController.conditionsTables];
 		[allConditions addObjectsFromArray:itemsViewController.conditions];

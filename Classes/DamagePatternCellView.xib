@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -45,7 +45,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{10, 2}, {258, 16}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="99626194"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -89,7 +88,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{175, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="407721241"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -134,7 +132,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{120, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="178653405"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -165,7 +162,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{65, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="869893449"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -196,7 +192,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{10, 20}, {50, 18}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="718588117"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
@@ -227,7 +222,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{286, 6}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="506135338"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">1</int>
@@ -237,7 +231,6 @@
 						</array>
 						<string key="NSFrameSize">{320, 43}</string>
 						<reference key="NSSuperview" ref="456304476"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1042385943"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -252,7 +245,6 @@
 				</array>
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="506135338"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -465,8 +457,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="cellBackground.png">{2, 4}</string>
-			<string key="cellBackgroundSelected.png">{2, 4}</string>
+			<string key="cellBackground.png">{5, 5}</string>
+			<string key="cellBackgroundSelected.png">{5, 5}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

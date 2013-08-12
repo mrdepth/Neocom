@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "AreaEffectsViewControllerDelegate.h"
 
-@interface AreaEffectsViewController : UITableViewController<UIPopoverControllerDelegate>
+@interface AreaEffectsViewController : UITableViewController
 @property (nonatomic, weak) IBOutlet id<AreaEffectsViewControllerDelegate> delegate;
-@property (nonatomic, weak) IBOutlet UIViewController *mainViewController;
 @property (nonatomic, strong) EVEDBInvType* selectedArea;
 
 @end

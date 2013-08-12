@@ -8,11 +8,11 @@
 
 #import "TargetsViewController.h"
 #import "FittingViewController.h"
-#import "FleetMemberCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "EUOperationQueue.h"
 #import "ShipFit.h"
 #import "ItemInfo.h"
+#import "GroupedCell.h"
+#import "appearance.h"
 
 #include "eufe.h"
 
@@ -45,13 +45,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	self.title = @"Select Target";
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	self.title = NSLocalizedString(@"Select Target", nil);
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+																				 style:UIBarButtonItemStyleBordered
+																				target:self
+																				action:@selector(dismiss)];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -62,17 +62,11 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-	self.targets = nil;
-}
-
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
 	NSMutableArray* targetsTmp = [NSMutableArray array];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:NSLocalizedString(@"Loading Targets", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"TargetsViewController+Update" name:NSLocalizedString(@"Loading Targets", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		eufe::Gang* gang = self.fittingViewController.fittingEngine->getGang();
@@ -120,6 +114,11 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.completionHandler = nil;
+}
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -136,23 +135,27 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString *cellIdentifier = @"FleetMemberCellView";
-	FleetMemberCellView *cell = (FleetMemberCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *cellIdentifier = @"Cell";
+	GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
-		cell = [FleetMemberCellView cellWithNibName:@"FleetMemberCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 	}
-	NSDictionary* row = [self.targets objectAtIndex:indexPath.row];
-	ItemInfo* ship = [row valueForKey:@"ship"];
-	ShipFit* fit = [[self.targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
+	NSDictionary* row = self.targets[indexPath.row];
+	ItemInfo* ship = row[@"ship"];
+	ShipFit* fit = row[@"fit"];
 
-	cell.titleLabel.text = [row valueForKey:@"title"];
-	cell.fitNameLabel.text = [row valueForKey:@"fitName"];
-	cell.iconView.image = [UIImage imageNamed:[ship typeSmallImageName]];
-	if (self.currentTarget == fit.character->getShip())
-		cell.stateView.image = [UIImage imageNamed:@"Icons/icon04_12.png"];
-	else
-		cell.stateView.image = nil;
+	cell.textLabel.text = [row valueForKey:@"title"];
+	cell.detailTextLabel.text = [row valueForKey:@"fitName"];
+	cell.imageView.image = [UIImage imageNamed:[ship typeSmallImageName]];
+	cell.accessoryView = self.currentTarget == fit.character->getShip() ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
 	return cell;
 }
 
@@ -167,7 +170,8 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	ShipFit* fit = [[self.targets objectAtIndex:indexPath.row] valueForKey:@"fit"];
-	[self.delegate targetsViewController:self didSelectTarget:fit.character->getShip()];
+	self.completionHandler(fit.character->getShip());
+	self.completionHandler = nil;
 }
 
 #pragma mark UIPopoverControllerDelegate

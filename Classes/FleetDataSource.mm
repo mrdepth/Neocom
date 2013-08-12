@@ -15,6 +15,7 @@
 #import "UIActionSheet+Neocom.h"
 #import "ItemViewController.h"
 #import "CharactersViewController.h"
+#import "UIViewController+Neocom.h"
 
 #define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -147,10 +148,35 @@
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if (indexPath.row == self.pilots.count) {
+		FitsViewController* controller = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
+		controller.engine = self.fittingViewController.fittingEngine;
+		controller.delegate = self;
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
 	}
+}
+
+#pragma mark FitsViewControllerDelegate
+
+- (void) fitsViewController:(FitsViewController*) aController didSelectFit:(ShipFit*) fit {
+	if (![self.fittingViewController.fits containsObject:fit]) {
+		eufe::Character* character = fit.character;
+		self.fittingViewController.fittingEngine->getGang()->addPilot(character);
+		[self.fittingViewController.fits addObject:fit];
+		
+		eufe::DamagePattern eufeDamagePattern;
+		eufeDamagePattern.emAmount = self.fittingViewController.damagePattern.emAmount;
+		eufeDamagePattern.thermalAmount = self.fittingViewController.damagePattern.thermalAmount;
+		eufeDamagePattern.kineticAmount = self.fittingViewController.damagePattern.kineticAmount;
+		eufeDamagePattern.explosiveAmount = self.fittingViewController.damagePattern.explosiveAmount;
+		character->getShip()->setDamagePattern(eufeDamagePattern);
+		[self.fittingViewController update];
+	}
+	[self.fittingViewController dismiss];
 }
 
 #pragma mark - Private

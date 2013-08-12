@@ -19,6 +19,7 @@
 #import "UIActionSheet+Block.h"
 #import "ItemViewController.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 #include "eufe.h"
 
@@ -90,24 +91,8 @@
 	
 	self.sectionSegmentControl.selectedSegmentIndex = self.currentSectionIndex;
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.statsSectionView addSubview:self.statsViewController.view];
-		self.statsViewController.view.frame = self.statsSectionView.bounds;
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
-		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
-
-		self.targetsPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.targetsModalController];
-		self.targetsPopoverController.delegate = (FittingItemsViewController*)  self.targetsModalController.topViewController;
-		
-		self.areaEffectsPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.areaEffectsModalController];
-		self.areaEffectsPopoverController.delegate = (AreaEffectsViewController*)  self.areaEffectsModalController.topViewController;
-		
-		self.modulesViewController.popoverController = self.popoverController;
-		self.dronesViewController.popoverController = self.popoverController;
-		self.implantsViewController.popoverController = self.popoverController;
-	}
 	self.priceManager = [[PriceManager alloc] init];
-	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Options", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onMenu:)]];
+	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onMenu:)]];
 	[self update];
 	
 	self.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
@@ -241,40 +226,178 @@
 }
 
 - (IBAction) onMenu:(id) sender {
-	if (self.actionSheet) {
-		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
-	}
-	self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-											  delegate:self
-									 cancelButtonTitle:nil
-								destructiveButtonTitle:nil
-									 otherButtonTitles:nil];
-//	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-//		[actionSheet addButtonWithTitle:ActionButtonBack];
+	NSMutableArray* buttons = [NSMutableArray new];
+	NSMutableArray* actions = [NSMutableArray new];
 	
-	if (self.fittingEngine->getArea() != NULL) {
-		[self.actionSheet addButtonWithTitle:ActionButtonClearAreaEffect];
-		self.actionSheet.destructiveButtonIndex = self.actionSheet.numberOfButtons - 1;
+	void (^clearAreaEffect)() = ^() {
+		self.fittingEngine->clearArea();
+		[self update];
+	};
+	
+	void (^shipInfo)() = ^() {
+		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:self.fit.character->getShip() error:nil];
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+		
+		[itemInfo updateAttributes];
+		itemViewController.type = itemInfo;
+		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentViewController:navController animated:YES completion:nil];
+		}
+		else
+			[self.navigationController pushViewController:itemViewController animated:YES];
+	};
+	
+	void (^rename)() = ^() {
+		self.fitNameTextField.text = self.fit.fitName;
+		self.navigationItem.titleView = self.fitNameTextField;
+		[self.fitNameTextField becomeFirstResponder];
+	};
+	
+	void (^save)() = ^() {
+		[self.fit save];
+	};
+
+	void (^duplicate)() = ^() {
+		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.fit.managedObjectContext] insertIntoManagedObjectContext:self.fit.managedObjectContext];
+		shipFit.typeID = self.fit.typeID;
+		shipFit.typeName = self.fit.typeName;
+		shipFit.imageName = self.fit.imageName;
+		shipFit.fitName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.fitName ? self.fit.fitName : @""];
+		shipFit.character = self.fit.character;
+		[self.fits replaceObjectAtIndex:[self.fits indexOfObject:self.fit] withObject:shipFit];
+		self.fit = shipFit;
+		self.fitNameTextField.text = shipFit.fitName;
+		[self update];
+	};
+	
+	void (^setCharacter)() = ^() {
+		CharactersViewController *controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		
+		controller.completionHandler = ^(id<Character> character) {
+			eufe::Character* eufeCharacter = self.fit.character;
+			eufeCharacter->setSkillLevels(*[character skillsMap]);
+			eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
+			[self update];
+		};
+		
+		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentViewController:navigationController animated:YES completion:nil];
+	};
+
+	void (^viewInBrowser)() = ^() {
+		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
+		//controller.delegate = self;
+		controller.startPageURL = [NSURL URLWithString:self.fit.url];
+		[self presentViewController:controller animated:YES completion:nil];
+	};
+
+	void (^setAreaEffect)() = ^() {
+		AreaEffectsViewController* controller = [[AreaEffectsViewController alloc] initWithNibName:@"AreaEffectsViewController" bundle:nil];
+		controller.delegate = self;
+		eufe::Item* area = self.fittingEngine->getArea();
+		controller.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
+
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self presentViewControllerInPopover:navigationController fromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else {
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+			[self presentViewController:navigationController animated:YES completion:nil];
+		}
+		
+
+	};
+
+	void (^setDamagePattern)() = ^() {
+		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:@"DamagePatternsViewController" bundle:nil];
+		damagePatternsViewController.delegate = self;
+		damagePatternsViewController.currentDamagePattern = self.damagePattern;
+		
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:damagePatternsViewController];
+		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		[self presentViewController:navController animated:YES completion:nil];
+	};
+
+	void (^requiredSkills)() = ^() {
+		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
+		requiredSkillsViewController.fit = self.fit;
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
+		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		[self presentViewController:navController animated:YES completion:nil];
+	};
+
+	void (^exportFit)() = ^() {
+		[self performExport];
+	};
+
+	if (self.fittingEngine->getArea() != NULL)
+		[actions addObject:clearAreaEffect];
+
+	[actions addObject:shipInfo];
+	[buttons addObject:ActionButtonShowShipInfo];
+	
+	[actions addObject:rename];
+	[buttons addObject:ActionButtonSetName];
+
+	if (!self.fit.managedObjectContext) {
+		[actions addObject:save];
+		[buttons addObject:ActionButtonSave];
+	}
+	else {
+		[actions addObject:duplicate];
+		[buttons addObject:ActionButtonDuplicate];
 	}
 
-	[self.actionSheet addButtonWithTitle:ActionButtonShowShipInfo];
-	[self.actionSheet addButtonWithTitle:ActionButtonSetName];
-	if (!self.fit.managedObjectContext)
-		[self.actionSheet addButtonWithTitle:ActionButtonSave];
-	else
-		[self.actionSheet addButtonWithTitle:ActionButtonDuplicate];
-	[self.actionSheet addButtonWithTitle:ActionButtonCharacter];
-	if (self.fit.url)
-		[self.actionSheet addButtonWithTitle:ActionButtonViewInBrowser];
-	[self.actionSheet addButtonWithTitle:ActionButtonAreaEffect];
+	[actions addObject:setCharacter];
+	[buttons addObject:ActionButtonCharacter];
+
+	if (self.fit.url) {
+		[actions addObject:viewInBrowser];
+		[buttons addObject:ActionButtonViewInBrowser];
+	}
+
+	[actions addObject:setAreaEffect];
+	[buttons addObject:ActionButtonAreaEffect];
+
+	[actions addObject:setDamagePattern];
+	[buttons addObject:ActionButtonSetDamagePattern];
+
+	[actions addObject:requiredSkills];
+	[buttons addObject:ActionButtonRequiredSkills];
+
+	[actions addObject:exportFit];
+	[buttons addObject:ActionButtonExport];
+
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
+		self.actionSheet = nil;
+	}
 	
-	[self.actionSheet addButtonWithTitle:ActionButtonSetDamagePattern];
-	[self.actionSheet addButtonWithTitle:ActionButtonRequiredSkills];
-	[self.actionSheet addButtonWithTitle:ActionButtonExport];
-	[self.actionSheet addButtonWithTitle:ActionButtonCancel];
 	
-	self.actionSheet.cancelButtonIndex = self.actionSheet.numberOfButtons - 1;
-	
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+													 title:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:self.fittingEngine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
+										 otherButtonTitles:buttons
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   void (^action)() = actions[selectedButtonIndex];
+												   action();
+											   }
+											   self.actionSheet = nil;
+										   } cancelBlock:nil];
 	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
@@ -323,11 +446,6 @@
 
 - (void) update {
 	[(FittingDataSource*) self.tableView.dataSource reload];
-//	[self.modulesDataSource reload];
-//	[self.dronesDataSource reload];
-//	[self.currentSection update];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.statsViewController update];
 }
 
 - (void) addFleetMember {
@@ -490,7 +608,14 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
-	[self onDone:nil];
+	self.fit.fitName = self.fitNameTextField.text;
+	
+	eufe::Character* character = self.fit.character;
+	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
+	self.navigationItem.titleView = nil;
+	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, self.fit.fitName ? self.fit.fitName : itemInfo.typeName];
+
+	[self update];
 	return YES;
 }
 
@@ -504,10 +629,7 @@
 
 - (void) areaEffectsViewController:(AreaEffectsViewController*) controller didSelectAreaEffect:(EVEDBInvType*) areaEffect {
 	self.fittingEngine->setArea(areaEffect.typeID);
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.areaEffectsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
+	[self dismiss];
 	[self update];
 }
 
@@ -611,7 +733,7 @@
 	[self update];
 }
 
-#pragma mark TargetsViewControllerDelegate
+/*#pragma mark TargetsViewControllerDelegate
 - (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
 	ItemInfo* itemInfo = controller.modifiedItem;
 	if (itemInfo.group.categoryID == 18) { // Drone
@@ -636,7 +758,7 @@
 		[self.targetsPopoverController dismissPopoverAnimated:YES];
 	else
 		[self dismissModalViewControllerAnimated:YES];
-}
+}*/
 
 #pragma mark FittingVariationsViewControllerDelegate
 
@@ -699,6 +821,8 @@
 }
 
 - (void) save {
+	self.fit.fitName = self.fitNameTextField.text;
+	
 	for (Fit* item in self.fits)
 		if (item.managedObjectContext)
 			[item save];

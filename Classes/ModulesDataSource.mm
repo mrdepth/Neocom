@@ -18,6 +18,8 @@
 #import "UIActionSheet+Neocom.h"
 #import "FittingVariationsViewController.h"
 #import "ItemViewController.h"
+#import "UIViewController+Neocom.h"
+#import "TargetsViewController.h"
 
 #define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)
 #define ActionButtonOnline NSLocalizedString(@"Put Online", nil)
@@ -372,6 +374,8 @@
 		self.fittingViewController.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
 			ship->addModule(type.typeID);
 			[self.fittingViewController update];
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+				[self.fittingViewController dismiss];
 		};
 		
 		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
@@ -521,6 +525,7 @@
 				module->setCharge(type.typeID);
 			}
 			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
 		};
 		
 		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
@@ -555,7 +560,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentModalViewController:navController animated:YES];
+			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
@@ -569,15 +574,38 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentModalViewController:navController animated:YES];
+			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];
 	};
 
 	void (^setTarget)(NSArray*) = ^(NSArray* modules){
+		TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
+		controller.currentTarget = module->getTarget();
+		controller.fittingViewController = self.fittingViewController;
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		controller.completionHandler = ^(eufe::Ship* target) {
+			for (ItemInfo* itemInfo in modules) {
+				eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+				module->setTarget(target);
+			}
+			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
+		};
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		}
+		else
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
+		
 	};
 	void (^clearTarget)(NSArray*) = ^(NSArray* modules){
+		for (ItemInfo* itemInfo in modules) {
+			eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+			module->clearTarget();
+		}
+		[self.fittingViewController update];
 	};
 
 	void (^variations)(NSArray*) = ^(NSArray* modules){

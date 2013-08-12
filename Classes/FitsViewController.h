@@ -15,7 +15,5 @@
 @property (nonatomic, weak) id<FitsViewControllerDelegate> delegate;
 @property (nonatomic, assign) eufe::Engine* engine;
 
-- (IBAction) didCloseModalViewController:(id) sender;
-- (IBAction) onClose:(id) sender;
 
 @end

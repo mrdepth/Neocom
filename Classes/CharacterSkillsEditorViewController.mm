@@ -30,6 +30,7 @@
 @property(nonatomic, strong) NSArray *sections;
 @property(nonatomic, strong) NSMutableDictionary* groups;
 @property(nonatomic, strong) NSIndexPath *modifiedIndexPath;
+@property(nonatomic, strong) UIActionSheet* actionSheet;
 
 - (void) keyboardWillShow: (NSNotification*) notification;
 - (void) keyboardWillHide: (NSNotification*) notification;
@@ -159,18 +160,25 @@
 	[actions addObject:duplicate];
 	[buttons addObject:ActionButtonDuplicate];
 	
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
+		self.actionSheet = nil;
+	}
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:!self.character.readonly ? NSLocalizedString(@"Delete", nil) : nil
-					   otherButtonTitles:buttons
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 void (^action)() = actions[selectedButtonIndex];
-								 action();
-							 }
-						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+	
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+													 title:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:!self.character.readonly ? NSLocalizedString(@"Delete", nil) : nil
+										 otherButtonTitles:buttons
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   void (^action)() = actions[selectedButtonIndex];
+												   action();
+											   }
+											   self.actionSheet = nil;
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 - (IBAction) onDone:(id)sender {

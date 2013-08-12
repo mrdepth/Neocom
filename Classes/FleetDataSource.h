@@ -7,7 +7,8 @@
 //
 
 #import "FittingDataSource.h"
+#import "FitsViewController.h"
 
-@interface FleetDataSource : FittingDataSource
+@interface FleetDataSource : FittingDataSource<FitsViewControllerDelegate>
 
 @end

@@ -34,18 +34,27 @@
 @end
 
 @interface NCItemsViewController ()
-@property (nonatomic, strong) NSArray* marketGroups;
+@property (nonatomic, strong) NSArray* groups;
 @property (nonatomic, strong) NSSet* conditionsTables;
 
 @end
 
 @implementation NCItemsViewController
 
+- (void) awakeFromNib {
+	NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
+	controller.itemsViewController = self;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+	self.viewControllers = @[controller];
+}
+
 - (id) init {
 	NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
 	controller.itemsViewController = self;
 	if (self = [super initWithRootViewController:controller]) {
-		controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
 	}
 	return self;
 }
@@ -76,7 +85,7 @@
 	if ([conditions isEqualToArray:_conditions])
 		return;
 	_conditions = conditions;
-	_marketGroups = nil;
+	_groups = nil;
 	_conditionsTables = nil;
 	if ([self isViewLoaded]) {
 		NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
@@ -109,8 +118,8 @@
 	return _conditionsTables;
 }
 
-- (NSArray*) marketGroups {
-	if (!_marketGroups) {
+- (NSArray*) groups {
+	if (!_groups) {
 		NSMutableSet* allTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
 		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invMarketGroups.marketGroupID=invTypes.marketGroupID", @"invTypes.published=1", nil];
 		
@@ -161,7 +170,7 @@
 				break;
 			lastGroups = parentGroup.subgroups;
 		}
-		_marketGroups = lastGroups;
+		_groups = lastGroups;
 		
 		[marketGroupsMap enumerateKeysAndObjectsUsingBlock:^(id key, EVEDBInvMarketGroup* marketGroup, BOOL *stop) {
 			[marketGroup.subgroups sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]]];
@@ -170,7 +179,7 @@
 
 
 	}
-	return _marketGroups;
+	return _groups;
 }
 
 @end

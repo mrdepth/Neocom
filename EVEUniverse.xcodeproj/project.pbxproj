@@ -30,7 +30,6 @@
 		1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0F616C8EEF8006E504E /* VariationsViewController.m */; };
 		1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0F716C8EEF8006E504E /* VariationsViewController.xib */; };
 		1213C0FD16C8FD07006E504E /* FittingVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */; };
-		121F3E671679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */; };
 		1224EBDE1647E698004401C5 /* CollapsableTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */; };
 		1224EBE01647E6B4004401C5 /* CollapsableTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */; };
 		1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBE91648E786004401C5 /* KillboardCellView.xib */; };
@@ -394,8 +393,6 @@
 		379F2D811418191B0018B2CA /* marketOrdersFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 379F2D801418191B0018B2CA /* marketOrdersFilter.plist */; };
 		37A0C25D14B35A92008ACDB4 /* AreaEffectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */; };
 		37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A0C25C14B35A92008ACDB4 /* AreaEffectsViewController.xib */; };
-		37A0C26914B37465008ACDB4 /* AreaEffectCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A0C26814B37465008ACDB4 /* AreaEffectCellView.m */; };
-		37A0C26B14B37476008ACDB4 /* AreaEffectCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A0C26A14B37476008ACDB4 /* AreaEffectCellView.xib */; };
 		37A4A3C114CECD00001DB4C7 /* CertificateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A4A3C014CECD00001DB4C7 /* CertificateView.m */; };
 		37A4A3C314CECD13001DB4C7 /* CertificateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A4A3C214CECD13001DB4C7 /* CertificateView.xib */; };
 		37A4A3CE14CEE361001DB4C7 /* certificateMaskBordered.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A4A3CD14CEE361001DB4C7 /* certificateMaskBordered.png */; };
@@ -435,7 +432,6 @@
 		37B965BE14D98EEF003F3900 /* DamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B965BD14D98EEF003F3900 /* DamagePattern.m */; };
 		37B965E014D99C1A003F3900 /* DamagePatternEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B965DE14D99C1A003F3900 /* DamagePatternEditViewController.m */; };
 		37B965E414D99F0B003F3900 /* ProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B965E314D99F09003F3900 /* ProgressTextField.m */; };
-		37B967C014D9C0B3003F3900 /* DamagePatternCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37B967BF14D9C0B2003F3900 /* DamagePatternCellView~ipad.xib */; };
 		37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37B967C314D9C478003F3900 /* damagePatterns.plist */; };
 		37BBC5AA15125D7600EDE204 /* POSFittingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */; };
 		37BBC5AE1512640E00EDE204 /* StructuresViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37BBC5AD1512640E00EDE204 /* StructuresViewController.mm */; };
@@ -698,7 +694,6 @@
 		71A0E9631379E3FC00CE4062 /* NSString+Fitting.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E9621379E3FC00CE4062 /* NSString+Fitting.m */; };
 		71A14EC71402E4A00090CDCA /* backgroundSplash-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A14EC61402E4A00090CDCA /* backgroundSplash-iPad.png */; };
 		71A14ECC1402E57B0090CDCA /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A14ECB1402E57B0090CDCA /* Default-Landscape~ipad.png */; };
-		71A1511A14030F4F0090CDCA /* mainMenu~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71A1511914030F4F0090CDCA /* mainMenu~ipad.plist */; };
 		71A16E35140D754A00BD69F5 /* UIDevice+IP.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A16E34140D754A00BD69F5 /* UIDevice+IP.m */; };
 		71A22806131D403800848200 /* IndustryJobsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A22804131D403800848200 /* IndustryJobsViewController.m */; };
 		71A22847131D479D00848200 /* IndustryJobCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A22846131D479D00848200 /* IndustryJobCellView.m */; };
@@ -881,7 +876,6 @@
 		1213C0F716C8EEF8006E504E /* VariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VariationsViewController.xib; sourceTree = "<group>"; };
 		1213C0FB16C8FD07006E504E /* FittingVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingVariationsViewController.h; sourceTree = "<group>"; };
 		1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingVariationsViewController.m; sourceTree = "<group>"; };
-		121F3E681679E5A20007CE03 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/DamagePatternEditViewController~ipad.xib"; sourceTree = "<group>"; };
 		1224EBDC1647E698004401C5 /* CollapsableTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableTableHeaderView.h; sourceTree = "<group>"; };
 		1224EBDD1647E698004401C5 /* CollapsableTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableTableHeaderView.m; sourceTree = "<group>"; };
 		1224EBDF1647E6B4004401C5 /* CollapsableTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapsableTableHeaderView.xib; sourceTree = "<group>"; };
@@ -1479,9 +1473,6 @@
 		37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaEffectsViewController.m; sourceTree = "<group>"; };
 		37A0C25C14B35A92008ACDB4 /* AreaEffectsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AreaEffectsViewController.xib; sourceTree = "<group>"; };
 		37A0C25F14B35AFB008ACDB4 /* AreaEffectsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaEffectsViewControllerDelegate.h; sourceTree = "<group>"; };
-		37A0C26714B37465008ACDB4 /* AreaEffectCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaEffectCellView.h; sourceTree = "<group>"; };
-		37A0C26814B37465008ACDB4 /* AreaEffectCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaEffectCellView.m; sourceTree = "<group>"; };
-		37A0C26A14B37476008ACDB4 /* AreaEffectCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AreaEffectCellView.xib; sourceTree = "<group>"; };
 		37A4A3BF14CECD00001DB4C7 /* CertificateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateView.h; sourceTree = "<group>"; };
 		37A4A3C014CECD00001DB4C7 /* CertificateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateView.m; sourceTree = "<group>"; };
 		37A4A3C214CECD13001DB4C7 /* CertificateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateView.xib; sourceTree = "<group>"; };
@@ -1543,7 +1534,6 @@
 		37B965DE14D99C1A003F3900 /* DamagePatternEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DamagePatternEditViewController.m; sourceTree = "<group>"; };
 		37B965E214D99F08003F3900 /* ProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressTextField.h; sourceTree = "<group>"; };
 		37B965E314D99F09003F3900 /* ProgressTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressTextField.m; sourceTree = "<group>"; };
-		37B967BF14D9C0B2003F3900 /* DamagePatternCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "DamagePatternCellView~ipad.xib"; sourceTree = "<group>"; };
 		37B967C314D9C478003F3900 /* damagePatterns.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = damagePatterns.plist; sourceTree = "<group>"; };
 		37BBC5A815125D7600EDE204 /* POSFittingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFittingViewController.h; sourceTree = "<group>"; };
 		37BBC5A915125D7600EDE204 /* POSFittingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFittingViewController.mm; sourceTree = "<group>"; };
@@ -1616,7 +1606,6 @@
 		71196C9414B1E77B00614711 /* TargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetsViewController.h; sourceTree = "<group>"; };
 		71196C9514B1E77B00614711 /* TargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetsViewController.mm; sourceTree = "<group>"; };
 		71196C9614B1E77B00614711 /* TargetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TargetsViewController.xib; sourceTree = "<group>"; };
-		71196C9914B1E79F00614711 /* TargetsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetsViewControllerDelegate.h; sourceTree = "<group>"; };
 		713BE29A1799D15F004F2A28 /* EVEAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountCell.h; sourceTree = "<group>"; };
 		713BE29B1799D15F004F2A28 /* EVEAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountCell.m; sourceTree = "<group>"; };
 		713BE29D1799D16D004F2A28 /* EVEAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EVEAccountCell.xib; sourceTree = "<group>"; };
@@ -1883,7 +1872,6 @@
 		71A0E9621379E3FC00CE4062 /* NSString+Fitting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Fitting.m"; sourceTree = "<group>"; };
 		71A14EC61402E4A00090CDCA /* backgroundSplash-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundSplash-iPad.png"; sourceTree = "<group>"; };
 		71A14ECB1402E57B0090CDCA /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
-		71A1511914030F4F0090CDCA /* mainMenu~ipad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mainMenu~ipad.plist"; sourceTree = "<group>"; };
 		71A16E33140D754A00BD69F5 /* UIDevice+IP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IP.h"; sourceTree = "<group>"; };
 		71A16E34140D754A00BD69F5 /* UIDevice+IP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IP.m"; sourceTree = "<group>"; };
 		71A22803131D403800848200 /* IndustryJobsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndustryJobsViewController.h; sourceTree = "<group>"; };
@@ -3243,7 +3231,6 @@
 				129284D01402A3CE00055445 /* MainWindow-iPad.xib */,
 				8D1107310486CEB800E47090 /* EVEUniverse-Info.plist */,
 				710852E71231283400397BC7 /* mainMenu.plist */,
-				71A1511914030F4F0090CDCA /* mainMenu~ipad.plist */,
 				71A93E1012ECCCF6007A4285 /* skillRequirementsMap.plist */,
 				717B183512F4B27E009DDE48 /* rssFeeds.plist */,
 				71834A0212FC342C00AEC222 /* tutorial.plist */,
@@ -3428,23 +3415,12 @@
 		37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				37A0C26614B37444008ACDB4 /* AreaEffectCellView */,
 				37A0C25A14B35A92008ACDB4 /* AreaEffectsViewController.h */,
 				37A0C25B14B35A92008ACDB4 /* AreaEffectsViewController.m */,
 				37A0C25C14B35A92008ACDB4 /* AreaEffectsViewController.xib */,
 				37A0C25F14B35AFB008ACDB4 /* AreaEffectsViewControllerDelegate.h */,
 			);
 			name = AreaEffectsViewController;
-			sourceTree = "<group>";
-		};
-		37A0C26614B37444008ACDB4 /* AreaEffectCellView */ = {
-			isa = PBXGroup;
-			children = (
-				37A0C26714B37465008ACDB4 /* AreaEffectCellView.h */,
-				37A0C26814B37465008ACDB4 /* AreaEffectCellView.m */,
-				37A0C26A14B37476008ACDB4 /* AreaEffectCellView.xib */,
-			);
-			name = AreaEffectCellView;
 			sourceTree = "<group>";
 		};
 		37A4A3BD14CECCCC001DB4C7 /* CertificateView */ = {
@@ -3471,7 +3447,6 @@
 			isa = PBXGroup;
 			children = (
 				71B0C31714B13D530022E9FE /* FleetMemberCellView */,
-				37B1B5F514ACC5C80037579C /* FitsViewController */,
 				37A6718714A0D52800D3284E /* FleetViewController.h */,
 				37A6718814A0D52800D3284E /* FleetViewController.mm */,
 				37A6718914A0D52800D3284E /* FleetViewController.xib */,
@@ -3611,7 +3586,6 @@
 				37B965B614D98532003F3900 /* DamagePatternCellView.h */,
 				37B965B714D98532003F3900 /* DamagePatternCellView.m */,
 				37B965B914D98544003F3900 /* DamagePatternCellView.xib */,
-				37B967BF14D9C0B2003F3900 /* DamagePatternCellView~ipad.xib */,
 			);
 			name = DamagePatternCellView;
 			sourceTree = "<group>";
@@ -3631,7 +3605,6 @@
 				37B965DD14D99C1A003F3900 /* DamagePatternEditViewController.h */,
 				37B965DE14D99C1A003F3900 /* DamagePatternEditViewController.m */,
 				12448F141679CF7500DC90AC /* DamagePatternEditViewController.xib */,
-				121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */,
 			);
 			name = DamagePatternEditViewController;
 			sourceTree = "<group>";
@@ -3814,7 +3787,6 @@
 				71196C9414B1E77B00614711 /* TargetsViewController.h */,
 				71196C9514B1E77B00614711 /* TargetsViewController.mm */,
 				71196C9614B1E77B00614711 /* TargetsViewController.xib */,
-				71196C9914B1E79F00614711 /* TargetsViewControllerDelegate.h */,
 			);
 			name = TargetsViewController;
 			sourceTree = "<group>";
@@ -4493,7 +4465,6 @@
 				71B4989C17AD43E400B98B59 /* NCItemsViewController */,
 				71B978C2137DDC6200301218 /* FittingServiceMenuViewController */,
 				12D5F8C817708CA00061D57C /* NAPISearchViewController */,
-				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				37DF48C4151C8D7300BC87A5 /* PriceManager */,
 				71196C9214B1E60300614711 /* ItemInfo */,
 				71997B86137F4AF70061BA4E /* BCSearchViewController */,
@@ -4511,12 +4482,13 @@
 				71B4989717AD06A400B98B59 /* DataSources */,
 				1213C0FA16C8FCE3006E504E /* FittingVariationsViewController */,
 				37DDFD8F14A202E100BCDEBB /* CharactersViewController */,
+				37B1B5F514ACC5C80037579C /* FitsViewController */,
+				71196C9314B1E75D00614711 /* TargetsViewController */,
 				71A0E8B01379DAC600CE4062 /* ModulesViewController */,
 				7187F1D5137B4A5E00EA8B86 /* DronesViewController */,
 				71880358137C7F57004060CC /* ImplantsViewController */,
 				71A0E8AF1379DA7500CE4062 /* StatsViewController */,
 				37A6718614A0D4EA00D3284E /* FleetViewController */,
-				71196C9314B1E75D00614711 /* TargetsViewController */,
 				37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */,
 				37B965AD14D981B0003F3900 /* DamagePatternsViewController */,
 				3750A43E14E00E6D00F06FA0 /* RequiredSkillsViewController */,
@@ -4983,6 +4955,7 @@
 		71B8D33E17A97E44008450CC /* ToDelete */ = {
 			isa = PBXGroup;
 			children = (
+				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				12BEA849140EA0D600D85E88 /* EVEAccountStorage */,
 				718CBFBD12F5E6D000CAC006 /* MainMenuCellView */,
 				71813C5B12F88C6E005364A6 /* ItemCellView */,
@@ -5379,7 +5352,6 @@
 				129284D31402A3D900055445 /* SplashScreenViewController~ipad.xib in Resources */,
 				71A14EC71402E4A00090CDCA /* backgroundSplash-iPad.png in Resources */,
 				71A14ECC1402E57B0090CDCA /* Default-Landscape~ipad.png in Resources */,
-				71A1511A14030F4F0090CDCA /* mainMenu~ipad.plist in Resources */,
 				1259B4D41679C70F00EA49B5 /* ItemsDBViewController~ipad.xib in Resources */,
 				1259B4EF1679C81C00EA49B5 /* SkillsViewController~ipad.xib in Resources */,
 				1259B5131679C96C00EA49B5 /* MarketOrderCellView~ipad.xib in Resources */,
@@ -5426,7 +5398,6 @@
 				71B0C32014B13DA20022E9FE /* FleetMemberCellView.xib in Resources */,
 				71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */,
 				37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */,
-				37A0C26B14B37476008ACDB4 /* AreaEffectCellView.xib in Resources */,
 				37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */,
 				37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */,
 				37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */,
@@ -5458,8 +5429,6 @@
 				37B965B314D98224003F3900 /* DamagePatternsViewController.xib in Resources */,
 				37B965BA14D98545003F3900 /* DamagePatternCellView.xib in Resources */,
 				12448F121679CF7500DC90AC /* DamagePatternEditViewController.xib in Resources */,
-				37B967C014D9C0B3003F3900 /* DamagePatternCellView~ipad.xib in Resources */,
-				121F3E671679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib in Resources */,
 				37B967C414D9C478003F3900 /* damagePatterns.plist in Resources */,
 				3750A44414E00E8400F06FA0 /* RequiredSkillsViewController.xib in Resources */,
 				12448F2A1679D05A00DC90AC /* SkillPlannerImportViewController.xib in Resources */,
@@ -5726,7 +5695,6 @@
 				71B0C31E14B13D940022E9FE /* FleetMemberCellView.m in Sources */,
 				71196C9714B1E77B00614711 /* TargetsViewController.mm in Sources */,
 				37A0C25D14B35A92008ACDB4 /* AreaEffectsViewController.m in Sources */,
-				37A0C26914B37465008ACDB4 /* AreaEffectCellView.m in Sources */,
 				3764AC8614CDDCCD00C7DEC5 /* CertificateViewController.m in Sources */,
 				3764AC8C14CDDDB300C7DEC5 /* CertificateTreeView.m in Sources */,
 				37A4A3C114CECD00001DB4C7 /* CertificateView.m in Sources */,
@@ -6013,14 +5981,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		121F3E691679E5A20007CE03 /* DamagePatternEditViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				121F3E681679E5A20007CE03 /* en */,
-			);
-			name = "DamagePatternEditViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
 		12448F011679CEA000DC90AC /* ImplantsViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

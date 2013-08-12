@@ -29,6 +29,7 @@
 #import "NeocomAPI.h"
 #import "FitCharacter.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 @interface FittingServiceMenuViewController()
 @property (nonatomic, strong) NSMutableArray *fits;
@@ -227,43 +228,113 @@
 			[self.navigationController pushViewController:controller animated:YES];
 		}
 		else if (indexPath.row == 2) {
-			self.fittingItemsViewController.marketGroupID = 4;
-			self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
+			self.itemsViewController.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
+			self.itemsViewController.title = NSLocalizedString(@"Ships", nil);
+			
+			__weak FittingServiceMenuViewController* weakSelf = self;
+			self.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
+				[weakSelf dismiss];
+				FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
+				EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
+				__weak EUOperation* weakOperation = operation;
+				__block ShipFit* fit = nil;
+				__block eufe::Character* character = NULL;
+				[operation addExecutionBlock:^{
+					character = new eufe::Character(fittingViewController.fittingEngine);
+					character->setShip(type.typeID);
+					
+					EVEAccount* currentAccount = [EVEAccount currentAccount];
+					if (currentAccount.characterSheet) {
+						FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
+						character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
+						character->setSkillLevels(*[fitCharacter skillsMap]);
+					}
+					else
+						character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
+					
+					weakOperation.progress = 0.5;
+					fit = [ShipFit shipFitWithFitName:type.typeName character:character];
+					weakOperation.progress = 1.0;
+				}];
+				
+				[operation setCompletionBlockInMainThread:^{
+					if (![weakOperation isCancelled]) {
+						[fit save];
+						fittingViewController.fittingEngine->getGang()->addPilot(character);
+						fittingViewController.fit = fit;
+						[fittingViewController.fits addObject:fit];
+						[weakSelf.navigationController pushViewController:fittingViewController animated:YES];
+					}
+					else {
+						if (character)
+							delete character;
+					}
+				}];
+				[[EUOperationQueue sharedQueue] addOperation:operation];
+			};
+			
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+				[self presentViewControllerInPopover:self.itemsViewController
+											fromRect:[tableView rectForRowAtIndexPath:indexPath]
+											  inView:tableView
+							permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
-				[self presentModalViewController:self.modalController animated:YES];
+				[self presentViewController:self.itemsViewController animated:YES completion:nil];
 
 		}
 		else if (indexPath.row == 3) {
-			self.fittingItemsViewController.marketGroupID = 478;
-			self.fittingItemsViewController.title = NSLocalizedString(@"Control Towers", nil);
+			self.itemsViewController.conditions = @[@"invTypes.marketGroupID = 478"];
+			self.itemsViewController.title = NSLocalizedString(@"Ships", nil);
+			
+			__weak FittingServiceMenuViewController* weakSelf = self;
+			self.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
+				[weakSelf dismiss];
+				POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
+				EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating POS Fit", nil)];
+				__weak EUOperation* weakOperation = operation;
+				__block POSFit* posFit = nil;
+				__block eufe::ControlTower* controlTower = NULL;
+				[operation addExecutionBlock:^{
+					controlTower = new eufe::ControlTower(posFittingViewController.fittingEngine, type.typeID);
+					
+					weakOperation.progress = 0.5;
+					posFit = [POSFit posFitWithFitName:type.typeName controlTower:controlTower];
+					weakOperation.progress = 1.0;
+				}];
+				
+				[operation setCompletionBlockInMainThread:^{
+					if (![weakOperation isCancelled]) {
+						[posFit save];
+						posFittingViewController.fittingEngine->setControlTower(controlTower);
+						posFittingViewController.fit = posFit;
+						[weakSelf.navigationController pushViewController:posFittingViewController animated:YES];
+					}
+					else {
+						if (controlTower)
+							delete controlTower;
+					}
+				}];
+				[[EUOperationQueue sharedQueue] addOperation:operation];
+			};
+			
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+				[self presentViewControllerInPopover:self.itemsViewController
+											fromRect:[tableView rectForRowAtIndexPath:indexPath]
+											  inView:tableView
+							permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			else
-				[self presentModalViewController:self.modalController animated:YES];
+				[self presentViewController:self.itemsViewController animated:YES completion:nil];
 		}
 		else {
-			if (self.needsConvert) {
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Export", nil)
-																	message:NSLocalizedString(@"To continue, Neocom must convert the loadouts database to its new format. This may take a few minutes.", nil)
-																   delegate:self
-														  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-														  otherButtonTitles:NSLocalizedString(@"Convert", nil), nil];
-				[alertView show];
-			}
-			else {
-				[self exportFits];
-			}
+			[self exportFits];
 		}
 	}
 	else {
-		//NSDictionary *row = [[fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		Fit* fit = [[self.fits objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
+		Fit* fit = self.fits[indexPath.section - 1][indexPath.row];
 
 		if ([fit isKindOfClass:[POSFit class]]) {
 			POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
-			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading POS Fit", nil)];
+			EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading POS Fit", nil)];
 			__weak EUOperation* weakOperation = operation;
 			__block POSFit* posFit = (POSFit*)(fit);
 			[operation addExecutionBlock:^{
@@ -281,7 +352,7 @@
 		}
 		else {
 			FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-			__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+			EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 			__weak EUOperation* weakOperation = operation;
 			__block ShipFit* shipFit = (ShipFit*)(fit);
 			
@@ -333,10 +404,6 @@
 #pragma mark FittingItemsViewControllerDelegate
 
 - (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[popoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
 
 	if (type.groupID == eufe::CONTROL_TOWER_GROUP_ID) {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
@@ -425,7 +492,6 @@
 - (void) reload {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Load" name:NSLocalizedString(@"Loading Fits", nil)];
 	__weak EUOperation* weakOperation = operation;
-	__block BOOL needsConvertTmp = NO;
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
 	[operation addExecutionBlock:^{
@@ -456,7 +522,6 @@
 	
 	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
-			self.needsConvert = needsConvertTmp;
 			self.fits = fitsTmp;
 			[self.tableView reloadData];
 		}

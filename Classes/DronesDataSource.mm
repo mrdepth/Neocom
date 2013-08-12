@@ -233,8 +233,7 @@
 					ship->addDrone(new eufe::Drone(*drone));
 			}
 			
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[self.fittingViewController.itemsViewController dismiss];
+			[self.fittingViewController dismiss];
 
 			[self.fittingViewController update];
 		};
@@ -285,8 +284,31 @@
 	};
 
 	void (^setTarget)(NSArray*) = ^(NSArray* drones){
+		TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
+		controller.currentTarget = drone->getTarget();
+		controller.fittingViewController = self.fittingViewController;
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		controller.completionHandler = ^(eufe::Ship* target) {
+			for (ItemInfo* itemInfo in drones) {
+				eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
+				drone->setTarget(target);
+			}
+			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
+		};
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		}
+		else
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	};
+	
 	void (^clearTarget)(NSArray*) = ^(NSArray* drones){
+		for (ItemInfo* itemInfo in drones) {
+			eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
+			drone->clearTarget();
+		}
+		[self.fittingViewController update];
 	};
 	
 	void (^setAmount)(NSArray*) = ^(NSArray* drones){

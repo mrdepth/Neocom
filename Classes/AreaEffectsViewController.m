@@ -8,10 +8,12 @@
 
 #import "AreaEffectsViewController.h"
 #import "EVEDBAPI.h"
-#import "AreaEffectCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "ItemViewController.h"
+#import "GroupedCell.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface AreaEffectsViewController()
 @property (nonatomic, strong) NSMutableArray *sections;
@@ -36,12 +38,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = NSLocalizedString(@"Area Effects", nil);
 	[self reload];
@@ -101,58 +98,56 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-	return [[self.sections objectAtIndex:section] count];
+	return [self.sections[section] count];
 }
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *cellIdentifier = @"AreaEffectCellView";
-    
-    AreaEffectCellView *cell = (AreaEffectCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [AreaEffectCellView cellWithNibName:@"AreaEffectCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
-	EVEDBInvType *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	cell.titleLabel.text = row.typeName;
-	cell.stateView.image = self.selectedArea && self.selectedArea.typeID == row.typeID ? [UIImage imageNamed:@"checkmark.png"] : nil;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *cellIdentifier = @"Cell";
+	GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+	}
 	
-    return cell;
+	EVEDBInvType *row = self.sections[indexPath.section][indexPath.row];
+	cell.textLabel.text = row.typeName;
+	cell.accessoryView = self.selectedArea && self.selectedArea.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
-- (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
-	NSString *s = [self tableView:aTableView titleForHeaderInSection:section];
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = s;
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 20 : 0;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	[self.delegate areaEffectsViewController:self didSelectAreaEffect:[[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]];
+	[self.delegate areaEffectsViewController:self didSelectAreaEffect:self.sections[indexPath.section][indexPath.row]];
 }
 
 - (void)tableView:(UITableView *)aTableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	EVEDBInvType *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	EVEDBInvType *row = self.sections[indexPath.section][indexPath.row];
 	
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
@@ -161,16 +156,10 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self.mainViewController presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
-}
-
-#pragma mark UIPopoverControllerDelegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	popoverController.popoverContentSize = CGSizeMake(320, 1100);
 }
 
 #pragma mark - Private

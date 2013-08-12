@@ -14,6 +14,7 @@
 #import "UIActionSheet+Block.h"
 #import "UIActionSheet+Neocom.h"
 #import "ItemViewController.h"
+#import "UIViewController+Neocom.h"
 
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -147,6 +148,8 @@
 			self.fittingViewController.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
 				self.fittingViewController.fit.character->addImplant(type.typeID);
 				[self.fittingViewController update];
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+					[self.fittingViewController dismiss];
 			};
 		}
 		else {
@@ -157,6 +160,8 @@
 			self.fittingViewController.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
 				self.fittingViewController.fit.character->addBooster(type.typeID);
 				[self.fittingViewController update];
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+					[self.fittingViewController dismiss];
 			};
 
 		}

@@ -41,7 +41,6 @@
 													AreaEffectsViewControllerDelegate,
 													DamagePatternsViewControllerDelegate,
 													FitsViewControllerDelegate,
-													TargetsViewControllerDelegate,
 													MFMailComposeViewControllerDelegate,
 													FittingVariationsViewControllerDelegate>
 
@@ -67,7 +66,7 @@
 
 @property (nonatomic, weak) IBOutlet UIView *shadeView;
 @property (nonatomic, weak) IBOutlet UIToolbar *fitNameView;
-@property (nonatomic, weak) IBOutlet UITextField *fitNameTextField;
+@property (nonatomic, strong) IBOutlet UITextField *fitNameTextField;
 @property (nonatomic, weak) IBOutlet UIView *statsSectionView;
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, strong) UIPopoverController *targetsPopoverController;

@@ -11,10 +11,8 @@
 @class ShipFit;
 @class SkillPlan;
 @interface RequiredSkillsViewController : UITableViewController<UIAlertViewDelegate>
-@property (weak, nonatomic) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, strong) ShipFit* fit;
 
-- (IBAction)onClose:(id)sender;
 - (IBAction)onAddToSkillPlan:(id)sender;
 
 @end

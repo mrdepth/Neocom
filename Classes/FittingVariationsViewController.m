@@ -9,9 +9,6 @@
 #import "FittingVariationsViewController.h"
 #import "UIViewController+Neocom.h"
 
-@interface FittingVariationsViewController ()
-- (IBAction)onClose:(id)sender;
-@end
 
 @implementation FittingVariationsViewController
 
@@ -49,9 +46,4 @@
 	[self dismiss];
 }
 
-#pragma mark - Private
-
-- (IBAction)onClose:(id)sender {
-	[self.navigationController dismissModalViewControllerAnimated:YES];
-}
 @end

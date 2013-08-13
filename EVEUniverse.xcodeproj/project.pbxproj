@@ -39,10 +39,6 @@
 		12320D55165B765500333AE7 /* AccountsSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */; };
 		12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12320D58165B7A2600333AE7 /* AccountsSelectionCellView.m */; };
 		12320D5B165B7A3500333AE7 /* AccountsSelectionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12320D5A165B7A3500333AE7 /* AccountsSelectionCellView.xib */; };
-		12448EFF1679CEA000DC90AC /* ImplantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F011679CEA000DC90AC /* ImplantsViewController.xib */; };
-		12448F031679CEA400DC90AC /* ImplantsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F051679CEA400DC90AC /* ImplantsViewController~ipad.xib */; };
-		12448F061679CEAE00DC90AC /* StatsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F081679CEAE00DC90AC /* StatsViewController.xib */; };
-		12448F091679CEB500DC90AC /* StatsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F0B1679CEB500DC90AC /* StatsViewController~ipad.xib */; };
 		12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */; };
 		12448F121679CF7500DC90AC /* DamagePatternEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F141679CF7500DC90AC /* DamagePatternEditViewController.xib */; };
 		12448F151679CFBC00DC90AC /* FittingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F171679CFBC00DC90AC /* FittingViewController.xib */; };
@@ -140,9 +136,6 @@
 		1259B53D1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B53F1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib */; };
 		1259B5401679CBA400EA49B5 /* BidCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5421679CBA400EA49B5 /* BidCellView.xib */; };
 		1259B5431679CBBB00EA49B5 /* ContractsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5451679CBBB00EA49B5 /* ContractsViewController.xib */; };
-		1259B54F1679CD1200EA49B5 /* ModulesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5511679CD1200EA49B5 /* ModulesViewController.xib */; };
-		1259B5521679CD1A00EA49B5 /* ModulesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5541679CD1A00EA49B5 /* ModulesViewController~ipad.xib */; };
-		1259B5551679CD2500EA49B5 /* DronesAmountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5571679CD2500EA49B5 /* DronesAmountViewController.xib */; };
 		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
 		127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */; };
 		12774D95177032C100E98F8C /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774C75177032C000E98F8C /* BCEveLoadout.m */; };
@@ -402,8 +395,6 @@
 		37A4A3F514CF23E8001DB4C7 /* certificateMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A4A3F314CF23E7001DB4C7 /* certificateMask.png */; };
 		37A4A3F914CF2544001DB4C7 /* CertificateRelationshipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A4A3F814CF2544001DB4C7 /* CertificateRelationshipView.m */; };
 		37A4A3FB14CF2561001DB4C7 /* CertificateRelationshipView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A4A3FA14CF2561001DB4C7 /* CertificateRelationshipView.xib */; };
-		37A6718A14A0D52800D3284E /* FleetViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37A6718814A0D52800D3284E /* FleetViewController.mm */; };
-		37A6718B14A0D52800D3284E /* FleetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A6718914A0D52800D3284E /* FleetViewController.xib */; };
 		37A815E914E2CACB00C38F73 /* EVEMonLogoBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */; };
 		37A815EA14E2CACB00C38F73 /* EVEMonLogoBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */; };
 		37A815F214E2D20900C38F73 /* ImportingTutorial in Resources */ = {isa = PBXBuildFile; fileRef = 37A815F114E2D20900C38F73 /* ImportingTutorial */; };
@@ -470,7 +461,6 @@
 		37DDFD9414A2031600BCDEBB /* CharactersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37DDFD9214A2031600BCDEBB /* CharactersViewController.xib */; };
 		37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37DDFD9914A204B600BCDEBB /* CharacterEqualSkills.mm */; };
 		37DF48C8151C8DBC00BC87A5 /* PriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF48C7151C8DBC00BC87A5 /* PriceManager.m */; };
-		37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */; };
 		37EBCDBA14D30FB00085D1CB /* graphButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCDB914D30FB00085D1CB /* graphButton.png */; };
 		37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */; };
 		37EBCE1514D31F8A0085D1CB /* linesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1214D31F8A0085D1CB /* linesButton.png */; };
@@ -580,11 +570,7 @@
 		71853852122E976C00118181 /* MarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71853850122E976C00118181 /* MarketInfoViewController.m */; };
 		7185DEB012EB67F30091CB0F /* EVEAccountsCharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7185DEAF12EB67F30091CB0F /* EVEAccountsCharacterCellView.m */; };
 		7187E48B124BB51600ACAD91 /* SkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7187E489124BB51600ACAD91 /* SkillsViewController.m */; };
-		7187F1D9137B4A7000EA8B86 /* DronesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7187F1D7137B4A7000EA8B86 /* DronesViewController.mm */; };
-		7187F1DA137B4A7000EA8B86 /* DronesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7187F1D8137B4A7000EA8B86 /* DronesViewController.xib */; };
 		7187F278137B549800EA8B86 /* drone.png in Resources */ = {isa = PBXBuildFile; fileRef = 7187F277137B549800EA8B86 /* drone.png */; };
-		7188027C137C68F6004060CC /* DronesAmountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7188027A137C68F6004060CC /* DronesAmountViewController.m */; };
-		7188035C137C7F69004060CC /* ImplantsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7188035A137C7F69004060CC /* ImplantsViewController.mm */; };
 		718803C9137C8FD2004060CC /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C6137C8FD2004060CC /* add.png */; };
 		718803CA137C8FD2004060CC /* booster.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C7137C8FD2004060CC /* booster.png */; };
 		718803CB137C8FD2004060CC /* implant.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C8137C8FD2004060CC /* implant.png */; };
@@ -653,8 +639,6 @@
 		718FAA96137A143C00705623 /* shieldRecharge.png in Resources */ = {isa = PBXBuildFile; fileRef = 718FAA92137A143C00705623 /* shieldRecharge.png */; };
 		718FAB4A137A240C00705623 /* NSString+TimeLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 718FAB49137A240C00705623 /* NSString+TimeLeft.m */; };
 		7191CBD21316CDC4008D90EF /* TrainingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7191CBD11316CDC4008D90EF /* TrainingQueue.m */; };
-		719407AA1405AC6C009E05FF /* DronesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 719407A91405AC6C009E05FF /* DronesViewController~ipad.xib */; };
-		7194081B1405B83D009E05FF /* DronesAmountViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7194081A1405B83D009E05FF /* DronesAmountViewController~ipad.xib */; };
 		71955A561376B00B0068DBD7 /* FittingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71955A541376B00B0068DBD7 /* FittingViewController.mm */; };
 		71955A691376B5390068DBD7 /* calibration.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A661376B5390068DBD7 /* calibration.png */; };
 		71955A6A1376B5390068DBD7 /* cpu.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A671376B5390068DBD7 /* cpu.png */; };
@@ -687,10 +671,6 @@
 		71A0E8381379C9F200CE4062 /* shield.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A0E8361379C9F200CE4062 /* shield.png */; };
 		71A0E8391379C9F200CE4062 /* thermal.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A0E8371379C9F200CE4062 /* thermal.png */; };
 		71A0E8AB1379D86300CE4062 /* ProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E8AA1379D86300CE4062 /* ProgressLabel.m */; };
-		71A0E8B41379DAD500CE4062 /* ModulesViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E8B21379DAD500CE4062 /* ModulesViewController.mm */; };
-		71A0E9011379DDBE00CE4062 /* StatsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E8FF1379DDBE00CE4062 /* StatsViewController.mm */; };
-		71A0E9171379DEF300CE4062 /* ModuleCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E9151379DEF300CE4062 /* ModuleCellView.m */; };
-		71A0E9181379DEF300CE4062 /* ModuleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71A0E9161379DEF300CE4062 /* ModuleCellView.xib */; };
 		71A0E9631379E3FC00CE4062 /* NSString+Fitting.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A0E9621379E3FC00CE4062 /* NSString+Fitting.m */; };
 		71A14EC71402E4A00090CDCA /* backgroundSplash-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A14EC61402E4A00090CDCA /* backgroundSplash-iPad.png */; };
 		71A14ECC1402E57B0090CDCA /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 71A14ECB1402E57B0090CDCA /* Default-Landscape~ipad.png */; };
@@ -709,8 +689,6 @@
 		71ABD08417B19CBA00785304 /* FittingDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71ABD08317B19CBA00785304 /* FittingDataSource.mm */; };
 		71ABD08817B1A3F800785304 /* FleetDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71ABD08717B1A3F800785304 /* FleetDataSource.mm */; };
 		71AF34F517AC37B100802FFD /* ModulesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71AF34F417AC37B100802FFD /* ModulesDataSource.mm */; };
-		71B0C31E14B13D940022E9FE /* FleetMemberCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B0C31D14B13D940022E9FE /* FleetMemberCellView.m */; };
-		71B0C32014B13DA20022E9FE /* FleetMemberCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B0C31F14B13DA10022E9FE /* FleetMemberCellView.xib */; };
 		71B10E5B179AAC5700D5214B /* tutorial1.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E53179AAC5700D5214B /* tutorial1.png */; };
 		71B10E5C179AAC5700D5214B /* tutorial1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E54179AAC5700D5214B /* tutorial1@2x.png */; };
 		71B10E5D179AAC5700D5214B /* tutorial2.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E55179AAC5700D5214B /* tutorial2.png */; };
@@ -733,6 +711,10 @@
 		71B10E7F179B188F00D5214B /* buttonBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E7D179B188F00D5214B /* buttonBackgroundSelected@2x.png */; };
 		71B10E81179B1E3C00D5214B /* segmentedControlDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E80179B1E3C00D5214B /* segmentedControlDivider@2x.png */; };
 		71B10E83179B218D00D5214B /* buttonBackgroundBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71B10E82179B218C00D5214B /* buttonBackgroundBlack@2x.png */; };
+		71B1E98D17BACCFF007330C2 /* AmountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B1E98A17BACCFF007330C2 /* AmountViewController.m */; };
+		71B1E99317BACD51007330C2 /* ModuleCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B1E99117BACD51007330C2 /* ModuleCellView.m */; };
+		71B1E99417BACD51007330C2 /* ModuleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99217BACD51007330C2 /* ModuleCellView.xib */; };
+		71B1E99617BACE4A007330C2 /* AmountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99517BACE4A007330C2 /* AmountViewController.xib */; };
 		71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B2106917B4403100B1E0C0 /* FitCharacter.mm */; };
 		71B4989417AD052100B98B59 /* UIActionSheet+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */; };
 		71B4989B17AD06D400B98B59 /* DronesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989A17AD06D400B98B59 /* DronesDataSource.mm */; };
@@ -889,10 +871,6 @@
 		12320D57165B7A2600333AE7 /* AccountsSelectionCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsSelectionCellView.h; sourceTree = "<group>"; };
 		12320D58165B7A2600333AE7 /* AccountsSelectionCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsSelectionCellView.m; sourceTree = "<group>"; };
 		12320D5A165B7A3500333AE7 /* AccountsSelectionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountsSelectionCellView.xib; sourceTree = "<group>"; };
-		12448F001679CEA000DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ImplantsViewController.xib; sourceTree = "<group>"; };
-		12448F041679CEA400DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ImplantsViewController~ipad.xib"; sourceTree = "<group>"; };
-		12448F071679CEAE00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/StatsViewController.xib; sourceTree = "<group>"; };
-		12448F0A1679CEB500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/StatsViewController~ipad.xib"; sourceTree = "<group>"; };
 		12448F101679CF0900DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CharacterSkillsEditorViewController.xib; sourceTree = "<group>"; };
 		12448F131679CF7500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DamagePatternEditViewController.xib; sourceTree = "<group>"; };
 		12448F161679CFBC00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FittingViewController.xib; sourceTree = "<group>"; };
@@ -1010,9 +988,6 @@
 		1259B53E1679CA9000EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ContractCellViewCompact~ipad.xib"; sourceTree = "<group>"; };
 		1259B5411679CBA400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BidCellView.xib; sourceTree = "<group>"; };
 		1259B5441679CBBB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ContractsViewController.xib; sourceTree = "<group>"; };
-		1259B5501679CD1200EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ModulesViewController.xib; sourceTree = "<group>"; };
-		1259B5531679CD1A00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ModulesViewController~ipad.xib"; sourceTree = "<group>"; };
-		1259B5561679CD2500EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DronesAmountViewController.xib; sourceTree = "<group>"; };
 		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		1273639F1643AD3900FB0EE2 /* KillboardApiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardApiViewController.h; sourceTree = "<group>"; };
 		127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardApiViewController.m; sourceTree = "<group>"; };
@@ -1485,9 +1460,6 @@
 		37A4A3F714CF2544001DB4C7 /* CertificateRelationshipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateRelationshipView.h; sourceTree = "<group>"; };
 		37A4A3F814CF2544001DB4C7 /* CertificateRelationshipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateRelationshipView.m; sourceTree = "<group>"; };
 		37A4A3FA14CF2561001DB4C7 /* CertificateRelationshipView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateRelationshipView.xib; sourceTree = "<group>"; };
-		37A6718714A0D52800D3284E /* FleetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FleetViewController.h; sourceTree = "<group>"; };
-		37A6718814A0D52800D3284E /* FleetViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FleetViewController.mm; sourceTree = "<group>"; };
-		37A6718914A0D52800D3284E /* FleetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FleetViewController.xib; sourceTree = "<group>"; };
 		37A815E714E2CACB00C38F73 /* EVEMonLogoBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EVEMonLogoBlue.png; sourceTree = "<group>"; };
 		37A815E814E2CACB00C38F73 /* EVEMonLogoBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "EVEMonLogoBlue@2x.png"; sourceTree = "<group>"; };
 		37A815F114E2D20900C38F73 /* ImportingTutorial */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ImportingTutorial; sourceTree = "<group>"; };
@@ -1590,7 +1562,6 @@
 		37DDFD9F14A2261000BCDEBB /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
 		37DF48C6151C8DBC00BC87A5 /* PriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceManager.h; sourceTree = "<group>"; };
 		37DF48C7151C8DBC00BC87A5 /* PriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceManager.m; sourceTree = "<group>"; };
-		37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "FleetViewController~ipad.xib"; sourceTree = "<group>"; };
 		37EBCDB914D30FB00085D1CB /* graphButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = graphButton.png; sourceTree = "<group>"; };
 		37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graphButton@2x.png"; sourceTree = "<group>"; };
 		37EBCE1214D31F8A0085D1CB /* linesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linesButton.png; sourceTree = "<group>"; };
@@ -1731,15 +1702,7 @@
 		7185DEAF12EB67F30091CB0F /* EVEAccountsCharacterCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountsCharacterCellView.m; sourceTree = "<group>"; };
 		7187E488124BB51600ACAD91 /* SkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillsViewController.h; sourceTree = "<group>"; };
 		7187E489124BB51600ACAD91 /* SkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillsViewController.m; sourceTree = "<group>"; };
-		7187F1D6137B4A7000EA8B86 /* DronesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesViewController.h; sourceTree = "<group>"; };
-		7187F1D7137B4A7000EA8B86 /* DronesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DronesViewController.mm; sourceTree = "<group>"; };
-		7187F1D8137B4A7000EA8B86 /* DronesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DronesViewController.xib; sourceTree = "<group>"; };
 		7187F277137B549800EA8B86 /* drone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drone.png; sourceTree = "<group>"; };
-		71880279137C68F6004060CC /* DronesAmountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesAmountViewController.h; sourceTree = "<group>"; };
-		7188027A137C68F6004060CC /* DronesAmountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DronesAmountViewController.m; sourceTree = "<group>"; };
-		718802DC137C745A004060CC /* DronesAmountViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesAmountViewControllerDelegate.h; sourceTree = "<group>"; };
-		71880359137C7F69004060CC /* ImplantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImplantsViewController.h; sourceTree = "<group>"; };
-		7188035A137C7F69004060CC /* ImplantsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImplantsViewController.mm; sourceTree = "<group>"; };
 		718803C6137C8FD2004060CC /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
 		718803C7137C8FD2004060CC /* booster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster.png; sourceTree = "<group>"; };
 		718803C8137C8FD2004060CC /* implant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = implant.png; sourceTree = "<group>"; };
@@ -1822,8 +1785,6 @@
 		718FAB49137A240C00705623 /* NSString+TimeLeft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeLeft.m"; sourceTree = "<group>"; };
 		7191CBD01316CDC4008D90EF /* TrainingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrainingQueue.h; sourceTree = "<group>"; };
 		7191CBD11316CDC4008D90EF /* TrainingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrainingQueue.m; sourceTree = "<group>"; };
-		719407A91405AC6C009E05FF /* DronesViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "DronesViewController~ipad.xib"; sourceTree = "<group>"; };
-		7194081A1405B83D009E05FF /* DronesAmountViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "DronesAmountViewController~ipad.xib"; sourceTree = "<group>"; };
 		71955A531376B00B0068DBD7 /* FittingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingViewController.h; sourceTree = "<group>"; };
 		71955A541376B00B0068DBD7 /* FittingViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingViewController.mm; sourceTree = "<group>"; };
 		71955A661376B5390068DBD7 /* calibration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calibration.png; sourceTree = "<group>"; };
@@ -1861,13 +1822,6 @@
 		71A0E8371379C9F200CE4062 /* thermal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermal.png; sourceTree = "<group>"; };
 		71A0E8A91379D86300CE4062 /* ProgressLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressLabel.h; sourceTree = "<group>"; };
 		71A0E8AA1379D86300CE4062 /* ProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressLabel.m; sourceTree = "<group>"; };
-		71A0E8B11379DAD500CE4062 /* ModulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModulesViewController.h; sourceTree = "<group>"; };
-		71A0E8B21379DAD500CE4062 /* ModulesViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = ModulesViewController.mm; sourceTree = "<group>"; };
-		71A0E8FE1379DDBE00CE4062 /* StatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsViewController.h; sourceTree = "<group>"; };
-		71A0E8FF1379DDBE00CE4062 /* StatsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatsViewController.mm; sourceTree = "<group>"; };
-		71A0E9141379DEF300CE4062 /* ModuleCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleCellView.h; sourceTree = "<group>"; };
-		71A0E9151379DEF300CE4062 /* ModuleCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleCellView.m; sourceTree = "<group>"; };
-		71A0E9161379DEF300CE4062 /* ModuleCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ModuleCellView.xib; sourceTree = "<group>"; };
 		71A0E9611379E3FC00CE4062 /* NSString+Fitting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Fitting.h"; sourceTree = "<group>"; };
 		71A0E9621379E3FC00CE4062 /* NSString+Fitting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Fitting.m"; sourceTree = "<group>"; };
 		71A14EC61402E4A00090CDCA /* backgroundSplash-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backgroundSplash-iPad.png"; sourceTree = "<group>"; };
@@ -1899,9 +1853,6 @@
 		71ABD08717B1A3F800785304 /* FleetDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FleetDataSource.mm; sourceTree = "<group>"; };
 		71AF34F317AC37B100802FFD /* ModulesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModulesDataSource.h; sourceTree = "<group>"; };
 		71AF34F417AC37B100802FFD /* ModulesDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulesDataSource.mm; sourceTree = "<group>"; };
-		71B0C31C14B13D940022E9FE /* FleetMemberCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FleetMemberCellView.h; sourceTree = "<group>"; };
-		71B0C31D14B13D940022E9FE /* FleetMemberCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FleetMemberCellView.m; sourceTree = "<group>"; };
-		71B0C31F14B13DA10022E9FE /* FleetMemberCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FleetMemberCellView.xib; sourceTree = "<group>"; };
 		71B10E53179AAC5700D5214B /* tutorial1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.png; sourceTree = "<group>"; };
 		71B10E54179AAC5700D5214B /* tutorial1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tutorial1@2x.png"; sourceTree = "<group>"; };
 		71B10E55179AAC5700D5214B /* tutorial2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial2.png; sourceTree = "<group>"; };
@@ -1926,6 +1877,12 @@
 		71B10E7D179B188F00D5214B /* buttonBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundSelected@2x.png"; sourceTree = "<group>"; };
 		71B10E80179B1E3C00D5214B /* segmentedControlDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmentedControlDivider@2x.png"; sourceTree = "<group>"; };
 		71B10E82179B218C00D5214B /* buttonBackgroundBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundBlack@2x.png"; sourceTree = "<group>"; };
+		71B1E98917BACCFF007330C2 /* AmountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmountViewController.h; sourceTree = "<group>"; };
+		71B1E98A17BACCFF007330C2 /* AmountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmountViewController.m; sourceTree = "<group>"; };
+		71B1E99017BACD51007330C2 /* ModuleCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleCellView.h; sourceTree = "<group>"; };
+		71B1E99117BACD51007330C2 /* ModuleCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleCellView.m; sourceTree = "<group>"; };
+		71B1E99217BACD51007330C2 /* ModuleCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModuleCellView.xib; sourceTree = "<group>"; };
+		71B1E99517BACE4A007330C2 /* AmountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AmountViewController.xib; sourceTree = "<group>"; };
 		71B2106817B4403100B1E0C0 /* FitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FitCharacter.h; sourceTree = "<group>"; };
 		71B2106917B4403100B1E0C0 /* FitCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FitCharacter.mm; sourceTree = "<group>"; };
 		71B4989217AD052100B98B59 /* UIActionSheet+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Neocom.h"; sourceTree = "<group>"; };
@@ -3443,18 +3400,6 @@
 			name = CertificateRelationshipView;
 			sourceTree = "<group>";
 		};
-		37A6718614A0D4EA00D3284E /* FleetViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71B0C31714B13D530022E9FE /* FleetMemberCellView */,
-				37A6718714A0D52800D3284E /* FleetViewController.h */,
-				37A6718814A0D52800D3284E /* FleetViewController.mm */,
-				37A6718914A0D52800D3284E /* FleetViewController.xib */,
-				37E352E014B4AA93004367AB /* FleetViewController~ipad.xib */,
-			);
-			name = FleetViewController;
-			sourceTree = "<group>";
-		};
 		37AB449914F52173007B4C33 /* EVEOnlineAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3612,6 +3557,7 @@
 		37BBC5A715125D4F00EDE204 /* POSFittingViewController */ = {
 			isa = PBXGroup;
 			children = (
+				718869D61401C860003CFF0A /* FittingSection.h */,
 				37BBC5AB151263EF00EDE204 /* StructuresViewController */,
 				37CE795215135C8600621D52 /* POSStatsViewController */,
 				37410500151A1DCC00BCED1B /* AssemblyLinesViewController */,
@@ -4244,41 +4190,6 @@
 			name = SkillsViewController;
 			sourceTree = "<group>";
 		};
-		7187F1D5137B4A5E00EA8B86 /* DronesViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71880278137C68F0004060CC /* DronesAmountViewController */,
-				7187F1D6137B4A7000EA8B86 /* DronesViewController.h */,
-				7187F1D7137B4A7000EA8B86 /* DronesViewController.mm */,
-				7187F1D8137B4A7000EA8B86 /* DronesViewController.xib */,
-				719407A91405AC6C009E05FF /* DronesViewController~ipad.xib */,
-			);
-			name = DronesViewController;
-			sourceTree = "<group>";
-		};
-		71880278137C68F0004060CC /* DronesAmountViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71880279137C68F6004060CC /* DronesAmountViewController.h */,
-				7188027A137C68F6004060CC /* DronesAmountViewController.m */,
-				1259B5571679CD2500EA49B5 /* DronesAmountViewController.xib */,
-				7194081A1405B83D009E05FF /* DronesAmountViewController~ipad.xib */,
-				718802DC137C745A004060CC /* DronesAmountViewControllerDelegate.h */,
-			);
-			name = DronesAmountViewController;
-			sourceTree = "<group>";
-		};
-		71880358137C7F57004060CC /* ImplantsViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71880359137C7F69004060CC /* ImplantsViewController.h */,
-				7188035A137C7F69004060CC /* ImplantsViewController.mm */,
-				12448F011679CEA000DC90AC /* ImplantsViewController.xib */,
-				12448F051679CEA400DC90AC /* ImplantsViewController~ipad.xib */,
-			);
-			name = ImplantsViewController;
-			sourceTree = "<group>";
-		};
 		718B8825122FC10900622C04 /* EVEAccount */ = {
 			isa = PBXGroup;
 			children = (
@@ -4480,19 +4391,14 @@
 			isa = PBXGroup;
 			children = (
 				71B4989717AD06A400B98B59 /* DataSources */,
+				71B1E98817BACCF1007330C2 /* AmountViewController */,
 				1213C0FA16C8FCE3006E504E /* FittingVariationsViewController */,
 				37DDFD8F14A202E100BCDEBB /* CharactersViewController */,
 				37B1B5F514ACC5C80037579C /* FitsViewController */,
 				71196C9314B1E75D00614711 /* TargetsViewController */,
-				71A0E8B01379DAC600CE4062 /* ModulesViewController */,
-				7187F1D5137B4A5E00EA8B86 /* DronesViewController */,
-				71880358137C7F57004060CC /* ImplantsViewController */,
-				71A0E8AF1379DA7500CE4062 /* StatsViewController */,
-				37A6718614A0D4EA00D3284E /* FleetViewController */,
 				37A0C25814B35A6D008ACDB4 /* AreaEffectsViewController */,
 				37B965AD14D981B0003F3900 /* DamagePatternsViewController */,
 				3750A43E14E00E6D00F06FA0 /* RequiredSkillsViewController */,
-				718869D61401C860003CFF0A /* FittingSection.h */,
 				71955A531376B00B0068DBD7 /* FittingViewController.h */,
 				71955A541376B00B0068DBD7 /* FittingViewController.mm */,
 				12448F171679CFBC00DC90AC /* FittingViewController.xib */,
@@ -4599,39 +4505,6 @@
 			name = BCSearchViewController;
 			sourceTree = "<group>";
 		};
-		71A0E8AF1379DA7500CE4062 /* StatsViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71A0E8FE1379DDBE00CE4062 /* StatsViewController.h */,
-				71A0E8FF1379DDBE00CE4062 /* StatsViewController.mm */,
-				12448F081679CEAE00DC90AC /* StatsViewController.xib */,
-				12448F0B1679CEB500DC90AC /* StatsViewController~ipad.xib */,
-			);
-			name = StatsViewController;
-			sourceTree = "<group>";
-		};
-		71A0E8B01379DAC600CE4062 /* ModulesViewController */ = {
-			isa = PBXGroup;
-			children = (
-				71A0E9191379DEF600CE4062 /* ModuleCellView */,
-				71A0E8B11379DAD500CE4062 /* ModulesViewController.h */,
-				71A0E8B21379DAD500CE4062 /* ModulesViewController.mm */,
-				1259B5511679CD1200EA49B5 /* ModulesViewController.xib */,
-				1259B5541679CD1A00EA49B5 /* ModulesViewController~ipad.xib */,
-			);
-			name = ModulesViewController;
-			sourceTree = "<group>";
-		};
-		71A0E9191379DEF600CE4062 /* ModuleCellView */ = {
-			isa = PBXGroup;
-			children = (
-				71A0E9141379DEF300CE4062 /* ModuleCellView.h */,
-				71A0E9151379DEF300CE4062 /* ModuleCellView.m */,
-				71A0E9161379DEF300CE4062 /* ModuleCellView.xib */,
-			);
-			name = ModuleCellView;
-			sourceTree = "<group>";
-		};
 		71A22802131D401F00848200 /* IndustryJobsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4730,20 +4603,11 @@
 		71AF34F117AC379600802FFD /* ModulesDataSource */ = {
 			isa = PBXGroup;
 			children = (
+				71B1E98F17BACD41007330C2 /* ModuleCellView */,
 				71AF34F317AC37B100802FFD /* ModulesDataSource.h */,
 				71AF34F417AC37B100802FFD /* ModulesDataSource.mm */,
 			);
 			name = ModulesDataSource;
-			sourceTree = "<group>";
-		};
-		71B0C31714B13D530022E9FE /* FleetMemberCellView */ = {
-			isa = PBXGroup;
-			children = (
-				71B0C31C14B13D940022E9FE /* FleetMemberCellView.h */,
-				71B0C31D14B13D940022E9FE /* FleetMemberCellView.m */,
-				71B0C31F14B13DA10022E9FE /* FleetMemberCellView.xib */,
-			);
-			name = FleetMemberCellView;
 			sourceTree = "<group>";
 		};
 		71B10E52179AAC5700D5214B /* Tutorial */ = {
@@ -4759,6 +4623,26 @@
 				71B10E5A179AAC5700D5214B /* tutorial4@2x.png */,
 			);
 			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		71B1E98817BACCF1007330C2 /* AmountViewController */ = {
+			isa = PBXGroup;
+			children = (
+				71B1E98917BACCFF007330C2 /* AmountViewController.h */,
+				71B1E98A17BACCFF007330C2 /* AmountViewController.m */,
+				71B1E99517BACE4A007330C2 /* AmountViewController.xib */,
+			);
+			name = AmountViewController;
+			sourceTree = "<group>";
+		};
+		71B1E98F17BACD41007330C2 /* ModuleCellView */ = {
+			isa = PBXGroup;
+			children = (
+				71B1E99017BACD51007330C2 /* ModuleCellView.h */,
+				71B1E99117BACD51007330C2 /* ModuleCellView.m */,
+				71B1E99217BACD51007330C2 /* ModuleCellView.xib */,
+			);
+			name = ModuleCellView;
 			sourceTree = "<group>";
 		};
 		71B4989717AD06A400B98B59 /* DataSources */ = {
@@ -5316,9 +5200,6 @@
 				71A0E8351379C81B00CE4062 /* droneCapacity.png in Resources */,
 				71A0E8381379C9F200CE4062 /* shield.png in Resources */,
 				71A0E8391379C9F200CE4062 /* thermal.png in Resources */,
-				1259B54F1679CD1200EA49B5 /* ModulesViewController.xib in Resources */,
-				12448F061679CEAE00DC90AC /* StatsViewController.xib in Resources */,
-				71A0E9181379DEF300CE4062 /* ModuleCellView.xib in Resources */,
 				718FAA93137A143C00705623 /* armorRepairer.png in Resources */,
 				718FAA94137A143C00705623 /* hullRepairer.png in Resources */,
 				718FAA95137A143C00705623 /* shieldBooster.png in Resources */,
@@ -5336,10 +5217,7 @@
 				718BEBC2137B1E1600F166CD /* targets.png in Resources */,
 				718BEBC3137B1E1600F166CD /* velocity.png in Resources */,
 				718BEBC5137B1EF200F166CD /* align.png in Resources */,
-				7187F1DA137B4A7000EA8B86 /* DronesViewController.xib in Resources */,
 				7187F278137B549800EA8B86 /* drone.png in Resources */,
-				1259B5551679CD2500EA49B5 /* DronesAmountViewController.xib in Resources */,
-				12448EFF1679CEA000DC90AC /* ImplantsViewController.xib in Resources */,
 				718803C9137C8FD2004060CC /* add.png in Resources */,
 				718803CA137C8FD2004060CC /* booster.png in Resources */,
 				718803CB137C8FD2004060CC /* implant.png in Resources */,
@@ -5362,12 +5240,7 @@
 				1259B4D71679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib in Resources */,
 				1259B5311679C9F000EA49B5 /* POSCellView~ipad.xib in Resources */,
 				12448F181679CFC300DC90AC /* FittingViewController~ipad.xib in Resources */,
-				12448F091679CEB500DC90AC /* StatsViewController~ipad.xib in Resources */,
-				1259B5521679CD1A00EA49B5 /* ModulesViewController~ipad.xib in Resources */,
-				719407AA1405AC6C009E05FF /* DronesViewController~ipad.xib in Resources */,
-				7194081B1405B83D009E05FF /* DronesAmountViewController~ipad.xib in Resources */,
 				1259B4FB1679C8F200EA49B5 /* AboutViewController~ipad.xib in Resources */,
-				12448F031679CEA400DC90AC /* ImplantsViewController~ipad.xib in Resources */,
 				12BF0090140D3C5400AD9450 /* index.html in Resources */,
 				1259B4B61679C69500EA49B5 /* PCViewController.xib in Resources */,
 				12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */,
@@ -5391,14 +5264,11 @@
 				37809238141D80AB00F32F1A /* Types in Resources */,
 				3780923A141D80CD00F32F1A /* icon72x72.png in Resources */,
 				37DBE021149F95EB00C17AF4 /* eufe.sqlite in Resources */,
-				37A6718B14A0D52800D3284E /* FleetViewController.xib in Resources */,
 				37DDFD9414A2031600BCDEBB /* CharactersViewController.xib in Resources */,
 				12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */,
 				71CAEF2314AB670D00512451 /* SkillLevelsViewController.xib in Resources */,
-				71B0C32014B13DA20022E9FE /* FleetMemberCellView.xib in Resources */,
 				71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */,
 				37A0C25E14B35A92008ACDB4 /* AreaEffectsViewController.xib in Resources */,
-				37E352E114B4AA93004367AB /* FleetViewController~ipad.xib in Resources */,
 				37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */,
 				37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */,
 				37CFDEF314B5C61300BF148F /* cellBackgroundSelected.png in Resources */,
@@ -5595,6 +5465,8 @@
 				71B6DEC217B2DE4E006A6E2E /* ShipStatsFirepowerCell.xib in Resources */,
 				71B6DEC817B2DEC0006A6E2E /* ShipStatsMiscCell.xib in Resources */,
 				71B6DECE17B2DF27006A6E2E /* ShipStatsPriceCell.xib in Resources */,
+				71B1E99417BACD51007330C2 /* ModuleCellView.xib in Resources */,
+				71B1E99617BACE4A007330C2 /* AmountViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5650,14 +5522,8 @@
 				71A65417131DBD370082FFAC /* POSFuelCellView.m in Sources */,
 				71955A561376B00B0068DBD7 /* FittingViewController.mm in Sources */,
 				71A0E8AB1379D86300CE4062 /* ProgressLabel.m in Sources */,
-				71A0E8B41379DAD500CE4062 /* ModulesViewController.mm in Sources */,
-				71A0E9011379DDBE00CE4062 /* StatsViewController.mm in Sources */,
-				71A0E9171379DEF300CE4062 /* ModuleCellView.m in Sources */,
 				71A0E9631379E3FC00CE4062 /* NSString+Fitting.m in Sources */,
 				718FAB4A137A240C00705623 /* NSString+TimeLeft.m in Sources */,
-				7187F1D9137B4A7000EA8B86 /* DronesViewController.mm in Sources */,
-				7188027C137C68F6004060CC /* DronesAmountViewController.m in Sources */,
-				7188035C137C7F69004060CC /* ImplantsViewController.mm in Sources */,
 				71B978C6137DDC7600301218 /* FittingServiceMenuViewController.mm in Sources */,
 				71997B8A137F4B080061BA4E /* BCSearchViewController.m in Sources */,
 				7197DC3F137F687400C3B3F4 /* BCSearchResultViewController.mm in Sources */,
@@ -5686,13 +5552,11 @@
 				377CC0E414141BCB000415BE /* EUFilterItemValue.m in Sources */,
 				371583561417B14000A20C92 /* ContractInfoCellView.m in Sources */,
 				37AC5E14149A71EB005DEAEB /* ItemInfo.mm in Sources */,
-				37A6718A14A0D52800D3284E /* FleetViewController.mm in Sources */,
 				37DDFD9314A2031600BCDEBB /* CharactersViewController.mm in Sources */,
 				37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */,
 				718B99DF14AA15DE0012520F /* CharacterSkillsEditorViewController.mm in Sources */,
 				71CAEF2214AB670D00512451 /* SkillLevelsViewController.m in Sources */,
 				37B1B60114ACD8490037579C /* FitsViewController.mm in Sources */,
-				71B0C31E14B13D940022E9FE /* FleetMemberCellView.m in Sources */,
 				71196C9714B1E77B00614711 /* TargetsViewController.mm in Sources */,
 				37A0C25D14B35A92008ACDB4 /* AreaEffectsViewController.m in Sources */,
 				3764AC8614CDDCCD00C7DEC5 /* CertificateViewController.m in Sources */,
@@ -5967,6 +5831,8 @@
 				71B6DEC617B2DEB3006A6E2E /* ShipStatsMiscCell.m in Sources */,
 				71B6DECC17B2DF1B006A6E2E /* ShipStatsPriceCell.m in Sources */,
 				71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */,
+				71B1E98D17BACCFF007330C2 /* AmountViewController.m in Sources */,
+				71B1E99317BACD51007330C2 /* ModuleCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5981,38 +5847,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		12448F011679CEA000DC90AC /* ImplantsViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F001679CEA000DC90AC /* en */,
-			);
-			name = ImplantsViewController.xib;
-			sourceTree = "<group>";
-		};
-		12448F051679CEA400DC90AC /* ImplantsViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F041679CEA400DC90AC /* en */,
-			);
-			name = "ImplantsViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
-		12448F081679CEAE00DC90AC /* StatsViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F071679CEAE00DC90AC /* en */,
-			);
-			name = StatsViewController.xib;
-			sourceTree = "<group>";
-		};
-		12448F0B1679CEB500DC90AC /* StatsViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F0A1679CEB500DC90AC /* en */,
-			);
-			name = "StatsViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
 		12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6579,30 +6413,6 @@
 				1259B5441679CBBB00EA49B5 /* en */,
 			);
 			name = ContractsViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B5511679CD1200EA49B5 /* ModulesViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B5501679CD1200EA49B5 /* en */,
-			);
-			name = ModulesViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B5541679CD1A00EA49B5 /* ModulesViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B5531679CD1A00EA49B5 /* en */,
-			);
-			name = "ModulesViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
-		1259B5571679CD2500EA49B5 /* DronesAmountViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B5561679CD2500EA49B5 /* en */,
-			);
-			name = DronesAmountViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

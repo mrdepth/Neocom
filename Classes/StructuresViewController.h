@@ -10,12 +10,12 @@
 #import "FittingItemsViewControllerDelegate.h"
 #import "ProgressLabel.h"
 #import "FittingSection.h"
-#import "DronesAmountViewController.h"
+#import "AmountViewController.h"
 
 #include "eufe.h"
 
 @class POSFittingViewController;
-@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, DronesAmountViewControllerDelegate>
+@interface StructuresViewController : UIViewController<FittingSection, UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet POSFittingViewController *posFittingViewController;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;

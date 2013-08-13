@@ -20,6 +20,9 @@
 #import "ShipFit.h"
 #import "ItemInfo.h"
 #import "Globals.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 #define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
 #define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
@@ -29,6 +32,7 @@
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface RequiredSkillsViewController()
+@property (nonatomic, strong) NSString* trainingTime;
 @property (nonatomic, strong) SkillPlan* skillPlan;
 
 - (void) loadData;
@@ -60,10 +64,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Required Skills", nil);
 	[self loadData];
-	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	if ([[EVEAccount currentAccount] skillPlan])
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Learn", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onAddToSkillPlan:)]];
 }
@@ -77,17 +81,6 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-}
-
-- (void)viewDidUnload
-{
-	[self setTrainingTimeLabel:nil];
-    [super viewDidUnload];
-	self.skillPlan = nil;
-}
-
-- (IBAction) onClose:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)onAddToSkillPlan:(id)sender {
@@ -141,12 +134,38 @@
 	cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), skill.requiredLevel];
 	NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [self.skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
 	cell.remainingLabel.text = [NSString stringWithTimeLeft:trainingTime];
+	
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
 	return cell;
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	return self.trainingTime;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		view.collapsImageView.hidden = YES;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return UITableViewCellEditingStyleDelete;
@@ -184,7 +203,7 @@
 #pragma mark - Private
 
 - (void) loadData {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"RequiredSkillsViewController+Load" name:NSLocalizedString(@"Loading Requirements", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"RequiredSkillsViewController+Load" name:NSLocalizedString(@"Loading Requirements", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
@@ -243,8 +262,8 @@
 		if (![operation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
 			
+			self.trainingTime = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 			[self.tableView reloadData];
-			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 		}
 		else {
 			self.skillPlan = nil;

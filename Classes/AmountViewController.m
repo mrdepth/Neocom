@@ -1,22 +1,22 @@
 //
-//  DronesAmountViewController.m
+//  AmountViewController.m
 //  EVEUniverse
 //
 //  Created by Artem Shimanski on 5/12/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "DronesAmountViewController.h"
+#import "AmountViewController.h"
 #import "UIViewController+Neocom.h"
 #import "GroupedCell.h"
 #import "appearance.h"
 
-@interface DronesAmountViewController()
+@interface AmountViewController()
 
 @end
 
 
-@implementation DronesAmountViewController
+@implementation AmountViewController
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.

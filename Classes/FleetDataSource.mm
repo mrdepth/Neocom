@@ -78,7 +78,8 @@
 	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.pilots = pilotsTmp;
-			[self.tableView reloadData];
+			if (self.tableView.dataSource == self)
+				[self.tableView reloadData];
 		}
 	}];
 	

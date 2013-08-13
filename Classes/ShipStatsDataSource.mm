@@ -204,88 +204,6 @@
 			self.basicStats = stats;
 			if (self.tableView.dataSource == self)
 				[self.tableView reloadData];
-
-			/*self.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
-			self.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
-			self.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
-			self.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
-			self.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
-			
-			if (usedCalibration > totalCalibration)
-				self.calibrationLabel.textColor = [UIColor redColor];
-			else
-				self.calibrationLabel.textColor = [UIColor whiteColor];
-			
-			self.dronesLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-			if (activeDrones > maxActiveDrones)
-				self.dronesLabel.textColor = [UIColor redColor];
-			else
-				self.dronesLabel.textColor = [UIColor whiteColor];
-			
-			self.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-			self.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-			self.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-			self.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-			
-			self.turretsLabel.text = [NSString stringWithFormat:@"%d/%d", usedTurretHardpoints, totalTurretHardpoints];
-			self.launchersLabel.text = [NSString stringWithFormat:@"%d/%d", usedMissileHardpoints, totalMissileHardpoints];
-			
-			NSArray *resistanceLabels = [NSArray arrayWithObjects:self.shieldEMLabel, self.shieldThermalLabel, self.shieldKineticLabel, self.shieldExplosiveLabel,
-										 self.armorEMLabel, self.armorThermalLabel, self.armorKineticLabel, self.armorExplosiveLabel,
-										 self.hullEMLabel, self.hullThermalLabel, self.hullKineticLabel, self.hullExplosiveLabel,
-										 self.damagePatternEMLabel, self.damagePatternThermalLabel, self.damagePatternKineticLabel, self.damagePatternExplosiveLabel, nil];
-			
-			float resistanceValues[] = {resistances.shield.em, resistances.shield.thermal, resistances.shield.kinetic, resistances.shield.explosive,
-				resistances.armor.em, resistances.armor.thermal, resistances.armor.kinetic, resistances.armor.explosive,
-				resistances.hull.em, resistances.hull.thermal, resistances.hull.kinetic, resistances.hull.explosive,
-				damagePattern.emAmount, damagePattern.thermalAmount, damagePattern.kineticAmount, damagePattern.explosiveAmount};
-			for (int i = 0; i < 16; i++) {
-				ProgressLabel *label = [resistanceLabels objectAtIndex:i];
-				float resist = resistanceValues[i];
-				label.progress = resist;
-				label.text = [NSString stringWithFormat:@"%.1f%%", resist * 100];
-			}
-			
-			self.shieldHPLabel.text = [NSString stringWithResource:hp.shield unit:nil];
-			self.armorHPLabel.text = [NSString stringWithResource:hp.armor unit:nil];
-			self.hullHPLabel.text = [NSString stringWithResource:hp.hull unit:nil];
-			
-			self.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:ehp unit:nil]];
-			
-			self.shieldReinforcedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.shieldRepair, ertank.shieldRepair];
-			self.shieldSustainedBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.shieldRepair, estank.shieldRepair];
-			self.armorReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.armorRepair, ertank.armorRepair];
-			self.armorSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.armorRepair, estank.armorRepair];
-			self.hullReinforcedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", rtank.hullRepair, ertank.hullRepair];
-			self.hullSustainedRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.hullRepair, estank.hullRepair];
-			self.shieldSustainedRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", stank.passiveShield, estank.passiveShield];
-			
-			self.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString stringWithResource:capCapacity unit:@"GJ"]];
-			if (capStable)
-				self.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), capState];
-			else
-				self.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts %@", nil), [NSString stringWithTimeLeft:capState]];
-			self.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:capacitorRechargeTime]];
-			self.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), delta >= 0.0 ? @"+" : @"", delta];
-			
-			self.weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),weaponDPS];
-			self.droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%.0f DPS", nil),droneDPS];
-			self.volleyDamageLabel.text = [NSString stringWithFormat:@"%.0f",volleyDamage];
-			self.dpsLabel.text = [NSString stringWithFormat:@"%.0f",dps];
-			
-			self.targetsLabel.text = [NSString stringWithFormat:@"%d", targets];
-			self.targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", targetRange];
-			self.scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", scanRes];
-			self.sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", sensorStr];
-			self.speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", speed];
-			self.alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", alignTime];
-			self.signatureLabel.text = [NSString stringWithFormat:@"%.0f", signature];
-			self.cargoLabel.text = [NSString stringWithResource:cargo unit:@"m3"];
-			self.sensorImageView.image = sensorImage;
-			
-			self.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", droneRange];
-			self.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", warpSpeed];*/
-			
 		}
 	}];
 	
@@ -454,7 +372,7 @@
 				if (self.basicStats.capStable)
 					cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), self.basicStats.capState];
 				else
-					cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts %@", nil), [NSString stringWithTimeLeft:self.basicStats.capState]];
+					cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts: %@", nil), [NSString stringWithTimeLeft:self.basicStats.capState]];
 				cell.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:self.basicStats.capacitorRechargeTime]];
 				cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), self.basicStats.delta >= 0.0 ? @"+" : @"", self.basicStats.delta];
 			}
@@ -601,20 +519,28 @@
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0)
-			return 40;
+			return 30;
 		else
-			return 65;
+			return 60;
 	}
-	else if (indexPath.section == 1)
-		return 40;
+	else if (indexPath.section == 1) {
+		if (indexPath.row == 0 || indexPath.row == 5)
+			return 30;
+		else
+			return 34;
+	}
 	else if (indexPath.section == 2)
 		return 40;
-	else if (indexPath.section == 3)
-		return 40;
+	else if (indexPath.section == 3) {
+		if (indexPath.row == 0)
+			return 30;
+		else
+			return 34;
+	}
 	else if (indexPath.section == 4)
-		return 50;
+		return 40;
 	else if (indexPath.section == 5)
-		return 140;
+		return 134;
 	else
 		return 40;
 }
@@ -673,9 +599,6 @@
 			self.priceStats = stats;
 			if (self.tableView.dataSource == self)
 				[self.tableView reloadData];
-			/*self.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:shipPrice unit:nil]];
-			self.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:fittingsPrice unit:nil]];
-			self.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:totalPrice unit:nil]];*/
 		}
 	}];
 	

@@ -7,10 +7,8 @@
 //
 
 #import "FittingViewController.h"
-#import "SelectCharacterBarButtonItem.h"
 #import "Globals.h"
 #import "EVEAccount.h"
-#import "FittingItemsViewController.h"
 #import "ShipFit.h"
 #import "ItemInfo.h"
 #import "DamagePattern.h"
@@ -38,22 +36,17 @@
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 
 @interface FittingViewController()
-@property (nonatomic, strong) UIViewController<FittingSection> *currentSection;
-@property (nonatomic, assign) NSInteger currentSectionIndex;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, readwrite) eufe::Engine* fittingEngine;
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
 @property (nonatomic, strong, readwrite) NCItemsViewController* itemsViewController;
 
-- (void) keyboardWillShow: (NSNotification*) notification;
-- (void) keyboardWillHide: (NSNotification*) notification;
 - (void) save;
 - (void) performExport;
 
 @end
 
 @implementation FittingViewController
-@synthesize popoverController;
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -74,23 +67,6 @@
 	self.fitNameTextField.text = self.fit.fitName;
 	self.damagePattern = [DamagePattern uniformDamagePattern];
 
-	if (self.currentSectionIndex == 0)
-		self.currentSection = self.modulesViewController;
-	else if (self.currentSectionIndex == 1)
-		self.currentSection = self.dronesViewController;
-	else if (self.currentSectionIndex == 2)
-		self.currentSection = self.implantsViewController;
-	else if (self.currentSectionIndex == 3)
-		self.currentSection = self.fleetViewController;
-	else if (self.currentSectionIndex == 4)
-		self.currentSection = self.statsViewController;
-
-	[self.sectionsView addSubview:self.currentSection.view];
-	self.currentSection.view.frame = self.sectionsView.bounds;
-	[self.currentSection viewWillAppear:NO];
-	
-	self.sectionSegmentControl.selectedSegmentIndex = self.currentSectionIndex;
-	
 	self.priceManager = [[PriceManager alloc] init];
 	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onMenu:)]];
 	[self update];
@@ -105,18 +81,6 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void) viewDidLayoutSubviews {
-	self.currentSection.view.frame = self.sectionsView.bounds;
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	}
-}	
-
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	if (self.actionSheet) {
@@ -124,11 +88,7 @@
 		self.actionSheet = nil;
 	}
 	
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-	}
-	else {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self save];
 	}
 }
@@ -140,89 +100,18 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.sectionsView = nil;
-	self.sectionSegmentControl = nil;
-	self.modalController = nil;
-	self.targetsModalController = nil;
-	self.areaEffectsModalController = nil;
-	self.areaEffectsViewController = nil;
-	self.modulesViewController = nil;
-	self.dronesViewController = nil;
-	self.implantsViewController = nil;
-	self.statsViewController = nil;
-	self.fleetViewController = nil;
-	self.shadeView = nil;
-	self.fitNameView = nil;
-	self.fitNameTextField = nil;
-	self.statsSectionView = nil;
-	self.popoverController = nil;
-	self.targetsPopoverController = nil;
-	self.areaEffectsPopoverController = nil;
-	self.variationsPopoverController = nil;
-	self.priceManager = nil;
-	self.currentSection = nil;
-}
-
-
 - (void)dealloc {
 	for (ShipFit* shipFit in self.fits)
 		[shipFit unload];
 	delete self.fittingEngine;
 }
 
-- (IBAction) didCloseModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 - (IBAction) didChangeSection:(id) sender {
-	UIViewController<FittingSection> *newSection = nil;
-	if (self.sectionSegmentControl.selectedSegmentIndex == 0) {
-		self.tableView.dataSource = self.modulesDataSource;
-		self.tableView.delegate = self.modulesDataSource;
-		self.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
-		[self.modulesDataSource reload];
-		newSection = self.modulesViewController;
-	}
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 1) {
-		self.tableView.dataSource = self.dronesDataSource;
-		self.tableView.delegate = self.dronesDataSource;
-		self.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
-		[self.dronesDataSource reload];
-		newSection = self.dronesViewController;
-	}
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 2) {
-		self.tableView.dataSource = self.implantsDataSource;
-		self.tableView.delegate = self.implantsDataSource;
-		self.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
-		[self.implantsDataSource reload];
-		newSection = self.implantsViewController;
-	}
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 3) {
-		self.tableView.dataSource = self.fleetDataSource;
-		self.tableView.delegate = self.fleetDataSource;
-		self.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
-		[self.fleetDataSource reload];
-		newSection = self.fleetViewController;
-	}
-	else if (self.sectionSegmentControl.selectedSegmentIndex == 4) {
-		self.tableView.dataSource = self.shipStatsDataSource;
-		self.tableView.delegate = self.shipStatsDataSource;
-		self.tableView.tableHeaderView = self.shipStatsDataSource.tableHeaderView;
-		[self.shipStatsDataSource reload];
-		newSection = self.statsViewController;
-	}
-	if (newSection == self.currentSection)
-		return;
-	
-	self.currentSectionIndex = self.sectionSegmentControl.selectedSegmentIndex;
-
-	[self.currentSection.view removeFromSuperview];
-	[self.sectionsView addSubview:newSection.view];
-	newSection.view.frame = self.sectionsView.bounds;
-	[newSection viewWillAppear:NO];
-	self.currentSection = newSection;
+	FittingDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.shipStatsDataSource};
+	self.tableView.dataSource = dataSources[self.sectionSegmentControl.selectedSegmentIndex];
+	self.tableView.delegate = dataSources[self.sectionSegmentControl.selectedSegmentIndex];
+	self.tableView.tableHeaderView = dataSources[self.sectionSegmentControl.selectedSegmentIndex].tableHeaderView;
+	[dataSources[self.sectionSegmentControl.selectedSegmentIndex] reload];
 }
 
 - (IBAction) onMenu:(id) sender {
@@ -409,21 +298,8 @@
 	ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:character->getShip() error:nil];
 	self.title = [NSString stringWithFormat:@"%@ - %@", itemInfo.typeName, self.fit.fitName ? self.fit.fitName : itemInfo.typeName];
 	
-	if (self.currentSection == self.fleetViewController)
-		[self.fleetViewController update];
-
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[UIView beginAnimations:nil context:nil];
-		[UIView setAnimationDuration:0.3];
-		[UIView setAnimationBeginsFromCurrentState:YES];
-		self.fitNameView.frame = CGRectMake(self.view.frame.size.width,
-											self.fitNameView.frame.origin.y,
-											self.fitNameView.frame.size.width,
-											self.fitNameView.frame.size.height);
-		[UIView commitAnimations];
-	}
-	
+	if (self.tableView.dataSource == self.fleetDataSource)
+		[self.fleetDataSource reload];
 }
 
 - (IBAction) onBack:(id) sender {
@@ -433,7 +309,6 @@
 
 - (eufe::Engine*) fittingEngine {
 	if (!_fittingEngine)
-		//_fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
 		_fittingEngine = new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]));
 	return _fittingEngine;
 }
@@ -446,32 +321,6 @@
 
 - (void) update {
 	[(FittingDataSource*) self.tableView.dataSource reload];
-}
-
-- (void) addFleetMember {
-	FitsViewController *fitsViewController = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
-	fitsViewController.delegate = self;
-	fitsViewController.engine = self.fittingEngine;
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fitsViewController];
-	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	
-	[self presentModalViewController:navController animated:YES];
-}
-
-- (void) selectCharacterForFit:(ShipFit*) aFit {
-	CharactersViewController *charactersViewController = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:charactersViewController];
-	navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	
-	[self presentModalViewController:navController animated:YES];
 }
 
 - (void) setFit:(ShipFit*) value {
@@ -502,108 +351,6 @@
 	return _itemsViewController;
 }
 
-#pragma mark UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)aActionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSString *button = [aActionSheet buttonTitleAtIndex:buttonIndex];
-	if ([button isEqualToString:ActionButtonBack]) {
-		[self save];
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonShowShipInfo]) {
-		ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:self.fit.character->getShip() error:nil];
-		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		
-		[itemInfo updateAttributes];
-		itemViewController.type = itemInfo;
-		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
-		}
-		else
-			[self.navigationController pushViewController:itemViewController animated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonSetName]) {
-		[self.fitNameTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.2];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[UIView beginAnimations:nil context:nil];
-			[UIView setAnimationDuration:0.3];
-			[UIView setAnimationBeginsFromCurrentState:YES];
-//			self.shadeView.alpha = 1;
-			self.fitNameView.frame = CGRectMake(self.sectionsView.frame.size.width,
-												self.fitNameView.frame.origin.y,
-												self.fitNameView.frame.size.width,
-												self.fitNameView.frame.size.height);
-			[UIView commitAnimations];
-		}
-	}
-	else if ([button isEqualToString:ActionButtonSave]) {
-		[self.fit save];
-	}
-	else if ([button isEqualToString:ActionButtonDuplicate]) {
-		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.fit.managedObjectContext] insertIntoManagedObjectContext:self.fit.managedObjectContext];
-		shipFit.typeID = self.fit.typeID;
-		shipFit.typeName = self.fit.typeName;
-		shipFit.imageName = self.fit.imageName;
-		shipFit.fitName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.fitName ? self.fit.fitName : @""];
-		shipFit.character = self.fit.character;
-		[self.fits replaceObjectAtIndex:[self.fits indexOfObject:self.fit] withObject:shipFit];
-		self.fit = shipFit;
-		[self update];
-	}
-	else if ([button isEqualToString:ActionButtonCharacter]) {
-		[self selectCharacterForFit:self.fit];
-	}
-	else if ([button isEqualToString:ActionButtonViewInBrowser]) {
-		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
-		//controller.delegate = self;
-		controller.startPageURL = [NSURL URLWithString:self.fit.url];
-		[self presentModalViewController:controller animated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonAreaEffect]) {
-		eufe::Item* area = self.fittingEngine->getArea();
-		self.areaEffectsViewController.selectedArea = area != NULL ? [ItemInfo itemInfoWithItem:area error:nil] : nil;
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self.areaEffectsPopoverController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		else
-			[self presentModalViewController:self.areaEffectsModalController animated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonClearAreaEffect]) {
-		self.fittingEngine->clearArea();
-		[self update];
-	}
-	else if ([button isEqualToString:ActionButtonSetDamagePattern]) {
-		DamagePatternsViewController *damagePatternsViewController = [[DamagePatternsViewController alloc] initWithNibName:@"DamagePatternsViewController" bundle:nil];
-		damagePatternsViewController.delegate = self;
-		damagePatternsViewController.currentDamagePattern = self.damagePattern;
-		
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:damagePatternsViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[self presentModalViewController:navController animated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonRequiredSkills]) {
-		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
-		requiredSkillsViewController.fit = self.fit;
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[self presentModalViewController:navController animated:YES];
-	}
-	else if ([button isEqualToString:ActionButtonExport]) {
-		[self performExport];
-	}
-	self.actionSheet = nil;
-}
-
 #pragma mark UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -622,97 +369,23 @@
 #pragma mark BrowserViewControllerDelegate
 
 - (void) browserViewControllerDidFinish:(BrowserViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismiss];
 }
 
 #pragma mark AreaEffectsViewControllerDelegate
 
 - (void) areaEffectsViewController:(AreaEffectsViewController*) controller didSelectAreaEffect:(EVEDBInvType*) areaEffect {
 	self.fittingEngine->setArea(areaEffect.typeID);
+	[self update];
 	[self dismiss];
-	[self update];
 }
-
-#pragma mark CharactersViewControllerDelegate
-
-/*- (void) charactersViewController:(CharactersViewController*) aController didSelectCharacter:(Character*) character {
-	eufe::Character* eufeCharacter = aController.modifiedFit.character;
-	eufeCharacter->setSkillLevels(*[character skillsMap]);
-	eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
-	[self update];
-	[self dismissModalViewControllerAnimated:YES];
-}*/
 
 #pragma mark DamagePatternsViewControllerDelegate
 
 - (void) damagePatternsViewController:(DamagePatternsViewController*) controller didSelectDamagePattern:(DamagePattern*) aDamagePattern {
 	self.damagePattern = aDamagePattern;
 	[self update];
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) aController didSelectType:(EVEDBInvType*) type {
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[aController dismissModalViewControllerAnimated:YES];
-	
-	eufe::Ship* ship = self.fit.character->getShip();
-
-	if (type.group.categoryID == 8) {// Charge
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController dismissPopoverAnimated:YES];
-		if (aController.modifiedItem) {
-			eufe::Module* module = dynamic_cast<eufe::Module*>(aController.modifiedItem.item);
-			module->setCharge(type.typeID);
-		}
-		else {
-			eufe::ModulesList::const_iterator i, end = ship->getModules().end();
-			for (i = ship->getModules().begin(); i != end; i++) {
-				(*i)->setCharge(type.typeID);
-			}
-		}
-	}
-	else if (type.group.categoryID == 18) {// Drone
-		eufe::TypeID typeID = type.typeID;
-		eufe::Ship* ship = self.fit.character->getShip();
-		
-		const eufe::DronesList& drones = ship->getDrones();
-		eufe::Drone* sameDrone = NULL;
-		eufe::DronesList::const_iterator i, end = drones.end();
-		for (i = drones.begin(); i != end; i++) {
-			if ((*i)->getTypeID() == typeID) {
-				sameDrone = *i;
-				break;
-			}
-		}
-		eufe::Drone* drone = ship->addDrone(type.typeID);
-		
-		if (sameDrone)
-			drone->setTarget(sameDrone->getTarget());
-		else {
-			int dronesLeft = ship->getMaxActiveDrones() - 1;
-			for (;dronesLeft > 0; dronesLeft--)
-				ship->addDrone(new eufe::Drone(*drone));
-		}
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[popoverController dismissPopoverAnimated:YES];
-	}
-	else if (type.group.categoryID == 20) {// Implant
-		if ([type.attributesDictionary valueForKey:@"331"]) {
-			self.fit.character->addImplant(type.typeID);
-		}
-		else {
-			self.fit.character->addBooster(type.typeID);
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				[popoverController dismissPopoverAnimated:YES];
-		}
-	}
-	else { //Module
-		self.fit.character->getShip()->addModule(type.typeID);
-	}
-	[self update];
+	[self dismiss];
 }
 
 #pragma mark FitsViewControllerDelegate
@@ -729,96 +402,18 @@
 	eufeDamagePattern.explosiveAmount = self.damagePattern.explosiveAmount;
 	character->getShip()->setDamagePattern(eufeDamagePattern);
 	
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismiss];
 	[self update];
-}
-
-/*#pragma mark TargetsViewControllerDelegate
-- (void) targetsViewController:(TargetsViewController*) controller didSelectTarget:(eufe::Ship*) target {
-	ItemInfo* itemInfo = controller.modifiedItem;
-	if (itemInfo.group.categoryID == 18) { // Drone
-		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
-		eufe::TypeID typeID = drone->getTypeID();
-		eufe::Ship* ship = self.fit.character->getShip();
-		
-		const eufe::DronesList& drones = ship->getDrones();
-		eufe::DronesList::const_iterator i, end = drones.end();
-		for (i = drones.begin(); i != end; i++) {
-			if ((*i)->getTypeID() == typeID)
-				(*i)->setTarget(target);
-		}
-	}
-	else {
-		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
-		module->setTarget(target);
-	}
-	[self update];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.targetsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
-}*/
-
-#pragma mark FittingVariationsViewControllerDelegate
-
-- (void) fittingVariationsViewController:(FittingVariationsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	eufe::Ship* ship = self.fit.character->getShip();
-
-	if (controller.modifiedItem) {
-		eufe::Module* module = dynamic_cast<eufe::Module*>(controller.modifiedItem.item);
-		ship->replaceModule(module, type.typeID);
-	}
-	else {
-		eufe::ModulesList modules = ship->getModules();
-		NSInteger marketGroupID = type.marketGroupID;
-		NSInteger typeID = type.typeID;
-		for (auto module: modules) {
-			ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:module error:nil];
-			if (itemInfo.marketGroupID == marketGroupID)
-				ship->replaceModule(module, typeID);
-		}
-	}
-	[self update];
-
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.variationsPopoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
 }
 
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismiss];
 }
 
 #pragma mark - Private
-
-- (void) keyboardWillShow: (NSNotification*) notification {
-	CGRect r = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationDuration:[[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-	[UIView setAnimationCurve:(UIViewAnimationCurve)[[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue]];
-	self.shadeView.alpha = 1;
-	self.fitNameView.frame = CGRectMake(self.fitNameView.frame.origin.x,
-										self.view.frame.size.height - r.size.height - self.fitNameView.frame.size.height,
-										self.fitNameView.frame.size.width,
-										self.fitNameView.frame.size.height);
-	[UIView commitAnimations];
-}
-
-- (void) keyboardWillHide: (NSNotification*) notification {
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationDuration:[[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-	[UIView setAnimationCurve:(UIViewAnimationCurve)[[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue]];
-	self.shadeView.alpha = 0;
-	self.fitNameView.frame = CGRectMake(self.fitNameView.frame.origin.x, self.view.frame.size.height, self.fitNameView.frame.size.width, self.fitNameView.frame.size.height);
-	[UIView commitAnimations];
-}
 
 - (void) save {
 	self.fit.fitName = self.fitNameTextField.text;
@@ -846,31 +441,34 @@
 	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Clipboard EVE XML", nil), NSLocalizedString(@"Clipboard DNA", nil), nil];
 	if ([MFMailComposeViewController canSendMail])
 		[buttons addObject:NSLocalizedString(@"Email", nil)];
-	[[UIActionSheet actionSheetWithTitle:NSLocalizedString(@"Export", nil)
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:buttons
-						 completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
-								 return;
-							 
-							 
-							 if (selectedButtonIndex == 0) {
-								 [[UIPasteboard generalPasteboard] setString:xml];
-							 }
-							 else if (selectedButtonIndex == 1) {
-								 [[UIPasteboard generalPasteboard] setString:link];
-							 }
-							 else if (selectedButtonIndex == 2) {
-								 MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-								 controller.mailComposeDelegate = self;
-								 [controller setMessageBody:link isHTML:YES];
-								 [controller setSubject:name];
-								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
-								 [self presentModalViewController:controller animated:YES];
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+													 title:NSLocalizedString(@"Export", nil)
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:buttons
+										   completionBlock:^(UIActionSheet *aActionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex == aActionSheet.cancelButtonIndex)
+												   return;
+											   
+											   
+											   if (selectedButtonIndex == 0) {
+												   [[UIPasteboard generalPasteboard] setString:xml];
+											   }
+											   else if (selectedButtonIndex == 1) {
+												   [[UIPasteboard generalPasteboard] setString:link];
+											   }
+											   else if (selectedButtonIndex == 2) {
+												   MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+												   controller.mailComposeDelegate = self;
+												   [controller setMessageBody:link isHTML:YES];
+												   [controller setSubject:name];
+												   [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:[NSString stringWithFormat:@"%@.xml", name]];
+												   [self presentViewController:controller animated:YES completion:nil];
+											   }
+										   }
+											   cancelBlock:nil];
+	
+	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 @end

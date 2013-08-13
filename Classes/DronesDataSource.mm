@@ -17,7 +17,7 @@
 #import "UIViewController+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "ItemViewController.h"
-#import "DronesAmountViewController.h"
+#import "AmountViewController.h"
 #import "NSString+Fitting.h"
 
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
@@ -200,7 +200,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[self tableView:aTableView cellForRowAtIndexPath:indexPath] frame].size.height;
+	return 40;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -312,7 +312,7 @@
 	};
 	
 	void (^setAmount)(NSArray*) = ^(NSArray* drones){
-		DronesAmountViewController *controller = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
+		AmountViewController *controller = [[AmountViewController alloc] initWithNibName:@"AmountViewController" bundle:nil];
 		controller.amount = drones.count;
 		int maxActiveDrones = ship->getMaxActiveDrones();
 		controller.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
@@ -337,12 +337,16 @@
 		};
 		
 		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		/*dronesAmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[dronesAmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		else
-			[dronesAmountViewController presentAnimated:YES];*/
-		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
+			[controller presentViewControllerInPopover:self.fittingViewController
+											  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+												inView:self.tableView
+							  permittedArrowDirections:UIPopoverArrowDirectionAny
+											  animated:YES];
+		else {
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
+		}
 	};
 
 	void (^showInfo)(NSArray*) = ^(NSArray* modules){
@@ -353,7 +357,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentModalViewController:navController animated:YES];
+			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];

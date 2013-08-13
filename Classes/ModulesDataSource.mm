@@ -290,7 +290,39 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[self tableView:aTableView cellForRowAtIndexPath:indexPath] frame].size.height;
+	NSArray *modules = self.sections[indexPath.section][@"modules"];
+
+	if (indexPath.row >= modules.count)
+		return 40;
+	else {
+		ItemInfo* itemInfo = modules[indexPath.row];
+		eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
+		eufe::Charge* charge = module->getCharge();
+		
+		bool useCharge = charge != NULL;
+		int optimal = (int) module->getMaxRange();
+		float lifeTime = module->getLifeTime();
+		
+		int additionalRows = 0;
+		if (useCharge) {
+			if (optimal > 0)
+				additionalRows = 2;
+			else
+				additionalRows = 1;
+		}
+		else {
+			if (optimal > 0)
+				additionalRows = 1;
+			else
+				additionalRows = 0;
+		}
+		
+		if (lifeTime > 0)
+			additionalRows++;
+		
+		static CGFloat sizes[] = {40, 40, 56, 72};
+		return sizes[additionalRows];
+	}
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

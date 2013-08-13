@@ -14,8 +14,11 @@
 #import "ItemViewController.h"
 #import "GroupedCell.h"
 #import "DamagePatternEditViewController.h"
-#import "ItemCellView.h"
 #import "FittingNPCGroupsViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "UIViewController+Neocom.h"
+#import "appearance.h"
 
 @interface DamagePatternsViewController()
 @property (nonatomic, strong) NSMutableArray *sections;
@@ -42,10 +45,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.title = NSLocalizedString(@"Damage Patterns", nil);
-	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	[self reload];
 }
@@ -112,47 +115,58 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	GroupedCell *cell;
 	if (indexPath.section == 0) {
-		static NSString *cellIdentifier = @"ItemCellView";
+		static NSString *cellIdentifier = @"Cell";
 		
-		ItemCellView *cell = (ItemCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 		}
-		cell.titleLabel.text = NSLocalizedString(@"Select NPC Type", nil);
-		cell.iconImageView.image = [UIImage imageNamed:@"Icons/icon04_07.png"];
-		return cell;
+		cell.textLabel.text = NSLocalizedString(@"Select NPC Type", nil);
+		cell.imageView.image = [UIImage imageNamed:@"Icons/icon04_07.png"];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-	else if ([[self.sections objectAtIndex:indexPath.section - 1] count] == indexPath.row) {
-		/*NSString *cellIdentifier = @"CharacterCellView";
+	else if ([self.sections[indexPath.section - 1] count] == indexPath.row) {
+		static NSString *cellIdentifier = @"Cell";
 		
-		CharacterCellView *cell = (CharacterCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 		}
-		cell.characterNameLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
-		return cell;*/
+		cell.textLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
+		cell.imageView.image = nil;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	else {
 		static NSString *cellIdentifier = @"DamagePatternCellView";
-		DamagePatternCellView *cell = (DamagePatternCellView*) [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [DamagePatternCellView cellWithNibName:@"DamagePatternCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		DamagePatternCellView *damagePatternCell = (DamagePatternCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (damagePatternCell == nil) {
+			damagePatternCell = [DamagePatternCellView cellWithNibName:@"DamagePatternCellView" bundle:nil reuseIdentifier:cellIdentifier];
 		}
-		DamagePattern* damagePattern = [[self.sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row];
-		cell.titleLabel.text = damagePattern.patternName;
-		cell.emLabel.progress = damagePattern.emAmount;
-		cell.thermalLabel.progress = damagePattern.thermalAmount;
-		cell.kineticLabel.progress = damagePattern.kineticAmount;
-		cell.explosiveLabel.progress = damagePattern.explosiveAmount;
-		cell.emLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.emAmount * 100)];
-		cell.thermalLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.thermalAmount * 100)];
-		cell.kineticLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.kineticAmount * 100)];
-		cell.explosiveLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.explosiveAmount * 100)];
-		cell.checkmarkImageView.image = [damagePattern isEqual:self.currentDamagePattern] ? [UIImage imageNamed:@"checkmark.png"] : nil;
-		return cell;
+		DamagePattern* damagePattern = self.sections[indexPath.section - 1][indexPath.row];
+		damagePatternCell.titleLabel.text = damagePattern.patternName;
+		damagePatternCell.emLabel.progress = damagePattern.emAmount;
+		damagePatternCell.thermalLabel.progress = damagePattern.thermalAmount;
+		damagePatternCell.kineticLabel.progress = damagePattern.kineticAmount;
+		damagePatternCell.explosiveLabel.progress = damagePattern.explosiveAmount;
+		damagePatternCell.emLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.emAmount * 100)];
+		damagePatternCell.thermalLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.thermalAmount * 100)];
+		damagePatternCell.kineticLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.kineticAmount * 100)];
+		damagePatternCell.explosiveLabel.text = [NSString stringWithFormat:@"%d%%", (int) (damagePattern.explosiveAmount * 100)];
+		damagePatternCell.accessoryView = [damagePattern isEqual:self.currentDamagePattern] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+		damagePatternCell.editingAccessoryType = indexPath.section == 2 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+		cell = damagePatternCell;
 	}
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)aTableView titleForHeaderInSection:(NSInteger)section {
@@ -191,26 +205,23 @@
 		return indexPath.row == [[self.sections objectAtIndex:indexPath.section - 1] count] ? UITableViewCellEditingStyleInsert : UITableViewCellEditingStyleDelete;
 }
 
-- (UIView *)tableView:(UITableView *)aTableView viewForHeaderInSection:(NSInteger)section {
-	NSString *s = [self tableView:aTableView titleForHeaderInSection:section];
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = s;
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0 ? 36 : 44;
+	return indexPath.section == 0 || [self.sections[indexPath.section - 1] count] == indexPath.row ? 40 : 44;
 }
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -237,12 +248,6 @@
 			[self.delegate damagePatternsViewController:self didSelectDamagePattern:[[self.sections objectAtIndex:indexPath.section - 1] objectAtIndex:indexPath.row]];
 		}
 	}
-}
-
-#pragma mark UIPopoverControllerDelegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	popoverController.popoverContentSize = CGSizeMake(320, 1100);
 }
 
 #pragma mark - Private

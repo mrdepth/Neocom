@@ -253,12 +253,6 @@
 		[self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
 #pragma mark SkillPlannerImportViewControllerDelegate
 - (void) skillPlannerImportViewController:(SkillPlannerImportViewController*) controller didSelectSkillPlan:(SkillPlan*) aSkillPlan {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

@@ -10,7 +10,7 @@
 #import "DamagePatternsViewControllerDelegate.h"
 #import "DamagePattern.h"
 
-@interface DamagePatternsViewController : UITableViewController<UIPopoverControllerDelegate>
+@interface DamagePatternsViewController : UITableViewController
 @property (nonatomic, weak) IBOutlet id<DamagePatternsViewControllerDelegate> delegate;
 @property (nonatomic, strong) DamagePattern* currentDamagePattern;
 

@@ -8,6 +8,7 @@
 
 #import "DamagePatternEditViewController.h"
 #import "DamagePattern.h"
+#import "appearance.h"
 
 @interface DamagePatternEditViewController()
 - (void) update;
@@ -38,6 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSave:)];
 	self.title = self.damagePattern.patternName;
 	self.titleTextField.text = self.damagePattern.patternName;
@@ -70,21 +72,6 @@
 	[self.titleTextField becomeFirstResponder];
 }
 
-- (void)viewDidUnload
-{
-	[self setDamageAmountsCellView:nil];
-	[self setTitleCellView:nil];
-	[self setTitleTextField:nil];
-	[self setEmTextField:nil];
-	[self setThermalTextField:nil];
-	[self setKineticTextField:nil];
-	[self setExplosiveTextField:nil];
-	[self setTotalDamageLabel:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 - (IBAction)onSave:(id)sender {
 	self.damagePattern.patternName = self.titleTextField.text;
 	self.damagePattern.emAmount = self.emTextField.progress;
@@ -103,21 +90,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-	return 2;
+	return 1;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.row == 0 ? self.titleCellView : self.damageAmountsCellView;
+	self.damageAmountsCellView.groupStyle = GroupedCellGroupStyleSingle;
+	return self.damageAmountsCellView;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 32;
-}
 
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -53,7 +53,8 @@
 		if (![weakOperation isCancelled]) {
 			self.implants = implantsTmp;
 			self.boosters = boostersTmp;
-			[self.tableView reloadData];
+			if (self.tableView.dataSource == self)
+				[self.tableView reloadData];
 		}
 	}];
 	

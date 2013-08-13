@@ -10,12 +10,8 @@
 
 @class FittingVariationsViewController;
 @class ItemInfo;
-@protocol FittingVariationsViewControllerDelegate <NSObject>
-- (void) fittingVariationsViewController:(FittingVariationsViewController*) controller didSelectType:(EVEDBInvType*) type;
-@end
 
 @interface FittingVariationsViewController : VariationsViewController
-@property (nonatomic, weak) id<FittingVariationsViewControllerDelegate> delegate;
 @property (nonatomic, strong) ItemInfo* modifiedItem;
 @property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
 @end

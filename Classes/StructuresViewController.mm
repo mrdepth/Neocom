@@ -17,6 +17,7 @@
 #import "POSFit.h"
 #import "EVEDBAPI.h"
 #import "NSString+TimeLeft.h"
+#import "AmountViewController.h"
 
 #import "ItemInfo.h"
 
@@ -420,14 +421,14 @@
 		[self.posFittingViewController update];
 	}
 	else if ([button isEqualToString:ActionButtonAmount]) {
-		DronesAmountViewController *dronesAmountViewController = [[DronesAmountViewController alloc] initWithNibName:@"DronesAmountViewController" bundle:nil];
-		dronesAmountViewController.amount = array.count;
-		dronesAmountViewController.maxAmount = 50;
-		/*dronesAmountViewController.delegate = self;
+		AmountViewController *amountViewController = [[AmountViewController alloc] initWithNibName:@"AmountViewController" bundle:nil];
+		amountViewController.amount = array.count;
+		amountViewController.maxAmount = 50;
+		/*AmountViewController.delegate = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[dronesAmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[AmountViewController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:self.modifiedIndexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[dronesAmountViewController presentAnimated:YES];*/
+			[AmountViewController presentAnimated:YES];*/
 	}
 	else if ([button isEqualToString:ActionButtonShowModuleInfo]) {
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
@@ -458,9 +459,9 @@
 	}
 }
 
-#pragma mark DronesAmountViewControllerDelegate
+#pragma mark AmountViewControllerDelegate
 
-- (void) dronesAmountViewController:(DronesAmountViewController*) aController didSelectAmount:(NSInteger) amount {
+- (void) AmountViewController:(AmountViewController*) aController didSelectAmount:(NSInteger) amount {
 	eufe::ControlTower* controlTower = self.posFittingViewController.fit.controlTower;
 	NSMutableArray* array = [self.structures objectAtIndex:self.modifiedIndexPath.row];
 	int left = array.count - amount;
@@ -481,7 +482,7 @@
 	[self.posFittingViewController update];
 }
 
-- (void) dronesAmountViewControllerDidCancel:(DronesAmountViewController*) controller {
+- (void) AmountViewControllerDidCancel:(AmountViewController*) controller {
 }
 
 #pragma mark FittingSection

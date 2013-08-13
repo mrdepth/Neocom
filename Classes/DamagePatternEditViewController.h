@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "ProgressTextField.h"
 #import "ProgressLabel.h"
+#import "GroupedCell.h"
 
 @class DamagePattern;
 @interface DamagePatternEditViewController : UITableViewController <UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UITableViewCell *damageAmountsCellView;
-@property (strong, nonatomic) IBOutlet UITableViewCell *titleCellView;
+@property (strong, nonatomic) IBOutlet GroupedCell *damageAmountsCellView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet ProgressTextField *emTextField;
 @property (weak, nonatomic) IBOutlet ProgressTextField *thermalTextField;

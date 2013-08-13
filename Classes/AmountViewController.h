@@ -1,5 +1,5 @@
 //
-//  DronesAmountViewController.h
+//  AmountViewController.h
 //  EVEUniverse
 //
 //  Created by Artem Shimanski on 5/12/11.
@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DronesAmountViewControllerDelegate.h"
 
 
-@interface DronesAmountViewController : UITableViewController
+@interface AmountViewController : UITableViewController
 @property (nonatomic, assign) NSInteger maxAmount;
 @property (nonatomic, assign) NSInteger amount;
 

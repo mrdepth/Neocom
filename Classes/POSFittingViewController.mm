@@ -17,6 +17,7 @@
 #import "RequiredSkillsViewController.h"
 #import "EVEDBAPI.h"
 #import "PriceManager.h"
+#import "appearance.h"
 
 #include "eufe.h"
 
@@ -33,6 +34,7 @@
 @property(nonatomic, assign) NSInteger currentSectionIndex;
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, readwrite) eufe::Engine* fittingEngine;
+@property (nonatomic, strong, readwrite) NCItemsViewController* itemsViewController;
 
 
 - (void) keyboardWillShow: (NSNotification*) notification;
@@ -58,6 +60,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+
+	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onBack:)];
 	
 	self.fitNameTextField.text = self.fit.fitName;
@@ -243,9 +248,7 @@
 }
 
 - (void) update {
-	[self.currentSection update];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.posStatsViewController update];
+	[(POSFittingDataSource*) self.tableView.dataSource reload];
 }
 
 - (void) setFit:(POSFit*) value {
@@ -276,6 +279,13 @@
 		}
 	}
 	return _posFuelRequirements;
+}
+
+- (NCItemsViewController*) itemsViewController {
+	if (!_itemsViewController) {
+		_itemsViewController = [[NCItemsViewController alloc] init];
+	}
+	return _itemsViewController;
 }
 
 #pragma mark UIActionSheetDelegate

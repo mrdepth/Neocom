@@ -472,6 +472,8 @@
 		7108533B1231317400397BC7 /* SelectCharacterBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7108533A1231317400397BC7 /* SelectCharacterBarButtonItem.m */; };
 		71196C9714B1E77B00614711 /* TargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71196C9514B1E77B00614711 /* TargetsViewController.mm */; };
 		71196C9814B1E77B00614711 /* TargetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71196C9614B1E77B00614711 /* TargetsViewController.xib */; };
+		7130A81F17BC143700C2B7EB /* StructuresDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7130A81E17BC143700C2B7EB /* StructuresDataSource.mm */; };
+		7130A82217BC14FA00C2B7EB /* POSFittingDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 7130A82117BC14FA00C2B7EB /* POSFittingDataSource.m */; };
 		713BE29C1799D15F004F2A28 /* EVEAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BE29B1799D15F004F2A28 /* EVEAccountCell.m */; };
 		713BE29E1799D16D004F2A28 /* EVEAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 713BE29D1799D16D004F2A28 /* EVEAccountCell.xib */; };
 		713BE2A11799D5BA004F2A28 /* CALayer+UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BE2A01799D5BA004F2A28 /* CALayer+UIColor.m */; };
@@ -1577,6 +1579,10 @@
 		71196C9414B1E77B00614711 /* TargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetsViewController.h; sourceTree = "<group>"; };
 		71196C9514B1E77B00614711 /* TargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TargetsViewController.mm; sourceTree = "<group>"; };
 		71196C9614B1E77B00614711 /* TargetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TargetsViewController.xib; sourceTree = "<group>"; };
+		7130A81D17BC143700C2B7EB /* StructuresDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StructuresDataSource.h; sourceTree = "<group>"; };
+		7130A81E17BC143700C2B7EB /* StructuresDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StructuresDataSource.mm; sourceTree = "<group>"; };
+		7130A82017BC14FA00C2B7EB /* POSFittingDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFittingDataSource.h; sourceTree = "<group>"; };
+		7130A82117BC14FA00C2B7EB /* POSFittingDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POSFittingDataSource.m; sourceTree = "<group>"; };
 		713BE29A1799D15F004F2A28 /* EVEAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountCell.h; sourceTree = "<group>"; };
 		713BE29B1799D15F004F2A28 /* EVEAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountCell.m; sourceTree = "<group>"; };
 		713BE29D1799D16D004F2A28 /* EVEAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EVEAccountCell.xib; sourceTree = "<group>"; };
@@ -3557,6 +3563,7 @@
 		37BBC5A715125D4F00EDE204 /* POSFittingViewController */ = {
 			isa = PBXGroup;
 			children = (
+				7130A81A17BC140A00C2B7EB /* DataSources */,
 				718869D61401C860003CFF0A /* FittingSection.h */,
 				37BBC5AB151263EF00EDE204 /* StructuresViewController */,
 				37CE795215135C8600621D52 /* POSStatsViewController */,
@@ -3735,6 +3742,25 @@
 				71196C9614B1E77B00614711 /* TargetsViewController.xib */,
 			);
 			name = TargetsViewController;
+			sourceTree = "<group>";
+		};
+		7130A81A17BC140A00C2B7EB /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				7130A81C17BC142500C2B7EB /* StructuresDataSource */,
+				7130A82017BC14FA00C2B7EB /* POSFittingDataSource.h */,
+				7130A82117BC14FA00C2B7EB /* POSFittingDataSource.m */,
+			);
+			name = DataSources;
+			sourceTree = "<group>";
+		};
+		7130A81C17BC142500C2B7EB /* StructuresDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				7130A81D17BC143700C2B7EB /* StructuresDataSource.h */,
+				7130A81E17BC143700C2B7EB /* StructuresDataSource.mm */,
+			);
+			name = StructuresDataSource;
 			sourceTree = "<group>";
 		};
 		713BE2991799D143004F2A28 /* EVEAccountCell */ = {
@@ -5833,6 +5859,8 @@
 				71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */,
 				71B1E98D17BACCFF007330C2 /* AmountViewController.m in Sources */,
 				71B1E99317BACD51007330C2 /* ModuleCellView.m in Sources */,
+				7130A81F17BC143700C2B7EB /* StructuresDataSource.mm in Sources */,
+				7130A82217BC14FA00C2B7EB /* POSFittingDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

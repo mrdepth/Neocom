@@ -30,8 +30,7 @@
 @class ShipFit;
 @class DamagePattern;
 @class PriceManager;
-@interface FittingViewController : UIViewController<UIActionSheetDelegate,
-													UITextFieldDelegate,
+@interface FittingViewController : UIViewController<UITextFieldDelegate,
 													BrowserViewControllerDelegate,
 													AreaEffectsViewControllerDelegate,
 													DamagePatternsViewControllerDelegate,

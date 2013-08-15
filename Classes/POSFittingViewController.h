@@ -15,6 +15,10 @@
 #import "DamagePatternsViewController.h"
 #import "EVECentralAPI.h"
 
+#import "StructuresDataSource.h"
+
+#import "NCItemsViewController.h"
+
 #import "eufe.h"
 
 @class POSFit;
@@ -35,6 +39,12 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *fitNameView;
 @property (nonatomic, weak) IBOutlet UITextField *fitNameTextField;
 @property (nonatomic, weak) IBOutlet UIView *statsSectionView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) IBOutlet StructuresDataSource *structuresDataSource;
+
+@property (nonatomic, strong, readonly) NCItemsViewController* itemsViewController;
+
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, strong) UIPopoverController *areaEffectsPopoverController;
 

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "KillNetFilterDateViewController.h"
-#import "KillNetFilterShipsViewController.h"
 #import "KillNetFilterShipClassesViewController.h"
 #import "KillNetFilterRegionsViewController.h"
 #import "KillNetFilterSolarSystemsViewController.h"
@@ -42,7 +41,7 @@ typedef enum {
 
 @end
 
-@interface KillNetFiltersViewController : UITableViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate>
+@interface KillNetFiltersViewController : UITableViewController<KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate>
 @property (strong, nonatomic) NSArray* usedFilters;
 @property (nonatomic, weak) id<KillNetFiltersViewControllerDelegate> delegate;
 

@@ -12,7 +12,7 @@
 @property (nonatomic, strong) NSArray* values;
 @property (nonatomic, strong) NSArray* titles;
 @property (nonatomic, strong) NSArray* icons;
-@property (nonatomic, strong) NSValue* selectedValue;
+@property (nonatomic, strong) NSNumber* selectedValue;
 @property (nonatomic, copy) void (^completionHandler)(NSValue* value);
 
 

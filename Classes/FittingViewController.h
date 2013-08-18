@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "BrowserViewController.h"
-#import "FittingSection.h"
 #import "AreaEffectsViewController.h"
 #import "CharactersViewController.h"
 #import "DamagePatternsViewController.h"

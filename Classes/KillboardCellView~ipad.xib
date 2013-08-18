@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -45,7 +45,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 2}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="736099974"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -58,7 +57,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 2}, {228, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="745546408"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -96,7 +94,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 18}, {228, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="314300603"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -127,7 +124,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{276, 2}, {400, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="992969648"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -149,7 +145,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{276, 18}, {400, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="554872062"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -171,7 +166,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 34}, {228, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="595971140"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -193,7 +187,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{276, 34}, {400, 16}}</string>
 								<reference key="NSSuperview" ref="448294861"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -212,7 +205,6 @@
 						</array>
 						<string key="NSFrameSize">{683, 51}</string>
 						<reference key="NSSuperview" ref="569057047"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="471807630"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -227,7 +219,6 @@
 				</array>
 				<string key="NSFrameSize">{703, 52}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="448294861"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -240,11 +231,9 @@
 				<real value="55" key="IBUIRowHeight"/>
 			</object>
 			<object class="IBUIImageView" id="184940012">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -256,11 +245,9 @@
 				</object>
 			</object>
 			<object class="IBUIImageView" id="383399795">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -471,8 +458,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="cellBackground.png">{2, 4}</string>
-			<string key="cellBackgroundSelected.png">{2, 4}</string>
+			<string key="cellBackground.png">{5, 5}</string>
+			<string key="cellBackgroundSelected.png">{5, 5}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

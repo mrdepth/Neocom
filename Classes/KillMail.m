@@ -71,13 +71,13 @@
 			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
 			
 			if (item.flag >= EVEInventoryFlagNone) {
-				if ([type.effectsDictionary valueForKey:@"12"])
+				if (type.effectsDictionary[@(12)])
 					slot = @"hiSlots";
-				else if ([type.effectsDictionary valueForKey:@"13"])
+				else if (type.effectsDictionary[@(13)])
 					slot = @"medSlots";
-				else if ([type.effectsDictionary valueForKey:@"11"])
+				else if (type.effectsDictionary[@(11)])
 					slot = @"lowSlots";
-				else if ([type.effectsDictionary valueForKey:@"2663"])
+				else if (type.effectsDictionary[@(2663)])
 					slot = @"rigSlots";
 				else if (type.group.categoryID == 32)
 					slot = @"subsystemSlots";
@@ -90,29 +90,27 @@
 			}
 			
 			if (item.qtyDestroyed) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"destroyed"];
-				KillMailItem* destroyedItem = [container valueForKey:key];
+				NSMutableDictionary* container = containers[slot][@"destroyed"];
+				KillMailItem* destroyedItem = container[@(type.typeID)];
 				if (!destroyedItem) {
 					destroyedItem = [[KillMailItem alloc] init];
 					destroyedItem.type = type;
 					destroyedItem.qty = item.qtyDestroyed;
 					destroyedItem.destroyed = YES;
-					[container setValue:destroyedItem forKey:key];
+					container[@(type.typeID)] = destroyedItem;
 				}
 				else
 					destroyedItem.qty += item.qtyDestroyed;
 			}
 			if (item.qtyDropped) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"dropped"];
-				KillMailItem* droppedItem = [container valueForKey:key];
+				NSMutableDictionary* container = containers[slot][@"dropped"];
+				KillMailItem* droppedItem = container[@(type.typeID)];
 				if (!droppedItem) {
 					droppedItem = [[KillMailItem alloc] init];
 					droppedItem.type = type;
 					droppedItem.qty = item.qtyDropped;
 					droppedItem.destroyed = NO;
-					[container setValue:droppedItem forKey:key];
+					container[@(type.typeID)] = droppedItem;
 				}
 				else
 					droppedItem.qty += item.qtyDropped;
@@ -120,15 +118,14 @@
 		}
 		
 		NSArray* sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"destroyed" ascending:NO]];
-		for (NSString* key in containers) {
-			NSDictionary* container = [containers valueForKey:key];
-			NSArray* dropped = [[container valueForKey:@"dropped"] allValues];
-			NSArray* destroyed = [[container valueForKey:@"destroyed"] allValues];
+		[containers enumerateKeysAndObjectsUsingBlock:^(id key, NSDictionary* container, BOOL *stop) {
+			NSArray* dropped = [container[@"dropped"] allValues];
+			NSArray* destroyed = [container[@"destroyed"] allValues];
 			NSArray* items = [[destroyed arrayByAddingObjectsFromArray:dropped] sortedArrayUsingDescriptors:sortDescriptors];
-			if (items.count > 0) {
+			if (items.count > 0)
 				[self setValue:items forKey:key];
-			}
-		}
+		}];
+
 	}
 	return self;
 }
@@ -197,13 +194,13 @@
 			NSString* slot = nil;
 			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
 			
-			if (item.itemSlot == 1 && [type.effectsDictionary valueForKey:@"12"])
+			if (item.itemSlot == 1 && type.effectsDictionary[@(12)])
 				slot = @"hiSlots";
-			else if (item.itemSlot == 2 && [type.effectsDictionary valueForKey:@"13"])
+			else if (item.itemSlot == 2 && type.effectsDictionary[@(13)])
 				slot = @"medSlots";
-			else if (item.itemSlot == 3 && [type.effectsDictionary valueForKey:@"11"])
+			else if (item.itemSlot == 3 && type.effectsDictionary[@(11)])
 				slot = @"lowSlots";
-			else if (item.itemSlot == 5 && [type.effectsDictionary valueForKey:@"2663"])
+			else if (item.itemSlot == 5 && type.effectsDictionary[@(2663)])
 				slot = @"rigSlots";
 			else if (item.itemSlot == 7 && type.group.categoryID == 32)
 				slot = @"subsystemSlots";
@@ -213,29 +210,27 @@
 				slot = @"cargo";
 			
 			if (item.qtyDestroyed) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"destroyed"];
-				KillMailItem* destroyedItem = [container valueForKey:key];
+				NSMutableDictionary* container = containers[slot][@"destroyed"];
+				KillMailItem* destroyedItem = container[@(type.typeID)];
 				if (!destroyedItem) {
 					destroyedItem = [[KillMailItem alloc] init];
 					destroyedItem.type = type;
 					destroyedItem.qty = item.qtyDestroyed;
 					destroyedItem.destroyed = YES;
-					[container setValue:destroyedItem forKey:key];
+					container[@(type.typeID)] = destroyedItem;
 				}
 				else
 					destroyedItem.qty += item.qtyDestroyed;
 			}
 			if (item.qtyDropped) {
-				NSString* key = [NSString stringWithFormat:@"%d", type.typeID];
-				NSMutableDictionary* container = [[containers valueForKey:slot] valueForKey:@"dropped"];
-				KillMailItem* droppedItem = [container valueForKey:key];
+				NSMutableDictionary* container = containers[slot][@"dropped"];
+				KillMailItem* droppedItem = container[@(type.typeID)];
 				if (!droppedItem) {
 					droppedItem = [[KillMailItem alloc] init];
 					droppedItem.type = type;
 					droppedItem.qty = item.qtyDropped;
 					droppedItem.destroyed = NO;
-					[container setValue:droppedItem forKey:key];
+					container[@(type.typeID)] = droppedItem;
 				}
 				else
 					droppedItem.qty += item.qtyDropped;
@@ -243,15 +238,13 @@
 		}
 		
 		NSArray* sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"destroyed" ascending:NO]];
-		for (NSString* key in containers) {
-			NSDictionary* container = [containers valueForKey:key];
-			NSArray* dropped = [[container valueForKey:@"dropped"] allValues];
-			NSArray* destroyed = [[container valueForKey:@"destroyed"] allValues];
+		[containers enumerateKeysAndObjectsUsingBlock:^(id key, NSDictionary* container, BOOL *stop) {
+			NSArray* dropped = [container[@"dropped"] allValues];
+			NSArray* destroyed = [container[@"destroyed"] allValues];
 			NSArray* items = [[destroyed arrayByAddingObjectsFromArray:dropped] sortedArrayUsingDescriptors:sortDescriptors];
-			if (items.count > 0) {
+			if (items.count > 0)
 				[self setValue:items forKey:key];
-			}
-		}
+		}];
 	}
 	return self;
 }

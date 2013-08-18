@@ -18,6 +18,7 @@
 #import "EVEAccount.h"
 #import "ShipFit.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "appearance.h"
 
 @interface NAPISearchResultsViewController ()
 @property (nonatomic, strong) NSArray* rows;
@@ -41,7 +42,7 @@
     [super viewDidLoad];
 	self.title = NSLocalizedString(@"Community Fits", nil);
 	
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		self.navigationItem.titleView = self.orderSegmentedControl;
 	[self reload];
@@ -124,7 +125,13 @@
 							  [NSNumberFormatter neocomLocalizedStringFromInteger:item.falloff]];
 	cell.capacitorLabel.text = item.flags & NeocomAPIFlagCapStable ? NSLocalizedString(@"Capacitor is Stable", nil) : NSLocalizedString(@"Capacitor is Unstable", nil);
 	
-    return cell;
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;
 }
 
 /*

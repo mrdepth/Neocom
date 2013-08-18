@@ -6,17 +6,18 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
+#import "ASCaptionTextField.h"
 
 @class KillNetFilterTextCellView;
 @protocol KillNetFilterTextCellViewDelegate <NSObject>
 - (void) killNetFilterTextCellViewDidPressDefaultButton:(KillNetFilterTextCellView*) cell;
 @end
 
-@interface KillNetFilterTextCellView : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@interface KillNetFilterTextCellView : GroupedCell
+@property (weak, nonatomic) IBOutlet ASCaptionTextField* textField;
 @property (nonatomic, weak) id<KillNetFilterTextCellViewDelegate> delegate;
+
 
 - (IBAction)onDefaultValue:(id)sender;
 

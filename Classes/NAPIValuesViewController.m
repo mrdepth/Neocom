@@ -7,8 +7,8 @@
 //
 
 #import "NAPIValuesViewController.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
+#import "GroupedCell.h"
+#import "appearance.h"
 
 @interface NAPIValuesViewController ()
 
@@ -28,18 +28,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+}
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.completionHandler = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,22 +56,29 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"ItemCellView";
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:CellIdentifier];
-		cell.accessoryType = UITableViewCellAccessoryNone;
+    static NSString *cellIdentifier = @"Cell";
+	
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	}
 	
-	cell.titleLabel.text = self.titles[indexPath.row];
-	cell.iconImageView.image = [UIImage imageNamed:self.icons[indexPath.row]];
+	cell.textLabel.text = self.titles[indexPath.row];
+	cell.imageView.image = [UIImage imageNamed:self.icons[indexPath.row]];
 	
 	
-	if ([self.selectedValue isEqualToValue:self.values[indexPath.row]])
+	if ([self.selectedValue integerValue] == [self.values[indexPath.row] integerValue])
 		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 	else
 		cell.accessoryView = nil;
-    return cell;
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 /*
@@ -124,6 +125,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	self.completionHandler(self.values[indexPath.row]);
+	self.completionHandler = nil;
 }
 
 @end

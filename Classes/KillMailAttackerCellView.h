@@ -6,9 +6,9 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-@interface KillMailAttackerCellView : UITableViewCell
+@interface KillMailAttackerCellView : GroupedCell
 @property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *shipImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *weaponImageView;

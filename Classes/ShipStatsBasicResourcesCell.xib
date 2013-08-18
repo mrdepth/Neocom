@@ -45,7 +45,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{31, 5}, {110, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="998882828"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="253438634">
 									<int key="NSColorSpace">1</int>
@@ -90,7 +89,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{31, 30}, {110, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="299956228"/>
 								<reference key="IBUIBackgroundColor" ref="253438634"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -117,7 +115,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{5, 30}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="893220251"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -134,7 +131,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{185, 5}, {110, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1014511218"/>
 								<reference key="IBUIBackgroundColor" ref="253438634"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -161,7 +157,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{159, 5}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="337351929"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -178,7 +173,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{185, 30}, {110, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="IBUIBackgroundColor" ref="253438634"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -204,7 +198,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{159, 30}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="648866933"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -221,7 +214,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{5, 5}, {24, 24}}</string>
 								<reference key="NSSuperview" ref="572899678"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="84303300"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -236,7 +228,6 @@
 						</array>
 						<string key="NSFrameSize">{300, 59}</string>
 						<reference key="NSSuperview" ref="256256774"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="352992662"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -252,7 +243,6 @@
 				</array>
 				<string key="NSFrameSize">{300, 60}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="572899678"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -402,58 +392,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">91</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GroupedCell</string>
-					<string key="superclassName">UITableViewCell</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GroupedCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ProgressLabel</string>
-					<string key="superclassName">UILabel</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ProgressLabel.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ShipStatsBasicResourcesCell</string>
-					<string key="superclassName">GroupedCell</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="cpuLabel">ProgressLabel</string>
-						<string key="droneBandwidthLabel">ProgressLabel</string>
-						<string key="droneBayLabel">ProgressLabel</string>
-						<string key="powerGridLabel">ProgressLabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="cpuLabel">
-							<string key="name">cpuLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="droneBandwidthLabel">
-							<string key="name">droneBandwidthLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="droneBayLabel">
-							<string key="name">droneBayLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="powerGridLabel">
-							<string key="name">powerGridLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ShipStatsBasicResourcesCell.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

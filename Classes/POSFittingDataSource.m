@@ -10,4 +10,8 @@
 
 @implementation POSFittingDataSource
 
+- (void) reload {
+	
+}
+
 @end

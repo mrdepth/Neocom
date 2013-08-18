@@ -7,15 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewController.h"
+#import "NCItemsViewController.h"
 
-@class EVEDBInvType;
-@interface BCSearchViewController : UITableViewController<FittingItemsViewControllerDelegate>
-@property (nonatomic, weak) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *searchButton;
-@property (nonatomic, strong) UIPopoverController *popoverController;
+@interface BCSearchViewController : UITableViewController
+@property (strong, nonatomic) IBOutlet NCItemsViewController *itemsViewController;
 
-- (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) onSearch:(id) sender;
 @end

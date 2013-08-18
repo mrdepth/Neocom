@@ -44,7 +44,11 @@
 
 - (IBAction) onClose:(id) sender {
 	[self.delegate browserViewControllerDidFinish:self];
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)onSafari:(id)sender {
+	[[UIApplication sharedApplication] openURL:self.webView.request.URL];
 }
 
 #pragma mark UIWebViewDelegate

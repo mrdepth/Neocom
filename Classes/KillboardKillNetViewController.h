@@ -10,7 +10,7 @@
 #import "CollapsableTableView.h"
 
 @class EVEKillNetLog;
-@interface KillboardKillNetViewController : UITableViewController<CollapsableTableViewDelegate>
+@interface KillboardKillNetViewController : UITableViewController
 @property (strong, nonatomic) EVEKillNetLog* killLog;
 
 @end

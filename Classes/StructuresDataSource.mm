@@ -20,6 +20,7 @@
 #import "UITableViewCell+Nib.h"
 #import "ItemViewController.h"
 #import "UIViewController+Neocom.h"
+#import "AmountViewController.h"
 
 #define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)
 #define ActionButtonOnline NSLocalizedString(@"Put Online", nil)

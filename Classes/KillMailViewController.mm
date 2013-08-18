@@ -19,6 +19,8 @@
 #import "ShipFit.h"
 #import "EVEAccount.h"
 #import "ItemViewController.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "appearance.h"
 
 @interface KillMailViewController ()
 @property (nonatomic, strong) NSMutableArray* itemsSections;
@@ -39,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.title = self.killMail.victim.characterName;
 
@@ -198,18 +200,29 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.sectionSegmentedControler.selectedSegmentIndex == 0) {
-		static NSString *cellIdentifier = @"KillMailItemCellView";
+		static NSString *cellIdentifier = @"ItemCell";
 		
-		KillMailItemCellView *cell = (KillMailItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [KillMailItemCellView cellWithNibName:@"KillMailItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.accessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 16, 16)];
+			cell.accessoryView.contentMode = UIViewContentModeScaleToFill;
 		}
-		KillMailItem* item = [[[self.itemsSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
-		cell.titleLabel.text = item.type.typeName;
-		cell.iconImageView.image = [UIImage imageNamed:item.type.typeSmallImageName];
-		cell.qualityLabel.text = [NSNumberFormatter localizedStringFromNumber:@(item.qty) numberStyle:NSNumberFormatterDecimalStyle];
-		cell.destroyed = item.destroyed;
 		
+		KillMailItem* item = [[[self.itemsSections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
+		cell.textLabel.text = item.type.typeName;
+		cell.imageView.image = [UIImage imageNamed:item.type.typeSmallImageName];
+		cell.detailTextLabel.text = [NSNumberFormatter neocomLocalizedStringFromNumber:@(item.qty)];
+		UIImageView* imageView = (UIImageView*) cell.accessoryView;
+		imageView.image = [UIImage imageNamed:item.destroyed ? @"Icons/icon22_11.png" : @"Icons/icon26_11.png"];
+		
+		int groupStyle = 0;
+		if (indexPath.row == 0)
+			groupStyle |= GroupedCellGroupStyleTop;
+		if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+			groupStyle |= GroupedCellGroupStyleBottom;
+		cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
 		return cell;
 	}
 	else {
@@ -245,6 +258,12 @@
 		cell.shipImageView.image = [UIImage imageNamed:attacker.shipType.typeSmallImageName];
 		cell.weaponImageView.image = [UIImage imageNamed:attacker.weaponType.typeSmallImageName];
 	
+		int groupStyle = 0;
+		if (indexPath.row == 0)
+			groupStyle |= GroupedCellGroupStyleTop;
+		if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+			groupStyle |= GroupedCellGroupStyleBottom;
+		cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
 		return cell;
 	}
 }
@@ -258,7 +277,7 @@
 		else if (section == 1)
 			return NSLocalizedString(@"Top damage", nil);
 		else
-			return @"";
+			return nil;
 	}
 }
 
@@ -267,9 +286,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.sectionSegmentedControler.selectedSegmentIndex == 0)
-		return 36;
+		return 40;
 	else
-		return 70;
+		return 72;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -310,47 +329,23 @@
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.collapsed = NO;
 		view.titleLabel.text = title;
-		if (self.sectionSegmentedControler.selectedSegmentIndex == 0)
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
-		else
-			view.collapsImageView.hidden = YES;
 		return view;
 	}
 	else
 		return nil;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	if (self.sectionSegmentedControler.selectedSegmentIndex == 0)
-		return [[[self.itemsSections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-	else
-		return NO;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	if (self.sectionSegmentedControler.selectedSegmentIndex == 0)
-		return YES;
-	else
-		return NO;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[self.itemsSections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[self.itemsSections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
-}
 
 #pragma mark - Private
 
 - (IBAction)onOpenFit:(id)sender {
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"KillMailViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;

@@ -7,16 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewController.h"
+#import "NCItemsViewController.h"
 #import "KillNetFilterShipClassesViewController.h"
-#import "NAPISearchTitleCellView.h"
-#import "NAPISearchSwitchCellView.h"
 
-@interface NAPISearchViewController : UITableViewController<FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, NAPISearchTitleCellViewDelegate, NAPISearchSwitchCellViewDelegate>
-@property (weak, nonatomic) IBOutlet FittingItemsViewController *fittingItemsViewController;
-@property (nonatomic, strong) IBOutlet UINavigationController *fittingItemsNavigationController;
-@property (weak, nonatomic) IBOutlet KillNetFilterShipClassesViewController *shipClassesViewController;
-@property (strong, nonatomic) IBOutlet UINavigationController *shipClassesNavigationController;
+@interface NAPISearchViewController : UITableViewController<KillNetFilterDBViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *fitsCountLabel;
 
 - (IBAction)onClose:(id)sender;

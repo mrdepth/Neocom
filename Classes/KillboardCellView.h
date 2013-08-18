@@ -6,9 +6,9 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-@interface KillboardCellView : UITableViewCell
+@interface KillboardCellView : GroupedCell
 @property (weak, nonatomic) IBOutlet UIImageView *shipImageView;
 @property (weak, nonatomic) IBOutlet UILabel *shipLabel;
 @property (weak, nonatomic) IBOutlet UILabel *systemNameLabel;

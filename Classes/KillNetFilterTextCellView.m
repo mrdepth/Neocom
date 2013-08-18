@@ -10,6 +10,11 @@
 
 @implementation KillNetFilterTextCellView
 
+- (void) awakeFromNib {
+	self.textField.captionLabel.textColor = [UIColor whiteColor];
+	self.textField.captionLabel.font = [UIFont boldSystemFontOfSize:12];
+}
+
 - (IBAction)onDefaultValue:(id)sender {
 	[self.delegate killNetFilterTextCellViewDidPressDefaultButton:self];
 }

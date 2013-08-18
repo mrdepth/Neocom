@@ -19,6 +19,7 @@
 #import "UIView+Nib.h"
 #import "KillMailViewController.h"
 #import "Globals.h"
+#import "appearance.h"
 
 @interface KillboardApiViewController ()
 @property (nonatomic, strong) NSMutableDictionary *charFilter;
@@ -50,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
 		self.navigationItem.titleView = self.ownerSegmentControl;
@@ -166,8 +167,13 @@
 		cell.systemNameLabel.text = [NSString stringWithFormat:@"%@ (%.1f)", solarSystem.solarSystemName, solarSystem.security];
 	cell.piratesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Inv.: %d", nil), kill.attackers.count];
 	
-	
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -183,7 +189,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 52;
+	return 54;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -194,7 +200,7 @@
 		record = [[[self.killLog objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	EVEKillLogKill* kill = [record valueForKey:@"kill"];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:NSLocalizedString(@"Loading...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+LoadKillMail" name:NSLocalizedString(@"Loading...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block KillMail* killMail = nil;
 	[operation addExecutionBlock:^(void) {
@@ -218,34 +224,15 @@
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.collapsed = NO;
 		view.titleLabel.text = title;
-		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapsImageView.hidden = YES;
-		else
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;
 	}
 	else
 		return nil;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[self.killLog objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[self.killLog objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[self.killLog objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -279,9 +266,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -338,15 +324,15 @@
 		EVEAccount *account = [EVEAccount currentAccount];
 		NSMutableDictionary *currentKillLogTmp = [NSMutableDictionary dictionary];
 		
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+reload" name:NSLocalizedString(@"Loading Kill Log", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+reload" name:NSLocalizedString(@"Loading Kill Log", nil)];
 		__weak EUOperation* weakOperation = operation;
 		
 		[operation addExecutionBlock:^{
 			@autoreleasepool {
 				NSError* error = nil;
 				EVEKillLog* killLog = corporate ?
-				[EVEKillLog killLogWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil] :
-				[EVEKillLog killLogWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil];
+				[EVEKillLog killLogWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil] :
+				[EVEKillLog killLogWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID beforeKillID:0 corporate:corporate error:&error progressHandler:nil];
 				weakOperation.progress = 0.5;
 				if (error) {
 					dispatch_async(dispatch_get_main_queue(), ^{
@@ -354,7 +340,7 @@
 					});
 				}
 				else {
-					NSInteger charID = account.characterID;
+					NSInteger charID = account.character.characterID;
 					float n = [killLog.kills count];
 					float i = 0;
 

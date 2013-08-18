@@ -111,7 +111,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Loading Loadout", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"BCSearchResultViewController+Select" name:NSLocalizedString(@"Loading Loadout", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;

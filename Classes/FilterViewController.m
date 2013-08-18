@@ -7,10 +7,11 @@
 //
 
 #import "FilterViewController.h"
-//#import "TagCellView.h"
+#import "GroupedCell.h"
 #import "UITableViewCell+Nib.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface FilterViewController()
 @property (nonatomic, strong) NSMutableIndexSet* collapsedSections;
@@ -42,12 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = NSLocalizedString(@"Filter", nil);
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
@@ -116,100 +112,81 @@
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIdentifier = @"Cell";
     
-	/*NSString *cellIdentifier = @"TagCellView";
-	
-	TagCellView *cell = (TagCellView*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
-		cell = [TagCellView cellWithNibName:@"TagCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
 	}
-	EUFilterItem *filterItem = [self.filter.filters objectAtIndex:indexPath.section];
+	
+	EUFilterItem *filterItem = self.filter.filters[indexPath.section];
 	if (indexPath.row == 0) {
-		cell.titleLabel.text = filterItem.allValue;
-		//cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
-		cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell.textLabel.text = filterItem.allValue;
+		cell.accessoryView = [[filterItem selectedValues] count] == 0 ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	}
 	else {
 		EUFilterItemValue *value = [[self.values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-		cell.titleLabel.text = value.title;
-		//cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
-		cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell.textLabel.text = value.title;
+		cell.accessoryView = value.enabled ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	}
-    return cell;*/
-	return nil;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.collapsed = NO;
 		view.titleLabel.text = title;
-		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapsImageView.hidden = YES;
-		else
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;
 	}
 	else
 		return nil;
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	/*[aTableView deselectRowAtIndexPath:indexPath animated:YES];
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	EUFilterItem *filterItem = [self.filter.filters objectAtIndex:indexPath.section];
 	if (indexPath.row == 0) {
 		NSInteger row = 1;
 		for (EUFilterItemValue *value in [self.values objectAtIndex:indexPath.section]) {
 			if (value.enabled) {
 				value.enabled = NO;
-				TagCellView *cell = (TagCellView*) [aTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:indexPath.section]];
-				cell.checkmarkImageView.image = nil;
+				GroupedCell *cell = (GroupedCell*) [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:indexPath.section]];
+				cell.accessoryView = nil;
 			}
 			row++;
 		}
-		TagCellView *cell = (TagCellView*) [aTableView cellForRowAtIndexPath:indexPath];
-		cell.checkmarkImageView.image = [UIImage imageNamed:@"checkmark.png"];
+		GroupedCell *cell = (GroupedCell*) [tableView cellForRowAtIndexPath:indexPath];
+		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 	}
 	else {
 		EUFilterItemValue *value = [[self.values objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
-		TagCellView *cell = (TagCellView*) [aTableView cellForRowAtIndexPath:indexPath];
+		GroupedCell *cell = (GroupedCell*) [tableView cellForRowAtIndexPath:indexPath];
 		value.enabled = !value.enabled;
-		cell.checkmarkImageView.image = value.enabled ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell.accessoryView = value.enabled ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 		
-		cell = (TagCellView*) [aTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
-		cell.checkmarkImageView.image = [[filterItem selectedValues] count] == 0 ? [UIImage imageNamed:@"checkmark.png"] : nil;
+		cell = (GroupedCell*) [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
+		cell.accessoryView = [[filterItem selectedValues] count] == 0 ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	}
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.delegate filterViewController:self didApplyFilter:self.filter];
-	return;*/
+	return;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [self.collapsedSections containsIndex:section];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[self.collapsedSections addIndex:section];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[self.collapsedSections removeIndex:section];
-}
 
 #pragma mark UIPopoverControllerDelegate
 

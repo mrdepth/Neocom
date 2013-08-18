@@ -7,10 +7,13 @@
 //
 
 #import "KillNetFiltersViewController.h"
-#import "TitleCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "EVEKillNetAPI.h"
 #import "EVEDBAPI.h"
+#import "GroupedCell.h"
+#import "appearance.h"
+#import "NCItemsViewController.h"
+#import "UIViewController+Neocom.h"
 
 @interface KillNetFiltersViewController ()
 @property (nonatomic, strong) NSMutableArray* filters;
@@ -22,12 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		self.tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.title = NSLocalizedString(@"Search Criteria", nil);
 	self.filters = [NSMutableArray arrayWithObjects:
@@ -90,12 +88,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TitleCellView";
-    TitleCellView *cell = (TitleCellView*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (!cell)
-		cell = [TitleCellView cellWithNibName:@"TitleCellView" bundle:nil reuseIdentifier:CellIdentifier];
-    cell.titleLabel.text = [[self.filters objectAtIndex:indexPath.row] valueForKey:@"title"];
-    return cell;
+    static NSString *cellIdentifier = @"Cell";
+	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	
+    cell.textLabel.text = [[self.filters objectAtIndex:indexPath.row] valueForKey:@"title"];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 /*
@@ -148,10 +154,28 @@
 		case KillNetFilterTypeVictimShip:
 		case KillNetFilterTypeAttackerShip:
 		case KillNetFilterTypeCombinedShip: {
-			KillNetFilterShipsViewController* controller = [[KillNetFilterShipsViewController alloc] initWithNibName:@"FittingItemsViewController" bundle:nil];
-			controller.delegate = self;
+			NCItemsViewController* controller = [[NCItemsViewController alloc] init];
 			controller.title = [self.filter valueForKey:@"title"];
-			[self.navigationController pushViewController:controller animated:YES];
+			
+			controller.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
+			
+			
+			controller.completionHandler = ^(EVEDBInvType* type) {
+				if (type) {
+					[self.filter setValue:type.typeName forKey:@"value"];
+					[self.delegate killNetFiltersViewController:self didSelectFilter:self.filter];
+				}
+			};
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				[self presentViewControllerInPopover:controller
+											fromRect:[tableView rectForRowAtIndexPath:indexPath]
+											  inView:tableView
+							permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			else {
+				[self presentViewController:controller animated:YES completion:nil];
+			}
+			
 			break;
 		}
 		case KillNetFilterTypeSolarSystem: {
@@ -196,15 +220,6 @@
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
-}
-
-#pragma mark - FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	if (type) {
-		[self.filter setValue:type.typeName forKey:@"value"];
-		[self.delegate killNetFiltersViewController:self didSelectFilter:self.filter];
-	}
 }
 
 #pragma mark - KillNetFilterDBViewControllerDelegate

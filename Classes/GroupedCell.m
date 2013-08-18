@@ -33,6 +33,18 @@
     return self;
 }
 
+- (void) awakeFromNib {
+	self.textLabel.textColor = [UIColor whiteColor];
+	self.textLabel.shadowColor = [UIColor blackColor];
+	self.textLabel.font = [UIFont systemFontOfSize:12];
+	self.textLabel.backgroundColor = [UIColor clearColor];
+	
+	self.detailTextLabel.textColor = [UIColor lightTextColor];
+	self.detailTextLabel.shadowColor = [UIColor blackColor];
+	self.detailTextLabel.font = [UIFont systemFontOfSize:12];
+	self.detailTextLabel.backgroundColor = [UIColor clearColor];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];

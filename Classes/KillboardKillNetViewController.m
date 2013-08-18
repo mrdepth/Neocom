@@ -17,6 +17,7 @@
 #import "KillMailViewController.h"
 #import "NSDate+DaysAgo.h"
 #import "UIAlertView+Error.h"
+#import "appearance.h"
 
 @interface KillboardKillNetViewController ()
 @property (nonatomic, strong) NSMutableArray* sections;
@@ -38,8 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	self.title = NSLocalizedString(@"EVE-Kill", nil);
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	self.title = NSLocalizedString(@"EVE-Kill.net", nil);
 	[self reload];
     // Do any additional setup after loading the view from its nib.
 }
@@ -107,7 +108,13 @@
 	cell.piratesLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Inv.: %d", nil), kill.involvedPartyCount];
 	
 	
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -117,14 +124,10 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 52;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* record = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"rows"] objectAtIndex:indexPath.row];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+KillLoading" name:NSLocalizedString(@"Loading...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardKillNetViewController+KillLoading" name:NSLocalizedString(@"Loading...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block KillMail* killMail = nil;
 	__block NSError* error = nil;
@@ -163,29 +166,15 @@
 		if (tableView == self.searchDisplayController.searchResultsTableView)
 			view.collapsImageView.hidden = YES;
 		else
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
+			view.collapsImageView.hidden = NO;
 		return view;
 	}
 	else
 		return nil;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[self.sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[self.sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[self.sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 #pragma mark - Private

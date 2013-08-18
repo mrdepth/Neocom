@@ -23,5 +23,6 @@
 @property (nonatomic, weak) id<BrowserViewControllerDelegate> delegate;
 
 - (IBAction) onClose:(id) sender;
+- (IBAction)onSafari:(id)sender;
 
 @end

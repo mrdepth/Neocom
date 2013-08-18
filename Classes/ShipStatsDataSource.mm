@@ -236,9 +236,8 @@
 			return 1;
 		case 6:
 			return 1;
-		default:
-			return 0;
 	}
+	return 0;
 }
 
 
@@ -301,7 +300,7 @@
 		}
 		else if (indexPath.row == 5) {
 			static NSString* cellIdentifier = @"EHPCell";
-			groupedCell = (ShipStatsResistancesHeaderCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+			groupedCell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 			if (!groupedCell)
 				groupedCell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 			groupedCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:self.basicStats.ehp unit:nil]];

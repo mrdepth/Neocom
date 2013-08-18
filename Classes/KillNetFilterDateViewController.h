@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 @class KillNetFilterDateViewController;
 @protocol KillNetFilterDateViewControllerDelegate
@@ -14,8 +15,7 @@
 @end
 
 @interface KillNetFilterDateViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *valueLabel;
+@property (weak, nonatomic) IBOutlet GroupedCell* cell;
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (strong, nonatomic) NSDate* minimumDate;
 @property (strong, nonatomic) NSDate* maximumDate;

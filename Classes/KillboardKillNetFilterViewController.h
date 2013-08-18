@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "KillNetFiltersViewController.h"
-#import "KillNetFilterValueCellView.h"
 #import "KillNetFilterTextCellView.h"
-#import "FittingItemsViewController.h"
 #import "KillNetFilterDBViewController.h"
 #import "KillNetFilterDateViewController.h"
 
-@interface KillboardKillNetFilterViewController : UITableViewController<KillNetFiltersViewControllerDelegate, KillNetFilterTextCellViewDelegate, FittingItemsViewControllerDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate, UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UIView *sectionFooterView;
+@interface KillboardKillNetFilterViewController : UITableViewController<KillNetFiltersViewControllerDelegate, KillNetFilterTextCellViewDelegate, KillNetFilterDBViewControllerDelegate, KillNetFilterDateViewControllerDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *searchResultsCountLabel;
 
 @end

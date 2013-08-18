@@ -18,6 +18,8 @@
 #import "UIView+Nib.h"
 #import "appearance.h"
 
+#import "UIViewController+Neocom.h"
+
 @interface BCSearchViewController()
 @property(nonatomic, strong) EVEDBInvType *ship;
 @property(nonatomic, strong) NSArray *tags;
@@ -29,7 +31,6 @@
 
 
 @implementation BCSearchViewController
-@synthesize popoverController;
 
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -48,19 +49,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)];
 
 	NSMutableArray *tagsTmp = [NSMutableArray array];
 	self.title = NSLocalizedString(@"Search", nil);
-	[self.navigationItem setRightBarButtonItem:self.searchButton];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
-		self.popoverController.delegate = (FittingItemsViewController*)  self.modalController.topViewController;
-	}
-	else
-		self.fittingItemsViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
-																											style:UIBarButtonItemStyleBordered
-																										   target:self
-																										   action:@selector(didCloseModalViewController:)];
 
 	if (!self.selectedTags)
 		self.selectedTags = [[NSMutableArray alloc] init];
@@ -97,20 +90,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.fittingItemsViewController = nil;
-	self.modalController = nil;
-	self.searchButton = nil;
-	self.popoverController = nil;
-	self.tags = nil;
-}
-
-
-- (IBAction) didCloseModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) onSearch:(id) sender {
@@ -224,15 +203,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
-		//fittingItemsViewController.groupsRequest = @"SELECT * FROM invGroups WHERE groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) ORDER BY groupName;";
-//		fittingItemsViewController.typesRequest = @"SELECT * FROM invTypes WHERE published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName;";
-		//fittingItemsViewController.typesRequest = @"SELECT invMetaGroups.metaGroupID, invMetaGroups.metaGroupName, invTypes.* FROM invTypes LEFT JOIN invMetaTypes ON invMetaTypes.typeID=invTypes.typeID LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID  WHERE invTypes.published=1 AND groupID IN (25,26,27,28,30,31,324,358,380,419,420,463,485,513,540,541,543,547,659,830,831,832,833,834,883,893,894,898,900,902,906,941,963,1022) %@ %@ ORDER BY invTypes.typeName";
-		self.fittingItemsViewController.marketGroupID = 4;
-		self.fittingItemsViewController.title = NSLocalizedString(@"Ships", nil);
+		self.itemsViewController.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
+		self.itemsViewController.title = NSLocalizedString(@"Ships", nil);
+		
+		__weak BCSearchViewController* weakSelf = self;
+		self.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
+			weakSelf.ship = type;
+			[weakSelf testInputData];
+			[weakSelf.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			[weakSelf dismiss];
+		};
+		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self.popoverController presentPopoverFromRect:[tableView rectForRowAtIndexPath:indexPath] inView:tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self presentViewControllerInPopover:self.itemsViewController
+										fromRect:[tableView rectForRowAtIndexPath:indexPath]
+										  inView:tableView
+						permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self presentModalViewController:self.modalController animated:YES];
+			[self presentViewController:self.itemsViewController animated:YES completion:nil];
 	}
 	else {
 		NSString *tag = [self.tags objectAtIndex:indexPath.row];
@@ -246,23 +234,10 @@
 	return;
 }
 
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	self.ship = type;
-	[self testInputData];
-	[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.popoverController dismissPopoverAnimated:YES];
-	else
-		[self dismissModalViewControllerAnimated:YES];
-}
-
 #pragma mark - Private
 
 - (void) testInputData {
-	self.searchButton.enabled = self.ship && self.selectedTags.count > 0;
+	self.navigationItem.rightBarButtonItem.enabled = self.ship && self.selectedTags.count > 0;
 }
 
 @end

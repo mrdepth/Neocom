@@ -7,6 +7,7 @@
 //
 
 #import "KillNetFilterDateViewController.h"
+#import "appearance.h"
 
 @interface KillNetFilterDateViewController ()
 - (IBAction)onDone:(id)sender;
@@ -18,9 +19,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.contentSizeForViewInPopover = self.view.frame.size;
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStyleDone target:self action:@selector(onDone:)];
-	self.titleLabel.text = self.title;
+	self.cell.groupStyle = GroupedCellGroupStyleSingle;
+	self.cell.textLabel.text = self.title;
 
 	self.datePicker.minimumDate = self.minimumDate;
 	self.datePicker.maximumDate = self.maximumDate;
@@ -44,13 +47,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-	[self setTitleLabel:nil];
-	[self setValueLabel:nil];
-	[self setDatePicker:nil];
-	[super viewDidUnload];
-}
-
 - (IBAction)onChangeDate:(id)sender {
 	self.date = self.datePicker.date;
 	[self update];
@@ -65,7 +61,8 @@
 - (void) update {
 	NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyy.MM.dd"];
-	self.valueLabel.text = [formatter stringFromDate:self.date];
+	self.cell.detailTextLabel.text = [formatter stringFromDate:self.date];
+	[self.cell setNeedsLayout];
 }
 
 @end

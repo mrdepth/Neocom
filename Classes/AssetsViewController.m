@@ -19,6 +19,7 @@
 #import "AssetContentsViewController.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface AssetsViewController()
 @property (nonatomic, strong) NSArray* accounts;
@@ -55,7 +56,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Assets", nil);
 	
 	if (!self.accounts) {
@@ -158,12 +159,13 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIdentifier = @"ItemCellView";
+    static NSString *cellIdentifier = @"Cell";
+    
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	}
 	
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
 	EVEAssetListItem* asset;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
@@ -171,18 +173,24 @@
 	else
 		asset = [[[self.assets objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	cell.iconImageView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	cell.imageView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
 
 	if (asset.parent) {
-		cell.titleLabel.numberOfLines = 2;
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), asset.name, asset.parent.name];
+		cell.textLabel.numberOfLines = 2;
+		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), asset.name, asset.parent.name];
 	}
 	else {
-		cell.titleLabel.numberOfLines = 1;
-		cell.titleLabel.text = asset.name;
+		cell.textLabel.numberOfLines = 1;
+		cell.textLabel.text = asset.name;
 	}
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -201,7 +209,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+	return 40;
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -264,34 +272,15 @@
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.collapsed = NO;
 		view.titleLabel.text = title;
-		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapsImageView.hidden = YES;
-		else
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;
 	}
 	else
 		return nil;
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[self.assets objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[self.assets objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[self.assets objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 #pragma mark -
@@ -310,9 +299,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -380,10 +368,9 @@
 			float n = self.accounts.count;
 			float i = 0;
 			for (EVEAccount* account in self.accounts) {
-				NSInteger characterID = account.characterID;
+				NSInteger characterID = account.character.characterID;
 				if (corporate)
 					characterID = -characterID;
-				//NSNumber* currentID = corporate ? @(account.corpKeyID) : @(account.charKeyID);
 				NSNumber* currentID = @(characterID);
 				weakOperation.progress = i / n;
 				
@@ -395,9 +382,9 @@
 				
 				EVEAssetList *assetsList;
 				if (corporate)
-					assetsList = [EVEAssetList assetListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+					assetsList = [EVEAssetList assetListWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 				else
-					assetsList = [EVEAssetList assetListWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+					assetsList = [EVEAssetList assetListWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 				
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -491,9 +478,9 @@
 							first += length;
 							left -= length;
 							if (corporate)
-								eveLocations = [EVELocations locationsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
+								eveLocations = [EVELocations locationsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
 							else
-								eveLocations = [EVELocations locationsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
+								eveLocations = [EVELocations locationsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
 							for (EVELocationsItem* location in eveLocations.locations)
 								[locations setValue:location forKey:[NSString stringWithFormat:@"%qi", location.itemID]];
 						}

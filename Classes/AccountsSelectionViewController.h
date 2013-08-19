@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EVEAccountsDataSource.h"
 
 @class AccountsSelectionViewController;
 @protocol AccountsSelectionViewControllerDelegate
 - (void) accountsSelectionViewController:(AccountsSelectionViewController*) controller didSelectAccounts:(NSArray*) accounts;
 @end
 
-@interface AccountsSelectionViewController : UITableViewController
+@interface AccountsSelectionViewController : UIViewController<UICollectionViewDelegate>
+@property (nonatomic, strong) IBOutlet EVEAccountsDataSource* dataSource;
+@property (nonatomic, weak) IBOutlet UICollectionView* collectionView;
 @property (nonatomic, strong) NSArray* selectedAccounts;
 @property (nonatomic, weak) id<AccountsSelectionViewControllerDelegate> delegate;
 

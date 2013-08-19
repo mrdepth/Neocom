@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -45,7 +45,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{5, 5}, {64, 64}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="17219365"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -55,7 +54,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{77, 5}, {223, 16}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="961108154"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -91,7 +89,6 @@
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{118, 35}, {182, 17}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -121,7 +118,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{77, 28}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="776241419"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="362385329"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -129,7 +125,6 @@
 						</array>
 						<string key="NSFrameSize">{320, 74}</string>
 						<reference key="NSSuperview" ref="358188677"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="327542408"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1041285230">
 							<int key="NSColorSpace">3</int>
@@ -144,7 +139,6 @@
 				</array>
 				<string key="NSFrameSize">{320, 75}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="776241419"/>
 				<reference key="IBUIBackgroundColor" ref="1041285230"/>
 				<bool key="IBUIOpaque">NO</bool>
@@ -156,11 +150,9 @@
 				<real value="75" key="IBUIRowHeight"/>
 			</object>
 			<object class="IBUIImageView" id="919863601">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -172,11 +164,9 @@
 				</object>
 			</object>
 			<object class="IBUIImageView" id="720935752">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{2, 4}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -341,8 +331,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="cellBackground.png">{2, 4}</string>
-			<string key="cellBackgroundSelected.png">{2, 4}</string>
+			<string key="cellBackground.png">{5, 5}</string>
+			<string key="cellBackgroundSelected.png">{5, 5}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

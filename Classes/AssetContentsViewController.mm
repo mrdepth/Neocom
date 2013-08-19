@@ -14,7 +14,7 @@
 #import "EVEAccount.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "UIAlertView+Error.h"
-#import "ItemCellView.h"
+#import "GroupedCell.h"
 #import "NSArray+GroupBy.h"
 #import "EVEAssetListItem+AssetsViewController.h"
 #import "ItemViewController.h"
@@ -25,6 +25,7 @@
 #import "POSFit.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "appearance.h"
 
 @interface AssetContentsViewController()
 @property (nonatomic, strong) NSMutableArray *filteredValues;
@@ -55,7 +56,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
@@ -71,22 +72,22 @@
 	}
 	else {
 		self.title = self.asset.name;
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:NSLocalizedString(@"Loading Locations", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+LoadLocation" name:NSLocalizedString(@"Loading Locations", nil)];
 		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
 			EVELocations* locations = nil;
 			if (self.corporate && account.corpAccessMask & 16777216)
-				locations = [EVELocations locationsWithKeyID:account.corpKeyID
-													   vCode:account.corpVCode
-												 characterID:account.characterID
+				locations = [EVELocations locationsWithKeyID:account.corpAPIKey.keyID
+													   vCode:account.corpAPIKey.vCode
+												 characterID:account.character.characterID
 														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:self.asset.itemID]]
 												   corporate:YES
 													   error:nil
 											 progressHandler:nil];
 			else if (!self.corporate && account.charAccessMask & 134217728)
-				locations = [EVELocations locationsWithKeyID:account.charKeyID
-													   vCode:account.charVCode
-												 characterID:account.characterID
+				locations = [EVELocations locationsWithKeyID:account.charAPIKey.keyID
+													   vCode:account.charAPIKey.vCode
+												 characterID:account.character.characterID
 														 ids:[NSArray arrayWithObject:[NSNumber numberWithLongLong:self.asset.itemID]]
 												   corporate:NO
 													   error:nil
@@ -234,12 +235,12 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIdentifier = @"ItemCellView";
-	
-    ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-    }
+    static NSString *cellIdentifier = @"Cell";
+    
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil) {
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	}
 	EVEAssetListItem* item;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
@@ -247,19 +248,25 @@
 	else
 		item = [[[self.sections objectAtIndex:indexPath.section] valueForKey:@"assets"] objectAtIndex:indexPath.row];
 	
-	cell.iconImageView.image = [UIImage imageNamed:item.type.typeSmallImageName];
+	cell.imageView.image = [UIImage imageNamed:item.type.typeSmallImageName];
 	
 	if (item.parent && item.parent != self.asset) {
-		cell.titleLabel.numberOfLines = 2;
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), item.name, item.parent.name];
+		cell.textLabel.numberOfLines = 2;
+		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@\nIn: %@", nil), item.name, item.parent.name];
 	}
 	else {
-		cell.titleLabel.numberOfLines = 1;
-		cell.titleLabel.text = item.name;
+		cell.textLabel.numberOfLines = 1;
+		cell.textLabel.text = item.name;
 	}
 
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-    return cell;
+	int groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = static_cast<GroupedCellGroupStyle>(groupStyle);
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -299,20 +306,19 @@
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
 		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.collapsed = NO;
 		view.titleLabel.text = title;
-		if (tableView == self.searchDisplayController.searchResultsTableView)
-			view.collapsImageView.hidden = YES;
-		else
-			view.collapsed = [self tableView:tableView sectionIsCollapsed:section];
 		return view;
 	}
 	else
 		return nil;
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 36;
+	return 40;
 }
 
 
@@ -346,24 +352,6 @@
 	}
 }
 
-#pragma mark - CollapsableTableViewDelegate
-
-- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
-	return [[[self.sections objectAtIndex:section] valueForKey:@"collapsed"] boolValue];
-}
-
-- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
-	return YES;
-}
-
-- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
-	[[self.sections objectAtIndex:section] setValue:@(YES) forKey:@"collapsed"];
-}
-
-- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
-	[[self.sections objectAtIndex:section] setValue:@(NO) forKey:@"collapsed"];
-}
-
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
 
@@ -379,9 +367,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 

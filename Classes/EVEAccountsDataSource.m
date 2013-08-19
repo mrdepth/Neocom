@@ -36,7 +36,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void) reload {
+- (void) reloadWithCompletionHandler:(void(^)()) completionHandler {
 	EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEAccountsDataSource+reload" name:@"Loading Accounts..."];
 	__weak EUOperation* weakOperation = operation;
 	NSMutableArray* accounts = [NSMutableArray array];
@@ -61,6 +61,8 @@
 			self.allAccounts = allAccounts;
 			self.apiKeys = [[APIKey allAPIKeys] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"keyID" ascending:YES]]];
 		}
+		if (completionHandler)
+			completionHandler();
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];

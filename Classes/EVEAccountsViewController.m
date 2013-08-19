@@ -56,7 +56,7 @@
 		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logoff", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onLogoff:)]
 		 ]];
 	
-	[self.dataSource reload];
+	[self.dataSource reloadWithCompletionHandler:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

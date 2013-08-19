@@ -4851,12 +4851,12 @@
 		71B8D34117A97F00008450CC /* Market */ = {
 			isa = PBXGroup;
 			children = (
+				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				71814F1413195157005E7B01 /* WalletTransactionsViewController */,
 				71836541131AA853003D0415 /* MarketOrdersViewController */,
 				71A22802131D401F00848200 /* IndustryJobsViewController */,
 				71A653C0131DAC270082FFAC /* POSesViewController */,
 				71CBDBE814102A8D003A50CE /* ContractsViewController */,
-				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 			);
 			name = Market;

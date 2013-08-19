@@ -15,6 +15,7 @@
 #import "Globals.h"
 #import "EVEOnlineAPI.h"
 #import "UIImageView+URL.h"
+#import "appearance.h"
 
 
 @interface AccountsSelectionViewController ()
@@ -23,53 +24,33 @@
 
 @implementation AccountsSelectionViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.collectionView.allowsMultipleSelection = YES;
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Select Characters", nil);
 	self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 	
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
 	
-	NSMutableArray* accountsTmp = [NSMutableArray array];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AccountsSelectionViewController+Load" name:NSLocalizedString(@"Loading...", nil)];
-
-	[operation addExecutionBlock:^{
-		@autoreleasepool {
-			for (EVEAccountStorageCharacter* character in [[[EVEAccountStorage sharedAccountStorage] characters] allValues]) {
-				if (character.enabled) {
-					EVEAccount* account = [EVEAccount accountWithCharacter:character];
-					NSMutableDictionary* item = [NSMutableDictionary dictionaryWithObject:account forKey:@"account"];
-					
-					for (EVEAccount* selectedAccount in self.selectedAccounts) {
-						if (account.characterID == selectedAccount.characterID) {
-							[item setValue:@(YES) forKey:@"selected"];
-							break;
-						}
-					}
-					
-					[accountsTmp addObject:item];
-				}
-			}
-			[accountsTmp sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.characterName" ascending:YES]]];
+	[self.dataSource reloadWithCompletionHandler:^{
+		NSInteger itemIndex = 0;
+		for (EVEAccount* account in self.dataSource.accounts) {
+			if ([self.selectedAccounts containsObject:account])
+				[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:itemIndex inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+			itemIndex++;
 		}
 	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		self.accounts = accountsTmp;
-		[self.tableView reloadData];
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	NSMutableArray* selected = [NSMutableArray array];
+	for (NSIndexPath* indexPath in self.collectionView.indexPathsForSelectedItems) {
+		[selected addObject:self.dataSource.accounts[indexPath.item]];
+	}
+	if (selected.count > 0)
+		[self.delegate accountsSelectionViewController:self didSelectAccounts:selected];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -79,115 +60,34 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (void) viewDidUnload {
-	[super viewDidUnload];
-	self.accounts = nil;
+#pragma mark - UICollectionViewDelegate
+
+- (BOOL) collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	NSMutableArray* selected = [NSMutableArray array];
-	for (NSDictionary* account in self.accounts) {
-		if ([[account valueForKey:@"selected"] boolValue])
-			[selected addObject:[account valueForKey:@"account"]];
-	}
-	if (selected.count > 0)
-		[self.delegate accountsSelectionViewController:self didSelectAccounts:selected];
+- (BOOL) collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+	return collectionView.indexPathsForSelectedItems.count > 1;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	return 1;
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.accounts.count;
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+	return UIEdgeInsetsMake(20, 0, 0, 0);
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"AccountsSelectionCellView";
-    AccountsSelectionCellView *cell = (AccountsSelectionCellView*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
-        cell = [AccountsSelectionCellView cellWithNibName:@"AccountsSelectionCellView" bundle:nil reuseIdentifier:CellIdentifier];
-	
-	NSDictionary* item = [self.accounts objectAtIndex:indexPath.row];
-	EVEAccount* account = [item valueForKey:@"account"];
-	
-	if (RETINA_DISPLAY) {
-		[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize128 error:nil] scale:2.0 completion:nil failureBlock:nil];
-		[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize64 error:nil] scale:2.0 completion:nil failureBlock:nil];
-	}
-	else {
-		[cell.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil] scale:1.0 completion:nil failureBlock:nil];
-		[cell.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationID size:EVEImageSize32 error:nil] scale:1.0 completion:nil failureBlock:nil];
-	}
-	cell.characterNameLabel.text = account.characterName;
-	cell.corpNameLabel.text = account.corporationName;
-	//cell.accessoryType = [[item valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-	cell.accessoryView = [[item valueForKey:@"selected"] boolValue] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
-    
-    return cell;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+	return CGSizeMake(230, 160);
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	NSDictionary* item = [self.accounts objectAtIndex:indexPath.row];
-	BOOL selected = ![[item valueForKey:@"selected"] boolValue];
-	[item setValue:@(selected) forKey:@"selected"];
-	AccountsSelectionCellView* cell = (AccountsSelectionCellView*) [tableView cellForRowAtIndexPath:indexPath];
-	cell.accessoryView = selected ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+	return 20;
 }
 
 @end

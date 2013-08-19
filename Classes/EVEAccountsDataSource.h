@@ -18,6 +18,6 @@
 @property (nonatomic, assign) BOOL editing;
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated;
-- (void) reload;
+- (void) reloadWithCompletionHandler:(void(^)()) completionHandler;
 
 @end

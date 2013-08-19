@@ -308,6 +308,8 @@
 		12CE330A16524A76009C2E1A /* KillNetFilterTextCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE330916524A76009C2E1A /* KillNetFilterTextCellView.xib */; };
 		12CE330E16525115009C2E1A /* KillNetFiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CE330D16525115009C2E1A /* KillNetFiltersViewController.m */; };
 		12CE331016525129009C2E1A /* KillNetFiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CE330F16525129009C2E1A /* KillNetFiltersViewController.xib */; };
+		12D4252417C218890036165D /* account.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D4252217C218890036165D /* account.png */; };
+		12D4252517C218890036165D /* account@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D4252317C218890036165D /* account@2x.png */; };
 		12D5F8C617707B3A0061D57C /* NAPISearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8C217707B3A0061D57C /* NAPISearch.m */; };
 		12D5F8C717707B3A0061D57C /* NAPIUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8C417707B3A0061D57C /* NAPIUpload.m */; };
 		12D5F8CC17708CCF0061D57C /* NAPISearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8CA17708CCF0061D57C /* NAPISearchViewController.mm */; };
@@ -1334,6 +1336,8 @@
 		12CE330C16525115009C2E1A /* KillNetFiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFiltersViewController.h; sourceTree = "<group>"; };
 		12CE330D16525115009C2E1A /* KillNetFiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFiltersViewController.m; sourceTree = "<group>"; };
 		12CE330F16525129009C2E1A /* KillNetFiltersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillNetFiltersViewController.xib; sourceTree = "<group>"; };
+		12D4252217C218890036165D /* account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account.png; sourceTree = "<group>"; };
+		12D4252317C218890036165D /* account@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account@2x.png"; sourceTree = "<group>"; };
 		12D5F8C117707B3A0061D57C /* NAPISearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearch.h; sourceTree = "<group>"; };
 		12D5F8C217707B3A0061D57C /* NAPISearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearch.m; sourceTree = "<group>"; };
 		12D5F8C317707B3A0061D57C /* NAPIUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPIUpload.h; sourceTree = "<group>"; };
@@ -3882,6 +3886,8 @@
 		71800EEE12EB9B2400F0B471 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				12D4252217C218890036165D /* account.png */,
+				12D4252317C218890036165D /* account@2x.png */,
 				71CDAEF917A84F3C00E58F22 /* xmark.png */,
 				71CDAEFA17A84F3C00E58F22 /* xmark@2x.png */,
 				71C7D90F17A533D500266FA7 /* iconSearch@2x.png */,
@@ -5545,6 +5551,8 @@
 				71CD9BBD17BEBC1F0007C606 /* POSDefenseOffenseHeaderCell.xib in Resources */,
 				71CD9BC317BEBC650007C606 /* POSDefenseOffenseCell.xib in Resources */,
 				71083CB217BF93D70005BBE5 /* StructuresViewController.xib in Resources */,
+				12D4252417C218890036165D /* account.png in Resources */,
+				12D4252517C218890036165D /* account@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

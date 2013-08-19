@@ -16,6 +16,8 @@
 			<integer>17170440</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
+			<key>detailsKeyPath</key>
+			<string>skillsDetails</string>
 		</dict>
 		<dict>
 			<key>className</key>
@@ -30,6 +32,8 @@
 			<integer>3584</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
+			<key>detailsKeyPath</key>
+			<string>mailsDetails</string>
 		</dict>
 	</array>
 	<array>

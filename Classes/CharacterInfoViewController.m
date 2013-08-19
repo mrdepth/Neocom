@@ -13,6 +13,7 @@
 #import "EUOperationQueue.h"
 #import "NSString+TimeLeft.h"
 #import "UIImageView+URL.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface CharacterInfoViewController()
 @property (nonatomic, strong) NSURL* portraitURL;
@@ -111,7 +112,7 @@
 		if (account.characterSheet) {
 			allianceID = account.characterSheet.allianceID;
 			allianceName = account.characterSheet.allianceName;
-			wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:account.characterSheet.balance] numberStyle:NSNumberFormatterDecimalStyle]];
+			wealth = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(account.characterSheet.balance)]];
 		}
 		else {
 			wealth = @"";

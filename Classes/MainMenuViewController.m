@@ -26,16 +26,22 @@
 #import "UIColor+NSNumber.h"
 #import "AccessMaskViewController.h"
 #import "UIViewController+Neocom.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
 @property (nonatomic, assign) NSInteger numberOfUnreadMessages;
-
+@property (nonatomic, strong) NSString* skillsDetails;
+@property (nonatomic, strong) NSString* mailsDetails;
+@property (nonatomic, strong) NSTimer* timer;
+@property (nonatomic, strong) EVEServerStatus* serverStatus;
+@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 
 - (void) accountDidSelect:(NSNotification*) notification;
-- (IBAction) dismissModalViewController;
 - (void) didReadMail:(NSNotification*) notification;
 - (void) loadMail;
+- (void) onTimer:(NSTimer*) timer;
+- (void) checkServerStatus;
 
 @end
 
@@ -81,6 +87,9 @@
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
 	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
+	self.dateFormatter = [[NSDateFormatter alloc] init];
+	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -113,6 +122,22 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	self.serverTimeLabel.text = nil;
+	if (self.serverStatus.serverOpen) {
+		self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+		[self onTimer:self.timer];
+	}
+	else if (!self.serverStatus)
+		[self checkServerStatus];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[self.timer invalidate];
+	self.timer = nil;
+}
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -155,7 +180,8 @@
     GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
 		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+		//cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 	NSString *className = [item valueForKey:@"className"];
@@ -185,7 +211,8 @@
 	}
 	else {
 		cell.textLabel.textColor = [UIColor whiteColor];
-		cell.detailTextLabel.text = nil;
+		NSString* detailsKeyPath = item[@"detailsKeyPath"];
+		cell.detailTextLabel.text = detailsKeyPath ? [self valueForKey:detailsKeyPath] : nil;
 	}
 
 	
@@ -249,7 +276,7 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController)]];
+			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 			[self.splitViewController presentModalViewController:navController animated:YES];
 		}
 		else {
@@ -320,14 +347,23 @@
 #pragma mark - Private
 
 - (void) accountDidSelect:(NSNotification*) notification {
-	self.characterInfoViewController.account = [EVEAccount currentAccount];
+	EVEAccount* account = [EVEAccount currentAccount];
+	self.characterInfoViewController.account = account;
 	self.numberOfUnreadMessages = 0;
+//	self.mailsDetails = [
+
+	if (account.characterSheet) {
+		NSInteger skillPoints = 0;
+		for (EVECharacterSheetSkill* skill in account.characterSheet.skills)
+			skillPoints += skill.skillpoints;
+		self.skillsDetails = [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], account.characterSheet.skills.count];
+	}
+	else
+		self.skillsDetails = nil;
+	
+	self.mailsDetails = nil;
 	[self.tableView reloadData];
 	[self loadMail];
-}
-
-- (IBAction) dismissModalViewController {
-	[self.splitViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void) didReadMail:(NSNotification*) notification {
@@ -337,20 +373,64 @@
 - (void) loadMail {
 	EVEAccount* currentAccount = [EVEAccount currentAccount];
 	if (currentAccount) {
+		__block NSInteger numberOfUnreadMessages;
 		EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+CheckMail" name:NSLocalizedString(@"Checking Mail", nil)];
 		[operation addExecutionBlock:^(void) {
 			@autoreleasepool {
-				self.numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];
+				numberOfUnreadMessages = [[currentAccount mailBox] numberOfUnreadMessages];
 			}
 		}];
 		
 		__weak EUOperation* weakOperation = operation;
 		[operation setCompletionBlockInMainThread:^(void) {
+			if (numberOfUnreadMessages > 0)
+				self.mailsDetails = [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), numberOfUnreadMessages];
+			else
+				self.mailsDetails = nil;
 			if (![weakOperation isCancelled])
 				[self.tableView reloadData];
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
+	}
+}
+
+- (void) checkServerStatus {
+	__block EVEServerStatus* serverStatus = nil;
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"MainMenuViewController+checkServerStatus" name:NSLocalizedString(@"Updating Server Status", nil)];
+	__block NSError* error = nil;
+	[operation addExecutionBlock:^(void) {
+		@autoreleasepool {
+			serverStatus = [EVEServerStatus serverStatusWithError:&error progressHandler:nil];
+		}
+	}];
+	
+	[operation setCompletionBlockInMainThread:^(void) {
+		self.serverStatus = serverStatus;
+		[self.timer invalidate];
+		self.timer = nil;
+		if (serverStatus.serverOpen) {
+			self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+			self.onlineLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ player online", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:serverStatus.onlinePlayers]];
+			[self onTimer:self.timer];
+		}
+		else if (error)
+			self.onlineLabel.text = [error localizedDescription];
+		else
+			self.onlineLabel.text = NSLocalizedString(@"Server offline", nil);
+		[self performSelector:@selector(checkServerStatus) withObject:nil afterDelay:30];
+	}];
+	
+	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (void) onTimer:(NSTimer *)timer {
+	if (self.serverStatus) {
+		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus serverTimeWithLocalTime:[NSDate date]]];
+	}
+	else {
+		[self.timer invalidate];
+		self.timer = nil;
 	}
 }
 

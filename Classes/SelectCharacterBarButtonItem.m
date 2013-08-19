@@ -26,7 +26,8 @@
 }
 
 - (id) initWithParentViewController: (UIViewController*) controller {
-	if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
+	//if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
+	if (self = [super initWithImage:[UIImage imageNamed:@"account.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 		EVEAccount *account = [EVEAccount currentAccount];
 		[self setCharacterName:account.characterName];
 		self.parentViewController = controller;

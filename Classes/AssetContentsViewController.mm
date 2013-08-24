@@ -76,7 +76,7 @@
 		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^(void) {
 			EVELocations* locations = nil;
-			if (self.corporate && account.corpAccessMask & 16777216)
+			if (self.corporate && account.corpAPIKey.apiKeyInfo.key.accessMask & 16777216)
 				locations = [EVELocations locationsWithKeyID:account.corpAPIKey.keyID
 													   vCode:account.corpAPIKey.vCode
 												 characterID:account.character.characterID
@@ -84,7 +84,7 @@
 												   corporate:YES
 													   error:nil
 											 progressHandler:nil];
-			else if (!self.corporate && account.charAccessMask & 134217728)
+			else if (!self.corporate && account.charAPIKey.apiKeyInfo.key.accessMask & 134217728)
 				locations = [EVELocations locationsWithKeyID:account.charAPIKey.keyID
 													   vCode:account.charAPIKey.vCode
 												 characterID:account.character.characterID
@@ -621,7 +621,7 @@
 	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		void (^search)(NSArray*, NSMutableArray*);

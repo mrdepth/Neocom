@@ -16,12 +16,19 @@
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
+#import "appearance.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface MarketOrdersViewController()
 @property (nonatomic, strong) NSMutableArray *filteredValues;
-@property (nonatomic, strong) NSMutableArray *orders;
-@property (nonatomic, strong) NSMutableArray *charOrders;
-@property (nonatomic, strong) NSMutableArray *corpOrders;
+@property (nonatomic, strong) NSMutableArray *openOrders;
+@property (nonatomic, strong) NSMutableArray *closedOrders;
+@property (nonatomic, strong) NSMutableArray *charOpenOrders;
+@property (nonatomic, strong) NSMutableArray *charClosedOrders;
+@property (nonatomic, strong) NSMutableArray *corpOpenOrders;
+@property (nonatomic, strong) NSMutableArray *corpClosedOrders;
 @property (nonatomic, strong) NSMutableDictionary *conquerableStations;
 @property (nonatomic, strong) EUFilter *charFilter;
 @property (nonatomic, strong) EUFilter *corpFilter;
@@ -44,11 +51,10 @@
 }
 */
 
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -79,24 +85,6 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.ownerSegmentControl = nil;
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	self.orders = nil;
-	self.charOrders = nil;
-	self.corpOrders = nil;
-	self.filteredValues = nil;
-	self.conquerableStations = nil;
-	self.charFilter = nil;
-	self.corpFilter = nil;
-}
-
-
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -115,7 +103,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return self.searchDisplayController.searchResultsTableView == tableView ? 1 : 2;
 }
 
 
@@ -124,7 +112,7 @@
 	if (self.searchDisplayController.searchResultsTableView == tableView)
 		return self.filteredValues.count;
 	else {
-		return self.orders.count;
+		return section == 0 ? self.openOrders.count : self.closedOrders.count;
 	}
 }
 
@@ -148,7 +136,7 @@
 	if (self.searchDisplayController.searchResultsTableView == tableView)
 		order = [self.filteredValues objectAtIndex:indexPath.row];
 	else {
-		order = [self.orders objectAtIndex:indexPath.row];
+		order = indexPath.section == 0 ? self.openOrders[indexPath.row] : self.closedOrders[indexPath.row];
 	}
 	
 	cell.expireInLabel.text = [order valueForKey:@"expireIn"];
@@ -163,66 +151,55 @@
 	cell.iconImageView.image = [UIImage imageNamed:[order valueForKey:@"imageName"]];
 	cell.stateLabel.textColor = [order valueForKey:@"stateColor"];
     
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- 
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source.
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }   
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
- }   
- }
- */
-
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (self.searchDisplayController.searchResultsTableView == tableView)
+		return nil;
+	else
+		return section == 0 ? [NSString stringWithFormat:NSLocalizedString(@"Open orders (%d)", nil), self.openOrders.count] : NSLocalizedString(@"Closed Orders", nil);
+}
 
 
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.tableView ? 70 : 104;
+		return tableView == self.tableView ? 75 : 109;
 	else
-		return 104;
+		return 109;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	ItemViewController *controller = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.type = [[self.filteredValues objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = self.filteredValues[indexPath.row][@"type"];
 	else
-		controller.type = [[self.orders objectAtIndex:indexPath.row] valueForKey:@"type"];
+		controller.type = indexPath.section == 0 ? self.openOrders[indexPath.row][@"type"] : self.closedOrders[indexPath.row][@"type"];
 	[controller setActivePage:ItemViewControllerActivePageInfo];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -250,14 +227,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -287,25 +258,36 @@
 
 - (void) reloadOrders {
 	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentOrders = corporate ? self.corpOrders : self.charOrders;
+	NSMutableArray *currentOpenOrders = corporate ? self.corpOpenOrders : self.charOpenOrders;
+	NSMutableArray *currentClosedOrders = corporate ? self.corpClosedOrders : self.charClosedOrders;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"marketOrdersFilter" ofType:@"plist"]]];
 	
-	self.orders = nil;
-	if (!currentOrders) {
+	self.openOrders = nil;
+	self.closedOrders = nil;
+	if (!currentOpenOrders || !currentClosedOrders) {
+		EVEAccount *account = [EVEAccount currentAccount];
 		if (corporate) {
-			self.corpOrders = [[NSMutableArray alloc] init];
-			currentOrders = self.corpOrders;
+			self.corpOpenOrders = [[NSMutableArray alloc] init];
+			self.corpClosedOrders = [[NSMutableArray alloc] init];
+			currentOpenOrders = self.corpOpenOrders;
+			currentClosedOrders = self.corpClosedOrders;
+			if (!account.corpAPIKey) {
+				[self.tableView reloadData];
+				return;
+			}
 		}
 		else {
-			self.charOrders = [[NSMutableArray alloc] init];
-			currentOrders = self.charOrders;
+			self.charOpenOrders = [[NSMutableArray alloc] init];
+			self.charClosedOrders = [[NSMutableArray alloc] init];
+			currentOpenOrders = self.charOpenOrders;
+			currentClosedOrders = self.charClosedOrders;
 		}
 		
-		EVEAccount *account = [EVEAccount currentAccount];
 		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Market Orders", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"MarketOrdersViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Market Orders", nil)];
 		__weak EUOperation* weakOperation = operation;
-		NSMutableArray *ordersTmp = [NSMutableArray array];
+		NSMutableArray *openOrdersTmp = [NSMutableArray array];
+		NSMutableArray *closedOrdersTmp = [NSMutableArray array];
 
 		[operation addExecutionBlock:^(void) {
 			NSError *error = nil;
@@ -316,9 +298,9 @@
 
 			EVEMarketOrders *marketOrders;
 			if (corporate)
-				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 			else
-				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+				marketOrders = [EVEMarketOrders marketOrdersWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 			weakOperation.progress = 0.5;
 			
 			NSDate *currentTime = [marketOrders serverTimeWithLocalTime:[NSDate date]];
@@ -333,12 +315,15 @@
 				NSMutableSet *charIDs = [NSMutableSet set];
 				
 				for (EVEMarketOrdersItem *order in marketOrders.orders) {
+					if (order.duration == 0)
+						continue;
+					
 					NSString *expireIn;
 					NSString *volEntered = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.volEntered] numberStyle:NSNumberFormatterDecimalStyle];
 					NSString *volRemaining = [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.volRemaining] numberStyle:NSNumberFormatterDecimalStyle];
 					NSString *state;
 					UIColor *stateColor;
-					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:order.typeID error:nil];//[[EVEDBInvType alloc] initWithTypeID:order.typeID error:nil];
+					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:order.typeID error:nil];
 					NSString *stationName = nil;
 					NSString *charID = [NSString stringWithFormat:@"%d", order.charID];
 					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:order.stationID error:nil];
@@ -405,42 +390,51 @@
 					
 					NSString *orderType = order.bid ? NSLocalizedString(@"Buy", nil) : NSLocalizedString(@"Sell", nil);
 					
-					[ordersTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-										  expireIn, @"expireIn",
-										  orderType, @"orderType",
-										  state, @"state",
-										  stateColor, @"stateColor",
-										  stationName, @"stationName",
-										  [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:order.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
-										  [NSString stringWithFormat:@"%@ / %@", volRemaining, volEntered], @"qty",
-										  [dateFormatter stringFromDate:order.issued], @"issued",
-										  [type typeSmallImageName], @"imageName",
-										  charID, @"charID",
-										  @"", @"characterName",
-										  [NSNumber numberWithBool:!order.bid], @"sell",
-										  [NSNumber numberWithBool:order.orderState == EVEOrderStateOpen], @"active",
-										  type, @"type",
-										  type.typeName, @"typeName",
-										  nil
-										  ]];
+					NSDictionary* record = @{@"order" : order,
+							  @"timeLeft": @(expireInTime),
+							  @"expireIn": expireIn,
+							  @"orderType": orderType ,
+							  @"state": state,
+							  @"stateColor": stateColor,
+							  @"stationName": stationName,
+							  @"price": [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(order.price)]],
+							  @"qty": [NSString stringWithFormat:@"%@ / %@", volRemaining, volEntered],
+							  @"issued": [dateFormatter stringFromDate:order.issued],
+							  @"imageName": [type typeSmallImageName],
+							  @"charID": charID,
+							  @"characterName": @"",
+							  @"sell": @(order.bid),
+							  @"active": @(order.orderState == EVEOrderStateOpen),
+							  @"type": type,
+							  @"typeName": type.typeName,
+							  @"order": order};
+					if (order.orderState == EVEOrderStateOpen)
+						[openOrdersTmp addObject:[NSMutableDictionary dictionaryWithDictionary:record]];
+					else
+						[closedOrdersTmp addObject:[NSMutableDictionary dictionaryWithDictionary:record]];
 				}
 				weakOperation.progress = 0.75;
-				[ordersTmp sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"issued" ascending:NO], nil]];
+				//[ordersTmp sortUsingDescriptors:[NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"issued" ascending:NO], nil]];
+				[openOrdersTmp sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeLeft" ascending:YES]]];
+				[closedOrdersTmp sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timeLeft" ascending:NO]]];
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;
 					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
-						for (NSDictionary *order in ordersTmp) {
-							NSString *charID = [order valueForKey:@"charID"];
-							NSString *charName = [characterNames.characters valueForKey:charID];
-							if (!charName)
-								charName = @"";
-							[order setValue:charName forKey:@"characterName"];
+						for (NSArray* orders in @[openOrdersTmp, closedOrdersTmp]) {
+							for (NSDictionary *order in orders) {
+								NSString *charID = [order valueForKey:@"charID"];
+								NSString *charName = [characterNames.characters valueForKey:charID];
+								if (!charName)
+									charName = @"";
+								[order setValue:charName forKey:@"characterName"];
+							}
 						}
 					}
 				}
-				[filterTmp updateWithValues:ordersTmp];
+				[filterTmp updateWithValues:openOrdersTmp];
+				[filterTmp updateWithValues:closedOrdersTmp];
 				weakOperation.progress = 1.0;
 			}
 		}];
@@ -453,7 +447,8 @@
 				else {
 					self.charFilter = filterTmp;
 				}
-				[currentOrders addObjectsFromArray:ordersTmp];
+				[currentOpenOrders addObjectsFromArray:openOrdersTmp];
+				[currentClosedOrders addObjectsFromArray:closedOrdersTmp];
 				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadOrders];
 			}
@@ -463,18 +458,21 @@
 	}
 	else {
 		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
-		NSMutableArray *ordersTmp = [NSMutableArray array];
+		NSMutableArray *openOrdersTmp = [NSMutableArray array];
+		NSMutableArray *closedOrdersTmp = [NSMutableArray array];
 		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
+			EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				[ordersTmp addObjectsFromArray:[filter applyToValues:currentOrders]];
+				[openOrdersTmp addObjectsFromArray:[filter applyToValues:currentOpenOrders]];
+				[closedOrdersTmp addObjectsFromArray:[filter applyToValues:currentClosedOrders]];
 			}];
 			
 			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						self.orders = ordersTmp;
+						self.openOrders = openOrdersTmp;
+						self.closedOrders = closedOrdersTmp;
 						[self searchWithSearchString:self.searchBar.text];
 						[self.tableView reloadData];
 					}
@@ -482,8 +480,10 @@
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
-		else
-			self.orders = currentOrders;
+		else {
+			self.openOrders = currentOpenOrders;
+			self.closedOrders = currentClosedOrders;
+		}
 	}
 	[self.tableView reloadData];
 }
@@ -509,9 +509,12 @@
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account)
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			self.orders = nil;
-			self.charOrders = nil;
-			self.corpOrders = nil;
+			self.openOrders = nil;
+			self.closedOrders = nil;
+			self.charOpenOrders = nil;
+			self.charClosedOrders = nil;
+			self.corpOpenOrders = nil;
+			self.corpClosedOrders = nil;
 			self.filteredValues = nil;
 			self.charFilter = nil;
 			self.corpFilter = nil;
@@ -520,9 +523,12 @@
 		else
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	else {
-		self.orders = nil;
-		self.charOrders = nil;
-		self.corpOrders = nil;
+		self.openOrders = nil;
+		self.closedOrders = nil;
+		self.charOpenOrders = nil;
+		self.charClosedOrders = nil;
+		self.corpOpenOrders = nil;
+		self.corpClosedOrders = nil;
 		self.filteredValues = nil;
 		self.charFilter = nil;
 		self.corpFilter = nil;
@@ -531,16 +537,18 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (self.orders.count == 0 || !aSearchString)
+	if ((self.openOrders.count == 0 && self.closedOrders.count == 0) || !aSearchString)
 		return;
 	
 	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"MarketOrdersViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		for (NSDictionary *order in self.orders) {
+		NSMutableArray* orders = [NSMutableArray arrayWithArray:self.openOrders];
+		[orders addObjectsFromArray:self.closedOrders];
+		for (NSDictionary *order in orders) {
 			if ([weakOperation isCancelled])
 				 break;
 			if (([order valueForKey:@"typeName"] && [[order valueForKey:@"typeName"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||

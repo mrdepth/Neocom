@@ -52,6 +52,8 @@
 				[accounts addObject:account];
 		}
 		[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+//		accounts = [NSMutableArray arrayWithArray:[allAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"ignored == FALSE"]]];
+		[accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 	}];
 	
 	[operation setCompletionBlockInMainThread:^{
@@ -161,15 +163,18 @@
 }
 
 - (void) accountCell:(EVEAccountCell*) cell favoritesButtonTapped:(UIButton*) button {
-	cell.account.ignored = !cell.account.ignored;
-	button.selected = !cell.account.ignored;
+	//cell.account.ignored = !cell.account.ignored;
 	
-	if (cell.account.ignored)
-		[(NSMutableArray*) self.accounts removeObject:cell.account];
-	else {
+	if (cell.account.ignored) {
+		[[EVEAccountsManager sharedManager] unignoreCharacter:cell.account.character.characterID];
 		[(NSMutableArray*) self.accounts addObject:cell.account];
 		[(NSMutableArray*) self.accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 	}
+	else {
+		[[EVEAccountsManager sharedManager] ignoreCharacter:cell.account.character.characterID];
+		[(NSMutableArray*) self.accounts removeObject:cell.account];
+	}
+	button.selected = !cell.account.ignored;
 }
 
 - (void) accountCell:(EVEAccountCell*) cell charKeyButtonTapped:(UIButton*) button {

@@ -134,9 +134,9 @@ static EVEAccountsManager* sharedManager = nil;
 				[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountsManagerDidChangeNotification object:self userInfo:userInfo];
 			};
 			
-			if (dispatch_get_current_queue() == dispatch_get_main_queue())
-				notify();
-			else
+//			if (dispatch_get_current_queue() == dispatch_get_main_queue())
+//				notify();
+//			else
 				dispatch_async(dispatch_get_main_queue(), notify);
 
 		}
@@ -198,6 +198,29 @@ static EVEAccountsManager* sharedManager = nil;
 		else
 			dispatch_async(dispatch_get_main_queue(), notify);
 
+	}
+}
+
+- (void) ignoreCharacter:(NSInteger) characterID {
+	if (![IgnoredCharacter ignoredCharacterWithID:characterID]) {
+		NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
+		IgnoredCharacter* ignoredCharacter = [[IgnoredCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"IgnoredCharacter" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+		ignoredCharacter.characterID = characterID;
+		EVEAccount* account = self.accounts[@(characterID)];
+		account.ignored = YES;
+		self.ignored[@(characterID)] = ignoredCharacter;
+		[[EUStorage sharedStorage] saveContext];
+	}
+}
+
+- (void) unignoreCharacter:(NSInteger) characterID {
+	IgnoredCharacter* ignoredCharacter = [IgnoredCharacter ignoredCharacterWithID:characterID];
+	if (ignoredCharacter) {
+		[ignoredCharacter.managedObjectContext deleteObject:ignoredCharacter];
+		EVEAccount* account = self.accounts[@(characterID)];
+		account.ignored = NO;
+		[self.ignored removeObjectForKey:@(characterID)];
+		[[EUStorage sharedStorage] saveContext];
 	}
 }
 

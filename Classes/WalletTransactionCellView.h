@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 
-@interface WalletTransactionCellView : UITableViewCell
+@interface WalletTransactionCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
 @property (nonatomic, weak) IBOutlet UILabel *transactionAmmountLabel;
 @property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;

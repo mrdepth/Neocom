@@ -4860,10 +4860,10 @@
 				37C355AF14EBE0120009B590 /* AssetsViewController */,
 				71814F1413195157005E7B01 /* WalletTransactionsViewController */,
 				71836541131AA853003D0415 /* MarketOrdersViewController */,
+				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 				71A22802131D401F00848200 /* IndustryJobsViewController */,
 				71A653C0131DAC270082FFAC /* POSesViewController */,
 				71CBDBE814102A8D003A50CE /* ContractsViewController */,
-				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -6516,6 +6516,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = LOG_REQUESTS;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _DEBUG;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";

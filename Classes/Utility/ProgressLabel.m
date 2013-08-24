@@ -13,8 +13,12 @@
 
 - (void) awakeFromNib {
 	self.color = self.backgroundColor;
-	self.backgroundColor = [UIColor clearColor];
+	[super setBackgroundColor:[UIColor clearColor]];
 	self.progress = 0;
+}
+
+- (void) setBackgroundColor:(UIColor *)backgroundColor {
+	self.color = backgroundColor;
 }
 
 - (id)initWithFrame:(CGRect)frame {

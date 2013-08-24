@@ -56,7 +56,15 @@
 		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logoff", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onLogoff:)]
 		 ]];
 	
-	[self.dataSource reloadWithCompletionHandler:nil];
+	[self.dataSource reloadWithCompletionHandler:^{
+		EVEAccount* account = [EVEAccount currentAccount];
+		if (account) {
+			NSInteger index = [self.dataSource.accounts indexOfObject:account];
+			if (index != NSNotFound) {
+				[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionTop];
+			}
+		}
+	}];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

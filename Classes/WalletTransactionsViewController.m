@@ -15,6 +15,9 @@
 #import "UITableViewCell+Nib.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface WalletTransactionsViewController()
 @property (nonatomic, strong) NSMutableArray *walletTransactions;
@@ -52,7 +55,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -86,26 +89,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.ownerSegmentControl = nil;
-	self.accountSegmentControl = nil;
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	
-	self.walletTransactions = nil;
-	self.charWalletTransactions = nil;
-	self.corpWalletTransactions = nil;
-	self.filteredValues = nil;
-	self.corpAccounts = nil;
-	self.characterBalance = nil;
-	self.charFilter = nil;
-	self.corpFilter = nil;
 }
 
 
@@ -187,7 +170,13 @@
 	else
 		cell.transactionAmmountLabel.textColor = [UIColor redColor];
     
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 
@@ -213,27 +202,26 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		view.collapsImageView.hidden = YES;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.tableView ? 53 : 72;
+		return tableView == self.tableView ? 53 : 77;
 	else
-		return 72;
+		return 77;
 }
 
 
@@ -324,7 +312,7 @@
 					return;
 				}
 				
-				EVECharWalletTransactions *transactions = [EVECharWalletTransactions charWalletTransactionsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeTransID:0 error:&error progressHandler:nil];
+				EVECharWalletTransactions *transactions = [EVECharWalletTransactions charWalletTransactionsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID beforeTransID:0 error:&error progressHandler:nil];
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 				}
@@ -344,7 +332,7 @@
 															  [NSString stringWithFormat:@"%@ (x%@)", transaction.typeName, [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"typeName",
 															  transaction.stationName, @"stationName",
 															  [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:transaction.price] numberStyle:NSNumberFormatterDecimalStyle]], @"price",
-															  account.characterName, @"characterName",
+															  account.character.characterName, @"characterName",
 															  [type typeSmallImageName], @"imageName",
 															  type, @"type",
 															  [NSNumber numberWithBool:sell], @"sell",
@@ -394,6 +382,11 @@
 	}
 	
 	else {
+		if (!account.corpAPIKey) {
+			[self.tableView reloadData];
+			return;
+		}
+			
 		if ((NSNull*) [self.corpWalletTransactions objectAtIndex:self.accountSegmentControl.selectedSegmentIndex] == [NSNull null]) {
 			if ((NSNull*) [self.corpWalletTransactions objectAtIndex:0] == [NSNull null])
 				[self.corpWalletTransactions replaceObjectAtIndex:0 withObject:[NSMutableArray array]];
@@ -415,7 +408,7 @@
 			NSMutableArray *corpWalletTransactionsTmp = [NSMutableArray arrayWithArray:self.corpWalletTransactions];
 			EUFilter *filter = self.corpFilter ? [self.corpFilter copy] : [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"walletTransactionsFilter" ofType:@"plist"]]];
 			
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
+			EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpWallet" name:NSLocalizedString(@"Loading Character Wallet", nil)];
 			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
 				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -495,7 +488,7 @@
 	if (!account)
 		return currentAccount;
 	
-	EVECorpWalletTransactions *transactions = [EVECorpWalletTransactions corpWalletTransactionsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeTransID:0 accountKey:accountKey error:&error progressHandler:nil];
+	EVECorpWalletTransactions *transactions = [EVECorpWalletTransactions corpWalletTransactionsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID beforeTransID:0 accountKey:accountKey error:&error progressHandler:nil];
 	if (error) {
 		@synchronized(self) {
 			if (!self.fail)
@@ -534,15 +527,15 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Corp Balance", nil)];
-	__weak EUOperation* weakOperation = operation;
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletTransactionsViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Corp Balance", nil)];
+	EUOperation* weakOperation = operation;
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		characterBalanceTmp = [NSNumber numberWithFloat:account.characterSheet.balance];
 		
 		NSError *error = nil;
 		//EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithUserID:character.userID apiKey:character.apiKey characterID:character.characterID corporate:YES error:&error];
-		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:YES error:&error progressHandler:nil];
+		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:YES error:&error progressHandler:nil];
 		if (!error) {
 			float summary = 0;
 			[corpAccountsTmp addObject:[NSNull null]];

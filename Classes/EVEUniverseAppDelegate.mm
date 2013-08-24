@@ -286,12 +286,12 @@
 	}
 	else
 		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:_currentAccount];
-	if (!_currentAccount)
+/*	if (!_currentAccount)
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentAccount];
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:[_currentAccount dictionary] forKey:SettingsCurrentAccount];
-	
-	if (_currentAccount && ((_currentAccount.charAccessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
+*/
+	if (_currentAccount && ((_currentAccount.charAPIKey.apiKeyInfo.key.accessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
 		NSMutableArray* wars = [NSMutableArray array];
 		
 		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:NSLocalizedString(@"Checking War Declarations", nil)];
@@ -536,16 +536,16 @@
 	[operation addExecutionBlock:^(void) {
 		if ([weakOperation isCancelled])
 			return;
-		EVEAccountStorage *storage = [EVEAccountStorage sharedAccountStorage];
-		float n = storage.characters.count;
+		EVEAccountsManager* accountsManager = [EVEAccountsManager sharedManager];
+		NSArray* accounts = accountsManager.allAccounts;
+		float n = accounts.count;
 		float i = 0;
-		for (EVEAccountStorageCharacter *item in [storage.characters allValues]) {
+		for (EVEAccount* account in accounts) {
 			weakOperation.progress = i++ / n;
-			if (item.enabled) {
-				EVEAccountStorageAPIKey *apiKey = item.anyCharAPIKey;
-				if (apiKey) {
+			if (!account.ignored) {
+				if (account.charAPIKey) {
 					NSError *error = nil;
-					EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:apiKey.keyID vCode:apiKey.vCode characterID:item.characterID error:&error progressHandler:nil];
+					EVESkillQueue *skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID error:&error progressHandler:nil];
 					if (!error && skillQueue.skillQueue.count > 0) {
 						NSDate *endTime = [[skillQueue.skillQueue lastObject] endTime];
 						if (endTime) {
@@ -553,10 +553,10 @@
 							NSTimeInterval dif = [endTime timeIntervalSinceNow];
 							if (dif > 3600 * 24) {
 								UILocalNotification *notification = [[UILocalNotification alloc] init];
-								notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), item.characterName];
+								notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.character.characterName];
 								notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
-								EVEAccount *account = [EVEAccount accountWithCharacter:item];
-								notification.userInfo = [account dictionary];
+#warning TODO
+//								notification.userInfo = [account dictionary];
 								[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(scheduleLocalNotification:) withObject:notification waitUntilDone:NO];
 							}
 						}

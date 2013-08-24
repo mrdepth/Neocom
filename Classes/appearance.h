@@ -13,5 +13,7 @@
 
 #define AppearanceBackgroundColor @(0x1f1e23ff)
 #define AppearanceNavigationBarColor @(0x393740ff)
+#define AppearanceGreenProgressColor @(0x008000ff)
+#define AppearanceRedProgressColor @(0x800000ff)
 
 #endif

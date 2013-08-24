@@ -86,7 +86,7 @@
 		
 		self.characterAttributes = [aAccount characterAttributes];
 		self.characterSkills = aAccount.characterSheet.skillsMap;
-		self.characterID = aAccount.characterID;
+		self.characterID = aAccount.character.characterID;
 	}
 	return self;
 }

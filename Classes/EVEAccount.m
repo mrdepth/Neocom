@@ -29,62 +29,9 @@ static EVEAccount* currentAccount;
 	return self;
 }
 
-+ (EVEAccount*) accountWithCharacter:(EVEAccountStorageCharacter*) character {
-	if (!character)
-		return nil;
-	return [[EVEAccount alloc] initWithCharacter:character];
-}
-
-+ (EVEAccount*) accountWithDictionary:(NSDictionary*) dictionary {
-	if (!dictionary)
-		return nil;
-	return [[EVEAccount alloc] initWithDictionary:dictionary];
-}
-
 + (EVEAccount*) dummyAccount {
 	EVEAccount *account = [[EVEAccount alloc] init];
 	return account;
-}
-
-- (id) initWithDictionary:(NSDictionary*) dictionary {
-	if (self = [self init]) {
-		self.charKeyID = [[dictionary valueForKey:@"charKeyID"] integerValue];
-		self.charVCode = [dictionary valueForKey:@"charVCode"];
-		self.charAccessMask = [[dictionary valueForKey:@"charAccessMask"] integerValue];
-		self.corpKeyID = [[dictionary valueForKey:@"corpKeyID"] integerValue];
-		self.corpVCode = [dictionary valueForKey:@"corpVCode"];
-		self.corpAccessMask = [[dictionary valueForKey:@"corpAccessMask"] integerValue];
-		
-		self.characterID = [[dictionary valueForKey:@"characterID"] integerValue];
-		self.characterName = [dictionary valueForKey:@"characterName"];
-		self.corporationID = [[dictionary valueForKey:@"corporationID"] integerValue];
-		self.corporationName = [dictionary valueForKey:@"corporationName"];
-	}
-	return self;
-}
-
-- (id) initWithCharacter:(EVEAccountStorageCharacter*) character {
-	if (self = [self init]) {
-		self.characterID = character.characterID;
-		self.characterName = character.characterName;
-		self.corporationID = character.corporationID;
-		self.corporationName = character.corporationName;
-		
-		EVEAccountStorageAPIKey *charAPIKey = character.anyCharAPIKey;
-		EVEAccountStorageAPIKey *corpAPIKey = character.anyCorpAPIKey;
-		
-		if (corpAPIKey) {
-			self.corpKeyID = corpAPIKey.keyID;
-			self.corpVCode = corpAPIKey.vCode;
-			self.corpAccessMask = corpAPIKey.apiKeyInfo.key.accessMask;
-		}
-		if (charAPIKey) {
-			self.charKeyID = charAPIKey.keyID;
-			self.charVCode = charAPIKey.vCode;
-			self.charAccessMask = charAPIKey.apiKeyInfo.key.accessMask;
-		}
-	}
-	return self;
 }
 
 - (void) dealloc {
@@ -132,17 +79,7 @@ static EVEAccount* currentAccount;
 
 
 - (NSDictionary*) dictionary {
-	return @{@"charKeyID": @(self.charKeyID),
-		  @"charVCode": self.charVCode ? self.charVCode : @"",
-		  @"charAccessMask": @(self.charAccessMask),
-		  @"corpKeyID": @(self.corpKeyID),
-		  @"corpVCode": self.corpVCode ? self.corpVCode : @"",
-		  @"corpAccessMask": @(self.corpAccessMask),
-		  @"characterID": @(self.characterID),
-		  @"characterName": self.characterName ? self.characterName : @"",
-		  @"corporationID": @(self.corporationID),
-		  @"corporationName": self.corporationName ? self.corporationName : @"",
-		  };
+	return @{};
 }
 
 - (void) updateSkillpoints {

@@ -21,4 +21,16 @@
 	return [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 }
 
++ (IgnoredCharacter*) ignoredCharacterWithID:(NSInteger*) characterID {
+	EUStorage* storage = [EUStorage sharedStorage];
+	NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"IgnoredCharacter" inManagedObjectContext:storage.managedObjectContext]];
+	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"characterID == %d", characterID];
+	NSArray* results = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	if (results.count > 0)
+		return results[0];
+	else
+		return nil;
+}
+
 @end

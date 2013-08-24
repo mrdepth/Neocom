@@ -24,5 +24,7 @@
 - (EVEAccount*) accountWithCharacterID:(NSInteger) characterID;
 - (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
 - (void) removeAPIKeyWithKeyID:(NSInteger) keyID;
+- (void) ignoreCharacter:(NSInteger) characterID;
+- (void) unignoreCharacter:(NSInteger) characterID;
 
 @end

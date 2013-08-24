@@ -144,6 +144,8 @@
 		[self.corpKeyButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Corp key: %d", nil), account.corpAPIKey.keyID] forState:UIControlStateNormal];
 	else
 		[self.corpKeyButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"%d corp keys", nil), corpKeysCount] forState:UIControlStateNormal];
+	
+	self.favoritesButton.selected = !account.ignored;
 
 }
 

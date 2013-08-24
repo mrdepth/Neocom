@@ -318,9 +318,9 @@
 		
 		EVEContractItems *contractItems;
 		if (self.corporate)
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
 		else
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
 
 		weakOperation.progress = 0.5;
 		
@@ -351,9 +351,9 @@
 
 			EVEContractBids *contractBids;
 			if (self.corporate)
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:self.contract error:&error progressHandler:nil];
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:self.contract error:&error progressHandler:nil];
 			else
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:self.contract error:&error progressHandler:nil];
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:self.contract error:&error progressHandler:nil];
 
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];

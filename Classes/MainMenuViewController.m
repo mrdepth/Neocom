@@ -87,7 +87,9 @@
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
 	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
+	
 	self.dateFormatter = [[NSDateFormatter alloc] init];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
 }

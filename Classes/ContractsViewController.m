@@ -320,9 +320,9 @@
 			
 			EVEContracts *eveContracts;
 			if (corporate)
-				eveContracts = [EVEContracts contractsWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+				eveContracts = [EVEContracts contractsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 			else
-				eveContracts = [EVEContracts contractsWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID corporate:corporate error:&error progressHandler:nil];
+				eveContracts = [EVEContracts contractsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:corporate error:&error progressHandler:nil];
 			weakOperation.progress = 0.5;
 			if (error) {
 				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];

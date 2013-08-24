@@ -6,12 +6,13 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
+#import "ProgressLabel.h"
 
 
-@interface IndustryJobCellView : UITableViewCell
+@interface IndustryJobCellView : GroupedCell
 
-@property (nonatomic, weak) IBOutlet UILabel *remainsLabel;
+@property (nonatomic, weak) IBOutlet ProgressLabel* remainsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *activityLabel;
 @property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;

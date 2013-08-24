@@ -180,7 +180,7 @@
 		if (!account)
 			return;
 		
-		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error progressHandler:nil];
+		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID error:&error progressHandler:nil];
 		weakOperation.progress = 0.3;
 		
 		if (error) {

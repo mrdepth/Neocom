@@ -117,7 +117,7 @@
 		else {
 			wealth = @"";
 			NSError *error = nil;
-			EVECorporationSheet *corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporationID:account.corporationID error:&error progressHandler:nil];
+			EVECorporationSheet *corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporationID:account.character.corporationID error:&error progressHandler:nil];
 			if (!error) {
 				allianceID = corporationSheet.allianceID;
 				allianceName = corporationSheet.allianceName;

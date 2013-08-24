@@ -429,7 +429,7 @@
 						}
 						asset.type = type;
 						if (self.accounts.count > 1)
-							asset.characterName = account.characterName;
+							asset.characterName = account.character.characterName;
 						[filterTmp updateWithValue:asset];
 						
 						if (asset.locationID > 0) {
@@ -465,7 +465,7 @@
 						process(asset);
 					}
 					
-					if (itemIDs.count > 0 && ((corporate && account.corpAccessMask & 16777216) || (!corporate && account.charAccessMask & 134217728))) {
+					if (itemIDs.count > 0 && ((corporate && account.corpAPIKey.apiKeyInfo.key.accessMask & 16777216) || (!corporate && account.charAPIKey.apiKeyInfo.key.accessMask & 134217728))) {
 						EVELocations* eveLocations = nil;
 						NSMutableDictionary* locations = [NSMutableDictionary dictionary];
 						NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];

@@ -189,7 +189,7 @@
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		NSError *error = nil;
-		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:self.posID error:&error progressHandler:nil];
+		EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID itemID:self.posID error:&error progressHandler:nil];
 
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];

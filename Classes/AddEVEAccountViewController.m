@@ -13,6 +13,7 @@
 #import "PCViewController.h"
 #import "UIAlertView+Error.h"
 #import "appearance.h"
+#import "EVEAccountsManager.h"
 
 @interface AddEVEAccountViewController()
 
@@ -92,13 +93,14 @@
 }
 
 - (IBAction) onSave:(id) sender {
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:NSLocalizedString(@"Checking API Key", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"AddEVEAccountViewController+Save" name:NSLocalizedString(@"Checking API Key", nil)];
 	__block NSError *error = nil;
 	NSInteger keyID = [self.keyIDTextField.text integerValue];
 	NSString* vCode = self.vCodeTextField.text;
 	
 	[operation addExecutionBlock:^(void) {
-		[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+		//[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+		[[EVEAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 	}];
 	
 	__weak EUOperation* weakOperation = operation;

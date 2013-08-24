@@ -13,8 +13,6 @@
 
 @interface SelectCharacterBarButtonItem()
 
-- (void) didSelectAccount:(NSNotification*) notification;
-
 @end
 
 
@@ -29,9 +27,7 @@
 	//if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 	if (self = [super initWithImage:[UIImage imageNamed:@"account.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 		EVEAccount *account = [EVEAccount currentAccount];
-		[self setCharacterName:account.characterName];
 		self.parentViewController = controller;
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	}
 	return self;
 }
@@ -45,28 +41,6 @@
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
 	[self.parentViewController presentModalViewController:navigationController animated:YES];
-}
-
-- (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void) setCharacterName:(NSString*) name {
-	if (name) {
-		if (name.length > 13)
-			self.title = [[name substringToIndex:10] stringByAppendingString:@"..."];
-		else
-			self.title = name;
-	}
-	else
-		self.title = NSLocalizedString(@"Select Character", nil);
-}
-
-#pragma mark - Private
-
-- (void) didSelectAccount:(NSNotification*) notification {
-	EVEAccount *account = [EVEAccount currentAccount];
-	[self setCharacterName:account.characterName];
 }
 
 @end

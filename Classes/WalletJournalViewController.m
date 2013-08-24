@@ -15,6 +15,9 @@
 #import "UITableViewCell+Nib.h"
 #import "SelectCharacterBarButtonItem.h"
 #import "ItemViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "appearance.h"
 
 #define JOURNAL_ROWS_COUNT 200
 
@@ -55,7 +58,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -189,7 +192,13 @@
 	cell.taxLabel.text = [row valueForKey:@"tax"];
 	cell.amountLabel.textColor = [[row valueForKey:@"outgo"] boolValue] ? [UIColor redColor] : [UIColor greenColor];
     
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 
@@ -215,20 +224,18 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -243,12 +250,12 @@
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if (tax)
-			return tableView == self.tableView ? 36 : 91;
+			return tableView == self.tableView ? 41 : 96;
 		else
-			return tableView == self.tableView ? 36 : 73;
+			return tableView == self.tableView ? 41 : 78;
 	}
 	else {
-		return tax ? 91 : 73;
+		return tax ? 96 : 78;
 	}
 }
 
@@ -272,14 +279,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -325,7 +326,7 @@
 				if (!account)
 					return;
 				
-				EVECharWalletJournal *journal = [EVECharWalletJournal charWalletJournalWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID fromID:0 rowCount:JOURNAL_ROWS_COUNT error:&error progressHandler:nil];
+				EVECharWalletJournal *journal = [EVECharWalletJournal charWalletJournalWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID fromID:0 rowCount:JOURNAL_ROWS_COUNT error:&error progressHandler:nil];
 				weakOperation.progress = 0.5;
 				if (error) {
 					[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -515,7 +516,7 @@
 	if (!account)
 		return currentAccount;
 	
-	EVECorpWalletJournal *journal = [EVECorpWalletJournal corpWalletJournalWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID accountKey:accountKey fromID:0 rowCount:JOURNAL_ROWS_COUNT error:&error progressHandler:nil];
+	EVECorpWalletJournal *journal = [EVECorpWalletJournal corpWalletJournalWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID accountKey:accountKey fromID:0 rowCount:JOURNAL_ROWS_COUNT error:&error progressHandler:nil];
 	if (error) {
 		@synchronized(self) {
 			if (!self.fail)
@@ -566,14 +567,14 @@
 - (void) downloadAccountBalance {
 	NSMutableArray *corpAccountsTmp = [NSMutableArray array];
 	EVEAccount *account = [EVEAccount currentAccount];
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Account Balance", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"WalletJournalViewController+CorpAccountBalance" name:NSLocalizedString(@"Loading Account Balance", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block NSNumber *characterBalanceTmp = nil;
 	[operation addExecutionBlock:^(void) {
 		characterBalanceTmp = [NSNumber numberWithFloat:account.characterSheet.balance];
 		
 		NSError *error = nil;
-		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID corporate:YES error:&error progressHandler:nil];
+		EVEAccountBalance *accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:YES error:&error progressHandler:nil];
 		if (!error) {
 			float summary = 0;
 			[corpAccountsTmp addObject:[NSNull null]];
@@ -594,6 +595,7 @@
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
+
 
 - (void) didSelectAccount:(NSNotification*) notification {
 	EVEAccount *account = [EVEAccount currentAccount];

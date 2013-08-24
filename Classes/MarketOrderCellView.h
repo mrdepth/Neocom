@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 
-@interface MarketOrderCellView : UITableViewCell
+@interface MarketOrderCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel *expireInLabel;
 @property (nonatomic, weak) IBOutlet UILabel *stateLabel;
 @property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;

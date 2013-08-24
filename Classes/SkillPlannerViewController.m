@@ -417,7 +417,7 @@
 		skillPlanTmp = account.skillPlan;
 		
 		NSError *error = nil;
-		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID error:&error progressHandler:nil];
+		account.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID error:&error progressHandler:nil];
 		weakOperation.progress = 0.5;
 		[skillPlanTmp trainingTime];
 		weakOperation.progress = 1.0;

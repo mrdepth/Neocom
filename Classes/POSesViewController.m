@@ -262,7 +262,7 @@
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		NSError *error = nil;
-		EVEStarbaseList *starbaseList = [EVEStarbaseList starbaseListWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID error:&error progressHandler:nil];
+		EVEStarbaseList *starbaseList = [EVEStarbaseList starbaseListWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID error:&error progressHandler:nil];
 		weakOperation.progress = 0.25;
 		if (error) {
 			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
@@ -394,7 +394,7 @@
 
 - (void) loadStarbaseDetailForStarbase:(NSMutableDictionary *)pos account:(EVEAccount*) account {
 	NSError *error = nil;
-	EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID itemID:[[pos valueForKey:@"posID"] longLongValue] error:&error progressHandler:nil];
+	EVEStarbaseDetail *starbaseDetail = [EVEStarbaseDetail starbaseDetailWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID itemID:[[pos valueForKey:@"posID"] longLongValue] error:&error progressHandler:nil];
 
 	if (!error) {
 		NSUInteger section = NSNotFound;

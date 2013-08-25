@@ -29,6 +29,10 @@
     return self;
 }
 
+- (void) setHighlighted:(BOOL)highlighted {
+	
+}
+
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	

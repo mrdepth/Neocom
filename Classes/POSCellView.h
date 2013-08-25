@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 
-@interface POSCellView : UITableViewCell
+@interface POSCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, weak) IBOutlet UILabel *stateLabel;

@@ -17,12 +17,19 @@
 #import "ContractCellView.h"
 #import "ContractViewController.h"
 #import "NSString+TimeLeft.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface ContractsViewController()
 @property(nonatomic, strong) NSMutableArray *filteredValues;
-@property(nonatomic, strong) NSMutableArray *contracts;
-@property(nonatomic, strong) NSMutableArray *charContracts;
-@property(nonatomic, strong) NSMutableArray *corpContracts;
+@property(nonatomic, strong) NSMutableArray *openContracts;
+@property(nonatomic, strong) NSMutableArray *finishedContracts;
+@property(nonatomic, strong) NSMutableArray *charOpenContracts;
+@property(nonatomic, strong) NSMutableArray *charFinishedContracts;
+@property(nonatomic, strong) NSMutableArray *corpOpenContracts;
+@property(nonatomic, strong) NSMutableArray *corpFinishedContracts;
 @property(nonatomic, strong) NSMutableDictionary *conquerableStations;
 @property(nonatomic, strong) EUFilter *charFilter;
 @property(nonatomic, strong) EUFilter *corpFilter;
@@ -50,7 +57,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -83,24 +90,6 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.ownerSegmentControl = nil;
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	self.contracts = nil;
-	self.charContracts = nil;
-	self.corpContracts = nil;
-	self.filteredValues = nil;
-	self.conquerableStations = nil;
-	self.charFilter = nil;
-	self.corpFilter = nil;
-}
-
-
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -115,7 +104,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return self.searchDisplayController.searchResultsTableView == tableView ? 1 : 2;
 }
 
 
@@ -124,7 +113,7 @@
 	if (self.searchDisplayController.searchResultsTableView == tableView)
 		return self.filteredValues.count;
 	else {
-		return self.contracts.count;
+		return section == 0 ? self.openContracts.count : self.finishedContracts.count;
 	}
 }
 
@@ -146,9 +135,9 @@
 	NSDictionary *contractDic;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView)
-		contractDic = [self.filteredValues objectAtIndex:indexPath.row];
+		contractDic = self.filteredValues[indexPath.row];
 	else {
-		contractDic = [self.contracts objectAtIndex:indexPath.row];
+		contractDic = indexPath.section == 0 ? self.openContracts[indexPath.row] : self.finishedContracts[indexPath.row];
 	}
 	EVEContractsItem *contract = [contractDic valueForKey:@"contract"];
 	
@@ -159,11 +148,17 @@
 	cell.locationLabel.text = [contractDic valueForKey:@"location"];
 	cell.characterLabel.text = [contractDic valueForKey:@"issuerName"];
 	cell.startTimeLabel.text = [contractDic valueForKey:@"dateIssued"];
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.reward > 0 ? contract.reward : contract.price] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(contract.reward > 0 ? contract.reward : contract.price)]];
 	cell.priceTitleLabel.text = contract.reward > 0 ? NSLocalizedString(@"Reward:", nil) : NSLocalizedString(@"Price:", nil);
-	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]];
+	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(contract.buyout)]];
 	
-    return cell;
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 
@@ -206,15 +201,36 @@
  }
  */
 
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (self.searchDisplayController.searchResultsTableView == tableView)
+		return nil;
+	else
+		return section == 0 ? [NSString stringWithFormat:NSLocalizedString(@"Open Contracts (%d)", nil), self.openContracts.count] : NSLocalizedString(@"Finished Contracts", nil);
+}
 
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.tableView ? 71 : 123;
+		return tableView == self.tableView ? 76 : 128;
 	else
-		return 123;
+		return 128;
 }
 
 
@@ -223,9 +239,9 @@
 	ContractViewController *controller = [[ContractViewController alloc] initWithNibName:@"ContractViewController" bundle:nil];
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView)
-		controller.contract = [[self.filteredValues objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
+		controller.contract = self.filteredValues[indexPath.row][@"contract"];
 	else
-		controller.contract = [[self.contracts objectAtIndex:indexPath.row] valueForKeyPath:@"contract"];
+		controller.contract = indexPath.section == 0 ? self.openContracts[indexPath.row][@"contract"] : self.finishedContracts[indexPath.row][@"contract"];
 	controller.corporate = self.ownerSegmentControl.selectedSegmentIndex == 1;
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -255,14 +271,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -293,23 +303,30 @@
 - (void) reloadContracts {
 	
 	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableArray *currentContracts = corporate ? self.corpContracts : self.charContracts;
+	NSMutableArray *currentOpenContracts = corporate ? self.corpOpenContracts : self.charOpenContracts;
+	NSMutableArray *currentFinishedContracts = corporate ? self.corpFinishedContracts : self.charFinishedContracts;
 	EUFilter *filterTmp = [EUFilter filterWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"contractsFilter" ofType:@"plist"]]];
 	
-	self.contracts = nil;
-	if (!currentContracts) {
+	self.openContracts = nil;
+	self.finishedContracts = nil;
+	if (!currentOpenContracts || !currentFinishedContracts) {
 		if (corporate) {
-			self.corpContracts = [[NSMutableArray alloc] init];
-			currentContracts = self.corpContracts;
+			self.corpOpenContracts = [[NSMutableArray alloc] init];
+			self.corpFinishedContracts = [[NSMutableArray alloc] init];
+			currentOpenContracts = self.corpOpenContracts;
+			currentFinishedContracts = self.corpFinishedContracts;
 		}
 		else {
-			self.charContracts = [[NSMutableArray alloc] init];
-			currentContracts = self.charContracts;
+			self.charOpenContracts = [[NSMutableArray alloc] init];
+			self.charFinishedContracts = [[NSMutableArray alloc] init];
+			currentOpenContracts = self.charOpenContracts;
+			currentFinishedContracts = self.charFinishedContracts;
 		}
 		EVEAccount *account = [EVEAccount currentAccount];
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Contracts", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"ContractsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Contracts", nil)];
 		__weak EUOperation* weakOperation = operation;
-		NSMutableArray *contractsTmp = [NSMutableArray array];
+		NSMutableArray *openContractsTmp = [NSMutableArray array];
+		NSMutableArray *finishedContractsTmp = [NSMutableArray array];
 		
 		[operation addExecutionBlock:^(void) {
 			NSError *error = nil;
@@ -361,21 +378,31 @@
 						stationName = [NSString stringWithFormat:@"%@ / %@", station.stationName, station.solarSystem.solarSystemName];
 					
 					NSString *statusString = [contract localizedStatusString];
+					BOOL finished;
+					NSDate* endDate = nil;
 					if (contract.status <= EVEContractStatusCompletedByContractor) {
+						finished = YES;
 						remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [dateFormatter stringFromDate:contract.dateCompleted]];
 						remainsColor = [UIColor greenColor];
+						endDate = contract.dateCompleted;
 					}
 					else if (contract.status >= EVEContractStatusCancelled) {
+						finished = YES;
 						remains = statusString;
 						remainsColor = [UIColor redColor];
 					}
 					else {
 						NSTimeInterval remainsTime = [contract.dateExpired timeIntervalSinceDate:currentTime];
-						if (remainsTime > 0)
+						if (remainsTime > 0) {
+							finished = NO;
 							remains = [NSString stringWithFormat:@"%@: %@", statusString, [NSString stringWithTimeLeft:remainsTime]];
-						else
-							remains = statusString;
-						remainsColor = [UIColor yellowColor];
+							remainsColor = [UIColor yellowColor];
+						}
+						else {
+							finished = YES;
+							remains = NSLocalizedString(@"Completed", nil);
+							remainsColor = [UIColor greenColor];
+						}
 					}
 					
 					
@@ -383,42 +410,49 @@
 					if (contract.assigneeID > 0)
 						[charIDs addObject:[NSString stringWithFormat:@"%d", contract.assigneeID]];
 					
-					[contractsTmp addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-											 remains, @"remains",
-											 stationName, @"location",
-											 remainsColor, @"remainsColor",
-											 contract, @"contract",
-											 statusString, @"statusString",
-											 [contract localizedTypeString], @"typeString",
-											 [dateFormatter stringFromDate:contract.dateIssued], @"dateIssued",
-											 nil]];
+					NSDictionary* record = @{@"remains": remains,
+							  @"location": stationName,
+							  @"remainsColor": remainsColor,
+							  @"contract": contract,
+							  @"statusString": statusString,
+							  @"typeString": [contract localizedTypeString],
+							  @"dateIssued": [dateFormatter stringFromDate:contract.dateIssued]};
+					
+					if (finished)
+						[finishedContractsTmp addObject:[NSMutableDictionary dictionaryWithDictionary:record]];
+					else
+						[openContractsTmp addObject:[NSMutableDictionary dictionaryWithDictionary:record]];
 				}
 				
-				[contractsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"dateIssued" ascending:NO]]];
+				[finishedContractsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"contract.dateCompleted" ascending:NO]]];
+				[openContractsTmp sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"contract.dateExpired" ascending:YES]]];
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;
 					EVECharacterName *characterNames = [EVECharacterName characterNameWithIDs:[charIDs allObjects] error:&error progressHandler:nil];
 					if (!error) {
-						for (NSMutableDictionary *item in contractsTmp) {
-							EVEContractsItem *contract = [item valueForKey:@"contract"];
-							if (contract.issuerID) {
-								NSString *charName = [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.issuerID]];
-								if (!charName)
-									charName = @"";
-								[item setValue:charName forKey:@"issuerName"];
-							}
-							if (contract.assigneeID) {
-								NSString *charName = [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.assigneeID]];
-								if (!charName)
-									charName = @"";
-								[item setValue:charName forKey:@"assigneeName"];
+						for (NSArray* contracts in @[openContractsTmp, finishedContractsTmp]) {
+							for (NSMutableDictionary *item in contracts) {
+								EVEContractsItem *contract = [item valueForKey:@"contract"];
+								if (contract.issuerID) {
+									NSString *charName = [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.issuerID]];
+									if (!charName)
+										charName = @"";
+									[item setValue:charName forKey:@"issuerName"];
+								}
+								if (contract.assigneeID) {
+									NSString *charName = [characterNames.characters valueForKey:[NSString stringWithFormat:@"%d", contract.assigneeID]];
+									if (!charName)
+										charName = @"";
+									[item setValue:charName forKey:@"assigneeName"];
+								}
 							}
 						}
 					}
 				}
 				
-				[filterTmp updateWithValues:contractsTmp];
+				[filterTmp updateWithValues:openContractsTmp];
+				[filterTmp updateWithValues:finishedContractsTmp];
 			}
 		}];
 		
@@ -430,7 +464,8 @@
 				else {
 					self.charFilter = filterTmp;
 				}
-				[currentContracts addObjectsFromArray:contractsTmp];
+				[currentOpenContracts addObjectsFromArray:openContractsTmp];
+				[currentFinishedContracts addObjectsFromArray:finishedContractsTmp];
 				if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate)
 					[self reloadContracts];
 			}
@@ -440,18 +475,21 @@
 	}
 	else {
 		EUFilter *filter = corporate ? self.corpFilter : self.charFilter;
-		NSMutableArray *contractsTmp = [NSMutableArray array];
+		NSMutableArray *openContractsTmp = [NSMutableArray array];
+		NSMutableArray *finishedContractsTmp = [NSMutableArray array];
 		if (filter) {
 			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Filter" name:NSLocalizedString(@"Applying Filter", nil)];
 			__weak EUOperation* weakOperation = operation;
 			[operation addExecutionBlock:^(void) {
-				[contractsTmp addObjectsFromArray:[filter applyToValues:currentContracts]];
+				[openContractsTmp addObjectsFromArray:[filter applyToValues:currentOpenContracts]];
+				[finishedContractsTmp addObjectsFromArray:[filter applyToValues:currentFinishedContracts]];
 			}];
 			
 			[operation setCompletionBlockInMainThread:^(void) {
 				if (![weakOperation isCancelled]) {
 					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						self.contracts = contractsTmp;
+						self.openContracts = openContractsTmp;
+						self.finishedContracts = finishedContractsTmp;
 						[self searchWithSearchString:self.searchBar.text];
 						[self.tableView reloadData];
 					}
@@ -459,8 +497,10 @@
 			}];
 			[[EUOperationQueue sharedQueue] addOperation:operation];
 		}
-		else
-			self.contracts = currentContracts;
+		else {
+			self.openContracts = currentOpenContracts;
+			self.finishedContracts = currentFinishedContracts;
+		}
 	}
 	[self.tableView reloadData];
 }
@@ -486,9 +526,12 @@
 	EVEAccount *account = [EVEAccount currentAccount];
 	if (!account) {
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			self.contracts = nil;
-			self.charContracts = nil;
-			self.corpContracts = nil;
+			self.openContracts = nil;
+			self.finishedContracts = nil;
+			self.charOpenContracts = nil;
+			self.charFinishedContracts = nil;
+			self.corpOpenContracts = nil;
+			self.corpFinishedContracts = nil;
 			self.filteredValues = nil;
 			self.conquerableStations = nil;
 			self.charFilter = nil;
@@ -499,9 +542,12 @@
 			[self.navigationController popToRootViewControllerAnimated:YES];
 	}
 	else {
-		self.contracts = nil;
-		self.charContracts = nil;
-		self.corpContracts = nil;
+		self.openContracts = nil;
+		self.finishedContracts = nil;
+		self.charOpenContracts = nil;
+		self.charFinishedContracts = nil;
+		self.corpOpenContracts = nil;
+		self.corpFinishedContracts = nil;
 		self.filteredValues = nil;
 		self.conquerableStations = nil;
 		self.charFilter = nil;
@@ -511,7 +557,7 @@
 }
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
-	if (self.contracts.count == 0 || !aSearchString)
+	if ((self.openContracts.count == 0 && self.finishedContracts.count == 0) || !aSearchString)
 		return;
 	
 	NSString *searchString = [aSearchString copy];
@@ -520,7 +566,9 @@
 	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"ContractsViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		for (NSDictionary *contract in self.contracts) {
+		NSMutableArray* contracts = [[NSMutableArray alloc] initWithArray:self.openContracts];
+		[contracts addObjectsFromArray:self.finishedContracts];
+		for (NSDictionary *contract in contracts) {
 			if ([weakOperation isCancelled])
 				break;
 			if (([contract valueForKeyPath:@"remains"] && [[contract valueForKeyPath:@"remains"] rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||

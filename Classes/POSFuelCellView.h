@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
 
-@interface POSFuelCellView : UITableViewCell
+@interface POSFuelCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel *typeNameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *remainsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *consumptionLabel;

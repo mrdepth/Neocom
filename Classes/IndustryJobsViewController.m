@@ -20,6 +20,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "appearance.h"
+#import "NSDate+DaysAgo.h"
 
 @interface IndustryJobsViewController()
 @property(nonatomic, strong) NSMutableArray *filteredValues;
@@ -405,7 +406,7 @@
 						}
 						else {
 							progress = 1.0f;
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceGreenProgressColor];
 							status = NSLocalizedString(@"Completed", nil);
 						}
@@ -413,33 +414,33 @@
 					else {
 						if (job.completedStatus == 0) {
 							progress = 1.0f;
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Failed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Failed: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceRedProgressColor];
 							status = NSLocalizedString(@"Failed", nil);
 						}
 						else if (job.completedStatus == 1) {
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Delivered: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Delivered: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							progress = 1.0f;
 							remainsColor = [UIColor colorWithNumber:AppearanceGreenProgressColor];
 							status = NSLocalizedString(@"Delivered", nil);
 						}
 						else if (job.completedStatus == 2) {
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Aborted: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Aborted: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceRedProgressColor];
 							status = NSLocalizedString(@"Aborted", nil);
 						}
 						else if (job.completedStatus == 3) {
-							remains = [NSString stringWithFormat:NSLocalizedString(@"GM aborted: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"GM aborted: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceRedProgressColor];
 							status = NSLocalizedString(@"GM aborted", nil);
 						}
 						else if (job.completedStatus == 4) {
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Inflight unanchored: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Inflight unanchored: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceRedProgressColor];
 							status = NSLocalizedString(@"Inflight unanchored", nil);
 						}
 						else if (job.completedStatus == 5) {
-							remains = [NSString stringWithFormat:NSLocalizedString(@"Destroyed: %@", nil), [dateFormatter stringFromDate:job.endProductionTime]];
+							remains = [NSString stringWithFormat:NSLocalizedString(@"Destroyed: %@", nil), [job.endProductionTime daysAgoStringWithTime:YES]];
 							remainsColor = [UIColor colorWithNumber:AppearanceRedProgressColor];
 							status = NSLocalizedString(@"Destroyed", nil);
 						}

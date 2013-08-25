@@ -9,16 +9,16 @@
 #import "ContractViewController.h"
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
-#import "POSFuelCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "EVEAccount.h"
 #import "UIAlertView+Error.h"
 #import "ItemViewController.h"
 #import "NSString+TimeLeft.h"
-#import "ItemCellView.h"
-#import "ContractInfoCellView.h"
-#import "BidCellView.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "GroupedCell.h"
+#import "appearance.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface ContractViewController()
 @property (nonatomic, strong) NSArray *sections;
@@ -46,7 +46,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Contract", nil);
 	[self loadData];
 }
@@ -110,49 +110,52 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *row = [[self.sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	
+	GroupedCell *cell = nil;
+	
+	NSDictionary *row = self.sections[indexPath.section][indexPath.row];
 	if (indexPath.section == 0) {
-		NSString *cellIdentifier = @"ContractInfoCellView";
+		static NSString *cellIdentifier = @"UITableViewCellStyleValue1";
 		
-		ContractInfoCellView *cell = (ContractInfoCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ContractInfoCellView cellWithNibName:@"ContractInfoCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
+		cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil)
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+
 		
-		cell.titleLabel.text = [row valueForKey:@"title"];
-		cell.valueLabel.text = [row valueForKey:@"value"];
-		return cell;
+		cell.textLabel.text = row[@"title"];
+		cell.detailTextLabel.text = row[@"value"];
 	}
 	else if (indexPath.section == 3) {
-		NSString *cellIdentifier = @"BidCellView";
+		static NSString *cellIdentifier = @"UITableViewCellStyleSubtitle";
 		
-		BidCellView *cell = (BidCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [BidCellView cellWithNibName:@"BidCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
+		cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil)
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 		
-		cell.amountLabel.text = [row valueForKey:@"amount"];
-		cell.dateLabel.text = [row valueForKey:@"date"];
-		cell.characterNameLabel.text = [row valueForKey:@"bidderName"];
-		return cell;
+		
+		cell.textLabel.text = row[@"amount"];
+		cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ at %@", nil), row[@"bidderName"], row[@"date"]];
+		cell.imageView.image = nil;
 	}
 	else {
-		NSString *cellIdentifier = @"ItemCellView";
+		static NSString *cellIdentifier = @"UITableViewCellStyleSubtitle";
 		
-		ItemCellView *cell = (ItemCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-		if (cell == nil) {
-			cell = [ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		}
-		EVEDBInvType *type = [row valueForKey:@"type"];
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%@)", type.typeName, [row valueForKey:@"quantity"]];;
-		cell.iconImageView.image = [UIImage imageNamed:[type typeSmallImageName]];
-		if (cell.iconImageView.image.size.width < cell.iconImageView.frame.size.width)
-			cell.iconImageView.contentMode = UIViewContentModeCenter;
-		else
-			cell.iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+		cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil)
+			cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 		
-		return cell;
+		EVEDBInvType *type = row[@"type"];
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ (x%@)", type.typeName, [row valueForKey:@"quantity"]];;
+		cell.imageView.image = [UIImage imageNamed:[type typeSmallImageName]];
 	}
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 
@@ -200,24 +203,22 @@
 #pragma mark Table view delegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [self tableView:tableView titleForHeaderInSection:section];
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0 ? 20 : 36;
+	return indexPath.section == 0 ? 32 : 40;
 }
 
 
@@ -306,26 +307,26 @@
 		}
 			
 		if (self.contract.price > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Price:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.price] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Price:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.price)]], @"value", nil]];
 		if (self.contract.reward > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Reward:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.reward] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Reward:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.reward)]], @"value", nil]];
 		if (self.contract.buyout > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Buyout:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.buyout] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Buyout:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.buyout)]], @"value", nil]];
 		if (self.contract.volume > 0)
-			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Volume:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ m3", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:self.contract.volume] numberStyle:NSNumberFormatterDecimalStyle]], @"value", nil]];
+			[rows addObject:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Volume:", nil), @"title", [NSString stringWithFormat:NSLocalizedString(@"%@ m3", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.volume)]], @"value", nil]];
 
 		[sectionsTmp addObject:rows];
 		
 		EVEContractItems *contractItems;
 		if (self.corporate)
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:YES error:&error progressHandler:nil];
 		else
-			contractItems = [EVEContractItems contractItemsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:self.contract error:&error progressHandler:nil];
+			contractItems = [EVEContractItems contractItemsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID contractID:self.contract.contractID corporate:NO error:&error progressHandler:nil];
 
 		weakOperation.progress = 0.5;
 		
 		if (error) {
-			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			//[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 		}
 		else {
 			NSMutableArray *sell = [NSMutableArray array];
@@ -336,7 +337,7 @@
 					NSInteger quantity = item.rawQuantity > 0 ? item.rawQuantity : item.quantity;
 					NSDictionary *row = [NSDictionary dictionaryWithObjectsAndKeys:
 										 type, @"type",
-										 [NSString stringWithFormat:@"%@", [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithInteger:quantity] numberStyle:NSNumberFormatterDecimalStyle]], @"quantity",
+										 [NSString stringWithFormat:@"%@", [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]], @"quantity",
 										 nil];
 					if (item.included)
 						[sell addObject:row];
@@ -351,12 +352,12 @@
 
 			EVEContractBids *contractBids;
 			if (self.corporate)
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:self.contract error:&error progressHandler:nil];
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.corpAPIKey.keyID vCode:account.corpAPIKey.vCode characterID:account.character.characterID corporate:YES error:&error progressHandler:nil];
 			else
-				contractBids = [EVEContractBids contractBidsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:self.contract error:&error progressHandler:nil];
+				contractBids = [EVEContractBids contractBidsWithKeyID:account.charAPIKey.keyID vCode:account.charAPIKey.vCode characterID:account.character.characterID corporate:NO error:&error progressHandler:nil];
 
 			if (error) {
-				[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				//[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}
 			else {
 				NSMutableSet *charIDs = [NSMutableSet set];
@@ -368,13 +369,15 @@
 					[charIDs addObject:bidderID];
 						
 					NSMutableDictionary *row = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+												item, @"bid",
 												bidderID, @"bidderID",
 												@"", @"bidderName",
-												[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:item.amount] numberStyle:NSNumberFormatterDecimalStyle]], @"amount",
+												[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(item.amount)]], @"amount",
 												[dateFormatter stringFromDate:item.dateBid], @"date",
 												nil];
 					[rows addObject:row];
 				}
+				[rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"bid.dateBid" ascending:YES]]];
 				
 				if (charIDs.count > 0) {
 					NSError *error = nil;

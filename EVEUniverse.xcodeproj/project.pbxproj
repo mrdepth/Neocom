@@ -132,7 +132,6 @@
 		1259B5371679CA8400EA49B5 /* ContractCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5391679CA8400EA49B5 /* ContractCellView.xib */; };
 		1259B53A1679CA8B00EA49B5 /* ContractCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B53C1679CA8B00EA49B5 /* ContractCellView~ipad.xib */; };
 		1259B53D1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B53F1679CA9000EA49B5 /* ContractCellViewCompact~ipad.xib */; };
-		1259B5401679CBA400EA49B5 /* BidCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5421679CBA400EA49B5 /* BidCellView.xib */; };
 		1259B5431679CBBB00EA49B5 /* ContractsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5451679CBBB00EA49B5 /* ContractsViewController.xib */; };
 		126DC1321532EDE70005921B /* fits.html in Resources */ = {isa = PBXBuildFile; fileRef = 126DC1311532EDE70005921B /* fits.html */; };
 		127363A21643AD3900FB0EE2 /* KillboardApiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127363A01643AD3900FB0EE2 /* KillboardApiViewController.m */; };
@@ -342,8 +341,6 @@
 		370CCEAA14ED467100605A42 /* AssetContentsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 370CCEA814ED467100605A42 /* AssetContentsViewController.mm */; };
 		370CCEAD14ED469900605A42 /* AssetContentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */; };
 		370CCEB414ED7B9000605A42 /* assetsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 370CCEB314ED7B8F00605A42 /* assetsFilter.plist */; };
-		371583561417B14000A20C92 /* ContractInfoCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371583551417B14000A20C92 /* ContractInfoCellView.m */; };
-		371583581417B14900A20C92 /* ContractInfoCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 371583571417B14900A20C92 /* ContractInfoCellView.xib */; };
 		371B780B14FBFBE3005127C2 /* WalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */; };
 		3750A44314E00E8400F06FA0 /* RequiredSkillsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3750A44114E00E8400F06FA0 /* RequiredSkillsViewController.mm */; };
 		3750A44414E00E8400F06FA0 /* RequiredSkillsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3750A44214E00E8400F06FA0 /* RequiredSkillsViewController.xib */; };
@@ -757,7 +754,6 @@
 		71CBDC1B14103629003A50CE /* ContractCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC1A14103629003A50CE /* ContractCellView.m */; };
 		71CBDC8314103E5A003A50CE /* ContractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC8114103E5A003A50CE /* ContractViewController.m */; };
 		71CBDC8414103E5A003A50CE /* ContractViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71CBDC8214103E5A003A50CE /* ContractViewController.xib */; };
-		71CBDC99141044D3003A50CE /* BidCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CBDC98141044D3003A50CE /* BidCellView.m */; };
 		71CD9BAD17BEB4AB0007C606 /* AssemblyLinesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71CD9BAC17BEB4AB0007C606 /* AssemblyLinesDataSource.mm */; };
 		71CD9BB117BEB8730007C606 /* POSStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71CD9BB017BEB8730007C606 /* POSStatsDataSource.mm */; };
 		71CD9BB517BEBB5E0007C606 /* POSStatsBasicResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 71CD9BB417BEBB5E0007C606 /* POSStatsBasicResourcesCell.m */; };
@@ -994,7 +990,6 @@
 		1259B5381679CA8400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ContractCellView.xib; sourceTree = "<group>"; };
 		1259B53B1679CA8B00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ContractCellView~ipad.xib"; sourceTree = "<group>"; };
 		1259B53E1679CA9000EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ContractCellViewCompact~ipad.xib"; sourceTree = "<group>"; };
-		1259B5411679CBA400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BidCellView.xib; sourceTree = "<group>"; };
 		1259B5441679CBBB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ContractsViewController.xib; sourceTree = "<group>"; };
 		126DC1311532EDE70005921B /* fits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = fits.html; sourceTree = "<group>"; };
 		1273639F1643AD3900FB0EE2 /* KillboardApiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardApiViewController.h; sourceTree = "<group>"; };
@@ -1392,9 +1387,6 @@
 		370CCEA814ED467100605A42 /* AssetContentsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssetContentsViewController.mm; sourceTree = "<group>"; };
 		370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssetContentsViewController.xib; sourceTree = "<group>"; };
 		370CCEB314ED7B8F00605A42 /* assetsFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = assetsFilter.plist; sourceTree = "<group>"; };
-		371583541417B14000A20C92 /* ContractInfoCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContractInfoCellView.h; sourceTree = "<group>"; };
-		371583551417B14000A20C92 /* ContractInfoCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContractInfoCellView.m; sourceTree = "<group>"; };
-		371583571417B14900A20C92 /* ContractInfoCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContractInfoCellView.xib; sourceTree = "<group>"; };
 		371B780914FBFBE3005127C2 /* WalletJournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletJournalViewController.h; sourceTree = "<group>"; };
 		371B780A14FBFBE3005127C2 /* WalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletJournalViewController.m; sourceTree = "<group>"; };
 		3750A44014E00E8400F06FA0 /* RequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequiredSkillsViewController.h; sourceTree = "<group>"; };
@@ -1967,8 +1959,6 @@
 		71CBDC8014103E5A003A50CE /* ContractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContractViewController.h; sourceTree = "<group>"; };
 		71CBDC8114103E5A003A50CE /* ContractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContractViewController.m; sourceTree = "<group>"; };
 		71CBDC8214103E5A003A50CE /* ContractViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContractViewController.xib; sourceTree = "<group>"; };
-		71CBDC97141044D3003A50CE /* BidCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidCellView.h; sourceTree = "<group>"; };
-		71CBDC98141044D3003A50CE /* BidCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidCellView.m; sourceTree = "<group>"; };
 		71CD9BAB17BEB4AB0007C606 /* AssemblyLinesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssemblyLinesDataSource.h; sourceTree = "<group>"; };
 		71CD9BAC17BEB4AB0007C606 /* AssemblyLinesDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssemblyLinesDataSource.mm; sourceTree = "<group>"; };
 		71CD9BAF17BEB8730007C606 /* POSStatsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSStatsDataSource.h; sourceTree = "<group>"; };
@@ -3241,16 +3231,6 @@
 				370CCEAC14ED469900605A42 /* AssetContentsViewController.xib */,
 			);
 			name = AssetContentsViewController;
-			sourceTree = "<group>";
-		};
-		371583531417B12800A20C92 /* ContractInfoCellView */ = {
-			isa = PBXGroup;
-			children = (
-				371583541417B14000A20C92 /* ContractInfoCellView.h */,
-				371583551417B14000A20C92 /* ContractInfoCellView.m */,
-				371583571417B14900A20C92 /* ContractInfoCellView.xib */,
-			);
-			name = ContractInfoCellView;
 			sourceTree = "<group>";
 		};
 		371B780714FBFBC6005127C2 /* WalletJournalViewController */ = {
@@ -4862,8 +4842,8 @@
 				71836541131AA853003D0415 /* MarketOrdersViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 				71A22802131D401F00848200 /* IndustryJobsViewController */,
-				71A653C0131DAC270082FFAC /* POSesViewController */,
 				71CBDBE814102A8D003A50CE /* ContractsViewController */,
+				71A653C0131DAC270082FFAC /* POSesViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -4987,23 +4967,11 @@
 		71CBDC7A14103E30003A50CE /* ContractViewController */ = {
 			isa = PBXGroup;
 			children = (
-				371583531417B12800A20C92 /* ContractInfoCellView */,
-				71CBDC96141044C8003A50CE /* BidCellView */,
 				71CBDC8014103E5A003A50CE /* ContractViewController.h */,
 				71CBDC8114103E5A003A50CE /* ContractViewController.m */,
 				71CBDC8214103E5A003A50CE /* ContractViewController.xib */,
 			);
 			name = ContractViewController;
-			sourceTree = "<group>";
-		};
-		71CBDC96141044C8003A50CE /* BidCellView */ = {
-			isa = PBXGroup;
-			children = (
-				71CBDC97141044D3003A50CE /* BidCellView.h */,
-				71CBDC98141044D3003A50CE /* BidCellView.m */,
-				1259B5421679CBA400EA49B5 /* BidCellView.xib */,
-			);
-			name = BidCellView;
 			sourceTree = "<group>";
 		};
 		71CD9BA917BEB4840007C606 /* AssemblyLinesDataSource */ = {
@@ -5337,10 +5305,8 @@
 				1259B5431679CBBB00EA49B5 /* ContractsViewController.xib in Resources */,
 				1259B5371679CA8400EA49B5 /* ContractCellView.xib in Resources */,
 				71CBDC8414103E5A003A50CE /* ContractViewController.xib in Resources */,
-				1259B5401679CBA400EA49B5 /* BidCellView.xib in Resources */,
 				377DBBDB1413B6B100CCF84B /* FilterViewController.xib in Resources */,
 				377CC0D914140E7C000415BE /* contractsFilter.plist in Resources */,
-				371583581417B14900A20C92 /* ContractInfoCellView.xib in Resources */,
 				1259B53A1679CA8B00EA49B5 /* ContractCellView~ipad.xib in Resources */,
 				379F2D811418191B0018B2CA /* marketOrdersFilter.plist in Resources */,
 				378480111418D51900450645 /* walletTransactionsFilter.plist in Resources */,
@@ -5631,12 +5597,10 @@
 				71CBDBEC14102A9D003A50CE /* ContractsViewController.m in Sources */,
 				71CBDC1B14103629003A50CE /* ContractCellView.m in Sources */,
 				71CBDC8314103E5A003A50CE /* ContractViewController.m in Sources */,
-				71CBDC99141044D3003A50CE /* BidCellView.m in Sources */,
 				377DBBDA1413B6B100CCF84B /* FilterViewController.m in Sources */,
 				377CC0DE14141118000415BE /* EUFilter.m in Sources */,
 				377CC0E114141B17000415BE /* EUFilterItem.m in Sources */,
 				377CC0E414141BCB000415BE /* EUFilterItemValue.m in Sources */,
-				371583561417B14000A20C92 /* ContractInfoCellView.m in Sources */,
 				37AC5E14149A71EB005DEAEB /* ItemInfo.mm in Sources */,
 				37DDFD9314A2031600BCDEBB /* CharactersViewController.mm in Sources */,
 				37DDFD9A14A204B600BCDEBB /* CharacterEqualSkills.mm in Sources */,
@@ -6481,14 +6445,6 @@
 				1259B53E1679CA9000EA49B5 /* en */,
 			);
 			name = "ContractCellViewCompact~ipad.xib";
-			sourceTree = "<group>";
-		};
-		1259B5421679CBA400EA49B5 /* BidCellView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B5411679CBA400EA49B5 /* en */,
-			);
-			name = BidCellView.xib;
 			sourceTree = "<group>";
 		};
 		1259B5451679CBBB00EA49B5 /* ContractsViewController.xib */ = {

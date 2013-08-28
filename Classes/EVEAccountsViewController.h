@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASCollectionView.h"
+#import "ASCollectionViewPanLayout.h"
 
 @class EVEAccountsDataSource;
-@interface EVEAccountsViewController : UIViewController<UICollectionViewDelegate>
+@interface EVEAccountsViewController : UIViewController<ASCollectionViewDelegatePanLayout>
 @property (nonatomic, strong) IBOutlet EVEAccountsDataSource* dataSource;
-@property (nonatomic, weak) IBOutlet UICollectionView* collectionView;
+@property (nonatomic, weak) IBOutlet ASCollectionView* collectionView;
 
 - (IBAction) onAddAccount: (id) sender;
 - (IBAction) onLogoff: (id) sender;

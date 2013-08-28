@@ -31,6 +31,8 @@
 @property (nonatomic, assign, getter = isIgnored) BOOL ignored;
 @property (nonatomic, strong) EVEAccountStatus* accountStatus;
 @property (nonatomic, strong) EVECharacterInfo* characterInfo;
+@property (nonatomic, strong) EVEAccountBalance* accountBalance;
+@property (nonatomic, assign) NSInteger order;
 
 + (EVEAccount*) dummyAccount;
 + (EVEAccount*) currentAccount;

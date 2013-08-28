@@ -27,19 +27,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.collectionView.allowsMultipleSelection = YES;
+	//self.collectionView.allowsMultipleSelection = YES;
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Select Characters", nil);
 	self.contentSizeForViewInPopover = CGSizeMake(320, 480);
 	
+	self.dataSource.selectedAccounts = self.selectedAccounts;
 	
 	[self.dataSource reloadWithCompletionHandler:^{
-		NSInteger itemIndex = 0;
-		for (EVEAccount* account in self.dataSource.accounts) {
-			if ([self.selectedAccounts containsObject:account])
-				[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:itemIndex inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-			itemIndex++;
-		}
 	}];
 }
 
@@ -62,32 +57,35 @@
 
 #pragma mark - UICollectionViewDelegate
 
-- (BOOL) collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL) collectionView:(ASCollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
 }
 
-- (BOOL) collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL) collectionView:(ASCollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 	return collectionView.indexPathsForSelectedItems.count > 1;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(ASCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(ASCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-	return UIEdgeInsetsMake(20, 0, 0, 0);
+- (UIEdgeInsets)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+	return UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return CGSizeMake(230, 160);
+- (CGSize)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return CGSizeMake(270, 160);
+	else
+		return CGSizeMake(270, 40);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-	return 20;
+- (CGFloat)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+	return section == 0 ? 20 : 5;
 }
 
 @end

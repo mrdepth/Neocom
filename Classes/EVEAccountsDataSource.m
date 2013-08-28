@@ -17,18 +17,19 @@
 #import "AccessMaskViewController.h"
 #import "AddEVEAccountViewController.h"
 #import "UIActionSheet+Block.h"
+#import "UIView+Nib.h"
 
 @interface EVEAccountsDataSource()<EVEAccountCellDelegate, EVEAPIKeyCellDelegate>
-@property (nonatomic, strong) NSMutableArray* allAccounts;
 
 - (void) didChangeAccountsManager:(NSNotification*) notification;
+- (void) selectItems;
 @end
 
 @implementation EVEAccountsDataSource
 
 - (void) awakeFromNib {
-	[self.collectionView registerNib:[UINib nibWithNibName:self.nibName bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"EVEAPIKeyCell" bundle:nil] forCellWithReuseIdentifier:@"EVEAPIKeyCell"];
+	//[self.collectionView registerNib:[UINib nibWithNibName:self.nibName bundle:nil] forCellWithReuseIdentifier:self.reuseIdentifier];
+	//[self.collectionView registerNib:[UINib nibWithNibName:@"EVEAPIKeyCell" bundle:nil] forCellWithReuseIdentifier:@"EVEAPIKeyCell"];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountsManager:) name:EVEAccountsManagerDidChangeNotification object:nil];
 }
 
@@ -55,17 +56,18 @@
 			i++;
 			weakOperation.progress = i / n;
 		}
-		[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+		[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 //		accounts = [NSMutableArray arrayWithArray:[allAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"ignored == FALSE"]]];
-		[accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+		[accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 	}];
 	
 	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
-			[self.collectionView reloadData];
 			self.accounts = accounts;
 			self.allAccounts = allAccounts;
 			self.apiKeys = [[APIKey allAPIKeys] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"keyID" ascending:YES]]];
+			[self.collectionView reloadData];
+			[self selectItems];
 		}
 		if (completionHandler)
 			completionHandler();
@@ -80,10 +82,7 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	_editing = editing;
-	for (EVEAccountCell* cell in self.collectionView.visibleCells) {
-		if ([cell isKindOfClass:[EVEAccountCell class]])
-			[cell setEditing:editing animated:animated];
-	}
+	[self.collectionView setEditing:editing animated:animated];
 	
 	NSMutableArray* indexes = [[NSMutableArray alloc] init];
 	int i = 0;
@@ -103,26 +102,36 @@
 			[self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:1]];
 		}
 	} completion:nil];
+	if (self.editing)
+		for (NSIndexPath* indexPath in self.collectionView.indexPathsForSelectedItems)
+			[self.collectionView deselectItemAtIndexPath:indexPath animated:animated];
+	else
+		[self selectItems];
 }
 
-#pragma mark - UICollectionViewDataSource
+#pragma mark - ASCollectionViewDataSource
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(ASCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	return section == 0 ? (self.editing ? self.allAccounts.count : self.accounts.count) : self.apiKeys.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (ASCollectionViewCell *)collectionView:(ASCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		EVEAccountCell* cell = (EVEAccountCell*) [collectionView dequeueReusableCellWithReuseIdentifier:self.reuseIdentifier forIndexPath:indexPath];
+		if (!cell)
+			cell = [EVEAccountCell viewWithNibName:@"EVEAccountCell" bundle:nil];
 		cell.delegate = self;
 		EVEAccount* account = [(self.editing ? self.allAccounts : self.accounts) objectAtIndex:indexPath.item];
 		
 		cell.account = account;
 		cell.editing = self.editing;
+//		cell.highlighted = [self.selectedAccounts containsObject:account];
 		return cell;
 	}
 	else {
 		EVEAPIKeyCell* cell = (EVEAPIKeyCell*) [collectionView dequeueReusableCellWithReuseIdentifier:@"EVEAPIKeyCell" forIndexPath:indexPath];
+		if (!cell)
+			cell = [EVEAPIKeyCell viewWithNibName:@"EVEAPIKeyCell" bundle:nil];
 		cell.delegate = self;
 		APIKey* apiKey = [self.apiKeys objectAtIndex:indexPath.row];
 		if (apiKey.apiKeyInfo) {
@@ -145,9 +154,10 @@
 	}
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView:(ASCollectionView *)collectionView {
 	return self.editing ? 2 : 1;
 }
+
 
 #pragma mark - EVEAccountCellDelegate
 
@@ -307,6 +317,14 @@
 		self.accounts = accounts;
 		self.apiKeys = apiKeys;
 	} completion:nil];
+}
+
+- (void) selectItems {
+	for (EVEAccount* account in self.selectedAccounts) {
+		NSInteger i = [self.accounts indexOfObject:account];
+		if (i != NSNotFound)
+			[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+	}
 }
 
 @end

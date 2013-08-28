@@ -6,7 +6,7 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "ASCollectionViewCell.h"
 
 @class EVEAccountCell;
 @protocol EVEAccountCellDelegate<NSObject>
@@ -17,11 +17,13 @@
 @end
 
 @class EVEAccount;
-@interface EVEAccountCell : UICollectionViewCell
+@interface EVEAccountCell : ASCollectionViewCell
 @property (nonatomic, weak) IBOutlet UIImageView *portraitImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *corpImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
 @property (weak, nonatomic) IBOutlet UILabel *characterNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *corpLabel;
+@property (weak, nonatomic) IBOutlet UILabel *allianceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wealthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
@@ -32,7 +34,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *favoritesButton;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (nonatomic, strong) EVEAccount* account;
-@property (nonatomic, assign) BOOL editing;
+//@property (nonatomic, assign) BOOL editing;
 @property (weak, nonatomic) id<EVEAccountCellDelegate> delegate;
 
 - (IBAction)onDelete:(id)sender;

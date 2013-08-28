@@ -26,5 +26,6 @@
 - (void) removeAPIKeyWithKeyID:(NSInteger) keyID;
 - (void) ignoreCharacter:(NSInteger) characterID;
 - (void) unignoreCharacter:(NSInteger) characterID;
+- (void) saveOrder;
 
 @end

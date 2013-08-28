@@ -6,14 +6,14 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "ASCollectionViewCell.h"
 
 @class EVEAPIKeyCell;
 @protocol EVEAPIKeyCellDelegate<NSObject>
 - (void) apiKeyCell:(EVEAPIKeyCell*) cell deleteButtonTapped:(UIButton*) button;
 @end
 
-@interface EVEAPIKeyCell : UICollectionViewCell
+@interface EVEAPIKeyCell : ASCollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *textLabel;
 @property (weak, nonatomic) id<EVEAPIKeyCellDelegate> delegate;
 

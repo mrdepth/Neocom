@@ -10,6 +10,7 @@
 #import "EVEAccount.h"
 #import "EUStorage.h"
 #import "IgnoredCharacter.h"
+#import "Setting.h"
 
 static EVEAccountsManager* sharedManager = nil;
 
@@ -17,6 +18,7 @@ static EVEAccountsManager* sharedManager = nil;
 @property (nonatomic, strong) NSMutableDictionary* accounts;
 @property (nonatomic, strong) NSMutableDictionary* ignored;
 @property (nonatomic, strong) NSMutableDictionary* reusedAccounts;
+@property (nonatomic, strong) NSMutableDictionary* order;
 
 - (void) manageAPIKey:(APIKey*) apiKey;
 @end
@@ -33,19 +35,41 @@ static EVEAccountsManager* sharedManager = nil;
 
 - (void) reload {
 	@synchronized(self) {
+		NSManagedObjectContext* context = [[EUStorage sharedStorage] managedObjectContext];
 		self.ignored = [[NSMutableDictionary alloc] init];
-		for (IgnoredCharacter* character in [IgnoredCharacter allIgnoredCharacters])
-			self.ignored[@(character.characterID)] = character;
+		
+		self.order = [NSMutableDictionary new];
+		[context performBlockAndWait:^{
+			for (IgnoredCharacter* character in [IgnoredCharacter allIgnoredCharacters])
+				self.ignored[@(character.characterID)] = character;
+			Setting* characersOrder = [Setting settingWithKey:SettingCharactersOrderKey];
+			
+			NSInteger n = 0;
+			for (NSString *s in [characersOrder.value componentsSeparatedByString:@","])
+				self.order[@([s integerValue])] = @(n++);
+			
+		}];
 		
 		self.reusedAccounts = self.accounts;
 		self.accounts = [[NSMutableDictionary alloc] init];
-		for (APIKey* apiKey in [APIKey allAPIKeys]) {
+		
+		__block NSArray* apiKeys = nil;
+		
+		[context performBlockAndWait:^{
+			apiKeys = [APIKey allAPIKeys];
+		}];
+		for (APIKey* apiKey in apiKeys) {
 			apiKey.apiKeyInfo = nil;
 			[apiKey apiKeyInfo];
 			[self manageAPIKey:apiKey];
 		}
 		self.allAccounts = [self.accounts allValues];
 		self.reusedAccounts = nil;
+		
+		[context performBlockAndWait:^{
+			[self saveOrder];
+		}];
+		self.order = nil;
 	}
 }
 
@@ -224,6 +248,16 @@ static EVEAccountsManager* sharedManager = nil;
 	}
 }
 
+- (void) saveOrder {
+	NSArray* accounts = [self.allAccounts sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+	NSMutableArray* components = [NSMutableArray new];
+	for (EVEAccount* account in accounts)
+		[components addObject:[NSString stringWithFormat:@"%d", account.character.characterID]];
+	Setting* setting = [Setting settingWithKey:SettingCharactersOrderKey];
+	setting.value = [components componentsJoinedByString:@","];
+	[[EUStorage sharedStorage] saveContext];
+}
+
 #pragma mark - Private
 
 - (void) manageAPIKey:(APIKey*) apiKey {
@@ -239,6 +273,9 @@ static EVEAccountsManager* sharedManager = nil;
 			else {
 				account = [[EVEAccount alloc] init];
 			}
+			NSNumber* order = self.order[@(character.characterID)];
+			account.order = order ? [order integerValue] : NSIntegerMax;
+			
 			account.character = character;
 			self.accounts[@(character.characterID)] = account;
 		}

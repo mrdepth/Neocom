@@ -65,11 +65,13 @@ static EVEAccount* currentAccount;
 	self.characterInfo = nil;
 	self.accountStatus = nil;
 	self.mailBox = nil;
-	[self characterSheet];
+	self.accountBalance = nil;
+	//[self characterSheet];
 	[self skillQueue];
 	[self characterInfo];
 	[self accountStatus];
-	if ([NSThread mainThread])
+	[self accountBalance];
+	if ([NSThread isMainThread])
 		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidUpdateNotification object:self];
 	else
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -241,6 +243,22 @@ static EVEAccount* currentAccount;
 		}
 		if ([_characterInfo isKindOfClass:[EVECharacterInfo class]])
 			return _characterInfo;
+		else
+			return nil;
+		
+	}
+}
+
+- (EVEAccountBalance*) accountBalance {
+	@synchronized(self) {
+		if (!_accountBalance && self.charAPIKey) {
+			NSError* error = nil;
+			_accountBalance = [EVEAccountBalance accountBalanceWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID corporate:NO error:&error progressHandler:nil];
+			if (!_accountBalance)
+				_accountBalance = (EVEAccountBalance*) [NSNull null];
+		}
+		if ([_accountBalance isKindOfClass:[EVEAccountBalance class]])
+			return _accountBalance;
 		else
 			return nil;
 		

@@ -21,6 +21,7 @@
 #import "EUStorage.h"
 #import "EVEAccountsDataSource.h"
 #import "UIColor+NSNumber.h"
+#import "EVEAccountsManager.h"
 
 @interface EVEAccountsViewController()
 
@@ -50,20 +51,15 @@
 	
 	if ([EVEAccount currentAccount] == nil)
 		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
-	else
+	else {
 		[self.navigationItem setLeftBarButtonItems:@[
 		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)],
 		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logoff", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onLogoff:)]
 		 ]];
+		self.dataSource.selectedAccounts = @[[EVEAccount currentAccount]];
+	}
 	
 	[self.dataSource reloadWithCompletionHandler:^{
-		EVEAccount* account = [EVEAccount currentAccount];
-		if (account) {
-			NSInteger index = [self.dataSource.accounts indexOfObject:account];
-			if (index != NSNotFound) {
-				[self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] animated:YES scrollPosition:UICollectionViewScrollPositionTop];
-			}
-		}
 	}];
 }
 
@@ -100,9 +96,9 @@
 	[self.dataSource setEditing:editing animated:animated];
 }
 
-#pragma mark - UICollectionViewDelegate
+#pragma mark - ASCollectionViewDelegate
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(ASCollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	[collectionView deselectItemAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0 && !self.editing) {
 		EVEAccount* account = [self.dataSource.accounts objectAtIndex:indexPath.row];
@@ -123,25 +119,63 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-	NSInteger n = self.view.frame.size.width / collectionViewLayout.itemSize.width;
-	if (n > 1) {
-		float w = (self.view.frame.size.width - n * collectionViewLayout.itemSize.width) / (2 + n - 1);
-		return UIEdgeInsetsMake(20, w, 0, w);
-	}
-	else
-		return UIEdgeInsetsMake(20, 0, 0, 0);
+- (UIEdgeInsets)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+	return UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0)
-		return CGSizeMake(230, 160);
+		return CGSizeMake(270, 160);
 	else
-		return CGSizeMake(230, 40);
+		return CGSizeMake(270, 40);
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+- (CGFloat)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
 	return section == 0 ? 20 : 5;
+}
+
+#pragma mark - ASCollectionViewDelegatePanLayout
+
+- (BOOL)collectionView:(ASCollectionView *)collectionView canPanItemsAtIndexPaths:(NSArray*) indexPaths {
+	return [indexPaths[0] section] == 0;
+}
+
+- (BOOL)collectionView:(ASCollectionView *)collectionView canMoveItemsAtIndexPaths:(NSArray*) indexPaths toIndexPaths:(NSArray*) destination {
+	return [destination[0] section] == 0;
+}
+
+
+- (void)collectionView:(ASCollectionView *)collectionView didMoveItemsAtIndexPaths:(NSArray*) indexPaths toIndexPaths:(NSArray*) destination {
+	NSMutableIndexSet* from = [NSMutableIndexSet new];
+	for (NSIndexPath* indexPath in indexPaths)
+		[from addIndex:indexPath.item];
+	
+	NSMutableIndexSet* to = [NSMutableIndexSet new];
+	for (NSIndexPath* indexPath in destination)
+		[to addIndex:indexPath.item];
+
+	if (!self.editing) {
+		NSArray* objects = [self.dataSource.accounts objectsAtIndexes:from];
+		[self.dataSource.accounts removeObjectsAtIndexes:from];
+		[self.dataSource.accounts insertObjects:objects atIndexes:to];
+
+		NSInteger order = 0;
+		for (EVEAccount* account in self.dataSource.accounts)
+			account.order = order++;
+		[self.dataSource.allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+		[[EVEAccountsManager sharedManager] saveOrder];
+	}
+	else {
+		NSArray* objects = [self.dataSource.allAccounts objectsAtIndexes:from];
+		[self.dataSource.allAccounts removeObjectsAtIndexes:from];
+		[self.dataSource.allAccounts insertObjects:objects atIndexes:to];
+		
+		NSInteger order = 0;
+		for (EVEAccount* account in self.dataSource.allAccounts)
+			account.order = order++;
+		[self.dataSource.accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+		[[EVEAccountsManager sharedManager] saveOrder];
+	}
 }
 
 #pragma mark - Private

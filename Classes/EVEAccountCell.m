@@ -11,8 +11,14 @@
 #import "UIImageView+URL.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+TimeLeft.h"
+#import "appearance.h"
 
 @implementation EVEAccountCell
+
+- (void) awakeFromNib {
+	self.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	self.layer.cornerRadius = 8;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -21,11 +27,6 @@
         // Initialization code
     }
     return self;
-}
-
-- (void) setEditing:(BOOL)editing {
-	self.favoritesButton.alpha = editing ? 1.0 : 0.0;
-	self.deleteButton.alpha = editing ? 1.0 : 0.0;
 }
 
 - (IBAction)onDelete:(id)sender {
@@ -45,35 +46,44 @@
 }
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
-	if (animated)
-		[UIView animateWithDuration:0.25
-							  delay:0
-							options:UIViewAnimationOptionBeginFromCurrentState
-						 animations:^{
-							 self.editing = editing;
-						 }
-						 completion:nil];
-	else
-		self.editing = editing;
+	[super setEditing:editing animated:animated];
+	self.favoritesButton.alpha = editing ? 1.0 : 0.0;
+	self.deleteButton.alpha = editing ? 1.0 : 0.0;
 }
 
 - (void) setAccount:(EVEAccount *)account {
 	_account = account;
 	
-	self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
+	//self.portraitImageView.image = [UIImage imageNamed:@"noAccount.png"];
 	[self.portraitImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.character.characterID
 																							   size:[[UIScreen mainScreen] scale] == 2.0 ? EVEImageSize128 : EVEImageSize64
 																							  error:nil]];
 	
-	self.corpImageView.image = nil;
+	//self.corpImageView.image = nil;
 	
 	[self.corpImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.character.corporationID
 																						   size:EVEImageSize32
 																						  error:nil]];
+	if (account.characterInfo.allianceID) {
+		[self.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:account.characterInfo.allianceID
+																							   size:EVEImageSize32
+																							  error:nil]];
+		self.allianceLabel.text = account.characterInfo.alliance;
+	}
+	else {
+		self.allianceImageView.image = nil;
+		self.allianceLabel.text = nil;
+	}
 	
 	self.characterNameLabel.text = account.character.characterName;
 	self.corpLabel.text = account.character.corporationName;
-	self.wealthLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(account.characterSheet.balance)]];
+	if (account.accountBalance.accounts.count > 0) {
+		EVEAccountBalanceItem* balance = account.accountBalance.accounts[0];
+		self.wealthLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(balance.balance)]];
+	}
+	else
+		self.wealthLabel.text = NSLocalizedString(@"Account balance not available", nil);
+	
 	self.locationLabel.text = account.characterInfo.lastKnownLocation;
 	self.shipLabel.text = account.characterInfo.shipTypeName;
 	

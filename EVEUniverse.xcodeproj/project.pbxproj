@@ -26,6 +26,7 @@
 		120B46B1164B9995000C33CE /* UIAlertView+Error.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B4698164B9995000C33CE /* UIAlertView+Error.m */; };
 		120B46B2164B9995000C33CE /* UIColor+NSNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469B164B9995000C33CE /* UIColor+NSNumber.m */; };
 		120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469E164B9995000C33CE /* UIImageView+URL.m */; };
+		120CC27717CC71CF008DCBAF /* Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 120CC27617CC71CF008DCBAF /* Setting.m */; };
 		120FE35516B9504B0091E692 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570D16B68A3F0015706B /* POSFit.mm */; };
 		1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0F616C8EEF8006E504E /* VariationsViewController.m */; };
 		1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0F716C8EEF8006E504E /* VariationsViewController.xib */; };
@@ -296,6 +297,8 @@
 		12BF018F140D3DCA00AD9450 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BF018E140D3DCA00AD9450 /* CFNetwork.framework */; };
 		12BF01A4140D418B00AD9450 /* PCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF01A2140D418B00AD9450 /* PCViewController.m */; };
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
+		12C8792317CDD04B0036F9BE /* MessageGroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C8792017CDD04B0036F9BE /* MessageGroupsDataSource.m */; };
+		12C8792417CDD04B0036F9BE /* MessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C8792217CDD04B0036F9BE /* MessagesDataSource.m */; };
 		12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C957F116AD102D00621B7C /* FittingItemsViewController.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
 		12CB26D316563D16002E58F9 /* KillNetFilterShipClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */; };
@@ -558,7 +561,6 @@
 		718803CA137C8FD2004060CC /* booster.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C7137C8FD2004060CC /* booster.png */; };
 		718803CB137C8FD2004060CC /* implant.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C8137C8FD2004060CC /* implant.png */; };
 		7189ACB1137E077C0006B2D1 /* battleclinic.png in Resources */ = {isa = PBXBuildFile; fileRef = 7189ACB0137E077C0006B2D1 /* battleclinic.png */; };
-		718AFA7917CA47BF00F72298 /* MessageGroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */; };
 		718B8828122FC11900622C04 /* EVEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B8827122FC11900622C04 /* EVEAccount.m */; };
 		718B8835122FC2BC00622C04 /* EVEAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B8833122FC2BC00622C04 /* EVEAccountsViewController.m */; };
 		718B8861122FC49300622C04 /* AddEVEAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B885F122FC49300622C04 /* AddEVEAccountViewController.m */; };
@@ -700,7 +702,6 @@
 		71B1E99417BACD51007330C2 /* ModuleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99217BACD51007330C2 /* ModuleCellView.xib */; };
 		71B1E99617BACE4A007330C2 /* AmountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99517BACE4A007330C2 /* AmountViewController.xib */; };
 		71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B2106917B4403100B1E0C0 /* FitCharacter.mm */; };
-		71B2127217CD479500525788 /* MessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B2127117CD479500525788 /* MessagesDataSource.m */; };
 		71B4989417AD052100B98B59 /* UIActionSheet+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */; };
 		71B4989B17AD06D400B98B59 /* DronesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989A17AD06D400B98B59 /* DronesDataSource.mm */; };
 		71B498A017AD440200B98B59 /* NCItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989E17AD440200B98B59 /* NCItemsViewController.m */; };
@@ -860,6 +861,8 @@
 		120B469B164B9995000C33CE /* UIColor+NSNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+NSNumber.m"; sourceTree = "<group>"; };
 		120B469D164B9995000C33CE /* UIImageView+URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+URL.h"; sourceTree = "<group>"; };
 		120B469E164B9995000C33CE /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
+		120CC27517CC71CF008DCBAF /* Setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Setting.h; sourceTree = "<group>"; };
+		120CC27617CC71CF008DCBAF /* Setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Setting.m; sourceTree = "<group>"; };
 		1213C0F516C8EEF8006E504E /* VariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariationsViewController.h; sourceTree = "<group>"; };
 		1213C0F616C8EEF8006E504E /* VariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariationsViewController.m; sourceTree = "<group>"; };
 		1213C0F716C8EEF8006E504E /* VariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VariationsViewController.xib; sourceTree = "<group>"; };
@@ -1314,6 +1317,10 @@
 		12BF01A2140D418B00AD9450 /* PCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCViewController.m; sourceTree = "<group>"; };
 		12C83A691525E3CF009665A9 /* NSString+EUHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EUHTTPServer.h"; sourceTree = "<group>"; };
 		12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EUHTTPServer.m"; sourceTree = "<group>"; };
+		12C8791F17CDD04B0036F9BE /* MessageGroupsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGroupsDataSource.h; sourceTree = "<group>"; };
+		12C8792017CDD04B0036F9BE /* MessageGroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGroupsDataSource.m; sourceTree = "<group>"; };
+		12C8792117CDD04B0036F9BE /* MessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDataSource.h; sourceTree = "<group>"; };
+		12C8792217CDD04B0036F9BE /* MessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDataSource.m; sourceTree = "<group>"; };
 		12C957F016AD102D00621B7C /* FittingItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingItemsViewController.h; sourceTree = "<group>"; };
 		12C957F116AD102D00621B7C /* FittingItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingItemsViewController.m; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
@@ -1690,8 +1697,6 @@
 		718803C7137C8FD2004060CC /* booster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster.png; sourceTree = "<group>"; };
 		718803C8137C8FD2004060CC /* implant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = implant.png; sourceTree = "<group>"; };
 		7189ACB0137E077C0006B2D1 /* battleclinic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battleclinic.png; sourceTree = "<group>"; };
-		718AFA7717CA47BF00F72298 /* MessageGroupsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGroupsDataSource.h; sourceTree = "<group>"; };
-		718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGroupsDataSource.m; sourceTree = "<group>"; };
 		718B8826122FC11900622C04 /* EVEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccount.h; sourceTree = "<group>"; };
 		718B8827122FC11900622C04 /* EVEAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccount.m; sourceTree = "<group>"; };
 		718B8832122FC2BC00622C04 /* EVEAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountsViewController.h; sourceTree = "<group>"; };
@@ -1869,8 +1874,6 @@
 		71B1E99517BACE4A007330C2 /* AmountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AmountViewController.xib; sourceTree = "<group>"; };
 		71B2106817B4403100B1E0C0 /* FitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FitCharacter.h; sourceTree = "<group>"; };
 		71B2106917B4403100B1E0C0 /* FitCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FitCharacter.mm; sourceTree = "<group>"; };
-		71B2127017CD479500525788 /* MessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDataSource.h; sourceTree = "<group>"; };
-		71B2127117CD479500525788 /* MessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDataSource.m; sourceTree = "<group>"; };
 		71B4989217AD052100B98B59 /* UIActionSheet+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Neocom.h"; sourceTree = "<group>"; };
 		71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Neocom.m"; sourceTree = "<group>"; };
 		71B4989917AD06D400B98B59 /* DronesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesDataSource.h; sourceTree = "<group>"; };
@@ -2373,6 +2376,8 @@
 				1203570716B68A3E0015706B /* ShipFit.mm */,
 				71B2106817B4403100B1E0C0 /* FitCharacter.h */,
 				71B2106917B4403100B1E0C0 /* FitCharacter.mm */,
+				120CC27517CC71CF008DCBAF /* Setting.h */,
+				120CC27617CC71CF008DCBAF /* Setting.m */,
 			);
 			name = EUStorage;
 			sourceTree = "<group>";
@@ -2982,6 +2987,24 @@
 			name = PCViewController;
 			sourceTree = "<group>";
 		};
+		12C8792617CDD05E0036F9BE /* MessageGroupsDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				12C8791F17CDD04B0036F9BE /* MessageGroupsDataSource.h */,
+				12C8792017CDD04B0036F9BE /* MessageGroupsDataSource.m */,
+			);
+			name = MessageGroupsDataSource;
+			sourceTree = "<group>";
+		};
+		12C8792717CDD0640036F9BE /* MessagesDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				12C8792117CDD04B0036F9BE /* MessagesDataSource.h */,
+				12C8792217CDD04B0036F9BE /* MessagesDataSource.m */,
+			);
+			name = MessagesDataSource;
+			sourceTree = "<group>";
+		};
 		12CB26D016563CF8002E58F9 /* KillNetFilterShipClassesViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3404,8 +3427,8 @@
 		37AE99C214E418B7007F7A25 /* MessagesViewController */ = {
 			isa = PBXGroup;
 			children = (
-				718AFA7617CA478100F72298 /* MessageGroupsDataSource */,
-				71B2126E17CD477B00525788 /* MessagesDataSource */,
+				12C8792717CDD0640036F9BE /* MessagesDataSource */,
+				12C8792617CDD05E0036F9BE /* MessageGroupsDataSource */,
 				37AE95B014E3EA7B007F7A25 /* MailBox */,
 				37AE99D814E436FB007F7A25 /* MessageViewController */,
 				37AE99C914E41DD8007F7A25 /* MessageCellView */,
@@ -4151,7 +4174,6 @@
 		7187E487124BB4FC00ACAD91 /* SkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				37B6F96B14E14C470046FC08 /* SkillPlannerImportViewController */,
 				71C9959A179EAF91008CA679 /* SkillsDataSource */,
 				717C215D12F0C88800757EE5 /* SkillCellView */,
 				7187E488124BB51600ACAD91 /* SkillsViewController.h */,
@@ -4160,15 +4182,6 @@
 				1259B4F11679C81C00EA49B5 /* SkillsViewController~ipad.xib */,
 			);
 			name = SkillsViewController;
-			sourceTree = "<group>";
-		};
-		718AFA7617CA478100F72298 /* MessageGroupsDataSource */ = {
-			isa = PBXGroup;
-			children = (
-				718AFA7717CA47BF00F72298 /* MessageGroupsDataSource.h */,
-				718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */,
-			);
-			name = MessageGroupsDataSource;
 			sourceTree = "<group>";
 		};
 		718B8825122FC10900622C04 /* EVEAccount */ = {
@@ -4626,15 +4639,6 @@
 			name = ModuleCellView;
 			sourceTree = "<group>";
 		};
-		71B2126E17CD477B00525788 /* MessagesDataSource */ = {
-			isa = PBXGroup;
-			children = (
-				71B2127017CD479500525788 /* MessagesDataSource.h */,
-				71B2127117CD479500525788 /* MessagesDataSource.m */,
-			);
-			name = MessagesDataSource;
-			sourceTree = "<group>";
-		};
 		71B4989717AD06A400B98B59 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
@@ -4791,8 +4795,9 @@
 			isa = PBXGroup;
 			children = (
 				717E8A3412DE4EF3001A2ABD /* CharacterInfoViewController */,
-				7187E487124BB4FC00ACAD91 /* SkillsViewController */,
 				37AE99C214E418B7007F7A25 /* MessagesViewController */,
+				7187E487124BB4FC00ACAD91 /* SkillsViewController */,
+				37B6F96B14E14C470046FC08 /* SkillPlannerImportViewController */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -4865,8 +4870,8 @@
 				71836541131AA853003D0415 /* MarketOrdersViewController */,
 				371B780714FBFBC6005127C2 /* WalletJournalViewController */,
 				71A22802131D401F00848200 /* IndustryJobsViewController */,
-				71CBDBE814102A8D003A50CE /* ContractsViewController */,
 				71A653C0131DAC270082FFAC /* POSesViewController */,
+				71CBDBE814102A8D003A50CE /* ContractsViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -5919,8 +5924,9 @@
 				71C670DE17C112DC00B0C853 /* ASCollectionViewPanLayout.m in Sources */,
 				71C670DF17C112DC00B0C853 /* ASLongPressPanGestureRecognizer.m in Sources */,
 				71C670E017C112DC00B0C853 /* ASCollectionViewUpdateItem.m in Sources */,
-				718AFA7917CA47BF00F72298 /* MessageGroupsDataSource.m in Sources */,
-				71B2127217CD479500525788 /* MessagesDataSource.m in Sources */,
+				120CC27717CC71CF008DCBAF /* Setting.m in Sources */,
+				12C8792317CDD04B0036F9BE /* MessageGroupsDataSource.m in Sources */,
+				12C8792417CDD04B0036F9BE /* MessagesDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

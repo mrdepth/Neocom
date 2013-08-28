@@ -96,6 +96,8 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	EUMailMessage *message = self.messages[indexPath.row];
+	[self.delegate messageDataSource:self didSelectMessage:message];
 /*	if (indexPath.section == 0) {
 		NSDictionary* group = self.groups[indexPath.row];
 		[self.delegate messageGroupsDataSource:self didSelectGroup:group[@"messages"] withTitle:group[@"title"]];

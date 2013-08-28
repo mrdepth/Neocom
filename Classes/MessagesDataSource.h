@@ -11,7 +11,7 @@
 @class EUMailMessage;
 @class MessagesDataSource;
 @protocol MessagesDataSourceDelegate
-- (void) messageGroupsDataSource:(MessagesDataSource*) dataSource didSelectMessage:(EUMailMessage*) message;
+- (void) messageDataSource:(MessagesDataSource*) dataSource didSelectMessage:(EUMailMessage*) message;
 @end
 
 @interface MessagesDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>

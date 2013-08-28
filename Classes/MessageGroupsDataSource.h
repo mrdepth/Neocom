@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EUMailBox.h"
 
 @class MessageGroupsDataSource;
 @protocol MessageGroupsDataSourceDelegate
@@ -16,6 +17,7 @@
 @interface MessageGroupsDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet UITableView* tableView;
 @property (nonatomic, weak) IBOutlet id<MessageGroupsDataSourceDelegate> delegate;
+@property (nonatomic, strong) EUMailBox* mailBox;
 - (void) reload;
 
 @end

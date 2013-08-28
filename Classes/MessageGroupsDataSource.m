@@ -17,59 +17,47 @@
 
 @interface MessageGroupsDataSource()
 @property (nonatomic, strong) NSMutableArray* groups;
-@property (nonatomic, strong) EUMailBox* mailBox;
 
 @end
 
 @implementation MessageGroupsDataSource
 
 - (void) reload {
-	__block EUMailBox* mailBoxTmp = nil;
+	EUMailBox* mailBox = self.mailBox;
 	NSMutableArray* groupsTmp = [NSMutableArray new];
 	EUOperation *operation = [EUOperation operationWithIdentifier:@"MessageGroupsDataSource+reload" name:NSLocalizedString(@"Loading Messages", nil)];
 	EVEAccount* account = [EVEAccount currentAccount];
 	
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		mailBoxTmp = account.mailBox;
-		if (!mailBoxTmp.inbox) {
-			NSError* error = mailBoxTmp ? mailBoxTmp.error : [NSError errorWithDomain:@"Neocom" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown error", nil) forKey:NSLocalizedDescriptionKey]];
-			[[UIAlertView alertViewWithError:error] performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
-			mailBoxTmp = nil;
-		}
-		else {
-			NSMutableDictionary* personal = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray new], @"messages", @(0), @"unread", @"Inbox", @"title", nil];
-			NSMutableDictionary* groups = [NSMutableDictionary new];
-			NSString* characterID = [NSString stringWithFormat:@"%d", account.character.characterID];
-			
-			for (EUMailMessage* message in mailBoxTmp.inbox) {
-				BOOL isPersonal = [message.header.toCharacterIDs containsObject:characterID];
-				if (isPersonal) {
-					[personal[@"messages"] addObject:message];
-					if (!message.read)
-						personal[@"unread"] = @([personal[@"unread"] integerValue] + 1);
-				}
-				else {
-					NSMutableDictionary* group = groups[message.to];
-					if (!group)
-						groups[message.to] = group = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray new], @"messages", @(0), @"unread", message.to, @"title", nil];
-					if (!message.read)
-						group[@"unread"] = @([group[@"unread"] integerValue] + 1);
-					[group[@"messages"] addObject:message];
-					
-				}
+		NSMutableDictionary* personal = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray new], @"messages", @(0), @"unread", @"Inbox", @"title", nil];
+		NSMutableDictionary* groups = [NSMutableDictionary new];
+		NSString* characterID = [NSString stringWithFormat:@"%d", account.character.characterID];
+		
+		for (EUMailMessage* message in mailBox.inbox) {
+			BOOL isPersonal = [message.header.toCharacterIDs containsObject:characterID];
+			if (isPersonal) {
+				[personal[@"messages"] addObject:message];
+				if (!message.read)
+					personal[@"unread"] = @([personal[@"unread"] integerValue] + 1);
 			}
-			[groupsTmp addObject:personal];
-			[groupsTmp addObjectsFromArray:[[groups allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]]];
-
+			else {
+				NSMutableDictionary* group = groups[message.to];
+				if (!group)
+					groups[message.to] = group = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray new], @"messages", @(0), @"unread", message.to, @"title", nil];
+				if (!message.read)
+					group[@"unread"] = @([group[@"unread"] integerValue] + 1);
+				[group[@"messages"] addObject:message];
+				
+			}
 		}
+		[groupsTmp addObject:personal];
+		[groupsTmp addObjectsFromArray:[[groups allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]]];
 	}];
 	
 	[operation setCompletionBlockInMainThread:^{
 		if (![weakOperation isCancelled]) {
-			self.mailBox = mailBoxTmp;
 			self.groups = groupsTmp;
-//			if (self.tableView.dataSource == self)
 			[self.tableView reloadData];
 		}
 	}];

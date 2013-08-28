@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-@interface MessageCellView : UITableViewCell
+@interface MessageCellView : GroupedCell
 @property (nonatomic, weak) IBOutlet UILabel* subjectLabel;
 @property (nonatomic, weak) IBOutlet UILabel* fromLabel;
 @property (nonatomic, weak) IBOutlet UILabel* dateLabel;

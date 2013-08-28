@@ -45,11 +45,15 @@
 	[operation addExecutionBlock:^{
 		EVEAccountsManager* manager = [EVEAccountsManager sharedManager];
 		[manager reload];
+		float n = manager.allAccounts.count;
+		int i = 0;
 		for (EVEAccount* account in manager.allAccounts) {
 			[account reload];
 			[allAccounts addObject:account];
 			if (!account.ignored)
 				[accounts addObject:account];
+			i++;
+			weakOperation.progress = i / n;
 		}
 		[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 //		accounts = [NSMutableArray arrayWithArray:[allAccounts filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"ignored == FALSE"]]];

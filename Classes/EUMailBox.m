@@ -189,35 +189,13 @@
 				range.length = 250;
 		}
 		
-		/*if (characterName.characters.count == 0 && ids.count > 0) {
-			NSMutableDictionary* characters = [NSMutableDictionary dictionary];
-			NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
-			for (NSString* charID in ids) {
-				[operationQueue addOperationWithBlock:^{
-					NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-					EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[NSArray arrayWithObject:charID] error:nil];
-					if (characterName.characters.count == 1) {
-						@synchronized(characters) {
-							[characters addEntriesFromDictionary:characterName.characters];
-						}
-					}
-					[pool release];
-				}];
-			}
-			[operationQueue waitUntilAllOperationsAreFinished];
-			//EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil];
-			//characterName.characters = characterName.characters;
-		}*/
-		
 		for (EUMailMessage* message in [self.inbox arrayByAddingObjectsFromArray:self.sent]) {
-			if (message.header.toCharacterIDs.count > 0) {
-				NSMutableArray* names = [[NSMutableArray alloc] init];
-				for (NSString* key in message.header.toCharacterIDs) {
-					NSString* name = [characterNames valueForKey:key];
-					if (name)
-						[names addObject:name];
-				}
-				message.to = [names componentsJoinedByString:@", "];
+			if (message.header.toCorpOrAllianceID) {
+				NSString* to = [characterNames valueForKey:[NSString stringWithFormat:@"%d", message.header.toCorpOrAllianceID]];
+				if (to)
+					message.to = to;
+				else
+					message.to = NSLocalizedString(@"Unknown corporation or alliance", nil);
 			}
 			else if (message.header.toListID.count > 0) {
 				NSMutableArray* lists = [NSMutableArray array];
@@ -231,12 +209,14 @@
 				else
 					message.to = NSLocalizedString(@"Unknown mailing list", nil);
 			}
-			else if (message.header.toCorpOrAllianceID) {
-				NSString* to = [characterNames valueForKey:[NSString stringWithFormat:@"%d", message.header.toCorpOrAllianceID]];
-				if (to)
-					message.to = to;
-				else
-					message.to = NSLocalizedString(@"Unknown corporation or alliance", nil);
+			else if (message.header.toCharacterIDs.count > 0) {
+				NSMutableArray* names = [[NSMutableArray alloc] init];
+				for (NSString* key in message.header.toCharacterIDs) {
+					NSString* name = [characterNames valueForKey:key];
+					if (name)
+						[names addObject:name];
+				}
+				message.to = [names componentsJoinedByString:@", "];
 			}
 			if (!message.to)
 				message.to = NSLocalizedString(@"Unknown recipient", nil);

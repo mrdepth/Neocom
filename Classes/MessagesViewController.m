@@ -17,10 +17,10 @@
 #import "MessageCellView.h"
 #import "EUMailBox.h"
 #import "MessageViewController.h"
+#import "appearance.h"
 
 @interface MessagesViewController()
 @property(nonatomic, strong) NSMutableArray *filteredValues;
-@property(nonatomic, strong) NSArray *messages;
 @property(nonatomic, strong) EUFilter *filter;
 @property(nonatomic, strong) EUMailBox* mailBox;
 
@@ -48,23 +48,36 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	self.title = NSLocalizedString(@"Mail", nil);
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	if (!self.title)
+		self.title = NSLocalizedString(@"Mail", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		//[self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithCustomView:searchBar] autorelease]];
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
+//		[self.navigationItem setRightBarButtonItem:];
 		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
 		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.toolbar];
+		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.toolbar];
 	}
-	else
+	else {
+		self.tableView.tableHeaderView = self.searchBar;
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
+	}
 //	else
 //		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
-	[self reloadMessages];
+	//[self reloadMessages];
+	if (self.messages) {
+		self.messagesDataSource.messages = self.messages;;
+		self.tableView.delegate = self.messagesDataSource;
+		self.tableView.dataSource = self.messagesDataSource;
+		[self.messagesDataSource reload];
+	}
+	else
+		[self.messageGroupsDataSource reload];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -110,6 +123,15 @@
 	[self.tableView reloadData];
 	[self.searchDisplayController.searchResultsTableView reloadData];
 	[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
+}
+
+#pragma mark - MessageGroupsDataSourceDelegate
+
+- (void) messageGroupsDataSource:(MessageGroupsDataSource*) dataSource didSelectGroup:(NSArray*) group withTitle:(NSString*) title {
+	MessagesViewController* controller = [[MessagesViewController alloc] initWithNibName:@"MessagesViewController" bundle:nil];
+	controller.messages = group;
+	controller.title = title;
+	[self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark -

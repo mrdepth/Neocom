@@ -74,7 +74,6 @@
 		124DFA37178E94BA00ACF7A2 /* NAPISearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA39178E94BA00ACF7A2 /* NAPISearchViewController.xib */; };
 		124DFA3B178E952700ACF7A2 /* BCSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA3A178E952700ACF7A2 /* BCSearchViewController.xib */; };
 		124DFA3F178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA41178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib */; };
-		124DFA42178E971200ACF7A2 /* MessagesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA44178E971200ACF7A2 /* MessagesViewController~ipad.xib */; };
 		124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */; };
 		124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA47178E98C900ACF7A2 /* FitsViewController.xib */; };
 		124DFA5C178EA88300ACF7A2 /* LUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA4D178EA88300ACF7A2 /* LUIBarButtonItem.m */; };
@@ -559,6 +558,7 @@
 		718803CA137C8FD2004060CC /* booster.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C7137C8FD2004060CC /* booster.png */; };
 		718803CB137C8FD2004060CC /* implant.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C8137C8FD2004060CC /* implant.png */; };
 		7189ACB1137E077C0006B2D1 /* battleclinic.png in Resources */ = {isa = PBXBuildFile; fileRef = 7189ACB0137E077C0006B2D1 /* battleclinic.png */; };
+		718AFA7917CA47BF00F72298 /* MessageGroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */; };
 		718B8828122FC11900622C04 /* EVEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B8827122FC11900622C04 /* EVEAccount.m */; };
 		718B8835122FC2BC00622C04 /* EVEAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B8833122FC2BC00622C04 /* EVEAccountsViewController.m */; };
 		718B8861122FC49300622C04 /* AddEVEAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718B885F122FC49300622C04 /* AddEVEAccountViewController.m */; };
@@ -700,6 +700,7 @@
 		71B1E99417BACD51007330C2 /* ModuleCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99217BACD51007330C2 /* ModuleCellView.xib */; };
 		71B1E99617BACE4A007330C2 /* AmountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71B1E99517BACE4A007330C2 /* AmountViewController.xib */; };
 		71B2106A17B4403100B1E0C0 /* FitCharacter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B2106917B4403100B1E0C0 /* FitCharacter.mm */; };
+		71B2127217CD479500525788 /* MessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B2127117CD479500525788 /* MessagesDataSource.m */; };
 		71B4989417AD052100B98B59 /* UIActionSheet+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */; };
 		71B4989B17AD06D400B98B59 /* DronesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989A17AD06D400B98B59 /* DronesDataSource.mm */; };
 		71B498A017AD440200B98B59 /* NCItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B4989E17AD440200B98B59 /* NCItemsViewController.m */; };
@@ -916,7 +917,6 @@
 		124DFA38178E94BA00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NAPISearchViewController.xib; sourceTree = "<group>"; };
 		124DFA3A178E952700ACF7A2 /* BCSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BCSearchViewController.xib; sourceTree = "<group>"; };
 		124DFA40178E96CD00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SkillPlannerSkillsBrowserViewController.xib; sourceTree = "<group>"; };
-		124DFA43178E971200ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/MessagesViewController~ipad.xib"; sourceTree = "<group>"; };
 		124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingServiceMenuViewController.xib; sourceTree = "<group>"; };
 		124DFA47178E98C900ACF7A2 /* FitsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FitsViewController.xib; sourceTree = "<group>"; };
 		124DFA4A178EA79000ACF7A2 /* resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
@@ -1690,6 +1690,8 @@
 		718803C7137C8FD2004060CC /* booster.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = booster.png; sourceTree = "<group>"; };
 		718803C8137C8FD2004060CC /* implant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = implant.png; sourceTree = "<group>"; };
 		7189ACB0137E077C0006B2D1 /* battleclinic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = battleclinic.png; sourceTree = "<group>"; };
+		718AFA7717CA47BF00F72298 /* MessageGroupsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageGroupsDataSource.h; sourceTree = "<group>"; };
+		718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGroupsDataSource.m; sourceTree = "<group>"; };
 		718B8826122FC11900622C04 /* EVEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccount.h; sourceTree = "<group>"; };
 		718B8827122FC11900622C04 /* EVEAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccount.m; sourceTree = "<group>"; };
 		718B8832122FC2BC00622C04 /* EVEAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountsViewController.h; sourceTree = "<group>"; };
@@ -1867,6 +1869,8 @@
 		71B1E99517BACE4A007330C2 /* AmountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AmountViewController.xib; sourceTree = "<group>"; };
 		71B2106817B4403100B1E0C0 /* FitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FitCharacter.h; sourceTree = "<group>"; };
 		71B2106917B4403100B1E0C0 /* FitCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FitCharacter.mm; sourceTree = "<group>"; };
+		71B2127017CD479500525788 /* MessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDataSource.h; sourceTree = "<group>"; };
+		71B2127117CD479500525788 /* MessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDataSource.m; sourceTree = "<group>"; };
 		71B4989217AD052100B98B59 /* UIActionSheet+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Neocom.h"; sourceTree = "<group>"; };
 		71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Neocom.m"; sourceTree = "<group>"; };
 		71B4989917AD06D400B98B59 /* DronesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DronesDataSource.h; sourceTree = "<group>"; };
@@ -3400,13 +3404,14 @@
 		37AE99C214E418B7007F7A25 /* MessagesViewController */ = {
 			isa = PBXGroup;
 			children = (
+				718AFA7617CA478100F72298 /* MessageGroupsDataSource */,
+				71B2126E17CD477B00525788 /* MessagesDataSource */,
 				37AE95B014E3EA7B007F7A25 /* MailBox */,
 				37AE99D814E436FB007F7A25 /* MessageViewController */,
 				37AE99C914E41DD8007F7A25 /* MessageCellView */,
 				37AE99C414E418E7007F7A25 /* MessagesViewController.h */,
 				37AE99C514E418E7007F7A25 /* MessagesViewController.m */,
 				37AE99C614E418E7007F7A25 /* MessagesViewController.xib */,
-				124DFA44178E971200ACF7A2 /* MessagesViewController~ipad.xib */,
 			);
 			name = MessagesViewController;
 			sourceTree = "<group>";
@@ -4146,6 +4151,7 @@
 		7187E487124BB4FC00ACAD91 /* SkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				37B6F96B14E14C470046FC08 /* SkillPlannerImportViewController */,
 				71C9959A179EAF91008CA679 /* SkillsDataSource */,
 				717C215D12F0C88800757EE5 /* SkillCellView */,
 				7187E488124BB51600ACAD91 /* SkillsViewController.h */,
@@ -4154,6 +4160,15 @@
 				1259B4F11679C81C00EA49B5 /* SkillsViewController~ipad.xib */,
 			);
 			name = SkillsViewController;
+			sourceTree = "<group>";
+		};
+		718AFA7617CA478100F72298 /* MessageGroupsDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				718AFA7717CA47BF00F72298 /* MessageGroupsDataSource.h */,
+				718AFA7817CA47BF00F72298 /* MessageGroupsDataSource.m */,
+			);
+			name = MessageGroupsDataSource;
 			sourceTree = "<group>";
 		};
 		718B8825122FC10900622C04 /* EVEAccount */ = {
@@ -4611,6 +4626,15 @@
 			name = ModuleCellView;
 			sourceTree = "<group>";
 		};
+		71B2126E17CD477B00525788 /* MessagesDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				71B2127017CD479500525788 /* MessagesDataSource.h */,
+				71B2127117CD479500525788 /* MessagesDataSource.m */,
+			);
+			name = MessagesDataSource;
+			sourceTree = "<group>";
+		};
 		71B4989717AD06A400B98B59 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
@@ -4767,9 +4791,8 @@
 			isa = PBXGroup;
 			children = (
 				717E8A3412DE4EF3001A2ABD /* CharacterInfoViewController */,
-				37AE99C214E418B7007F7A25 /* MessagesViewController */,
 				7187E487124BB4FC00ACAD91 /* SkillsViewController */,
-				37B6F96B14E14C470046FC08 /* SkillPlannerImportViewController */,
+				37AE99C214E418B7007F7A25 /* MessagesViewController */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -5367,7 +5390,6 @@
 				37AE99D514E4319F007F7A25 /* mailMessagesFilter.plist in Resources */,
 				37AE99D714E4361A007F7A25 /* mailMessageTemplate.html in Resources */,
 				37AE99DD14E43717007F7A25 /* MessageViewController.xib in Resources */,
-				124DFA42178E971200ACF7A2 /* MessagesViewController~ipad.xib in Resources */,
 				37C5B9DA14E5884600380B9B /* MessageCellView~ipad.xib in Resources */,
 				12448F361679D0E500DC90AC /* AssetsViewController.xib in Resources */,
 				370CCEAD14ED469900605A42 /* AssetContentsViewController.xib in Resources */,
@@ -5897,6 +5919,8 @@
 				71C670DE17C112DC00B0C853 /* ASCollectionViewPanLayout.m in Sources */,
 				71C670DF17C112DC00B0C853 /* ASLongPressPanGestureRecognizer.m in Sources */,
 				71C670E017C112DC00B0C853 /* ASCollectionViewUpdateItem.m in Sources */,
+				718AFA7917CA47BF00F72298 /* MessageGroupsDataSource.m in Sources */,
+				71B2127217CD479500525788 /* MessagesDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6125,14 +6149,6 @@
 				124DFA40178E96CD00ACF7A2 /* en */,
 			);
 			name = SkillPlannerSkillsBrowserViewController.xib;
-			sourceTree = "<group>";
-		};
-		124DFA44178E971200ACF7A2 /* MessagesViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				124DFA43178E971200ACF7A2 /* en */,
-			);
-			name = "MessagesViewController~ipad.xib";
 			sourceTree = "<group>";
 		};
 		124DFA64178EA8AB00ACF7A2 /* Localizable.strings */ = {

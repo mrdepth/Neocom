@@ -18,5 +18,4 @@
 - (IBAction) onSafari: (id) sender;
 - (IBAction) onPC: (id) sender;
 - (IBAction) onSave: (id) sender;
-- (IBAction) onToutorial: (id) sender;
 @end

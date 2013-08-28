@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "EVEOnlineAPI.h"
 #import "EVEDBAPI.h"
-#import "EVEAccountStorage.h"
 #import "SkillPlan.h"
 #import "EUMailBox.h"
 #import "CharacterAttributes.h"

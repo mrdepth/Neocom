@@ -32,7 +32,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		if ([[self.navigationController viewControllers] objectAtIndex:0] == self)
-			[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)]];
+			[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	}
 	
 	self.marketInfoViewController.type = self.type;
@@ -110,10 +110,5 @@
 - (IBAction) onChangePage:(id) sender {
 	[self setActivePage:self.pageSegmentControl.selectedSegmentIndex == 0 ? ItemViewControllerActivePageInfo : ItemViewControllerActivePageMarket];
 }
-
-- (IBAction) dismissModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 
 @end

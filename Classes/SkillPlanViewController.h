@@ -12,8 +12,6 @@
 @class SkillPlan;
 @class SkillPlannerImportViewController;
 @interface SkillPlanViewController : UITableViewController<UIAlertViewDelegate>
-@property (nonatomic, weak) IBOutlet UITableView* skillsTableView;
-@property (nonatomic, weak) IBOutlet UILabel *trainingTimeLabel;
 @property (nonatomic, strong) NSString* skillPlanPath;
 @property (nonatomic, weak) SkillPlannerImportViewController* skillPlannerImportViewController;
 @property (nonatomic, strong) SkillPlan* skillPlan;

@@ -17,5 +17,4 @@
 - (id) initWithParentViewController: (UIViewController*) controller;
 
 - (IBAction) onSelect: (id) sender;
-- (void) setCharacterName:(NSString*) name;
 @end

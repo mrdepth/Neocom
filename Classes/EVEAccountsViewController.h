@@ -17,6 +17,5 @@
 
 - (IBAction) onAddAccount: (id) sender;
 - (IBAction) onLogoff: (id) sender;
-- (IBAction) onClose:(id)sender;
 @end
 

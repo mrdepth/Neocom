@@ -18,7 +18,6 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *pageSegmentControl;
 @property (strong, nonatomic) EVEDBCrtCertificate* certificate;
 
-- (IBAction) dismissModalViewController:(id) sender;
 - (IBAction) onSwitchScreens:(id)sender;
 
 @end

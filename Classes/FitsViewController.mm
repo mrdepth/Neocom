@@ -7,7 +7,6 @@
 //
 
 #import "FitsViewController.h"
-#import "MainMenuCellView.h"
 #import "GroupedCell.h"
 #import "Globals.h"
 #import "FittingViewController.h"
@@ -237,44 +236,6 @@
 		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 	return;
-}
-
-#pragma mark FittingItemsViewControllerDelegate
-
-- (void) fittingItemsViewController:(FittingItemsViewController*) controller didSelectType:(EVEDBInvType*) type {
-	EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Select" name:NSLocalizedString(@"Creating Ship Fit", nil)];
-	__weak EUOperation* weakOperation = operation;
-	__block ShipFit* fit = nil;
-	__block eufe::Character* character = NULL;
-	[operation addExecutionBlock:^{
-		character = new eufe::Character(self.engine);
-		character->setShip(type.typeID);
-
-		EVEAccount* currentAccount = [EVEAccount currentAccount];
-		if (currentAccount.characterSheet) {
-			FitCharacter* fitCharacter = [FitCharacter fitCharacterWithAccount:currentAccount];
-			character->setCharacterName([fitCharacter.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			character->setSkillLevels(*[fitCharacter skillsMap]);
-		}
-		else
-			character->setCharacterName([NSLocalizedString(@"All Skills 0", nil) UTF8String]);
-
-		weakOperation.progress = 0.5;
-		fit = [ShipFit shipFitWithFitName:type.typeName character:character];
-		weakOperation.progress = 1.0;
-	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		if (![weakOperation isCancelled]) {
-			[fit save];
-			[self.delegate fitsViewController:self didSelectFit:fit];
-		}
-		else {
-			if (!character)
-				delete character;
-		}
-	}];
-	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
 #pragma mark - Private

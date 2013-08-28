@@ -11,9 +11,6 @@
 #import "AddEVEAccountViewController.h"
 #import "EVEAccount.h"
 #import "EVEOnlineAPI.h"
-#import "EVEAccountsAPIKeyCellView.h"
-#import "EVEAccountsCharacterCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "EVEUniverseAppDelegate.h"
 #import "NSString+TimeLeft.h"
 #import "AccessMaskViewController.h"
@@ -50,10 +47,10 @@
 	[self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAddAccount:)]]];
 	
 	if ([EVEAccount currentAccount] == nil)
-		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
+		[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	else {
 		[self.navigationItem setLeftBarButtonItems:@[
-		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)],
+		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)],
 		 [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logoff", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onLogoff:)]
 		 ]];
 		self.dataSource.selectedAccounts = @[[EVEAccount currentAccount]];
@@ -84,10 +81,6 @@
 
 - (IBAction) onLogoff: (id) sender {
 	[EVEAccount setCurrentAccount:nil];
-	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction) onClose:(id)sender {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

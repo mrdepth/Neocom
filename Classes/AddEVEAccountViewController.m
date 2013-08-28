@@ -9,7 +9,6 @@
 #import "AddEVEAccountViewController.h"
 #import "Globals.h"
 #import "EVEOnlineAPI.h"
-#import "TutorialViewController.h"
 #import "PCViewController.h"
 #import "UIAlertView+Error.h"
 #import "appearance.h"
@@ -80,7 +79,7 @@
 	BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
 	//controller.delegate = self;
 	controller.startPageURL = [NSURL URLWithString:@"https://support.eveonline.com/api/Key/ActivateInstallLinks"];
-	[self presentModalViewController:controller animated:YES];
+	[self presentViewController:controller animated:YES completion:nil];
 }
 
 - (IBAction) onSafari: (id) sender {
@@ -118,16 +117,9 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
-- (IBAction) onToutorial: (id) sender {
-	TutorialViewController *controller = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
-	[self.navigationController pushViewController:controller animated:YES];
-}
-
 #pragma mark BrowserViewControllerDelegate
 
 - (void) browserViewControllerDidFinish:(BrowserViewController*) controller {
-	//[controller dismissModalViewControllerAnimated:YES];
-	//[self loadAccountFromPasteboard];
 }
 
 #pragma mark UITextFieldDelegate

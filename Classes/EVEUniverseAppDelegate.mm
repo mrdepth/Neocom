@@ -368,16 +368,6 @@
 	return _sharedQueue;
 }
 
-- (EVEAccountStorage*) sharedAccountStorage {
-	@synchronized(self) {
-		if (!_sharedAccountStorage) {
-			_sharedAccountStorage = [[EVEAccountStorage alloc] init];
-		}
-		return _sharedAccountStorage;
-	}
-}
-
-
 #pragma mark -
 #pragma mark Memory management
 

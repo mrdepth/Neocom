@@ -10,7 +10,6 @@
 //#import "AdWhirlView.h"
 #import "EUOperationQueue.h"
 #import "GADBannerView.h"
-#import "EVEAccountStorage.h"
 
 @class EVEAccount;
 @class EVESkillTree;
@@ -22,7 +21,6 @@
 @property (nonatomic, strong) EVEAccount *currentAccount;
 @property (nonatomic, getter = isInAppStatus) BOOL inAppStatus;
 @property (nonatomic, strong) EUOperationQueue *sharedQueue;
-@property (nonatomic, strong) EVEAccountStorage *sharedAccountStorage;
 
 @end
 

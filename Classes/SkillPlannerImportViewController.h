@@ -13,6 +13,4 @@
 @interface SkillPlannerImportViewController : UITableViewController<EUHTTPServerDelegate>
 @property (nonatomic, weak) id<SkillPlannerImportViewControllerDelegate> delegate;
 
-- (IBAction)onClose:(id)sender;
-
 @end

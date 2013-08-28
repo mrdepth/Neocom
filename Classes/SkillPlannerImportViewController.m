@@ -14,6 +14,9 @@
 #import "SkillPlan.h"
 #import "EVEAccount.h"
 #import "GroupedCell.h"
+#import "appearance.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
 
 @interface SkillPlannerImportViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -52,9 +55,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Import", nil);
-	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 
 	NSArray* files = [[NSFileManager defaultManager] subpathsAtPath:[Globals documentsDirectory]];
 	self.rows = [[NSMutableArray alloc] init];
@@ -83,11 +86,6 @@
 	self.server = nil;
 }
 
-- (IBAction) onClose:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -104,19 +102,26 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *cellIdentifier = @"Cell";
 	
-	/*GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (cell == nil) {
-		cell = [CharacterCellView cellWithNibName:@"CharacterCellView" bundle:nil reuseIdentifier:cellIdentifier];
-	}
+	GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	
 	if (indexPath.section == 0) {
-		cell.characterNameLabel.text = [NSString stringWithFormat:@"http://%@:8080", [self.addresses objectAtIndex:indexPath.row]];
+		cell.textLabel.text = [NSString stringWithFormat:@"http://%@:8080", [self.addresses objectAtIndex:indexPath.row]];
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	else {
-		cell.characterNameLabel.text = [[self.rows objectAtIndex:indexPath.row] stringByDeletingPathExtension];
+		cell.textLabel.text = [[self.rows objectAtIndex:indexPath.row] stringByDeletingPathExtension];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-	return cell;*/
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -128,23 +133,18 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 22)];
-	header.opaque = NO;
-	header.backgroundColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.9];
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, 22)];
-	label.opaque = NO;
-	label.backgroundColor = [UIColor clearColor];
-	label.text = title;
-	label.textColor = [UIColor whiteColor];
-	label.font = [label.font fontWithSize:12];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = CGSizeMake(1, 1);
-	[header addSubview:label];
-	return header;
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		view.collapsImageView.hidden = YES;
+		return view;
+	}
+	else
+		return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -208,7 +208,7 @@
 	}
 	else {
 		__block SkillPlan* skillPlan = nil;
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+didReceiveRequest" name:NSLocalizedString(@"Processing Request", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+didReceiveRequest" name:NSLocalizedString(@"Processing Request", nil)];
 		__weak EUOperation* weakOperation = operation;
 		[operation addExecutionBlock:^{
 			EVEAccount *account = [EVEAccount currentAccount];

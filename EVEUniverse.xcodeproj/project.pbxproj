@@ -38,8 +38,6 @@
 		1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBF216491D5D004401C5 /* killboardApiFilter.plist */; };
 		12320D54165B765500333AE7 /* AccountsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12320D52165B765500333AE7 /* AccountsSelectionViewController.m */; };
 		12320D55165B765500333AE7 /* AccountsSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */; };
-		12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12320D58165B7A2600333AE7 /* AccountsSelectionCellView.m */; };
-		12320D5B165B7A3500333AE7 /* AccountsSelectionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12320D5A165B7A3500333AE7 /* AccountsSelectionCellView.xib */; };
 		12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */; };
 		12448F121679CF7500DC90AC /* DamagePatternEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F141679CF7500DC90AC /* DamagePatternEditViewController.xib */; };
 		12448F151679CFBC00DC90AC /* FittingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F171679CFBC00DC90AC /* FittingViewController.xib */; };
@@ -73,7 +71,6 @@
 		124DFA34178E94A100ACF7A2 /* NAPISearchResultsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA36178E94A100ACF7A2 /* NAPISearchResultsViewController~ipad.xib */; };
 		124DFA37178E94BA00ACF7A2 /* NAPISearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA39178E94BA00ACF7A2 /* NAPISearchViewController.xib */; };
 		124DFA3B178E952700ACF7A2 /* BCSearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA3A178E952700ACF7A2 /* BCSearchViewController.xib */; };
-		124DFA3F178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA41178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib */; };
 		124DFA46178E989F00ACF7A2 /* FittingServiceMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */; };
 		124DFA48178E98C900ACF7A2 /* FitsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124DFA47178E98C900ACF7A2 /* FitsViewController.xib */; };
 		124DFA5C178EA88300ACF7A2 /* LUIBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 124DFA4D178EA88300ACF7A2 /* LUIBarButtonItem.m */; };
@@ -95,8 +92,6 @@
 		12582F2216B2903600445581 /* IgnoredCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F2116B2903600445581 /* IgnoredCharacter.m */; };
 		1259B4A11679C56F00EA49B5 /* CharacterInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4A31679C56F00EA49B5 /* CharacterInfoViewController.xib */; };
 		1259B4A91679C60C00EA49B5 /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4A81679C60C00EA49B5 /* LoadingViewController.xib */; };
-		1259B4AA1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4AC1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib */; };
-		1259B4B01679C67000EA49B5 /* EVEAccountsAPIKeyCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4B21679C67000EA49B5 /* EVEAccountsAPIKeyCellView.xib */; };
 		1259B4B61679C69500EA49B5 /* PCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4B81679C69500EA49B5 /* PCViewController.xib */; };
 		1259B4C51679C6DB00EA49B5 /* AddEVEAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4C71679C6DB00EA49B5 /* AddEVEAccountViewController.xib */; };
 		1259B4CB1679C6F300EA49B5 /* EVEAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4CD1679C6F300EA49B5 /* EVEAccountsViewController.xib */; };
@@ -280,13 +275,11 @@
 		12A3B9A7140E4DF500E5A00C /* AccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A3B9A5140E4DF500E5A00C /* AccessMaskViewController.m */; };
 		12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */; };
 		12A3C72A177C312F0067E00C /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A3C6ED177C299F0067E00C /* libeufe.a */; };
-		12B06EC61772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B06EC41772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m */; };
 		12B06ECA1772ECA000966669 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */; };
 		12B06ECE177309CF00966669 /* NAPISearchFitCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B06ECD177309CF00966669 /* NAPISearchFitCellView~ipad.xib */; };
 		12B3E6661405662F00FC6B5B /* NSArray+GroupBy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */; };
 		12B8CD2216BB8D6500C5104E /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 12582F1216B25A4500445581 /* SkillPlan.m */; };
 		12B8CD2516BB993000C5104E /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B8CD2416BB993000C5104E /* Fit.mm */; };
-		12BEA855140EA22C00D85E88 /* EVEAccountStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BEA854140EA22C00D85E88 /* EVEAccountStorage.m */; };
 		12BF008B140D3C4000AD9450 /* EUHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF0084140D3C3F00AD9450 /* EUHTTPConnection.m */; };
 		12BF008C140D3C4000AD9450 /* EUHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF0086140D3C3F00AD9450 /* EUHTTPRequest.m */; };
 		12BF008D140D3C4000AD9450 /* EUHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF0088140D3C3F00AD9450 /* EUHTTPResponse.m */; };
@@ -297,7 +290,6 @@
 		12C83A6B1525E3CF009665A9 /* NSString+EUHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C83A6A1525E3CF009665A9 /* NSString+EUHTTPServer.m */; };
 		12C8792317CDD04B0036F9BE /* MessageGroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C8792017CDD04B0036F9BE /* MessageGroupsDataSource.m */; };
 		12C8792417CDD04B0036F9BE /* MessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C8792217CDD04B0036F9BE /* MessagesDataSource.m */; };
-		12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C957F116AD102D00621B7C /* FittingItemsViewController.m */; };
 		12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 12CAC4EC152AF1EC003180E6 /* evemon.html */; };
 		12CB26D316563D16002E58F9 /* KillNetFilterShipClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */; };
 		12CB26D716563D85002E58F9 /* KillNetFilterRegionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB26D616563D85002E58F9 /* KillNetFilterRegionsViewController.m */; };
@@ -427,8 +419,6 @@
 		37C76DF714D0798B00EABCA7 /* CertificateCategoriesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76DF514D0798B00EABCA7 /* CertificateCategoriesViewController.xib */; };
 		37C76E0914D07EE700EABCA7 /* CertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C76E0714D07EE700EABCA7 /* CertificatesViewController.m */; };
 		37C76E0A14D07EE700EABCA7 /* CertificatesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0814D07EE700EABCA7 /* CertificatesViewController.xib */; };
-		37C76E0E14D0882400EABCA7 /* CertificateCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C76E0D14D0882400EABCA7 /* CertificateCellView.m */; };
-		37C76E1014D0883400EABCA7 /* CertificateCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */; };
 		37CFDEF114B5C61300BF148F /* cellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEED14B5C61200BF148F /* cellBackground.png */; };
 		37CFDEF214B5C61300BF148F /* cellBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEEE14B5C61200BF148F /* cellBackground@2x.png */; };
 		37CFDEF314B5C61300BF148F /* cellBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CFDEEF14B5C61300BF148F /* cellBackgroundSelected.png */; };
@@ -446,8 +436,6 @@
 		37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */; };
 		37EBCE1514D31F8A0085D1CB /* linesButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1214D31F8A0085D1CB /* linesButton.png */; };
 		37EBCE1614D31F8A0085D1CB /* linesButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37EBCE1314D31F8A0085D1CB /* linesButton@2x.png */; };
-		37FD3B4314D86589005FA724 /* SkillPlannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */; };
-		37FD3B4414D86589005FA724 /* SkillPlannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37FD3B4214D86589005FA724 /* SkillPlannerViewController.xib */; };
 		71083CB217BF93D70005BBE5 /* StructuresViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71083CB117BF93D70005BBE5 /* StructuresViewController.xib */; };
 		710852E4123125C800397BC7 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 710852E2123125C800397BC7 /* MainMenuViewController.m */; };
 		710852E81231283400397BC7 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 710852E71231283400397BC7 /* mainMenu.plist */; };
@@ -460,8 +448,6 @@
 		713BE29E1799D16D004F2A28 /* EVEAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 713BE29D1799D16D004F2A28 /* EVEAccountCell.xib */; };
 		713BE2A11799D5BA004F2A28 /* CALayer+UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BE2A01799D5BA004F2A28 /* CALayer+UIColor.m */; };
 		713BE2A51799E062004F2A28 /* EVEAccountsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 713BE2A41799E061004F2A28 /* EVEAccountsDataSource.m */; };
-		716AE97E140EC842004A5285 /* EVEAccountStorageAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */; };
-		716AE991140ECD89004A5285 /* EVEAccountStorageCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 716AE990140ECD89004A5285 /* EVEAccountStorageCharacter.m */; };
 		716ED4051688E38500E07C6B /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 716ED4041688E38500E07C6B /* Default-Portrait~ipad.png */; };
 		716ED4081688E83800E07C6B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 716ED4071688E83800E07C6B /* logo.png */; };
 		717B183012F4B1A4009DDE48 /* RSSFeedsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717B182E12F4B1A4009DDE48 /* RSSFeedsViewController.m */; };
@@ -512,26 +498,19 @@
 		717C215012F0C63400757EE5 /* level_500.gif in Resources */ = {isa = PBXBuildFile; fileRef = 717C212C12F0C63400757EE5 /* level_500.gif */; };
 		717C216012F0C89900757EE5 /* SkillCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 717C215F12F0C89900757EE5 /* SkillCellView.m */; };
 		717C216212F0C89F00757EE5 /* SkillCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717C216112F0C89F00757EE5 /* SkillCellView.xib */; };
-		717D7FA512EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 717D7FA412EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.m */; };
 		717E8A3812DE4F0A001A2ABD /* CharacterInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717E8A3612DE4F0A001A2ABD /* CharacterInfoViewController.m */; };
 		717E9DC912F5A87B00410524 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 717E9DC812F5A87B00410524 /* background.png */; };
 		717E9DD212F5AA7F00410524 /* backgroundCharacterInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = 717E9DD112F5AA7F00410524 /* backgroundCharacterInfo.png */; };
 		717F6BC712F9A32D00BEA1E5 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717F6BC512F9A32D00BEA1E5 /* ItemViewController.m */; };
-		71813C5E12F88C7E005364A6 /* ItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71813C5D12F88C7E005364A6 /* ItemCellView.m */; };
-		71813C6012F88C83005364A6 /* ItemCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71813C5F12F88C83005364A6 /* ItemCellView.xib */; };
 		71814F1D1319516A005E7B01 /* WalletTransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71814F1B1319516A005E7B01 /* WalletTransactionsViewController.m */; };
 		71814F6913195851005E7B01 /* WalletTransactionCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71814F6813195851005E7B01 /* WalletTransactionCellView.m */; };
 		718348DF12FC062400AEC222 /* MarketInfoCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 718348DE12FC062400AEC222 /* MarketInfoCellView.m */; };
-		7183498612FC215000AEC222 /* RSSCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7183498512FC215000AEC222 /* RSSCellView.m */; };
-		7183498812FC215600AEC222 /* RSSCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7183498712FC215600AEC222 /* RSSCellView.xib */; };
 		718349B712FC25B800AEC222 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B112FC25B800AEC222 /* back.png */; };
 		718349B812FC25B800AEC222 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B212FC25B800AEC222 /* back@2x.png */; };
 		718349B912FC25B800AEC222 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B312FC25B800AEC222 /* forward.png */; };
 		718349BA12FC25B800AEC222 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B412FC25B800AEC222 /* forward@2x.png */; };
 		718349BB12FC25B800AEC222 /* reload.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B512FC25B800AEC222 /* reload.png */; };
 		718349BC12FC25B800AEC222 /* reload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718349B612FC25B800AEC222 /* reload@2x.png */; };
-		718349FF12FC33C600AEC222 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718349FD12FC33C600AEC222 /* TutorialViewController.m */; };
-		71834A0012FC33C600AEC222 /* TutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 718349FE12FC33C600AEC222 /* TutorialViewController.xib */; };
 		71834A0312FC342C00AEC222 /* tutorial.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71834A0212FC342C00AEC222 /* tutorial.plist */; };
 		718364DA131A98DC003D0415 /* tutorial1.png in Resources */ = {isa = PBXBuildFile; fileRef = 718364D0131A98DC003D0415 /* tutorial1.png */; };
 		718364DB131A98DC003D0415 /* tutorial1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718364D1131A98DC003D0415 /* tutorial1@2x.png */; };
@@ -552,7 +531,6 @@
 		71853769122E840400118181 /* MarketGroupsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71853767122E840400118181 /* MarketGroupsViewController.xib */; };
 		718537FD122E90C700118181 /* ItemInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 718537FB122E90C700118181 /* ItemInfoViewController.m */; };
 		71853852122E976C00118181 /* MarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71853850122E976C00118181 /* MarketInfoViewController.m */; };
-		7185DEB012EB67F30091CB0F /* EVEAccountsCharacterCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7185DEAF12EB67F30091CB0F /* EVEAccountsCharacterCellView.m */; };
 		7187E48B124BB51600ACAD91 /* SkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7187E489124BB51600ACAD91 /* SkillsViewController.m */; };
 		7187F278137B549800EA8B86 /* drone.png in Resources */ = {isa = PBXBuildFile; fileRef = 7187F277137B549800EA8B86 /* drone.png */; };
 		718803C9137C8FD2004060CC /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 718803C6137C8FD2004060CC /* add.png */; };
@@ -599,8 +577,6 @@
 		718C695B1300918700C2A5A2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 718C695A1300918700C2A5A2 /* CoreLocation.framework */; };
 		718CBFBB12F5E6BB00CAC006 /* cellMenuBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 718CBFB912F5E6BB00CAC006 /* cellMenuBackground.png */; };
 		718CBFBC12F5E6BB00CAC006 /* cellMenuBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 718CBFBA12F5E6BB00CAC006 /* cellMenuBackgroundSelected.png */; };
-		718CBFC012F5E6DC00CAC006 /* MainMenuCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 718CBFBF12F5E6DC00CAC006 /* MainMenuCellView.m */; };
-		718CBFC212F5E71100CAC006 /* MainMenuCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 718CBFC112F5E71100CAC006 /* MainMenuCellView.xib */; };
 		718CBFF412F5EEA500CAC006 /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = 718CBFF312F5EEA500CAC006 /* rss.png */; };
 		718CC00412F5F02A00CAC006 /* cellMenuBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718CC00212F5F02A00CAC006 /* cellMenuBackground@2x.png */; };
 		718CC00512F5F02A00CAC006 /* cellMenuBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 718CC00312F5F02A00CAC006 /* cellMenuBackgroundSelected@2x.png */; };
@@ -636,7 +612,6 @@
 		71955A9D1376BE660068DBD7 /* offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A991376BE660068DBD7 /* offline.png */; };
 		71955A9E1376BE660068DBD7 /* online.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A9A1376BE660068DBD7 /* online.png */; };
 		71955A9F1376BE660068DBD7 /* overheated.png in Resources */ = {isa = PBXBuildFile; fileRef = 71955A9B1376BE660068DBD7 /* overheated.png */; };
-		71955B511376D53B0068DBD7 /* FittingItemsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */; };
 		7197DC39137F685800C3B3F4 /* thumbsDown.png in Resources */ = {isa = PBXBuildFile; fileRef = 7197DC37137F685800C3B3F4 /* thumbsDown.png */; };
 		7197DC3A137F685800C3B3F4 /* thumbsUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 7197DC38137F685800C3B3F4 /* thumbsUp.png */; };
 		7197DC3F137F687400C3B3F4 /* BCSearchResultViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7197DC3D137F687400C3B3F4 /* BCSearchResultViewController.mm */; };
@@ -876,9 +851,6 @@
 		12320D51165B765500333AE7 /* AccountsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsSelectionViewController.h; sourceTree = "<group>"; };
 		12320D52165B765500333AE7 /* AccountsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsSelectionViewController.m; sourceTree = "<group>"; };
 		12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountsSelectionViewController.xib; sourceTree = "<group>"; };
-		12320D57165B7A2600333AE7 /* AccountsSelectionCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsSelectionCellView.h; sourceTree = "<group>"; };
-		12320D58165B7A2600333AE7 /* AccountsSelectionCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsSelectionCellView.m; sourceTree = "<group>"; };
-		12320D5A165B7A3500333AE7 /* AccountsSelectionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountsSelectionCellView.xib; sourceTree = "<group>"; };
 		12448F101679CF0900DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CharacterSkillsEditorViewController.xib; sourceTree = "<group>"; };
 		12448F131679CF7500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DamagePatternEditViewController.xib; sourceTree = "<group>"; };
 		12448F161679CFBC00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FittingViewController.xib; sourceTree = "<group>"; };
@@ -916,7 +888,6 @@
 		124DFA35178E94A100ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/NAPISearchResultsViewController~ipad.xib"; sourceTree = "<group>"; };
 		124DFA38178E94BA00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NAPISearchViewController.xib; sourceTree = "<group>"; };
 		124DFA3A178E952700ACF7A2 /* BCSearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BCSearchViewController.xib; sourceTree = "<group>"; };
-		124DFA40178E96CD00ACF7A2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SkillPlannerSkillsBrowserViewController.xib; sourceTree = "<group>"; };
 		124DFA45178E989E00ACF7A2 /* FittingServiceMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FittingServiceMenuViewController.xib; sourceTree = "<group>"; };
 		124DFA47178E98C900ACF7A2 /* FitsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FitsViewController.xib; sourceTree = "<group>"; };
 		124DFA4A178EA79000ACF7A2 /* resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resources.h; sourceTree = "<group>"; };
@@ -954,8 +925,6 @@
 		12582F2116B2903600445581 /* IgnoredCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IgnoredCharacter.m; sourceTree = "<group>"; };
 		1259B4A21679C56F00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CharacterInfoViewController.xib; sourceTree = "<group>"; };
 		1259B4A81679C60C00EA49B5 /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
-		1259B4AB1679C63C00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/EVEAccountsCharacterCellView.xib; sourceTree = "<group>"; };
-		1259B4B11679C67000EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/EVEAccountsAPIKeyCellView.xib; sourceTree = "<group>"; };
 		1259B4B71679C69500EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PCViewController.xib; sourceTree = "<group>"; };
 		1259B4C61679C6DB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AddEVEAccountViewController.xib; sourceTree = "<group>"; };
 		1259B4CC1679C6F300EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/EVEAccountsViewController.xib; sourceTree = "<group>"; };
@@ -1288,8 +1257,6 @@
 		12A3B9A6140E4DF500E5A00C /* AccessMaskViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccessMaskViewController.xib; sourceTree = "<group>"; };
 		12A3C6E5177C299F0067E00C /* eufe.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = eufe.xcodeproj; path = eufe/eufe.xcodeproj; sourceTree = SOURCE_ROOT; };
 		12AFBC7516C1375D0098C5BB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		12B06EC31772E1A400966669 /* SkillPlannerSkillsBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlannerSkillsBrowserViewController.h; sourceTree = "<group>"; };
-		12B06EC41772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlannerSkillsBrowserViewController.m; sourceTree = "<group>"; };
 		12B06EC81772ECA000966669 /* NSNumberFormatter+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Neocom.h"; sourceTree = "<group>"; };
 		12B06EC91772ECA000966669 /* NSNumberFormatter+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+Neocom.m"; sourceTree = "<group>"; };
 		12B06ECD177309CF00966669 /* NAPISearchFitCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NAPISearchFitCellView~ipad.xib"; sourceTree = "<group>"; };
@@ -1297,8 +1264,6 @@
 		12B3E6651405662F00FC6B5B /* NSArray+GroupBy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+GroupBy.m"; sourceTree = "<group>"; };
 		12B8CD2316BB993000C5104E /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
 		12B8CD2416BB993000C5104E /* Fit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fit.mm; sourceTree = "<group>"; };
-		12BEA853140EA22C00D85E88 /* EVEAccountStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStorage.h; sourceTree = "<group>"; };
-		12BEA854140EA22C00D85E88 /* EVEAccountStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorage.m; sourceTree = "<group>"; };
 		12BF0083140D3C3F00AD9450 /* EUHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUHTTPConnection.h; sourceTree = "<group>"; };
 		12BF0084140D3C3F00AD9450 /* EUHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUHTTPConnection.m; sourceTree = "<group>"; };
 		12BF0085140D3C3F00AD9450 /* EUHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUHTTPRequest.h; sourceTree = "<group>"; };
@@ -1317,8 +1282,6 @@
 		12C8792017CDD04B0036F9BE /* MessageGroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageGroupsDataSource.m; sourceTree = "<group>"; };
 		12C8792117CDD04B0036F9BE /* MessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDataSource.h; sourceTree = "<group>"; };
 		12C8792217CDD04B0036F9BE /* MessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDataSource.m; sourceTree = "<group>"; };
-		12C957F016AD102D00621B7C /* FittingItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingItemsViewController.h; sourceTree = "<group>"; };
-		12C957F116AD102D00621B7C /* FittingItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingItemsViewController.m; sourceTree = "<group>"; };
 		12CAC4EC152AF1EC003180E6 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
 		12CB26D116563D16002E58F9 /* KillNetFilterShipClassesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillNetFilterShipClassesViewController.h; sourceTree = "<group>"; };
 		12CB26D216563D16002E58F9 /* KillNetFilterShipClassesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillNetFilterShipClassesViewController.m; sourceTree = "<group>"; };
@@ -1523,9 +1486,6 @@
 		37C76E0614D07EE700EABCA7 /* CertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificatesViewController.h; sourceTree = "<group>"; };
 		37C76E0714D07EE700EABCA7 /* CertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificatesViewController.m; sourceTree = "<group>"; };
 		37C76E0814D07EE700EABCA7 /* CertificatesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificatesViewController.xib; sourceTree = "<group>"; };
-		37C76E0C14D0882400EABCA7 /* CertificateCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateCellView.h; sourceTree = "<group>"; };
-		37C76E0D14D0882400EABCA7 /* CertificateCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateCellView.m; sourceTree = "<group>"; };
-		37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateCellView.xib; sourceTree = "<group>"; };
 		37CFDEED14B5C61200BF148F /* cellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackground.png; sourceTree = "<group>"; };
 		37CFDEEE14B5C61200BF148F /* cellBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellBackground@2x.png"; sourceTree = "<group>"; };
 		37CFDEEF14B5C61300BF148F /* cellBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellBackgroundSelected.png; sourceTree = "<group>"; };
@@ -1547,9 +1507,6 @@
 		37EBCE1114D31F8A0085D1CB /* graphButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "graphButton@2x.png"; sourceTree = "<group>"; };
 		37EBCE1214D31F8A0085D1CB /* linesButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linesButton.png; sourceTree = "<group>"; };
 		37EBCE1314D31F8A0085D1CB /* linesButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linesButton@2x.png"; sourceTree = "<group>"; };
-		37FD3B4014D86588005FA724 /* SkillPlannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlannerViewController.h; sourceTree = "<group>"; };
-		37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlannerViewController.m; sourceTree = "<group>"; };
-		37FD3B4214D86589005FA724 /* SkillPlannerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkillPlannerViewController.xib; sourceTree = "<group>"; };
 		71083CB117BF93D70005BBE5 /* StructuresViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StructuresViewController.xib; sourceTree = "<group>"; };
 		710852E1123125C800397BC7 /* MainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuViewController.h; sourceTree = "<group>"; };
 		710852E2123125C800397BC7 /* MainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuViewController.m; sourceTree = "<group>"; };
@@ -1570,10 +1527,6 @@
 		713BE2A01799D5BA004F2A28 /* CALayer+UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CALayer+UIColor.m"; path = "../CALayer+UIColor.m"; sourceTree = "<group>"; };
 		713BE2A31799E061004F2A28 /* EVEAccountsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountsDataSource.h; sourceTree = "<group>"; };
 		713BE2A41799E061004F2A28 /* EVEAccountsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountsDataSource.m; sourceTree = "<group>"; };
-		716AE97C140EC842004A5285 /* EVEAccountStorageAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStorageAPIKey.h; sourceTree = "<group>"; };
-		716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorageAPIKey.m; sourceTree = "<group>"; };
-		716AE98F140ECD89004A5285 /* EVEAccountStorageCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStorageCharacter.h; sourceTree = "<group>"; };
-		716AE990140ECD89004A5285 /* EVEAccountStorageCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStorageCharacter.m; sourceTree = "<group>"; };
 		716ED4041688E38500E07C6B /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		716ED4071688E83800E07C6B /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		717B182D12F4B1A4009DDE48 /* RSSFeedsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSFeedsViewController.h; sourceTree = "<group>"; };
@@ -1630,35 +1583,24 @@
 		717C215E12F0C89900757EE5 /* SkillCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillCellView.h; sourceTree = "<group>"; };
 		717C215F12F0C89900757EE5 /* SkillCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillCellView.m; sourceTree = "<group>"; };
 		717C216112F0C89F00757EE5 /* SkillCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SkillCellView.xib; sourceTree = "<group>"; };
-		717D7FA312EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountsAPIKeyCellView.h; sourceTree = "<group>"; };
-		717D7FA412EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountsAPIKeyCellView.m; sourceTree = "<group>"; };
 		717E8A3512DE4F0A001A2ABD /* CharacterInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharacterInfoViewController.h; sourceTree = "<group>"; };
 		717E8A3612DE4F0A001A2ABD /* CharacterInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharacterInfoViewController.m; sourceTree = "<group>"; };
 		717E9DC812F5A87B00410524 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		717E9DD112F5AA7F00410524 /* backgroundCharacterInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundCharacterInfo.png; sourceTree = "<group>"; };
 		717F6BC412F9A32D00BEA1E5 /* ItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewController.h; sourceTree = "<group>"; };
 		717F6BC512F9A32D00BEA1E5 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
-		71813C5C12F88C7E005364A6 /* ItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemCellView.h; sourceTree = "<group>"; };
-		71813C5D12F88C7E005364A6 /* ItemCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemCellView.m; sourceTree = "<group>"; };
-		71813C5F12F88C83005364A6 /* ItemCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCellView.xib; sourceTree = "<group>"; };
 		71814F1A1319516A005E7B01 /* WalletTransactionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletTransactionsViewController.h; sourceTree = "<group>"; };
 		71814F1B1319516A005E7B01 /* WalletTransactionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletTransactionsViewController.m; sourceTree = "<group>"; };
 		71814F6713195851005E7B01 /* WalletTransactionCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletTransactionCellView.h; sourceTree = "<group>"; };
 		71814F6813195851005E7B01 /* WalletTransactionCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletTransactionCellView.m; sourceTree = "<group>"; };
 		718348DD12FC062400AEC222 /* MarketInfoCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarketInfoCellView.h; sourceTree = "<group>"; };
 		718348DE12FC062400AEC222 /* MarketInfoCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarketInfoCellView.m; sourceTree = "<group>"; };
-		7183498412FC215000AEC222 /* RSSCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSCellView.h; sourceTree = "<group>"; };
-		7183498512FC215000AEC222 /* RSSCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSCellView.m; sourceTree = "<group>"; };
-		7183498712FC215600AEC222 /* RSSCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RSSCellView.xib; sourceTree = "<group>"; };
 		718349B112FC25B800AEC222 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		718349B212FC25B800AEC222 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		718349B312FC25B800AEC222 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
 		718349B412FC25B800AEC222 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
 		718349B512FC25B800AEC222 /* reload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload.png; sourceTree = "<group>"; };
 		718349B612FC25B800AEC222 /* reload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload@2x.png"; sourceTree = "<group>"; };
-		718349FC12FC33C600AEC222 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
-		718349FD12FC33C600AEC222 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
-		718349FE12FC33C600AEC222 /* TutorialViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TutorialViewController.xib; sourceTree = "<group>"; };
 		71834A0212FC342C00AEC222 /* tutorial.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tutorial.plist; sourceTree = "<group>"; };
 		718364D0131A98DC003D0415 /* tutorial1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial1.png; sourceTree = "<group>"; };
 		718364D1131A98DC003D0415 /* tutorial1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tutorial1@2x.png"; sourceTree = "<group>"; };
@@ -1684,8 +1626,6 @@
 		718537FB122E90C700118181 /* ItemInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemInfoViewController.m; sourceTree = "<group>"; };
 		7185384F122E976C00118181 /* MarketInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarketInfoViewController.h; sourceTree = "<group>"; };
 		71853850122E976C00118181 /* MarketInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarketInfoViewController.m; sourceTree = "<group>"; };
-		7185DEAE12EB67F30091CB0F /* EVEAccountsCharacterCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountsCharacterCellView.h; sourceTree = "<group>"; };
-		7185DEAF12EB67F30091CB0F /* EVEAccountsCharacterCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountsCharacterCellView.m; sourceTree = "<group>"; };
 		7187E488124BB51600ACAD91 /* SkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillsViewController.h; sourceTree = "<group>"; };
 		7187E489124BB51600ACAD91 /* SkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillsViewController.m; sourceTree = "<group>"; };
 		7187F277137B549800EA8B86 /* drone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drone.png; sourceTree = "<group>"; };
@@ -1742,9 +1682,6 @@
 		718C695A1300918700C2A5A2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = iphoneos4.3/System/Library/Frameworks/CoreLocation.framework; sourceTree = "<group>"; };
 		718CBFB912F5E6BB00CAC006 /* cellMenuBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellMenuBackground.png; sourceTree = "<group>"; };
 		718CBFBA12F5E6BB00CAC006 /* cellMenuBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellMenuBackgroundSelected.png; sourceTree = "<group>"; };
-		718CBFBE12F5E6DC00CAC006 /* MainMenuCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuCellView.h; sourceTree = "<group>"; };
-		718CBFBF12F5E6DC00CAC006 /* MainMenuCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuCellView.m; sourceTree = "<group>"; };
-		718CBFC112F5E71100CAC006 /* MainMenuCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenuCellView.xib; sourceTree = "<group>"; };
 		718CBFF312F5EEA500CAC006 /* rss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rss.png; sourceTree = "<group>"; };
 		718CC00212F5F02A00CAC006 /* cellMenuBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellMenuBackground@2x.png"; sourceTree = "<group>"; };
 		718CC00312F5F02A00CAC006 /* cellMenuBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellMenuBackgroundSelected@2x.png"; sourceTree = "<group>"; };
@@ -1759,7 +1696,6 @@
 		718CC24C12F6344A00CAC006 /* cellSkillHeader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellSkillHeader@2x.png"; sourceTree = "<group>"; };
 		718DCF3213574DEB007DE67F /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonPlay.png; sourceTree = "<group>"; };
 		718DCF3313574DEB007DE67F /* buttonPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonPlay@2x.png"; sourceTree = "<group>"; };
-		718E1BF213778BA4006D3765 /* FittingItemsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingItemsViewControllerDelegate.h; sourceTree = "<group>"; };
 		718EDB7E137863A900ACAFF4 /* launchers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = launchers.png; sourceTree = "<group>"; };
 		718EDB7F137863A900ACAFF4 /* turrets.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = turrets.png; sourceTree = "<group>"; };
 		718FAA8F137A143C00705623 /* armorRepairer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = armorRepairer.png; sourceTree = "<group>"; };
@@ -1784,7 +1720,6 @@
 		71955A991376BE660068DBD7 /* offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = offline.png; sourceTree = "<group>"; };
 		71955A9A1376BE660068DBD7 /* online.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = online.png; sourceTree = "<group>"; };
 		71955A9B1376BE660068DBD7 /* overheated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overheated.png; sourceTree = "<group>"; };
-		71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FittingItemsViewController.xib; sourceTree = "<group>"; };
 		7197DC37137F685800C3B3F4 /* thumbsDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbsDown.png; sourceTree = "<group>"; };
 		7197DC38137F685800C3B3F4 /* thumbsUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbsUp.png; sourceTree = "<group>"; };
 		7197DC3C137F687400C3B3F4 /* BCSearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCSearchResultViewController.h; sourceTree = "<group>"; };
@@ -2052,7 +1987,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				71B8D33E17A97E44008450CC /* ToDelete */,
 				12A3C6E5177C299F0067E00C /* eufe.xcodeproj */,
 				718DD66213F9AC8800FFDFEB /* 3rd Party */,
 				120B466B164B9995000C33CE /* tools */,
@@ -2280,22 +2214,11 @@
 		12320D4C165B75F300333AE7 /* AccountsSelectionViewController */ = {
 			isa = PBXGroup;
 			children = (
-				12320D56165B7A1000333AE7 /* AccountsSelectionCellView */,
 				12320D51165B765500333AE7 /* AccountsSelectionViewController.h */,
 				12320D52165B765500333AE7 /* AccountsSelectionViewController.m */,
 				12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */,
 			);
 			name = AccountsSelectionViewController;
-			sourceTree = "<group>";
-		};
-		12320D56165B7A1000333AE7 /* AccountsSelectionCellView */ = {
-			isa = PBXGroup;
-			children = (
-				12320D57165B7A2600333AE7 /* AccountsSelectionCellView.h */,
-				12320D58165B7A2600333AE7 /* AccountsSelectionCellView.m */,
-				12320D5A165B7A3500333AE7 /* AccountsSelectionCellView.xib */,
-			);
-			name = AccountsSelectionCellView;
 			sourceTree = "<group>";
 		};
 		1248696F17717D2C0025C647 /* NAPIValuesViewController */ = {
@@ -2931,29 +2854,6 @@
 				12A3C6ED177C299F0067E00C /* libeufe.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		12B06EC21772E18300966669 /* SkillPlannerSkillsBrowserViewController */ = {
-			isa = PBXGroup;
-			children = (
-				12B06EC31772E1A400966669 /* SkillPlannerSkillsBrowserViewController.h */,
-				12B06EC41772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m */,
-				124DFA41178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib */,
-			);
-			name = SkillPlannerSkillsBrowserViewController;
-			sourceTree = "<group>";
-		};
-		12BEA849140EA0D600D85E88 /* EVEAccountStorage */ = {
-			isa = PBXGroup;
-			children = (
-				12BEA853140EA22C00D85E88 /* EVEAccountStorage.h */,
-				12BEA854140EA22C00D85E88 /* EVEAccountStorage.m */,
-				716AE97C140EC842004A5285 /* EVEAccountStorageAPIKey.h */,
-				716AE97D140EC842004A5285 /* EVEAccountStorageAPIKey.m */,
-				716AE98F140ECD89004A5285 /* EVEAccountStorageCharacter.h */,
-				716AE990140ECD89004A5285 /* EVEAccountStorageCharacter.m */,
-			);
-			name = EVEAccountStorage;
 			sourceTree = "<group>";
 		};
 		12BF0082140D3C3F00AD9450 /* EUHTTPServer */ = {
@@ -3613,16 +3513,6 @@
 			name = CertificatesViewController;
 			sourceTree = "<group>";
 		};
-		37C76E0B14D0880B00EABCA7 /* CertificateCellView */ = {
-			isa = PBXGroup;
-			children = (
-				37C76E0C14D0882400EABCA7 /* CertificateCellView.h */,
-				37C76E0D14D0882400EABCA7 /* CertificateCellView.m */,
-				37C76E0F14D0883400EABCA7 /* CertificateCellView.xib */,
-			);
-			name = CertificateCellView;
-			sourceTree = "<group>";
-		};
 		37DDFD8F14A202E100BCDEBB /* CharactersViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3652,17 +3542,6 @@
 				37DF48C7151C8DBC00BC87A5 /* PriceManager.m */,
 			);
 			name = PriceManager;
-			sourceTree = "<group>";
-		};
-		37FD3AA514D84080005FA724 /* SkillPlanner */ = {
-			isa = PBXGroup;
-			children = (
-				12B06EC21772E18300966669 /* SkillPlannerSkillsBrowserViewController */,
-				37FD3B4014D86588005FA724 /* SkillPlannerViewController.h */,
-				37FD3B4114D86588005FA724 /* SkillPlannerViewController.m */,
-				37FD3B4214D86589005FA724 /* SkillPlannerViewController.xib */,
-			);
-			name = SkillPlanner;
 			sourceTree = "<group>";
 		};
 		710852E0123125B500397BC7 /* MainMenuViewController */ = {
@@ -3839,16 +3718,6 @@
 			name = SkillCellView;
 			sourceTree = "<group>";
 		};
-		717D7FA212EAF64900C315A4 /* EVEAccountsAPIKeyCellView */ = {
-			isa = PBXGroup;
-			children = (
-				717D7FA312EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.h */,
-				717D7FA412EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.m */,
-				1259B4B21679C67000EA49B5 /* EVEAccountsAPIKeyCellView.xib */,
-			);
-			name = EVEAccountsAPIKeyCellView;
-			sourceTree = "<group>";
-		};
 		717E8A3412DE4EF3001A2ABD /* CharacterInfoViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3974,16 +3843,6 @@
 			path = Graphics;
 			sourceTree = "<group>";
 		};
-		71813C5B12F88C6E005364A6 /* ItemCellView */ = {
-			isa = PBXGroup;
-			children = (
-				71813C5C12F88C7E005364A6 /* ItemCellView.h */,
-				71813C5D12F88C7E005364A6 /* ItemCellView.m */,
-				71813C5F12F88C83005364A6 /* ItemCellView.xib */,
-			);
-			name = ItemCellView;
-			sourceTree = "<group>";
-		};
 		71814F1413195157005E7B01 /* WalletTransactionsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4016,26 +3875,6 @@
 				124DFA30178E93CD00ACF7A2 /* MarketInfoCellView.xib */,
 			);
 			name = MarketInfoCellView;
-			sourceTree = "<group>";
-		};
-		7183498312FC214300AEC222 /* RSSCellView */ = {
-			isa = PBXGroup;
-			children = (
-				7183498412FC215000AEC222 /* RSSCellView.h */,
-				7183498512FC215000AEC222 /* RSSCellView.m */,
-				7183498712FC215600AEC222 /* RSSCellView.xib */,
-			);
-			name = RSSCellView;
-			sourceTree = "<group>";
-		};
-		718349FB12FC33B900AEC222 /* TutorialViewController */ = {
-			isa = PBXGroup;
-			children = (
-				718349FC12FC33C600AEC222 /* TutorialViewController.h */,
-				718349FD12FC33C600AEC222 /* TutorialViewController.m */,
-				718349FE12FC33C600AEC222 /* TutorialViewController.xib */,
-			);
-			name = TutorialViewController;
 			sourceTree = "<group>";
 		};
 		718364CF131A98DC003D0415 /* Tutorial */ = {
@@ -4155,16 +3994,6 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
-		7185DEAB12EB67DA0091CB0F /* EVEAccountsCharacterCellView */ = {
-			isa = PBXGroup;
-			children = (
-				7185DEAE12EB67F30091CB0F /* EVEAccountsCharacterCellView.h */,
-				7185DEAF12EB67F30091CB0F /* EVEAccountsCharacterCellView.m */,
-				1259B4AC1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib */,
-			);
-			name = EVEAccountsCharacterCellView;
-			sourceTree = "<group>";
-		};
 		7187E487124BB4FC00ACAD91 /* SkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4197,8 +4026,6 @@
 				713BE2A21799E02D004F2A28 /* EVEAccountsDataSource */,
 				713BE2991799D143004F2A28 /* EVEAccountCell */,
 				71D2772A179C34F600C69353 /* EVEAPIKeyCell */,
-				7185DEAB12EB67DA0091CB0F /* EVEAccountsCharacterCellView */,
-				717D7FA212EAF64900C315A4 /* EVEAccountsAPIKeyCellView */,
 				718B885D122FC46900622C04 /* AddEVEAccountViewController */,
 				71DE00EA179D7A7100F49339 /* EVEAPIKeysViewController */,
 				718B8832122FC2BC00622C04 /* EVEAccountsViewController.h */,
@@ -4211,7 +4038,6 @@
 		718B885D122FC46900622C04 /* AddEVEAccountViewController */ = {
 			isa = PBXGroup;
 			children = (
-				718349FB12FC33B900AEC222 /* TutorialViewController */,
 				718B8864122FC61F00622C04 /* BrowserViewController */,
 				12BF01A0140D417B00AD9450 /* PCViewController */,
 				718B885E122FC49300622C04 /* AddEVEAccountViewController.h */,
@@ -4307,16 +4133,6 @@
 				718CBFBA12F5E6BB00CAC006 /* cellMenuBackgroundSelected.png */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		718CBFBD12F5E6D000CAC006 /* MainMenuCellView */ = {
-			isa = PBXGroup;
-			children = (
-				718CBFBE12F5E6DC00CAC006 /* MainMenuCellView.h */,
-				718CBFBF12F5E6DC00CAC006 /* MainMenuCellView.m */,
-				718CBFC112F5E71100CAC006 /* MainMenuCellView.xib */,
-			);
-			name = MainMenuCellView;
 			sourceTree = "<group>";
 		};
 		718CC01B12F5F98A00CAC006 /* Buttons */ = {
@@ -4447,17 +4263,6 @@
 				71955A681376B5390068DBD7 /* powerGrid.png */,
 			);
 			path = FittingIcons;
-			sourceTree = "<group>";
-		};
-		71955B451376D4BD0068DBD7 /* FittingItemsViewController */ = {
-			isa = PBXGroup;
-			children = (
-				12C957F016AD102D00621B7C /* FittingItemsViewController.h */,
-				12C957F116AD102D00621B7C /* FittingItemsViewController.m */,
-				71955B4F1376D53B0068DBD7 /* FittingItemsViewController.xib */,
-				718E1BF213778BA4006D3765 /* FittingItemsViewControllerDelegate.h */,
-			);
-			name = FittingItemsViewController;
 			sourceTree = "<group>";
 		};
 		7197DC3B137F686400C3B3F4 /* BCSearchResultViewController */ = {
@@ -4823,20 +4628,6 @@
 			name = Database;
 			sourceTree = "<group>";
 		};
-		71B8D33E17A97E44008450CC /* ToDelete */ = {
-			isa = PBXGroup;
-			children = (
-				7183498312FC214300AEC222 /* RSSCellView */,
-				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
-				12BEA849140EA0D600D85E88 /* EVEAccountStorage */,
-				718CBFBD12F5E6D000CAC006 /* MainMenuCellView */,
-				71813C5B12F88C6E005364A6 /* ItemCellView */,
-				37FD3AA514D84080005FA724 /* SkillPlanner */,
-				37C76E0B14D0880B00EABCA7 /* CertificateCellView */,
-			);
-			name = ToDelete;
-			sourceTree = "<group>";
-		};
 		71B8D33F17A97E83008450CC /* About */ = {
 			isa = PBXGroup;
 			children = (
@@ -5156,8 +4947,6 @@
 				710852E81231283400397BC7 /* mainMenu.plist in Resources */,
 				1259B4EC1679C81500EA49B5 /* SkillsViewController.xib in Resources */,
 				1259B4A11679C56F00EA49B5 /* CharacterInfoViewController.xib in Resources */,
-				1259B4B01679C67000EA49B5 /* EVEAccountsAPIKeyCellView.xib in Resources */,
-				1259B4AA1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib in Resources */,
 				71A93E1112ECCCF6007A4285 /* skillRequirementsMap.plist in Resources */,
 				717C212D12F0C63400757EE5 /* level_000.gif in Resources */,
 				717C212E12F0C63400757EE5 /* level_010.gif in Resources */,
@@ -5205,7 +4994,6 @@
 				717E9DD212F5AA7F00410524 /* backgroundCharacterInfo.png in Resources */,
 				718CBFBB12F5E6BB00CAC006 /* cellMenuBackground.png in Resources */,
 				718CBFBC12F5E6BB00CAC006 /* cellMenuBackgroundSelected.png in Resources */,
-				718CBFC212F5E71100CAC006 /* MainMenuCellView.xib in Resources */,
 				718CBFF412F5EEA500CAC006 /* rss.png in Resources */,
 				718CC00412F5F02A00CAC006 /* cellMenuBackground@2x.png in Resources */,
 				718CC00512F5F02A00CAC006 /* cellMenuBackgroundSelected@2x.png in Resources */,
@@ -5218,17 +5006,14 @@
 				718CC06D12F6066500CAC006 /* cellAccountSeparator@2x.png in Resources */,
 				718CC24D12F6344A00CAC006 /* cellSkillHeader.png in Resources */,
 				718CC24E12F6344A00CAC006 /* cellSkillHeader@2x.png in Resources */,
-				71813C6012F88C83005364A6 /* ItemCellView.xib in Resources */,
 				1259B4E61679C7DB00EA49B5 /* ItemViewController.xib in Resources */,
 				124DFA2E178E93CD00ACF7A2 /* MarketInfoCellView.xib in Resources */,
-				7183498812FC215600AEC222 /* RSSCellView.xib in Resources */,
 				718349B712FC25B800AEC222 /* back.png in Resources */,
 				718349B812FC25B800AEC222 /* back@2x.png in Resources */,
 				718349B912FC25B800AEC222 /* forward.png in Resources */,
 				718349BA12FC25B800AEC222 /* forward@2x.png in Resources */,
 				718349BB12FC25B800AEC222 /* reload.png in Resources */,
 				718349BC12FC25B800AEC222 /* reload@2x.png in Resources */,
-				71834A0012FC33C600AEC222 /* TutorialViewController.xib in Resources */,
 				71834A0312FC342C00AEC222 /* tutorial.plist in Resources */,
 				1259B4F81679C8E700EA49B5 /* AboutViewController.xib in Resources */,
 				718C4A72130062A600C2A5A2 /* icon.png in Resources */,
@@ -5267,7 +5052,6 @@
 				71955A9D1376BE660068DBD7 /* offline.png in Resources */,
 				71955A9E1376BE660068DBD7 /* online.png in Resources */,
 				71955A9F1376BE660068DBD7 /* overheated.png in Resources */,
-				71955B511376D53B0068DBD7 /* FittingItemsViewController.xib in Resources */,
 				718EDB80137863A900ACAFF4 /* launchers.png in Resources */,
 				718EDB81137863A900ACAFF4 /* turrets.png in Resources */,
 				71A0E82C1379C70300CE4062 /* armor.png in Resources */,
@@ -5367,12 +5151,10 @@
 				37C76DD214D034C200EABCA7 /* certificateMaskBordered@2x.png in Resources */,
 				37C76DF714D0798B00EABCA7 /* CertificateCategoriesViewController.xib in Resources */,
 				37C76E0A14D07EE700EABCA7 /* CertificatesViewController.xib in Resources */,
-				37C76E1014D0883400EABCA7 /* CertificateCellView.xib in Resources */,
 				37EBCDBA14D30FB00085D1CB /* graphButton.png in Resources */,
 				37EBCE1414D31F8A0085D1CB /* graphButton@2x.png in Resources */,
 				37EBCE1514D31F8A0085D1CB /* linesButton.png in Resources */,
 				37EBCE1614D31F8A0085D1CB /* linesButton@2x.png in Resources */,
-				37FD3B4414D86589005FA724 /* SkillPlannerViewController.xib in Resources */,
 				37B965B314D98224003F3900 /* DamagePatternsViewController.xib in Resources */,
 				37B965BA14D98545003F3900 /* DamagePatternCellView.xib in Resources */,
 				12448F121679CF7500DC90AC /* DamagePatternEditViewController.xib in Resources */,
@@ -5433,7 +5215,6 @@
 				12448F3F1679D11600DC90AC /* WalletJournalCellViewCompact~ipad.xib in Resources */,
 				1259B5011679C90000EA49B5 /* WalletTransactionCellViewCompact~ipad.xib in Resources */,
 				12320D55165B765500333AE7 /* AccountsSelectionViewController.xib in Resources */,
-				12320D5B165B7A3500333AE7 /* AccountsSelectionCellView.xib in Resources */,
 				12F17D45167066CB0070B97C /* Default-568h@2x.png in Resources */,
 				12F17D46167066CB0070B97C /* icon72x72@2x.png in Resources */,
 				12F17D7316707BCC0070B97C /* README.txt in Resources */,
@@ -5448,7 +5229,6 @@
 				124869A317718C240025C647 /* NAPIValuesViewController.xib in Resources */,
 				124DFA31178E949B00ACF7A2 /* NAPISearchResultsViewController.xib in Resources */,
 				12486BC41771BBCF0025C647 /* NAPISearchFitCellView.xib in Resources */,
-				124DFA3F178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib in Resources */,
 				124DFA34178E94A100ACF7A2 /* NAPISearchResultsViewController~ipad.xib in Resources */,
 				12B06ECE177309CF00966669 /* NAPISearchFitCellView~ipad.xib in Resources */,
 				128A636C1782AD4E00229BB0 /* background@2x.png in Resources */,
@@ -5563,8 +5343,6 @@
 				7108533B1231317400397BC7 /* SelectCharacterBarButtonItem.m in Sources */,
 				7187E48B124BB51600ACAD91 /* SkillsViewController.m in Sources */,
 				717E8A3812DE4F0A001A2ABD /* CharacterInfoViewController.m in Sources */,
-				717D7FA512EAF66A00C315A4 /* EVEAccountsAPIKeyCellView.m in Sources */,
-				7185DEB012EB67F30091CB0F /* EVEAccountsCharacterCellView.m in Sources */,
 				7184F75312EC58C2000C7769 /* LoadingViewController.m in Sources */,
 				71A93D4112ECA1A1007A4285 /* SkillTree.m in Sources */,
 				717C20D812F0C26200757EE5 /* UIImageView+GIF.m in Sources */,
@@ -5573,12 +5351,8 @@
 				717B184712F4B523009DDE48 /* RSSFeedViewController.m in Sources */,
 				717B184C12F4B53F009DDE48 /* RSSFeedCellView.m in Sources */,
 				717B190312F4C353009DDE48 /* RSSViewController.m in Sources */,
-				718CBFC012F5E6DC00CAC006 /* MainMenuCellView.m in Sources */,
-				71813C5E12F88C7E005364A6 /* ItemCellView.m in Sources */,
 				717F6BC712F9A32D00BEA1E5 /* ItemViewController.m in Sources */,
 				718348DF12FC062400AEC222 /* MarketInfoCellView.m in Sources */,
-				7183498612FC215000AEC222 /* RSSCellView.m in Sources */,
-				718349FF12FC33C600AEC222 /* TutorialViewController.m in Sources */,
 				718C49AE13004D7800C2A5A2 /* AboutViewController.m in Sources */,
 				7191CBD21316CDC4008D90EF /* TrainingQueue.m in Sources */,
 				71814F1D1319516A005E7B01 /* WalletTransactionsViewController.m in Sources */,
@@ -5610,9 +5384,6 @@
 				12BF01A4140D418B00AD9450 /* PCViewController.m in Sources */,
 				71A16E35140D754A00BD69F5 /* UIDevice+IP.m in Sources */,
 				12A3B9A7140E4DF500E5A00C /* AccessMaskViewController.m in Sources */,
-				12BEA855140EA22C00D85E88 /* EVEAccountStorage.m in Sources */,
-				716AE97E140EC842004A5285 /* EVEAccountStorageAPIKey.m in Sources */,
-				716AE991140ECD89004A5285 /* EVEAccountStorageCharacter.m in Sources */,
 				71CBDBEC14102A9D003A50CE /* ContractsViewController.m in Sources */,
 				71CBDC1B14103629003A50CE /* ContractCellView.m in Sources */,
 				71CBDC8314103E5A003A50CE /* ContractViewController.m in Sources */,
@@ -5638,8 +5409,6 @@
 				37C76DED14D06E1700EABCA7 /* EVEDBInvType+TrainingQueue.m in Sources */,
 				37C76DF614D0798B00EABCA7 /* CertificateCategoriesViewController.m in Sources */,
 				37C76E0914D07EE700EABCA7 /* CertificatesViewController.m in Sources */,
-				37C76E0E14D0882400EABCA7 /* CertificateCellView.m in Sources */,
-				37FD3B4314D86589005FA724 /* SkillPlannerViewController.m in Sources */,
 				37B965B214D98224003F3900 /* DamagePatternsViewController.m in Sources */,
 				37B965B814D98532003F3900 /* DamagePatternCellView.m in Sources */,
 				37B965BE14D98EEF003F3900 /* DamagePattern.m in Sources */,
@@ -5699,8 +5468,6 @@
 				12CB26D716563D85002E58F9 /* KillNetFilterRegionsViewController.m in Sources */,
 				12CB26DB16563D9F002E58F9 /* KillNetFilterSolarSystemsViewController.m in Sources */,
 				12320D54165B765500333AE7 /* AccountsSelectionViewController.m in Sources */,
-				12320D59165B7A2600333AE7 /* AccountsSelectionCellView.m in Sources */,
-				12C957F216AD102D00621B7C /* FittingItemsViewController.m in Sources */,
 				12582F0A16B251C300445581 /* EUStorage.m in Sources */,
 				12582F0F16B2537000445581 /* EUStorage.xcdatamodeld in Sources */,
 				12582F1F16B25BF400445581 /* APIKey.m in Sources */,
@@ -5848,7 +5615,6 @@
 				124869A217718C240025C647 /* NAPIValuesViewController.m in Sources */,
 				12486BBD1771B8B60025C647 /* NAPISearchResultsViewController.mm in Sources */,
 				12486BC21771BBBC0025C647 /* NAPISearchFitCellView.m in Sources */,
-				12B06EC61772E1A400966669 /* SkillPlannerSkillsBrowserViewController.m in Sources */,
 				12B06ECA1772ECA000966669 /* NSNumberFormatter+Neocom.m in Sources */,
 				128A637A1782ADCA00229BB0 /* NSBundle+Retina4.m in Sources */,
 				128A637B1782ADCA00229BB0 /* UIImage+Retina4.m in Sources */,
@@ -6133,14 +5899,6 @@
 			name = NAPISearchViewController.xib;
 			sourceTree = "<group>";
 		};
-		124DFA41178E96CD00ACF7A2 /* SkillPlannerSkillsBrowserViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				124DFA40178E96CD00ACF7A2 /* en */,
-			);
-			name = SkillPlannerSkillsBrowserViewController.xib;
-			sourceTree = "<group>";
-		};
 		124DFA64178EA8AB00ACF7A2 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6163,22 +5921,6 @@
 				1259B4A21679C56F00EA49B5 /* en */,
 			);
 			name = CharacterInfoViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B4AC1679C63C00EA49B5 /* EVEAccountsCharacterCellView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B4AB1679C63C00EA49B5 /* en */,
-			);
-			name = EVEAccountsCharacterCellView.xib;
-			sourceTree = "<group>";
-		};
-		1259B4B21679C67000EA49B5 /* EVEAccountsAPIKeyCellView.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B4B11679C67000EA49B5 /* en */,
-			);
-			name = EVEAccountsAPIKeyCellView.xib;
 			sourceTree = "<group>";
 		};
 		1259B4B81679C69500EA49B5 /* PCViewController.xib */ = {

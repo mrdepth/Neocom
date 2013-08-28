@@ -144,7 +144,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];

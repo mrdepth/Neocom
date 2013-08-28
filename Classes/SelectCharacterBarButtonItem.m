@@ -26,7 +26,6 @@
 - (id) initWithParentViewController: (UIViewController*) controller {
 	//if (self = [super initWithTitle:NSLocalizedString(@"Select Character", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
 	if (self = [super initWithImage:[UIImage imageNamed:@"account.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(onSelect:)]) {
-		EVEAccount *account = [EVEAccount currentAccount];
 		self.parentViewController = controller;
 	}
 	return self;
@@ -40,7 +39,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-	[self.parentViewController presentModalViewController:navigationController animated:YES];
+	[self.parentViewController presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

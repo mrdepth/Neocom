@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FittingItemsViewController.h"
 #import "FitsViewControllerDelegate.h"
 #include "eufe.h"
 

@@ -11,6 +11,7 @@
 #import "UIDevice+IP.h"
 #import "Globals.h"
 #import "appearance.h"
+#import "EVEAccountsManager.h"
 
 @interface PCViewController()
 @property (nonatomic, strong) EUHTTPServer *server;
@@ -29,19 +30,8 @@
 	[self.view setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
 	self.title = NSLocalizedString(@"Add API Key", nil);
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"PCViewController+viewDidLoad" name:NSLocalizedString(@"Loading Accounts", nil)];
-	[operation addExecutionBlock:^{
-		@autoreleasepool {
-			[[EVEAccountStorage sharedAccountStorage] reload];
-		}
-	}];
-	
-	[operation setCompletionBlockInMainThread:^(void) {
-		self.server = [[EUHTTPServer alloc] initWithDelegate:self];
-		[self.server run];
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
+	self.server = [[EUHTTPServer alloc] initWithDelegate:self];
+	[self.server run];
 	
 	[self updateAddress];
 }
@@ -117,7 +107,7 @@
 			NSInteger keyID = [[arguments valueForKey:@"keyID"] integerValue];
 			NSString* vCode = [arguments valueForKey:@"vCode"];
 			
-			[[EVEAccountStorage sharedAccountStorage] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+			[[EVEAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 			if (error) {
 				[page replaceOccurrencesOfString:@"{error}" withString:[NSString stringWithFormat:@"Error: %@", [error localizedDescription]] options:0 range:NSMakeRange(0, page.length)];
 				[page replaceOccurrencesOfString:@"{keyID}" withString:[arguments valueForKey:@"keyID"] options:0 range:NSMakeRange(0, page.length)];

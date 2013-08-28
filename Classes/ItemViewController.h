@@ -25,6 +25,5 @@ typedef enum {
 @property (nonatomic, strong) IBOutlet UISegmentedControl *pageSegmentControl;
 
 - (IBAction) onChangePage:(id) sender;
-- (IBAction) dismissModalViewController:(id) sender;
 
 @end

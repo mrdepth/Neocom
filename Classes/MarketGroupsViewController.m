@@ -9,10 +9,9 @@
 #import "MarketGroupsViewController.h"
 #import "ItemInfoViewController.h"
 #import "ItemViewController.h"
-#import "ItemCellView.h"
-#import "UITableViewCell+Nib.h"
 #import "Globals.h"
 #import "CollapsableTableHeaderView.h"
+#import "GroupedCell.h"
 #import "UIView+Nib.h"
 #import "appearance.h"
 
@@ -161,7 +160,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
+			[self presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
@@ -174,7 +173,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
+			[self presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];

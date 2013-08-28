@@ -10,7 +10,6 @@
 #import "SelectCharacterBarButtonItem.h"
 #import "Globals.h"
 #import "EVEAccount.h"
-#import "FittingItemsViewController.h"
 #import "POSFit.h"
 #import "ItemInfo.h"
 #import "DamagePattern.h"

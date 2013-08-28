@@ -49,7 +49,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		if ([[self.navigationController viewControllers] objectAtIndex:0] == self)
-			[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismissModalViewController:)]];
+			[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	}
 
 	self.title = self.certificate.certificateClass.className;
@@ -75,10 +75,6 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-}
-
-- (IBAction) dismissModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction) onSwitchScreens:(id)sender {

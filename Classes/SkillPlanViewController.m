@@ -17,9 +17,11 @@
 #import "UIImageView+GIF.h"
 #import "NSString+TimeLeft.h"
 #import "ItemViewController.h"
-#import "ItemCellView.h"
 #import "Globals.h"
 #import "SkillPlannerImportViewController.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "appearance.h"
 
 #define ActionButtonLevel1 NSLocalizedString(@"Train to Level 1", nil)
 #define ActionButtonLevel2 NSLocalizedString(@"Train to Level 2", nil)
@@ -29,7 +31,7 @@
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 
 @interface SkillPlanViewController()
-
+@property (nonatomic, strong) NSString* headerTitle;
 - (void) loadData;
 
 @end
@@ -58,10 +60,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.skillPlan.name;
-	self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
-
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Import", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onImport:)];
 	//self.navigationItem.rightBarButtonItem.enabled = NO;
 //	[self loadData];
@@ -72,14 +72,6 @@
 		return YES;
 	else
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-	[self setTrainingTimeLabel:nil];
-	self.skillsTableView = nil;
-	self.skillPlan = nil;
 }
 
 - (IBAction)onImport:(id)sender {
@@ -133,12 +125,39 @@
 	cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), skill.requiredLevel];
 	NSTimeInterval trainingTime = (skill.requiredSP - skill.currentSP) / [self.skillPlan.characterAttributes skillpointsPerSecondForSkill:skill];
 	cell.remainingLabel.text = [NSString stringWithTimeLeft:trainingTime];
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	
 	return cell;
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	return self.headerTitle;
 }
 
 #pragma mark -
 #pragma mark Table view delegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		view.collapsImageView.hidden = YES;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -155,10 +174,10 @@
 - (void) alertView:(UIAlertView *)aAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
 		[self.skillPlannerImportViewController.delegate skillPlannerImportViewController:self.skillPlannerImportViewController didSelectSkillPlan:self.skillPlan];
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 	else if (buttonIndex == 2) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Merge" name:NSLocalizedString(@"Merging Skill Plans", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Merge" name:NSLocalizedString(@"Merging Skill Plans", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block SkillPlan* skillPlanTmp = nil;
 		[operation addExecutionBlock:^(void) {
@@ -181,7 +200,7 @@
 		[operation setCompletionBlockInMainThread:^(void) {
 			if (![weakOperation isCancelled]) {
 				[self.skillPlannerImportViewController.delegate skillPlannerImportViewController:self.skillPlannerImportViewController didSelectSkillPlan:skillPlanTmp];
-				[self dismissModalViewControllerAnimated:YES];
+				[self dismissViewControllerAnimated:YES completion:nil];
 			}
 		}];
 		
@@ -192,7 +211,7 @@
 #pragma mark - Private
 
 - (void) loadData {
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Load" name:NSLocalizedString(@"Updating Training Time", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlanViewController+Load" name:NSLocalizedString(@"Updating Training Time", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block SkillPlan* skillPlanTmp = nil;
 	[operation addExecutionBlock:^(void) {
@@ -208,9 +227,9 @@
 	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
 			self.skillPlan = skillPlanTmp;
-			self.trainingTimeLabel.text = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
+			self.headerTitle = self.skillPlan.skills.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingTime]] : NSLocalizedString(@"Skill plan is empty", nil);
 			
-			[self.skillsTableView reloadData];
+			[self.tableView reloadData];
 			self.navigationItem.rightBarButtonItem.enabled = YES;
 		}
 		else {

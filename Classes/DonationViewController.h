@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GroupedCell.h"
 
-@interface DonationViewController : UIViewController<UIActionSheetDelegate, SKPaymentTransactionObserver>
-@property (nonatomic, strong) IBOutlet UIView *upgradeView;
-@property (nonatomic, strong) IBOutlet UIView *donateView;
-@property (strong, nonatomic) IBOutlet UIView *upgradeDoneView;
+@interface DonationViewController : UITableViewController<UIActionSheetDelegate, SKPaymentTransactionObserver>
+@property (strong, nonatomic) IBOutlet GroupedCell *upgradeCellView;
+@property (strong, nonatomic) IBOutlet GroupedCell *donateCellView;
+@property (strong, nonatomic) IBOutlet GroupedCell *upgradeDoneCellView;
 
 - (IBAction) onUpgrade:(id) sender;
 - (IBAction) onDonate:(id) sender;

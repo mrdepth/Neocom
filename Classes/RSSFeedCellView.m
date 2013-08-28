@@ -20,7 +20,7 @@
 	self.contentView.frame = CGRectMake(self.contentView.frame.origin.x,
 										self.contentView.frame.origin.y,
 										self.contentView.frame.size.width,
-										self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + 2);
+										self.descriptionLabel.frame.origin.y + self.descriptionLabel.frame.size.height + 3);
 }
 
 @end

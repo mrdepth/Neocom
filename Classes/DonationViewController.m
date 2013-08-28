@@ -10,8 +10,16 @@
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
+#import "appearance.h"
+
+typedef enum {
+	DonationViewControllerUpgrade,
+	DonationViewControllerUpgradeDone,
+	DonationViewControllerDonate
+} DonationViewControllerMode;
 
 @interface DonationViewController()
+@property (nonatomic, assign) DonationViewControllerMode mode;
 
 - (void) reload;
 
@@ -36,6 +44,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = NSLocalizedString(@"Remove Ads", nil);
 	[self reload];
 }
@@ -53,14 +62,6 @@
     
     // Release any cached data, images, etc. that aren't in use.
 }
-
-- (void)viewDidUnload {
-	[self setUpgradeDoneView:nil];
-    [super viewDidUnload];
-	self.upgradeView = nil;
-	self.donateView = nil;
-}
-
 
 - (void)dealloc {
 	[[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
@@ -97,6 +98,45 @@
 	[paymentQueue addTransactionObserver:self];
 	[paymentQueue restoreCompletedTransactions];
 }
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 1;
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+    GroupedCell *cell = nil;
+	if (self.mode == DonationViewControllerUpgrade)
+		cell = self.upgradeCellView;
+	else if (self.mode == DonationViewControllerUpgradeDone)
+		cell = self.upgradeDoneCellView;
+	else
+		cell = self.donateCellView;
+	cell.groupStyle = GroupedCellGroupStyleSingle;
+	return cell;
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.mode == DonationViewControllerUpgrade)
+		return 128;
+	else if (self.mode == DonationViewControllerUpgradeDone)
+		return 40;
+	else
+		return 91;
+}
+
 
 #pragma mark UIActionSheetDelegate
 
@@ -168,19 +208,13 @@
 #pragma mark - Private
 
 - (void) reload {
-	if (self.upgradeView.superview)
-		[self.upgradeView removeFromSuperview];
-	if (self.donateView.superview)
-		[self.upgradeView removeFromSuperview];
-	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:SettingsNoAds]) {
-		[self.view addSubview:self.upgradeView];
-		self.upgradeView.frame = CGRectMake(0, 0, self.upgradeView.frame.size.width, self.upgradeView.frame.size.height);
+		self.mode = DonationViewControllerUpgrade;
 	}
 	else {
-		[self.view addSubview:self.donateView];
-		self.donateView.frame = CGRectMake(0, 0, self.donateView.frame.size.width, self.donateView.frame.size.height);
+		self.mode = DonationViewControllerDonate;
 	}
+	[self.tableView reloadData];
 }
 
 @end

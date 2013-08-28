@@ -10,11 +10,15 @@
 #import "Globals.h"
 #import "EVEUniverseAppDelegate.h"
 #import "EVEAccount.h"
+#import "GroupedCell.h"
+#import "CollapsableTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "appearance.h"
 
 @interface AboutViewController()
-
-- (NSUInteger) contentsSizeOfDirectoryAtPath:(NSString*) path;
-- (void) reload;
+@property (nonatomic, assign) NSInteger cacheSize;
+@property (nonatomic, strong) NSArray* specialThanks;
 
 @end
 
@@ -36,14 +40,23 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+	NSURLCache* cache = [NSURLCache sharedURLCache];
+	self.cacheSize = [cache currentDiskUsage] + [cache currentMemoryUsage];
+	self.specialThanks = @[@"Peter Vlaar aka Tess La'Coil",
+						@"Anton Vorobyov aka Kadesh Priestess",
+						@"Kurt Otto",
+						@"Toby Rayfield",
+						@"Jim Nastik"];
+
 	self.title = NSLocalizedString(@"About", nil);
-	self.databaseVersionLabel.text = @"Retribution_1.1_84566";
-	self.imagesVersionLabel.text = @"Retribution_1.1_imgs";
+//	self.databaseVersionLabel.text = @"Retribution_1.1_84566";
+//	self.imagesVersionLabel.text = @"Retribution_1.1_imgs";
 	
-	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	self.applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
+//	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+//	self.applicationVersionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
 	
-	[self reload];
+//	[self reload];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -60,37 +73,152 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.scrollView = nil;
-	self.cacheView = nil;
-	self.databaseView = nil;
-	self.marketView = nil;
-	self.versionView = nil;
-	self.specialThanksView = nil;
-	self.apiCacheSizeLabel = nil;
-	self.imagesCacheSizeLabel = nil;
-	self.databaseVersionLabel = nil;
-	self.imagesVersionLabel = nil;
-	self.applicationVersionLabel = nil;
-}
-
-
 - (IBAction) onClearCache:(id) sender {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Warning!", nil) message:NSLocalizedString(@"Some features may be temporarily unavailable.", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Clear", nil), nil];
 	[alertView show];
 }
 
-- (IBAction) onHomepage:(id) sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.eveuniverseiphone.com"]];
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+	return 5;
 }
 
-- (IBAction) onMail:(id) sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:support@eveuniverseiphone.com"]];
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (section == 0)
+		return 1;
+	else if (section == 1)
+		return 2;
+	else if (section == 2)
+		return 1;
+	else if (section == 3)
+		return self.specialThanks.count;
+	else if (section == 4)
+		return 4;
+	else
+		return 0;
+		
 }
 
-- (IBAction) onSources:(id) sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/mrdepth"]];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return NSLocalizedString(@"Cache", nil);
+	else if (section == 1)
+		return NSLocalizedString(@"Database", nil);
+	else if (section == 2)
+		return NSLocalizedString(@"Market", nil);
+	else if (section == 3)
+		return NSLocalizedString(@"Special thanks", nil);
+	else if (section == 4)
+		return NSLocalizedString(@"Application", nil);
+	else
+		return nil;
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCellStyle cellStyle;
+	NSString* cellIdentifier = nil;
+	if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 4) {
+		cellStyle = UITableViewCellStyleValue1;
+		cellIdentifier = @"ValueCell";
+	}
+	else {
+		cellStyle = UITableViewCellStyleSubtitle;
+		cellIdentifier = @"SubtitleCell";
+	}
+	
+    GroupedCell *cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (cell == nil)
+		cell = [[GroupedCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
+	
+	if (indexPath.section == 0) {
+		cell.textLabel.text = NSLocalizedString(@"Cache size", nil);
+		cell.detailTextLabel.text = [NSNumberFormatter neocomLocalizedStringFromInteger:self.cacheSize];
+		cell.accessoryView = self.clearButton;
+	}
+	else {
+		cell.accessoryView = nil;
+		
+		if (indexPath.section == 1) {
+			if (indexPath.row == 0) {
+				cell.textLabel.text = NSLocalizedString(@"Database", nil);
+				cell.detailTextLabel.text = @"Retribution_1.1_84566";
+			}
+			else if (indexPath.row == 1) {
+				cell.textLabel.text = NSLocalizedString(@"Images", nil);
+				cell.detailTextLabel.text = @"Retribution_1.1_imgs";
+			}
+		}
+		else if (indexPath.section == 2) {
+			cell.textLabel.text = NSLocalizedString(@"Market information provided by", nil);
+			cell.detailTextLabel.text = @"http://eve-central.com";
+		}
+		else if (indexPath.section == 3) {
+			cell.textLabel.text = self.specialThanks[indexPath.row];
+			cell.detailTextLabel.text = nil;
+		}
+		else if (indexPath.section == 4) {
+			if (indexPath.row == 0) {
+				cell.textLabel.text = NSLocalizedString(@"Version", nil);
+				NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
+			}
+			else if (indexPath.row == 1) {
+				cell.textLabel.text = NSLocalizedString(@"Homepage", nil);
+				cell.detailTextLabel.text = @"www.eveuniverseiphone.com";
+			}
+			else if (indexPath.row == 2) {
+				cell.textLabel.text = NSLocalizedString(@"E-mail", nil);
+				cell.detailTextLabel.text = @"support@eveuniverseiphone.com";
+			}
+			else if (indexPath.row == 3) {
+				cell.textLabel.text = NSLocalizedString(@"Sources", nil);
+				cell.detailTextLabel.text = @"https://github.com/mrdepth";
+			}
+		}
+	}
+	
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
+		view.titleLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (indexPath.section == 4) {
+		if (indexPath.row == 1)
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.eveuniverseiphone.com"]];
+		else if (indexPath.row == 2)
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:support@eveuniverseiphone.com"]];
+		else if (indexPath.row == 3)
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/mrdepth"]];
+	}
 }
 
 #pragma mark UIAlertViewDelegate
@@ -98,58 +226,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 1) {
 		[[NSURLCache sharedURLCache] removeAllCachedResponses];
-		self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), @(0)];
-
-//		[self reload];
-		//[EVEAccount reload];
-		
+		self.cacheSize = 0;
+		[self.tableView reloadData];
 	}
-}
-
-#pragma mark - Private
-
-- (NSUInteger) contentsSizeOfDirectoryAtPath:(NSString*) path {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *items = [fileManager contentsOfDirectoryAtPath:path error:nil];
-	NSUInteger size = 0;
-	for (NSString *item in items) {
-		size += [[fileManager attributesOfItemAtPath:[path stringByAppendingPathComponent:item] error:nil] fileSize];
-	}
-	return size;
-}
-
-- (void) reload {
-	for (UIView *v in [self.scrollView subviews])
-		[v removeFromSuperview];
-
-	float y = 0;
-	
-	[self.scrollView addSubview:self.cacheView];
-	self.cacheView.frame = CGRectMake(0, y, self.cacheView.frame.size.width, self.cacheView.frame.size.height);
-	y += self.cacheView.frame.size.height;
-	
-	[self.scrollView addSubview:self.databaseView];
-	self.databaseView.frame = CGRectMake(0, y, self.databaseView.frame.size.width, self.databaseView.frame.size.height);
-	y += self.databaseView.frame.size.height;
-	
-	[self.scrollView addSubview:self.marketView];
-	self.marketView.frame = CGRectMake(0, y, self.marketView.frame.size.width, self.marketView.frame.size.height);
-	y += self.marketView.frame.size.height;
-
-	[self.scrollView addSubview:self.specialThanksView];
-	self.specialThanksView.frame = CGRectMake(0, y, self.specialThanksView.frame.size.width, self.specialThanksView.frame.size.height);
-	y += self.specialThanksView.frame.size.height;
-
-	[self.scrollView addSubview:self.versionView];
-	self.versionView.frame = CGRectMake(0, y, self.versionView.frame.size.width, self.versionView.frame.size.height);
-	y += self.versionView.frame.size.height;
-	
-	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		y += 50;
-
-	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, y);
-	NSURLCache* cache = [NSURLCache sharedURLCache];
-	self.apiCacheSizeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ bytes", nil), [NSNumberFormatter localizedStringFromNumber:@([cache currentDiskUsage] + [cache currentMemoryUsage]) numberStyle:NSNumberFormatterDecimalStyle]];
 }
 
 @end

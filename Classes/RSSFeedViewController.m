@@ -17,6 +17,7 @@
 #import "RSSViewController.h"
 #import "NSMutableString+RSSParser10.h"
 #import "NSString+HTML.h"
+#import "appearance.h"
 
 @interface RSSFeedViewController()
 @property (nonatomic, strong) NSMutableArray *rows;
@@ -43,7 +44,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	[self loadData];
 }
 
@@ -97,7 +98,14 @@
 	cell.dateLabel.text = [row valueForKey:@"date"];
 	cell.descriptionLabel.text = [row valueForKey:@"description"];
 	[cell layoutSubviews];
-    return cell;
+
+	GroupedCellGroupStyle groupStyle = 0;
+	if (indexPath.row == 0)
+		groupStyle |= GroupedCellGroupStyleTop;
+	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
+		groupStyle |= GroupedCellGroupStyleBottom;
+	cell.groupStyle = groupStyle;
+	return cell;
 }
 
 #pragma mark -

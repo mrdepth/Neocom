@@ -49,7 +49,6 @@
 		12448F241679CFF400DC90AC /* FittingExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F261679CFF400DC90AC /* FittingExportViewController.xib */; };
 		12448F2A1679D05A00DC90AC /* SkillPlannerImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F2C1679D05A00DC90AC /* SkillPlannerImportViewController.xib */; };
 		12448F301679D0C000DC90AC /* DonationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F321679D0C000DC90AC /* DonationViewController.xib */; };
-		12448F331679D0C600DC90AC /* DonationViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F351679D0C600DC90AC /* DonationViewController~ipad.xib */; };
 		12448F361679D0E500DC90AC /* AssetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F381679D0E500DC90AC /* AssetsViewController.xib */; };
 		12448F3C1679D11100DC90AC /* WalletJournalCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F3E1679D11100DC90AC /* WalletJournalCellView.xib */; };
 		12448F3F1679D11600DC90AC /* WalletJournalCellViewCompact~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F411679D11600DC90AC /* WalletJournalCellViewCompact~ipad.xib */; };
@@ -111,7 +110,6 @@
 		1259B4EF1679C81C00EA49B5 /* SkillsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4F11679C81C00EA49B5 /* SkillsViewController~ipad.xib */; };
 		1259B4F21679C85400EA49B5 /* RSSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4F41679C85400EA49B5 /* RSSViewController.xib */; };
 		1259B4F81679C8E700EA49B5 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4FA1679C8E700EA49B5 /* AboutViewController.xib */; };
-		1259B4FB1679C8F200EA49B5 /* AboutViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4FD1679C8F200EA49B5 /* AboutViewController~ipad.xib */; };
 		1259B4FE1679C8FB00EA49B5 /* WalletTransactionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5001679C8FB00EA49B5 /* WalletTransactionCellView.xib */; };
 		1259B5011679C90000EA49B5 /* WalletTransactionCellViewCompact~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5031679C90000EA49B5 /* WalletTransactionCellViewCompact~ipad.xib */; };
 		1259B5041679C90500EA49B5 /* WalletTransactionCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B5061679C90500EA49B5 /* WalletTransactionCellView~ipad.xib */; };
@@ -890,7 +888,6 @@
 		12448F251679CFF400DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FittingExportViewController.xib; sourceTree = "<group>"; };
 		12448F2B1679D05A00DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SkillPlannerImportViewController.xib; sourceTree = "<group>"; };
 		12448F311679D0C000DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DonationViewController.xib; sourceTree = "<group>"; };
-		12448F341679D0C600DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/DonationViewController~ipad.xib"; sourceTree = "<group>"; };
 		12448F371679D0E500DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AssetsViewController.xib; sourceTree = "<group>"; };
 		12448F3D1679D11100DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WalletJournalCellView.xib; sourceTree = "<group>"; };
 		12448F401679D11600DC90AC /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/WalletJournalCellViewCompact~ipad.xib"; sourceTree = "<group>"; };
@@ -972,7 +969,6 @@
 		1259B4F01679C81C00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/SkillsViewController~ipad.xib"; sourceTree = "<group>"; };
 		1259B4F31679C85400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RSSViewController.xib; sourceTree = "<group>"; };
 		1259B4F91679C8E700EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AboutViewController.xib; sourceTree = "<group>"; };
-		1259B4FC1679C8F200EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/AboutViewController~ipad.xib"; sourceTree = "<group>"; };
 		1259B4FF1679C8FB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WalletTransactionCellView.xib; sourceTree = "<group>"; };
 		1259B5021679C90000EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/WalletTransactionCellViewCompact~ipad.xib"; sourceTree = "<group>"; };
 		1259B5051679C90500EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/WalletTransactionCellView~ipad.xib"; sourceTree = "<group>"; };
@@ -3467,7 +3463,6 @@
 				37B063E614EEC2500040D9FC /* DonationViewController.h */,
 				37B063E714EEC2500040D9FC /* DonationViewController.m */,
 				12448F321679D0C000DC90AC /* DonationViewController.xib */,
-				12448F351679D0C600DC90AC /* DonationViewController~ipad.xib */,
 			);
 			name = DonationViewController;
 			sourceTree = "<group>";
@@ -3753,7 +3748,6 @@
 			children = (
 				717B184312F4B501009DDE48 /* RSSFeedViewController */,
 				717B18FF12F4C33C009DDE48 /* RSSViewController */,
-				7183498312FC214300AEC222 /* RSSCellView */,
 				717B182D12F4B1A4009DDE48 /* RSSFeedsViewController.h */,
 				717B182E12F4B1A4009DDE48 /* RSSFeedsViewController.m */,
 				717B182F12F4B1A4009DDE48 /* RSSFeedsViewController.xib */,
@@ -4275,7 +4269,6 @@
 				718C49AB13004D7800C2A5A2 /* AboutViewController.h */,
 				718C49AC13004D7800C2A5A2 /* AboutViewController.m */,
 				1259B4FA1679C8E700EA49B5 /* AboutViewController.xib */,
-				1259B4FD1679C8F200EA49B5 /* AboutViewController~ipad.xib */,
 			);
 			name = AboutViewController;
 			sourceTree = "<group>";
@@ -4833,6 +4826,7 @@
 		71B8D33E17A97E44008450CC /* ToDelete */ = {
 			isa = PBXGroup;
 			children = (
+				7183498312FC214300AEC222 /* RSSCellView */,
 				71955B451376D4BD0068DBD7 /* FittingItemsViewController */,
 				12BEA849140EA0D600D85E88 /* EVEAccountStorage */,
 				718CBFBD12F5E6D000CAC006 /* MainMenuCellView */,
@@ -5326,7 +5320,6 @@
 				1259B4D71679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib in Resources */,
 				1259B5311679C9F000EA49B5 /* POSCellView~ipad.xib in Resources */,
 				12448F181679CFC300DC90AC /* FittingViewController~ipad.xib in Resources */,
-				1259B4FB1679C8F200EA49B5 /* AboutViewController~ipad.xib in Resources */,
 				12BF0090140D3C5400AD9450 /* index.html in Resources */,
 				1259B4B61679C69500EA49B5 /* PCViewController.xib in Resources */,
 				12A3B9A8140E4DF500E5A00C /* AccessMaskViewController.xib in Resources */,
@@ -5400,7 +5393,6 @@
 				370CCEAD14ED469900605A42 /* AssetContentsViewController.xib in Resources */,
 				370CCEB414ED7B9000605A42 /* assetsFilter.plist in Resources */,
 				12448F301679D0C000DC90AC /* DonationViewController.xib in Resources */,
-				12448F331679D0C600DC90AC /* DonationViewController~ipad.xib in Resources */,
 				12448F481679D12800DC90AC /* WalletJournalViewController~ipad.xib in Resources */,
 				12448F451679D12200DC90AC /* WalletJournalViewController.xib in Resources */,
 				12448F3C1679D11100DC90AC /* WalletJournalCellView.xib in Resources */,
@@ -6013,14 +6005,6 @@
 			name = DonationViewController.xib;
 			sourceTree = "<group>";
 		};
-		12448F351679D0C600DC90AC /* DonationViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				12448F341679D0C600DC90AC /* en */,
-			);
-			name = "DonationViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
 		12448F381679D0E500DC90AC /* AssetsViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -6299,14 +6283,6 @@
 				1259B4F91679C8E700EA49B5 /* en */,
 			);
 			name = AboutViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B4FD1679C8F200EA49B5 /* AboutViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B4FC1679C8F200EA49B5 /* en */,
-			);
-			name = "AboutViewController~ipad.xib";
 			sourceTree = "<group>";
 		};
 		1259B5001679C8FB00EA49B5 /* WalletTransactionCellView.xib */ = {

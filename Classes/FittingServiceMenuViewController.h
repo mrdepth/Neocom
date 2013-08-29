@@ -13,6 +13,4 @@
 @interface FittingServiceMenuViewController : UITableViewController<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong) IBOutlet NCItemsViewController *itemsViewController;
 
-- (IBAction) didCloseModalViewController:(id) sender;
-
 @end

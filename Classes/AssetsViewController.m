@@ -19,10 +19,10 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 @interface AssetsViewController()
 @property (nonatomic, strong) NSArray* accounts;
-@property (nonatomic, strong) UIPopoverController* popover;
 @property (nonatomic, strong) NSMutableArray *filteredValues;
 @property (nonatomic, strong) NSMutableArray *assets;
 @property (nonatomic, strong) NSMutableArray *charAssets;
@@ -66,12 +66,7 @@
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
 
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
-	}
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onCombined:)];
-	
 	self.ownerSegmentControl.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsAssetsOwner];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
@@ -105,24 +100,6 @@
     
     // Release any cached data, images, etc. that aren't in use.
 }
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.ownerSegmentControl = nil;
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	self.popover = nil;
-	self.assets = nil;
-	self.charAssets = nil;
-	self.corpAssets = nil;
-	self.filteredValues = nil;
-	self.charFilter = nil;
-	self.corpFilter = nil;
-}
-
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -227,7 +204,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -260,7 +237,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
+			[self presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
@@ -309,20 +286,23 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadAssets];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - AccountsSelectionViewControllerDelegate
@@ -357,7 +337,7 @@
 			currentAssets = self.charAssets;
 		}
 		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Assets", nil)];
+		EUOperation *operation = [EUOperation operationWithIdentifier:[NSString stringWithFormat:@"AssetsViewController+Load%d", corporate] name:NSLocalizedString(@"Loading Assets", nil)];
 		__weak EUOperation* weakOperation = operation;
 		NSMutableArray *assetsTmp = [NSMutableArray array];
 		
@@ -737,15 +717,15 @@
 }
 
 - (IBAction)onCombined:(id)sender {
-	if ([self.popover isPopoverVisible])
-		return;
-	
 	AccountsSelectionViewController* controller = [[AccountsSelectionViewController alloc] initWithNibName:@"AccountsSelectionViewController" bundle:nil];
 	controller.selectedAccounts = self.accounts;
 	controller.delegate = self;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popover = [[UIPopoverController alloc] initWithContentViewController:controller];
-		[self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		[self presentViewControllerInPopover:navigationController
+						   fromBarButtonItem:sender
+					permittedArrowDirections:UIPopoverArrowDirectionAny
+									animated:YES];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];

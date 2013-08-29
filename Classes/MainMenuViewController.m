@@ -278,7 +278,7 @@
 			[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
 			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
-			[self.splitViewController presentModalViewController:navController animated:YES];
+			[self.splitViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else {
 			NSArray *viewControllers = [self.splitViewController viewControllers];

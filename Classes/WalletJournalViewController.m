@@ -18,6 +18,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 #define JOURNAL_ROWS_COUNT 200
 
@@ -61,11 +62,8 @@
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
-	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
 	self.corpWalletJournal  = [[NSMutableArray alloc] initWithObjects:[NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], [NSNull null], nil];
@@ -92,31 +90,6 @@
     
     // Release any cached data, images, etc. that aren't in use.
 }
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.ownerSegmentControl = nil;
-	self.accountSegmentControl = nil;
-	self.accountsView = nil;
-	self.ownerToolbar = nil;
-	self.accountToolbar = nil;
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	
-	self.walletJournal = nil;
-	self.charWalletJournal = nil;
-	self.corpWalletJournal = nil;
-	self.filteredValues = nil;
-	self.corpAccounts = nil;
-	self.characterBalance = nil;
-	self.charFilter = nil;
-	self.corpFilter = nil;
-	self.refTypes = nil;
-}
-
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -290,20 +263,23 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadJournal];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private

@@ -411,7 +411,7 @@
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 	
 #pragma mark - Private
@@ -558,7 +558,7 @@
 								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
 								 
-								 [self presentModalViewController:navController animated:YES];
+								 [self presentViewController:navController animated:YES completion:nil];
 							 }
 							 else if (selectedButtonIndex == 1) {
 								 NSString* xml = [ShipFit allFitsEveXML];
@@ -570,8 +570,7 @@
 								 controller.mailComposeDelegate = self;
 								 [controller setSubject:NSLocalizedString(@"Neocom fits", nil)];
 								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
-								 [self presentModalViewController:controller animated:YES];
-								 
+								 [self presentViewController:controller animated:YES completion:nil];
 							 }
 						 }
 							 cancelBlock:nil] showInWindowFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.tableView animated:YES];

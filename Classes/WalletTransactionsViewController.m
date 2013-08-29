@@ -18,6 +18,7 @@
 #import "appearance.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "UIViewController+Neocom.h"
 
 @interface WalletTransactionsViewController()
 @property (nonatomic, strong) NSMutableArray *walletTransactions;
@@ -60,8 +61,6 @@
 	self.navigationItem.titleView = self.ownerSegmentControl;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
@@ -237,7 +236,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -258,14 +257,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundPopover~ipad.png"]];
-		tableView.backgroundView.contentMode = UIViewContentModeTop;
-	}
-	else
-		tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -275,20 +268,23 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadTransactions];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private

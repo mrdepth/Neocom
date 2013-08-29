@@ -635,7 +635,7 @@
 				fittingViewController.fittingEngine->getGang()->addPilot(character);
 				fittingViewController.fit = fit;
 				[fittingViewController.fits addObject:fit];
-				[self.controller dismissModalViewControllerAnimated:NO];
+				[self.controller dismissViewControllerAnimated:NO completion:nil];
 				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 					UINavigationController* navigationController = [[(UISplitViewController*) self.controller viewControllers] objectAtIndex:1];
 					[navigationController pushViewController:fittingViewController animated:YES];

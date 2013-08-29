@@ -101,7 +101,7 @@
 		noResultsLabel.textColor = [UIColor colorWithWhite:0.48 alpha:1];
 		noResultsLabel.backgroundColor = [UIColor clearColor];
 		noResultsLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-		noResultsLabel.textAlignment = UITextAlignmentCenter;
+		noResultsLabel.textAlignment = NSTextAlignmentCenter;
 	}
 	return noResultsLabel;
 }

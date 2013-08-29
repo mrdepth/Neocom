@@ -14,6 +14,4 @@
 @property (nonatomic, weak) IBOutlet id<DamagePatternsViewControllerDelegate> delegate;
 @property (nonatomic, strong) DamagePattern* currentDamagePattern;
 
-- (IBAction)onClose:(id)sender;
-
 @end

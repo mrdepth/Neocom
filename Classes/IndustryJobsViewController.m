@@ -21,6 +21,7 @@
 #import "UIView+Nib.h"
 #import "appearance.h"
 #import "NSDate+DaysAgo.h"
+#import "UIViewController+Neocom.h"
 
 @interface IndustryJobsViewController()
 @property(nonatomic, strong) NSMutableArray *filteredValues;
@@ -60,11 +61,8 @@
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.navigationItem.titleView = self.ownerSegmentControl;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
-	}
 	else
 		self.tableView.tableHeaderView = self.searchBar;
 
@@ -205,7 +203,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -238,20 +236,24 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
+
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadJobs];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private

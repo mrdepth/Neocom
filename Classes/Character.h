@@ -10,7 +10,7 @@
 #include "eufe.h"
 
 @protocol Character
-@property (nonatomic, copy) NSString* name;
+@property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSMutableDictionary* skillsDictionary;
 @property (nonatomic, readonly, getter = isReadonly) BOOL readonly;
 

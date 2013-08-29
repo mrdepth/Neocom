@@ -32,6 +32,9 @@
 }
 
 - (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
+	if (self.popover)
+		[self.popover dismissPopoverAnimated:YES];
+	
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:viewControllerToPresent];
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
@@ -46,7 +49,8 @@
 #pragma mark - UIPopoverControllerDelegate
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	self.popover = nil;
+	if (self.popover == popoverController)
+		self.popover = nil;
 }
 
 @end

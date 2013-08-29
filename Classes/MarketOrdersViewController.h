@@ -17,7 +17,6 @@
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, weak) IBOutlet FilterViewController *filterViewController;
 @property (nonatomic, strong) IBOutlet UINavigationController *filterNavigationViewController;
-@property (nonatomic, strong) UIPopoverController *filterPopoverController;
 
 - (IBAction) onChangeOwner:(id) sender;
 

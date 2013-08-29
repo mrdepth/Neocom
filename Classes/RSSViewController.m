@@ -70,7 +70,7 @@
 
 
 - (IBAction) onClose:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)onSafari:(id)sender {

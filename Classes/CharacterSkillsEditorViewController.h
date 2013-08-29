@@ -18,7 +18,6 @@
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, strong) id<Character> character;
 
-- (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) onOptions:(id) sender;
 - (IBAction) onDone:(id)sender;
 

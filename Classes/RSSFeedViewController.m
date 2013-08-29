@@ -117,7 +117,7 @@
 	controller.rss = [[self.rows objectAtIndex:indexPath.row] valueForKey:@"item"];
 	
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self presentModalViewController:controller animated:YES];
+	[self presentViewController:controller animated:YES completion:nil];
 //	else
 //		[self.navigationController pushViewController:controller animated:YES];
 }

@@ -91,10 +91,6 @@
 	}
 }
 
-- (IBAction) onClose:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 #pragma mark -
 #pragma mark Table view data source
 

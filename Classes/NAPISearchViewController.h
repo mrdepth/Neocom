@@ -13,6 +13,5 @@
 @interface NAPISearchViewController : UITableViewController<KillNetFilterDBViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *fitsCountLabel;
 
-- (IBAction)onClose:(id)sender;
 - (IBAction)onSearch:(id)sender;
 @end

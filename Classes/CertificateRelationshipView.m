@@ -10,8 +10,6 @@
 
 @interface CertificateRelationshipView()
 
-- (void) didTap;
-
 @end
 
 @implementation CertificateRelationshipView

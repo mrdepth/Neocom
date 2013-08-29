@@ -32,7 +32,6 @@
 - (void) loadStarbaseDetailForStarbase:(NSMutableDictionary *)pos account:(EVEAccount*) account;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
-- (IBAction) onClose:(id) sender;
 @end
 
 @implementation POSesViewController
@@ -221,10 +220,9 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
-		[self presentModalViewController:navController animated:YES];
+		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -557,10 +555,6 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
-- (IBAction) onClose:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

@@ -72,7 +72,7 @@
 		cell.textLabel.shadowColor = [UIColor blackColor];
 		cell.textLabel.textColor = [UIColor whiteColor];
 
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.numberOfLines = 2;
     }
 	

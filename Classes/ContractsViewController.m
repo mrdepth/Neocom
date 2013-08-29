@@ -21,6 +21,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "UIViewController+Neocom.h"
 
 @interface ContractsViewController()
 @property(nonatomic, strong) NSMutableArray *filteredValues;
@@ -37,7 +38,6 @@
 - (void) reloadContracts;
 - (void) didSelectAccount:(NSNotification*) notification;
 - (void) searchWithSearchString:(NSString*) searchString;
-- (IBAction) onClose:(id) sender;
 @end
 
 @implementation ContractsViewController
@@ -63,8 +63,6 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 		self.navigationItem.titleView = self.ownerSegmentControl;
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	else
 		self.tableView.tableHeaderView = self.searchBar;
@@ -248,8 +246,8 @@
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
-		[self presentModalViewController:navController animated:YES];
+		[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -282,20 +280,23 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadContracts];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private
@@ -589,10 +590,6 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
-- (IBAction) onClose:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

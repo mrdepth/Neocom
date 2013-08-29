@@ -120,10 +120,6 @@
 		return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
 }
 
-- (IBAction) didCloseModalViewController:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
 - (IBAction) onOptions:(id) sender {
 	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];

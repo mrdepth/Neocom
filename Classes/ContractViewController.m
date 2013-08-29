@@ -232,14 +232,7 @@
 		controller.type = resourceType;
 		[controller setActivePage:ItemViewControllerActivePageInfo];
 		
-/*		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
-			[navController release];
-		}
-		else*/
-			[self.navigationController pushViewController:controller animated:YES];
+		[self.navigationController pushViewController:controller animated:YES];
 	}
 	
 }

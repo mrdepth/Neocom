@@ -55,13 +55,10 @@
 
 @property (nonatomic, strong, readonly) NCItemsViewController* itemsViewController;
 
-- (IBAction) didCloseModalViewController:(id) sender;
 - (IBAction) didChangeSection:(id) sender;
 - (IBAction) onMenu:(id) sender;
 - (IBAction) onDone:(id) sender;
 - (IBAction) onBack:(id) sender;
 - (void) update;
-- (void) addFleetMember;
-- (void) selectCharacterForFit:(ShipFit*) fit;
 
 @end

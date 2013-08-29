@@ -26,6 +26,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 @interface AssetContentsViewController()
 @property (nonatomic, strong) NSMutableArray *filteredValues;
@@ -35,7 +36,6 @@
 
 - (void) reloadAssets;
 - (void) searchWithSearchString:(NSString*) searchString;
-- (IBAction)onClose:(id)sender;
 @end
 
 @implementation AssetContentsViewController
@@ -58,10 +58,6 @@
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
-	}
 	if (self.asset.type.group.categoryID == 6 || self.asset.type.groupID == eufe::CONTROL_TOWER_GROUP_ID) // Ship or Control Tower
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Open fit", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onOpenFit:)];
 	EVEAccount* account = [EVEAccount currentAccount];
@@ -143,20 +139,10 @@
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-	self.searchBar = nil;
-	self.filterPopoverController = nil;
-	self.filterViewController = nil;
-	self.filterNavigationViewController = nil;
-	self.assets = nil;
-	self.filteredValues = nil;
-}
-
 - (IBAction)onOpenFit:(id)sender {
 	if (self.asset.type.group.categoryID == 6) {// Ship
 		FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block ShipFit* fit = nil;
 		__block eufe::Character* character = NULL;
@@ -194,7 +180,7 @@
 	}
 	else {
 		POSFittingViewController *posFittingViewController = [[POSFittingViewController alloc] initWithNibName:@"POSFittingViewController" bundle:nil];
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading POS Fit", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading POS Fit", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block POSFit* fit = nil;
 		
@@ -295,7 +281,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self presentModalViewController:navController animated:YES];
+		[self presentViewController:navController animated:YES completion:nil];
 	}
 	else
 		[self.navigationController pushViewController:controller animated:YES];
@@ -345,7 +331,7 @@
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentModalViewController:navController animated:YES];
+			[self presentViewController:navController animated:YES completion:nil];
 		}
 		else
 			[self.navigationController pushViewController:controller animated:YES];
@@ -376,20 +362,23 @@
 	self.filterViewController.filter = self.filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchBar.frame inView:[self.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchBar.frame
+									  inView:[self.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 }
 
 #pragma mark FilterViewControllerDelegate
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reloadAssets];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private
@@ -609,10 +598,6 @@
 	[self.tableView reloadData];
 }
 
-
-- (IBAction) onClose:(id) sender {
-	[self dismissModalViewControllerAnimated:YES];
-}
 
 - (void) searchWithSearchString:(NSString*) aSearchString {
 	if (self.sections.count == 0 || !aSearchString)

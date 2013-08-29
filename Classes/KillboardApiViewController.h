@@ -14,7 +14,6 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *killboardTypeSegmentControl;
 @property (strong, nonatomic) IBOutlet UINavigationController *filterNavigationViewController;
 @property (weak, nonatomic) IBOutlet FilterViewController *filterViewController;
-@property (nonatomic, strong) UIPopoverController *filterPopoverController;
 
 - (IBAction) onChangeOwner:(id) sender;
 - (IBAction) onChangeKillboardType:(id) sender;

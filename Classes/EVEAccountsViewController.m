@@ -19,6 +19,7 @@
 #import "EVEAccountsDataSource.h"
 #import "UIColor+NSNumber.h"
 #import "EVEAccountsManager.h"
+#import "appearance.h"
 
 @interface EVEAccountsViewController()
 
@@ -41,7 +42,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.view setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		self.title = NSLocalizedString(@"Accounts", nil);
+	
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	[self.navigationItem setRightBarButtonItem:self.editButtonItem];
 	
 	[self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onAddAccount:)]]];
@@ -109,22 +113,30 @@
 	}
 }
 
+- (void)collectionView:(ASCollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0 && !self.editing) {
+		EVEAccount* account = [self.dataSource.accounts objectAtIndex:indexPath.row];
+		[EVEAccount setCurrentAccount:account];
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
+
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (UIEdgeInsets)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-	return UIEdgeInsetsMake(20, 20, 20, 20);
+	return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
 - (CGSize)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0)
-		return CGSizeMake(270, 160);
+		return CGSizeMake(240, 160);
 	else
-		return CGSizeMake(270, 40);
+		return CGSizeMake(240, 40);
 }
 
 - (CGFloat)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-	return section == 0 ? 20 : 5;
+	return section == 0 ? 10 : 5;
 }
 
 #pragma mark - ASCollectionViewDelegatePanLayout

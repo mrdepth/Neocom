@@ -43,7 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)]];
+	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	self.title = NSLocalizedString(@"Export", nil);
 	
 	NSMutableArray* fitsTmp = [NSMutableArray array];
@@ -133,10 +133,6 @@
 - (void)dealloc {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAddress) object:nil];
 	[self.server shutdown];
-}
-
-- (IBAction) onClose:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark EUHTTPServerDelegate

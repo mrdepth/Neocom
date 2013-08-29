@@ -166,7 +166,13 @@
 			};
 
 		}
-		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.fittingViewController presentViewControllerInPopover:self.fittingViewController.itemsViewController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
 	}
 	else {
 		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque

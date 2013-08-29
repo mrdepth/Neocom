@@ -43,7 +43,7 @@
 	//[self.delegate fittingVariationsViewController:self didSelectType:type];
 	if (self.completionHandler)
 		self.completionHandler(type);
-	[self dismiss];
+//	[self dismiss];
 }
 
 @end

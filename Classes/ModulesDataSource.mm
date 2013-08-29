@@ -410,13 +410,13 @@
 				[self.fittingViewController dismiss];
 		};
 		
-		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
-		
-#warning todo
-//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//			[popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//		else
-//			[self.fittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.fittingViewController presentViewControllerInPopover:self.fittingViewController.itemsViewController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
@@ -559,8 +559,13 @@
 			[self.fittingViewController update];
 			[self.fittingViewController dismiss];
 		};
-		
-		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.fittingViewController presentViewControllerInPopover:self.fittingViewController.itemsViewController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
 	};
 	void (^unloadAmmo)(NSArray*) = ^(NSArray* modules){
 		for (ItemInfo* itemInfo in modules) {
@@ -627,6 +632,10 @@
 		};
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.fittingViewController presentViewControllerInPopover:navigationController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 		else
 			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
@@ -649,11 +658,20 @@
 				eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
 				ship->replaceModule(module, type.typeID);
 			}
+			[self.fittingViewController dismiss];
 			[self.fittingViewController update];
 		};
 		
 		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.fittingViewController presentViewControllerInPopover:navigationController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		}
+		else
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
 	};
 
 	void (^similarModules)(NSArray*) = ^(NSArray* modules){
@@ -676,6 +694,15 @@
 		[buttons addObject:ActionButtonVariations];
 		[actions addObject:variations];
 		
+		if (module->requireTarget() && self.fittingViewController.fits.count > 1) {
+			[buttons addObject:ActionButtonSetTarget];
+			[actions addObject:setTarget];
+			if (module->getTarget() != NULL) {
+				[buttons addObject:ActionButtonClearTarget];
+				[actions addObject:clearTarget];
+			}
+		}
+
 		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", )

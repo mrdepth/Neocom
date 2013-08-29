@@ -62,7 +62,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
+	//self.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -90,7 +90,8 @@
 	if ([self isViewLoaded]) {
 		NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
 		controller.itemsViewController = self;
-		controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
 		[self setViewControllers:@[controller]];
 	}
 }

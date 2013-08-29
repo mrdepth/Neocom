@@ -182,7 +182,7 @@
 	if (cell.account.ignored) {
 		[[EVEAccountsManager sharedManager] unignoreCharacter:cell.account.character.characterID];
 		[(NSMutableArray*) self.accounts addObject:cell.account];
-		[(NSMutableArray*) self.accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+		[(NSMutableArray*) self.accounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 	}
 	else {
 		[[EVEAccountsManager sharedManager] ignoreCharacter:cell.account.character.characterID];
@@ -254,7 +254,7 @@
 
 - (void) didChangeAccountsManager:(NSNotification*) notification {
 	NSMutableArray* allAccounts = [NSMutableArray arrayWithArray:[notification.object allAccounts]];
-	[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
+	[allAccounts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"character.characterName" ascending:YES]]];
 	
 	NSMutableArray* accounts = [[NSMutableArray alloc] init];
 	

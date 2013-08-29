@@ -114,13 +114,14 @@
 				CGRect frame = self.textLabel.frame;
 				CGFloat maxX;
 				if (self.detailTextLabel.text.length > 0) {
+					CGFloat rightX = CGRectGetMaxX(self.detailTextLabel.frame);
 					CGRect rect = [self.detailTextLabel textRectForBounds:CGRectMake(0, 0, self.frame.size.width, self.detailTextLabel.frame.size.height) limitedToNumberOfLines:1];
-					maxX = CGRectGetMaxX(self.contentView.frame) - rect.size.width - 15;
+					maxX = rightX - rect.size.width;
+					
 					rect.origin.x = maxX;
 					rect.origin.y = self.detailTextLabel.frame.origin.y;
 					rect.size.height = self.detailTextLabel.frame.size.height;
 					self.detailTextLabel.frame = rect;
-					
 					maxX -= 10;
 				}
 				else

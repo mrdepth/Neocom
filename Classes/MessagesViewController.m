@@ -51,24 +51,19 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
-//		[self.navigationItem setRightBarButtonItem:];
-		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)] autorelease];
-		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.toolbar];
 	}
 	else {
-		self.tableView.tableHeaderView = self.searchBar;
+		self.tableViewLeft.tableHeaderView = self.searchBar;
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
 	}
-//	else
-//		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSelectAccount:) name:EVEAccountDidSelectNotification object:nil];
-	//[self reloadMessages];
-	if (self.messages) {
+
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && self.messages) {
 		self.messagesDataSource.messages = self.messages;;
-		self.tableView.delegate = self.messagesDataSource;
-		self.tableView.dataSource = self.messagesDataSource;
-		//[self.messagesDataSource reload];
+		self.tableViewLeft.delegate = self.messagesDataSource;
+		self.tableViewLeft.dataSource = self.messagesDataSource;
 	}
 	[self reload];
 }
@@ -115,10 +110,17 @@
 #pragma mark - MessageGroupsDataSourceDelegate
 
 - (void) messageGroupsDataSource:(MessageGroupsDataSource*) dataSource didSelectGroup:(NSArray*) group withTitle:(NSString*) title {
-	MessagesViewController* controller = [[MessagesViewController alloc] initWithNibName:@"MessagesViewController" bundle:nil];
-	controller.messages = group;
-	controller.title = title;
-	[self.navigationController pushViewController:controller animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.messages = group;
+		self.messagesDataSource.messages = self.messages;
+		[self.messagesDataSource reload];
+	}
+	else {
+		MessagesViewController* controller = [[MessagesViewController alloc] initWithNibName:@"MessagesViewController" bundle:nil];
+		controller.messages = group;
+		controller.title = title;
+		[self.navigationController pushViewController:controller animated:YES];
+	}
 }
 
 #pragma mark - MessagesDataSourceDelegate
@@ -130,7 +132,7 @@
 	if (!message.read && message.text) {
 		message.read = YES;
 		[self.mailBox save];
-		[self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+		[self.tableViewLeft performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 		[self.searchDisplayController.searchResultsTableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 		[[NSNotificationCenter defaultCenter] postNotificationName:NotificationReadMail object:self.mailBox];
 	}
@@ -223,10 +225,10 @@
 	NSString *searchString = [aSearchString copy];
 	NSMutableArray *filteredValuesTmp = [NSMutableArray array];
 	
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+Search" name:NSLocalizedString(@"Searching...", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
-		if (self.messages) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && self.messages) {
 			for (EUMailMessage *message in self.messages) {
 				if (([message.header.title rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||
 					([message.from rangeOfString:searchString options:NSCaseInsensitiveSearch].location != NSNotFound) ||

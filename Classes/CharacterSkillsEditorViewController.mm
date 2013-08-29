@@ -19,6 +19,7 @@
 #import "FitCharacter.h"
 #import "EUStorage.h"
 #import "UIActionSheet+Block.h"
+#import "UIViewController+Neocom.h"
 
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate", nil)
 #define ActionButtonRename NSLocalizedString(@"Rename", nil)
@@ -32,12 +33,9 @@
 @property(nonatomic, strong) NSIndexPath *modifiedIndexPath;
 @property(nonatomic, strong) UIActionSheet* actionSheet;
 
-- (void) keyboardWillShow: (NSNotification*) notification;
-- (void) keyboardWillHide: (NSNotification*) notification;
 @end
 
 @implementation CharacterSkillsEditorViewController
-@synthesize popoverController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,10 +62,6 @@
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.character.name;
 	[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onOptions:)]];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.modalController];
-	}
 	
 	__block NSArray* sectionsTmp = nil;
 	self.groups = [[NSMutableDictionary alloc] init];
@@ -260,11 +254,17 @@
 		self.character.skillsDictionary[@(skill.typeID)] = @(level);
 		[(FitCharacter*) self.character save];
 		[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self dismiss];
 	};
 	
 	UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-	
-	[self presentViewController:navigationController animated:YES completion:nil];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self presentViewControllerInPopover:navigationController
+									fromRect:[tableView rectForRowAtIndexPath:indexPath]
+									  inView:tableView
+					permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	else
+		[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -325,31 +325,6 @@
 	[[EUStorage sharedStorage] saveContext];
 	[textField resignFirstResponder];
 	return YES;
-}
-
-#pragma mark - Private
-
-- (void) keyboardWillShow: (NSNotification*) notification {
-//	CGRect r = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationDuration:[[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-	[UIView setAnimationCurve:(UIViewAnimationCurve)[[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue]];
-	self.shadowView.alpha = 1;
-	self.characterNameToolbar.frame = CGRectMake(0, 0, self.characterNameToolbar.frame.size.width, self.characterNameToolbar.frame.size.height);
-	[UIView commitAnimations];
-}
-
-- (void) keyboardWillHide: (NSNotification*) notification {
-//	CGRect r = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationDuration:[[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
-	[UIView setAnimationCurve:(UIViewAnimationCurve)[[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue]];
-	self.shadowView.alpha = 0;
-	self.characterNameToolbar.frame = CGRectMake(0, -self.characterNameToolbar.frame.size.height, self.characterNameToolbar.frame.size.width, self.characterNameToolbar.frame.size.height);
-	self.title = self.characterNameTextField.text;
-	[UIView commitAnimations];
 }
 
 @end

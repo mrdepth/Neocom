@@ -100,7 +100,6 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	self.completionHandler(indexPath.row);
 	self.completionHandler = nil;
-	[self dismiss];
 }
 
 

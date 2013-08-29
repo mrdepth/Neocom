@@ -97,7 +97,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.completionHandler)
 		self.completionHandler(indexPath.row + 1);
-	[self dismiss];
+//	[self dismiss];
 }
 
 

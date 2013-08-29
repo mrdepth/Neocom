@@ -27,16 +27,16 @@
 	if (self = [super init]) {
 		self.patternName = type.typeName;
 		
-		EVEDBDgmTypeAttribute* emDamageAttribute = [type.attributesDictionary valueForKey:@"114"];
-		EVEDBDgmTypeAttribute* explosiveDamageAttribute = [type.attributesDictionary valueForKey:@"116"];
-		EVEDBDgmTypeAttribute* kineticDamageAttribute = [type.attributesDictionary valueForKey:@"117"];
-		EVEDBDgmTypeAttribute* thermalDamageAttribute = [type.attributesDictionary valueForKey:@"118"];
-		EVEDBDgmTypeAttribute* damageMultiplierAttribute = [type.attributesDictionary valueForKey:@"64"];
-		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = [type.attributesDictionary valueForKey:@"212"];
-		EVEDBDgmTypeAttribute* missileTypeIDAttribute = [type.attributesDictionary valueForKey:@"507"];
+		EVEDBDgmTypeAttribute* emDamageAttribute = type.attributesDictionary[@(114)];
+		EVEDBDgmTypeAttribute* explosiveDamageAttribute = type.attributesDictionary[@(116)];
+		EVEDBDgmTypeAttribute* kineticDamageAttribute = type.attributesDictionary[@(117)];
+		EVEDBDgmTypeAttribute* thermalDamageAttribute = type.attributesDictionary[@(1180)];
+		EVEDBDgmTypeAttribute* damageMultiplierAttribute = type.attributesDictionary[@(64)];
+		EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = type.attributesDictionary[@(212)];
+		EVEDBDgmTypeAttribute* missileTypeIDAttribute = type.attributesDictionary[@(507)];
 		
-		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = [type.attributesDictionary valueForKey:@"51"];
-		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = [type.attributesDictionary valueForKey:@"506"];
+		EVEDBDgmTypeAttribute* turretFireSpeedAttribute = type.attributesDictionary[@(51)];
+		EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = type.attributesDictionary[@(506)];
 		
 		
 		//Turrets damage
@@ -47,7 +47,7 @@
 		float thermalDamageTurret = 0;
 		float intervalTurret = 0;
 		
-		if ([type.effectsDictionary valueForKey:@"10"] || [type.effectsDictionary valueForKey:@"1086"]) {
+		if (type.effectsDictionary[@(10)] || type.effectsDictionary[@(1086)]) {
 			float damageMultiplier = [damageMultiplierAttribute value];
 			if (damageMultiplier == 0)
 				damageMultiplier = 1;
@@ -66,13 +66,13 @@
 		float thermalDamageMissile = 0;
 		float intervalMissile = 0;
 		
-		if ([type.effectsDictionary valueForKey:@"569"]) {
+		if (type.effectsDictionary[@(569)]) {
 			EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
 			if (missile) {
-				EVEDBDgmTypeAttribute* emDamageAttribute = [missile.attributesDictionary valueForKey:@"114"];
-				EVEDBDgmTypeAttribute* explosiveDamageAttribute = [missile.attributesDictionary valueForKey:@"116"];
-				EVEDBDgmTypeAttribute* kineticDamageAttribute = [missile.attributesDictionary valueForKey:@"117"];
-				EVEDBDgmTypeAttribute* thermalDamageAttribute = [missile.attributesDictionary valueForKey:@"118"];
+				EVEDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
+				EVEDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];
+				EVEDBDgmTypeAttribute* kineticDamageAttribute = missile.attributesDictionary[@(117)];
+				EVEDBDgmTypeAttribute* thermalDamageAttribute = missile.attributesDictionary[@(118)];
 				
 				float missileDamageMultiplier = [missileDamageMultiplierAttribute value];
 				if (missileDamageMultiplier == 0)

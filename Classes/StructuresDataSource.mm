@@ -272,17 +272,13 @@
 				[self.posFittingViewController dismiss];
 		};
 		
-		[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
-
-/*		self.fittingItemsViewController.marketGroupID = 1285;
-		self.fittingItemsViewController.except = @[@(478)];
-		self.fittingItemsViewController.title = NSLocalizedString(@"Structures", nil);
-		//fittingItemsViewController.group = nil;
-		self.fittingItemsViewController.modifiedItem = nil;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+			[self.posFittingViewController presentViewControllerInPopover:self.posFittingViewController.itemsViewController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		else
-			[self.posFittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];*/
+			[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
@@ -414,7 +410,13 @@
 			[self.posFittingViewController dismiss];
 		};
 		
-		[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.posFittingViewController presentViewControllerInPopover:self.posFittingViewController.itemsViewController
+																 fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																   inView:self.tableView
+												 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
 	};
 	
 	void (^setAllModulesAmmo)(NSArray*) = ^(NSArray* structures){
@@ -445,7 +447,13 @@
 			[self.posFittingViewController dismiss];
 		};
 		
-		[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.posFittingViewController presentViewControllerInPopover:self.posFittingViewController.itemsViewController
+																 fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																   inView:self.tableView
+												 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.posFittingViewController presentViewController:self.posFittingViewController.itemsViewController animated:YES completion:nil];
 	};
 	
 	void (^unloadAmmo)(NSArray*) = ^(NSArray* structures){

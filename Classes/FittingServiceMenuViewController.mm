@@ -33,11 +33,8 @@
 
 @interface FittingServiceMenuViewController()
 @property (nonatomic, strong) NSMutableArray *fits;
-@property (nonatomic, assign) BOOL needsConvert;
 
 - (void) reload;
-- (void) convertFits;
-- (void) save;
 - (void) exportFits;
 - (void) didUpdateCloud:(NSNotification*) notification;
 @end
@@ -69,7 +66,6 @@
 																											style:UIBarButtonItemStyleBordered
 																										   target:self
 																										   action:@selector(dismiss)];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -89,13 +85,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
-	[self.tableView setEditing:editing animated:animated];
-	if (!editing) {
-	}
 }
 
 #pragma mark -
@@ -164,9 +153,9 @@
 	if (section == 0)
 		return nil;
 	else {
-		NSArray* rows = [self.fits objectAtIndex:section - 1];
+		NSArray* rows = self.fits[section - 1];
 		if (rows.count > 0)
-			return [[rows objectAtIndex:0] valueForKeyPath:@"type.group.groupName"];
+			return [rows[0] valueForKeyPath:@"type.group.groupName"];
 		else
 			return nil;
 	}
@@ -190,7 +179,6 @@
 		else {
 			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
-		[self save];
 	}
 }
 
@@ -284,7 +272,7 @@
 		}
 		else if (indexPath.row == 3) {
 			self.itemsViewController.conditions = @[@"invTypes.marketGroupID = 478"];
-			self.itemsViewController.title = NSLocalizedString(@"Ships", nil);
+			self.itemsViewController.title = NSLocalizedString(@"Control Towers", nil);
 			
 			__weak FittingServiceMenuViewController* weakSelf = self;
 			self.itemsViewController.completionHandler = ^(EVEDBInvType* type) {
@@ -401,13 +389,6 @@
 		return UITableViewCellEditingStyleDelete;
 }
 
-#pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex != alertView.cancelButtonIndex)
-		[self convertFits];
-}
-
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
@@ -456,93 +437,12 @@
 	[[EUOperationQueue sharedQueue] addOperation:operation];
 }
 
-- (void) convertFits {
-/*	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"FittingServiceMenuViewController+Convert" name:NSLocalizedString(@"Converting Fits", nil)];
-	NSMutableArray* fitsTmp = [NSMutableArray array];
-	for (NSArray* group in fits)
-		[fitsTmp addObject:[NSMutableArray arrayWithArray:group]];
-	[operation addExecutionBlock:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		
-		eufe::Engine* fittingEngine = new eufe::Engine([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding]);
-		eufe::Character* character = new eufe::Character(fittingEngine);
-
-		float count = fitsTmp.count;
-		float j = 0;
-		for (NSMutableArray* group in fitsTmp) {
-			operation.progress = j++ / count;
-			int n = group.count;
-			for (int i = 0; i < n; i++) {
-				NSDictionary* row = [group objectAtIndex:i];
-				if ([[row valueForKey:@"isPOS"] boolValue])
-					break;
-				
-				Fit* fit = [[Fit alloc] initWithDictionary:row character:character];
-				row = [fit dictionary];
-				[group replaceObjectAtIndex:i withObject:row];
-				[fit release];
-			}
-		}
-
-		delete character;
-		delete fittingEngine;
-	
-		[pool release];
-	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		if (![operation isCancelled]) {
-			needsConvert = NO;
-			[fits release];
-			fits = [fitsTmp retain];
-			
-			NSMutableArray* allFits = [NSMutableArray array];
-			for (NSArray* rows in fits) {
-				for (NSDictionary* row in rows) {
-					NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
-					[dictionary setValue:nil forKey:@"type"];
-					[allFits addObject:dictionary];
-				}
-			}
-			
-			[allFits writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];
-
-			
-			FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
-			navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-			
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			
-			[self presentModalViewController:navController animated:YES];
-			[navController release];
-			[fittingExportViewController release];
-		}
-	}];
-	[[EUOperationQueue sharedQueue] addOperation:operation];*/
-}
-
-- (void) save {
-/*	NSMutableArray* allFits = [NSMutableArray array];
-	for (NSArray* rows in fits) {
-		for (NSDictionary* row in rows) {
-			NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithDictionary:row];
-			[dictionary setValue:nil forKey:@"type"];
-			[allFits addObject:dictionary];
-		}
-	}
-	
-	[[allFits sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"fitID" ascending:YES]]]
-	 writeToURL:[NSURL fileURLWithPath:[Globals fitsFilePath]] atomically:YES];*/
-}
-
 - (void) exportFits {
 	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Browser", nil), NSLocalizedString(@"Clipboard", nil), nil];
 	if ([MFMailComposeViewController canSendMail])
 		[buttons addObject:NSLocalizedString(@"Email", nil)];
 	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
-								   title:NSLocalizedString(@"Export", nil)
+								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:nil
 					   otherButtonTitles:buttons
@@ -553,8 +453,6 @@
 							 if (selectedButtonIndex == 0) {
 								 FittingExportViewController *fittingExportViewController = [[FittingExportViewController alloc] initWithNibName:@"FittingExportViewController" bundle:nil];
 								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:fittingExportViewController];
-								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-								 
 								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
 								 
@@ -571,11 +469,10 @@
 								 [controller setSubject:NSLocalizedString(@"Neocom fits", nil)];
 								 [controller addAttachmentData:[xml dataUsingEncoding:NSUTF8StringEncoding] mimeType:@"application/xml" fileName:@"fits.xml"];
 								 [self presentViewController:controller animated:YES completion:nil];
+								 
 							 }
 						 }
-							 cancelBlock:nil] showInWindowFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]] inView:self.tableView animated:YES];
-	NSLog(@"%@", [NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]]]);
-	
+							 cancelBlock:nil] showInWindowFromRect:[self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]] inView:self.tableView animated:YES];
 }
 
 - (void) didUpdateCloud:(NSNotification*) notification {

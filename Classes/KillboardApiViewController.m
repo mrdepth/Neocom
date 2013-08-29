@@ -20,6 +20,7 @@
 #import "KillMailViewController.h"
 #import "Globals.h"
 #import "appearance.h"
+#import "UIViewController+Neocom.h"
 
 @interface KillboardApiViewController ()
 @property (nonatomic, strong) NSMutableDictionary *charFilter;
@@ -55,8 +56,6 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		//self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.ownerSegmentControl] autorelease];
 		self.navigationItem.titleView = self.ownerSegmentControl;
-		self.filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:self.filterNavigationViewController];
-		self.filterPopoverController.delegate = (FilterViewController*)  self.filterNavigationViewController.topViewController;
 	}
 	self.title = NSLocalizedString(@"Kill Reports", nil);
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.killboardTypeSegmentControl];
@@ -95,7 +94,6 @@
 	[self setFilteredValues:nil];
 	[self setFilterNavigationViewController:nil];
 	[self setFilterViewController:nil];
-	[self setFilterPopoverController:nil];
 	[super viewDidUnload];
 }
 
@@ -281,21 +279,26 @@
 	self.filterViewController.filter = filter;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[self.filterPopoverController presentPopoverFromRect:self.searchDisplayController.searchBar.frame inView:[self.searchDisplayController.searchBar superview] permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		[self presentViewControllerInPopover:self.filterNavigationViewController
+									fromRect:self.searchDisplayController.searchBar.frame
+									  inView:[self.searchDisplayController.searchBar superview]
+					permittedArrowDirections:UIPopoverArrowDirectionUp
+									animated:YES];
 	else
-		[self presentModalViewController:self.filterNavigationViewController animated:YES];
+		[self presentViewController:self.filterNavigationViewController animated:YES completion:nil];
 	
 }
 
 #pragma mark - FilterViewControllerDelegate
+
 - (void) filterViewController:(FilterViewController*) controller didApplyFilter:(EUFilter*) filter {
 	if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self reload];
 }
 
 - (void) filterViewControllerDidCancel:(FilterViewController*) controller {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private
@@ -500,192 +503,5 @@
 		[self reload];
 	}
 }
-
-/*- (void) loadKillLogBeforeKillID:(NSInteger) beforeKillID corporate:(BOOL) corporate {
-	self.loading = YES;
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+load" name:@"Loading Kill Log"];
-	__block NSError* error = nil;
-	EVEAccount *account = [EVEAccount currentAccount];
-	
-	NSMutableDictionary *currentKillLog = corporate ? self.corpKillLog : self.charKillLog;
-	NSMutableDictionary* kills = [NSMutableDictionary dictionary];
-	NSMutableDictionary* losses = [NSMutableDictionary dictionary];
-	
-	[operation addExecutionBlock:^{
-		@autoreleasepool {
-			EVEKillLog* killLog = corporate ?
-				[EVEKillLog killLogWithKeyID:account.corpKeyID vCode:account.corpVCode characterID:account.characterID beforeKillID:beforeKillID corporate:corporate error:&error] :
-				[EVEKillLog killLogWithKeyID:account.charKeyID vCode:account.charVCode characterID:account.characterID beforeKillID:beforeKillID corporate:corporate error:&error];
-			[error retain];
-			operation.progress = 0.5;
-			
-			if (!error) {
-				NSInteger charID = account.characterID;
-				float n = [killLog.kills count];
-				float i = 0;
-				
-				for (EVEKillLogKill* kill in killLog.kills) {
-					operation.progress = 0.5 + i++ / n / 2;
-
-					if ([operation isCancelled])
-						return;
-					
-					NSMutableDictionary* record = [NSMutableDictionary dictionaryWithObject:kill forKey:@"kill"];
-					EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
-					if (type)
-						[record setValue:type forKey:@"ship"];
-					
-					EVEDBMapSolarSystem* solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-					if (solarSystem)
-						[record setValue:solarSystem forKey:@"solarSystem"];
-					
-					NSMutableDictionary* category;
-					if ((corporate && kill.victim.corporationID == account.characterSheet.corporationID) || (!corporate && kill.victim.characterID == charID))
-						category = losses;
-					else
-						category = kills;
-					
-					NSInteger days = [kill.killTime daysAgo];
-					NSString* key = [NSDate stringWithDaysAgo:days];
-					
-					NSMutableDictionary* section = [category valueForKey:key];
-					if (!section) {
-						section = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray array], @"rows", @(days), @"daysAgo", key, @"title", nil];
-						[category setValue:section forKey:key];
-					}
-					[[section valueForKey:@"rows"] addObject:record];
-				}
-				
-//				[[filterTmp valueForKey:@"kills"] updateWithValues:[currentKillLogTmp valueForKey:@"kills"]];
-//				[[filterTmp valueForKey:@"losses"] updateWithValues:[currentKillLogTmp valueForKey:@"losses"]];
-			}
-		}
-	}];
-	
-	[operation setCompletionBlockInMainThread:^{
-		if (![operation isCancelled]) {
-			if (kills.count == 0 && losses.count == 0) {
-				if (corporate)
-					self.corpEnd = YES;
-				else
-					self.charEnd = YES;
-			}
-			
-			if (error) {
-				[[UIAlertView alertViewWithError:error] show];
-				self.loading = NO;
-			}
-			else {
-				NSMutableDictionary* currentKillLogTmp = [NSMutableDictionary dictionary];
-				__block EUOperation* operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+process" name:@"Processing Kill Log"];
-				[operation addExecutionBlock:^{
-					@autoreleasepool {
-						float n = currentKillLog.count;
-						float i = 0;
-						
-						for (NSString* killboardType in [currentKillLog allValues]) {
-							operation.progress = i++ / n / 2;
-							NSMutableDictionary* category;
-							if ([killboardType isEqualToString:@"kills"])
-								category = kills;
-							else
-								category = losses;
-							
-							for (NSMutableDictionary* section in [currentKillLog valueForKey:killboardType]) {
-								NSString* key = [section valueForKey:@"key"];
-								NSMutableDictionary* dic = [category valueForKey:key];
-								if (!dic) {
-									[category setValue:section forKey:key];
-								}
-								else
-									[[dic valueForKey:@"rows"] addObjectsFromArray:[section valueForKey:@"rows"]];
-							}
-						}
-					}
-					NSArray* sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"kill.killTime" ascending:NO]];
-					for (NSDictionary* section in [kills allValues])
-						[[section valueForKey:@"rows"] sortUsingDescriptors:sortDescriptors];
-					operation.progress = 0.625;
-					for (NSDictionary* section in [losses allValues])
-						[[section valueForKey:@"rows"] sortUsingDescriptors:sortDescriptors];
-					operation.progress = 0.75;
-					
-					sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"daysAgo" ascending:YES]];
-					[currentKillLogTmp setValue:[NSMutableArray arrayWithArray:[[kills allValues] sortedArrayUsingDescriptors:sortDescriptors]] forKey:@"kills"];
-					operation.progress = 0.875;
-					[currentKillLogTmp setValue:[NSMutableArray arrayWithArray:[[losses allValues] sortedArrayUsingDescriptors:sortDescriptors]] forKey:@"losses"];
-					operation.progress = 1.0;
-				}];
-				
-				[operation setCompletionBlockInMainThread:^{
-					if (![operation isCancelled]) {
-						if (currentKillLog) {
-							[currentKillLog removeAllObjects];
-							[currentKillLog addEntriesFromDictionary:currentKillLogTmp];
-						}
-						else {
-							if (corporate)
-								self.corpKillLog = currentKillLogTmp;
-							else
-								self.charKillLog = currentKillLogTmp;
-						}
-						[self filter];
-					}
-					self.loading = NO;
-				}];
-				
-				[[EUOperationQueue sharedQueue] addOperation:operation];
-			}
-		}
-		[error release];
-	}];
-	
-	[[EUOperationQueue sharedQueue] addOperation:operation];
-}
-
-- (void) filter {
-	BOOL corporate = (self.ownerSegmentControl.selectedSegmentIndex == 1);
-	NSMutableDictionary *currentKillLog = corporate ? self.corpKillLog : self.charKillLog;
-	
-	if (!currentKillLog) {
-		[self loadKillLogBeforeKillID:0 corporate:corporate];
-	}
-	else {
-		NSString* killboardType = self.killboardTypeSegmentControl.selectedSegmentIndex == 0 ? @"kills" : @"losses";
-		
-		NSDictionary *filters = corporate ? self.corpFilter : self.charFilter;
-		EUFilter* filter = [filters valueForKey:killboardType];
-		NSMutableArray* sections = [NSMutableArray array];
-		filter = nil;
-		if (filter) {
-			__block EUOperation *operation = [EUOperation operationWithIdentifier:@"KillboardApiViewController+Filter" name:@"Applying Filter"];
-			[operation addExecutionBlock:^(void) {
-				NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-				for (NSDictionary* record in [currentKillLog valueForKey:killboardType]) {
-					NSArray* rows = [filter applyToValues:[record valueForKey:@"rows"]];
-					if (rows.count > 0) {
-						[sections addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:rows, @"rows", [record valueForKey:@"title"], @"title", [record valueForKey:@"daysAgo"], @"daysAgo", nil]];
-					}
-				}
-				[pool release];
-			}];
-			
-			[operation setCompletionBlockInMainThread:^(void) {
-				if (![operation isCancelled]) {
-					if ((self.ownerSegmentControl.selectedSegmentIndex == 1) == corporate) {
-						self.killLog = sections;
-						//						[self searchWithSearchString:self.searchBar.text];
-						[self.tableView reloadData];
-					}
-				}
-			}];
-			[[EUOperationQueue sharedQueue] addOperation:operation];
-		}
-		else {
-			self.killLog = [currentKillLog valueForKey:killboardType];
-		}
-	}
-	[self.tableView reloadData];
-}*/
 
 @end

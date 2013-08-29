@@ -12,7 +12,7 @@
 @implementation ProgressLabel
 
 - (void) awakeFromNib {
-	self.color = self.backgroundColor;
+//	self.color = self.backgroundColor;
 	[super setBackgroundColor:[UIColor clearColor]];
 	self.progress = 0;
 }

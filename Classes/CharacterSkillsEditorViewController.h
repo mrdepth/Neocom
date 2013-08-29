@@ -11,11 +11,7 @@
 #import "Character.h"
 
 @interface CharacterSkillsEditorViewController : UITableViewController<UITextFieldDelegate>
-@property (nonatomic, strong) IBOutlet UINavigationController *modalController;
-@property (nonatomic, weak) IBOutlet UIView *shadowView;
-@property (nonatomic, weak) IBOutlet UIToolbar *characterNameToolbar;
 @property (nonatomic, strong) IBOutlet UITextField *characterNameTextField;
-@property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, strong) id<Character> character;
 
 - (IBAction) onOptions:(id) sender;

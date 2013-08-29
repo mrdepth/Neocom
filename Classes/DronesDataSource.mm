@@ -237,15 +237,15 @@
 
 			[self.fittingViewController update];
 		};
-		
-		[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
-//		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//			[self.popoverController presentPopoverFromRect:[self.tableView rectForRowAtIndexPath:indexPath] inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//		else
-//			[self.self.fittingViewController presentModalViewController:self.fittingItemsViewController.navigationController animated:YES];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.fittingViewController presentViewControllerInPopover:self.fittingViewController.itemsViewController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		else
+			[self.fittingViewController presentViewController:self.fittingViewController.itemsViewController animated:YES completion:nil];
 	}
 	else {
-		//EVEFittingDrone *drone = [rows objectAtIndex:indexPath.row];
 		[self performActionForRowAtIndexPath:indexPath];
 	}
 }
@@ -298,6 +298,10 @@
 		};
 		
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.fittingViewController presentViewControllerInPopover:navigationController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		}
 		else
 			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
@@ -334,11 +338,12 @@
 				}
 			}
 			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
 		};
 		
 		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[controller presentViewControllerInPopover:self.fittingViewController
+			[self.fittingViewController presentViewControllerInPopover:navigationController
 											  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
 												inView:self.tableView
 							  permittedArrowDirections:UIPopoverArrowDirectionAny

@@ -36,15 +36,9 @@
 	NSString *cellIdentifier = @"MessageCellView";
 	
     MessageCellView *cell = (MessageCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-		NSString *nibName;
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			nibName = tableView == self.tableView ? @"MessageCellView" : @"MessageCellViewCompact";
-		else
-			nibName = @"MessageCellView";
-		
-        cell = [MessageCellView cellWithNibName:nibName bundle:nil reuseIdentifier:cellIdentifier];
-    }
+    if (cell == nil)
+        cell = [MessageCellView cellWithNibName:@"MessageCellView" bundle:nil reuseIdentifier:cellIdentifier];
+	
 	EUMailMessage *message = self.messages[indexPath.row];
 	UIFont* font = message.read ?
 		[UIFont systemFontOfSize:cell.subjectLabel.font.pointSize] :
@@ -89,10 +83,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return tableView == self.tableView ? 32 : 54;
-	else
-		return 54;
+	return 54;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

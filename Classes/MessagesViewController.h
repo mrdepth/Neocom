@@ -14,9 +14,9 @@
 
 @class EUMailBox;
 @interface MessagesViewController : UIViewController<MessageGroupsDataSourceDelegate, MessagesDataSourceDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewLeft;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewRight;
 @property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong, nonatomic) IBOutlet MessageGroupsDataSource *messageGroupsDataSource;
 @property (strong, nonatomic) IBOutlet MessagesDataSource *messagesDataSource;
 @property (strong, nonatomic) IBOutlet MessagesDataSource *searchResultsDataSource;

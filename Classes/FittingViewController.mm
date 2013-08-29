@@ -321,6 +321,8 @@
 
 - (void) update {
 	[(FittingDataSource*) self.tableView.dataSource reload];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self.shipStatsDataSource reload];
 }
 
 - (void) setFit:(ShipFit*) value {

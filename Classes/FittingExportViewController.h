@@ -12,6 +12,4 @@
 @interface FittingExportViewController : UIViewController<EUHTTPServerDelegate>
 @property (nonatomic, weak) IBOutlet UILabel *addressLabel;
 
-- (IBAction) onClose:(id)sender;
-
 @end

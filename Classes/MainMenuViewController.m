@@ -26,6 +26,7 @@
 #import "AccessMaskViewController.h"
 #import "UIViewController+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "appearance.h"
 
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
@@ -65,15 +66,11 @@
 	self.title = NSLocalizedString(@"Home", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self.splitViewController]];
-		[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backgroundMenu~ipad.png"]]];
 	}
 	else {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self]];
-		UIImage* image = [UIImage imageNamed:@"background.png"];
-		image = [image resizableImageWithCapInsets:UIEdgeInsetsZero];
-		//[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:image]];
 	}
-	[self.tableView setBackgroundColor:[UIColor colorWithNumber:@(0x1f1e23ff)]];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	
 	self.menuItems = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]]];
 	[self.characterInfoView addSubview:self.characterInfoViewController.view];

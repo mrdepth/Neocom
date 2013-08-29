@@ -150,7 +150,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 1) {
-		__block EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load" name:NSLocalizedString(@"Importing Skill Plan", nil)];
+		EUOperation* operation = [EUOperation operationWithIdentifier:@"SkillPlannerImportViewController+Load" name:NSLocalizedString(@"Importing Skill Plan", nil)];
 		__weak EUOperation* weakOperation = operation;
 		__block SkillPlan* skillPlan = nil;
 		[operation addExecutionBlock:^(void) {

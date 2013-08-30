@@ -146,11 +146,11 @@
 		if (indexPath.section == 1) {
 			if (indexPath.row == 0) {
 				cell.textLabel.text = NSLocalizedString(@"Database", nil);
-				cell.detailTextLabel.text = @"Retribution_1.1_84566";
+				cell.detailTextLabel.text = @"Odyssey_1.0";
 			}
 			else if (indexPath.row == 1) {
 				cell.textLabel.text = NSLocalizedString(@"Images", nil);
-				cell.detailTextLabel.text = @"Retribution_1.1_imgs";
+				cell.detailTextLabel.text = @"Odyssey_1.0_imgs";
 			}
 		}
 		else if (indexPath.section == 2) {

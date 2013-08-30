@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -56,7 +56,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{41, 7}, {300, 30}}</string>
 								<reference key="NSSuperview" ref="19348903"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="206558942"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -92,7 +91,6 @@
 						</object>
 						<string key="NSFrameSize">{382, 44}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="532607947"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -122,7 +120,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 44}, {382, 660}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="253018758"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="166096540">
@@ -144,7 +141,6 @@
 						<int key="NSvFlags">273</int>
 						<string key="NSFrame">{{383, 0}, {320, 704}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="166096540"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -160,7 +156,6 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {703, 704}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="19348903"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -213,7 +208,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{34, 2}, {123, 20}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="690482197"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="932707193">
 							<int key="NSColorSpace">1</int>
@@ -258,7 +252,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="147001291"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -275,7 +268,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{187, 2}, {123, 20}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="967194574"/>
 						<reference key="IBUIBackgroundColor" ref="932707193"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -298,7 +290,6 @@
 						<int key="NSvFlags">260</int>
 						<string key="NSFrame">{{163, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="490340005"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -315,7 +306,6 @@
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 24}, {320, 1}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -328,7 +318,6 @@
 				</object>
 				<string key="NSFrameSize">{320, 25}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="474643074"/>
 				<reference key="IBUIBackgroundColor" ref="166096540"/>
 				<bool key="IBUIOpaque">NO</bool>
@@ -348,7 +337,6 @@
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{237, 30}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -769,245 +757,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">243</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">AssemblyLinesDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AssemblyLinesDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">EUTextField</string>
-					<string key="superclassName">UITextField</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/EUTextField.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">LUISegmentedControl</string>
-					<string key="superclassName">UISegmentedControl</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/LUISegmentedControl.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSFittingDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>posFittingViewController</string>
-							<string>tableHeaderView</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>POSFittingViewController</string>
-							<string>UIView</string>
-							<string>UITableView</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>posFittingViewController</string>
-							<string>tableHeaderView</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">posFittingViewController</string>
-								<string key="candidateClassName">POSFittingViewController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableHeaderView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableView</string>
-								<string key="candidateClassName">UITableView</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSFittingDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSFittingViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>didChangeSection:</string>
-							<string>onBack:</string>
-							<string>onMenu:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>didChangeSection:</string>
-							<string>onBack:</string>
-							<string>onMenu:</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">didChangeSection:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">onBack:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">onMenu:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>assemblyLinesDataSource</string>
-							<string>fitNameTextField</string>
-							<string>sectionSegmentControl</string>
-							<string>statsDataSource</string>
-							<string>structuresDataSource</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>AssemblyLinesDataSource</string>
-							<string>UITextField</string>
-							<string>UISegmentedControl</string>
-							<string>POSStatsDataSource</string>
-							<string>StructuresDataSource</string>
-							<string>UITableView</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>assemblyLinesDataSource</string>
-							<string>fitNameTextField</string>
-							<string>sectionSegmentControl</string>
-							<string>statsDataSource</string>
-							<string>structuresDataSource</string>
-							<string>tableView</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">assemblyLinesDataSource</string>
-								<string key="candidateClassName">AssemblyLinesDataSource</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">fitNameTextField</string>
-								<string key="candidateClassName">UITextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">sectionSegmentControl</string>
-								<string key="candidateClassName">UISegmentedControl</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">statsDataSource</string>
-								<string key="candidateClassName">POSStatsDataSource</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">structuresDataSource</string>
-								<string key="candidateClassName">StructuresDataSource</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tableView</string>
-								<string key="candidateClassName">UITableView</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSFittingViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSStatsDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSStatsDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ProgressLabel</string>
-					<string key="superclassName">UILabel</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ProgressLabel.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StructuresDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cpuLabel</string>
-							<string>powerGridLabel</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>ProgressLabel</string>
-							<string>ProgressLabel</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cpuLabel</string>
-							<string>powerGridLabel</string>
-						</object>
-						<object class="NSArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">cpuLabel</string>
-								<string key="candidateClassName">ProgressLabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">powerGridLabel</string>
-								<string key="candidateClassName">ProgressLabel</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/StructuresDataSource.h</string>
-					</object>
-				</object>
-			</object>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">

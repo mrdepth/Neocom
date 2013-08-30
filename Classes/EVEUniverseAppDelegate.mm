@@ -139,7 +139,7 @@
 
 	UILocalNotification *notification = [launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (notification) {
-		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo forKey:SettingsCurrentAccount];
+		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo[SettingsCurrentCharacterID] forKey:SettingsCurrentCharacterID];
 	}
 	
 	[self.window addSubview:self.controller.view];
@@ -264,7 +264,7 @@
 		[alert show];
 	}
 	else {
-		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo forKey:SettingsCurrentAccount];
+		[[NSUserDefaults standardUserDefaults] setObject:notification.userInfo[SettingsCurrentCharacterID] forKey:SettingsCurrentCharacterID];
 	}
 }
 
@@ -545,7 +545,8 @@
 								UILocalNotification *notification = [[UILocalNotification alloc] init];
 								notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.character.characterName];
 								notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
-#warning TODO
+								notification.userInfo = @{SettingsCurrentCharacterID: @(account.character.characterID)};
+//#warning TODO
 //								notification.userInfo = [account dictionary];
 								[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(scheduleLocalNotification:) withObject:notification waitUntilDone:NO];
 							}

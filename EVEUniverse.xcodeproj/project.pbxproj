@@ -477,8 +477,6 @@
 		12D5F8CC17708CCF0061D57C /* NAPISearchViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12D5F8CA17708CCF0061D57C /* NAPISearchViewController.mm */; };
 		12DED91816BF8C0200C560E5 /* EUMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */; };
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
-		12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31221651047C00C69C5D /* KillMailItemCellView.m */; };
-		12EB31251651049A00C69C5D /* KillMailItemCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31241651049A00C69C5D /* KillMailItemCellView.xib */; };
 		12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31321651274800C69C5D /* KillMailAttackerCellView.m */; };
 		12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */; };
 		12F17D7216707BCC0070B97C /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F17D6D16707BCB0070B97C /* libGoogleAdMobAds.a */; };
@@ -1436,9 +1434,6 @@
 		12DED91716BF8C0200C560E5 /* EUMigrationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EUMigrationManager.mm; sourceTree = "<group>"; };
 		12DEFD83152EC9640076ABC7 /* FittingExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingExportViewController.h; sourceTree = "<group>"; };
 		12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FittingExportViewController.mm; sourceTree = "<group>"; };
-		12EB31211651047C00C69C5D /* KillMailItemCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailItemCellView.h; sourceTree = "<group>"; };
-		12EB31221651047C00C69C5D /* KillMailItemCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailItemCellView.m; sourceTree = "<group>"; };
-		12EB31241651049A00C69C5D /* KillMailItemCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailItemCellView.xib; sourceTree = "<group>"; };
 		12EB31311651274800C69C5D /* KillMailAttackerCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailAttackerCellView.h; sourceTree = "<group>"; };
 		12EB31321651274800C69C5D /* KillMailAttackerCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailAttackerCellView.m; sourceTree = "<group>"; };
 		12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailAttackerCellView.xib; sourceTree = "<group>"; };
@@ -1950,7 +1945,6 @@
 		120B4669164B96A3000C33CE /* KillMailViewController */ = {
 			isa = PBXGroup;
 			children = (
-				12EB311F1651045F00C69C5D /* KillMailItemCellView */,
 				12EB31301651272A00C69C5D /* KillMailAttackerCellView */,
 				12880E11164CDE210072FA13 /* KillMail */,
 				12880E0B164CDC4C0072FA13 /* KillMailViewController.h */,
@@ -3068,16 +3062,6 @@
 				12448F261679CFF400DC90AC /* FittingExportViewController.xib */,
 			);
 			name = FittingExportViewController;
-			sourceTree = "<group>";
-		};
-		12EB311F1651045F00C69C5D /* KillMailItemCellView */ = {
-			isa = PBXGroup;
-			children = (
-				12EB31211651047C00C69C5D /* KillMailItemCellView.h */,
-				12EB31221651047C00C69C5D /* KillMailItemCellView.m */,
-				12EB31241651049A00C69C5D /* KillMailItemCellView.xib */,
-			);
-			name = KillMailItemCellView;
 			sourceTree = "<group>";
 		};
 		12EB31301651272A00C69C5D /* KillMailAttackerCellView */ = {
@@ -4888,7 +4872,6 @@
 				1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */,
 				1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */,
 				12448F541679D1F900DC90AC /* KillMailViewController.xib in Resources */,
-				12EB31251651049A00C69C5D /* KillMailItemCellView.xib in Resources */,
 				12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */,
 				125147E1165224300008AC6B /* KillboardKillNetViewController.xib in Resources */,
 				12448F4B1679D1A200DC90AC /* KillboardKillNetFilterViewController.xib in Resources */,
@@ -5258,7 +5241,6 @@
 				120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */,
 				12880E0E164CDC4C0072FA13 /* KillMailViewController.mm in Sources */,
 				12880E14164CDE350072FA13 /* KillMail.m in Sources */,
-				12EB31231651047C00C69C5D /* KillMailItemCellView.m in Sources */,
 				12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */,
 				125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */,
 				12CE330216524685009C2E1A /* KillboardKillNetFilterViewController.m in Sources */,
@@ -6025,6 +6007,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4B07F058-D066-4A31-8905-BD2F05199CE3";
@@ -6057,6 +6040,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/admob_iphone_sdk\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C234F5F7-8AA7-4BD2-9E86-D670A771AACA";

@@ -27,6 +27,7 @@
 #import "UIViewController+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "appearance.h"
+#import "UIActionSheet+Block.h"
 
 @interface MainMenuViewController()
 @property (nonatomic, strong) UIPopoverController* masterPopover;
@@ -36,6 +37,7 @@
 @property (nonatomic, strong) NSTimer* timer;
 @property (nonatomic, strong) EVEServerStatus* serverStatus;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
+@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 - (void) accountDidSelect:(NSNotification*) notification;
 - (void) didReadMail:(NSNotification*) notification;
@@ -62,7 +64,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.onlineModeSegmentedControl];
 	self.title = NSLocalizedString(@"Home", nil);
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		[self.navigationItem setRightBarButtonItem:[SelectCharacterBarButtonItem barButtonItemWithParentViewController:self.splitViewController]];
@@ -82,7 +83,17 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReadMail:) name:NotificationReadMail object:nil];
 	self.numberOfUnreadMessages = 0;
 	[self loadMail];
-	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
+	
+	double delayInSeconds = 0.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[EVECachedURLRequest isOfflineMode] ? NSLocalizedString(@"Offline", nil) : NSLocalizedString(@"Online", nil)
+																				 style:UIBarButtonItemStyleBordered
+																				target:self
+																				action:@selector(onChangeOnlineMode:)];
+	});
+	
+//	self.onlineModeSegmentedControl.selectedSegmentIndex = [EVECachedURLRequest isOfflineMode] ? 1 : 0;
 	
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
@@ -102,22 +113,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	[self setOnlineModeSegmentedControl:nil];
-    [self setTableHeaderContentView:nil];
-    [self setOnlineLabel:nil];
-    [self setServerTimeLabel:nil];
-    [super viewDidUnload];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[NSObject cancelPreviousPerformRequestsWithTarget:self.characterInfoViewController];
-	self.characterInfoViewController = nil;
-	self.menuItems = nil;
-	self.characterInfoView = nil;
-	self.masterPopover = nil;
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -147,8 +142,29 @@
 }
 
 - (IBAction)onChangeOnlineMode:(id)sender {
-	[EVECachedURLRequest setOfflineMode:self.onlineModeSegmentedControl.selectedSegmentIndex == 1];
-	[[NSUserDefaults standardUserDefaults] setBool:self.onlineModeSegmentedControl.selectedSegmentIndex == 1 forKey:SettingsOfflineMode];
+	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+													 title:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:@[NSLocalizedString(@"Online mode", nil), NSLocalizedString(@"Offline mode", nil)]
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   BOOL offline = selectedButtonIndex == 1;
+												   [EVECachedURLRequest setOfflineMode:offline];
+												   [[NSUserDefaults standardUserDefaults] setBool:offline forKey:SettingsOfflineMode];
+												   [[NSUserDefaults standardUserDefaults] synchronize];
+												   
+												   self.navigationItem.leftBarButtonItem.title = offline ? NSLocalizedString(@"Offline", nil) : NSLocalizedString(@"Online", nil);
+											   }
+											   self.actionSheet = nil;
+										   }
+											   cancelBlock:^{
+												   self.actionSheet = nil;
+											   }];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+//	[EVECachedURLRequest setOfflineMode:self.onlineModeSegmentedControl.selectedSegmentIndex == 1];
+//	[[NSUserDefaults standardUserDefaults] setBool:self.onlineModeSegmentedControl.selectedSegmentIndex == 1 forKey:SettingsOfflineMode];
 }
 
 

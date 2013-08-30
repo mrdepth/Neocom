@@ -266,6 +266,8 @@
 			<integer>0</integer>
 			<key>corpAccessMask</key>
 			<integer>0</integer>
+			<key>modal</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>className</key>
@@ -280,6 +282,8 @@
 			<integer>0</integer>
 			<key>corpAccessMask</key>
 			<integer>0</integer>
+			<key>modal</key>
+			<true/>
 		</dict>
 	</array>
 </array>

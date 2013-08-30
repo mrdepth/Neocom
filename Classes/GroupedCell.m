@@ -20,6 +20,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		self.style = style;
+		self.backgroundColor = [UIColor clearColor];
 		self.textLabel.textColor = [UIColor whiteColor];
 		self.textLabel.shadowColor = [UIColor blackColor];
 		self.textLabel.font = [UIFont systemFontOfSize:12];
@@ -34,6 +35,7 @@
 }
 
 - (void) awakeFromNib {
+	self.backgroundColor = [UIColor clearColor];
 	self.textLabel.textColor = [UIColor whiteColor];
 	self.textLabel.shadowColor = [UIColor blackColor];
 	self.textLabel.font = [UIFont systemFontOfSize:12];

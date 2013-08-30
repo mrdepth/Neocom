@@ -12,7 +12,6 @@
 @interface MainMenuViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate>
 @property (nonatomic, strong) IBOutlet CharacterInfoViewController *characterInfoViewController;
 @property (nonatomic, weak) IBOutlet UIView *characterInfoView;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *onlineModeSegmentedControl;
 @property (nonatomic, strong) NSArray *menuItems;
 @property (weak, nonatomic) IBOutlet UIView *tableHeaderContentView;
 @property (weak, nonatomic) IBOutlet UILabel *onlineLabel;

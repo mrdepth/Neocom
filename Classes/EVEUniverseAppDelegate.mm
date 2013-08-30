@@ -74,8 +74,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[self setupAppearance];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
+	[self setupAppearance];
 	
 	
 	//[[EUStorage sharedStorage] managedObjectContext];
@@ -677,7 +677,10 @@
 - (void) setupAppearance {
 	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
 	[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
-	
+
+	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
+
 	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
 											forState:UIControlStateNormal
 										  barMetrics:UIBarMetricsDefault];
@@ -698,6 +701,8 @@
 	[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
 													  forState:UIControlStateHighlighted
 													barMetrics:UIBarMetricsDefault];
+	
+	[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
 	
 	[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
 											   forState:UIControlStateNormal

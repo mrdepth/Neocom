@@ -74,7 +74,6 @@
 										<string key="NSFrame">{{10, 8}, {300, 30}}</string>
 										<reference key="NSSuperview" ref="5569226"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBSegmentControlStyle">2</int>

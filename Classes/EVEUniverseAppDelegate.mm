@@ -50,6 +50,20 @@
 
 @end
 
+@interface UITableView(Neocom)
+
+- (void) setSeparatorStyleAppearance: (UITableViewCellSeparatorStyle)separatorStyle UI_APPEARANCE_SELECTOR;
+
+@end
+
+@implementation UITableView(Neocom)
+
+- (void) setSeparatorStyleAppearance: (UITableViewCellSeparatorStyle)separatorStyle {
+	self.separatorStyle = separatorStyle;
+}
+
+@end
+
 
 @interface EVEUniverseAppDelegate()<GADBannerViewDelegate>
 @property (nonatomic, strong) GADBannerView *adView;
@@ -705,7 +719,7 @@
 		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	}
 	else {
-		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+		[[UITableView appearance] setSeparatorStyleAppearance:UITableViewCellSeparatorStyleNone];
 //		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
 //		[[UITableView appearance] setSeparatorColor:[UIColor colorWithNumber:AppearanceSeparatorColor]];
 		//[[NSClassFromString(@"UISearchResultsTableView") appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];

@@ -281,10 +281,8 @@
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.png"]];
-	
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	tableView.backgroundView = nil;
+	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 }
 
 #pragma mark - Private

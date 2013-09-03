@@ -8,8 +8,13 @@
 
 #import "Globals.h"
 
+float SYSTEM_VERSION;
 
 @implementation Globals
+
++ (void) initialize {
+	SYSTEM_VERSION = [[[UIDevice currentDevice] systemVersion] floatValue];
+}
 
 + (NSString*) documentsDirectory {
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];

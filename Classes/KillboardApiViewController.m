@@ -266,7 +266,6 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundView = nil;
 	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {

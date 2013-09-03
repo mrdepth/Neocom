@@ -23,6 +23,7 @@
 #import "UIColor+NSNumber.h"
 #import "EVEAccountsManager.h"
 #import "FitCharacter.h"
+#import "appearance.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 
@@ -676,34 +677,51 @@
 }
 
 - (void) setupAppearance {
+	if (SYSTEM_VERSION < 7) {
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateNormal
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateHighlighted
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDone.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateNormal
+												   style:UIBarButtonItemStyleDone
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDoneSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateHighlighted
+												   style:UIBarButtonItemStyleDone
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+														  forState:UIControlStateNormal
+														barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+														  forState:UIControlStateHighlighted
+														barMetrics:UIBarMetricsDefault];
+		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+	}
+	else {
+		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+//		[[UITableView appearance] setSeparatorColor:[UIColor colorWithNumber:AppearanceSeparatorColor]];
+		//[[NSClassFromString(@"UISearchResultsTableView") appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+		[self.window setValue:[UIColor whiteColor] forKey:@"tintColor"];
+//		[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+		//[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont systemFontOfSize:14]} forState:UIControlStateNormal];
+		//[[UIBarButtonItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, 4) forBarMetrics:UIBarMetricsDefault];
+	}
+	
+	[[UINavigationBar appearance] setBarStyle:UIBarStyleDefault];
 	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
 	[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
 
 	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
 
-	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
-											forState:UIControlStateNormal
-										  barMetrics:UIBarMetricsDefault];
-	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
-											forState:UIControlStateHighlighted
-										  barMetrics:UIBarMetricsDefault];
-	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDone.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
-											forState:UIControlStateNormal
-											   style:UIBarButtonItemStyleDone
-										  barMetrics:UIBarMetricsDefault];
-	[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDoneSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
-											forState:UIControlStateHighlighted
-											   style:UIBarButtonItemStyleDone
-										  barMetrics:UIBarMetricsDefault];
-	[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
-													  forState:UIControlStateNormal
-													barMetrics:UIBarMetricsDefault];
-	[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
-													  forState:UIControlStateHighlighted
-													barMetrics:UIBarMetricsDefault];
+	//[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -2) forBarMetrics:UIBarMetricsDefault];
+	//[[UIBarButtonItem appearance] setBackButtonBackgroundVerticalPositionAdjustment:1 forBarMetrics:UIBarMetricsDefault];
 	
-	[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+	
 	
 	[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
 											   forState:UIControlStateNormal

@@ -211,6 +211,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	//NSLog(@"%@", [tableView class]);
 	EVEAssetListItem* asset;
 	
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
@@ -277,7 +278,6 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundView = nil;
 	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchBarBookmarkButtonClicked:(UISearchBar *)aSearchBar {

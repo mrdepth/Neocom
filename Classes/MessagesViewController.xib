@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11G63</string>
-		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.51</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4504</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">2083</string>
+			<string key="NS.object.0">3734.1</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -35,7 +35,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="893756222">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUITableView" id="856812761">
@@ -43,7 +43,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 568}</string>
 						<reference key="NSSuperview" ref="893756222"/>
-						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -61,8 +60,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 568}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="856812761"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
@@ -86,7 +83,7 @@
 						</array>
 					</object>
 					<string key="IBUITargetRuntime">IBCocoaTouchFramework</string>
-					<string key="IBUIDisplayName">Retina 4 Full Screen</string>
+					<string key="IBUIDisplayName">Retina 4-inch Full Screen</string>
 					<int key="IBUIType">2</int>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -104,11 +101,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUISearchBar" id="486260790">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<int key="IBUIContentMode">3</int>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBBarStyle">1</int>
@@ -120,6 +115,7 @@
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
+			<bool key="usesAutoincrementingIDs">NO</bool>
 			<array class="NSMutableArray" key="connectionRecords">
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -127,7 +123,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="705638350"/>
 					</object>
-					<int key="connectionID">25</int>
+					<string key="id">25</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -135,7 +131,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="818682677"/>
 					</object>
-					<int key="connectionID">40</int>
+					<string key="id">40</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -143,7 +139,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="486260790"/>
 					</object>
-					<int key="connectionID">26</int>
+					<string key="id">26</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -151,7 +147,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="893756222"/>
 					</object>
-					<int key="connectionID">43</int>
+					<string key="id">43</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -159,7 +155,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="703724580"/>
 					</object>
-					<int key="connectionID">49</int>
+					<string key="id">49</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -167,7 +163,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="799662211"/>
 					</object>
-					<int key="connectionID">53</int>
+					<string key="id">53</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -175,7 +171,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="856812761"/>
 					</object>
-					<int key="connectionID">56</int>
+					<string key="id">56</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -183,7 +179,7 @@
 						<reference key="source" ref="705638350"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">32</int>
+					<string key="id">32</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -191,7 +187,7 @@
 						<reference key="source" ref="705638350"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">33</int>
+					<string key="id">33</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -199,7 +195,7 @@
 						<reference key="source" ref="705638350"/>
 						<reference key="destination" ref="486260790"/>
 					</object>
-					<int key="connectionID">20</int>
+					<string key="id">20</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -207,7 +203,7 @@
 						<reference key="source" ref="705638350"/>
 						<reference key="destination" ref="799662211"/>
 					</object>
-					<int key="connectionID">54</int>
+					<string key="id">54</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -215,7 +211,7 @@
 						<reference key="source" ref="705638350"/>
 						<reference key="destination" ref="799662211"/>
 					</object>
-					<int key="connectionID">55</int>
+					<string key="id">55</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -223,7 +219,7 @@
 						<reference key="source" ref="856812761"/>
 						<reference key="destination" ref="818682677"/>
 					</object>
-					<int key="connectionID">39</int>
+					<string key="id">39</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -231,7 +227,7 @@
 						<reference key="source" ref="856812761"/>
 						<reference key="destination" ref="818682677"/>
 					</object>
-					<int key="connectionID">41</int>
+					<string key="id">41</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -239,7 +235,7 @@
 						<reference key="source" ref="486260790"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">27</int>
+					<string key="id">27</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -247,7 +243,7 @@
 						<reference key="source" ref="818682677"/>
 						<reference key="destination" ref="856812761"/>
 					</object>
-					<int key="connectionID">38</int>
+					<string key="id">38</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -255,7 +251,7 @@
 						<reference key="source" ref="818682677"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">44</int>
+					<string key="id">44</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -263,7 +259,7 @@
 						<reference key="source" ref="703724580"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">47</int>
+					<string key="id">47</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -271,7 +267,7 @@
 						<reference key="source" ref="703724580"/>
 						<reference key="destination" ref="856812761"/>
 					</object>
-					<int key="connectionID">48</int>
+					<string key="id">48</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -279,45 +275,45 @@
 						<reference key="source" ref="799662211"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">52</int>
+					<string key="id">52</string>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
-						<int key="objectID">0</int>
+						<string key="id">0</string>
 						<reference key="object" ref="0"/>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">-1</int>
+						<string key="id">-1</string>
 						<reference key="object" ref="372490531"/>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">File's Owner</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">-2</int>
+						<string key="id">-2</string>
 						<reference key="object" ref="975951072"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">5</int>
+						<string key="id">5</string>
 						<reference key="object" ref="705638350"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">37</int>
+						<string key="id">37</string>
 						<reference key="object" ref="818682677"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">11</int>
+						<string key="id">11</string>
 						<reference key="object" ref="486260790"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">42</int>
+						<string key="id">42</string>
 						<reference key="object" ref="893756222"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="856812761"/>
@@ -325,17 +321,17 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">7</int>
+						<string key="id">7</string>
 						<reference key="object" ref="856812761"/>
 						<reference key="parent" ref="893756222"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">46</int>
+						<string key="id">46</string>
 						<reference key="object" ref="703724580"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">50</int>
+						<string key="id">50</string>
 						<reference key="object" ref="799662211"/>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -376,116 +372,21 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">56</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">CollapsableTableView</string>
-					<string key="superclassName">UITableView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CollapsableTableView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MessageGroupsDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="delegate">id</string>
-						<string key="tableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="delegate">
-							<string key="name">delegate</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MessageGroupsDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MessagesDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="delegate">id</string>
-						<string key="tableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="delegate">
-							<string key="name">delegate</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MessagesDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MessagesViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">markAsRead:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">markAsRead:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">markAsRead:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="messageGroupsDataSource">MessageGroupsDataSource</string>
-						<string key="messagesDataSource">MessagesDataSource</string>
-						<string key="searchBar">UISearchBar</string>
-						<string key="searchResultsDataSource">MessagesDataSource</string>
-						<string key="tableViewLeft">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="messageGroupsDataSource">
-							<string key="name">messageGroupsDataSource</string>
-							<string key="candidateClassName">MessageGroupsDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="messagesDataSource">
-							<string key="name">messagesDataSource</string>
-							<string key="candidateClassName">MessagesDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="searchBar">
-							<string key="name">searchBar</string>
-							<string key="candidateClassName">UISearchBar</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="searchResultsDataSource">
-							<string key="name">searchResultsDataSource</string>
-							<string key="candidateClassName">MessagesDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableViewLeft">
-							<string key="name">tableViewLeft</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/MessagesViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
+		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1536" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
+			<integer value="4600" key="NS.object.0"/>
+		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">2083</string>
+		<string key="IBCocoaTouchPluginVersion">3734.1</string>
 	</data>
 </archive>

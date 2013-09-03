@@ -11,7 +11,6 @@
 #import "UIImageView+URL.h"
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
-#import "KillMailItemCellView.h"
 #import "KillMailAttackerCellView.h"
 #import "UITableViewCell+Nib.h"
 #import "FittingViewController.h"

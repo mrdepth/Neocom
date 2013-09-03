@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">11E53</string>
-		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1138.47</string>
-		<string key="IBDocument.HIToolboxVersion">569.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4504</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">2083</string>
+			<string key="NS.object.0">3734.1</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -46,7 +46,6 @@
 								<string key="NSFrame">{{10, 0}, {300, 60}}</string>
 								<reference key="NSSuperview" ref="1012390462"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -73,7 +72,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 									<double key="pointSize">12</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica</string>
+									<string key="NSName">HelveticaNeue</string>
 									<double key="NSSize">12</double>
 									<int key="NSfFlags">16</int>
 								</object>
@@ -112,6 +111,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
+			<bool key="usesAutoincrementingIDs">NO</bool>
 			<array class="NSMutableArray" key="connectionRecords">
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -119,7 +119,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="144938050"/>
 					</object>
-					<int key="connectionID">23</int>
+					<string key="id">23</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -127,7 +127,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="source" ref="144938050"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">13</int>
+					<string key="id">13</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -135,30 +135,30 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="source" ref="144938050"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">12</int>
+					<string key="id">12</string>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
-						<int key="objectID">0</int>
+						<string key="id">0</string>
 						<array key="object" id="0"/>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">-1</int>
+						<string key="id">-1</string>
 						<reference key="object" ref="372490531"/>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">File's Owner</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">-2</int>
+						<string key="id">-2</string>
 						<reference key="object" ref="975951072"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">6</int>
+						<string key="id">6</string>
 						<reference key="object" ref="144938050"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="1012390462"/>
@@ -166,7 +166,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">21</int>
+						<string key="id">21</string>
 						<reference key="object" ref="1012390462"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="796081066"/>
@@ -174,7 +174,7 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 						<reference key="parent" ref="144938050"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">22</int>
+						<string key="id">22</string>
 						<reference key="object" ref="796081066"/>
 						<reference key="parent" ref="1012390462"/>
 					</object>
@@ -194,7 +194,6 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -209,17 +208,6 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 				<object class="IBPartialClassDescription">
 					<string key="className">SkillPlannerImportViewController</string>
 					<string key="superclassName">UITableViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">onClose:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">onClose:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">onClose:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SkillPlannerImportViewController.h</string>
@@ -229,8 +217,17 @@ bmcgbGlua3Mgb24gdGhlIFBDOg</string>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
+		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1536" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
+			<integer value="4600" key="NS.object.0"/>
+		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">2083</string>
+		<string key="IBCocoaTouchPluginVersion">3734.1</string>
 	</data>
 </archive>

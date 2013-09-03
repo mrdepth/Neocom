@@ -482,6 +482,7 @@
 		12F17D7216707BCC0070B97C /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F17D6D16707BCB0070B97C /* libGoogleAdMobAds.a */; };
 		12F17D7316707BCC0070B97C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12F17D6E16707BCB0070B97C /* README.txt */; };
 		12F17D7516707C6A0070B97C /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F17D7416707C670070B97C /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12FDFB2317D5BC0A0063FAB2 /* NSObject+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */; };
 		12FE0C4F165A258B002E467E /* KillNetFilterDateViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */; };
 		12FE0C55165A2CA5002E467E /* KillboardCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */; };
@@ -1449,6 +1450,8 @@
 		12F17D6D16707BCB0070B97C /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		12F17D6E16707BCB0070B97C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		12F17D7416707C670070B97C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		12FDFB2117D5BC0A0063FAB2 /* NSObject+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Debug.h"; sourceTree = "<group>"; };
+		12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Debug.m"; sourceTree = "<group>"; };
 		12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "KillNetFilterDateViewController~ipad.xib"; sourceTree = "<group>"; };
 		12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "KillboardCellView~ipad.xib"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1958,6 +1961,7 @@
 		120B466B164B9995000C33CE /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				12FDFB1F17D5BBF50063FAB2 /* Debug */,
 				71C670B417C112DB00B0C853 /* ASCollectionView */,
 				71C670B017C0C9D900B0C853 /* ASCaptionTextField */,
 				128A63751782ADCA00229BB0 /* Retina4 */,
@@ -3090,6 +3094,15 @@
 				12F17D6E16707BCB0070B97C /* README.txt */,
 			);
 			path = admob_iphone_sdk;
+			sourceTree = "<group>";
+		};
+		12FDFB1F17D5BBF50063FAB2 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				12FDFB2117D5BC0A0063FAB2 /* NSObject+Debug.h */,
+				12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */,
+			);
+			path = Debug;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -4716,7 +4729,12 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0500;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = YB4RLQ4M9A;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "EVEUniverse" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -5290,6 +5308,7 @@
 				12774DAD177032C100E98F8C /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
 				12774DAE177032C100E98F8C /* EVEDBInvGroup.m in Sources */,
 				12774DAF177032C100E98F8C /* EVEDBInvMarketGroup.m in Sources */,
+				12FDFB2317D5BC0A0063FAB2 /* NSObject+Debug.m in Sources */,
 				12774DB0177032C100E98F8C /* EVEDBInvMetaGroup.m in Sources */,
 				12774DB1177032C100E98F8C /* EVEDBInvType+ControlTower.m in Sources */,
 				12774DB2177032C100E98F8C /* EVEDBInvType+Installation.m in Sources */,
@@ -5986,7 +6005,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "";
@@ -6022,7 +6040,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "";
@@ -6055,13 +6072,13 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Don't Code Sign";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -6070,13 +6087,12 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};

@@ -7,6 +7,8 @@
 //
 
 #import "GroupedCell.h"
+#import "appearance.h"
+#import "Globals.h"
 
 @interface GroupedCell()
 @property (nonatomic, assign) UITableViewCellStyle style;
@@ -20,7 +22,16 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		self.style = style;
+
 		self.backgroundColor = [UIColor clearColor];
+/*		if (SYSTEM_VERSION >= 7) {
+			self.backgroundView = [UIView new];
+			self.backgroundView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+			self.selectedBackgroundView = [UIView new];
+			self.selectedBackgroundView.backgroundColor = [UIColor colorWithNumber:AppearanceSelectedBackgroundColor];
+			self.backgroundView.layer.zPosition = -1;
+		}*/
+
 		self.textLabel.textColor = [UIColor whiteColor];
 		self.textLabel.shadowColor = [UIColor blackColor];
 		self.textLabel.font = [UIFont systemFontOfSize:12];
@@ -36,6 +47,13 @@
 
 - (void) awakeFromNib {
 	self.backgroundColor = [UIColor clearColor];
+/*	if (SYSTEM_VERSION >= 7) {
+		self.backgroundView = [UIView new];
+		self.backgroundView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
+		self.selectedBackgroundView = [UIView new];
+		self.selectedBackgroundView.backgroundColor = [UIColor colorWithNumber:AppearanceSelectedBackgroundColor];
+	}*/
+
 	self.textLabel.textColor = [UIColor whiteColor];
 	self.textLabel.shadowColor = [UIColor blackColor];
 	self.textLabel.font = [UIFont systemFontOfSize:12];
@@ -47,49 +65,49 @@
 	self.detailTextLabel.backgroundColor = [UIColor clearColor];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 - (void) setGroupStyle:(GroupedCellGroupStyle)groupStyle {
-	_groupStyle = groupStyle;
-	UIImage* backgroundImage = nil;
-	UIImage* selectedBackgroundImage = nil;
-	UIEdgeInsets edgeInsets;
-	
-	if (groupStyle == GroupedCellGroupStyleTop) {
-		backgroundImage = [UIImage imageNamed:@"cellGroupedTop.png"];
-		selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedTopSelected.png"];
-		edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height * 2.0 / 3.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 3.0, backgroundImage.size.width / 2.0);
-	}
-	else if (groupStyle == GroupedCellGroupStyleBottom) {
-		backgroundImage = [UIImage imageNamed:@"cellGroupedBottom.png"];
-		selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedBottomSelected.png"];
-		edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 3.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height * 2.0 / 3.0, backgroundImage.size.width / 2.0);
-	}
-	else if (groupStyle == GroupedCellGroupStyleMiddle) {
-		backgroundImage = [UIImage imageNamed:@"cellGroupedMiddle.png"];
-		selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedMiddleSelected.png"];
-		edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 2.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 2.0, backgroundImage.size.width / 2.0);
-	}
-	else {
-		backgroundImage = [UIImage imageNamed:@"cellGrouped.png"];
-		selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedSelected.png"];
-		edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 2.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 2.0, backgroundImage.size.width / 2.0);
-	}
-
-	backgroundImage = [backgroundImage resizableImageWithCapInsets:edgeInsets];
-	selectedBackgroundImage = [selectedBackgroundImage resizableImageWithCapInsets:edgeInsets];
-
-	self.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-	self.selectedBackgroundView = [[UIImageView alloc] initWithImage:selectedBackgroundImage];
+	//if (SYSTEM_VERSION < 7) {
+		_groupStyle = groupStyle;
+		UIImage* backgroundImage = nil;
+		UIImage* selectedBackgroundImage = nil;
+		UIEdgeInsets edgeInsets;
+		
+		if (groupStyle == GroupedCellGroupStyleTop) {
+			backgroundImage = [UIImage imageNamed:@"cellGroupedTop.png"];
+			selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedTopSelected.png"];
+			edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height * 2.0 / 3.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 3.0, backgroundImage.size.width / 2.0);
+		}
+		else if (groupStyle == GroupedCellGroupStyleBottom) {
+			backgroundImage = [UIImage imageNamed:@"cellGroupedBottom.png"];
+			selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedBottomSelected.png"];
+			edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 3.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height * 2.0 / 3.0, backgroundImage.size.width / 2.0);
+		}
+		else if (groupStyle == GroupedCellGroupStyleMiddle) {
+			backgroundImage = [UIImage imageNamed:@"cellGroupedMiddle.png"];
+			selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedMiddleSelected.png"];
+			edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 2.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 2.0, backgroundImage.size.width / 2.0);
+		}
+		else {
+			backgroundImage = [UIImage imageNamed:@"cellGrouped.png"];
+			selectedBackgroundImage = [UIImage imageNamed:@"cellGroupedSelected.png"];
+			edgeInsets = UIEdgeInsetsMake(backgroundImage.size.height / 2.0 - 1, backgroundImage.size.width / 2.0 - 1, backgroundImage.size.height / 2.0, backgroundImage.size.width / 2.0);
+		}
+		
+		backgroundImage = [backgroundImage resizableImageWithCapInsets:edgeInsets resizingMode:UIImageResizingModeStretch];
+		selectedBackgroundImage = [selectedBackgroundImage resizableImageWithCapInsets:edgeInsets];
+		
+		self.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+		self.selectedBackgroundView = [[UIImageView alloc] initWithImage:selectedBackgroundImage];
+	self.backgroundView.layer.zPosition = -1;
+	self.selectedBackgroundView.layer.zPosition = -1;
+	//}
 }
 
 - (void) layoutSubviews {
 	[super layoutSubviews];
+	self.textLabel.backgroundColor = [UIColor clearColor];
+	self.detailTextLabel.backgroundColor = [UIColor clearColor];
+
 	if (self.imageView.image) {
 		CGFloat indentationOffset = self.indentationLevel * 10;
 		self.imageView.frame = CGRectMake(4 + indentationOffset, 4, 32, 32);
@@ -133,7 +151,19 @@
 				self.textLabel.frame = frame;
 			}
 		}
+		else {
+			if (self.textLabel.text.length > 0) {
+				CGRect frame = self.textLabel.frame;
+				CGFloat maxX = CGRectGetMaxX(frame);
+				frame.origin.x = 40 + indentationOffset;
+				frame.size.width = maxX - frame.origin.x;
+				self.textLabel.frame = frame;
+			}
+		}
+
 	}
+	if (SYSTEM_VERSION >= 7)
+			self.separatorInset = UIEdgeInsetsMake(0, 40, 0, 0);
 }
 
 @end

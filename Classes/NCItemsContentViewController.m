@@ -206,7 +206,6 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundView = nil;
 	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
-	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 #pragma mark - Private

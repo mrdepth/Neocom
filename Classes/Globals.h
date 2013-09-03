@@ -53,3 +53,5 @@
 + (EVEUniverseAppDelegate*) appDelegate;
 
 @end
+
+extern float SYSTEM_VERSION;

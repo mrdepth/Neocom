@@ -16,6 +16,7 @@
 #import "NSArray+GroupBy.h"
 #include "eufe.h"
 #import "EUStorage.h"
+#import "appearance.h"
 
 @interface FittingExportViewController ()
 @property(nonatomic, strong) EUHTTPServer *server;
@@ -43,6 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	[self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
 	self.title = NSLocalizedString(@"Export", nil);
 	

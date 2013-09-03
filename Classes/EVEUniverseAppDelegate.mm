@@ -24,8 +24,10 @@
 #import "EVEAccountsManager.h"
 #import "FitCharacter.h"
 #import "appearance.h"
+#import "NCURLCache.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
+#define NSURLCacheMemoryCapacity (1024*1024*50)
 
 @interface UISearchBar(Neocom)
 @property (nonatomic, strong) UIColor* textColor UI_APPEARANCE_SELECTOR;
@@ -75,6 +77,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	NCURLCache* cache = [[NCURLCache alloc] initWithMemoryCapacity:NSURLCacheMemoryCapacity diskCapacity:NSURLCacheDiskCapacity diskPath:@"NCURLCache"];
+	[NSURLCache setSharedURLCache:cache];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
 	[self setupAppearance];
 	

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1203382317D60F8300C9C0AB /* NCURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203382217D60F8300C9C0AB /* NCURLCache.m */; };
 		1203571016B68B740015706B /* ShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570716B68A3E0015706B /* ShipFit.mm */; };
 		1203985816537336008F047B /* KillNetFilterDBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203985616537336008F047B /* KillNetFilterDBViewController.m */; };
 		1203985916537336008F047B /* KillNetFilterDBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1203985716537336008F047B /* KillNetFilterDBViewController.xib */; };
@@ -750,6 +751,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1203382117D60F8300C9C0AB /* NCURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCURLCache.h; sourceTree = "<group>"; };
+		1203382217D60F8300C9C0AB /* NCURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCURLCache.m; sourceTree = "<group>"; };
 		1203570616B68A3E0015706B /* ShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipFit.h; sourceTree = "<group>"; };
 		1203570716B68A3E0015706B /* ShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShipFit.mm; sourceTree = "<group>"; };
 		1203570C16B68A3F0015706B /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
@@ -3958,6 +3961,8 @@
 				71F3A1C1179DF2EF00ABD7F5 /* EUTextField.m */,
 				71B4989217AD052100B98B59 /* UIActionSheet+Neocom.h */,
 				71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */,
+				1203382117D60F8300C9C0AB /* NCURLCache.h */,
+				1203382217D60F8300C9C0AB /* NCURLCache.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -5154,6 +5159,7 @@
 				717B184712F4B523009DDE48 /* RSSFeedViewController.m in Sources */,
 				717B184C12F4B53F009DDE48 /* RSSFeedCellView.m in Sources */,
 				717B190312F4C353009DDE48 /* RSSViewController.m in Sources */,
+				1203382317D60F8300C9C0AB /* NCURLCache.m in Sources */,
 				717F6BC712F9A32D00BEA1E5 /* ItemViewController.m in Sources */,
 				718348DF12FC062400AEC222 /* MarketInfoCellView.m in Sources */,
 				718C49AE13004D7800C2A5A2 /* AboutViewController.m in Sources */,

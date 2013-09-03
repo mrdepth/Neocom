@@ -367,6 +367,7 @@
 				}
 			}
 			[self.posFittingViewController update];
+			[self.posFittingViewController dismiss];
 		};
 		
 		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -377,7 +378,7 @@
 							  permittedArrowDirections:UIPopoverArrowDirectionAny
 											  animated:YES];
 		else {
-			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self.posFittingViewController action:@selector(dismiss)];
 			[self.posFittingViewController presentViewController:navigationController animated:YES completion:nil];
 		}
 	};

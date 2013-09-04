@@ -92,7 +92,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:SettingsNoAds];
 	NCURLCache* cache = [[NCURLCache alloc] initWithMemoryCapacity:NSURLCacheMemoryCapacity diskCapacity:NSURLCacheDiskCapacity diskPath:@"NCURLCache"];
 	[NSURLCache setSharedURLCache:cache];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
@@ -231,6 +230,7 @@
 		[EVEAccountsManager setSharedManager:manager];
 		if (account)
 			[EVEAccount setCurrentAccount:account];
+		[self updateNotifications];
 	}];
 	
 	[loadingAccountsOperation addDependency:operation];
@@ -260,16 +260,19 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	EVEAccount* account = [EVEAccount currentAccount];
-	if (account) {// && [self.resignActiveTime timeIntervalSinceNow] < -60 * 60 * 30) {
-		EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+applicationDidBecomeActive" name:NSLocalizedString(@"Updating Account Information", nil)];
-		[operation addExecutionBlock:^{
-			[account reload];
-		}];
-		
-		[operation setCompletionBlockInMainThread:^{
-		}];
-		[[EUOperationQueue sharedQueue] addOperation:operation];
+	if([self.resignActiveTime timeIntervalSinceNow] < -60 * 30) {
+		EVEAccount* account = [EVEAccount currentAccount];
+		if (account) {
+			EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+applicationDidBecomeActive" name:NSLocalizedString(@"Updating Account Information", nil)];
+			[operation addExecutionBlock:^{
+				[account reload];
+			}];
+			
+			[operation setCompletionBlockInMainThread:^{
+			}];
+			[[EUOperationQueue sharedQueue] addOperation:operation];
+		}
+		[self updateNotifications];
 	}
 }
 

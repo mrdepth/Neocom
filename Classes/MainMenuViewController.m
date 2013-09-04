@@ -210,11 +210,11 @@
 	if ((account.charAPIKey.apiKeyInfo.key.accessMask & charAccessMask) != charAccessMask &&
 		(account.corpAPIKey.apiKeyInfo.key.accessMask & corpAccessMask) != corpAccessMask) {
 		if (corpAccessMask > 0 && charAccessMask < 0 && !account.corpAPIKey)
-			cell.detailTextLabel.text = NSLocalizedString(@"Add corp API Key", nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"Requires a corp API key", nil);
 		else if (charAccessMask > 0 && corpAccessMask > 0 && !account.charAPIKey && !account.corpAPIKey)
-			cell.detailTextLabel.text = NSLocalizedString(@"Add char or corp API Key", nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"Requires an API key", nil);
 		else if (charAccessMask > 0 && corpAccessMask < 0 && !account.corpAPIKey)
-			cell.detailTextLabel.text = NSLocalizedString(@"Add char API Key", nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"Requires a char API key", nil);
 		else {
 			if (charAccessMask > 0)
 				cell.detailTextLabel.text = NSLocalizedString(@"Invalid char access mask", nil);

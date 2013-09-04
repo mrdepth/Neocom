@@ -251,6 +251,13 @@
 		[self.navigationController pushViewController:controller animated:YES];
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.section == 0)
+		return [NSIndexPath indexPathForRow:0 inSection:1];
+	else
+		return proposedDestinationIndexPath;
+}
+
 #pragma mark SkillPlannerImportViewControllerDelegate
 - (void) skillPlannerImportViewController:(SkillPlannerImportViewController*) controller didSelectSkillPlan:(SkillPlan*) aSkillPlan {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

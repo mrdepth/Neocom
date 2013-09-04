@@ -192,9 +192,11 @@
 			self.adView.rootViewController = self.controller;
 			//[self.controller.view addSubview:self.adView];
 		}
-		self.adView.adUnitID = @"a14d501062a8c09";
+		//self.adView.adUnitID = @"a14d501062a8c09";
+		self.adView.adUnitID = @"3822eeab0e184c8f";
 		self.adView.delegate = self;
 		GADRequest *request = [GADRequest request];
+		request.testDevices = @[GAD_SIMULATOR_ID];
 		[self.adView loadRequest:request];
 		
 	}
@@ -540,7 +542,7 @@
 - (void) updateNotifications {
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-	__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:NSLocalizedString(@"Updating Notifications", nil)];
+	EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+updateNotifications" name:NSLocalizedString(@"Updating Notifications", nil)];
 	__weak EUOperation* weakOperation = operation;
 	[operation addExecutionBlock:^(void) {
 		if ([weakOperation isCancelled])
@@ -565,8 +567,6 @@
 								notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.character.characterName];
 								notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
 								notification.userInfo = @{SettingsCurrentCharacterID: @(account.character.characterID)};
-//#warning TODO
-//								notification.userInfo = [account dictionary];
 								[[UIApplication sharedApplication] performSelectorOnMainThread:@selector(scheduleLocalNotification:) withObject:notification waitUntilDone:NO];
 							}
 						}
@@ -627,7 +627,7 @@
 	[dna replaceOccurrencesOfString:@"fitting:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, dna.length)];
 	
 	FittingViewController *fittingViewController = [[FittingViewController alloc] initWithNibName:@"FittingViewController" bundle:nil];
-	__block EUOperation* operation = [EUOperation operationWithIdentifier:@"AssetContentsViewController+OpenFit" name:NSLocalizedString(@"Loading Ship Fit", nil)];
+	EUOperation* operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+openFitWithURL" name:NSLocalizedString(@"Loading Ship Fit", nil)];
 	__weak EUOperation* weakOperation = operation;
 	__block ShipFit* fit = nil;
 	__block eufe::Character* character = NULL;

@@ -5,6 +5,22 @@
 	<array>
 		<dict>
 			<key>className</key>
+			<string>CharacterSheetViewController</string>
+			<key>nibName</key>
+			<string>CharacterSheetViewController</string>
+			<key>title</key>
+			<string>Characer Sheet</string>
+			<key>image</key>
+			<string>Icons/icon02_16.png</string>
+			<key>charAccessMask</key>
+			<integer>16777224</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+			<key>modal</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>className</key>
 			<string>SkillsViewController</string>
 			<key>nibName</key>
 			<string>SkillsViewController</string>

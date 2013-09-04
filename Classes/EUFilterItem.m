@@ -38,7 +38,7 @@
 }
 
 - (NSPredicate*) predicate {
-	NSMutableSet *selectedValues = [NSMutableArray array];
+	NSMutableArray *selectedValues = [NSMutableArray array];
 	for (EUFilterItemValue *value in self.values)
 		if (value.enabled)
 			[selectedValues addObject:value.value];

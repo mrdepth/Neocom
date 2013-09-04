@@ -56,21 +56,23 @@
 				[self.outputData replaceBytesInRange:NSMakeRange(0, len) withBytes:NULL length:0];
 				if (self.outputData.length == 0)
 					[self.delegate httpResponse:self didCompleteWithError:nil];
-				[self.outputStream close];
-				self.outputStream = nil;
+				else {
+					[self.outputStream close];
+					self.outputStream = nil;
+				}
 			}
 			break;
 		}
 		case NSStreamEventErrorOccurred: {
 			[self.delegate httpResponse:self didCompleteWithError:[self.outputStream streamError]];
-			[self.outputStream close];
-			self.outputStream = nil;
+	//		[self.outputStream close];
+	//		self.outputStream = nil;
 			break;
 		}
 		case NSStreamEventEndEncountered: {
 			[self.delegate httpResponse:self didCompleteWithError:nil];
-			[self.outputStream close];
-			self.outputStream = nil;
+//			[self.outputStream close];
+//			self.outputStream = nil;
 		}
 		default:
 			break;

@@ -81,6 +81,7 @@
 - (void) configureCloudWithCompletionHandler:(void(^)()) completionHandler;
 - (void) setupAppearance;
 - (void) accountDidSelect:(NSNotification*) notification;
+- (void) removeAds;
 @end
 
 @implementation EVEUniverseAppDelegate
@@ -91,6 +92,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:SettingsNoAds];
 	NCURLCache* cache = [[NCURLCache alloc] initWithMemoryCapacity:NSURLCacheMemoryCapacity diskCapacity:NSURLCacheDiskCapacity diskPath:@"NCURLCache"];
 	[NSURLCache setSharedURLCache:cache];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];
@@ -503,6 +505,10 @@
 	adView.hidden = NO;
 }
 
+- (void)adViewDidDismissScreen:(GADBannerView *)adView {
+	adView.hidden = NO;
+}
+
 #pragma mark - Private
 
 - (void) loadAccounts {
@@ -514,8 +520,7 @@
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-	[self.adView removeFromSuperview];
-	self.adView = nil;
+	[self removeAds];
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
 }
@@ -525,8 +530,7 @@
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:SettingsNoAds];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-	[self.adView removeFromSuperview];
-	self.adView = nil;
+	[self removeAds];
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 	[alertView show];
 }
@@ -779,6 +783,21 @@
 		[[NSUserDefaults standardUserDefaults] setInteger:account.character.characterID forKey:SettingsCurrentCharacterID];
 	else
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentCharacterID];
+}
+
+- (void) removeAds {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		[self.adView removeFromSuperview];
+		self.adView = nil;
+	}
+	else {
+		if (self.adView) {
+			UIView* contentView = [self.window.rootViewController valueForKey:@"navigationTransitionView"];
+			contentView.frame = contentView.superview.bounds;
+			[self.adView removeFromSuperview];
+			self.adView = nil;
+		}
+	}
 }
 
 @end

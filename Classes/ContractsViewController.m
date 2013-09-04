@@ -379,12 +379,10 @@
 					
 					NSString *statusString = [contract localizedStatusString];
 					BOOL finished;
-					NSDate* endDate = nil;
 					if (contract.status <= EVEContractStatusCompletedByContractor) {
 						finished = YES;
 						remains = [NSString stringWithFormat:NSLocalizedString(@"Completed: %@", nil), [dateFormatter stringFromDate:contract.dateCompleted]];
 						remainsColor = [UIColor greenColor];
-						endDate = contract.dateCompleted;
 					}
 					else if (contract.status >= EVEContractStatusCancelled) {
 						finished = YES;

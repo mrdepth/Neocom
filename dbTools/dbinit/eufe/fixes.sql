@@ -59,3 +59,9 @@ DELETE FROM "dgmTypeEffects" WHERE effectID=3461;
 
 INSERT INTO "dgmTypeEffects" VALUES ("4248","3461","0");
 INSERT INTO "dgmTypeEffects" VALUES ("28654","3461","0");
+
+--Ancillary Armor Repairer fix
+INSERT INTO "dgmEffects" (effectID,effectName,effectCategory,preExpression,postExpression,description,isOffensive,isAssistance)
+ VALUES ("10004","naniteRepairPasteArmorDamageBonus","0","59","59","eufe: Ancillary Armor Repairer chargedArmorDamageMultiplier bonus","0","0");
+
+INSERT INTO "dgmTypeEffects" VALUES ("28668","10004","0");

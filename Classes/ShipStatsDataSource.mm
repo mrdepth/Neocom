@@ -313,7 +313,7 @@
 			groupedCell = cell;
 			
 			if (self.basicStats) {
-				float values[5];
+				float values[5] = {0};
 				NSString* imageName = nil;
 				if (indexPath.row == 1) {
 					values[0] = self.basicStats.resistances.shield.em;

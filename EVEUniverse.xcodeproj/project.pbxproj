@@ -436,6 +436,8 @@
 		12774E13177032C100E98F8C /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774D92177032C100E98F8C /* NSString+MD5.m */; };
 		12774E14177032C100E98F8C /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774D94177032C100E98F8C /* NSURL+MD5.m */; };
 		12774E1A1770348500E98F8C /* ASURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774E191770348500E98F8C /* ASURLConnection.m */; };
+		12861B2117D9A17100AC87C3 /* libFlurry_4.2.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */; };
+		12861B2417D9A24A00AC87C3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12861B2317D9A24A00AC87C3 /* Security.framework */; };
 		12880E0E164CDC4C0072FA13 /* KillMailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */; };
 		12880E14164CDE350072FA13 /* KillMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 12880E13164CDE350072FA13 /* KillMail.m */; };
 		128A637A1782ADCA00229BB0 /* NSBundle+Retina4.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A63771782ADCA00229BB0 /* NSBundle+Retina4.m */; };
@@ -1368,6 +1370,9 @@
 		12774D94177032C100E98F8C /* NSURL+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MD5.m"; sourceTree = "<group>"; };
 		12774E181770348500E98F8C /* ASURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASURLConnection.h; sourceTree = "<group>"; };
 		12774E191770348500E98F8C /* ASURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASURLConnection.m; sourceTree = "<group>"; };
+		12861B1F17D9A17100AC87C3 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.2.3.a; sourceTree = "<group>"; };
+		12861B2317D9A24A00AC87C3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		12880E0B164CDC4C0072FA13 /* KillMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailViewController.h; sourceTree = "<group>"; };
 		12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KillMailViewController.mm; sourceTree = "<group>"; };
 		12880E12164CDE350072FA13 /* KillMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMail.h; sourceTree = "<group>"; };
@@ -1879,6 +1884,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12861B2417D9A24A00AC87C3 /* Security.framework in Frameworks */,
 				12A3C72A177C312F0067E00C /* libeufe.a in Frameworks */,
 				12D43FB717D716910076872B /* libGoogleAdMobAds.a in Frameworks */,
 				12582F0C16B2523200445581 /* CoreData.framework in Frameworks */,
@@ -1902,6 +1908,7 @@
 				718C69511300916C00C2A5A2 /* SystemConfiguration.framework in Frameworks */,
 				718C695B1300918700C2A5A2 /* CoreLocation.framework in Frameworks */,
 				12BF018F140D3DCA00AD9450 /* CFNetwork.framework in Frameworks */,
+				12861B2117D9A17100AC87C3 /* libFlurry_4.2.3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2858,6 +2865,15 @@
 			path = "NSString+HTML";
 			sourceTree = "<group>";
 		};
+		12861B1E17D9A17100AC87C3 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				12861B1F17D9A17100AC87C3 /* Flurry.h */,
+				12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */,
+			);
+			path = Flurry;
+			sourceTree = "<group>";
+		};
 		12880E11164CDE210072FA13 /* KillMail */ = {
 			isa = PBXGroup;
 			children = (
@@ -3225,6 +3241,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12861B2317D9A24A00AC87C3 /* Security.framework */,
 				718C695A1300918700C2A5A2 /* CoreLocation.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -4123,6 +4140,7 @@
 			isa = PBXGroup;
 			children = (
 				12D43F9217D7167E0076872B /* admob_iphone_sdk */,
+				12861B1E17D9A17100AC87C3 /* Flurry */,
 			);
 			name = "3rd Party";
 			sourceTree = "<group>";
@@ -6070,7 +6088,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = LOG_REQUESTS;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _DEBUG;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
@@ -6079,8 +6097,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/Classes/admob_iphone_sdk\\\"",
+					"\\\\\\\"$(SRCROOT)/Classes/admob_iphone_sdk\\\\\\\"",
 					/Users/shimanski/Documents/git/EVEUniverse/Classes/admob_iphone_sdk,
+					/Users/shimanski/Documents/git/EVEUniverse/Classes/Flurry,
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -6112,8 +6131,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\\\"$(SRCROOT)/Classes/admob_iphone_sdk\\\"",
+					"\\\\\\\"$(SRCROOT)/Classes/admob_iphone_sdk\\\\\\\"",
 					/Users/shimanski/Documents/git/EVEUniverse/Classes/admob_iphone_sdk,
+					/Users/shimanski/Documents/git/EVEUniverse/Classes/Flurry,
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";

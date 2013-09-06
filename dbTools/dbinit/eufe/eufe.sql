@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS eufe.dgmAttributeTypes;
 CREATE TABLE eufe.dgmAttributeTypes (
   "attributeID" smallint(6) NOT NULL,
   "attributeName" varchar(100) default NULL,
-  "maxAttributeID" smallint(6) NOT NULL,
+  "maxAttributeID" smallint(6) default NULL,
   "defaultValue" double default NULL,
   "stackable" tinyint(1) default NULL,
   "highIsGood" tinyint(1) default NULL,

@@ -270,7 +270,16 @@
 			controller.apiKeyType = EVEAPIKeyTypeCharacter;
 			controller.requiredAccessMask = charAccessMask;
 		}
-		[self.navigationController pushViewController:controller animated:YES];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+			[self presentViewControllerInPopover:navigationController
+										fromRect:[tableView rectForRowAtIndexPath:indexPath]
+										  inView:tableView
+						permittedArrowDirections:UIPopoverArrowDirectionAny
+										animated:YES];
+		}
+		else
+			[self.navigationController pushViewController:controller animated:YES];
 /*		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 		controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:controller action:@selector(dismiss)];
@@ -350,6 +359,7 @@
 	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
 	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
 	self.masterPopover = pc;
+	self.masterPopover.backgroundColor = [UIColor colorWithNumber:AppearanceNavigationBarColor];
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {

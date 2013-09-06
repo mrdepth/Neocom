@@ -25,6 +25,7 @@
 #import "FitCharacter.h"
 #import "appearance.h"
 #import "NCURLCache.h"
+#import "Flurry.h"
 
 #define NSURLCacheDiskCapacity (1024*1024*50)
 #define NSURLCacheMemoryCapacity (1024*1024*50)
@@ -92,6 +93,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 	NCURLCache* cache = [[NCURLCache alloc] initWithMemoryCapacity:NSURLCacheMemoryCapacity diskCapacity:NSURLCacheDiskCapacity diskPath:@"NCURLCache"];
 	[NSURLCache setSharedURLCache:cache];
 	[EVECachedURLRequest setOfflineMode:[[NSUserDefaults standardUserDefaults] boolForKey:SettingsOfflineMode]];

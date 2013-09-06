@@ -111,6 +111,7 @@
 	
 	self.skillsLabel.text = text;
 	self.skillsLabel.textColor = color;
+	self.skillsLabel.highlightedTextColor = color;
 	
 	if (account.accountStatus) {
 		UIColor *color;
@@ -127,10 +128,12 @@
 			color = [UIColor yellowColor];
 		self.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Paid until %@ (%d days remaining)", nil), [dateFormatter stringFromDate:account.accountStatus.paidUntil], days];
 		self.subscriptionLabel.textColor = color;
+		self.subscriptionLabel.highlightedTextColor = color;
 	}
 	else {
 		self.subscriptionLabel.text = NSLocalizedString(@"Can't request subscription information", nil);
 		self.subscriptionLabel.textColor = [UIColor lightGrayColor];
+		self.subscriptionLabel.highlightedTextColor = [UIColor lightGrayColor];
 	}
 	
 	int charKeysCount = 0;

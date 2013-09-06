@@ -16,6 +16,18 @@
 
 static EVEAccount* currentAccount;
 
+@interface EVEAccount()
+
+- (void) loadCharacterSheet;
+- (void) loadSkillQueue;
+- (void) loadAccountStatus;
+- (void) loadCharacterInfo;
+- (void) loadAccountBalance;
+- (void) loadCharAPIKey;
+- (void) loadCorpAPIKey;
+
+@end
+
 @implementation EVEAccount
 @synthesize characterSheet = _characterSheet;
 @synthesize skillQueue = _skillQueue;
@@ -60,17 +72,27 @@ static EVEAccount* currentAccount;
 }
 
 - (void) reload {
-	self.characterSheet = nil;
+/*	self.characterSheet = nil;
 	self.skillQueue = nil;
 	self.characterInfo = nil;
 	self.accountStatus = nil;
 	self.mailBox = nil;
-	self.accountBalance = nil;
+	self.accountBalance = nil;*/
 	//[self characterSheet];
-	[self skillQueue];
+/*	[self skillQueue];
 	[self characterInfo];
 	[self accountStatus];
-	[self accountBalance];
+	[self accountBalance];*/
+	
+	self.mailBox = nil;
+	[self loadCharAPIKey];
+	[self loadCorpAPIKey];
+	[self loadSkillQueue];
+	[self loadCharacterInfo];
+	[self loadCharacterSheet];
+	[self loadAccountStatus];
+	[self loadAccountBalance];
+	
 	if ([NSThread isMainThread])
 		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidUpdateNotification object:self];
 	else
@@ -108,12 +130,7 @@ static EVEAccount* currentAccount;
 - (EVECharacterSheet*) characterSheet {
 	@synchronized(self) {
 		if (!_characterSheet) {
-			NSError *error = nil;
-			if (!self.charAPIKey)
-				return nil;
-			self.characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
-			if (!_characterSheet)
-				_characterSheet = (EVECharacterSheet*) [NSNull null];
+			[self loadCharacterSheet];
 		}
 		if ([_characterSheet isKindOfClass:[EVECharacterSheet class]])
 			return _characterSheet;
@@ -167,12 +184,7 @@ static EVEAccount* currentAccount;
 - (EVESkillQueue*) skillQueue {
 	@synchronized(self) {
 		if (!_skillQueue) {
-			NSError *error = nil;
-			if (!self.charAPIKey)
-				return nil;
-			_skillQueue = [EVESkillQueue skillQueueWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
-			if (!_skillQueue)
-				_skillQueue = (EVESkillQueue*) [NSNull null];
+			[self loadSkillQueue];
 		}
 		if ([_skillQueue isKindOfClass:[EVESkillQueue class]])
 			return _skillQueue;
@@ -220,10 +232,7 @@ static EVEAccount* currentAccount;
 - (EVEAccountStatus*) accountStatus {
 	@synchronized(self) {
 		if (!_accountStatus && self.charAPIKey) {
-			NSError* error = nil;
-			_accountStatus = [EVEAccountStatus accountStatusWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode error:&error progressHandler:nil];
-			if (!_accountStatus)
-				_accountStatus = (EVEAccountStatus*) [NSNull null];
+			[self loadAccountStatus];
 		}
 		if ([_accountStatus isKindOfClass:[EVEAccountStatus class]])
 			return _accountStatus;
@@ -236,10 +245,7 @@ static EVEAccount* currentAccount;
 - (EVECharacterInfo*) characterInfo {
 	@synchronized(self) {
 		if (!_characterInfo && self.charAPIKey) {
-			NSError* error = nil;
-			_characterInfo = [EVECharacterInfo characterInfoWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
-			if (!_characterInfo)
-				_characterInfo = (EVECharacterInfo*) [NSNull null];
+			[self loadCharacterInfo];
 		}
 		if ([_characterInfo isKindOfClass:[EVECharacterInfo class]])
 			return _characterInfo;
@@ -252,10 +258,7 @@ static EVEAccount* currentAccount;
 - (EVEAccountBalance*) accountBalance {
 	@synchronized(self) {
 		if (!_accountBalance && self.charAPIKey) {
-			NSError* error = nil;
-			_accountBalance = [EVEAccountBalance accountBalanceWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID corporate:NO error:&error progressHandler:nil];
-			if (!_accountBalance)
-				_accountBalance = (EVEAccountBalance*) [NSNull null];
+			[self loadAccountBalance];
 		}
 		if ([_accountBalance isKindOfClass:[EVEAccountBalance class]])
 			return _accountBalance;
@@ -268,11 +271,7 @@ static EVEAccount* currentAccount;
 - (APIKey*) charAPIKey {
 	@synchronized(self) {
 		if (!_charAPIKey) {
-			for (APIKey* apiKey in self.apiKeys)
-				if (apiKey.apiKeyInfo.key.type != EVEAPIKeyTypeCorporation) {
-					_charAPIKey = apiKey;
-					break;
-				}
+			[self loadCharAPIKey];
 		}
 		return _charAPIKey;
 	}
@@ -281,13 +280,97 @@ static EVEAccount* currentAccount;
 - (APIKey*) corpAPIKey {
 	@synchronized(self) {
 		if (!_corpAPIKey) {
-			for (APIKey* apiKey in self.apiKeys)
-				if (apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation) {
-					_corpAPIKey = apiKey;
-					break;
-				}
+			[self loadCorpAPIKey];
 		}
 		return _corpAPIKey;
+	}
+}
+
+#pragma mark - Private
+
+- (void) loadCharacterSheet {
+	NSError *error = nil;
+	if (!self.charAPIKey)
+		return;
+	EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
+	if (!characterSheet)
+		characterSheet = (EVECharacterSheet*) [NSNull null];
+	@synchronized(self) {
+		self.characterSheet = characterSheet;
+	}
+}
+
+- (void) loadSkillQueue {
+	NSError *error = nil;
+	if (!self.charAPIKey)
+		return;
+	EVESkillQueue* skillQueue = [EVESkillQueue skillQueueWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
+	if (!skillQueue)
+		skillQueue = (EVESkillQueue*) [NSNull null];
+	@synchronized(self) {
+		self.skillQueue = skillQueue;
+	}
+}
+
+- (void) loadAccountStatus {
+	NSError *error = nil;
+	if (!self.charAPIKey)
+		return;
+	EVEAccountStatus* accountStatus = [EVEAccountStatus accountStatusWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode error:&error progressHandler:nil];
+	if (!accountStatus)
+		accountStatus = (EVEAccountStatus*) [NSNull null];
+	@synchronized(self) {
+		self.accountStatus = accountStatus;
+	}
+}
+
+- (void) loadCharacterInfo {
+	NSError *error = nil;
+	if (!self.charAPIKey)
+		return;
+	EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID error:&error progressHandler:nil];
+	if (!characterInfo)
+		characterInfo = (EVECharacterInfo*) [NSNull null];
+	@synchronized(self) {
+		self.characterInfo = characterInfo;
+	}
+}
+
+- (void) loadAccountBalance {
+	NSError *error = nil;
+	if (!self.charAPIKey)
+		return;
+	EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:self.charAPIKey.keyID vCode:self.charAPIKey.vCode characterID:self.character.characterID corporate:NO error:&error progressHandler:nil];
+	if (!accountBalance)
+		accountBalance = (EVEAccountBalance*) [NSNull null];
+	@synchronized(self) {
+		self.accountBalance = accountBalance;
+	}
+}
+
+- (void) loadCharAPIKey {
+	APIKey* charAPIKey = nil;
+	for (APIKey* apiKey in self.apiKeys)
+		if (apiKey.apiKeyInfo.key.type != EVEAPIKeyTypeCorporation) {
+			charAPIKey = apiKey;
+			break;
+		}
+
+	@synchronized(self) {
+		self.charAPIKey = charAPIKey;
+	}
+}
+
+- (void) loadCorpAPIKey {
+	APIKey* corpAPIKey = nil;
+	for (APIKey* apiKey in self.apiKeys)
+		if (apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation) {
+			corpAPIKey = apiKey;
+			break;
+		}
+	
+	@synchronized(self) {
+		self.corpAPIKey = corpAPIKey;
 	}
 }
 

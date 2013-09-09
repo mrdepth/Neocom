@@ -9,7 +9,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "dgmEffects",
 "dgmTypeAttributes",
 "dgmTypeEffects",
-"eveIcons",
+--"eveIcons",
 "eveUnits",
 "invBlueprintTypes",
 "invCategories",

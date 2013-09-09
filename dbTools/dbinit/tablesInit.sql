@@ -1,48 +1,48 @@
 CREATE TABLE "crtCategories" (
-  "categoryID" integer NOT NULL,
-  "description" varchar(500) DEFAULT NULL,
-  "categoryName" varchar(256) DEFAULT NULL,
+  "categoryID" integer  NOT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "categoryName" varchar(512) DEFAULT NULL,
   PRIMARY KEY ("categoryID")
 );
 CREATE TABLE "crtCertificates" (
   "certificateID" integer NOT NULL,
-  "categoryID" integer DEFAULT NULL,
+  "categoryID" integer  DEFAULT NULL,
   "classID" integer DEFAULT NULL,
-  "grade" integer DEFAULT NULL,
+  "grade" integer  DEFAULT NULL,
   "corpID" integer DEFAULT NULL,
   "iconID" integer DEFAULT NULL,
-  "description" varchar(500) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
   PRIMARY KEY ("certificateID")
 );
 CREATE TABLE "crtClasses" (
   "classID" integer NOT NULL,
-  "description" varchar(500) DEFAULT NULL,
-  "className" varchar(256) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "className" varchar(512) DEFAULT NULL,
   PRIMARY KEY ("classID")
 );
 CREATE TABLE "crtRecommendations" (
   "recommendationID" integer NOT NULL,
   "shipTypeID" integer DEFAULT NULL,
   "certificateID" integer DEFAULT NULL,
-  "recommendationLevel" integer NOT NULL DEFAULT '0',
+  "recommendationLevel" integer  NOT NULL DEFAULT '0',
   PRIMARY KEY ("recommendationID")
 );
 CREATE TABLE "crtRelationships" (
   "relationshipID" integer NOT NULL,
   "parentID" integer DEFAULT NULL,
   "parentTypeID" integer DEFAULT NULL,
-  "parentLevel" integer DEFAULT NULL,
+  "parentLevel" integer  DEFAULT NULL,
   "childID" integer DEFAULT NULL,
   PRIMARY KEY ("relationshipID")
 );
 CREATE TABLE "dgmAttributeCategories" (
-  "categoryID" integer NOT NULL,
-  "categoryName" varchar(50) DEFAULT NULL,
-  "categoryDescription" varchar(200) DEFAULT NULL,
+  "categoryID" integer  NOT NULL,
+  "categoryName" varchar(100) DEFAULT NULL,
+  "categoryDescription" varchar(400) DEFAULT NULL,
   PRIMARY KEY ("categoryID")
 );
 CREATE TABLE "eveUnits" (
-  "unitID" integer NOT NULL,
+  "unitID" integer  NOT NULL,
   "unitName" varchar(100) DEFAULT NULL,
   "displayName" varchar(50) DEFAULT NULL,
   "description" varchar(1000) DEFAULT NULL,
@@ -65,23 +65,23 @@ CREATE TABLE "invBlueprintTypes" (
   PRIMARY KEY ("blueprintTypeID")
 );
 CREATE TABLE "invControlTowerResourcePurposes" (
-  "purpose" integer NOT NULL,
+  "purpose" integer  NOT NULL,
   "purposeText" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("purpose")
 );
 CREATE TABLE "invMarketGroups" (
   "marketGroupID" integer NOT NULL,
   "parentGroupID" integer DEFAULT NULL,
-  "marketGroupName" varchar(100) DEFAULT NULL,
-  "description" varchar(3000) DEFAULT NULL,
+  "marketGroupName" varchar(200) DEFAULT NULL,
+  "description" varchar(6000) DEFAULT NULL,
   "iconID" integer DEFAULT NULL,
   "hasTypes" integer DEFAULT NULL,
   PRIMARY KEY ("marketGroupID")
 );
 CREATE TABLE "invMetaGroups" (
   "metaGroupID" integer NOT NULL,
-  "metaGroupName" varchar(100) DEFAULT NULL,
-  "description" varchar(1000) DEFAULT NULL,
+  "metaGroupName" varchar(200) DEFAULT NULL,
+  "description" varchar(2000) DEFAULT NULL,
   "iconID" integer DEFAULT NULL,
   PRIMARY KEY ("metaGroupID")
 );
@@ -101,7 +101,7 @@ CREATE TABLE "invTypeMaterials" (
 CREATE TABLE "mapConstellations" (
   "regionID" integer DEFAULT NULL,
   "constellationID" integer NOT NULL,
-  "constellationName" varchar(100) DEFAULT NULL,
+  "constellationName" varchar(200) DEFAULT NULL,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
@@ -127,15 +127,15 @@ CREATE TABLE "mapDenormalize" (
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
   "radius" double DEFAULT NULL,
-  "itemName" varchar(100) DEFAULT NULL,
+  "itemName" varchar(200) DEFAULT NULL,
   "security" double DEFAULT NULL,
-  "celestialIndex" integer DEFAULT NULL,
-  "orbitIndex" integer DEFAULT NULL,
+  "celestialIndex" integer  DEFAULT NULL,
+  "orbitIndex" integer  DEFAULT NULL,
   PRIMARY KEY ("itemID")
 );
 CREATE TABLE "mapRegions" (
   "regionID" integer NOT NULL,
-  "regionName" varchar(100) DEFAULT NULL,
+  "regionName" varchar(200) DEFAULT NULL,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE "mapSolarSystems" (
   "regionID" integer DEFAULT NULL,
   "constellationID" integer DEFAULT NULL,
   "solarSystemID" integer NOT NULL,
-  "solarSystemName" varchar(100) DEFAULT NULL,
+  "solarSystemName" varchar(200) DEFAULT NULL,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
@@ -179,34 +179,34 @@ CREATE TABLE "mapSolarSystems" (
   PRIMARY KEY ("solarSystemID")
 );
 CREATE TABLE "ramActivities" (
-  "activityID" integer NOT NULL,
-  "activityName" varchar(100) DEFAULT NULL,
+  "activityID" integer  NOT NULL,
+  "activityName" varchar(200) DEFAULT NULL,
   "iconNo" varchar(5) DEFAULT NULL,
-  "description" varchar(1000) DEFAULT NULL,
+  "description" varchar(2000) DEFAULT NULL,
   "published" integer DEFAULT NULL,
   PRIMARY KEY ("activityID")
 );
 CREATE TABLE "ramAssemblyLineTypes" (
-  "assemblyLineTypeID" integer NOT NULL,
-  "assemblyLineTypeName" varchar(100) DEFAULT NULL,
-  "description" varchar(1000) DEFAULT NULL,
+  "assemblyLineTypeID" integer  NOT NULL,
+  "assemblyLineTypeName" varchar(200) DEFAULT NULL,
+  "description" varchar(2000) DEFAULT NULL,
   "baseTimeMultiplier" double DEFAULT NULL,
   "baseMaterialMultiplier" double DEFAULT NULL,
   "volume" double DEFAULT NULL,
-  "activityID" integer DEFAULT NULL,
+  "activityID" integer  DEFAULT NULL,
   "minCostPerHour" double DEFAULT NULL,
   PRIMARY KEY ("assemblyLineTypeID")
 );
 CREATE TABLE "ramInstallationTypeContents" (
   "installationTypeID" integer NOT NULL,
-  "assemblyLineTypeID" integer NOT NULL,
-  "quantity" integer DEFAULT NULL,
+  "assemblyLineTypeID" integer  NOT NULL,
+  "quantity" integer  DEFAULT NULL,
   PRIMARY KEY ("installationTypeID","assemblyLineTypeID")
 );
 
 CREATE TABLE "ramTypeRequirements" (
   "typeID" integer NOT NULL,
-  "activityID" integer NOT NULL,
+  "activityID" integer  NOT NULL,
   "requiredTypeID" integer NOT NULL,
   "quantity" integer DEFAULT NULL,
   "damagePerJob" double DEFAULT NULL,
@@ -220,50 +220,105 @@ CREATE TABLE "staStations" (
   "dockingCostPerVolume" double DEFAULT NULL,
   "maxShipVolumeDockable" double DEFAULT NULL,
   "officeRentalCost" integer DEFAULT NULL,
-  "operationID" integer DEFAULT NULL,
+  "operationID" integer  DEFAULT NULL,
   "stationTypeID" integer DEFAULT NULL,
   "corporationID" integer DEFAULT NULL,
   "solarSystemID" integer DEFAULT NULL,
   "constellationID" integer DEFAULT NULL,
   "regionID" integer DEFAULT NULL,
-  "stationName" varchar(100) DEFAULT NULL,
+  "stationName" varchar(200) DEFAULT NULL,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
   "reprocessingEfficiency" double DEFAULT NULL,
   "reprocessingStationsTake" double DEFAULT NULL,
-  "reprocessingHangarFlag" integer DEFAULT NULL,
+  "reprocessingHangarFlag" integer  DEFAULT NULL,
   PRIMARY KEY ("stationID")
 );
-CREATE INDEX "staStations_staStations_IX_constellation" ON "staStations" ("constellationID");
-CREATE INDEX "staStations_staStations_IX_corporation" ON "staStations" ("corporationID");
-CREATE INDEX "staStations_staStations_IX_operation" ON "staStations" ("operationID");
 CREATE INDEX "staStations_staStations_IX_region" ON "staStations" ("regionID");
 CREATE INDEX "staStations_staStations_IX_system" ON "staStations" ("solarSystemID");
+CREATE INDEX "staStations_staStations_IX_constellation" ON "staStations" ("constellationID");
+CREATE INDEX "staStations_staStations_IX_operation" ON "staStations" ("operationID");
 CREATE INDEX "staStations_staStations_IX_type" ON "staStations" ("stationTypeID");
+CREATE INDEX "staStations_staStations_IX_corporation" ON "staStations" ("corporationID");
 CREATE INDEX "crtCertificates_crtCertificates_IX_category" ON "crtCertificates" ("categoryID");
 CREATE INDEX "crtCertificates_crtCertificates_IX_class" ON "crtCertificates" ("classID");
-CREATE INDEX "crtRelationships_crtRelationships_IX_child" ON "crtRelationships" ("childID");
 CREATE INDEX "crtRelationships_crtRelationships_IX_parent" ON "crtRelationships" ("parentID");
-CREATE INDEX "mapDenormalize_mapDenormalize_IX_constellation" ON "mapDenormalize" ("constellationID");
-CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupConstell" ON "mapDenormalize" ("groupID","constellationID");
+CREATE INDEX "crtRelationships_crtRelationships_IX_child" ON "crtRelationships" ("childID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupRegion" ON "mapDenormalize" ("groupID","regionID");
+CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupConstellation" ON "mapDenormalize" ("groupID","constellationID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupSystem" ON "mapDenormalize" ("groupID","solarSystemID");
-CREATE INDEX "mapDenormalize_mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
-CREATE INDEX "mapDenormalize_mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_system" ON "mapDenormalize" ("solarSystemID");
+CREATE INDEX "mapDenormalize_mapDenormalize_IX_constellation" ON "mapDenormalize" ("constellationID");
+CREATE INDEX "mapDenormalize_mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
+CREATE INDEX "mapDenormalize_mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
 CREATE INDEX "mapConstellations_mapConstellations_IX_region" ON "mapConstellations" ("regionID");
-CREATE INDEX "crtRecommendations_crtRecommendations_IX_certifica" ON "crtRecommendations" ("certificateID");
 CREATE INDEX "crtRecommendations_crtRecommendations_IX_shipType" ON "crtRecommendations" ("shipTypeID");
-CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
+CREATE INDEX "crtRecommendations_crtRecommendations_IX_certificate" ON "crtRecommendations" ("certificateID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
+CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
-CREATE TABLE "eveIcons" (
-  "iconID" integer NOT NULL,
-  "iconFile" varchar(500) NOT NULL,
-  "description" text NOT NULL,
-  PRIMARY KEY ("iconID")
+CREATE TABLE dgmAttributeTypes (
+  "attributeID" smallint(6) NOT NULL,
+  "attributeName" varchar(100) default NULL,
+  attributeCategory smallint(6) NOT NULL,
+  "description" varchar(1000) default NULL,
+  maxAttributeID smallint(6) default NULL,
+  attributeIdx smallint(6) default NULL,
+  chargeRechargeTimeID smallint(6) default NULL,
+  "defaultValue" double default NULL,
+  "published" tinyint(1) default NULL,
+  "displayName" varchar(100) default NULL,
+  "unitID" tinyint(3) default NULL,
+  "stackable" tinyint(1) default NULL,
+  "highIsGood" tinyint(1) default NULL,
+  "categoryID" tinyint(3) default NULL,
+  "iconID" smallint(6) default NULL,
+  displayNameID smallint(6) default NULL,
+  dataID smallint(6) default NULL,
+  PRIMARY KEY  ("attributeID")
 );
+
+CREATE TABLE dgmEffects (
+"effectID"  INTEGER NOT NULL,
+"effectName"  TEXT(400),
+"effectCategory"  INTEGER,
+"preExpression"  INTEGER,
+"postExpression"  INTEGER,
+"description"  TEXT(1000),
+"guid"  TEXT(60),
+"isOffensive"  INTEGER,
+"isAssistance"  INTEGER,
+"durationAttributeID"  INTEGER,
+"trackingSpeedAttributeID"  INTEGER,
+"dischargeAttributeID"  INTEGER,
+"rangeAttributeID"  INTEGER,
+"falloffAttributeID"  INTEGER,
+"disallowAutoRepeat"  INTEGER,
+"published"  INTEGER,
+"displayName"  TEXT(100),
+"isWarpSafe"  INTEGER,
+"rangeChance"  INTEGER,
+"electronicChance"  INTEGER,
+"propulsionChance"  INTEGER,
+"distribution"  INTEGER,
+"sfxName"  TEXT(20),
+"npcUsageChanceAttributeID"  INTEGER,
+"npcActivationChanceAttributeID"  INTEGER,
+"fittingUsageChanceAttributeID"  INTEGER,
+"iconID" smallint(6) default NULL,
+"displayNameID" smallint(6) default NULL,
+"descriptionID" smallint(6) default NULL,
+"dataID" smallint(6) default NULL,
+PRIMARY KEY ("effectID")
+);
+CREATE TABLE "dgmTypeAttributes" (
+ "typeID"  INTEGER NOT NULL,
+ "attributeID"  INTEGER NOT NULL,
+ "value"  double default NULL,
+ PRIMARY KEY ("typeID", "attributeID")
+);
+
 CREATE TABLE "dgmTypeEffects" (
 "typeID"  INTEGER NOT NULL,
 "effectID"  INTEGER NOT NULL,
@@ -331,66 +386,5 @@ CREATE TABLE invControlTowerResources (
   "factionID" int(11) default NULL,
   "wormholeClassID" INTEGER default NULL,
   PRIMARY KEY  ("controlTowerTypeID","resourceTypeID")
-);
-
-CREATE TABLE dgmAttributeTypes (
-  "attributeID" smallint(6) NOT NULL,
-  "attributeName" varchar(100) default NULL,
-  attributeCategory smallint(6) NOT NULL,
-  "description" varchar(1000) default NULL,
-  maxAttributeID smallint(6) NOT NULL,
-  attributeIdx smallint(6) NOT NULL,
-  chargeRechargeTimeID smallint(6) NOT NULL,
-  "defaultValue" double default NULL,
-  "published" tinyint(1) default NULL,
-  "displayName" varchar(100) default NULL,
-  "unitID" tinyint(3) default NULL,
-  "stackable" tinyint(1) default NULL,
-  "highIsGood" tinyint(1) default NULL,
-  "categoryID" tinyint(3) default NULL,
-  "iconID" smallint(6) default NULL,
-  displayNameID smallint(6) default NULL,
-  dataID smallint(6) default NULL,
-  PRIMARY KEY  ("attributeID")
-);
-
-CREATE TABLE dgmEffects (
-"effectID"  INTEGER NOT NULL,
-"effectName"  TEXT(400),
-"effectCategory"  INTEGER,
-"preExpression"  INTEGER,
-"postExpression"  INTEGER,
-"description"  TEXT(1000),
-"guid"  TEXT(60),
-"isOffensive"  INTEGER,
-"isAssistance"  INTEGER,
-"durationAttributeID"  INTEGER,
-"trackingSpeedAttributeID"  INTEGER,
-"dischargeAttributeID"  INTEGER,
-"rangeAttributeID"  INTEGER,
-"falloffAttributeID"  INTEGER,
-"disallowAutoRepeat"  INTEGER,
-"published"  INTEGER,
-"displayName"  TEXT(100),
-"isWarpSafe"  INTEGER,
-"rangeChance"  INTEGER,
-"electronicChance"  INTEGER,
-"propulsionChance"  INTEGER,
-"distribution"  INTEGER,
-"sfxName"  TEXT(20),
-"npcUsageChanceAttributeID"  INTEGER,
-"npcActivationChanceAttributeID"  INTEGER,
-"fittingUsageChanceAttributeID"  INTEGER,
-"iconID" smallint(6) default NULL,
-"displayNameID" smallint(6) default NULL,
-"descriptionID" smallint(6) default NULL,
-"dataID" smallint(6) default NULL,
-PRIMARY KEY ("effectID")
-);
-CREATE TABLE "dgmTypeAttributes" (
- "typeID"  INTEGER NOT NULL,
- "attributeID"  INTEGER NOT NULL,
- "value"  double default NULL,
- PRIMARY KEY ("typeID", "attributeID")
 );
 

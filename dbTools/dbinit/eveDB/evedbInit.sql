@@ -15,7 +15,7 @@ INSERT INTO eveDB.mapRegions SELECT * FROM mapRegions;
 INSERT INTO eveDB.mapSolarSystems SELECT * FROM mapSolarSystems;
 INSERT INTO eveDB.staStations SELECT * FROM staStations;
 INSERT INTO eveDB.mapConstellations SELECT * FROM mapConstellations;
-INSERT INTO eveDB.eveIcons SELECT * FROM eveIcons;
+--INSERT INTO eveDB.eveIcons SELECT * FROM eveIcons;
 INSERT INTO eveDB.eveUnits SELECT * FROM eveUnits;
 INSERT INTO eveDB.ramActivities SELECT * FROM ramActivities;
 INSERT INTO eveDB.mapDenormalize SELECT * FROM mapDenormalize WHERE groupID in (5,7,8,15);
@@ -31,7 +31,6 @@ INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
 INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
 INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
 INSERT INTO eveDB.ramTypeRequirements SELECT * FROM ramTypeRequirements;
-
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;
 

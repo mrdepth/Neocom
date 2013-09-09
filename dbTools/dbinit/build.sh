@@ -26,3 +26,6 @@ sqlite3 evedb.sqlite ".read tablesInit.sql"
 
 echo ".read eveDbInit.sql"
 sqlite3 ./eveDB/eve.sqlite ".read eveDbInit.sql"
+
+echo ".read eveDB/eveIcons.sql"
+sqlite3 ./evedb.sqlite ".read eveDB/eveIcons.sql"

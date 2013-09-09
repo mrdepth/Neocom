@@ -359,7 +359,8 @@
 	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
 	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
 	self.masterPopover = pc;
-	self.masterPopover.backgroundColor = [UIColor colorWithNumber:AppearanceNavigationBarColor];
+	if ([self.masterPopover respondsToSelector:@selector(setBackgroundColor:)])
+		[self.masterPopover setValue:[UIColor colorWithNumber:AppearanceNavigationBarColor] forKey:@"backgroundColor"];
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {

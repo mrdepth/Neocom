@@ -162,8 +162,9 @@
 		}
 
 	}
-	if (SYSTEM_VERSION >= 7)
-			self.separatorInset = UIEdgeInsetsMake(0, 40, 0, 0);
+	if (SYSTEM_VERSION >= 7) {
+//			self.separatorInset = UIEdgeInsetsMake(0, 40, 0, 0);
+	}
 }
 
 @end

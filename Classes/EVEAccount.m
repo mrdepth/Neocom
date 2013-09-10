@@ -144,7 +144,7 @@ static EVEAccount* currentAccount;
 		_characterSheet = value;
 		
 		_characterAttributes = [CharacterAttributes defaultCharacterAttributes];
-		if (_characterSheet) {
+		if ([_characterSheet isKindOfClass:[EVECharacterSheet class]]) {
 			_characterAttributes.charisma = _characterSheet.attributes.charisma;
 			_characterAttributes.intelligence = _characterSheet.attributes.intelligence;
 			_characterAttributes.memory = _characterSheet.attributes.memory;

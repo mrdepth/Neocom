@@ -385,7 +385,9 @@
 }
 
 - (IBAction)onClear:(id)sender {
-	UITableViewCell* cell = (UITableViewCell*) [sender superview];
+	UITableViewCell* cell = nil;
+	for (cell = (UITableViewCell*) [sender superview]; ![cell isKindOfClass:[UITableViewCell class]] && cell; cell = (UITableViewCell*) cell.superview);
+
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
 	
 	if (indexPath.row == 0)

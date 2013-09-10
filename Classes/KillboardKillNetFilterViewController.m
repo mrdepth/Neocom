@@ -392,7 +392,9 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
 	[self reload];
 
-	UITableViewCell* cell = (UITableViewCell*) [[textField superview] superview];
+	UITableViewCell* cell = nil;
+	for (cell = (UITableViewCell*) textField.superview; ![cell isKindOfClass:[UITableViewCell class]] && cell; cell = (UITableViewCell*) cell.superview);
+	
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
 	NSInteger n = self.filters.count;
 

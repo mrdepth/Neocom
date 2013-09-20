@@ -39,9 +39,9 @@
 	self.itemInfoViewController.type = self.type;
 	
 	if (self.activePage == ItemViewControllerActivePageInfo) {
-		[self.view addSubview:self.itemInfoViewController.view];
-		self.itemInfoViewController.view.frame = self.view.bounds;
 		[self addChildViewController:self.itemInfoViewController];
+		self.itemInfoViewController.view.frame = self.view.bounds;
+		[self.view addSubview:self.itemInfoViewController.view];
 		[self.itemInfoViewController didMoveToParentViewController:self];
 		
 		self.pageSegmentControl.selectedSegmentIndex = 0;
@@ -49,9 +49,9 @@
 			[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.pageSegmentControl]];
 	}
 	else {
-		[self.view addSubview:self.marketInfoViewController.view];
-		self.marketInfoViewController.view.frame = self.view.bounds;
 		[self addChildViewController:self.marketInfoViewController];
+		self.marketInfoViewController.view.frame = self.view.bounds;
+		[self.view addSubview:self.marketInfoViewController.view];
 		[self.marketInfoViewController didMoveToParentViewController:self];
 
 		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.pageSegmentControl]];
@@ -97,12 +97,16 @@
 			toRemove = self.itemInfoViewController;
 		}
 		[toRemove.view removeFromSuperview];
-		[self.view addSubview:toAdd.view];
-		toAdd.view.frame = self.view.frame;
 
 		if (!toAdd.parentViewController) {
 			[self addChildViewController:toAdd];
+			[self.view addSubview:toAdd.view];
+			toAdd.view.frame = self.view.bounds;
 			[toAdd didMoveToParentViewController:self];
+		}
+		else {
+			[self.view addSubview:toAdd.view];
+			toAdd.view.frame = self.view.bounds;
 		}
 	}
 }

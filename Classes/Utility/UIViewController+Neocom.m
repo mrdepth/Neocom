@@ -8,6 +8,7 @@
 
 #import "UIViewController+Neocom.h"
 #import <objc/runtime.h>
+#import "appearance.h"
 
 @interface UIViewController()<UIPopoverControllerDelegate>
 @property (nonatomic, strong) UIPopoverController* popover;

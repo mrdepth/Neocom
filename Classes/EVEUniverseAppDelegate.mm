@@ -65,6 +65,18 @@
 
 @end
 
+@interface UINavigationBar(iScanner)
+- (void) setTranslucentAppearance:(NSInteger)translucent UI_APPEARANCE_SELECTOR;
+@end
+
+@implementation UINavigationBar(iScanner)
+
+- (void) setTranslucentAppearance:(NSInteger)translucent {
+	self.translucent = translucent;
+}
+
+@end
+
 
 @interface EVEUniverseAppDelegate()<GADBannerViewDelegate>
 @property (nonatomic, strong) GADBannerView *adView;
@@ -704,7 +716,7 @@
 }
 
 - (void) setupAppearance {
-	if (SYSTEM_VERSION < 7) {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
 		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
 												forState:UIControlStateNormal
 											  barMetrics:UIBarMetricsDefault];
@@ -726,24 +738,30 @@
 														  forState:UIControlStateHighlighted
 														barMetrics:UIBarMetricsDefault];
 		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
+		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	}
 	else {
 		[[UITableView appearance] setSeparatorStyleAppearance:UITableViewCellSeparatorStyleNone];
 //		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
 //		[[UITableView appearance] setSeparatorColor:[UIColor colorWithNumber:AppearanceSeparatorColor]];
 		//[[NSClassFromString(@"UISearchResultsTableView") appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-		[self.window setValue:[UIColor whiteColor] forKey:@"tintColor"];
+		//[self.window setValue:[UIColor whiteColor] forKey:@"tintColor"];
 //		[[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
 		//[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont systemFontOfSize:14]} forState:UIControlStateNormal];
 		//[[UIBarButtonItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, 4) forBarMetrics:UIBarMetricsDefault];
+		
+		[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithNumber:AppearanceNavigationBarColor]];
+		
+		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBarTintColor:nil];
+		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTintColor:[UIColor blackColor]];
 	}
 	
 	[[UINavigationBar appearance] setBarStyle:UIBarStyleDefault];
-	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
 	[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
+	[[UINavigationBar appearance] setTranslucentAppearance:NO];
+	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTitleTextAttributes:nil];
 
-	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
 
 	//[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -2) forBarMetrics:UIBarMetricsDefault];
 	//[[UIBarButtonItem appearance] setBackButtonBackgroundVerticalPositionAdjustment:1 forBarMetrics:UIBarMetricsDefault];

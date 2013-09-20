@@ -162,9 +162,10 @@
 		}
 
 	}
-	if (SYSTEM_VERSION >= 7) {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
 //			self.separatorInset = UIEdgeInsetsMake(0, 40, 0, 0);
 	}
+	self.backgroundColor = [UIColor clearColor];
 }
 
 @end

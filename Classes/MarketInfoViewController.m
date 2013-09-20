@@ -36,6 +36,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.edgesForExtendedLayout = UIRectEdgeNone;
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.type.typeName;
 	
@@ -172,7 +173,6 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     static NSString *cellIdentifier = @"MarketInfoCellView";
     
     MarketInfoCellView *cell = (MarketInfoCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -230,7 +230,6 @@
 	if (indexPath.row == [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)
 		groupStyle |= GroupedCellGroupStyleBottom;
 	cell.groupStyle = groupStyle;
-    
     return cell;
 }
 

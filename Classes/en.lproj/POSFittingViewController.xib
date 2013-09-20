@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4504</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">3734.1</string>
+			<string key="NS.object.0">3742</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -215,7 +215,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{187, 2}, {123, 20}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSNextKeyView" ref="967194574"/>
+						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="932707193"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -246,20 +246,6 @@
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">powerGrid.png</string>
-						</object>
-					</object>
-					<object class="IBUIImageView" id="967194574">
-						<reference key="NSNextResponder" ref="526099855"/>
-						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{0, 24}, {320, 1}}</string>
-						<reference key="NSSuperview" ref="526099855"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">cellAccountSeparator.png</string>
 						</object>
 					</object>
 				</array>
@@ -555,7 +541,6 @@
 						<string key="id">227</string>
 						<reference key="object" ref="526099855"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="967194574"/>
 							<reference ref="147001291"/>
 							<reference ref="474643074"/>
 							<reference ref="490340005"/>
@@ -581,11 +566,6 @@
 					<object class="IBObjectRecord">
 						<string key="id">233</string>
 						<reference key="object" ref="690482197"/>
-						<reference key="parent" ref="526099855"/>
-					</object>
-					<object class="IBObjectRecord">
-						<string key="id">234</string>
-						<reference key="object" ref="967194574"/>
 						<reference key="parent" ref="526099855"/>
 					</object>
 				</array>
@@ -618,7 +598,6 @@
 				<string key="232.CustomClassName">ProgressLabel</string>
 				<string key="232.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="233.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="234.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
@@ -641,10 +620,9 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="cellAccountSeparator.png">{16, 16}</string>
 			<string key="cpu.png">{64, 64}</string>
 			<string key="powerGrid.png">{64, 64}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">3734.1</string>
+		<string key="IBCocoaTouchPluginVersion">3742</string>
 	</data>
 </archive>

@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1536</int>
 		<string key="IBDocument.SystemVersion">12E55</string>
-		<string key="IBDocument.InterfaceBuilderVersion">4504</string>
+		<string key="IBDocument.InterfaceBuilderVersion">4510</string>
 		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">3734.1</string>
+			<string key="NS.object.0">3742</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -210,7 +210,7 @@ IHRoZSB1cGRhdGVkIGluZm8gb3IgYSBuZXcgQVBJIGtleS4</bytes>
 					</object>
 					<object class="IBUIImageView" id="507417916">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">288</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{0, 124}, {320, 3}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView" ref="1006002077"/>
@@ -433,6 +433,6 @@ IHRoZSB1cGRhdGVkIGluZm8gb3IgYSBuZXcgQVBJIGtleS4</bytes>
 			<string key="NS.key.0">separator.png</string>
 			<string key="NS.object.0">{320, 3}</string>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">3734.1</string>
+		<string key="IBCocoaTouchPluginVersion">3742</string>
 	</data>
 </archive>

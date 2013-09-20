@@ -88,6 +88,8 @@
 	_groups = nil;
 	_conditionsTables = nil;
 	if ([self isViewLoaded]) {
+		self.navigationBarHidden = NO;
+		//[[self.viewControllers[0] searchDisplayController] setActive:NO];
 		NCItemsContentViewController* controller = [[NCItemsContentViewController alloc] initWithNibName:@"NCItemsContentViewController" bundle:nil];
 		controller.itemsViewController = self;
 		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)

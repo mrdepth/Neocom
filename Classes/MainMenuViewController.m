@@ -360,22 +360,12 @@
 	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
 	self.masterPopover = pc;
 	navigationController = (UINavigationController*) aViewController;
-	
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-		[navigationController.navigationBar setTintColor:[UIColor blackColor]];
-	}
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
 	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
 	[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:nil animated:YES];
 	self.masterPopover = nil;
-	
-	navigationController = (UINavigationController*) aViewController;
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-		[navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-	}
-
 }
 
 #pragma mark - Private

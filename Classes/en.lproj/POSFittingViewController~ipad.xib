@@ -39,7 +39,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="453512796">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIToolbar" id="19348903">
@@ -51,7 +51,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{41, 8}, {300, 30}}</string>
 								<reference key="NSSuperview" ref="19348903"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="206558942"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -82,7 +81,6 @@
 						</array>
 						<string key="NSFrameSize">{382, 44}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="532607947"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -111,7 +109,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 44}, {382, 680}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="253018758"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="166096540">
@@ -133,7 +130,6 @@
 						<int key="NSvFlags">273</int>
 						<string key="NSFrame">{{383, 0}, {320, 724}}</string>
 						<reference key="NSSuperview" ref="453512796"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="166096540"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -148,8 +144,6 @@
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 44}, {703, 724}}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="19348903"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -190,7 +184,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="526099855">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUILabel" id="147001291">
@@ -198,7 +192,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{34, 2}, {123, 20}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="690482197"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="932707193">
 							<int key="NSColorSpace">1</int>
@@ -243,7 +236,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{10, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="147001291"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -260,8 +252,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{187, 2}, {123, 20}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="932707193"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -283,7 +273,6 @@
 						<int key="NSvFlags">260</int>
 						<string key="NSFrame">{{163, 0}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="526099855"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="490340005"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -297,8 +286,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 25}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="474643074"/>
 				<reference key="IBUIBackgroundColor" ref="166096540"/>
 				<bool key="IBUIOpaque">NO</bool>
@@ -314,11 +301,9 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUITextField" id="113657528">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrameSize">{237, 30}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -679,160 +664,7 @@
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AssemblyLinesDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AssemblyLinesDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">EUTextField</string>
-					<string key="superclassName">UITextField</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/EUTextField.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">LUISegmentedControl</string>
-					<string key="superclassName">UISegmentedControl</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/LUISegmentedControl.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSFittingDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="posFittingViewController">POSFittingViewController</string>
-						<string key="tableHeaderView">UIView</string>
-						<string key="tableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="posFittingViewController">
-							<string key="name">posFittingViewController</string>
-							<string key="candidateClassName">POSFittingViewController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableHeaderView">
-							<string key="name">tableHeaderView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSFittingDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSFittingViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="didChangeSection:">id</string>
-						<string key="onBack:">id</string>
-						<string key="onMenu:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="didChangeSection:">
-							<string key="name">didChangeSection:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="onBack:">
-							<string key="name">onBack:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="onMenu:">
-							<string key="name">onMenu:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="assemblyLinesDataSource">AssemblyLinesDataSource</string>
-						<string key="fitNameTextField">UITextField</string>
-						<string key="sectionSegmentControl">UISegmentedControl</string>
-						<string key="statsDataSource">POSStatsDataSource</string>
-						<string key="structuresDataSource">StructuresDataSource</string>
-						<string key="tableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="assemblyLinesDataSource">
-							<string key="name">assemblyLinesDataSource</string>
-							<string key="candidateClassName">AssemblyLinesDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="fitNameTextField">
-							<string key="name">fitNameTextField</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sectionSegmentControl">
-							<string key="name">sectionSegmentControl</string>
-							<string key="candidateClassName">UISegmentedControl</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="statsDataSource">
-							<string key="name">statsDataSource</string>
-							<string key="candidateClassName">POSStatsDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="structuresDataSource">
-							<string key="name">structuresDataSource</string>
-							<string key="candidateClassName">StructuresDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="tableView">
-							<string key="name">tableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSFittingViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">POSStatsDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/POSStatsDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">ProgressLabel</string>
-					<string key="superclassName">UILabel</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ProgressLabel.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StructuresDataSource</string>
-					<string key="superclassName">POSFittingDataSource</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="cpuLabel">ProgressLabel</string>
-						<string key="powerGridLabel">ProgressLabel</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="cpuLabel">
-							<string key="name">cpuLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="powerGridLabel">
-							<string key="name">powerGridLabel</string>
-							<string key="candidateClassName">ProgressLabel</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/StructuresDataSource.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>

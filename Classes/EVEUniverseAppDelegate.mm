@@ -739,7 +739,7 @@
 														barMetrics:UIBarMetricsDefault];
 		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
-		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		//[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	}
 	else {
 		[[UITableView appearance] setSeparatorStyleAppearance:UITableViewCellSeparatorStyleNone];
@@ -752,15 +752,15 @@
 		//[[UIBarButtonItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, 4) forBarMetrics:UIBarMetricsDefault];
 		
 		[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithNumber:AppearanceNavigationBarColor]];
+		[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 		
-		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBarTintColor:nil];
-		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTintColor:[UIColor blackColor]];
+//		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBarTintColor:nil];
+//		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTintColor:[UIColor blackColor]];
 	}
 	
 	[[UINavigationBar appearance] setBarStyle:UIBarStyleDefault];
 	[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
 	[[UINavigationBar appearance] setTranslucentAppearance:NO];
-	[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTitleTextAttributes:nil];
 
 
 	//[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -2) forBarMetrics:UIBarMetricsDefault];

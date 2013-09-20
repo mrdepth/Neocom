@@ -9,6 +9,7 @@
 #import "UIViewController+Neocom.h"
 #import <objc/runtime.h>
 #import "appearance.h"
+#import "EUPopoverBackgroundView.h"
 
 @interface UIViewController()<UIPopoverControllerDelegate>
 @property (nonatomic, strong) UIPopoverController* popover;
@@ -37,14 +38,16 @@
 		[self.popover dismissPopoverAnimated:YES];
 	
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:viewControllerToPresent];
+	self.popover.popoverBackgroundViewClass = [EUPopoverBackgroundView class];
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
 }
 
 - (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromRect:(CGRect) rect inView:(UIView*) view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:viewControllerToPresent];
+	self.popover.popoverBackgroundViewClass = [EUPopoverBackgroundView class];
 	self.popover.delegate = self;
-	[self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:arrowDirections animated:animated];
+	[self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
 }
 
 #pragma mark - UIPopoverControllerDelegate

@@ -219,7 +219,6 @@
 	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 }
 
-
 #pragma mark - Private
 
 - (void) reload {

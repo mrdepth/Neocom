@@ -491,6 +491,7 @@
 		12FDFB2317D5BC0A0063FAB2 /* NSObject+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */; };
 		12FE0C4F165A258B002E467E /* KillNetFilterDateViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */; };
 		12FE0C55165A2CA5002E467E /* KillboardCellView~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */; };
+		12FECBFA17EC377300EA621E /* EUPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FECBF917EC377300EA621E /* EUPopoverBackgroundView.m */; };
 		1D3623260D0F684500981E51 /* EVEUniverseAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */; };
 		1D60589B0D05DD56006BFB54 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.mm */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -1475,6 +1476,8 @@
 		12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Debug.m"; sourceTree = "<group>"; };
 		12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "KillNetFilterDateViewController~ipad.xib"; sourceTree = "<group>"; };
 		12FE0C54165A2CA5002E467E /* KillboardCellView~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "KillboardCellView~ipad.xib"; sourceTree = "<group>"; };
+		12FECBF817EC377300EA621E /* EUPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUPopoverBackgroundView.h; sourceTree = "<group>"; };
+		12FECBF917EC377300EA621E /* EUPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUPopoverBackgroundView.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUniverseAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EVEUniverseAppDelegate.mm; sourceTree = "<group>"; };
@@ -1940,6 +1943,7 @@
 				1224EBDB1647E672004401C5 /* CollapsableTableHeaderView */,
 				12582F0616B251A800445581 /* EUStorage */,
 				12DED91516BF8BEB00C560E5 /* EUMigrationManager */,
+				12FECBF717EC375500EA621E /* EUPopoverBackgroundView */,
 				1D3623240D0F684500981E51 /* EVEUniverseAppDelegate.h */,
 				1D3623250D0F684500981E51 /* EVEUniverseAppDelegate.mm */,
 				124DFA4A178EA79000ACF7A2 /* resources.h */,
@@ -3169,6 +3173,15 @@
 				12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */,
 			);
 			path = Debug;
+			sourceTree = "<group>";
+		};
+		12FECBF717EC375500EA621E /* EUPopoverBackgroundView */ = {
+			isa = PBXGroup;
+			children = (
+				12FECBF817EC377300EA621E /* EUPopoverBackgroundView.h */,
+				12FECBF917EC377300EA621E /* EUPopoverBackgroundView.m */,
+			);
+			name = EUPopoverBackgroundView;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -5215,6 +5228,7 @@
 				718B8868122FC62B00622C04 /* BrowserViewController.m in Sources */,
 				718B88BD122FCF5200622C04 /* Globals.m in Sources */,
 				710852E4123125C800397BC7 /* MainMenuViewController.m in Sources */,
+				12FECBFA17EC377300EA621E /* EUPopoverBackgroundView.m in Sources */,
 				7108533B1231317400397BC7 /* SelectCharacterBarButtonItem.m in Sources */,
 				7187E48B124BB51600ACAD91 /* SkillsViewController.m in Sources */,
 				717E8A3812DE4F0A001A2ABD /* CharacterInfoViewController.m in Sources */,

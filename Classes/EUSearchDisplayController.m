@@ -7,6 +7,11 @@
 //
 
 #import "EUSearchDisplayController.h"
+#import "EUPopoverBackgroundView.h"
+
+@interface UISearchDisplayController() <UISearchBarDelegate>
+
+@end
 
 @interface EUSearchDisplayController()
 @property (nonatomic, readwrite, strong) UIPopoverController *popoverController;
@@ -48,6 +53,7 @@
 		popoverController.delegate = self;
 		popoverController.passthroughViews = [NSArray arrayWithObject:self.searchBar];
 		popoverController.popoverContentSize = CGSizeMake(320, 1100);
+		popoverController.popoverBackgroundViewClass = [EUPopoverBackgroundView class];
 	}
 	return popoverController;
 }
@@ -77,19 +83,28 @@
 }
 
 - (UITableView*) searchResultsTableView {
-	return self.tableViewController.tableView;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return self.tableViewController.tableView;
+	else
+		return [super searchResultsTableView];
 }
 
 - (void)setActive:(BOOL)visible animated:(BOOL)animated {
-	if (visible) {
-		if (![self.popoverController isPopoverVisible])
-			[self.popoverController presentPopoverFromRect:self.searchBar.frame inView:self.searchBar.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (visible) {
+			if (![self.popoverController isPopoverVisible])
+				[self.popoverController presentPopoverFromRect:self.searchBar.frame inView:self.searchBar.superview permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+		}
+		else {
+			if ([self.popoverController isPopoverVisible]) {
+				[self.searchBar resignFirstResponder];
+				[self.popoverController dismissPopoverAnimated:animated];
+			}
+		}
 	}
 	else {
-		if ([self.popoverController isPopoverVisible]) {
-			[self.searchBar resignFirstResponder];
-			[self.popoverController dismissPopoverAnimated:animated];
-		}
+		//[self.searchContentsController.navigationController setNavigationBarHidden:visible animated:YES];
+		[super setActive:visible animated:animated];
 	}
 }
 
@@ -137,13 +152,18 @@
 #pragma mark UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	[self setActive:YES animated:YES];
-	if ([self.delegate respondsToSelector:@selector(searchDisplayController:shouldReloadTableForSearchString:)]) {
-		if ([self.delegate searchDisplayController:self shouldReloadTableForSearchString:searchText])
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		
+		[self setActive:YES animated:YES];
+		if ([self.delegate respondsToSelector:@selector(searchDisplayController:shouldReloadTableForSearchString:)]) {
+			if ([self.delegate searchDisplayController:self shouldReloadTableForSearchString:searchText])
+				[self.searchResultsTableView reloadData];
+		}
+		else
 			[self.searchResultsTableView reloadData];
 	}
 	else
-		[self.searchResultsTableView reloadData];
+		[super searchBar:searchBar textDidChange:searchText];
 }
 
 - (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
@@ -152,9 +172,12 @@
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-//	searchBar.showsSearchResultsButton = NO;
-	if (searchBar.text.length > 0)
-		[self setActive:YES animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (searchBar.text.length > 0)
+			[self setActive:YES animated:YES];
+	}
+	else
+		[super searchBarTextDidBeginEditing:searchBar];
 }
 
 #pragma mark UIPopoverControllerDelegate

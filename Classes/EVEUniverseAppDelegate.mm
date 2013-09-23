@@ -758,7 +758,7 @@
 //		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTintColor:[UIColor blackColor]];
 	}
 	
-	[[UINavigationBar appearance] setBarStyle:UIBarStyleDefault];
+	[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
 	[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeTextShadowColor: [UIColor blackColor], UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, -1)]}];
 	[[UINavigationBar appearance] setTranslucentAppearance:NO];
 
@@ -788,8 +788,8 @@
 										  barMetrics:UIBarMetricsDefault];
 	
 	[[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-	[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
-	[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
+//	[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
+//	[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
 	[[UISearchBar appearance] setTextColor:[UIColor whiteColor]];
 	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClear.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
 	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClearSelected.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateHighlighted];

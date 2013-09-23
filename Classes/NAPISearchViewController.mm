@@ -20,12 +20,15 @@
 #import "GroupedCell.h"
 #import "appearance.h"
 #import "RoundRectButton.h"
+#import "NSString+TimeLeft.h"
+#import "UIActionSheet+Block.h"
 
 @interface NAPISearchViewController ()
 @property (nonatomic, strong) EVEDBInvType* ship;
 @property (nonatomic, strong) EVEDBInvGroup* group;
 @property (nonatomic, assign) NSInteger flags;
 @property (nonatomic, strong) NSDictionary* criteria;
+@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 - (void) update;
 - (void) uploadFits;
@@ -50,7 +53,8 @@
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 
 	self.flags = NeocomAPIFlagComplete | NeocomAPIFlagValid;
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)];
+	self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(onSearch:)],
+												[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]];
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 	
 	self.title = NSLocalizedString(@"Community Fits", nil);
@@ -89,6 +93,31 @@
 	NAPISearchResultsViewController* controller = [[NAPISearchResultsViewController alloc] initWithNibName:@"NAPISearchResultsViewController" bundle:nil];
 	controller.criteria = self.criteria;
 	[self.navigationController pushViewController:controller animated:YES];
+}
+
+- (IBAction)onAction:(id)sender {
+	NSDate* nextSyncDate = [[NSUserDefaults standardUserDefaults] valueForKey:SettingsNeocomAPINextSyncDate];
+	BOOL alwaysUpload =[[NSUserDefaults standardUserDefaults] boolForKey:SettingsNeocomAPIAlwaysUploadFits];
+	NSString* title = nil;
+	if (nextSyncDate) {
+		NSInteger timeInterval = [nextSyncDate timeIntervalSinceNow];
+		if (timeInterval > 0)
+			title = [NSString stringWithFormat:@"Next sync in %@", [NSString stringWithTimeLeft:timeInterval]];
+	}
+	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
+	
+	self.actionSheet = [UIActionSheet actionSheetWithTitle:title
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:@[NSLocalizedString(@"Sync now", nil), alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil)]
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex == 0)
+												   [self uploadFits];
+											   else if (selectedButtonIndex == 1) {
+												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:SettingsNeocomAPIAlwaysUploadFits];
+											   }
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark -

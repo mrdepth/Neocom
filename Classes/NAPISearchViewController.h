@@ -14,4 +14,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *fitsCountLabel;
 
 - (IBAction)onSearch:(id)sender;
+- (IBAction)onAction:(id)sender;
 @end

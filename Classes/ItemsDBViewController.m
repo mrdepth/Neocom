@@ -13,16 +13,20 @@
 #import "ItemViewController.h"
 #import "appearance.h"
 #import "GroupedCell.h"
+#import "UIActionSheet+Block.h"
 
 @interface ItemsDBViewController()
+@property (nonatomic, strong) UIBarButtonItem* publishedButton;
+@property (nonatomic, strong) UIActionSheet* actionSheet;
+
 
 - (void) reload;
 - (void) searchWithSearchString:(NSString*) aSearchString;
+- (NSString*) localizedPublishedTitleWithMode:(ItemsDBViewControllerMode) mode;
 @end
 
 
 @implementation ItemsDBViewController
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -38,12 +42,27 @@
 	else
 		self.title = NSLocalizedString(@"Database", nil);
 
-	self.publishedFilterSegment.selectedSegmentIndex = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
-	self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.publishedFilterSegment.selectedSegmentIndex;
-//	if (publishedFilterSegment.selectedSegmentIndex == 0)
-		[self reload];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !self.modalMode)
-		[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+	self.mode = [[NSUserDefaults standardUserDefaults] integerForKey:SettingsPublishedFilterKey];
+	self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.mode;
+	[self reload];
+	
+	
+	self.publishedButton = [[UIBarButtonItem alloc] initWithTitle:[self localizedPublishedTitleWithMode:self.mode]
+															style:UIBarButtonItemStyleBordered
+														   target:self
+														   action:@selector(onChangePublished:)];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.publishedFilterSegment];
+		self.tableView.tableHeaderView = self.searchBar;
+		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
+		self.navigationItem.rightBarButtonItem = self.publishedButton;
+	}
+	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {// && !self.modalMode) {
+		//[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+		self.navigationItem.rightBarButtonItems = @[self.publishedButton, [[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+//		self.tableView.tableHeaderView = self.pu
+	}
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -64,19 +83,26 @@
 }
 
 
-- (IBAction) onChangePublishedFilterSegment: (id) sender {
-	[self reload];
-	self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.publishedFilterSegment.selectedSegmentIndex;
-	[[NSUserDefaults standardUserDefaults] setInteger:self.publishedFilterSegment.selectedSegmentIndex forKey:SettingsPublishedFilterKey];
+- (IBAction) onChangePublished: (id) sender {
+	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
+	self.actionSheet = [UIActionSheet actionSheetWithTitle:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:@[NSLocalizedString(@"Published", nil), NSLocalizedString(@"Unpublished", nil), NSLocalizedString(@"All", nil)]
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   self.mode = selectedButtonIndex;
+												   self.searchDisplayController.searchBar.selectedScopeButtonIndex = self.mode;
+												   [[NSUserDefaults standardUserDefaults] setInteger:self.mode forKey:SettingsPublishedFilterKey];
+												   [self reload];
+											   }
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
-- (ItemsDBViewControllerMode) mode {
-	if (self.publishedFilterSegment.selectedSegmentIndex == 0)
-		return ItemsDBViewControllerModePublished;
-	else if (self.publishedFilterSegment.selectedSegmentIndex == 2)
-		return ItemsDBViewControllerModeNotPublished;
-	else
-		return ItemsDBViewControllerModeAll;
+- (void) setMode:(ItemsDBViewControllerMode)mode {
+	_mode = mode;
+	self.publishedButton.title = [self localizedPublishedTitleWithMode:_mode];
 }
 
 #pragma mark -
@@ -209,7 +235,7 @@
 }
 
 - (void) searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-	self.publishedFilterSegment.selectedSegmentIndex = selectedScope;
+	self.mode = selectedScope;
 	[[NSUserDefaults standardUserDefaults] setInteger:selectedScope forKey:SettingsPublishedFilterKey];
 	[self.tableView reloadData];
 }
@@ -219,6 +245,15 @@
 	tableView.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 }
 
+- (void) searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+	[self.searchBar invalidateIntrinsicContentSize];
+	[self.searchBar setShowsScopeBar:YES];
+}
+
+- (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
+	[self.searchBar setShowsScopeBar:NO];
+	[self.searchBar invalidateIntrinsicContentSize];
+}
 
 #pragma mark - Private
 
@@ -315,6 +350,15 @@
 	}];
 	
 	[[EUOperationQueue sharedQueue] addOperation:operation];
+}
+
+- (NSString*) localizedPublishedTitleWithMode:(ItemsDBViewControllerMode) mode {
+	if (mode == ItemsDBViewControllerModePublished)
+		return NSLocalizedString(@"Published", nil);
+	else if (mode == ItemsDBViewControllerModeAll)
+		return NSLocalizedString(@"All", nil);
+	else
+		return NSLocalizedString(@"Unpublished", nil);
 }
 
 @end

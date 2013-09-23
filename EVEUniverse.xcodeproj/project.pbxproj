@@ -29,6 +29,7 @@
 		120B46B3164B9995000C33CE /* UIImageView+URL.m in Sources */ = {isa = PBXBuildFile; fileRef = 120B469E164B9995000C33CE /* UIImageView+URL.m */; };
 		120CC27717CC71CF008DCBAF /* Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 120CC27617CC71CF008DCBAF /* Setting.m */; };
 		120FE35516B9504B0091E692 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1203570D16B68A3F0015706B /* POSFit.mm */; };
+		1212224B17F0326A00722878 /* EUSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1212224A17F0326A00722878 /* EUSearchBar.m */; };
 		1213C0F816C8EEF8006E504E /* VariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0F616C8EEF8006E504E /* VariationsViewController.m */; };
 		1213C0F916C8EEF8006E504E /* VariationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1213C0F716C8EEF8006E504E /* VariationsViewController.xib */; };
 		1213C0FD16C8FD07006E504E /* FittingVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1213C0FC16C8FD07006E504E /* FittingVariationsViewController.m */; };
@@ -97,8 +98,6 @@
 		1259B4C51679C6DB00EA49B5 /* AddEVEAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4C71679C6DB00EA49B5 /* AddEVEAccountViewController.xib */; };
 		1259B4CB1679C6F300EA49B5 /* EVEAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4CD1679C6F300EA49B5 /* EVEAccountsViewController.xib */; };
 		1259B4D11679C70900EA49B5 /* ItemsDBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4D31679C70900EA49B5 /* ItemsDBViewController.xib */; };
-		1259B4D41679C70F00EA49B5 /* ItemsDBViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4D61679C70F00EA49B5 /* ItemsDBViewController~ipad.xib */; };
-		1259B4D71679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4D91679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib */; };
 		1259B4DA1679C74B00EA49B5 /* ItemInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4DC1679C74B00EA49B5 /* ItemInfoViewController.xib */; };
 		1259B4E01679C77400EA49B5 /* MarketInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4E21679C77400EA49B5 /* MarketInfoViewController.xib */; };
 		1259B4E61679C7DB00EA49B5 /* ItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259B4E81679C7DB00EA49B5 /* ItemViewController.xib */; };
@@ -799,6 +798,8 @@
 		120B469E164B9995000C33CE /* UIImageView+URL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+URL.m"; sourceTree = "<group>"; };
 		120CC27517CC71CF008DCBAF /* Setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Setting.h; sourceTree = "<group>"; };
 		120CC27617CC71CF008DCBAF /* Setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Setting.m; sourceTree = "<group>"; };
+		1212224917F0326A00722878 /* EUSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUSearchBar.h; sourceTree = "<group>"; };
+		1212224A17F0326A00722878 /* EUSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUSearchBar.m; sourceTree = "<group>"; };
 		1213C0F516C8EEF8006E504E /* VariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VariationsViewController.h; sourceTree = "<group>"; };
 		1213C0F616C8EEF8006E504E /* VariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariationsViewController.m; sourceTree = "<group>"; };
 		1213C0F716C8EEF8006E504E /* VariationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VariationsViewController.xib; sourceTree = "<group>"; };
@@ -892,8 +893,6 @@
 		1259B4C61679C6DB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AddEVEAccountViewController.xib; sourceTree = "<group>"; };
 		1259B4CC1679C6F300EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/EVEAccountsViewController.xib; sourceTree = "<group>"; };
 		1259B4D21679C70900EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ItemsDBViewController.xib; sourceTree = "<group>"; };
-		1259B4D51679C70F00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ItemsDBViewController~ipad.xib"; sourceTree = "<group>"; };
-		1259B4D81679C71400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/ItemsDBViewControllerModal~ipad.xib"; sourceTree = "<group>"; };
 		1259B4DB1679C74B00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ItemInfoViewController.xib; sourceTree = "<group>"; };
 		1259B4E11679C77400EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MarketInfoViewController.xib; sourceTree = "<group>"; };
 		1259B4E71679C7DB00EA49B5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ItemViewController.xib; sourceTree = "<group>"; };
@@ -4040,6 +4039,8 @@
 				71B4989317AD052100B98B59 /* UIActionSheet+Neocom.m */,
 				1203382117D60F8300C9C0AB /* NCURLCache.h */,
 				1203382217D60F8300C9C0AB /* NCURLCache.m */,
+				1212224917F0326A00722878 /* EUSearchBar.h */,
+				1212224A17F0326A00722878 /* EUSearchBar.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -4133,8 +4134,6 @@
 				718BA582122BF34A00148015 /* ItemsDBViewController.h */,
 				718BA583122BF34A00148015 /* ItemsDBViewController.m */,
 				1259B4D31679C70900EA49B5 /* ItemsDBViewController.xib */,
-				1259B4D61679C70F00EA49B5 /* ItemsDBViewController~ipad.xib */,
-				1259B4D91679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib */,
 			);
 			name = ItemsDBViewController;
 			sourceTree = "<group>";
@@ -4906,13 +4905,11 @@
 				7197DC46137F699200C3B3F4 /* LoadoutCellView.xib in Resources */,
 				129284D11402A3CE00055445 /* MainWindow-iPad.xib in Resources */,
 				129284D31402A3D900055445 /* SplashScreenViewController~ipad.xib in Resources */,
-				1259B4D41679C70F00EA49B5 /* ItemsDBViewController~ipad.xib in Resources */,
 				1259B4EF1679C81C00EA49B5 /* SkillsViewController~ipad.xib in Resources */,
 				1259B5131679C96C00EA49B5 /* MarketOrderCellView~ipad.xib in Resources */,
 				1259B50A1679C91A00EA49B5 /* WalletTransactionsViewController~ipad.xib in Resources */,
 				1259B5041679C90500EA49B5 /* WalletTransactionCellView~ipad.xib in Resources */,
 				1259B5221679C9AF00EA49B5 /* IndustryJobCellView~ipad.xib in Resources */,
-				1259B4D71679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib in Resources */,
 				1259B5311679C9F000EA49B5 /* POSCellView~ipad.xib in Resources */,
 				12448F181679CFC300DC90AC /* FittingViewController~ipad.xib in Resources */,
 				12BF0090140D3C5400AD9450 /* index.html in Resources */,
@@ -5349,6 +5346,7 @@
 				12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */,
 				125147DE165223D70008AC6B /* KillboardKillNetViewController.m in Sources */,
 				12CE330216524685009C2E1A /* KillboardKillNetFilterViewController.m in Sources */,
+				1212224B17F0326A00722878 /* EUSearchBar.m in Sources */,
 				12CE330816524A0D009C2E1A /* KillNetFilterTextCellView.m in Sources */,
 				12CE330E16525115009C2E1A /* KillNetFiltersViewController.m in Sources */,
 				1203985816537336008F047B /* KillNetFilterDBViewController.m in Sources */,
@@ -5844,22 +5842,6 @@
 				1259B4D21679C70900EA49B5 /* en */,
 			);
 			name = ItemsDBViewController.xib;
-			sourceTree = "<group>";
-		};
-		1259B4D61679C70F00EA49B5 /* ItemsDBViewController~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B4D51679C70F00EA49B5 /* en */,
-			);
-			name = "ItemsDBViewController~ipad.xib";
-			sourceTree = "<group>";
-		};
-		1259B4D91679C71400EA49B5 /* ItemsDBViewControllerModal~ipad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1259B4D81679C71400EA49B5 /* en */,
-			);
-			name = "ItemsDBViewControllerModal~ipad.xib";
 			sourceTree = "<group>";
 		};
 		1259B4DC1679C74B00EA49B5 /* ItemInfoViewController.xib */ = {

@@ -30,6 +30,18 @@
 #define NSURLCacheDiskCapacity (1024*1024*50)
 #define NSURLCacheMemoryCapacity (1024*1024*50)
 
+@interface UISplitViewController(My)
+
+@end
+
+@implementation UISplitViewController(My)
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
+}
+
+@end
+
 @interface UISearchBar(Neocom)
 @property (nonatomic, strong) UIColor* textColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, readonly) UITextField* searchField;
@@ -740,6 +752,7 @@
 		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
 		//[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 	}
 	else {
 		self.window.tintColor = [UIColor whiteColor];
@@ -757,6 +770,7 @@
 		
 //		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBarTintColor:nil];
 //		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setTintColor:[UIColor blackColor]];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	}
 	
 	[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];

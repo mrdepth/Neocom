@@ -29,7 +29,20 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.title = NSLocalizedString(@"Browser", nil);
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onClose:)];
+	self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reload.png"] style:UIBarButtonItemStyleBordered target:self.webView action:@selector(reload)],
+												[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"forward.png"] style:UIBarButtonItemStyleBordered target:self.webView action:@selector(goForward)],
+												[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStyleBordered target:self.webView action:@selector(goBack)],
+												[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Safari", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(onSafari:)]
+												];
+	self.reloadButton = self.navigationItem.rightBarButtonItems[0];
+	self.forwardButton = self.navigationItem.rightBarButtonItems[1];
+	self.backButton = self.navigationItem.rightBarButtonItems[2];
+	self.reloadButton.enabled = NO;
+	self.forwardButton.enabled = NO;
+	self.backButton.enabled = NO;
+	
+	//self.title = NSLocalizedString(@"Browser", nil);
 	NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<a href=\"%@\">%@</a><br>%@<br>", [self.rss.link absoluteString], self.rss.title, self.rss.description];
 	if (self.rss.enclosure && self.rss.enclosure.url) {
 		//NSString *url = [rss.enclosure valueForKey:@"url"];
@@ -108,7 +121,8 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	[self.activityIndicatorView stopAnimating];
-	[[UIAlertView alertViewWithError:error] show];
+	if (error.code != -999)
+		[[UIAlertView alertViewWithError:error] show];
 }
 
 @end

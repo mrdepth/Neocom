@@ -115,9 +115,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	RSSViewController *controller = [[RSSViewController alloc] initWithNibName:@"RSSViewController" bundle:nil];
 	controller.rss = [[self.rows objectAtIndex:indexPath.row] valueForKey:@"item"];
+	UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 	
 //	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	[self presentViewController:controller animated:YES completion:nil];
+	[self presentViewController:navigationController animated:YES completion:nil];
 //	else
 //		[self.navigationController pushViewController:controller animated:YES];
 }

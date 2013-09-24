@@ -167,7 +167,6 @@
 //	[[NSUserDefaults standardUserDefaults] setBool:self.onlineModeSegmentedControl.selectedSegmentIndex == 1 forKey:SettingsOfflineMode];
 }
 
-
 #pragma mark -
 #pragma mark Table view data source
 

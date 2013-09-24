@@ -8,13 +8,6 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>icon.png</string>
-		<string>icon@2x.png</string>
-		<string>icon72x72.png</string>
-		<string>icon72x72@2x.png</string>
-	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.shimanski.eveuniverse</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -65,7 +58,7 @@
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackOpaque</string>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

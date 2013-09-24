@@ -55,5 +55,4 @@
     // e.g. self.myOutlet = nil;
 }
 
-
 @end

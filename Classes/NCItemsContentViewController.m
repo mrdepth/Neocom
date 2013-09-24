@@ -15,6 +15,7 @@
 #import "CollapsableTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "UIViewController+Neocom.h"
+#import "ItemViewController.h"
 
 @interface EVEDBInvMarketGroup ()
 @property (nonatomic, strong, readonly) NSMutableArray* subgroups;
@@ -95,19 +96,20 @@
 	GroupedCell* cell = (GroupedCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (cell == nil) {
 		cell = [[GroupedCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];//[ItemCellView cellWithNibName:@"ItemCellView" bundle:nil reuseIdentifier:cellIdentifier];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		EVEDBInvType* row = self.searchResult[indexPath.section][@"rows"][indexPath.row];
 		cell.textLabel.text = row.typeName;
 		cell.imageView.image = [UIImage imageNamed:row.typeSmallImageName];
+		cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	}
 	else {
 		if (self.groupID) {
 			EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 			cell.textLabel.text = row.typeName;
 			cell.imageView.image = [UIImage imageNamed:row.typeSmallImageName];
+			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
 		else {
 			EVEDBInvMarketGroup* row = self.groups[indexPath.row];
@@ -116,6 +118,7 @@
 				cell.imageView.image = [UIImage imageNamed:row.icon.iconImageName];
 			else
 				cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 	}
 	
@@ -186,6 +189,31 @@
 		
 		controller.title = marketGroup.marketGroupName;
 		[self.navigationController pushViewController:controller animated:YES];
+	}
+}
+
+- (void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	EVEDBInvType* type = nil;
+	
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		type = self.searchResult[indexPath.section][@"rows"][indexPath.row];
+	}
+	else if (self.groupID) {
+		type = self.sections[indexPath.section][@"rows"][indexPath.row];
+	}
+	else {
+	}
+	if (type) {
+		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+		itemViewController.type = type;
+		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentViewController:navController animated:YES completion:nil];
+		}
+		else
+			[self.navigationController pushViewController:itemViewController animated:YES];
 	}
 }
 

@@ -161,6 +161,8 @@
 			
 			
 			controller.completionHandler = ^(EVEDBInvType* type) {
+				if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+					[self dismiss];
 				if (type) {
 					[self.filter setValue:type.typeName forKey:@"value"];
 					[self.delegate killNetFiltersViewController:self didSelectFilter:self.filter];

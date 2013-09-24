@@ -742,6 +742,7 @@
 		//[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	}
 	else {
+		self.window.tintColor = [UIColor whiteColor];
 		[[UITableView appearance] setSeparatorStyleAppearance:UITableViewCellSeparatorStyleNone];
 //		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
 //		[[UITableView appearance] setSeparatorColor:[UIColor colorWithNumber:AppearanceSeparatorColor]];

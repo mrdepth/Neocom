@@ -238,6 +238,7 @@
 	NSObject *objectToMove = [self.account.skillPlan.skills objectAtIndex:fromIndexPath.row];
     [self.account.skillPlan.skills removeObjectAtIndex:fromIndexPath.row];
     [self.account.skillPlan.skills insertObject:objectToMove atIndex:toIndexPath.row];
+	[self.account.skillPlan save];
 
 	objectToMove = [self.skillPlan objectAtIndex:fromIndexPath.row];
     [self.skillPlan removeObjectAtIndex:fromIndexPath.row];

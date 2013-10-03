@@ -298,7 +298,7 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 			[navController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)]];
+			[controller.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self.splitViewController action:@selector(dismiss)]];
 			[self.splitViewController presentViewController:navController animated:YES completion:nil];
 		}
 		else {

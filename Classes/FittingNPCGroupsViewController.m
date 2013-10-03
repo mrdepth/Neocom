@@ -100,6 +100,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.searchDisplayController.searchResultsTableView == tableView) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.searchDisplayController setActive:NO animated:YES];
 		[self.damagePatternsViewController.delegate damagePatternsViewController:self.damagePatternsViewController
 													 didSelectDamagePattern:[DamagePattern damagePatternWithNPCType:[self.filteredValues objectAtIndex:indexPath.row]]];
 	}

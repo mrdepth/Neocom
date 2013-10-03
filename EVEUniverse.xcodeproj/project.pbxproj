@@ -500,7 +500,6 @@
 		3764AC8614CDDCCD00C7DEC5 /* CertificateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3764AC8414CDDCCD00C7DEC5 /* CertificateViewController.m */; };
 		3764AC8714CDDCCD00C7DEC5 /* CertificateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3764AC8514CDDCCD00C7DEC5 /* CertificateViewController.xib */; };
 		3764AC8C14CDDDB300C7DEC5 /* CertificateTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3764AC8B14CDDDB300C7DEC5 /* CertificateTreeView.m */; };
-		37763D22150E12570096A467 /* NPCGroupsViewControllerModal~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37763D21150E12570096A467 /* NPCGroupsViewControllerModal~ipad.xib */; };
 		37763D27150E15D50096A467 /* FittingNPCGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37763D26150E15D50096A467 /* FittingNPCGroupsViewController.m */; };
 		37763D2C150E1A5B0096A467 /* FittingNPCItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37763D2B150E1A5B0096A467 /* FittingNPCItemViewController.m */; };
 		377CC0D914140E7C000415BE /* contractsFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 377CC0D814140E7C000415BE /* contractsFilter.plist */; };
@@ -1488,7 +1487,6 @@
 		3764AC8514CDDCCD00C7DEC5 /* CertificateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CertificateViewController.xib; sourceTree = "<group>"; };
 		3764AC8A14CDDDB300C7DEC5 /* CertificateTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CertificateTreeView.h; sourceTree = "<group>"; };
 		3764AC8B14CDDDB300C7DEC5 /* CertificateTreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CertificateTreeView.m; sourceTree = "<group>"; };
-		37763D21150E12570096A467 /* NPCGroupsViewControllerModal~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NPCGroupsViewControllerModal~ipad.xib"; sourceTree = "<group>"; };
 		37763D25150E15D50096A467 /* FittingNPCGroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingNPCGroupsViewController.h; sourceTree = "<group>"; };
 		37763D26150E15D50096A467 /* FittingNPCGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingNPCGroupsViewController.m; sourceTree = "<group>"; };
 		37763D2A150E1A5B0096A467 /* FittingNPCItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingNPCItemViewController.h; sourceTree = "<group>"; };
@@ -3369,7 +3367,6 @@
 				379B8DA01507A9E300326B5D /* NPCGroupsViewController.h */,
 				379B8DA11507A9E300326B5D /* NPCGroupsViewController.m */,
 				379B8DA31507AAED00326B5D /* NPCGroupsViewController.xib */,
-				37763D21150E12570096A467 /* NPCGroupsViewControllerModal~ipad.xib */,
 			);
 			name = NPCGroupsViewController;
 			sourceTree = "<group>";
@@ -4936,7 +4933,6 @@
 				37C0FB2914FD1319006A153D /* walletJournalFilter.plist in Resources */,
 				12448F421679D11C00DC90AC /* WalletJournalCellView~ipad.xib in Resources */,
 				379B8DA41507AAED00326B5D /* NPCGroupsViewController.xib in Resources */,
-				37763D22150E12570096A467 /* NPCGroupsViewControllerModal~ipad.xib in Resources */,
 				12448F1E1679CFE600DC90AC /* POSFittingViewController.xib in Resources */,
 				12448F211679CFEA00DC90AC /* POSFittingViewController~ipad.xib in Resources */,
 				12CAC4ED152AF1EC003180E6 /* evemon.html in Resources */,

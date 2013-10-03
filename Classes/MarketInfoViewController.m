@@ -36,11 +36,12 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.edgesForExtendedLayout = UIRectEdgeNone;
+	
 	self.view.backgroundColor = [UIColor colorWithNumber:AppearanceBackgroundColor];
 	self.title = self.type.typeName;
 	
 	self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self.parentViewController];
+	[self.searchDisplayController setValue:@(UITableViewStyleGrouped) forKey:@"searchResultsTableViewStyle"];
 	self.searchDisplayController.delegate = self;
 	self.searchDisplayController.searchResultsDataSource = self;
 	self.searchDisplayController.searchResultsDelegate = self;

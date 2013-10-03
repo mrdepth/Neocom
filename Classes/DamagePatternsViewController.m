@@ -223,8 +223,7 @@
 - (void)tableView:(UITableView*) tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.section == 0) {
-		FittingNPCGroupsViewController *controller = [[FittingNPCGroupsViewController alloc] initWithNibName:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"NPCGroupsViewControllerModal" : @"NPCGroupsViewController")
-																					bundle:nil];
+		FittingNPCGroupsViewController *controller = [[FittingNPCGroupsViewController alloc] initWithNibName:@"NPCGroupsViewController"	bundle:nil];
 		controller.modalMode = YES;
 		controller.damagePatternsViewController = self;
 		[self.navigationController pushViewController:controller animated:YES];

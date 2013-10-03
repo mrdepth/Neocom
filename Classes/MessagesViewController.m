@@ -49,8 +49,9 @@
 		self.title = NSLocalizedString(@"Mail", nil);
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
+		self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)],
+													[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
+		//self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Mark as read", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(markAsRead:)];
 	}
 	else {
 		self.tableViewLeft.tableHeaderView = self.searchBar;

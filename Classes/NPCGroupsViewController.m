@@ -50,6 +50,8 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 		self.tableView.tableHeaderView = self.searchBar;
+	else
+		self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 
 }
 

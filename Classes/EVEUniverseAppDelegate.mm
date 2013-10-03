@@ -751,8 +751,10 @@
 														barMetrics:UIBarMetricsDefault];
 		[[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
-		//[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+		
+		[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
+		[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
 	}
 	else {
 		self.window.tintColor = [UIColor whiteColor];
@@ -803,8 +805,6 @@
 										  barMetrics:UIBarMetricsDefault];
 	
 	[[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-//	[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
-//	[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
 	[[UISearchBar appearance] setTextColor:[UIColor whiteColor]];
 	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClear.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
 	[[UISearchBar appearance] setImage:[UIImage imageNamed:@"iconClearSelected.png"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateHighlighted];

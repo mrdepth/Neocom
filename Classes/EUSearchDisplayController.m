@@ -60,10 +60,11 @@
 
 - (UITableViewController*) tableViewController {
 	if (!_tableViewController) {
-		_tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+		_tableViewController = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		_tableViewController.tableView.dataSource = self;
 		_tableViewController.tableView.delegate = self;
 		_tableViewController.contentSizeForViewInPopover = CGSizeMake(320, 1100);
+		_tableViewController.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		NSArray *titles = self.searchBar.scopeButtonTitles;
 		if (titles.count > 0) {
 			_scopeSegmentControler = [[UISegmentedControl alloc] initWithItems:titles];

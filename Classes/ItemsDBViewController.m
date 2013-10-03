@@ -53,15 +53,11 @@
 														   action:@selector(onChangePublished:)];
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.publishedFilterSegment];
 		self.tableView.tableHeaderView = self.searchBar;
-		//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchBar];
 		self.navigationItem.rightBarButtonItem = self.publishedButton;
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {// && !self.modalMode) {
-		//[self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
 		self.navigationItem.rightBarButtonItems = @[self.publishedButton, [[UIBarButtonItem alloc] initWithCustomView:self.searchBar]];
-//		self.tableView.tableHeaderView = self.pu
 	}
 }
 

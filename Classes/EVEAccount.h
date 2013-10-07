@@ -37,9 +37,6 @@
 + (EVEAccount*) currentAccount;
 + (void) setCurrentAccount:(EVEAccount*) account;
 
-- (void) login;
-- (void) logoff;
-
 - (void) reload;
 
 - (void) updateSkillpoints;

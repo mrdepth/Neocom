@@ -61,16 +61,6 @@ static EVEAccount* currentAccount;
 	[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:currentAccount];
 }
 
-- (void) login {
-	EVEUniverseAppDelegate *delegate = (EVEUniverseAppDelegate*) [[UIApplication sharedApplication] delegate];
-	delegate.currentAccount = self;
-}
-
-- (void) logoff {
-	EVEUniverseAppDelegate *delegate = (EVEUniverseAppDelegate*) [[UIApplication sharedApplication] delegate];
-	delegate.currentAccount = nil;
-}
-
 - (void) reload {
 /*	self.characterSheet = nil;
 	self.skillQueue = nil;

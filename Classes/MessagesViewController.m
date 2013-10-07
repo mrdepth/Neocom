@@ -174,7 +174,7 @@
 	if (self.messages) {
 		[self.messagesDataSource reload];
 	}
-	else {
+//	else {
 		__block EUMailBox* mailBoxTmp = nil;
 		EUOperation *operation = [EUOperation operationWithIdentifier:@"MessagesViewController+reload" name:NSLocalizedString(@"Loading Messages", nil)];
 		EVEAccount* account = [EVEAccount currentAccount];
@@ -198,7 +198,7 @@
 		}];
 		
 		[[EUOperationQueue sharedQueue] addOperation:operation];
-	}
+//	}
 }
 
 - (void) didSelectAccount:(NSNotification*) notification {

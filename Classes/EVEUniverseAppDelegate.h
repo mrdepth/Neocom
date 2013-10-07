@@ -18,7 +18,6 @@
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) IBOutlet UIViewController *controller;
 @property (nonatomic, strong) IBOutlet UIViewController *loadingViewController;
-@property (nonatomic, strong) EVEAccount *currentAccount;
 @property (nonatomic, getter = isInAppStatus) BOOL inAppStatus;
 @property (nonatomic, strong) EUOperationQueue *sharedQueue;
 

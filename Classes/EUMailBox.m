@@ -72,11 +72,13 @@
 
 - (void) save {
 	[[NSFileManager defaultManager] createDirectoryAtPath:[EUMailBox mailBoxDirectory] withIntermediateDirectories:NO attributes:nil error:nil];
-	NSMutableArray* readMessages = [[NSMutableArray alloc] init];
+	NSArray* readMessages = [[NSArray alloc] initWithContentsOfFile:[self messagesFilePath]];
+	NSMutableSet* set = readMessages.count > 10000 ? [NSMutableSet new] : [[NSMutableSet alloc] initWithArray:readMessages];
+
 	for (EUMailMessage* message in self.inbox)
 		if (message.read)
-			[readMessages addObject:[NSNumber numberWithInteger:message.header.messageID]];
-	[readMessages writeToURL:[NSURL fileURLWithPath:[self messagesFilePath]] atomically:YES];
+			[set addObject:[NSNumber numberWithInteger:message.header.messageID]];
+	[[set allObjects] writeToURL:[NSURL fileURLWithPath:[self messagesFilePath]] atomically:YES];
 	
 	NSMutableArray* readNotifications = [[NSMutableArray alloc] init];
 	for (EUNotification* notification in self.notifications)

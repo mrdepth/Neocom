@@ -107,6 +107,7 @@
 - (void) setupAppearance;
 - (void) accountDidSelect:(NSNotification*) notification;
 - (void) removeAds;
+- (void) checkWarDeclarations;
 @end
 
 @implementation EVEUniverseAppDelegate
@@ -327,73 +328,6 @@
 	else if ([scheme isEqualToString:@"fitting"])
 		[self openFitWithURL:url];
 	return YES;
-}
-
-- (void) setCurrentAccount: (EVEAccount*) value {
-	if (value != _currentAccount) {
-		_currentAccount = value;
-	}
-	if (_currentAccount) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:_currentAccount];
-	}
-	else
-		[[NSNotificationCenter defaultCenter] postNotificationName:EVEAccountDidSelectNotification object:_currentAccount];
-/*	if (!_currentAccount)
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentAccount];
-	else
-		[[NSUserDefaults standardUserDefaults] setObject:[_currentAccount dictionary] forKey:SettingsCurrentAccount];
-*/
-	if (_currentAccount && ((_currentAccount.charAPIKey.apiKeyInfo.key.accessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
-		NSMutableArray* wars = [NSMutableArray array];
-		
-		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+CheckMail" name:NSLocalizedString(@"Checking War Declarations", nil)];
-		__weak EUOperation* weakOperation = operation;
-		[operation addExecutionBlock:^(void) {
-			EUMailBox* mailBox = [_currentAccount mailBox];
-			NSMutableSet* ids = [NSMutableSet set];
-			float n = mailBox.notifications.count + 1;
-			float i = 0;
-			for (EUNotification* notification in  mailBox.notifications) {
-				weakOperation.progress = i++ / n;
-				if (!notification.read && (notification.header.typeID == 5 || notification.header.typeID == 27)) {
-					NSString* declaredByID = [notification.details.properties valueForKey:@"declaredByID"];
-					NSInteger iDeclaredByID = [declaredByID integerValue];
-					if (declaredByID && _currentAccount.characterSheet.corporationID != iDeclaredByID && _currentAccount.characterSheet.allianceID != iDeclaredByID)
-						[ids addObject:declaredByID];
-				}
-			}
-			if (ids.count > 0) {
-				EVECharacterName* charNames = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil progressHandler:nil];
-				
-				for (NSString* war in [charNames.characters allValues]) {
-					[wars addObject:war];
-				}
-			}
-			weakOperation.progress = 1;
-			[mailBox save];
-		}];
-		
-		[operation setCompletionBlockInMainThread:^(void) {
-			if (wars.count > 0) {
-				NSString* s = [wars componentsJoinedByString:@", "];
-				BOOL multiple = wars.count > 1;
-				NSString* message;
-				if (multiple)
-					message = [NSString stringWithFormat:NSLocalizedString(@"%@ have declared war against you! Fly safe.", nil), s];
-				else
-					message = [NSString stringWithFormat:NSLocalizedString(@"%@ has declared war against you! Fly safe.", nil), s];
-				
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:multiple ? NSLocalizedString(@"Declarations of war!", nil) : NSLocalizedString(@"Declaration of war!", nil)
-																	message:message
-																   delegate:nil
-														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-														  otherButtonTitles:nil];
-				[alertView show];
-			}
-		}];
-		
-		[[EUOperationQueue sharedQueue] addOperation:operation];
-	}
 }
 
 - (BOOL) isInAppStatus {
@@ -817,8 +751,10 @@
 
 - (void) accountDidSelect:(NSNotification*) notification {
 	EVEAccount* account = notification.object;
-	if (account)
+	if (account) {
 		[[NSUserDefaults standardUserDefaults] setInteger:account.character.characterID forKey:SettingsCurrentCharacterID];
+		[self checkWarDeclarations];
+	}
 	else
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:SettingsCurrentCharacterID];
 }
@@ -835,6 +771,61 @@
 			[self.adView removeFromSuperview];
 			self.adView = nil;
 		}
+	}
+}
+
+- (void) checkWarDeclarations {
+	EVEAccount* account = [EVEAccount currentAccount];
+	if (account && ((account.charAPIKey.apiKeyInfo.key.accessMask & 49152) == 49152)) { //49152 = NotificationTexts | Notifications
+		NSMutableArray* wars = [NSMutableArray array];
+		
+		__block EUOperation *operation = [EUOperation operationWithIdentifier:@"EVEUniverseAppDelegate+checkWarDeclarations" name:NSLocalizedString(@"Checking War Declarations", nil)];
+		__weak EUOperation* weakOperation = operation;
+		[operation addExecutionBlock:^(void) {
+			EUMailBox* mailBox = [account mailBox];
+			NSMutableSet* ids = [NSMutableSet set];
+			float n = mailBox.notifications.count + 1;
+			float i = 0;
+			for (EUNotification* notification in  mailBox.notifications) {
+				weakOperation.progress = i++ / n;
+				if (!notification.read && (notification.header.typeID == 5 || notification.header.typeID == 27)) {
+					NSString* declaredByID = [notification.details.properties valueForKey:@"declaredByID"];
+					NSInteger iDeclaredByID = [declaredByID integerValue];
+					if (declaredByID && account.characterSheet.corporationID != iDeclaredByID && account.characterSheet.allianceID != iDeclaredByID)
+						[ids addObject:declaredByID];
+				}
+			}
+			if (ids.count > 0) {
+				EVECharacterName* charNames = [EVECharacterName characterNameWithIDs:[ids allObjects] error:nil progressHandler:nil];
+				
+				for (NSString* war in [charNames.characters allValues]) {
+					[wars addObject:war];
+				}
+			}
+			weakOperation.progress = 1;
+			[mailBox save];
+		}];
+		
+		[operation setCompletionBlockInMainThread:^(void) {
+			if (wars.count > 0) {
+				NSString* s = [wars componentsJoinedByString:@", "];
+				BOOL multiple = wars.count > 1;
+				NSString* message;
+				if (multiple)
+					message = [NSString stringWithFormat:NSLocalizedString(@"%@ have declared war against you! Fly safe.", nil), s];
+				else
+					message = [NSString stringWithFormat:NSLocalizedString(@"%@ has declared war against you! Fly safe.", nil), s];
+				
+				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:multiple ? NSLocalizedString(@"Declarations of war!", nil) : NSLocalizedString(@"Declaration of war!", nil)
+																	message:message
+																   delegate:nil
+														  cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+														  otherButtonTitles:nil];
+				[alertView show];
+			}
+		}];
+		
+		[[EUOperationQueue sharedQueue] addOperation:operation];
 	}
 }
 

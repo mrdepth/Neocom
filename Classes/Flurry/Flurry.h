@@ -20,7 +20,7 @@
  *  attract high-quality users and monetize your user base see <a href="http://support.flurry.com/index.php?title=Publishers">Support Center - Publishers</a>.
  *  
  *  @author 2009 - 2012 Flurry, Inc. All Rights Reserved.
- *  @version 4.2.0
+ *  @version 4.2.4
  * 
  */
 
@@ -235,15 +235,12 @@ typedef enum {
 
 
 /*!
- *  @brief Pauses a Flurry session.
+ *  @brief Pauses a Flurry session left running in background.
  *  @since 4.2.2
  *
- *  This method is useful in case of #setBackgroundSessionEnabled: set to YES. It can be
+ *  This method should be used in case of #setBackgroundSessionEnabled: set to YES. It can be
  *  called when application finished all background tasks (such as playing music) to pause session.
- *  If the app is resumed before time specified in #setSessionContinueSeconds:,
- *  the session will continue, otherwise a new session will begin.
  *
- * @see #setSessionContinueSeconds: for details on setting a custom session timeout.
  * @see #setBackgroundSessionEnabled: for details on setting a custom behaviour on resigning activity.
  *
  * @code
@@ -709,11 +706,17 @@ typedef enum {
  *  @brief Set session to support background execution.
  *  @since 4.2.2
  *
- *  Use this method finish session data when the app is paused. The default value is taken looking at the UIBackgroundModes of application's Info.plist.
- *  If UIBackgroundModes array is empty, equals @c NO, otherwise @c YES.
+ *  Use this method to enable reporting of errors and events when application is 
+ *  running in backgorund (such applications have  UIBackgroundModes in Info.plist).
+ *  You should call #pauseBackgroundSession when appropriate in background mode to 
+ *  pause the session (for example when played song completed in background)
  *
- *  @param setBackgroundSessionEnabled NO to finish on resigning active, YES to omit finishing.
+ *  Default value is @c NO
  *
+ *  @see #pauseBackgroundSession for details
+ *
+ *  @param setBackgroundSessionEnabled YES to enbale background support and 
+ *  continue log events and errors for running session.
  */
 + (void)setBackgroundSessionEnabled:(BOOL)setBackgroundSessionEnabled;
 

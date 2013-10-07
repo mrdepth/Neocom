@@ -427,7 +427,6 @@
 		12774E13177032C100E98F8C /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774D92177032C100E98F8C /* NSString+MD5.m */; };
 		12774E14177032C100E98F8C /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774D94177032C100E98F8C /* NSURL+MD5.m */; };
 		12774E1A1770348500E98F8C /* ASURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 12774E191770348500E98F8C /* ASURLConnection.m */; };
-		12861B2117D9A17100AC87C3 /* libFlurry_4.2.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */; };
 		12861B2417D9A24A00AC87C3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12861B2317D9A24A00AC87C3 /* Security.framework */; };
 		12880E0E164CDC4C0072FA13 /* KillMailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */; };
 		12880E14164CDE350072FA13 /* KillMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 12880E13164CDE350072FA13 /* KillMail.m */; };
@@ -478,6 +477,7 @@
 		12DEFD85152EC9640076ABC7 /* FittingExportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12DEFD84152EC9640076ABC7 /* FittingExportViewController.mm */; };
 		12EB31331651274800C69C5D /* KillMailAttackerCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EB31321651274800C69C5D /* KillMailAttackerCellView.m */; };
 		12EB31351651275500C69C5D /* KillMailAttackerCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */; };
+		12EB9523180288AA009578F4 /* libFlurry_4.2.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12EB9522180288AA009578F4 /* libFlurry_4.2.4.a */; };
 		12F17D7516707C6A0070B97C /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F17D7416707C670070B97C /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12FDFB2317D5BC0A0063FAB2 /* NSObject+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */; };
 		12FE0C4F165A258B002E467E /* KillNetFilterDateViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12FE0C4E165A258B002E467E /* KillNetFilterDateViewController~ipad.xib */; };
@@ -1354,7 +1354,6 @@
 		12774E181770348500E98F8C /* ASURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASURLConnection.h; sourceTree = "<group>"; };
 		12774E191770348500E98F8C /* ASURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASURLConnection.m; sourceTree = "<group>"; };
 		12861B1F17D9A17100AC87C3 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.2.3.a; sourceTree = "<group>"; };
 		12861B2317D9A24A00AC87C3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		12880E0B164CDC4C0072FA13 /* KillMailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailViewController.h; sourceTree = "<group>"; };
 		12880E0C164CDC4C0072FA13 /* KillMailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KillMailViewController.mm; sourceTree = "<group>"; };
@@ -1453,6 +1452,7 @@
 		12EB31311651274800C69C5D /* KillMailAttackerCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillMailAttackerCellView.h; sourceTree = "<group>"; };
 		12EB31321651274800C69C5D /* KillMailAttackerCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillMailAttackerCellView.m; sourceTree = "<group>"; };
 		12EB31341651275500C69C5D /* KillMailAttackerCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KillMailAttackerCellView.xib; sourceTree = "<group>"; };
+		12EB9522180288AA009578F4 /* libFlurry_4.2.4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.2.4.a; sourceTree = "<group>"; };
 		12F17D7416707C670070B97C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		12FDFB2117D5BC0A0063FAB2 /* NSObject+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Debug.h"; sourceTree = "<group>"; };
 		12FDFB2217D5BC0A0063FAB2 /* NSObject+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Debug.m"; sourceTree = "<group>"; };
@@ -1890,9 +1890,9 @@
 				718C68FB1300913F00C2A5A2 /* libz.dylib in Frameworks */,
 				718C694F1300916C00C2A5A2 /* iAd.framework in Frameworks */,
 				718C69511300916C00C2A5A2 /* SystemConfiguration.framework in Frameworks */,
+				12EB9523180288AA009578F4 /* libFlurry_4.2.4.a in Frameworks */,
 				718C695B1300918700C2A5A2 /* CoreLocation.framework in Frameworks */,
 				12BF018F140D3DCA00AD9450 /* CFNetwork.framework in Frameworks */,
-				12861B2117D9A17100AC87C3 /* libFlurry_4.2.3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2854,7 +2854,7 @@
 			isa = PBXGroup;
 			children = (
 				12861B1F17D9A17100AC87C3 /* Flurry.h */,
-				12861B2017D9A17100AC87C3 /* libFlurry_4.2.3.a */,
+				12EB9522180288AA009578F4 /* libFlurry_4.2.4.a */,
 			);
 			path = Flurry;
 			sourceTree = "<group>";

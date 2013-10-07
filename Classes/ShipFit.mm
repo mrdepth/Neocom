@@ -193,24 +193,32 @@ public:
 			NSMutableArray *charges = [NSMutableArray array];
 			NSMutableArray *modules = [NSMutableArray array];
 			for (EVEAssetListItem* item in asset.contents) {
+				BOOL fitted = (item.flag >= EVEInventoryFlagLoSlot0 && item.flag <= EVEInventoryFlagHiSlot7) ||
+					(item.flag >= EVEInventoryFlagRigSlot0 && item.flag <= EVEInventoryFlagRigSlot7) ||
+					(item.flag >= EVEInventoryFlagSubSystem0 && item.flag <= EVEInventoryFlagSubSystem7);
+				BOOL inDroneBay = item.flag == EVEInventoryFlagDroneBay;
+				
 				int amount = item.quantity;
 				if (amount < 1)
 					amount = 1;
 				EVEDBInvType* type = item.type;
 				if ([type.group.category.categoryName isEqualToString:@"Module"]) {
-					for (int i = 0; i < amount; i++)
-						[modules addObject:type];
+					if (fitted)
+						for (int i = 0; i < amount; i++)
+							[modules addObject:type];
 				}
 				else if ([type.group.category.categoryName isEqualToString:@"Subsystem"]) {
-					for (int i = 0; i < amount; i++)
-						ship->addModule(type.typeID);
+					if (fitted)
+						for (int i = 0; i < amount; i++)
+							ship->addModule(type.typeID);
 				}
 				else if ([type.group.category.categoryName isEqualToString:@"Charge"]) {
 					[charges addObject:type];
 				}
 				else if ([type.group.category.categoryName isEqualToString:@"Drone"]) {
-					for (int i = 0; i < amount; i++)
-						ship->addDrone(type.typeID);
+					if (item.flag == inDroneBay)
+						for (int i = 0; i < amount; i++)
+							ship->addDrone(type.typeID);
 				}
 			}
 			for (EVEDBInvType *type in modules) {

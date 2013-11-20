@@ -158,12 +158,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString* cellIdentifier = @"SkillCellView";
+	SkillData* skill = (SkillData*) [self skillAtIndexPath:indexPath];
+
+	NSString* cellIdentifier = skill.trainedLevel >= 0  ? @"SkillCellView" : @"SkillCellViewShort";
 	SkillCellView* cell = (SkillCellView*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell)
-		cell = [SkillCellView cellWithNibName:@"SkillCellView" bundle:nil reuseIdentifier:cellIdentifier];
+		cell = [SkillCellView cellWithNibName:cellIdentifier bundle:nil reuseIdentifier:cellIdentifier];
 	
-	SkillData* skill = (SkillData*) [self skillAtIndexPath:indexPath];
 	
 	cell.iconImageView.image = [UIImage imageNamed:skill.active ? @"Icons/icon50_12.png" : (skill.trainedLevel == 5 ? @"Icons/icon50_14.png" : @"Icons/icon50_13.png")];
 

@@ -309,6 +309,7 @@ CREATE TABLE dgmEffects (
 "iconID" smallint(6) default NULL,
 "displayNameID" smallint(6) default NULL,
 "descriptionID" smallint(6) default NULL,
+"modifierInfo"  TEXT(100),
 "dataID" smallint(6) default NULL,
 PRIMARY KEY ("effectID")
 );
@@ -387,4 +388,5 @@ CREATE TABLE invControlTowerResources (
   "wormholeClassID" INTEGER default NULL,
   PRIMARY KEY  ("controlTowerTypeID","resourceTypeID")
 );
+
 

@@ -220,7 +220,7 @@
 			self.adView.rootViewController = self.controller;
 			//[self.controller.view addSubview:self.adView];
 		}
-		self.adView.adUnitID = @"a14d501062a8c09";
+		self.adView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
 		self.adView.delegate = self;
 		GADRequest *request = [GADRequest request];
 		request.testDevices = @[GAD_SIMULATOR_ID];

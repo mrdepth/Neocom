@@ -38,6 +38,7 @@
 		1224EBEA1648E786004401C5 /* KillboardCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBE91648E786004401C5 /* KillboardCellView.xib */; };
 		1224EBED1648E79B004401C5 /* KillboardCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1224EBEC1648E79B004401C5 /* KillboardCellView.m */; };
 		1224EBF316491D5D004401C5 /* killboardApiFilter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1224EBF216491D5D004401C5 /* killboardApiFilter.plist */; };
+		12277890183C947B0018D85D /* SkillCellViewShort.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1227788F183C947B0018D85D /* SkillCellViewShort.xib */; };
 		12320D54165B765500333AE7 /* AccountsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12320D52165B765500333AE7 /* AccountsSelectionViewController.m */; };
 		12320D55165B765500333AE7 /* AccountsSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */; };
 		12448F0F1679CF0900DC90AC /* CharacterSkillsEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12448F111679CF0900DC90AC /* CharacterSkillsEditorViewController.xib */; };
@@ -803,6 +804,7 @@
 		1224EBEB1648E79B004401C5 /* KillboardCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KillboardCellView.h; sourceTree = "<group>"; };
 		1224EBEC1648E79B004401C5 /* KillboardCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KillboardCellView.m; sourceTree = "<group>"; };
 		1224EBF216491D5D004401C5 /* killboardApiFilter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = killboardApiFilter.plist; sourceTree = "<group>"; };
+		1227788F183C947B0018D85D /* SkillCellViewShort.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SkillCellViewShort.xib; sourceTree = "<group>"; };
 		12320D51165B765500333AE7 /* AccountsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsSelectionViewController.h; sourceTree = "<group>"; };
 		12320D52165B765500333AE7 /* AccountsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsSelectionViewController.m; sourceTree = "<group>"; };
 		12320D53165B765500333AE7 /* AccountsSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountsSelectionViewController.xib; sourceTree = "<group>"; };
@@ -3781,6 +3783,7 @@
 				717C215E12F0C89900757EE5 /* SkillCellView.h */,
 				717C215F12F0C89900757EE5 /* SkillCellView.m */,
 				717C216112F0C89F00757EE5 /* SkillCellView.xib */,
+				1227788F183C947B0018D85D /* SkillCellViewShort.xib */,
 			);
 			name = SkillCellView;
 			sourceTree = "<group>";
@@ -4857,6 +4860,7 @@
 				717B183112F4B1A4009DDE48 /* RSSFeedsViewController.xib in Resources */,
 				717B183612F4B27E009DDE48 /* rssFeeds.plist in Resources */,
 				717B184812F4B523009DDE48 /* RSSFeedViewController.xib in Resources */,
+				12277890183C947B0018D85D /* SkillCellViewShort.xib in Resources */,
 				717B184E12F4B650009DDE48 /* RSSFeedCellView.xib in Resources */,
 				1259B4F21679C85400EA49B5 /* RSSViewController.xib in Resources */,
 				1259B4E61679C7DB00EA49B5 /* ItemViewController.xib in Resources */,
@@ -6043,7 +6047,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6067,7 +6071,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Neocom;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4B07F058-D066-4A31-8905-BD2F05199CE3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/eufe/eufe/**";
@@ -6083,8 +6087,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Artem Shimanski";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = EVEUniverse_Prefix.pch;

@@ -7,3 +7,6 @@
 [submodule "tools"]
 	path = tools
 	url = https://github.com/mrdepth/tools.git
+[submodule "ThirdParty/EVEOnlineAPI"]
+	path = ThirdParty/EVEOnlineAPI
+	url = https://github.com/mrdepth/EVEOnlineAPI.git

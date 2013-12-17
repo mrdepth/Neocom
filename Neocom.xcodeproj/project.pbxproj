@@ -1,0 +1,1656 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
+		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
+		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
+		1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1209685B1845F0CB00921A37 /* InfoPlist.strings */; };
+		1209685F1845F0CB00921A37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1209685E1845F0CB00921A37 /* main.m */; };
+		120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 120968621845F0CB00921A37 /* NCAppDelegate.m */; };
+		120968661845F0CB00921A37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120968641845F0CB00921A37 /* Main.storyboard */; };
+		1209686B1845F0CB00921A37 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209686A1845F0CB00921A37 /* Images.xcassets */; };
+		120968721845F0CB00921A37 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968711845F0CB00921A37 /* XCTest.framework */; };
+		120968731845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
+		120968741845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
+		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
+		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
+		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
+		1211123818599339009E5106 /* NCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123718599339009E5106 /* NCCache.m */; };
+		1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1211123C18599396009E5106 /* NCCache.xcdatamodeld */; };
+		121112401859A54D009E5106 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1211123F1859A54D009E5106 /* CoreData.framework */; };
+		1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211124C1859E1AF009E5106 /* NCCacheRecord.m */; };
+		126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */; };
+		126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */; };
+		126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */; };
+		126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CD3185F3B9100A8E8A3 /* BCRequest.m */; };
+		126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */; };
+		126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */; };
+		126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */; };
+		126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */; };
+		126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CE5185F3B9100A8E8A3 /* EVEDBCrtCategory.m */; };
+		126A0E09185F3B9300A8E8A3 /* EVEDBCrtCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CE7185F3B9100A8E8A3 /* EVEDBCrtCertificate.m */; };
+		126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CE9185F3B9100A8E8A3 /* EVEDBCrtClass.m */; };
+		126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CEB185F3B9200A8E8A3 /* EVEDBCrtRecommendation.m */; };
+		126A0E0C185F3B9300A8E8A3 /* EVEDBCrtRelationship.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CED185F3B9200A8E8A3 /* EVEDBCrtRelationship.m */; };
+		126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CEF185F3B9200A8E8A3 /* EVEDBDatabase.m */; };
+		126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CF1185F3B9200A8E8A3 /* EVEDBDgmAttributeCategory.m */; };
+		126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CF3185F3B9200A8E8A3 /* EVEDBDgmAttributeType.m */; };
+		126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CF5185F3B9200A8E8A3 /* EVEDBDgmEffect.m */; };
+		126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CF7185F3B9200A8E8A3 /* EVEDBDgmTypeAttribute.m */; };
+		126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CF9185F3B9200A8E8A3 /* EVEDBDgmTypeEffect.m */; };
+		126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CFB185F3B9200A8E8A3 /* EVEDBEveIcon.m */; };
+		126A0E14185F3B9300A8E8A3 /* EVEDBEveUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CFD185F3B9200A8E8A3 /* EVEDBEveUnit.m */; };
+		126A0E15185F3B9300A8E8A3 /* EVEDBInvBlueprintType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CFF185F3B9200A8E8A3 /* EVEDBInvBlueprintType.m */; };
+		126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D01185F3B9200A8E8A3 /* EVEDBInvCategory.m */; };
+		126A0E17185F3B9300A8E8A3 /* EVEDBInvControlTowerResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D03185F3B9200A8E8A3 /* EVEDBInvControlTowerResource.m */; };
+		126A0E18185F3B9300A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D05185F3B9200A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m */; };
+		126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D07185F3B9200A8E8A3 /* EVEDBInvGroup.m */; };
+		126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D09185F3B9200A8E8A3 /* EVEDBInvMarketGroup.m */; };
+		126A0E1B185F3B9300A8E8A3 /* EVEDBInvMetaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D0B185F3B9200A8E8A3 /* EVEDBInvMetaGroup.m */; };
+		126A0E1C185F3B9300A8E8A3 /* EVEDBInvType+ControlTower.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D0D185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.m */; };
+		126A0E1D185F3B9300A8E8A3 /* EVEDBInvType+Installation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D0F185F3B9200A8E8A3 /* EVEDBInvType+Installation.m */; };
+		126A0E1E185F3B9300A8E8A3 /* EVEDBInvType+Skill.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D11185F3B9200A8E8A3 /* EVEDBInvType+Skill.m */; };
+		126A0E1F185F3B9300A8E8A3 /* EVEDBInvType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D13185F3B9200A8E8A3 /* EVEDBInvType.m */; };
+		126A0E20185F3B9300A8E8A3 /* EVEDBInvTypeMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D15185F3B9200A8E8A3 /* EVEDBInvTypeMaterial.m */; };
+		126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D17185F3B9200A8E8A3 /* EVEDBMapConstellation.m */; };
+		126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D19185F3B9200A8E8A3 /* EVEDBMapDenormalize.m */; };
+		126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D1B185F3B9200A8E8A3 /* EVEDBMapRegion.m */; };
+		126A0E24185F3B9300A8E8A3 /* EVEDBMapSolarSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D1D185F3B9200A8E8A3 /* EVEDBMapSolarSystem.m */; };
+		126A0E25185F3B9300A8E8A3 /* EVEDBRamActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D1F185F3B9200A8E8A3 /* EVEDBRamActivity.m */; };
+		126A0E26185F3B9300A8E8A3 /* EVEDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D21185F3B9200A8E8A3 /* EVEDBRamAssemblyLineType.m */; };
+		126A0E27185F3B9300A8E8A3 /* EVEDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D23185F3B9200A8E8A3 /* EVEDBRamInstallationTypeContent.m */; };
+		126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D25185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.m */; };
+		126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D27185F3B9200A8E8A3 /* EVEDBStaStation.m */; };
+		126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D2B185F3B9200A8E8A3 /* EVEDBObject.m */; };
+		126A0E2B185F3B9300A8E8A3 /* NSDictionary+EVEDBAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D2D185F3B9200A8E8A3 /* NSDictionary+EVEDBAPI.m */; };
+		126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D31185F3B9200A8E8A3 /* EVEKillNetLog.m */; };
+		126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */; };
+		126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */; };
+		126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D39185F3B9200A8E8A3 /* EVECharacters.m */; };
+		126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */; };
+		126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */; };
+		126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */; };
+		126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */; };
+		126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */; };
+		126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */; };
+		126A0E36185F3B9300A8E8A3 /* EVECharFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */; };
+		126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */; };
+		126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */; };
+		126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */; };
+		126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */; };
+		126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */; };
+		126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */; };
+		126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D57185F3B9200A8E8A3 /* EVEContracts.m */; };
+		126A0E3E185F3B9300A8E8A3 /* EVEIndustryJobs.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */; };
+		126A0E3F185F3B9300A8E8A3 /* EVEKillLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */; };
+		126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5D185F3B9200A8E8A3 /* EVELocations.m */; };
+		126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */; };
+		126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */; };
+		126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */; };
+		126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */; };
+		126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D67185F3B9200A8E8A3 /* EVENotifications.m */; };
+		126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */; };
+		126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */; };
+		126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */; };
+		126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */; };
+		126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D71185F3B9200A8E8A3 /* EVEStandings.m */; };
+		126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */; };
+		126A0E4C185F3B9300A8E8A3 /* EVEContainerLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */; };
+		126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */; };
+		126A0E4E185F3B9300A8E8A3 /* EVECorpFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */; };
+		126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */; };
+		126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */; };
+		126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */; };
+		126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */; };
+		126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */; };
+		126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */; };
+		126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */; };
+		126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */; };
+		126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */; };
+		126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */; };
+		126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */; };
+		126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */; };
+		126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */; };
+		126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D96185F3B9200A8E8A3 /* EVETitles.m */; };
+		126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */; };
+		126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */; };
+		126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */; };
+		126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */; };
+		126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */; };
+		126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */; };
+		126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */; };
+		126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */; };
+		126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */; };
+		126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */; };
+		126A0E67185F3B9300A8E8A3 /* EVESkillTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */; };
+		126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */; };
+		126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */; };
+		126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB5185F3B9200A8E8A3 /* EVEKills.m */; };
+		126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */; };
+		126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DBA185F3B9200A8E8A3 /* EVEImage.m */; };
+		126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */; };
+		126A0E6E185F3B9300A8E8A3 /* EVERequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC1185F3B9200A8E8A3 /* EVERequest.m */; };
+		126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */; };
+		126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */; };
+		126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */; };
+		126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */; };
+		126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD2185F3B9200A8E8A3 /* RSSParser.m */; };
+		126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */; };
+		126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */; };
+		126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */; };
+		126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */; };
+		126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */; };
+		126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DDE185F3B9200A8E8A3 /* RSSImage.m */; };
+		126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE0185F3B9200A8E8A3 /* RSSItem.m */; };
+		126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE2185F3B9200A8E8A3 /* RSSSource.m */; };
+		126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE4185F3B9200A8E8A3 /* RSS.m */; };
+		126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */; };
+		126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */; };
+		126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */; };
+		126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */; };
+		126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */; };
+		126A0E83185F3B9300A8E8A3 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */; };
+		126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */; };
+		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
+		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
+		129FEE331860326D00F75FA6 /* NCFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE321860326D00F75FA6 /* NCFit.m */; };
+		129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
+		129FEE391860326E00F75FA6 /* NCSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE381860326E00F75FA6 /* NCSetting.m */; };
+		129FEE3C1860326E00F75FA6 /* NCIgnoredCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */; };
+		129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
+		129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE411860326E00F75FA6 /* NCPOSFit.m */; };
+		129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE441860326E00F75FA6 /* NCShipFit.m */; };
+		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
+		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
+		129FEE4D186032ED00F75FA6 /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE4C186032ED00F75FA6 /* NCAccount.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		120968751845F0CB00921A37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 120968471845F0CB00921A37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1209684E1845F0CB00921A37;
+			remoteInfo = Neocom;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1209684F1845F0CB00921A37 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		120968521845F0CB00921A37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		120968541845F0CB00921A37 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		120968561845F0CB00921A37 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1209685A1845F0CB00921A37 /* Neocom-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Neocom-Info.plist"; sourceTree = "<group>"; };
+		1209685C1845F0CB00921A37 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1209685E1845F0CB00921A37 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		120968601845F0CB00921A37 /* Neocom-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Neocom-Prefix.pch"; sourceTree = "<group>"; };
+		120968611845F0CB00921A37 /* NCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCAppDelegate.h; sourceTree = "<group>"; };
+		120968621845F0CB00921A37 /* NCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NCAppDelegate.m; sourceTree = "<group>"; };
+		120968651845F0CB00921A37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1209686A1845F0CB00921A37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		120968701845F0CB00921A37 /* NeocomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeocomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		120968711845F0CB00921A37 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
+		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
+		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
+		1211123018598B09009E5106 /* NCTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTask.m; sourceTree = "<group>"; };
+		121112321859929E009E5106 /* NCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewController.h; sourceTree = "<group>"; };
+		121112331859929E009E5106 /* NCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewController.m; sourceTree = "<group>"; };
+		1211123618599339009E5106 /* NCCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCache.h; sourceTree = "<group>"; };
+		1211123718599339009E5106 /* NCCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCache.m; sourceTree = "<group>"; };
+		1211123D18599396009E5106 /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
+		1211123F1859A54D009E5106 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		1211124B1859E1AF009E5106 /* NCCacheRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecord.h; sourceTree = "<group>"; };
+		1211124C1859E1AF009E5106 /* NCCacheRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecord.m; sourceTree = "<group>"; };
+		126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleClinicAPI.h; sourceTree = "<group>"; };
+		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
+		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
+		126A0CCC185F3B9100A8E8A3 /* BCEveLoadoutsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsList.h; sourceTree = "<group>"; };
+		126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadoutsList.m; sourceTree = "<group>"; };
+		126A0CCE185F3B9100A8E8A3 /* BCEveLoadoutsTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsTags.h; sourceTree = "<group>"; };
+		126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadoutsTags.m; sourceTree = "<group>"; };
+		126A0CD1185F3B9100A8E8A3 /* BCGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCGlobals.h; sourceTree = "<group>"; };
+		126A0CD2185F3B9100A8E8A3 /* BCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCRequest.h; sourceTree = "<group>"; };
+		126A0CD3185F3B9100A8E8A3 /* BCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCRequest.m; sourceTree = "<group>"; };
+		126A0CD5185F3B9100A8E8A3 /* EVEC0rporationAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationAPI.h; sourceTree = "<group>"; };
+		126A0CD6185F3B9100A8E8A3 /* EVEC0rporationFaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEC0rporationFaction.h; sourceTree = "<group>"; };
+		126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEC0rporationFaction.m; sourceTree = "<group>"; };
+		126A0CD9185F3B9100A8E8A3 /* EVECentralAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralAPI.h; sourceTree = "<group>"; };
+		126A0CDA185F3B9100A8E8A3 /* EVECentralMarketStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralMarketStat.h; sourceTree = "<group>"; };
+		126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralMarketStat.m; sourceTree = "<group>"; };
+		126A0CDC185F3B9100A8E8A3 /* EVECentralQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralQuickLook.h; sourceTree = "<group>"; };
+		126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralQuickLook.m; sourceTree = "<group>"; };
+		126A0CDF185F3B9100A8E8A3 /* EVECentralGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralGlobals.h; sourceTree = "<group>"; };
+		126A0CE0185F3B9100A8E8A3 /* EVECentralRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralRequest.h; sourceTree = "<group>"; };
+		126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralRequest.m; sourceTree = "<group>"; };
+		126A0CE3185F3B9100A8E8A3 /* EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBAPI.h; sourceTree = "<group>"; };
+		126A0CE4185F3B9100A8E8A3 /* EVEDBCrtCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCategory.h; sourceTree = "<group>"; };
+		126A0CE5185F3B9100A8E8A3 /* EVEDBCrtCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCategory.m; sourceTree = "<group>"; };
+		126A0CE6185F3B9100A8E8A3 /* EVEDBCrtCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtCertificate.h; sourceTree = "<group>"; };
+		126A0CE7185F3B9100A8E8A3 /* EVEDBCrtCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtCertificate.m; sourceTree = "<group>"; };
+		126A0CE8185F3B9100A8E8A3 /* EVEDBCrtClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtClass.h; sourceTree = "<group>"; };
+		126A0CE9185F3B9100A8E8A3 /* EVEDBCrtClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtClass.m; sourceTree = "<group>"; };
+		126A0CEA185F3B9200A8E8A3 /* EVEDBCrtRecommendation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRecommendation.h; sourceTree = "<group>"; };
+		126A0CEB185F3B9200A8E8A3 /* EVEDBCrtRecommendation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRecommendation.m; sourceTree = "<group>"; };
+		126A0CEC185F3B9200A8E8A3 /* EVEDBCrtRelationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCrtRelationship.h; sourceTree = "<group>"; };
+		126A0CED185F3B9200A8E8A3 /* EVEDBCrtRelationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCrtRelationship.m; sourceTree = "<group>"; };
+		126A0CEE185F3B9200A8E8A3 /* EVEDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDatabase.h; sourceTree = "<group>"; };
+		126A0CEF185F3B9200A8E8A3 /* EVEDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDatabase.m; sourceTree = "<group>"; };
+		126A0CF0185F3B9200A8E8A3 /* EVEDBDgmAttributeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeCategory.h; sourceTree = "<group>"; };
+		126A0CF1185F3B9200A8E8A3 /* EVEDBDgmAttributeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeCategory.m; sourceTree = "<group>"; };
+		126A0CF2185F3B9200A8E8A3 /* EVEDBDgmAttributeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmAttributeType.h; sourceTree = "<group>"; };
+		126A0CF3185F3B9200A8E8A3 /* EVEDBDgmAttributeType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmAttributeType.m; sourceTree = "<group>"; };
+		126A0CF4185F3B9200A8E8A3 /* EVEDBDgmEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmEffect.h; sourceTree = "<group>"; };
+		126A0CF5185F3B9200A8E8A3 /* EVEDBDgmEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmEffect.m; sourceTree = "<group>"; };
+		126A0CF6185F3B9200A8E8A3 /* EVEDBDgmTypeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeAttribute.h; sourceTree = "<group>"; };
+		126A0CF7185F3B9200A8E8A3 /* EVEDBDgmTypeAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeAttribute.m; sourceTree = "<group>"; };
+		126A0CF8185F3B9200A8E8A3 /* EVEDBDgmTypeEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBDgmTypeEffect.h; sourceTree = "<group>"; };
+		126A0CF9185F3B9200A8E8A3 /* EVEDBDgmTypeEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBDgmTypeEffect.m; sourceTree = "<group>"; };
+		126A0CFA185F3B9200A8E8A3 /* EVEDBEveIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveIcon.h; sourceTree = "<group>"; };
+		126A0CFB185F3B9200A8E8A3 /* EVEDBEveIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveIcon.m; sourceTree = "<group>"; };
+		126A0CFC185F3B9200A8E8A3 /* EVEDBEveUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBEveUnit.h; sourceTree = "<group>"; };
+		126A0CFD185F3B9200A8E8A3 /* EVEDBEveUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBEveUnit.m; sourceTree = "<group>"; };
+		126A0CFE185F3B9200A8E8A3 /* EVEDBInvBlueprintType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvBlueprintType.h; sourceTree = "<group>"; };
+		126A0CFF185F3B9200A8E8A3 /* EVEDBInvBlueprintType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvBlueprintType.m; sourceTree = "<group>"; };
+		126A0D00185F3B9200A8E8A3 /* EVEDBInvCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvCategory.h; sourceTree = "<group>"; };
+		126A0D01185F3B9200A8E8A3 /* EVEDBInvCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvCategory.m; sourceTree = "<group>"; };
+		126A0D02185F3B9200A8E8A3 /* EVEDBInvControlTowerResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResource.h; sourceTree = "<group>"; };
+		126A0D03185F3B9200A8E8A3 /* EVEDBInvControlTowerResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResource.m; sourceTree = "<group>"; };
+		126A0D04185F3B9200A8E8A3 /* EVEDBInvControlTowerResourcePurpose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvControlTowerResourcePurpose.h; sourceTree = "<group>"; };
+		126A0D05185F3B9200A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvControlTowerResourcePurpose.m; sourceTree = "<group>"; };
+		126A0D06185F3B9200A8E8A3 /* EVEDBInvGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvGroup.h; sourceTree = "<group>"; };
+		126A0D07185F3B9200A8E8A3 /* EVEDBInvGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvGroup.m; sourceTree = "<group>"; };
+		126A0D08185F3B9200A8E8A3 /* EVEDBInvMarketGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvMarketGroup.h; sourceTree = "<group>"; };
+		126A0D09185F3B9200A8E8A3 /* EVEDBInvMarketGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvMarketGroup.m; sourceTree = "<group>"; };
+		126A0D0A185F3B9200A8E8A3 /* EVEDBInvMetaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvMetaGroup.h; sourceTree = "<group>"; };
+		126A0D0B185F3B9200A8E8A3 /* EVEDBInvMetaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvMetaGroup.m; sourceTree = "<group>"; };
+		126A0D0C185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+ControlTower.h"; sourceTree = "<group>"; };
+		126A0D0D185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+ControlTower.m"; sourceTree = "<group>"; };
+		126A0D0E185F3B9200A8E8A3 /* EVEDBInvType+Installation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Installation.h"; sourceTree = "<group>"; };
+		126A0D0F185F3B9200A8E8A3 /* EVEDBInvType+Installation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Installation.m"; sourceTree = "<group>"; };
+		126A0D10185F3B9200A8E8A3 /* EVEDBInvType+Skill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Skill.h"; sourceTree = "<group>"; };
+		126A0D11185F3B9200A8E8A3 /* EVEDBInvType+Skill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Skill.m"; sourceTree = "<group>"; };
+		126A0D12185F3B9200A8E8A3 /* EVEDBInvType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvType.h; sourceTree = "<group>"; };
+		126A0D13185F3B9200A8E8A3 /* EVEDBInvType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvType.m; sourceTree = "<group>"; };
+		126A0D14185F3B9200A8E8A3 /* EVEDBInvTypeMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvTypeMaterial.h; sourceTree = "<group>"; };
+		126A0D15185F3B9200A8E8A3 /* EVEDBInvTypeMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvTypeMaterial.m; sourceTree = "<group>"; };
+		126A0D16185F3B9200A8E8A3 /* EVEDBMapConstellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapConstellation.h; sourceTree = "<group>"; };
+		126A0D17185F3B9200A8E8A3 /* EVEDBMapConstellation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapConstellation.m; sourceTree = "<group>"; };
+		126A0D18185F3B9200A8E8A3 /* EVEDBMapDenormalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapDenormalize.h; sourceTree = "<group>"; };
+		126A0D19185F3B9200A8E8A3 /* EVEDBMapDenormalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapDenormalize.m; sourceTree = "<group>"; };
+		126A0D1A185F3B9200A8E8A3 /* EVEDBMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapRegion.h; sourceTree = "<group>"; };
+		126A0D1B185F3B9200A8E8A3 /* EVEDBMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapRegion.m; sourceTree = "<group>"; };
+		126A0D1C185F3B9200A8E8A3 /* EVEDBMapSolarSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBMapSolarSystem.h; sourceTree = "<group>"; };
+		126A0D1D185F3B9200A8E8A3 /* EVEDBMapSolarSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBMapSolarSystem.m; sourceTree = "<group>"; };
+		126A0D1E185F3B9200A8E8A3 /* EVEDBRamActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamActivity.h; sourceTree = "<group>"; };
+		126A0D1F185F3B9200A8E8A3 /* EVEDBRamActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamActivity.m; sourceTree = "<group>"; };
+		126A0D20185F3B9200A8E8A3 /* EVEDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamAssemblyLineType.h; sourceTree = "<group>"; };
+		126A0D21185F3B9200A8E8A3 /* EVEDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamAssemblyLineType.m; sourceTree = "<group>"; };
+		126A0D22185F3B9200A8E8A3 /* EVEDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
+		126A0D23185F3B9200A8E8A3 /* EVEDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
+		126A0D24185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBRamTypeRequirement.h; sourceTree = "<group>"; };
+		126A0D25185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBRamTypeRequirement.m; sourceTree = "<group>"; };
+		126A0D26185F3B9200A8E8A3 /* EVEDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBStaStation.h; sourceTree = "<group>"; };
+		126A0D27185F3B9200A8E8A3 /* EVEDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBStaStation.m; sourceTree = "<group>"; };
+		126A0D29185F3B9200A8E8A3 /* EVEDBGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBGlobals.h; sourceTree = "<group>"; };
+		126A0D2A185F3B9200A8E8A3 /* EVEDBObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBObject.h; sourceTree = "<group>"; };
+		126A0D2B185F3B9200A8E8A3 /* EVEDBObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBObject.m; sourceTree = "<group>"; };
+		126A0D2C185F3B9200A8E8A3 /* NSDictionary+EVEDBAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+EVEDBAPI.h"; sourceTree = "<group>"; };
+		126A0D2D185F3B9200A8E8A3 /* NSDictionary+EVEDBAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+EVEDBAPI.m"; sourceTree = "<group>"; };
+		126A0D2F185F3B9200A8E8A3 /* EVEKillNetAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillNetAPI.h; sourceTree = "<group>"; };
+		126A0D30185F3B9200A8E8A3 /* EVEKillNetLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillNetLog.h; sourceTree = "<group>"; };
+		126A0D31185F3B9200A8E8A3 /* EVEKillNetLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEKillNetLog.m; sourceTree = "<group>"; };
+		126A0D34185F3B9200A8E8A3 /* EVEAccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStatus.h; sourceTree = "<group>"; };
+		126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStatus.m; sourceTree = "<group>"; };
+		126A0D36185F3B9200A8E8A3 /* EVEAPIKeyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAPIKeyInfo.h; sourceTree = "<group>"; };
+		126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAPIKeyInfo.m; sourceTree = "<group>"; };
+		126A0D38185F3B9200A8E8A3 /* EVECharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacters.h; sourceTree = "<group>"; };
+		126A0D39185F3B9200A8E8A3 /* EVECharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacters.m; sourceTree = "<group>"; };
+		126A0D3B185F3B9200A8E8A3 /* EVECalllist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECalllist.h; sourceTree = "<group>"; };
+		126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECalllist.m; sourceTree = "<group>"; };
+		126A0D3E185F3B9200A8E8A3 /* EVEAccountBalance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountBalance.h; sourceTree = "<group>"; };
+		126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountBalance.m; sourceTree = "<group>"; };
+		126A0D40185F3B9200A8E8A3 /* EVEAssetList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAssetList.h; sourceTree = "<group>"; };
+		126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAssetList.m; sourceTree = "<group>"; };
+		126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECalendarEventAttendees.h; sourceTree = "<group>"; };
+		126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECalendarEventAttendees.m; sourceTree = "<group>"; };
+		126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterSheet.h; sourceTree = "<group>"; };
+		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterSheet.m; sourceTree = "<group>"; };
+		126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharContactList.h; sourceTree = "<group>"; };
+		126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharContactList.m; sourceTree = "<group>"; };
+		126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharFacWarStats.h; sourceTree = "<group>"; };
+		126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharFacWarStats.m; sourceTree = "<group>"; };
+		126A0D4A185F3B9200A8E8A3 /* EVECharMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharMedals.h; sourceTree = "<group>"; };
+		126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharMedals.m; sourceTree = "<group>"; };
+		126A0D4C185F3B9200A8E8A3 /* EVECharWalletJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharWalletJournal.h; sourceTree = "<group>"; };
+		126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharWalletJournal.m; sourceTree = "<group>"; };
+		126A0D4E185F3B9200A8E8A3 /* EVECharWalletTransactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharWalletTransactions.h; sourceTree = "<group>"; };
+		126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharWalletTransactions.m; sourceTree = "<group>"; };
+		126A0D50185F3B9200A8E8A3 /* EVEContactNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContactNotifications.h; sourceTree = "<group>"; };
+		126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContactNotifications.m; sourceTree = "<group>"; };
+		126A0D52185F3B9200A8E8A3 /* EVEContractBids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContractBids.h; sourceTree = "<group>"; };
+		126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContractBids.m; sourceTree = "<group>"; };
+		126A0D54185F3B9200A8E8A3 /* EVEContractItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContractItems.h; sourceTree = "<group>"; };
+		126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContractItems.m; sourceTree = "<group>"; };
+		126A0D56185F3B9200A8E8A3 /* EVEContracts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContracts.h; sourceTree = "<group>"; };
+		126A0D57185F3B9200A8E8A3 /* EVEContracts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContracts.m; sourceTree = "<group>"; };
+		126A0D58185F3B9200A8E8A3 /* EVEIndustryJobs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEIndustryJobs.h; sourceTree = "<group>"; };
+		126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEIndustryJobs.m; sourceTree = "<group>"; };
+		126A0D5A185F3B9200A8E8A3 /* EVEKillLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillLog.h; sourceTree = "<group>"; };
+		126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEKillLog.m; sourceTree = "<group>"; };
+		126A0D5C185F3B9200A8E8A3 /* EVELocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVELocations.h; sourceTree = "<group>"; };
+		126A0D5D185F3B9200A8E8A3 /* EVELocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVELocations.m; sourceTree = "<group>"; };
+		126A0D5E185F3B9200A8E8A3 /* EVEMailBodies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailBodies.h; sourceTree = "<group>"; };
+		126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailBodies.m; sourceTree = "<group>"; };
+		126A0D60185F3B9200A8E8A3 /* EVEMailingLists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailingLists.h; sourceTree = "<group>"; };
+		126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailingLists.m; sourceTree = "<group>"; };
+		126A0D62185F3B9200A8E8A3 /* EVEMailMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMailMessages.h; sourceTree = "<group>"; };
+		126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMailMessages.m; sourceTree = "<group>"; };
+		126A0D64185F3B9200A8E8A3 /* EVEMarketOrders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMarketOrders.h; sourceTree = "<group>"; };
+		126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMarketOrders.m; sourceTree = "<group>"; };
+		126A0D66185F3B9200A8E8A3 /* EVENotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVENotifications.h; sourceTree = "<group>"; };
+		126A0D67185F3B9200A8E8A3 /* EVENotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVENotifications.m; sourceTree = "<group>"; };
+		126A0D68185F3B9200A8E8A3 /* EVENotificationTexts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVENotificationTexts.h; sourceTree = "<group>"; };
+		126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVENotificationTexts.m; sourceTree = "<group>"; };
+		126A0D6A185F3B9200A8E8A3 /* EVEResearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEResearch.h; sourceTree = "<group>"; };
+		126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEResearch.m; sourceTree = "<group>"; };
+		126A0D6C185F3B9200A8E8A3 /* EVESkillInTraining.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillInTraining.h; sourceTree = "<group>"; };
+		126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESkillInTraining.m; sourceTree = "<group>"; };
+		126A0D6E185F3B9200A8E8A3 /* EVESkillQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillQueue.h; sourceTree = "<group>"; };
+		126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESkillQueue.m; sourceTree = "<group>"; };
+		126A0D70185F3B9200A8E8A3 /* EVEStandings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStandings.h; sourceTree = "<group>"; };
+		126A0D71185F3B9200A8E8A3 /* EVEStandings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStandings.m; sourceTree = "<group>"; };
+		126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUpcomingCalendarEvents.h; sourceTree = "<group>"; };
+		126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUpcomingCalendarEvents.m; sourceTree = "<group>"; };
+		126A0D75185F3B9200A8E8A3 /* EVEContainerLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContainerLog.h; sourceTree = "<group>"; };
+		126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContainerLog.m; sourceTree = "<group>"; };
+		126A0D77185F3B9200A8E8A3 /* EVECorpContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpContactList.h; sourceTree = "<group>"; };
+		126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpContactList.m; sourceTree = "<group>"; };
+		126A0D79185F3B9200A8E8A3 /* EVECorpFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpFacWarStats.h; sourceTree = "<group>"; };
+		126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpFacWarStats.m; sourceTree = "<group>"; };
+		126A0D7B185F3B9200A8E8A3 /* EVECorpMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpMedals.h; sourceTree = "<group>"; };
+		126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpMedals.m; sourceTree = "<group>"; };
+		126A0D7D185F3B9200A8E8A3 /* EVECorporationSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorporationSheet.h; sourceTree = "<group>"; };
+		126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorporationSheet.m; sourceTree = "<group>"; };
+		126A0D7F185F3B9200A8E8A3 /* EVECorpWalletJournal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpWalletJournal.h; sourceTree = "<group>"; };
+		126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpWalletJournal.m; sourceTree = "<group>"; };
+		126A0D81185F3B9200A8E8A3 /* EVECorpWalletTransactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpWalletTransactions.h; sourceTree = "<group>"; };
+		126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpWalletTransactions.m; sourceTree = "<group>"; };
+		126A0D83185F3B9200A8E8A3 /* EVEMemberMedals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberMedals.h; sourceTree = "<group>"; };
+		126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberMedals.m; sourceTree = "<group>"; };
+		126A0D85185F3B9200A8E8A3 /* EVEMemberSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberSecurity.h; sourceTree = "<group>"; };
+		126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberSecurity.m; sourceTree = "<group>"; };
+		126A0D87185F3B9200A8E8A3 /* EVEMemberSecurityLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberSecurityLog.h; sourceTree = "<group>"; };
+		126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberSecurityLog.m; sourceTree = "<group>"; };
+		126A0D89185F3B9200A8E8A3 /* EVEMemberTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEMemberTracking.h; sourceTree = "<group>"; };
+		126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEMemberTracking.m; sourceTree = "<group>"; };
+		126A0D8B185F3B9200A8E8A3 /* EVEOutpostList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOutpostList.h; sourceTree = "<group>"; };
+		126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOutpostList.m; sourceTree = "<group>"; };
+		126A0D8D185F3B9200A8E8A3 /* EVEOutpostServiceDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOutpostServiceDetail.h; sourceTree = "<group>"; };
+		126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOutpostServiceDetail.m; sourceTree = "<group>"; };
+		126A0D8F185F3B9200A8E8A3 /* EVEShareholders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEShareholders.h; sourceTree = "<group>"; };
+		126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEShareholders.m; sourceTree = "<group>"; };
+		126A0D91185F3B9200A8E8A3 /* EVEStarbaseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStarbaseDetail.h; sourceTree = "<group>"; };
+		126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStarbaseDetail.m; sourceTree = "<group>"; };
+		126A0D93185F3B9200A8E8A3 /* EVEStarbaseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEStarbaseList.h; sourceTree = "<group>"; };
+		126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEStarbaseList.m; sourceTree = "<group>"; };
+		126A0D95185F3B9200A8E8A3 /* EVETitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVETitles.h; sourceTree = "<group>"; };
+		126A0D96185F3B9200A8E8A3 /* EVETitles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVETitles.m; sourceTree = "<group>"; };
+		126A0D98185F3B9200A8E8A3 /* EVEAllianceList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAllianceList.h; sourceTree = "<group>"; };
+		126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAllianceList.m; sourceTree = "<group>"; };
+		126A0D9A185F3B9200A8E8A3 /* EVECertificateTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECertificateTree.h; sourceTree = "<group>"; };
+		126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECertificateTree.m; sourceTree = "<group>"; };
+		126A0D9C185F3B9200A8E8A3 /* EVECharacterID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterID.h; sourceTree = "<group>"; };
+		126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterID.m; sourceTree = "<group>"; };
+		126A0D9E185F3B9200A8E8A3 /* EVECharacterInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterInfo.h; sourceTree = "<group>"; };
+		126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterInfo.m; sourceTree = "<group>"; };
+		126A0DA0185F3B9200A8E8A3 /* EVECharacterName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterName.h; sourceTree = "<group>"; };
+		126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterName.m; sourceTree = "<group>"; };
+		126A0DA2185F3B9200A8E8A3 /* EVEConquerableStationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEConquerableStationList.h; sourceTree = "<group>"; };
+		126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEConquerableStationList.m; sourceTree = "<group>"; };
+		126A0DA4185F3B9200A8E8A3 /* EVEErrorList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEErrorList.h; sourceTree = "<group>"; };
+		126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEErrorList.m; sourceTree = "<group>"; };
+		126A0DA6185F3B9200A8E8A3 /* EVEFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEFacWarStats.h; sourceTree = "<group>"; };
+		126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEFacWarStats.m; sourceTree = "<group>"; };
+		126A0DA8185F3B9200A8E8A3 /* EVEFacWarTopStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEFacWarTopStats.h; sourceTree = "<group>"; };
+		126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEFacWarTopStats.m; sourceTree = "<group>"; };
+		126A0DAA185F3B9200A8E8A3 /* EVERefTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVERefTypes.h; sourceTree = "<group>"; };
+		126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVERefTypes.m; sourceTree = "<group>"; };
+		126A0DAC185F3B9200A8E8A3 /* EVESkillTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESkillTree.h; sourceTree = "<group>"; };
+		126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESkillTree.m; sourceTree = "<group>"; };
+		126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOnlineAPI.h; sourceTree = "<group>"; };
+		126A0DB0185F3B9200A8E8A3 /* EVEFacWarSystems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEFacWarSystems.h; sourceTree = "<group>"; };
+		126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEFacWarSystems.m; sourceTree = "<group>"; };
+		126A0DB2185F3B9200A8E8A3 /* EVEJumps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEJumps.h; sourceTree = "<group>"; };
+		126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEJumps.m; sourceTree = "<group>"; };
+		126A0DB4185F3B9200A8E8A3 /* EVEKills.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKills.h; sourceTree = "<group>"; };
+		126A0DB5185F3B9200A8E8A3 /* EVEKills.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEKills.m; sourceTree = "<group>"; };
+		126A0DB6185F3B9200A8E8A3 /* EVESovereignty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVESovereignty.h; sourceTree = "<group>"; };
+		126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVESovereignty.m; sourceTree = "<group>"; };
+		126A0DB9185F3B9200A8E8A3 /* EVEImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEImage.h; sourceTree = "<group>"; };
+		126A0DBA185F3B9200A8E8A3 /* EVEImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEImage.m; sourceTree = "<group>"; };
+		126A0DBC185F3B9200A8E8A3 /* EVEServerStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEServerStatus.h; sourceTree = "<group>"; };
+		126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEServerStatus.m; sourceTree = "<group>"; };
+		126A0DBF185F3B9200A8E8A3 /* EVEGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEGlobals.h; sourceTree = "<group>"; };
+		126A0DC0185F3B9200A8E8A3 /* EVERequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVERequest.h; sourceTree = "<group>"; };
+		126A0DC1185F3B9200A8E8A3 /* EVERequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVERequest.m; sourceTree = "<group>"; };
+		126A0DC5185F3B9200A8E8A3 /* NAPILookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPILookup.h; sourceTree = "<group>"; };
+		126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPILookup.m; sourceTree = "<group>"; };
+		126A0DC7185F3B9200A8E8A3 /* NAPISearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPISearch.h; sourceTree = "<group>"; };
+		126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPISearch.m; sourceTree = "<group>"; };
+		126A0DC9185F3B9200A8E8A3 /* NAPIUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAPIUpload.h; sourceTree = "<group>"; };
+		126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAPIUpload.m; sourceTree = "<group>"; };
+		126A0DCB185F3B9200A8E8A3 /* NeocomAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeocomAPI.h; sourceTree = "<group>"; };
+		126A0DCF185F3B9200A8E8A3 /* NSMutableString+RSSParser10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+RSSParser10.h"; sourceTree = "<group>"; };
+		126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+RSSParser10.m"; sourceTree = "<group>"; };
+		126A0DD1185F3B9200A8E8A3 /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
+		126A0DD2185F3B9200A8E8A3 /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
+		126A0DD3185F3B9200A8E8A3 /* RSSParser10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser10.h; sourceTree = "<group>"; };
+		126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser10.m; sourceTree = "<group>"; };
+		126A0DD5185F3B9200A8E8A3 /* RSSParser20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser20.h; sourceTree = "<group>"; };
+		126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser20.m; sourceTree = "<group>"; };
+		126A0DD7185F3B9200A8E8A3 /* RSSParserAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParserAtom.h; sourceTree = "<group>"; };
+		126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParserAtom.m; sourceTree = "<group>"; };
+		126A0DD9185F3B9200A8E8A3 /* RSSEnclosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSEnclosure.h; sourceTree = "<group>"; };
+		126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSEnclosure.m; sourceTree = "<group>"; };
+		126A0DDB185F3B9200A8E8A3 /* RSSFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSFeed.h; sourceTree = "<group>"; };
+		126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSFeed.m; sourceTree = "<group>"; };
+		126A0DDD185F3B9200A8E8A3 /* RSSImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSImage.h; sourceTree = "<group>"; };
+		126A0DDE185F3B9200A8E8A3 /* RSSImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSImage.m; sourceTree = "<group>"; };
+		126A0DDF185F3B9200A8E8A3 /* RSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSItem.h; sourceTree = "<group>"; };
+		126A0DE0185F3B9200A8E8A3 /* RSSItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSItem.m; sourceTree = "<group>"; };
+		126A0DE1185F3B9200A8E8A3 /* RSSSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSSource.h; sourceTree = "<group>"; };
+		126A0DE2185F3B9200A8E8A3 /* RSSSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSSource.m; sourceTree = "<group>"; };
+		126A0DE3185F3B9200A8E8A3 /* RSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSS.h; sourceTree = "<group>"; };
+		126A0DE4185F3B9200A8E8A3 /* RSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSS.m; sourceTree = "<group>"; };
+		126A0DE6185F3B9200A8E8A3 /* ASURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASURLConnection.h; sourceTree = "<group>"; };
+		126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASURLConnection.m; sourceTree = "<group>"; };
+		126A0DE8185F3B9200A8E8A3 /* EVECachedURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECachedURLRequest.h; sourceTree = "<group>"; };
+		126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECachedURLRequest.m; sourceTree = "<group>"; };
+		126A0DEA185F3B9200A8E8A3 /* NSData+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MD5.h"; sourceTree = "<group>"; };
+		126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MD5.m"; sourceTree = "<group>"; };
+		126A0DED185F3B9200A8E8A3 /* NSMutableString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+HTML.h"; sourceTree = "<group>"; };
+		126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+HTML.m"; sourceTree = "<group>"; };
+		126A0DF0185F3B9200A8E8A3 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		126A0DF2185F3B9200A8E8A3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MD5.h"; sourceTree = "<group>"; };
+		126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MD5.m"; sourceTree = "<group>"; };
+		129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
+		129FEE161860313D00F75FA6 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
+		129FEE171860313D00F75FA6 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
+		129FEE311860326D00F75FA6 /* NCFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFit.h; sourceTree = "<group>"; };
+		129FEE321860326D00F75FA6 /* NCFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFit.m; sourceTree = "<group>"; };
+		129FEE341860326E00F75FA6 /* NCAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKey.h; sourceTree = "<group>"; };
+		129FEE351860326E00F75FA6 /* NCAPIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKey.m; sourceTree = "<group>"; };
+		129FEE371860326E00F75FA6 /* NCSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSetting.h; sourceTree = "<group>"; };
+		129FEE381860326E00F75FA6 /* NCSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSetting.m; sourceTree = "<group>"; };
+		129FEE3A1860326E00F75FA6 /* NCIgnoredCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIgnoredCharacter.h; sourceTree = "<group>"; };
+		129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIgnoredCharacter.m; sourceTree = "<group>"; };
+		129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlan.h; sourceTree = "<group>"; };
+		129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlan.m; sourceTree = "<group>"; };
+		129FEE401860326E00F75FA6 /* NCPOSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSFit.h; sourceTree = "<group>"; };
+		129FEE411860326E00F75FA6 /* NCPOSFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPOSFit.m; sourceTree = "<group>"; };
+		129FEE431860326E00F75FA6 /* NCShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipFit.h; sourceTree = "<group>"; };
+		129FEE441860326E00F75FA6 /* NCShipFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShipFit.m; sourceTree = "<group>"; };
+		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
+		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
+		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		129FEE4B186032ED00F75FA6 /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
+		129FEE4C186032ED00F75FA6 /* NCAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccount.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1209684C1845F0CB00921A37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
+				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
+				120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */,
+				120968571845F0CB00921A37 /* UIKit.framework in Frameworks */,
+				120968531845F0CB00921A37 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1209686D1845F0CB00921A37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				120968721845F0CB00921A37 /* XCTest.framework in Frameworks */,
+				120968741845F0CB00921A37 /* UIKit.framework in Frameworks */,
+				120968731845F0CB00921A37 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1200C32218603093008F3C5E /* NCAccount */ = {
+			isa = PBXGroup;
+			children = (
+				129FEE4B186032ED00F75FA6 /* NCAccount.h */,
+				129FEE4C186032ED00F75FA6 /* NCAccount.m */,
+			);
+			name = NCAccount;
+			sourceTree = "<group>";
+		};
+		120968461845F0CB00921A37 = {
+			isa = PBXGroup;
+			children = (
+				120968581845F0CB00921A37 /* Neocom */,
+				120968511845F0CB00921A37 /* Frameworks */,
+				120968501845F0CB00921A37 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		120968501845F0CB00921A37 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1209684F1845F0CB00921A37 /* Neocom.app */,
+				120968701845F0CB00921A37 /* NeocomTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		120968511845F0CB00921A37 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				129FEE49186032B100F75FA6 /* libsqlite3.dylib */,
+				1211123F1859A54D009E5106 /* CoreData.framework */,
+				120968521845F0CB00921A37 /* Foundation.framework */,
+				120968541845F0CB00921A37 /* CoreGraphics.framework */,
+				120968561845F0CB00921A37 /* UIKit.framework */,
+				120968711845F0CB00921A37 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		120968581845F0CB00921A37 /* Neocom */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CC2185F398C00A8E8A3 /* Utility */,
+				120968611845F0CB00921A37 /* NCAppDelegate.h */,
+				120968621845F0CB00921A37 /* NCAppDelegate.m */,
+				120968591845F0CB00921A37 /* Supporting Files */,
+			);
+			path = Neocom;
+			sourceTree = "<group>";
+		};
+		120968591845F0CB00921A37 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				120968641845F0CB00921A37 /* Main.storyboard */,
+				1209686A1845F0CB00921A37 /* Images.xcassets */,
+				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
+				1209685B1845F0CB00921A37 /* InfoPlist.strings */,
+				1209685E1845F0CB00921A37 /* main.m */,
+				120968601845F0CB00921A37 /* Neocom-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1211122B185989CC009E5106 /* NCTaskManager */ = {
+			isa = PBXGroup;
+			children = (
+				1211122C185989E1009E5106 /* NCTaskManager.h */,
+				1211122D185989E1009E5106 /* NCTaskManager.m */,
+				1211122F18598B09009E5106 /* NCTask.h */,
+				1211123018598B09009E5106 /* NCTask.m */,
+			);
+			name = NCTaskManager;
+			sourceTree = "<group>";
+		};
+		12111235185992DD009E5106 /* NCCache */ = {
+			isa = PBXGroup;
+			children = (
+				1211123C18599396009E5106 /* NCCache.xcdatamodeld */,
+				1211123618599339009E5106 /* NCCache.h */,
+				1211123718599339009E5106 /* NCCache.m */,
+				1211124B1859E1AF009E5106 /* NCCacheRecord.h */,
+				1211124C1859E1AF009E5106 /* NCCacheRecord.m */,
+			);
+			name = NCCache;
+			sourceTree = "<group>";
+		};
+		126A0CC2185F398C00A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				129FEE12186030E000F75FA6 /* NCStorage */,
+				12111235185992DD009E5106 /* NCCache */,
+				1200C32218603093008F3C5E /* NCAccount */,
+				126A0CC4185F3B9100A8E8A3 /* ThirdParty */,
+				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
+				1211122B185989CC009E5106 /* NCTaskManager */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		126A0CC3185F399F00A8E8A3 /* NCTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				121112321859929E009E5106 /* NCTableViewController.h */,
+				121112331859929E009E5106 /* NCTableViewController.m */,
+			);
+			name = NCTableViewController;
+			sourceTree = "<group>";
+		};
+		126A0CC4185F3B9100A8E8A3 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */,
+			);
+			path = ThirdParty;
+			sourceTree = SOURCE_ROOT;
+		};
+		126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CC8185F3B9100A8E8A3 /* BattleClinicAPI */,
+				126A0CD4185F3B9100A8E8A3 /* EVEC0rporationAPI */,
+				126A0CD8185F3B9100A8E8A3 /* EVECentralAPI */,
+				126A0CE2185F3B9100A8E8A3 /* EVEDBAPI */,
+				126A0D2E185F3B9200A8E8A3 /* EVEKillNetAPI */,
+				126A0D32185F3B9200A8E8A3 /* EVEOnlineAPI */,
+				126A0DC4185F3B9200A8E8A3 /* NeocomAPI */,
+				126A0DCC185F3B9200A8E8A3 /* RSS */,
+				126A0DE5185F3B9200A8E8A3 /* Utility */,
+			);
+			path = EVEOnlineAPI;
+			sourceTree = "<group>";
+		};
+		126A0CC8185F3B9100A8E8A3 /* BattleClinicAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */,
+				126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */,
+				126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */,
+				126A0CCC185F3B9100A8E8A3 /* BCEveLoadoutsList.h */,
+				126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */,
+				126A0CCE185F3B9100A8E8A3 /* BCEveLoadoutsTags.h */,
+				126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */,
+				126A0CD0185F3B9100A8E8A3 /* Utility */,
+			);
+			name = BattleClinicAPI;
+			path = Classes/BattleClinicAPI;
+			sourceTree = "<group>";
+		};
+		126A0CD0185F3B9100A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CD1185F3B9100A8E8A3 /* BCGlobals.h */,
+				126A0CD2185F3B9100A8E8A3 /* BCRequest.h */,
+				126A0CD3185F3B9100A8E8A3 /* BCRequest.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		126A0CD4185F3B9100A8E8A3 /* EVEC0rporationAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CD5185F3B9100A8E8A3 /* EVEC0rporationAPI.h */,
+				126A0CD6185F3B9100A8E8A3 /* EVEC0rporationFaction.h */,
+				126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */,
+			);
+			name = EVEC0rporationAPI;
+			path = Classes/EVEC0rporationAPI;
+			sourceTree = "<group>";
+		};
+		126A0CD8185F3B9100A8E8A3 /* EVECentralAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CD9185F3B9100A8E8A3 /* EVECentralAPI.h */,
+				126A0CDA185F3B9100A8E8A3 /* EVECentralMarketStat.h */,
+				126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */,
+				126A0CDC185F3B9100A8E8A3 /* EVECentralQuickLook.h */,
+				126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */,
+				126A0CDE185F3B9100A8E8A3 /* Utility */,
+			);
+			name = EVECentralAPI;
+			path = Classes/EVECentralAPI;
+			sourceTree = "<group>";
+		};
+		126A0CDE185F3B9100A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CDF185F3B9100A8E8A3 /* EVECentralGlobals.h */,
+				126A0CE0185F3B9100A8E8A3 /* EVECentralRequest.h */,
+				126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		126A0CE2185F3B9100A8E8A3 /* EVEDBAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0CE3185F3B9100A8E8A3 /* EVEDBAPI.h */,
+				126A0CE4185F3B9100A8E8A3 /* EVEDBCrtCategory.h */,
+				126A0CE5185F3B9100A8E8A3 /* EVEDBCrtCategory.m */,
+				126A0CE6185F3B9100A8E8A3 /* EVEDBCrtCertificate.h */,
+				126A0CE7185F3B9100A8E8A3 /* EVEDBCrtCertificate.m */,
+				126A0CE8185F3B9100A8E8A3 /* EVEDBCrtClass.h */,
+				126A0CE9185F3B9100A8E8A3 /* EVEDBCrtClass.m */,
+				126A0CEA185F3B9200A8E8A3 /* EVEDBCrtRecommendation.h */,
+				126A0CEB185F3B9200A8E8A3 /* EVEDBCrtRecommendation.m */,
+				126A0CEC185F3B9200A8E8A3 /* EVEDBCrtRelationship.h */,
+				126A0CED185F3B9200A8E8A3 /* EVEDBCrtRelationship.m */,
+				126A0CEE185F3B9200A8E8A3 /* EVEDBDatabase.h */,
+				126A0CEF185F3B9200A8E8A3 /* EVEDBDatabase.m */,
+				126A0CF0185F3B9200A8E8A3 /* EVEDBDgmAttributeCategory.h */,
+				126A0CF1185F3B9200A8E8A3 /* EVEDBDgmAttributeCategory.m */,
+				126A0CF2185F3B9200A8E8A3 /* EVEDBDgmAttributeType.h */,
+				126A0CF3185F3B9200A8E8A3 /* EVEDBDgmAttributeType.m */,
+				126A0CF4185F3B9200A8E8A3 /* EVEDBDgmEffect.h */,
+				126A0CF5185F3B9200A8E8A3 /* EVEDBDgmEffect.m */,
+				126A0CF6185F3B9200A8E8A3 /* EVEDBDgmTypeAttribute.h */,
+				126A0CF7185F3B9200A8E8A3 /* EVEDBDgmTypeAttribute.m */,
+				126A0CF8185F3B9200A8E8A3 /* EVEDBDgmTypeEffect.h */,
+				126A0CF9185F3B9200A8E8A3 /* EVEDBDgmTypeEffect.m */,
+				126A0CFA185F3B9200A8E8A3 /* EVEDBEveIcon.h */,
+				126A0CFB185F3B9200A8E8A3 /* EVEDBEveIcon.m */,
+				126A0CFC185F3B9200A8E8A3 /* EVEDBEveUnit.h */,
+				126A0CFD185F3B9200A8E8A3 /* EVEDBEveUnit.m */,
+				126A0CFE185F3B9200A8E8A3 /* EVEDBInvBlueprintType.h */,
+				126A0CFF185F3B9200A8E8A3 /* EVEDBInvBlueprintType.m */,
+				126A0D00185F3B9200A8E8A3 /* EVEDBInvCategory.h */,
+				126A0D01185F3B9200A8E8A3 /* EVEDBInvCategory.m */,
+				126A0D02185F3B9200A8E8A3 /* EVEDBInvControlTowerResource.h */,
+				126A0D03185F3B9200A8E8A3 /* EVEDBInvControlTowerResource.m */,
+				126A0D04185F3B9200A8E8A3 /* EVEDBInvControlTowerResourcePurpose.h */,
+				126A0D05185F3B9200A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m */,
+				126A0D06185F3B9200A8E8A3 /* EVEDBInvGroup.h */,
+				126A0D07185F3B9200A8E8A3 /* EVEDBInvGroup.m */,
+				126A0D08185F3B9200A8E8A3 /* EVEDBInvMarketGroup.h */,
+				126A0D09185F3B9200A8E8A3 /* EVEDBInvMarketGroup.m */,
+				126A0D0A185F3B9200A8E8A3 /* EVEDBInvMetaGroup.h */,
+				126A0D0B185F3B9200A8E8A3 /* EVEDBInvMetaGroup.m */,
+				126A0D0C185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.h */,
+				126A0D0D185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.m */,
+				126A0D0E185F3B9200A8E8A3 /* EVEDBInvType+Installation.h */,
+				126A0D0F185F3B9200A8E8A3 /* EVEDBInvType+Installation.m */,
+				126A0D10185F3B9200A8E8A3 /* EVEDBInvType+Skill.h */,
+				126A0D11185F3B9200A8E8A3 /* EVEDBInvType+Skill.m */,
+				126A0D12185F3B9200A8E8A3 /* EVEDBInvType.h */,
+				126A0D13185F3B9200A8E8A3 /* EVEDBInvType.m */,
+				126A0D14185F3B9200A8E8A3 /* EVEDBInvTypeMaterial.h */,
+				126A0D15185F3B9200A8E8A3 /* EVEDBInvTypeMaterial.m */,
+				126A0D16185F3B9200A8E8A3 /* EVEDBMapConstellation.h */,
+				126A0D17185F3B9200A8E8A3 /* EVEDBMapConstellation.m */,
+				126A0D18185F3B9200A8E8A3 /* EVEDBMapDenormalize.h */,
+				126A0D19185F3B9200A8E8A3 /* EVEDBMapDenormalize.m */,
+				126A0D1A185F3B9200A8E8A3 /* EVEDBMapRegion.h */,
+				126A0D1B185F3B9200A8E8A3 /* EVEDBMapRegion.m */,
+				126A0D1C185F3B9200A8E8A3 /* EVEDBMapSolarSystem.h */,
+				126A0D1D185F3B9200A8E8A3 /* EVEDBMapSolarSystem.m */,
+				126A0D1E185F3B9200A8E8A3 /* EVEDBRamActivity.h */,
+				126A0D1F185F3B9200A8E8A3 /* EVEDBRamActivity.m */,
+				126A0D20185F3B9200A8E8A3 /* EVEDBRamAssemblyLineType.h */,
+				126A0D21185F3B9200A8E8A3 /* EVEDBRamAssemblyLineType.m */,
+				126A0D22185F3B9200A8E8A3 /* EVEDBRamInstallationTypeContent.h */,
+				126A0D23185F3B9200A8E8A3 /* EVEDBRamInstallationTypeContent.m */,
+				126A0D24185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.h */,
+				126A0D25185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.m */,
+				126A0D26185F3B9200A8E8A3 /* EVEDBStaStation.h */,
+				126A0D27185F3B9200A8E8A3 /* EVEDBStaStation.m */,
+				126A0D28185F3B9200A8E8A3 /* Utility */,
+			);
+			name = EVEDBAPI;
+			path = Classes/EVEDBAPI;
+			sourceTree = "<group>";
+		};
+		126A0D28185F3B9200A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D29185F3B9200A8E8A3 /* EVEDBGlobals.h */,
+				126A0D2A185F3B9200A8E8A3 /* EVEDBObject.h */,
+				126A0D2B185F3B9200A8E8A3 /* EVEDBObject.m */,
+				126A0D2C185F3B9200A8E8A3 /* NSDictionary+EVEDBAPI.h */,
+				126A0D2D185F3B9200A8E8A3 /* NSDictionary+EVEDBAPI.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		126A0D2E185F3B9200A8E8A3 /* EVEKillNetAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D2F185F3B9200A8E8A3 /* EVEKillNetAPI.h */,
+				126A0D30185F3B9200A8E8A3 /* EVEKillNetLog.h */,
+				126A0D31185F3B9200A8E8A3 /* EVEKillNetLog.m */,
+			);
+			name = EVEKillNetAPI;
+			path = Classes/EVEKillNetAPI;
+			sourceTree = "<group>";
+		};
+		126A0D32185F3B9200A8E8A3 /* EVEOnlineAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D33185F3B9200A8E8A3 /* Account */,
+				126A0D3A185F3B9200A8E8A3 /* API */,
+				126A0D3D185F3B9200A8E8A3 /* Character */,
+				126A0D74185F3B9200A8E8A3 /* Corporation */,
+				126A0D97185F3B9200A8E8A3 /* EVE */,
+				126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */,
+				126A0DAF185F3B9200A8E8A3 /* Map */,
+				126A0DB8185F3B9200A8E8A3 /* Misc */,
+				126A0DBB185F3B9200A8E8A3 /* Server */,
+				126A0DBE185F3B9200A8E8A3 /* Utility */,
+			);
+			name = EVEOnlineAPI;
+			path = Classes/EVEOnlineAPI;
+			sourceTree = "<group>";
+		};
+		126A0D33185F3B9200A8E8A3 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D34185F3B9200A8E8A3 /* EVEAccountStatus.h */,
+				126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */,
+				126A0D36185F3B9200A8E8A3 /* EVEAPIKeyInfo.h */,
+				126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */,
+				126A0D38185F3B9200A8E8A3 /* EVECharacters.h */,
+				126A0D39185F3B9200A8E8A3 /* EVECharacters.m */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		126A0D3A185F3B9200A8E8A3 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D3B185F3B9200A8E8A3 /* EVECalllist.h */,
+				126A0D3C185F3B9200A8E8A3 /* EVECalllist.m */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		126A0D3D185F3B9200A8E8A3 /* Character */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D3E185F3B9200A8E8A3 /* EVEAccountBalance.h */,
+				126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */,
+				126A0D40185F3B9200A8E8A3 /* EVEAssetList.h */,
+				126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */,
+				126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */,
+				126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */,
+				126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */,
+				126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */,
+				126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */,
+				126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */,
+				126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */,
+				126A0D49185F3B9200A8E8A3 /* EVECharFacWarStats.m */,
+				126A0D4A185F3B9200A8E8A3 /* EVECharMedals.h */,
+				126A0D4B185F3B9200A8E8A3 /* EVECharMedals.m */,
+				126A0D4C185F3B9200A8E8A3 /* EVECharWalletJournal.h */,
+				126A0D4D185F3B9200A8E8A3 /* EVECharWalletJournal.m */,
+				126A0D4E185F3B9200A8E8A3 /* EVECharWalletTransactions.h */,
+				126A0D4F185F3B9200A8E8A3 /* EVECharWalletTransactions.m */,
+				126A0D50185F3B9200A8E8A3 /* EVEContactNotifications.h */,
+				126A0D51185F3B9200A8E8A3 /* EVEContactNotifications.m */,
+				126A0D52185F3B9200A8E8A3 /* EVEContractBids.h */,
+				126A0D53185F3B9200A8E8A3 /* EVEContractBids.m */,
+				126A0D54185F3B9200A8E8A3 /* EVEContractItems.h */,
+				126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */,
+				126A0D56185F3B9200A8E8A3 /* EVEContracts.h */,
+				126A0D57185F3B9200A8E8A3 /* EVEContracts.m */,
+				126A0D58185F3B9200A8E8A3 /* EVEIndustryJobs.h */,
+				126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */,
+				126A0D5A185F3B9200A8E8A3 /* EVEKillLog.h */,
+				126A0D5B185F3B9200A8E8A3 /* EVEKillLog.m */,
+				126A0D5C185F3B9200A8E8A3 /* EVELocations.h */,
+				126A0D5D185F3B9200A8E8A3 /* EVELocations.m */,
+				126A0D5E185F3B9200A8E8A3 /* EVEMailBodies.h */,
+				126A0D5F185F3B9200A8E8A3 /* EVEMailBodies.m */,
+				126A0D60185F3B9200A8E8A3 /* EVEMailingLists.h */,
+				126A0D61185F3B9200A8E8A3 /* EVEMailingLists.m */,
+				126A0D62185F3B9200A8E8A3 /* EVEMailMessages.h */,
+				126A0D63185F3B9200A8E8A3 /* EVEMailMessages.m */,
+				126A0D64185F3B9200A8E8A3 /* EVEMarketOrders.h */,
+				126A0D65185F3B9200A8E8A3 /* EVEMarketOrders.m */,
+				126A0D66185F3B9200A8E8A3 /* EVENotifications.h */,
+				126A0D67185F3B9200A8E8A3 /* EVENotifications.m */,
+				126A0D68185F3B9200A8E8A3 /* EVENotificationTexts.h */,
+				126A0D69185F3B9200A8E8A3 /* EVENotificationTexts.m */,
+				126A0D6A185F3B9200A8E8A3 /* EVEResearch.h */,
+				126A0D6B185F3B9200A8E8A3 /* EVEResearch.m */,
+				126A0D6C185F3B9200A8E8A3 /* EVESkillInTraining.h */,
+				126A0D6D185F3B9200A8E8A3 /* EVESkillInTraining.m */,
+				126A0D6E185F3B9200A8E8A3 /* EVESkillQueue.h */,
+				126A0D6F185F3B9200A8E8A3 /* EVESkillQueue.m */,
+				126A0D70185F3B9200A8E8A3 /* EVEStandings.h */,
+				126A0D71185F3B9200A8E8A3 /* EVEStandings.m */,
+				126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */,
+				126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */,
+			);
+			path = Character;
+			sourceTree = "<group>";
+		};
+		126A0D74185F3B9200A8E8A3 /* Corporation */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D75185F3B9200A8E8A3 /* EVEContainerLog.h */,
+				126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */,
+				126A0D77185F3B9200A8E8A3 /* EVECorpContactList.h */,
+				126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */,
+				126A0D79185F3B9200A8E8A3 /* EVECorpFacWarStats.h */,
+				126A0D7A185F3B9200A8E8A3 /* EVECorpFacWarStats.m */,
+				126A0D7B185F3B9200A8E8A3 /* EVECorpMedals.h */,
+				126A0D7C185F3B9200A8E8A3 /* EVECorpMedals.m */,
+				126A0D7D185F3B9200A8E8A3 /* EVECorporationSheet.h */,
+				126A0D7E185F3B9200A8E8A3 /* EVECorporationSheet.m */,
+				126A0D7F185F3B9200A8E8A3 /* EVECorpWalletJournal.h */,
+				126A0D80185F3B9200A8E8A3 /* EVECorpWalletJournal.m */,
+				126A0D81185F3B9200A8E8A3 /* EVECorpWalletTransactions.h */,
+				126A0D82185F3B9200A8E8A3 /* EVECorpWalletTransactions.m */,
+				126A0D83185F3B9200A8E8A3 /* EVEMemberMedals.h */,
+				126A0D84185F3B9200A8E8A3 /* EVEMemberMedals.m */,
+				126A0D85185F3B9200A8E8A3 /* EVEMemberSecurity.h */,
+				126A0D86185F3B9200A8E8A3 /* EVEMemberSecurity.m */,
+				126A0D87185F3B9200A8E8A3 /* EVEMemberSecurityLog.h */,
+				126A0D88185F3B9200A8E8A3 /* EVEMemberSecurityLog.m */,
+				126A0D89185F3B9200A8E8A3 /* EVEMemberTracking.h */,
+				126A0D8A185F3B9200A8E8A3 /* EVEMemberTracking.m */,
+				126A0D8B185F3B9200A8E8A3 /* EVEOutpostList.h */,
+				126A0D8C185F3B9200A8E8A3 /* EVEOutpostList.m */,
+				126A0D8D185F3B9200A8E8A3 /* EVEOutpostServiceDetail.h */,
+				126A0D8E185F3B9200A8E8A3 /* EVEOutpostServiceDetail.m */,
+				126A0D8F185F3B9200A8E8A3 /* EVEShareholders.h */,
+				126A0D90185F3B9200A8E8A3 /* EVEShareholders.m */,
+				126A0D91185F3B9200A8E8A3 /* EVEStarbaseDetail.h */,
+				126A0D92185F3B9200A8E8A3 /* EVEStarbaseDetail.m */,
+				126A0D93185F3B9200A8E8A3 /* EVEStarbaseList.h */,
+				126A0D94185F3B9200A8E8A3 /* EVEStarbaseList.m */,
+				126A0D95185F3B9200A8E8A3 /* EVETitles.h */,
+				126A0D96185F3B9200A8E8A3 /* EVETitles.m */,
+			);
+			path = Corporation;
+			sourceTree = "<group>";
+		};
+		126A0D97185F3B9200A8E8A3 /* EVE */ = {
+			isa = PBXGroup;
+			children = (
+				126A0D98185F3B9200A8E8A3 /* EVEAllianceList.h */,
+				126A0D99185F3B9200A8E8A3 /* EVEAllianceList.m */,
+				126A0D9A185F3B9200A8E8A3 /* EVECertificateTree.h */,
+				126A0D9B185F3B9200A8E8A3 /* EVECertificateTree.m */,
+				126A0D9C185F3B9200A8E8A3 /* EVECharacterID.h */,
+				126A0D9D185F3B9200A8E8A3 /* EVECharacterID.m */,
+				126A0D9E185F3B9200A8E8A3 /* EVECharacterInfo.h */,
+				126A0D9F185F3B9200A8E8A3 /* EVECharacterInfo.m */,
+				126A0DA0185F3B9200A8E8A3 /* EVECharacterName.h */,
+				126A0DA1185F3B9200A8E8A3 /* EVECharacterName.m */,
+				126A0DA2185F3B9200A8E8A3 /* EVEConquerableStationList.h */,
+				126A0DA3185F3B9200A8E8A3 /* EVEConquerableStationList.m */,
+				126A0DA4185F3B9200A8E8A3 /* EVEErrorList.h */,
+				126A0DA5185F3B9200A8E8A3 /* EVEErrorList.m */,
+				126A0DA6185F3B9200A8E8A3 /* EVEFacWarStats.h */,
+				126A0DA7185F3B9200A8E8A3 /* EVEFacWarStats.m */,
+				126A0DA8185F3B9200A8E8A3 /* EVEFacWarTopStats.h */,
+				126A0DA9185F3B9200A8E8A3 /* EVEFacWarTopStats.m */,
+				126A0DAA185F3B9200A8E8A3 /* EVERefTypes.h */,
+				126A0DAB185F3B9200A8E8A3 /* EVERefTypes.m */,
+				126A0DAC185F3B9200A8E8A3 /* EVESkillTree.h */,
+				126A0DAD185F3B9200A8E8A3 /* EVESkillTree.m */,
+			);
+			path = EVE;
+			sourceTree = "<group>";
+		};
+		126A0DAF185F3B9200A8E8A3 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DB0185F3B9200A8E8A3 /* EVEFacWarSystems.h */,
+				126A0DB1185F3B9200A8E8A3 /* EVEFacWarSystems.m */,
+				126A0DB2185F3B9200A8E8A3 /* EVEJumps.h */,
+				126A0DB3185F3B9200A8E8A3 /* EVEJumps.m */,
+				126A0DB4185F3B9200A8E8A3 /* EVEKills.h */,
+				126A0DB5185F3B9200A8E8A3 /* EVEKills.m */,
+				126A0DB6185F3B9200A8E8A3 /* EVESovereignty.h */,
+				126A0DB7185F3B9200A8E8A3 /* EVESovereignty.m */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		126A0DB8185F3B9200A8E8A3 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DB9185F3B9200A8E8A3 /* EVEImage.h */,
+				126A0DBA185F3B9200A8E8A3 /* EVEImage.m */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
+		126A0DBB185F3B9200A8E8A3 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DBC185F3B9200A8E8A3 /* EVEServerStatus.h */,
+				126A0DBD185F3B9200A8E8A3 /* EVEServerStatus.m */,
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
+		126A0DBE185F3B9200A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DBF185F3B9200A8E8A3 /* EVEGlobals.h */,
+				126A0DC0185F3B9200A8E8A3 /* EVERequest.h */,
+				126A0DC1185F3B9200A8E8A3 /* EVERequest.m */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		126A0DC4185F3B9200A8E8A3 /* NeocomAPI */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DC5185F3B9200A8E8A3 /* NAPILookup.h */,
+				126A0DC6185F3B9200A8E8A3 /* NAPILookup.m */,
+				126A0DC7185F3B9200A8E8A3 /* NAPISearch.h */,
+				126A0DC8185F3B9200A8E8A3 /* NAPISearch.m */,
+				126A0DC9185F3B9200A8E8A3 /* NAPIUpload.h */,
+				126A0DCA185F3B9200A8E8A3 /* NAPIUpload.m */,
+				126A0DCB185F3B9200A8E8A3 /* NeocomAPI.h */,
+			);
+			name = NeocomAPI;
+			path = Classes/NeocomAPI;
+			sourceTree = "<group>";
+		};
+		126A0DCC185F3B9200A8E8A3 /* RSS */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DCD185F3B9200A8E8A3 /* RSS */,
+				126A0DE3185F3B9200A8E8A3 /* RSS.h */,
+				126A0DE4185F3B9200A8E8A3 /* RSS.m */,
+			);
+			name = RSS;
+			path = Classes/RSS;
+			sourceTree = "<group>";
+		};
+		126A0DCD185F3B9200A8E8A3 /* RSS */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DCE185F3B9200A8E8A3 /* Parsers */,
+				126A0DD9185F3B9200A8E8A3 /* RSSEnclosure.h */,
+				126A0DDA185F3B9200A8E8A3 /* RSSEnclosure.m */,
+				126A0DDB185F3B9200A8E8A3 /* RSSFeed.h */,
+				126A0DDC185F3B9200A8E8A3 /* RSSFeed.m */,
+				126A0DDD185F3B9200A8E8A3 /* RSSImage.h */,
+				126A0DDE185F3B9200A8E8A3 /* RSSImage.m */,
+				126A0DDF185F3B9200A8E8A3 /* RSSItem.h */,
+				126A0DE0185F3B9200A8E8A3 /* RSSItem.m */,
+				126A0DE1185F3B9200A8E8A3 /* RSSSource.h */,
+				126A0DE2185F3B9200A8E8A3 /* RSSSource.m */,
+			);
+			path = RSS;
+			sourceTree = "<group>";
+		};
+		126A0DCE185F3B9200A8E8A3 /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DCF185F3B9200A8E8A3 /* NSMutableString+RSSParser10.h */,
+				126A0DD0185F3B9200A8E8A3 /* NSMutableString+RSSParser10.m */,
+				126A0DD1185F3B9200A8E8A3 /* RSSParser.h */,
+				126A0DD2185F3B9200A8E8A3 /* RSSParser.m */,
+				126A0DD3185F3B9200A8E8A3 /* RSSParser10.h */,
+				126A0DD4185F3B9200A8E8A3 /* RSSParser10.m */,
+				126A0DD5185F3B9200A8E8A3 /* RSSParser20.h */,
+				126A0DD6185F3B9200A8E8A3 /* RSSParser20.m */,
+				126A0DD7185F3B9200A8E8A3 /* RSSParserAtom.h */,
+				126A0DD8185F3B9200A8E8A3 /* RSSParserAtom.m */,
+			);
+			path = Parsers;
+			sourceTree = "<group>";
+		};
+		126A0DE5185F3B9200A8E8A3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DE6185F3B9200A8E8A3 /* ASURLConnection.h */,
+				126A0DE7185F3B9200A8E8A3 /* ASURLConnection.m */,
+				126A0DE8185F3B9200A8E8A3 /* EVECachedURLRequest.h */,
+				126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */,
+				126A0DEA185F3B9200A8E8A3 /* NSData+MD5.h */,
+				126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */,
+				126A0DEC185F3B9200A8E8A3 /* NSMutableString+HTML */,
+				126A0DEF185F3B9200A8E8A3 /* NSString+HTML */,
+				126A0DF2185F3B9200A8E8A3 /* NSString+MD5.h */,
+				126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */,
+				126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */,
+				126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */,
+			);
+			name = Utility;
+			path = Classes/Utility;
+			sourceTree = "<group>";
+		};
+		126A0DEC185F3B9200A8E8A3 /* NSMutableString+HTML */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DED185F3B9200A8E8A3 /* NSMutableString+HTML.h */,
+				126A0DEE185F3B9200A8E8A3 /* NSMutableString+HTML.m */,
+			);
+			path = "NSMutableString+HTML";
+			sourceTree = "<group>";
+		};
+		126A0DEF185F3B9200A8E8A3 /* NSString+HTML */ = {
+			isa = PBXGroup;
+			children = (
+				126A0DF0185F3B9200A8E8A3 /* NSString+HTML.h */,
+				126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */,
+			);
+			path = "NSString+HTML";
+			sourceTree = "<group>";
+		};
+		129FEE12186030E000F75FA6 /* NCStorage */ = {
+			isa = PBXGroup;
+			children = (
+				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				129FEE161860313D00F75FA6 /* NCStorage.h */,
+				129FEE171860313D00F75FA6 /* NCStorage.m */,
+				129FEE461860326E00F75FA6 /* NCFitCharacter.h */,
+				129FEE471860326E00F75FA6 /* NCFitCharacter.m */,
+				129FEE431860326E00F75FA6 /* NCShipFit.h */,
+				129FEE441860326E00F75FA6 /* NCShipFit.m */,
+				129FEE401860326E00F75FA6 /* NCPOSFit.h */,
+				129FEE411860326E00F75FA6 /* NCPOSFit.m */,
+				129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */,
+				129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */,
+				129FEE3A1860326E00F75FA6 /* NCIgnoredCharacter.h */,
+				129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */,
+				129FEE371860326E00F75FA6 /* NCSetting.h */,
+				129FEE381860326E00F75FA6 /* NCSetting.m */,
+				129FEE341860326E00F75FA6 /* NCAPIKey.h */,
+				129FEE351860326E00F75FA6 /* NCAPIKey.m */,
+				129FEE311860326D00F75FA6 /* NCFit.h */,
+				129FEE321860326D00F75FA6 /* NCFit.m */,
+			);
+			name = NCStorage;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1209684E1845F0CB00921A37 /* Neocom */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 120968811845F0CB00921A37 /* Build configuration list for PBXNativeTarget "Neocom" */;
+			buildPhases = (
+				1209684B1845F0CB00921A37 /* Sources */,
+				1209684C1845F0CB00921A37 /* Frameworks */,
+				1209684D1845F0CB00921A37 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Neocom;
+			productName = Neocom;
+			productReference = 1209684F1845F0CB00921A37 /* Neocom.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1209686F1845F0CB00921A37 /* NeocomTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 120968841845F0CB00921A37 /* Build configuration list for PBXNativeTarget "NeocomTests" */;
+			buildPhases = (
+				1209686C1845F0CB00921A37 /* Sources */,
+				1209686D1845F0CB00921A37 /* Frameworks */,
+				1209686E1845F0CB00921A37 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				120968761845F0CB00921A37 /* PBXTargetDependency */,
+			);
+			name = NeocomTests;
+			productName = NeocomTests;
+			productReference = 120968701845F0CB00921A37 /* NeocomTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		120968471845F0CB00921A37 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NC;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Artem Shimanski";
+				TargetAttributes = {
+					1209686F1845F0CB00921A37 = {
+						TestTargetID = 1209684E1845F0CB00921A37;
+					};
+				};
+			};
+			buildConfigurationList = 1209684A1845F0CB00921A37 /* Build configuration list for PBXProject "Neocom" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 120968461845F0CB00921A37;
+			productRefGroup = 120968501845F0CB00921A37 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1209684E1845F0CB00921A37 /* Neocom */,
+				1209686F1845F0CB00921A37 /* NeocomTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1209684D1845F0CB00921A37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
+				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
+				120968661845F0CB00921A37 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1209686E1845F0CB00921A37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1209684B1845F0CB00921A37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */,
+				126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */,
+				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
+				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
+				126A0E1B185F3B9300A8E8A3 /* EVEDBInvMetaGroup.m in Sources */,
+				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
+				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
+				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,
+				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
+				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,
+				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
+				126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */,
+				126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */,
+				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
+				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
+				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
+				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
+				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
+				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
+				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
+				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
+				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
+				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,
+				126A0E25185F3B9300A8E8A3 /* EVEDBRamActivity.m in Sources */,
+				126A0E17185F3B9300A8E8A3 /* EVEDBInvControlTowerResource.m in Sources */,
+				126A0E18185F3B9300A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
+				126A0E15185F3B9300A8E8A3 /* EVEDBInvBlueprintType.m in Sources */,
+				126A0E1D185F3B9300A8E8A3 /* EVEDBInvType+Installation.m in Sources */,
+				126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */,
+				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
+				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
+				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
+				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
+				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
+				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
+				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
+				126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */,
+				126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */,
+				126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */,
+				126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */,
+				129FEE4D186032ED00F75FA6 /* NCAccount.m in Sources */,
+				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
+				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
+				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
+				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
+				126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */,
+				126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */,
+				126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */,
+				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
+				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,
+				126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */,
+				126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */,
+				126A0E20185F3B9300A8E8A3 /* EVEDBInvTypeMaterial.m in Sources */,
+				129FEE331860326D00F75FA6 /* NCFit.m in Sources */,
+				126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */,
+				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
+				129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */,
+				126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */,
+				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
+				129FEE3C1860326E00F75FA6 /* NCIgnoredCharacter.m in Sources */,
+				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
+				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
+				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
+				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
+				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
+				126A0E26185F3B9300A8E8A3 /* EVEDBRamAssemblyLineType.m in Sources */,
+				1211123118598B09009E5106 /* NCTask.m in Sources */,
+				126A0E36185F3B9300A8E8A3 /* EVECharFacWarStats.m in Sources */,
+				126A0E83185F3B9300A8E8A3 /* NSString+MD5.m in Sources */,
+				126A0E1C185F3B9300A8E8A3 /* EVEDBInvType+ControlTower.m in Sources */,
+				126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */,
+				126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */,
+				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
+				126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */,
+				126A0E14185F3B9300A8E8A3 /* EVEDBEveUnit.m in Sources */,
+				126A0E2B185F3B9300A8E8A3 /* NSDictionary+EVEDBAPI.m in Sources */,
+				126A0E24185F3B9300A8E8A3 /* EVEDBMapSolarSystem.m in Sources */,
+				129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */,
+				126A0E3F185F3B9300A8E8A3 /* EVEKillLog.m in Sources */,
+				126A0E1F185F3B9300A8E8A3 /* EVEDBInvType.m in Sources */,
+				126A0E67185F3B9300A8E8A3 /* EVESkillTree.m in Sources */,
+				126A0E09185F3B9300A8E8A3 /* EVEDBCrtCertificate.m in Sources */,
+				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
+				1209685F1845F0CB00921A37 /* main.m in Sources */,
+				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
+				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
+				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
+				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,
+				126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */,
+				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
+				126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */,
+				126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */,
+				126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */,
+				126A0E0C185F3B9300A8E8A3 /* EVEDBCrtRelationship.m in Sources */,
+				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
+				126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */,
+				126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */,
+				126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */,
+				126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */,
+				126A0E3E185F3B9300A8E8A3 /* EVEIndustryJobs.m in Sources */,
+				126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */,
+				129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */,
+				126A0E6E185F3B9300A8E8A3 /* EVERequest.m in Sources */,
+				126A0E4E185F3B9300A8E8A3 /* EVECorpFacWarStats.m in Sources */,
+				129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */,
+				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
+				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
+				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
+				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
+				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
+				126A0E27185F3B9300A8E8A3 /* EVEDBRamInstallationTypeContent.m in Sources */,
+				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
+				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
+				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
+				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
+				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,
+				126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */,
+				126A0E4C185F3B9300A8E8A3 /* EVEContainerLog.m in Sources */,
+				129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */,
+				126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */,
+				126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */,
+				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
+				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,
+				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
+				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
+				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
+				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
+				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
+				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
+				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
+				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
+				126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */,
+				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
+				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
+				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
+				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
+				126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */,
+				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,
+				126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */,
+				126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */,
+				126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */,
+				126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */,
+				126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */,
+				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
+				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,
+				126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */,
+				126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */,
+				126A0E1E185F3B9300A8E8A3 /* EVEDBInvType+Skill.m in Sources */,
+				1211123818599339009E5106 /* NCCache.m in Sources */,
+				126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */,
+				126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1209686C1845F0CB00921A37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		120968761845F0CB00921A37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1209684E1845F0CB00921A37 /* Neocom */;
+			targetProxy = 120968751845F0CB00921A37 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1209685B1845F0CB00921A37 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1209685C1845F0CB00921A37 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		120968641845F0CB00921A37 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				120968651845F0CB00921A37 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1209687F1845F0CB00921A37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		120968801845F0CB00921A37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		120968821845F0CB00921A37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		120968831845F0CB00921A37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		120968851845F0CB00921A37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "NeocomTests/NeocomTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		120968861845F0CB00921A37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				INFOPLIST_FILE = "NeocomTests/NeocomTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1209684A1845F0CB00921A37 /* Build configuration list for PBXProject "Neocom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1209687F1845F0CB00921A37 /* Debug */,
+				120968801845F0CB00921A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		120968811845F0CB00921A37 /* Build configuration list for PBXNativeTarget "Neocom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				120968821845F0CB00921A37 /* Debug */,
+				120968831845F0CB00921A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		120968841845F0CB00921A37 /* Build configuration list for PBXNativeTarget "NeocomTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				120968851845F0CB00921A37 /* Debug */,
+				120968861845F0CB00921A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1211123C18599396009E5106 /* NCCache.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1211123D18599396009E5106 /* NCCache.xcdatamodel */,
+			);
+			currentVersion = 1211123D18599396009E5106 /* NCCache.xcdatamodel */;
+			path = NCCache.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */,
+			);
+			currentVersion = 129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */;
+			path = NCStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 120968471845F0CB00921A37 /* Project object */;
+}

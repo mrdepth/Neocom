@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NCAPIKey.h"
+#import "EVEOnlineAPI.h"
 
 typedef enum {
 	NCAccountTypeCharacter,
@@ -17,8 +18,16 @@ typedef enum {
 @interface NCAccount : NSObject<NSCoding>
 @property (nonatomic, strong) NCAPIKey* apiKey;
 @property (nonatomic, assign, readonly) NCAccountType accountType;
-//@property (nonatomic, strong) NCAccountCharacter* character;
-@property (nonatomic, assign) NSInteger order;
+@property (nonatomic, assign) NSInteger priority;
+@property (nonatomic, assign, getter = isIgnored) BOOL ignored;
 
+@property (nonatomic, strong) EVEAPIKeyInfoCharactersItem* character;
+@property (nonatomic, strong) EVEAccountStatus* accountStatus;
+@property (nonatomic, strong) EVECharacterInfo* characterInfo;
+@property (nonatomic, strong) EVEAccountBalance* accountBalance;
+
+@property (nonatomic, strong) NSError* error;
+
+- (void) reload;
 
 @end

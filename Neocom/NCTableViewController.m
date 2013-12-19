@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.refreshControl = [UIRefreshControl new];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,8 +56,8 @@
 	return _taskManager;
 }
 
-- (void) reload {
-	
+- (void) reloadWithIgnoringCache:(BOOL) ignoreCache {
+
 }
 
 - (void) reloadFromCache {
@@ -76,14 +77,14 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 if (!record) {
-										 [self reload];
+										 [self reloadWithIgnoringCache:NO];
 									 }
 									 else {
 										 self.record = record;
 										 [self update];
 										 
 										 if ([[record expireDate] compare:[NSDate date]] == NSOrderedAscending)
-											 [self reload];
+											 [self reloadWithIgnoringCache:NO];
 									 }
 								 }
 							 }];

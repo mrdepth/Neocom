@@ -14,7 +14,7 @@
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) NCCacheRecord* record;
 
-- (void) reload;
+- (void) reloadWithIgnoringCache:(BOOL) ignoreCache;
 - (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) update;
 - (NSTimeInterval) defaultCacheExpireTime;

@@ -10,9 +10,16 @@
 #import <CoreData/CoreData.h>
 
 
+@class EVEAPIKeyInfo;
+
 @interface NCAPIKey : NSManagedObject
 
 @property (nonatomic) int32_t keyID;
-@property (nonatomic, retain) NSString * vCode;
+@property (nonatomic, strong) NSString * vCode;
+
+@property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
+@property (nonatomic, strong) NSError* error;
+
++ (instancetype) apiKeyWithKeyID:(NSInteger) keyID;
 
 @end

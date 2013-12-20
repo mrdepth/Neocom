@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NCAccount.h"
 
 @interface NCAccountsManager : NSObject
 @property (nonatomic, strong, readonly) NSArray* accounts;

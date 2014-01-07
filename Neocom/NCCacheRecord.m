@@ -23,9 +23,18 @@
 	NSManagedObjectContext* context = [[NCCache sharedCache] managedObjectContext];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
 	[fetchRequest setEntity:entity];
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID == %@", recordID]];
 	
 	NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
-	return fetchedObjects.count > 0 ? fetchedObjects[0] : nil;
+	if (fetchedObjects.count > 0)
+		return fetchedObjects[0];
+	else {
+		NCCacheRecord* record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+		record.recordID = recordID;
+		record.date = [NSDate date];
+		record.expireDate = [NSDate distantFuture];
+		return record;
+	}
 }
 
 @end

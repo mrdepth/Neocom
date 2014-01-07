@@ -9,63 +9,51 @@
 #import "NCAPIKey.h"
 #import "EVEOnlineAPI.h"
 #import "NCCache.h"
+#import "NCStorage.h"
 
 @interface NCAPIKey()
-@property (nonatomic, strong) NCCacheRecord* apiKeyInfoCacheRecord;
-
 @end
 
 @implementation NCAPIKey
 
 @dynamic keyID;
 @dynamic vCode;
-@synthesize apiKeyInfo = _apiKeyInfo;
+@dynamic accounts;
+@dynamic apiKeyInfo;
+
 @synthesize error = _error;
-@synthesize apiKeyInfoCacheRecord = _apiKeyInfoCacheRecord;
 
 + (instancetype) apiKeyWithKeyID:(NSInteger) keyID {
 	return nil;
 }
 
-
-- (EVEAPIKeyInfo*) apiKeyInfo {
-	@synchronized(self) {
-		if (!_apiKeyInfo && !_error) {
-			_apiKeyInfo = self.apiKeyInfoCacheRecord.data;
-			
-			if (!_apiKeyInfo && ![NSThread isMainThread]) {
-				NSError* error = nil;
-				self.apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:self.keyID vCode:self.vCode cachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:nil];
-				self.error = error;
-			}
-		}
-		return _apiKeyInfo;
-	}
++ (NSArray*) allAPIKeys {
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = storage.managedObjectContext;
+	
+	__block NSArray* apiKeys = nil;
+	[context performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		apiKeys = [context executeFetchRequest:fetchRequest error:nil];
+	}];
+	return apiKeys;
 }
 
-- (void) setApiKeyInfo:(EVEAPIKeyInfo *)apiKeyInfo {
-	_apiKeyInfo = apiKeyInfo;
-	self.error = nil;
-	NCCache* cache = [NCCache sharedCache];
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
+	NSError* error = nil;
+	EVEAPIKeyInfo* apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:self.keyID vCode:self.vCode cachePolicy:cachePolicy error:&error progressHandler:nil];
 	if (apiKeyInfo) {
-		[cache.managedObjectContext performBlock:^{
-			self.apiKeyInfoCacheRecord.data = apiKeyInfo;
-			[cache saveContext];
-		}];
+		self.apiKeyInfo = apiKeyInfo;
+		self.error = nil;
+		return YES;
 	}
-}
-
-#pragma mark - Private
-
-- (NCCacheRecord*) apiKeyInfoCacheRecord {
-	@synchronized(self) {
-		if (!_apiKeyInfoCacheRecord) {
-			NCCache* cache = [NCCache sharedCache];
-			[cache.managedObjectContext performBlockAndWait:^{
-				_apiKeyInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCAPIKey.apiKeyInfo.%d", self.keyID]];
-			}];
-		}
-		return _apiKeyInfoCacheRecord;
+	else {
+		self.error = error;
+		if (errorPtr)
+			*errorPtr = error;
+		return NO;
 	}
 }
 

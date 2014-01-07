@@ -162,14 +162,16 @@
 		129FEE331860326D00F75FA6 /* NCFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE321860326D00F75FA6 /* NCFit.m */; };
 		129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
 		129FEE391860326E00F75FA6 /* NCSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE381860326E00F75FA6 /* NCSetting.m */; };
-		129FEE3C1860326E00F75FA6 /* NCIgnoredCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */; };
 		129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
 		129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE411860326E00F75FA6 /* NCPOSFit.m */; };
 		129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE441860326E00F75FA6 /* NCShipFit.m */; };
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
-		129FEE4D186032ED00F75FA6 /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE4C186032ED00F75FA6 /* NCAccount.m */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
+		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
+		84FC4F59187840910004073C /* NCAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84FC4F58187840910004073C /* NCAccountsViewController.xib */; };
+		84FC4F6018785CCC0004073C /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -493,8 +495,6 @@
 		129FEE351860326E00F75FA6 /* NCAPIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKey.m; sourceTree = "<group>"; };
 		129FEE371860326E00F75FA6 /* NCSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSetting.h; sourceTree = "<group>"; };
 		129FEE381860326E00F75FA6 /* NCSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSetting.m; sourceTree = "<group>"; };
-		129FEE3A1860326E00F75FA6 /* NCIgnoredCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIgnoredCharacter.h; sourceTree = "<group>"; };
-		129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIgnoredCharacter.m; sourceTree = "<group>"; };
 		129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlan.h; sourceTree = "<group>"; };
 		129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlan.m; sourceTree = "<group>"; };
 		129FEE401860326E00F75FA6 /* NCPOSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSFit.h; sourceTree = "<group>"; };
@@ -504,10 +504,15 @@
 		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
 		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		129FEE4B186032ED00F75FA6 /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
-		129FEE4C186032ED00F75FA6 /* NCAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccount.m; sourceTree = "<group>"; };
 		12C9DC9F18617A6300A654C5 /* NCAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsManager.h; sourceTree = "<group>"; };
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
+		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
+		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		84FC4F55187840910004073C /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
+		84FC4F56187840910004073C /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
+		84FC4F58187840910004073C /* NCAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAccountsViewController.xib; sourceTree = "<group>"; };
+		84FC4F5E18785CCC0004073C /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
+		84FC4F5F18785CCC0004073C /* NCAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccount.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -536,15 +541,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1200C32218603093008F3C5E /* NCAccount */ = {
+		1200C32218603093008F3C5E /* NCAccountsManager */ = {
 			isa = PBXGroup;
 			children = (
-				129FEE4B186032ED00F75FA6 /* NCAccount.h */,
-				129FEE4C186032ED00F75FA6 /* NCAccount.m */,
 				12C9DC9F18617A6300A654C5 /* NCAccountsManager.h */,
 				12C9DCA018617A6300A654C5 /* NCAccountsManager.m */,
 			);
-			name = NCAccount;
+			name = NCAccountsManager;
 			sourceTree = "<group>";
 		};
 		120968461845F0CB00921A37 = {
@@ -581,7 +584,9 @@
 		120968581845F0CB00921A37 /* Neocom */ = {
 			isa = PBXGroup;
 			children = (
+				126A0CC4185F3B9100A8E8A3 /* ThirdParty */,
 				126A0CC2185F398C00A8E8A3 /* Utility */,
+				84FC4F541878405C0004073C /* Account */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.m */,
 				120968591845F0CB00921A37 /* Supporting Files */,
@@ -630,8 +635,7 @@
 			children = (
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,
-				1200C32218603093008F3C5E /* NCAccount */,
-				126A0CC4185F3B9100A8E8A3 /* ThirdParty */,
+				1200C32218603093008F3C5E /* NCAccountsManager */,
 				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
 				1211122B185989CC009E5106 /* NCTaskManager */,
 			);
@@ -1123,6 +1127,8 @@
 				126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */,
 				126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */,
 				126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */,
+				8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */,
+				8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */,
 			);
 			name = Utility;
 			path = Classes/Utility;
@@ -1150,6 +1156,8 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				84FC4F5E18785CCC0004073C /* NCAccount.h */,
+				84FC4F5F18785CCC0004073C /* NCAccount.m */,
 				129FEE161860313D00F75FA6 /* NCStorage.h */,
 				129FEE171860313D00F75FA6 /* NCStorage.m */,
 				129FEE461860326E00F75FA6 /* NCFitCharacter.h */,
@@ -1160,8 +1168,6 @@
 				129FEE411860326E00F75FA6 /* NCPOSFit.m */,
 				129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */,
 				129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */,
-				129FEE3A1860326E00F75FA6 /* NCIgnoredCharacter.h */,
-				129FEE3B1860326E00F75FA6 /* NCIgnoredCharacter.m */,
 				129FEE371860326E00F75FA6 /* NCSetting.h */,
 				129FEE381860326E00F75FA6 /* NCSetting.m */,
 				129FEE341860326E00F75FA6 /* NCAPIKey.h */,
@@ -1170,6 +1176,24 @@
 				129FEE321860326D00F75FA6 /* NCFit.m */,
 			);
 			name = NCStorage;
+			sourceTree = "<group>";
+		};
+		84FC4F541878405C0004073C /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				84FC4F5A187841C50004073C /* NCAccountsViewController */,
+			);
+			name = Account;
+			sourceTree = "<group>";
+		};
+		84FC4F5A187841C50004073C /* NCAccountsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84FC4F55187840910004073C /* NCAccountsViewController.h */,
+				84FC4F56187840910004073C /* NCAccountsViewController.m */,
+				84FC4F58187840910004073C /* NCAccountsViewController.xib */,
+			);
+			name = NCAccountsViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1250,6 +1274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
+				84FC4F59187840910004073C /* NCAccountsViewController.xib in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
 				120968661845F0CB00921A37 /* Main.storyboard in Resources */,
 			);
@@ -1272,6 +1297,7 @@
 				126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */,
 				126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */,
 				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
+				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
 				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
 				126A0E1B185F3B9300A8E8A3 /* EVEDBInvMetaGroup.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
@@ -1302,6 +1328,7 @@
 				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
 				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
+				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
 				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
@@ -1309,7 +1336,6 @@
 				126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */,
 				126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */,
 				126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */,
-				129FEE4D186032ED00F75FA6 /* NCAccount.m in Sources */,
 				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
 				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
@@ -1328,7 +1354,6 @@
 				129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */,
 				126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */,
 				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
-				129FEE3C1860326E00F75FA6 /* NCIgnoredCharacter.m in Sources */,
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
 				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
@@ -1401,6 +1426,7 @@
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
 				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
+				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
 				126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */,
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
 				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,

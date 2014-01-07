@@ -2,12 +2,12 @@
 //  NCAccount.h
 //  Neocom
 //
-//  Created by Artem Shimanski on 17.12.13.
-//  Copyright (c) 2013 Artem Shimanski. All rights reserved.
+//  Created by Admin on 04.01.14.
+//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "NCAPIKey.h"
+#import <CoreData/CoreData.h>
 #import "EVEOnlineAPI.h"
 
 typedef enum {
@@ -15,19 +15,26 @@ typedef enum {
 	NCAccountTypeCorporate
 } NCAccountType;
 
-@interface NCAccount : NSObject<NSCoding>
-@property (nonatomic, strong) NCAPIKey* apiKey;
-@property (nonatomic, assign, readonly) NCAccountType accountType;
-@property (nonatomic, assign) NSInteger priority;
-@property (nonatomic, assign, getter = isIgnored) BOOL ignored;
+@class NCAPIKey;
+@interface NCAccount : NSManagedObject
 
-@property (nonatomic, strong) EVEAPIKeyInfoCharactersItem* character;
-@property (nonatomic, strong) EVEAccountStatus* accountStatus;
-@property (nonatomic, strong) EVECharacterInfo* characterInfo;
-@property (nonatomic, strong) EVEAccountBalance* accountBalance;
+@property (nonatomic) int32_t characterID;
+@property (nonatomic) int32_t order;
+@property (nonatomic, retain) NCAPIKey *apiKey;
+
+@property (nonatomic, assign, readonly) NCAccountType accountType;
+
+@property (nonatomic, strong, readonly) EVECharacterInfo* characterInfo;
+@property (nonatomic, strong, readonly) EVEAccountBalance* accountBalance;
+@property (nonatomic, strong, readonly) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong, readonly) EVESkillQueue* skillQueue;
 
 @property (nonatomic, strong) NSError* error;
 
-- (void) reload;
++ (NSArray*) allAccounts;
++ (instancetype) currentAccount;
++ (void) setCurrentAccount:(NCAccount*) account;
+
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 
 @end

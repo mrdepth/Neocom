@@ -11,7 +11,9 @@
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
-@property (nonatomic, strong, readwrite) NCCacheRecord* record;
+@property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
+
+- (IBAction) onRefresh:(id) sender;
 
 @end
 
@@ -30,6 +32,7 @@
 {
     [super viewDidLoad];
 	self.refreshControl = [UIRefreshControl new];
+    [self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,7 +44,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.taskManager.active = YES;
-	if (!self.record)
+	if (!self.cacheRecord)
 		[self reloadFromCache];
 }
 
@@ -56,8 +59,8 @@
 	return _taskManager;
 }
 
-- (void) reloadWithIgnoringCache:(BOOL) ignoreCache {
-
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
+    [self.refreshControl beginRefreshing];
 }
 
 - (void) reloadFromCache {
@@ -76,35 +79,43 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
-									 if (!record) {
-										 [self reloadWithIgnoringCache:NO];
+									 self.cacheRecord = record;
+									 if (!record.data) {
+										 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 									 }
 									 else {
-										 self.record = record;
 										 [self update];
 										 
 										 if ([[record expireDate] compare:[NSDate date]] == NSOrderedAscending)
-											 [self reloadWithIgnoringCache:NO];
+                                             [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 									 }
 								 }
 							 }];
 }
 
-- (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
+- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	NCCache* cache = [NCCache sharedCache];
-	NSManagedObjectContext* context = cache.managedObjectContext;
+//	NSManagedObjectContext* context = cache.managedObjectContext;
 
-	if (!self.record)
-		self.record = [[NCCacheRecord alloc] initWithEntity:[NSEntityDescription entityForName:@"Record" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-	self.record.data = data;
-	self.record.date = cacheDate;
-	self.record.expireDate = expireDate;
+	if (!self.cacheRecord)
+		self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+		//self.cacheRecord = [[NCCacheRecord alloc] initWithEntity:[NSEntityDescription entityForName:@"Record" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+	self.cacheRecord.recordID = self.recordID;
+	self.cacheRecord.data = data;
+	self.cacheRecord.date = cacheDate;
+	self.cacheRecord.expireDate = expireDate;
 	[cache saveContext];
 	[self update];
+	return self.cacheRecord;
+}
+
+- (void) didFailLoadDataWithError:(NSError*) error {
+    [self.refreshControl endRefreshing];
 }
 
 - (void) update {
 	[self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {
@@ -113,6 +124,12 @@
 
 - (NSString*) recordID {
 	return NSStringFromClass(self.class);
+}
+
+#pragma mark - Private
+
+- (IBAction) onRefresh:(id) sender {
+    [self reloadDataWithCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
 @end

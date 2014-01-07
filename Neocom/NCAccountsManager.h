@@ -11,8 +11,12 @@
 
 @interface NCAccountsManager : NSObject
 @property (nonatomic, strong, readonly) NSArray* accounts;
+@property (nonatomic, strong, readonly) NSArray* apiKeys;
++ (instancetype) defaultManager;
++ (void) cleanup;
 
 - (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
 - (void) removeAPIKeyWithKeyID:(NSInteger) keyID;
-
+- (void) removeAccount:(NCAccount*) account;
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 @end

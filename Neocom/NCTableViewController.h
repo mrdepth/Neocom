@@ -12,10 +12,13 @@
 
 @interface NCTableViewController : UITableViewController
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
-@property (nonatomic, strong, readonly) NCCacheRecord* record;
+@property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
 
-- (void) reloadWithIgnoringCache:(BOOL) ignoreCache;
-- (void) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
+- (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
+- (void) didFailLoadDataWithError:(NSError*) error;
+
+#pragma mark - Override
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy;
 - (void) update;
 - (NSTimeInterval) defaultCacheExpireTime;
 - (NSString*) recordID;

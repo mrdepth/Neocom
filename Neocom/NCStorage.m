@@ -108,7 +108,7 @@ static NCStorage* sharedStorage;
 		if (_managedObjectModel != nil) {
 			return _managedObjectModel;
 		}
-		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"EUStorage" withExtension:@"momd"];
+		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 		return _managedObjectModel;
 	}

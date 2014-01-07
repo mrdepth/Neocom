@@ -7,9 +7,7 @@
 //
 
 #import "NCAppDelegate.h"
-#import "NCCache.h"
-#import "NCTaskManager.h"
-#import "ASURLConnection.h"
+#import "NCAccountsManager.h"
 
 @interface MyOperation : NSOperation
 
@@ -35,6 +33,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
+	NSError* error = nil;
+	[accountsManager addAPIKeyWithKeyID:666053 vCode:@"P4jCPSyzjbdrpJpn1gimlekmgep2tP1L9AT21JoA9nYqxO6BPapo7g7s6AgzCn2K" error:&error];
     return YES;
 }
 							

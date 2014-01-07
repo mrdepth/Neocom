@@ -11,15 +11,19 @@
 
 
 @class EVEAPIKeyInfo;
+@class EVEAccountStatus;
 
 @interface NCAPIKey : NSManagedObject
 
 @property (nonatomic) int32_t keyID;
 @property (nonatomic, strong) NSString * vCode;
-
+@property (nonatomic, strong) NSSet* accounts;
 @property (nonatomic, strong) EVEAPIKeyInfo* apiKeyInfo;
+
 @property (nonatomic, strong) NSError* error;
 
 + (instancetype) apiKeyWithKeyID:(NSInteger) keyID;
++ (NSArray*) allAPIKeys;
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 
 @end

@@ -168,6 +168,7 @@
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
+		84250639187DC566002E691E /* NCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
 		84FC4F59187840910004073C /* NCAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84FC4F58187840910004073C /* NCAccountsViewController.xib */; };
@@ -506,6 +507,8 @@
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		12C9DC9F18617A6300A654C5 /* NCAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsManager.h; sourceTree = "<group>"; };
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
+		84250637187DC566002E691E /* NCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMenuViewController.h; sourceTree = "<group>"; };
+		84250638187DC566002E691E /* NCMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
 		84FC4F55187840910004073C /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
@@ -633,6 +636,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				84250636187DC548002E691E /* NCMenuViewController */,
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,
 				1200C32218603093008F3C5E /* NCAccountsManager */,
@@ -1178,6 +1182,15 @@
 			name = NCStorage;
 			sourceTree = "<group>";
 		};
+		84250636187DC548002E691E /* NCMenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84250637187DC566002E691E /* NCMenuViewController.h */,
+				84250638187DC566002E691E /* NCMenuViewController.m */,
+			);
+			name = NCMenuViewController;
+			sourceTree = "<group>";
+		};
 		84FC4F541878405C0004073C /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -1424,6 +1437,7 @@
 				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
+				84250639187DC566002E691E /* NCMenuViewController.m in Sources */,
 				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
 				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,

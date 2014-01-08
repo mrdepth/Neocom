@@ -157,6 +157,7 @@
 		126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF1185F3B9200A8E8A3 /* NSString+HTML.m */; };
 		126A0E83185F3B9300A8E8A3 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */; };
 		126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */; };
+		129D2574187D73CA00E2062C /* NCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2573187D73CA00E2062C /* NCMenuViewController.m */; };
 		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
 		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
 		129FEE331860326D00F75FA6 /* NCFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE321860326D00F75FA6 /* NCFit.m */; };
@@ -168,10 +169,8 @@
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
-		84250639187DC566002E691E /* NCMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
-		84FC4F59187840910004073C /* NCAccountsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84FC4F58187840910004073C /* NCAccountsViewController.xib */; };
 		84FC4F6018785CCC0004073C /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
 /* End PBXBuildFile section */
 
@@ -487,6 +486,8 @@
 		126A0DF3185F3B9200A8E8A3 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		126A0DF4185F3B9200A8E8A3 /* NSURL+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MD5.h"; sourceTree = "<group>"; };
 		126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MD5.m"; sourceTree = "<group>"; };
+		129D2572187D73CA00E2062C /* NCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMenuViewController.h; sourceTree = "<group>"; };
+		129D2573187D73CA00E2062C /* NCMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMenuViewController.m; sourceTree = "<group>"; };
 		129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		129FEE161860313D00F75FA6 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
 		129FEE171860313D00F75FA6 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
@@ -507,13 +508,10 @@
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		12C9DC9F18617A6300A654C5 /* NCAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsManager.h; sourceTree = "<group>"; };
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
-		84250637187DC566002E691E /* NCMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMenuViewController.h; sourceTree = "<group>"; };
-		84250638187DC566002E691E /* NCMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
 		84FC4F55187840910004073C /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
 		84FC4F56187840910004073C /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
-		84FC4F58187840910004073C /* NCAccountsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAccountsViewController.xib; sourceTree = "<group>"; };
 		84FC4F5E18785CCC0004073C /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
 		84FC4F5F18785CCC0004073C /* NCAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccount.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -636,7 +634,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				84250636187DC548002E691E /* NCMenuViewController */,
+				129D2571187D73B300E2062C /* NCMenuViewController */,
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,
 				1200C32218603093008F3C5E /* NCAccountsManager */,
@@ -1156,6 +1154,15 @@
 			path = "NSString+HTML";
 			sourceTree = "<group>";
 		};
+		129D2571187D73B300E2062C /* NCMenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				129D2572187D73CA00E2062C /* NCMenuViewController.h */,
+				129D2573187D73CA00E2062C /* NCMenuViewController.m */,
+			);
+			name = NCMenuViewController;
+			sourceTree = "<group>";
+		};
 		129FEE12186030E000F75FA6 /* NCStorage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1182,15 +1189,6 @@
 			name = NCStorage;
 			sourceTree = "<group>";
 		};
-		84250636187DC548002E691E /* NCMenuViewController */ = {
-			isa = PBXGroup;
-			children = (
-				84250637187DC566002E691E /* NCMenuViewController.h */,
-				84250638187DC566002E691E /* NCMenuViewController.m */,
-			);
-			name = NCMenuViewController;
-			sourceTree = "<group>";
-		};
 		84FC4F541878405C0004073C /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -1204,7 +1202,6 @@
 			children = (
 				84FC4F55187840910004073C /* NCAccountsViewController.h */,
 				84FC4F56187840910004073C /* NCAccountsViewController.m */,
-				84FC4F58187840910004073C /* NCAccountsViewController.xib */,
 			);
 			name = NCAccountsViewController;
 			sourceTree = "<group>";
@@ -1257,6 +1254,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
+					1209684E1845F0CB00921A37 = {
+						DevelopmentTeam = YB4RLQ4M9A;
+					};
 					1209686F1845F0CB00921A37 = {
 						TestTargetID = 1209684E1845F0CB00921A37;
 					};
@@ -1287,7 +1287,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
-				84FC4F59187840910004073C /* NCAccountsViewController.xib in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
 				120968661845F0CB00921A37 /* Main.storyboard in Resources */,
 			);
@@ -1437,7 +1436,7 @@
 				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
-				84250639187DC566002E691E /* NCMenuViewController.m in Sources */,
+				129D2574187D73CA00E2062C /* NCMenuViewController.m in Sources */,
 				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
 				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
@@ -1578,11 +1577,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1592,11 +1594,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

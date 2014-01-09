@@ -17,11 +17,13 @@ static NCAccount* currentAccount = nil;
 @property (nonatomic, strong) NCCacheRecord* characterInfoCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* accountBalanceCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* characterSheetCacheRecord;
+@property (nonatomic, strong) NCCacheRecord* corporationSheetCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* skillQueueCacheRecord;
 
 @property (nonatomic, strong, readwrite) EVECharacterInfo* characterInfo;
 @property (nonatomic, strong, readwrite) EVEAccountBalance* accountBalance;
 @property (nonatomic, strong, readwrite) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong, readwrite) EVECorporationSheet* corporationSheet;
 @property (nonatomic, strong, readwrite) EVESkillQueue* skillQueue;
 
 
@@ -36,6 +38,7 @@ static NCAccount* currentAccount = nil;
 @synthesize characterInfoCacheRecord = _characterInfoCacheRecord;
 @synthesize accountBalanceCacheRecord = _accountBalanceCacheRecord;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
+@synthesize corporationSheetCacheRecord = _corporationSheetCacheRecord;
 @synthesize skillQueueCacheRecord = _skillQueueCacheRecord;
 
 + (NSArray*) allAccounts {
@@ -47,7 +50,7 @@ static NCAccount* currentAccount = nil;
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
 		[fetchRequest setEntity:entity];
-		[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"characterID" ascending:YES]]];
+		[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"characterID" ascending:YES]]];
 		
 		accounts = [context executeFetchRequest:fetchRequest error:nil];
 	}];
@@ -92,6 +95,15 @@ static NCAccount* currentAccount = nil;
 																			 error:&characterSheetError
 																   progressHandler:nil];
 
+	NSError* corporationSheetError = nil;
+	EVECorporationSheet* corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:self.apiKey.keyID
+																			 vCode:self.apiKey.vCode
+																	   cachePolicy:cachePolicy
+																	   characterID:self.characterID
+																			 corporationID:0
+																			 error:&corporationSheetError
+																   progressHandler:nil];
+
 	NSError* skillQueueError = nil;
 	EVESkillQueue* skillQueue = [EVESkillQueue skillQueueWithKeyID:self.apiKey.keyID
 															 vCode:self.apiKey.vCode
@@ -105,6 +117,7 @@ static NCAccount* currentAccount = nil;
 		self.characterInfo = characterInfo ? characterInfo : (id) characterInfoError;
 		self.accountBalance = accountBalance ? accountBalance : (id) accountBalanceError;
 		self.characterSheet = characterSheet ? characterSheet : (id) characterSheetError;
+		self.corporationSheet = corporationSheet ? corporationSheet : (id) corporationSheetError;
 		self.skillQueue = skillQueue ? skillQueue : (id) skillQueueError;
 		[cache saveContext];
 	}];
@@ -120,6 +133,10 @@ static NCAccount* currentAccount = nil;
 			*errorPtr = skillQueueError;
 	}
 	return YES;
+}
+
+- (NCAccountType) accountType {
+	return self.apiKey.apiKeyInfo.key.type == EVEAPIKeyTypeCorporation ? NCAccountTypeCorporate : NCAccountTypeCharacter;
 }
 
 - (EVECharacterInfo*) characterInfo {
@@ -143,6 +160,14 @@ static NCAccount* currentAccount = nil;
 		if (!self.characterSheetCacheRecord.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
 		return [self.characterSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data;
+	}
+}
+
+- (EVECorporationSheet*) corporationSheet {
+	@synchronized(self) {
+		if (!self.corporationSheetCacheRecord.data)
+			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
+		return [self.corporationSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.corporationSheetCacheRecord.data;
 	}
 }
 
@@ -196,6 +221,20 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
+- (void) setCorporationSheet:(EVECorporationSheet *)corporationSheet {
+	@synchronized(self) {
+		self.corporationSheetCacheRecord.data = corporationSheet;
+		if ([corporationSheet isKindOfClass:[NSError class]]) {
+			self.corporationSheetCacheRecord.date = [NSDate date];
+			self.corporationSheetCacheRecord.expireDate = nil;
+		}
+		else {
+			self.corporationSheetCacheRecord.date = corporationSheet.cacheDate;
+			self.corporationSheetCacheRecord.expireDate = corporationSheet.cacheExpireDate;
+		}
+	}
+}
+
 - (void) setSkillQueue:(EVESkillQueue *)skillQueue {
 	@synchronized(self) {
 		self.skillQueueCacheRecord.data = skillQueue;
@@ -245,6 +284,18 @@ static NCAccount* currentAccount = nil;
 			}];
 		}
 		return _characterSheetCacheRecord;
+	}
+}
+
+- (NCCacheRecord*) corporationSheetCacheRecord {
+	@synchronized(self) {
+		if (_corporationSheetCacheRecord) {
+			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
+				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", [[self objectID] URIRepresentation]]];
+				[_corporationSheetCacheRecord data];
+			}];
+		}
+		return _corporationSheetCacheRecord;
 	}
 }
 

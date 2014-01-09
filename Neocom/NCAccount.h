@@ -27,6 +27,7 @@ typedef enum {
 @property (nonatomic, strong, readonly) EVECharacterInfo* characterInfo;
 @property (nonatomic, strong, readonly) EVEAccountBalance* accountBalance;
 @property (nonatomic, strong, readonly) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong, readonly) EVECorporationSheet* corporationSheet;
 @property (nonatomic, strong, readonly) EVESkillQueue* skillQueue;
 
 @property (nonatomic, strong) NSError* error;

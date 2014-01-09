@@ -33,9 +33,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	//NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-	//NSError* error = nil;
-	//[accountsManager addAPIKeyWithKeyID:666053 vCode:@"P4jCPSyzjbdrpJpn1gimlekmgep2tP1L9AT21JoA9nYqxO6BPapo7g7s6AgzCn2K" error:&error];
+	/*NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
+	NSError* error = nil;
+	[accountsManager addAPIKeyWithKeyID:522 vCode:@"JaVnBPBGDdJj9XzI9zDfY0486WTpccuI2pMtsdzSKhRqwDNPxLSiUhjgPejJi16l" error:&error];*/
     return YES;
 }
 							

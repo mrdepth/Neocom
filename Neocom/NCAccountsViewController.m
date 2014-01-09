@@ -126,7 +126,7 @@
 												 [account reloadWithCachePolicy:cachePolicy error:&error];
                                                  NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
                                                  dataAccount.account = account;
-                                                 dataAccount.accountStatus = accountStatuses[@([account hash])];
+                                                 dataAccount.accountStatus = accountStatuses[@([account.apiKey hash])];
                                                  [data.accounts addObject:dataAccount];
 												 task.progress = p += dp;
 											 }

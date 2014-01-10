@@ -70,14 +70,17 @@ static NCAccount* currentAccount = nil;
 }
 
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
+	if ([NSThread isMainThread])
+		return NO;
+	
 	NSError* characterInfoError = nil;
-	EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:self.apiKey.keyID
-																		 vCode:self.apiKey.vCode
-																   cachePolicy:NSURLRequestUseProtocolCachePolicy
-																   characterID:self.characterID
-																		 error:&characterInfoError
-															   progressHandler:nil];
-
+	EVECharacterInfo* characterInfo = self.accountType == NCAccountTypeCharacter ? [EVECharacterInfo characterInfoWithKeyID:self.apiKey.keyID
+																													  vCode:self.apiKey.vCode
+																												cachePolicy:NSURLRequestUseProtocolCachePolicy
+																												characterID:self.characterID
+																													  error:&characterInfoError
+																											progressHandler:nil] : nil;
+	
 	NSError* accountBalanceError = nil;
 	EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:self.apiKey.keyID
 																			 vCode:self.apiKey.vCode
@@ -88,37 +91,56 @@ static NCAccount* currentAccount = nil;
 																   progressHandler:nil];
 	
 	NSError* characterSheetError = nil;
-	EVECharacterSheet* characterSheet = [EVECharacterSheet characterSheetWithKeyID:self.apiKey.keyID
-																			 vCode:self.apiKey.vCode
-																	   cachePolicy:cachePolicy
-																	   characterID:self.characterID
-																			 error:&characterSheetError
-																   progressHandler:nil];
-
+	EVECharacterSheet* characterSheet = self.accountType == NCAccountTypeCharacter ? [EVECharacterSheet characterSheetWithKeyID:self.apiKey.keyID
+																														  vCode:self.apiKey.vCode
+																													cachePolicy:cachePolicy
+																													characterID:self.characterID
+																														  error:&characterSheetError
+																												progressHandler:nil] : nil;
+	
 	NSError* corporationSheetError = nil;
 	EVECorporationSheet* corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:self.apiKey.keyID
-																			 vCode:self.apiKey.vCode
-																	   cachePolicy:cachePolicy
-																	   characterID:self.characterID
+																					 vCode:self.apiKey.vCode
+																			   cachePolicy:cachePolicy
+																			   characterID:self.characterID
 																			 corporationID:0
-																			 error:&corporationSheetError
-																   progressHandler:nil];
-
+																					 error:&corporationSheetError
+																		   progressHandler:nil];
+	
 	NSError* skillQueueError = nil;
-	EVESkillQueue* skillQueue = [EVESkillQueue skillQueueWithKeyID:self.apiKey.keyID
-															 vCode:self.apiKey.vCode
-													   cachePolicy:cachePolicy
-													   characterID:self.characterID
-															 error:&skillQueueError
-												   progressHandler:nil];
+	EVESkillQueue* skillQueue = self.accountType == NCAccountTypeCharacter ? [EVESkillQueue skillQueueWithKeyID:self.apiKey.keyID
+																										  vCode:self.apiKey.vCode
+																									cachePolicy:cachePolicy
+																									characterID:self.characterID
+																										  error:&skillQueueError
+																								progressHandler:nil] : nil;
 	
 	NCCache* cache = [NCCache sharedCache];
 	[cache.managedObjectContext performBlockAndWait:^{
-		self.characterInfo = characterInfo ? characterInfo : (id) characterInfoError;
-		self.accountBalance = accountBalance ? accountBalance : (id) accountBalanceError;
-		self.characterSheet = characterSheet ? characterSheet : (id) characterSheetError;
-		self.corporationSheet = corporationSheet ? corporationSheet : (id) corporationSheetError;
-		self.skillQueue = skillQueue ? skillQueue : (id) skillQueueError;
+		if (characterInfo)
+			self.characterInfo = characterInfo;
+		else if (!self.characterSheetCacheRecord.data)
+			self.characterInfo = (id) characterInfoError;
+		
+		if (accountBalance)
+			self.accountBalance = accountBalance;
+		else if (!self.accountBalanceCacheRecord.data)
+			self.accountBalance = (id) accountBalanceError;
+
+		if (characterSheet)
+			self.characterSheet = characterSheet;
+		else if (!self.characterSheetCacheRecord.data)
+			self.characterSheet = (id) characterSheetError;
+		
+		if (corporationSheet)
+			self.corporationSheet = corporationSheet;
+		else if (!self.corporationSheetCacheRecord.data)
+			self.corporationSheet = (id) corporationSheetError;
+		
+		if (skillQueue)
+			self.skillQueue = skillQueue;
+		else if (!self.skillQueueCacheRecord.data)
+			self.skillQueue = (id) skillQueueError;
 		[cache saveContext];
 	}];
 	
@@ -253,7 +275,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) characterInfoCacheRecord {
 	@synchronized(self) {
-		if (_characterInfoCacheRecord) {
+		if (!_characterInfoCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", [[self objectID] URIRepresentation]]];
 				[_characterInfoCacheRecord data];
@@ -265,7 +287,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) accountBalanceCacheRecord {
 	@synchronized(self) {
-		if (_accountBalanceCacheRecord) {
+		if (!_accountBalanceCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_accountBalanceCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.accountBalance", [[self objectID] URIRepresentation]]];
 				[_accountBalanceCacheRecord data];
@@ -277,7 +299,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) characterSheetCacheRecord {
 	@synchronized(self) {
-		if (_characterSheetCacheRecord) {
+		if (!_characterSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", [[self objectID] URIRepresentation]]];
 				[_characterSheetCacheRecord data];
@@ -289,7 +311,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) corporationSheetCacheRecord {
 	@synchronized(self) {
-		if (_corporationSheetCacheRecord) {
+		if (!_corporationSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", [[self objectID] URIRepresentation]]];
 				[_corporationSheetCacheRecord data];
@@ -301,7 +323,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) skillQueueCacheRecord {
 	@synchronized(self) {
-		if (_skillQueueCacheRecord) {
+		if (!_skillQueueCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_skillQueueCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.skillQueue", [[self objectID] URIRepresentation]]];
 				[_skillQueueCacheRecord data];

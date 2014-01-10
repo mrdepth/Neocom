@@ -10,10 +10,10 @@
 #import <CoreData/CoreData.h>
 #import "EVEOnlineAPI.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
 	NCAccountTypeCorporate
-} NCAccountType;
+};
 
 @class NCAPIKey;
 @interface NCAccount : NSManagedObject

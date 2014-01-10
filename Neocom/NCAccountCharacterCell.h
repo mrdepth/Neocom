@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *shipLabel;
 @property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentSkill;
+@property (weak, nonatomic) IBOutlet UILabel *skillQueueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subscriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *apiKeyButton;
+
 @end

@@ -15,7 +15,6 @@ static NCAccountsManager* defaultManager = nil;
 @interface NCAccountsManager()
 @property (nonatomic, strong, readwrite) NSArray* accounts;
 @property (nonatomic, strong, readwrite) NSArray* apiKeys;
-- (void) reloadAccounts;
 @end
 
 @implementation NCAccountsManager
@@ -120,14 +119,11 @@ static NCAccountsManager* defaultManager = nil;
 	}];
 }
 
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
-	BOOL error = NO;
-
-	for (NCAccount* account in self.accounts)
-		error = error || ![account reloadWithCachePolicy:cachePolicy error:errorPtr];
-	for (NCAPIKey* apiKey in self.apiKeys)
-		error = error || ![apiKey reloadWithCachePolicy:cachePolicy error:errorPtr];
-	return error;
+- (void) reload {
+	@synchronized(self) {
+		_accounts = [NCAccount allAccounts];
+		_apiKeys = [NCAPIKey allAPIKeys];
+	}
 }
 
 - (NSArray*) accounts {

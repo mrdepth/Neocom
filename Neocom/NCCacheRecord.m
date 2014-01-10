@@ -37,9 +37,4 @@
 	}
 }
 
-- (void) willSave {
-	[super willSave];
-	NSLog(@"%@", self.changedValues);
-}
-
 @end

@@ -111,6 +111,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -327,6 +330,7 @@
 	[[NCCache sharedCache] saveContext];
 	[[NCAccountsManager defaultManager] reload];
 }
+
 /*
  // Override to support rearranging the table view.
  - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -397,6 +401,9 @@
 											 NSMutableDictionary* accountStatuses = [NSMutableDictionary new];
 											 
 											 for (NCAPIKey* apiKey in accountsManager.apiKeys) {
+												 if (task.isCancelled)
+													 return;
+
 												 NSError* error = nil;
 												 EVEAccountStatus* accountStatus = [EVEAccountStatus accountStatusWithKeyID:apiKey.keyID vCode:apiKey.vCode cachePolicy:cachePolicy error:&error progressHandler:nil];
 												 if (accountStatus)
@@ -405,6 +412,9 @@
 											 }
 											 
 											 for (NCAccount* account in accountsManager.accounts) {
+												 if (task.isCancelled)
+													 return;
+												 
 												 [account reloadWithCachePolicy:cachePolicy error:&error];
                                                  NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
                                                  dataAccount.account = account;
@@ -433,6 +443,26 @@
 //									 }
 								 }
 							 }];
+}
+
+- (BOOL) shouldReloadData {
+	BOOL shouldReloadData = [super shouldReloadData];
+	if (!shouldReloadData) {
+		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+			BOOL exist = NO;
+			for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data accounts]) {
+				if ([accountData.account isEqual:account]) {
+					exist = YES;
+					break;
+				}
+			}
+			if (!exist) {
+				shouldReloadData = YES;
+				break;
+			}
+		}
+	}
+	return shouldReloadData;
 }
 
 @end

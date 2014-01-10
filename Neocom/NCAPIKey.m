@@ -24,7 +24,16 @@
 @synthesize error = _error;
 
 + (instancetype) apiKeyWithKeyID:(NSInteger) keyID {
-	return nil;
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = storage.managedObjectContext;
+
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"keyID == %d", keyID];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:context];
+	[fetchRequest setEntity:entity];
+	NSArray* result = [context executeFetchRequest:fetchRequest error:nil];
+	
+	return result.count > 0 ? result[0] : nil;
 }
 
 + (NSArray*) allAPIKeys {

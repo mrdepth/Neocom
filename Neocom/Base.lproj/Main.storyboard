@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Menu View Controller-->
+        <!--Side Menu View Controller-->
         <scene sceneID="QwQ-1Q-Rp4">
             <objects>
-                <viewController id="g7F-Lq-llb" customClass="NCMenuViewController" sceneMemberID="viewController">
+                <viewController id="g7F-Lq-llb" customClass="NCSideMenuViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hwQ-HR-Lgp"/>
                         <viewControllerLayoutGuide type="bottom" id="zqM-CX-Au7"/>
@@ -19,8 +19,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="spX-rM-BWk" kind="custom" identifier="NCMenuViewControllerContentSegue" customClass="NCMenuViewControllerContentSegue" id="kIx-mp-Voa"/>
-                        <segue destination="cPu-vA-lla" kind="custom" identifier="NCMenuViewControllerEmbedSegue" customClass="NCMenuViewControllerEmbedSegue" id="Wt9-Hn-U0m"/>
+                        <segue destination="spX-rM-BWk" kind="custom" identifier="NCSideMenuViewControllerContentSegue" customClass="NCSideMenuViewControllerContentSegue" id="iqd-Rg-nIW"/>
+                        <segue destination="cPu-vA-lla" kind="custom" identifier="NCSideMenuViewControllerEmbedSegue" customClass="NCSideMenuViewControllerEmbedSegue" id="KeM-4Z-cmB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ccv-fd-2Kh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -53,12 +53,15 @@
                     <navigationItem key="navigationItem" id="ipP-zY-vww">
                         <nil key="title"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="GWj-hT-r1l" kind="custom" identifier="NCMainMenuDropDownSegue" customClass="NCMainMenuDropDownSegue" id="2nb-jZ-Qb9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohg-2L-fXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="345" y="-629"/>
         </scene>
-        <!--Accounts View Controller - Content-->
+        <!--Accounts View Controller-->
         <scene sceneID="GcY-27-fIA">
             <objects>
                 <tableViewController id="GWj-hT-r1l" customClass="NCAccountsViewController" sceneMemberID="viewController">
@@ -68,7 +71,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCAccountCharacterCell" rowHeight="185" id="2Qg-OP-x0l" customClass="NCAccountCharacterCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="185"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="185"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qg-OP-x0l" id="AAv-1V-CND">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
@@ -238,10 +241,11 @@
                                     <outlet property="skillsLabel" destination="Fap-mC-RhC" id="BL9-Cl-06Q"/>
                                     <outlet property="stationLabel" destination="2Mb-o9-9KD" id="jA8-Sb-fB6"/>
                                     <outlet property="subscriptionLabel" destination="XrT-ri-r8a" id="YP0-k9-k2s"/>
+                                    <segue destination="6fx-83-xta" kind="unwind" unwindAction="unwindToMainMenu:" id="OqI-jR-ZMU"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCAccountCorporationCell" rowHeight="134" id="DHv-RC-Dcu" customClass="NCAccountCorporationCell">
-                                <rect key="frame" x="0.0" y="271" width="320" height="134"/>
+                                <rect key="frame" x="0.0" y="207" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DHv-RC-Dcu" id="Pf6-Rj-SG7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="133"/>
@@ -351,11 +355,12 @@
                         </prototypes>
                         <sections/>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Content" id="AM0-oN-MZD"/>
+                    <navigationItem key="navigationItem" id="AM0-oN-MZD"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ef-eq-wIg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="6fx-83-xta" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1001" y="125"/>
+            <point key="canvasLocation" x="586" y="76"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YtL-gF-2xl">
@@ -364,13 +369,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rCK-2V-d8w">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="GWj-hT-r1l" kind="relationship" relationship="rootViewController" id="YeB-uh-KzT"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xge-Jv-FCj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="569" y="125"/>
+            <point key="canvasLocation" x="47" y="423"/>
         </scene>
         <!--Main Menu View Controller-->
         <scene sceneID="iaV-Lg-iie">

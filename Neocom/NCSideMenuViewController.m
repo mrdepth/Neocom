@@ -1,49 +1,68 @@
 //
-//  NCMenuViewController.m
+//  NCSideMenuViewController.m
 //  Neocom
 //
 //  Created by Admin on 08.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCMenuViewController.h"
+#import "NCSideMenuViewController.h"
+#import <objc/runtime.h>
 
-
-@interface NCMenuViewControllerEmbedSegue : UIStoryboardSegue
-
-@end
-
-@interface NCMenuViewControllerContentSegue : UIStoryboardSegue
+@interface NCSideMenuViewControllerEmbedSegue : UIStoryboardSegue
 
 @end
 
-@implementation NCMenuViewControllerEmbedSegue
+@interface NCSideMenuViewControllerContentSegue : UIStoryboardSegue
+
+@end
+
+@implementation NCSideMenuViewControllerEmbedSegue
 
 - (void) perform {
-	NCMenuViewController* sourceViewController = self.sourceViewController;
+	NCSideMenuViewController* sourceViewController = self.sourceViewController;
 	UIViewController* destinationViewController = self.destinationViewController;
 	sourceViewController.menuViewController = destinationViewController;
 }
 
 @end
 
-@implementation NCMenuViewControllerContentSegue
+@implementation NCSideMenuViewControllerContentSegue
 
 - (void) perform {
-	NCMenuViewController* sourceViewController = self.sourceViewController;
+	NCSideMenuViewController* sourceViewController = self.sourceViewController;
 	UIViewController* destinationViewController = self.destinationViewController;
 	sourceViewController.contentViewController = destinationViewController;
 }
 
 @end
 
-@interface NCMenuViewController ()<UIGestureRecognizerDelegate>
+@interface NCSideMenuViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic, assign) CGAffineTransform startTransform;
 - (void) onPan:(UIPanGestureRecognizer*) recognizer;
 - (void) onTap:(UITapGestureRecognizer*) recognizer;
+- (CGAffineTransform) contentViewTransform;
 @end
 
-@implementation NCMenuViewController
+@interface UIViewController()
+@property (nonatomic, weak, readwrite) NCSideMenuViewController* sideMenuViewController;
+
+@end
+
+@implementation UIViewController(NCSideMenuViewController)
+
+- (NCSideMenuViewController*) sideMenuViewController {
+	NCSideMenuViewController* sideMenuViewController = objc_getAssociatedObject(self, @"sideMenuViewController");
+	return sideMenuViewController ? sideMenuViewController : self.parentViewController.sideMenuViewController;
+}
+
+- (void) setSideMenuViewController:(NCSideMenuViewController *)sideMenuViewController {
+	objc_setAssociatedObject(self, @"sideMenuViewController", sideMenuViewController, OBJC_ASSOCIATION_ASSIGN);
+}
+
+@end
+
+@implementation NCSideMenuViewController
 
 - (void)viewDidLoad
 {
@@ -57,8 +76,8 @@
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
 	
-	[self performSegueWithIdentifier:@"NCMenuViewControllerEmbedSegue" sender:nil];
-	[self performSegueWithIdentifier:@"NCMenuViewControllerContentSegue" sender:nil];
+	[self performSegueWithIdentifier:@"NCSideMenuViewControllerEmbedSegue" sender:nil];
+	[self performSegueWithIdentifier:@"NCSideMenuViewControllerContentSegue" sender:nil];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -86,8 +105,9 @@
 	
 	CGRect frame = self.view.bounds;
 	if (self.contentViewController)
-		frame.size.width -= NCMenuViewControllermMenuEdgeInset;
+		frame.size.width -= NCSideMenuViewControllermMenuEdgeInset;
 	menuViewController.view.frame = frame;
+	menuViewController.sideMenuViewController = self;
 	
 	[menuViewController didMoveToParentViewController:self];
 }
@@ -114,7 +134,7 @@
 		[_contentViewController removeFromParentViewController];
 	}
 	
-	contentViewController.view.transform = self.menuVisible ? CGAffineTransformMakeTranslation(self.view.frame.size.width - NCMenuViewControllermMenuEdgeInset, 0) : CGAffineTransformIdentity;
+	contentViewController.view.transform = self.menuVisible ? CGAffineTransformMakeTranslation(self.view.frame.size.width - NCSideMenuViewControllermMenuEdgeInset, 0) : CGAffineTransformIdentity;
 
 	_contentViewController = contentViewController;
 	[contentViewController didMoveToParentViewController:self];
@@ -129,11 +149,12 @@
 	contentViewController.view.layer.shadowOffset = CGSizeMake(0, 0);
 	contentViewController.view.clipsToBounds = NO;
 	contentViewController.view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:contentViewController.view.bounds] CGPath];
+	contentViewController.sideMenuViewController = self;
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible {
 	_menuVisible = menuVisible;
-	self.contentViewController.view.transform = menuVisible ? CGAffineTransformMakeTranslation(self.view.frame.size.width - NCMenuViewControllermMenuEdgeInset, 0) : CGAffineTransformIdentity;
+	self.contentViewController.view.transform = [self contentViewTransform];
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible animated:(BOOL)animated {
@@ -167,7 +188,7 @@
 
     
 	if (animated)
-		[UIView animateWithDuration:NCMenuViewControllerAnimationDuration
+		[UIView animateWithDuration:NCSideMenuViewControllerAnimationDuration
 							  delay:0
 							options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
 						 animations:^{
@@ -184,6 +205,27 @@
 	}
 	self.contentViewController.view.userInteractionEnabled = !menuVisible;
 }
+
+- (void) setFullScreen:(BOOL)fullScreen {
+	_fullScreen = fullScreen;
+	self.contentViewController.view.transform = [self contentViewTransform];
+}
+
+- (void) setFullScreen:(BOOL)fullScreen animated:(BOOL)animated {
+	if (animated) {
+		[UIView animateWithDuration:NCSideMenuViewControllerAnimationDuration
+							  delay:0
+							options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
+						 animations:^{
+							 self.fullScreen = fullScreen;
+						 }
+						 completion:^(BOOL finished) {
+						 }];
+	}
+	else
+		self.fullScreen = fullScreen;
+}
+
 
 - (IBAction)onMenu:(id)sender {
 	[self setMenuVisible:YES animated:YES];
@@ -229,7 +271,7 @@
 			if (self.menuVisible)
 				return p.x > -10;
 			else
-				return p.x < NCMenuViewControllermPanWidth;
+				return p.x < NCSideMenuViewControllermPanWidth;
 		}
 		else {
 			return self.menuVisible && p.x >= 0;
@@ -246,7 +288,11 @@
 		self.startTransform = self.contentViewController.view.transform;
 	}
 	if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged) {
-		self.contentViewController.view.transform = CGAffineTransformConcat(self.startTransform, CGAffineTransformMakeTranslation([recognizer translationInView:self.view].x, 0));
+		CGFloat dx = [recognizer translationInView:self.view].x;
+		CGAffineTransform transform = CGAffineTransformConcat(self.startTransform, CGAffineTransformMakeTranslation(dx, 0.0f));
+		if (transform.tx < 0.0f)
+			transform.tx = 0.0f;
+		self.contentViewController.view.transform = transform;
 
 	}
 	else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
@@ -262,6 +308,17 @@
 	if (self.menuVisible && p.x >= 0)
 		[self setMenuVisible:NO animated:YES];
 	
+}
+
+- (CGAffineTransform) contentViewTransform {
+	if (self.menuVisible) {
+		if (self.fullScreen)
+			return CGAffineTransformMakeTranslation(self.view.frame.size.width, 0.0f);
+		else
+			return CGAffineTransformMakeTranslation(self.view.frame.size.width - NCSideMenuViewControllermMenuEdgeInset, 0.0f);
+	}
+	else
+		return CGAffineTransformIdentity;
 }
 
 @end

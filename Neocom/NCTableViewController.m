@@ -46,6 +46,8 @@
 	self.taskManager.active = YES;
 	if (!self.cacheRecord)
 		[self reloadFromCache];
+	else if ([self shouldReloadData])
+		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -61,6 +63,13 @@
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
     [self.refreshControl beginRefreshing];
+}
+
+- (BOOL) shouldReloadData {
+	NSDate* date = [NSDate date];
+	NSDate* expire = self.cacheRecord.expireDate;
+	NSComparisonResult result = [expire compare:date];
+	return [[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending;
 }
 
 - (void) reloadFromCache {
@@ -86,7 +95,7 @@
 									 else {
 										 [self update];
 										 
-										 if ([[record expireDate] compare:[NSDate date]] == NSOrderedAscending)
+										 if ([self shouldReloadData])
                                              [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 									 }
 								 }
@@ -119,7 +128,7 @@
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {
-	return 60;
+	return 60 * 60;
 }
 
 - (NSString*) recordID {

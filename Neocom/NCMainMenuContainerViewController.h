@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#define NCMainMenuDropDownSegueAnimationDuration 0.35f
 
 @interface NCMainMenuContainerViewController : UIViewController
-
+- (IBAction)unwindToMainMenu:(UIStoryboardSegue*)sender;
 @end

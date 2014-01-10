@@ -19,6 +19,7 @@
 
 #pragma mark - Override
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy;
+- (BOOL) shouldReloadData;
 - (void) update;
 - (NSTimeInterval) defaultCacheExpireTime;
 - (NSString*) recordID;

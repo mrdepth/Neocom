@@ -7,6 +7,7 @@
 //
 
 #import "NCNavigationCharacterButton.h"
+#import "NCMainMenuContainerViewController.h"
 
 @implementation NCNavigationCharacterButton
 
@@ -48,7 +49,19 @@
 }
 
 - (void) setSelected:(BOOL)selected {
+	if (self.selected == selected)
+		return;
+	
 	[super setSelected:selected];
+	[UIView animateWithDuration:NCMainMenuDropDownSegueAnimationDuration
+						  delay:0
+						options:UIViewAnimationOptionBeginFromCurrentState
+					 animations:^{
+						 self.arrowImageView.transform = CGAffineTransformMakeRotation(selected ? M_PI : 0);
+					 }
+					 completion:^(BOOL finished) {
+						 
+					 }];
 }
 
 @end

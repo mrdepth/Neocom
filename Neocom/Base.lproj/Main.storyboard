@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -71,7 +71,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" showsReorderControl="YES" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCAccountCharacterCell" rowHeight="185" id="2Qg-OP-x0l" customClass="NCAccountCharacterCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="185"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="185"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qg-OP-x0l" id="AAv-1V-CND">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
@@ -127,7 +127,7 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Skills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fap-mC-RhC">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Skills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Fap-mC-RhC">
                                             <rect key="frame" x="20" y="85" width="34" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -166,7 +166,7 @@
                                             <rect key="frame" x="92" y="47" width="21" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMP-y0-4fr">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMP-y0-4fr">
                                             <rect key="frame" x="20" y="153" width="280" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
@@ -241,11 +241,11 @@
                                     <outlet property="skillsLabel" destination="Fap-mC-RhC" id="BL9-Cl-06Q"/>
                                     <outlet property="stationLabel" destination="2Mb-o9-9KD" id="jA8-Sb-fB6"/>
                                     <outlet property="subscriptionLabel" destination="XrT-ri-r8a" id="YP0-k9-k2s"/>
-                                    <segue destination="6fx-83-xta" kind="unwind" unwindAction="unwindToMainMenu:" id="OqI-jR-ZMU"/>
+                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectAccount" unwindAction="unwindToMainMenu:" id="OqI-jR-ZMU"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCAccountCorporationCell" rowHeight="134" id="DHv-RC-Dcu" customClass="NCAccountCorporationCell">
-                                <rect key="frame" x="0.0" y="207" width="320" height="134"/>
+                                <rect key="frame" x="0.0" y="271" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DHv-RC-Dcu" id="Pf6-Rj-SG7">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="133"/>
@@ -302,7 +302,7 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Be-w7-RTs">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Be-w7-RTs">
                                             <rect key="frame" x="20" y="102" width="280" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
@@ -350,17 +350,20 @@
                                     <outlet property="corporationImageView" destination="cNC-pM-lU4" id="vB1-Wj-z81"/>
                                     <outlet property="corporationNameLabel" destination="8vt-Qc-iur" id="KdZ-04-8ve"/>
                                     <outlet property="membersLabel" destination="Am9-37-d4S" id="LUA-wy-LRT"/>
+                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectAccount" unwindAction="unwindToMainMenu:" id="E6b-Pg-knl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
                     </tableView>
                     <navigationItem key="navigationItem" id="AM0-oN-MZD"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ef-eq-wIg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="6fx-83-xta" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="586" y="76"/>
+            <point key="canvasLocation" x="717" y="78"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YtL-gF-2xl">
@@ -378,7 +381,7 @@
         <scene sceneID="iaV-Lg-iie">
             <objects>
                 <tableViewController id="PgR-W2-PV6" customClass="NCMainMenuViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Opw-lt-6pY">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Opw-lt-6pY" customClass="MyTableView">
                         <rect key="frame" x="0.0" y="0.0" width="280" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

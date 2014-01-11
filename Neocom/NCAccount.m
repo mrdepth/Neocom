@@ -40,6 +40,7 @@ static NCAccount* currentAccount = nil;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
 @synthesize corporationSheetCacheRecord = _corporationSheetCacheRecord;
 @synthesize skillQueueCacheRecord = _skillQueueCacheRecord;
+@synthesize error = _error;
 
 + (NSArray*) allAccounts {
 	NCStorage* storage = [NCStorage sharedStorage];
@@ -66,6 +67,7 @@ static NCAccount* currentAccount = nil;
 + (void) setCurrentAccount:(NCAccount*) account {
 	@synchronized(self) {
 		currentAccount = account;
+		[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:account];
 	}
 }
 

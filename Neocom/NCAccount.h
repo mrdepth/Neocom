@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "EVEOnlineAPI.h"
 
+#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
 	NCAccountTypeCorporate

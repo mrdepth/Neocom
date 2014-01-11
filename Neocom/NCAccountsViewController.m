@@ -101,6 +101,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
+		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	// Do any additional setup after loading the view.
 }
@@ -112,6 +114,12 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCSelectAccount"]) {
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
+		NCAccountsViewControllerData* data = self.cacheRecord.data;
+		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+		[NCAccount setCurrentAccount:account.account];
+	}
 }
 
 #pragma mark - Table view data source
@@ -230,9 +238,9 @@
 		}
 		
 		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
-		//[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
-		NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
-		[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
+		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
+		//NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
+		//[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
 		return cell;
 	}
 	else {
@@ -272,9 +280,9 @@
 			cell.balanceLabel.text = nil;
 		
 		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
-		//[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
-		NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
-		[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
+		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
+		//NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
+		//[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
 		return cell;
 	}
 }
@@ -425,7 +433,7 @@
 												 if (account.skillQueue.skillQueue.count > 0) {
 													 EVESkillQueueItem* item = account.skillQueue.skillQueue[0];
 													 EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"%@ Level %d", nil), type.typeName, item.level];
+													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 												 }
 											 }
                                              NCStorage* storage = [NCStorage sharedStorage];

@@ -8,6 +8,18 @@
 
 #import "NCMainMenuViewController.h"
 
+@interface MyTableView : UITableView
+
+@end
+
+@implementation MyTableView
+
+- (void) setContentInset:(UIEdgeInsets)contentInset {
+	[super setContentInset:contentInset];
+}
+
+@end
+
 @interface NCMainMenuViewController ()
 
 @end

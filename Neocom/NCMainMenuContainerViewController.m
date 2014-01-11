@@ -77,10 +77,12 @@
 		[self addChildViewController:dropDownViewController];
 		__block CGRect frame = self.view.bounds;
 		CGFloat navigationBarHeight = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+		navigationBarHeight = 0;
 		frame.size.height -= navigationBarHeight;
 		frame.origin.y = navigationBarHeight;
 		dropDownViewController.view.frame = frame;
 		
+		[dropDownViewController beginAppearanceTransition:YES animated:animated];
 		[self.view addSubview:dropDownViewController.view];
 		NSMutableArray* items = [NSMutableArray arrayWithArray:self.navigationController.navigationBar.items];
 		[items addObject:dropDownViewController.navigationItem];
@@ -113,6 +115,7 @@
 																	}
 																	completion:^(BOOL finished) {
 																		[dropDownViewController didMoveToParentViewController:self];
+																		[dropDownViewController endAppearanceTransition];
 																		self.navigationCharacterButton.userInteractionEnabled = YES;
 																	}];
 												}];

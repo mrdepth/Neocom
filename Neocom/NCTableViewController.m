@@ -50,6 +50,11 @@
 		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+}
+
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	self.taskManager.active = NO;
@@ -66,9 +71,6 @@
 }
 
 - (BOOL) shouldReloadData {
-	NSDate* date = [NSDate date];
-	NSDate* expire = self.cacheRecord.expireDate;
-	NSComparisonResult result = [expire compare:date];
 	return [[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending;
 }
 

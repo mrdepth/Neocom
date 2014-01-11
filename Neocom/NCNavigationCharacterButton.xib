@@ -33,7 +33,7 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="navigationArrowUp.png" translatesAutoresizingMaskIntoConstraints="NO" id="gOX-9l-3Ra">
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" image="navigationArrowUp.png" translatesAutoresizingMaskIntoConstraints="NO" id="gOX-9l-3Ra">
                     <rect key="frame" x="158" y="18" width="12" height="8"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <constraints>

@@ -8,6 +8,7 @@
 
 #import "NCTableViewController.h"
 #import "NCCache.h"
+#import "NCAccount.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -48,11 +49,6 @@
 		[self reloadFromCache];
 	else if ([self shouldReloadData])
 		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -134,7 +130,12 @@
 }
 
 - (NSString*) recordID {
-	return NSStringFromClass(self.class);
+	NCAccount* account = [NCAccount currentAccount];
+	if (account && !account.error) {
+		return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [[account objectID] URIRepresentation]];
+	}
+	else
+		return NSStringFromClass(self.class);
 }
 
 #pragma mark - Private

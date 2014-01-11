@@ -82,26 +82,32 @@
 
 - (void) didChangeAccount:(NSNotification*) notification {
 	NCAccount* account = notification.object;
-	self.logoImageView.image = nil;
-	if (account) {
-		if (account.error) {
-			
-		}
-		else if (account.accountType == NCAccountTypeCorporate) {
-			[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSize64 error:nil]];
-			self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
-			self.subtitleLabel.text = account.corporationSheet.allianceName;
-		}
-		else {
-			[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
-			self.nameLabel.text = account.characterInfo.characterName;
-			self.subtitleLabel.text = account.characterInfo.corporation;
-		}
-	}
-	else {
-		self.nameLabel.text = NSLocalizedString(@"Select account", nil);
-		self.subtitleLabel.text = nil;
-	}
+	[self layoutIfNeeded];
+	[UIView animateWithDuration:0.35
+					 animations:^{
+						 self.logoImageView.image = nil;
+						 if (account) {
+							 if (account.error) {
+								 
+							 }
+							 else if (account.accountType == NCAccountTypeCorporate) {
+								 [self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSize64 error:nil]];
+								 self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
+								 self.subtitleLabel.text = account.corporationSheet.allianceName;
+							 }
+							 else {
+								 [self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
+								 self.nameLabel.text = account.characterInfo.characterName;
+								 self.subtitleLabel.text = account.characterInfo.corporation;
+							 }
+						 }
+						 else {
+							 self.nameLabel.text = NSLocalizedString(@"Select account", nil);
+							 self.subtitleLabel.text = nil;
+						 }
+						 [self setNeedsLayout];
+						 [self layoutIfNeeded];
+					 }];
 }
 
 @end

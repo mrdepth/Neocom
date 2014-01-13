@@ -134,7 +134,7 @@
 		[_contentViewController removeFromParentViewController];
 	}
 	
-	contentViewController.view.transform = self.menuVisible ? CGAffineTransformMakeTranslation(self.view.frame.size.width - NCSideMenuViewControllermMenuEdgeInset, 0) : CGAffineTransformIdentity;
+	contentViewController.view.transform = [self contentViewTransform];
 
 	_contentViewController = contentViewController;
 	[contentViewController didMoveToParentViewController:self];

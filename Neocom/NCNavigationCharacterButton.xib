@@ -12,29 +12,29 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4CW-GZ-qct">
-                    <rect key="frame" x="6" y="5" width="34" height="34"/>
+                    <rect key="frame" x="6" y="6" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="34" id="OX3-3b-QVu"/>
-                        <constraint firstAttribute="height" constant="34" id="acO-dE-mWN"/>
+                        <constraint firstAttribute="width" constant="32" id="OX3-3b-QVu"/>
+                        <constraint firstAttribute="height" constant="32" id="acO-dE-mWN"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Select account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z6m-jq-qRc">
-                    <rect key="frame" x="45" y="5" width="103" height="34"/>
+                    <rect key="frame" x="43" y="6" width="103" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7rH-kN-luC">
-                    <rect key="frame" x="45" y="39" width="103" height="0.0"/>
+                    <rect key="frame" x="43" y="38" width="103" height="0.0"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" image="navigationArrowUp.png" translatesAutoresizingMaskIntoConstraints="NO" id="gOX-9l-3Ra">
-                    <rect key="frame" x="158" y="18" width="12" height="8"/>
+                    <rect key="frame" x="156" y="18" width="12" height="8"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="8" id="vmJ-Xu-kjl"/>

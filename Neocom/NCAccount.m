@@ -15,13 +15,11 @@ static NCAccount* currentAccount = nil;
 
 @interface NCAccount()
 @property (nonatomic, strong) NCCacheRecord* characterInfoCacheRecord;
-@property (nonatomic, strong) NCCacheRecord* accountBalanceCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* characterSheetCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* corporationSheetCacheRecord;
 @property (nonatomic, strong) NCCacheRecord* skillQueueCacheRecord;
 
 @property (nonatomic, strong, readwrite) EVECharacterInfo* characterInfo;
-@property (nonatomic, strong, readwrite) EVEAccountBalance* accountBalance;
 @property (nonatomic, strong, readwrite) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong, readwrite) EVECorporationSheet* corporationSheet;
 @property (nonatomic, strong, readwrite) EVESkillQueue* skillQueue;
@@ -36,7 +34,6 @@ static NCAccount* currentAccount = nil;
 @dynamic apiKey;
 
 @synthesize characterInfoCacheRecord = _characterInfoCacheRecord;
-@synthesize accountBalanceCacheRecord = _accountBalanceCacheRecord;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
 @synthesize corporationSheetCacheRecord = _corporationSheetCacheRecord;
 @synthesize skillQueueCacheRecord = _skillQueueCacheRecord;
@@ -83,15 +80,6 @@ static NCAccount* currentAccount = nil;
 																													  error:&characterInfoError
 																											progressHandler:nil] : nil;
 	
-	NSError* accountBalanceError = nil;
-	EVEAccountBalance* accountBalance = [EVEAccountBalance accountBalanceWithKeyID:self.apiKey.keyID
-																			 vCode:self.apiKey.vCode
-																	   cachePolicy:cachePolicy
-																	   characterID:self.characterID
-																		 corporate:self.accountType == NCAccountTypeCorporate
-																			 error:&accountBalanceError
-																   progressHandler:nil];
-	
 	NSError* characterSheetError = nil;
 	EVECharacterSheet* characterSheet = self.accountType == NCAccountTypeCharacter ? [EVECharacterSheet characterSheetWithKeyID:self.apiKey.keyID
 																														  vCode:self.apiKey.vCode
@@ -124,11 +112,6 @@ static NCAccount* currentAccount = nil;
 		else if (!self.characterSheetCacheRecord.data)
 			self.characterInfo = (id) characterInfoError;
 		
-		if (accountBalance)
-			self.accountBalance = accountBalance;
-		else if (!self.accountBalanceCacheRecord.data)
-			self.accountBalance = (id) accountBalanceError;
-
 		if (characterSheet)
 			self.characterSheet = characterSheet;
 		else if (!self.characterSheetCacheRecord.data)
@@ -149,8 +132,6 @@ static NCAccount* currentAccount = nil;
 	if (errorPtr) {
 		if (characterInfoError)
 			*errorPtr = characterInfoError;
-		else if (accountBalanceError)
-			*errorPtr = accountBalanceError;
 		else if (characterSheetError)
 			*errorPtr = characterSheetError;
 		else if (skillQueueError)
@@ -168,14 +149,6 @@ static NCAccount* currentAccount = nil;
 		if (!self.characterInfoCacheRecord.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
 		return [self.characterInfoCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterInfoCacheRecord.data;
-	}
-}
-
-- (EVEAccountBalance*) accountBalance {
-	@synchronized(self) {
-		if (!self.accountBalanceCacheRecord.data)
-			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
-		return [self.accountBalanceCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.accountBalanceCacheRecord.data;
 	}
 }
 
@@ -213,20 +186,6 @@ static NCAccount* currentAccount = nil;
 		else {
 			self.characterInfoCacheRecord.date = characterInfo.cacheDate;
 			self.characterInfoCacheRecord.expireDate = characterInfo.cacheExpireDate;
-		}
-	}
-}
-
-- (void) setAccountBalance:(EVEAccountBalance *)accountBalance {
-	@synchronized(self) {
-		self.accountBalanceCacheRecord.data = accountBalance;
-		if ([accountBalance isKindOfClass:[NSError class]]) {
-			self.accountBalanceCacheRecord.date = [NSDate date];
-			self.accountBalanceCacheRecord.expireDate = nil;
-		}
-		else {
-			self.accountBalanceCacheRecord.date = accountBalance.cacheDate;
-			self.accountBalanceCacheRecord.expireDate = accountBalance.cacheExpireDate;
 		}
 	}
 }
@@ -284,18 +243,6 @@ static NCAccount* currentAccount = nil;
 			}];
 		}
 		return _characterInfoCacheRecord;
-	}
-}
-
-- (NCCacheRecord*) accountBalanceCacheRecord {
-	@synchronized(self) {
-		if (!_accountBalanceCacheRecord) {
-			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_accountBalanceCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.accountBalance", [[self objectID] URIRepresentation]]];
-				[_accountBalanceCacheRecord data];
-			}];
-		}
-		return _accountBalanceCacheRecord;
 	}
 }
 

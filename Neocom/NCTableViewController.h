@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NCCache.h"
+#import "NCStorage.h"
 #import "NCTaskManager.h"
 
 @interface NCTableViewController : UITableViewController
@@ -23,5 +24,6 @@
 - (void) update;
 - (NSTimeInterval) defaultCacheExpireTime;
 - (NSString*) recordID;
+- (void) didChangeAccount:(NCAccount*) account;
 
 @end

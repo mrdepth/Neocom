@@ -9,6 +9,7 @@
 #import "NCMainMenuViewController.h"
 #import "NCStorage.h"
 #import "NCTableViewEmptyHedaerView.h"
+#import "NCSideMenuViewController.h"
 
 @interface NCMainMenuViewController ()
 @property (nonatomic, strong) NSMutableArray* allSections;
@@ -47,6 +48,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -77,6 +79,14 @@
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewEmptyHedaerView"];
+}
+
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	//NSDictionary* row = self.sections[indexPath.section][indexPath.row];
+	
+	[self.sideMenuViewController setContentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCCharacterSheetViewController"] animated:YES];
 }
 
 #pragma mark - Private

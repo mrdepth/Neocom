@@ -32,8 +32,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
 	self.refreshControl = [UIRefreshControl new];
     [self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
+	[self update];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,17 +103,16 @@
 }
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
-	NCCache* cache = [NCCache sharedCache];
-//	NSManagedObjectContext* context = cache.managedObjectContext;
-
-	if (!self.cacheRecord)
-		self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-		//self.cacheRecord = [[NCCacheRecord alloc] initWithEntity:[NSEntityDescription entityForName:@"Record" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-	self.cacheRecord.recordID = self.recordID;
-	self.cacheRecord.data = data;
-	self.cacheRecord.date = cacheDate;
-	self.cacheRecord.expireDate = expireDate;
-	[cache saveContext];
+	if (data) {
+		NCCache* cache = [NCCache sharedCache];
+		if (!self.cacheRecord)
+			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+		self.cacheRecord.recordID = self.recordID;
+		self.cacheRecord.data = data;
+		self.cacheRecord.date = cacheDate;
+		self.cacheRecord.expireDate = expireDate;
+		[cache saveContext];
+	}
 	[self update];
 	return self.cacheRecord;
 }
@@ -136,6 +137,10 @@
 	}
 	else
 		return NSStringFromClass(self.class);
+}
+
+- (void) didChangeAccount:(NCAccount *)account {
+	
 }
 
 #pragma mark - Private

@@ -19,6 +19,7 @@
 @interface NCAccountsViewControllerDataAccount : NSObject<NSCoding>
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) EVEAccountStatus* accountStatus;
+@property (nonatomic, strong) EVEAccountBalance* accountBalance;
 @property (nonatomic, strong) NSString* currentSkill;
 @end
 
@@ -33,9 +34,15 @@
 			[storage.managedObjectContext performBlockAndWait:^{
 				self.account = (NCAccount*) [storage.managedObjectContext objectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url]];
 			}];
+			
 			self.accountStatus = [aDecoder decodeObjectForKey:@"accountStatus"];
 			if (![self.accountStatus isKindOfClass:[EVEAccountStatus class]])
 				self.accountStatus = nil;
+			
+			self.accountBalance = [aDecoder decodeObjectForKey:@"accountBalance"];
+			if (![self.accountBalance isKindOfClass:[EVEAccountBalance class]])
+				self.accountBalance = nil;
+			
 			self.currentSkill = [aDecoder decodeObjectForKey:@"currentSkill"];
 		}
 	}
@@ -47,6 +54,8 @@
 		[aCoder encodeObject:[self.account.objectID URIRepresentation] forKey:@"account"];
 	if (self.accountStatus)
 		[aCoder encodeObject:self.accountStatus forKey:@"accountStatus"];
+	if (self.accountBalance)
+		[aCoder encodeObject:self.accountBalance forKey:@"accountBalance"];
 	if (self.currentSkill)
 		[aCoder encodeObject:self.currentSkill forKey:@"currentSkill"];
 }
@@ -148,14 +157,14 @@
 		cell.corporationImageView.image = nil;
 		cell.allianceImageView.image = nil;
 		
-		[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.account.characterID size:EVEImageSize128 error:nil]];
+		[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.account.characterID size:EVEImageSizeRetina64 error:nil]];
 		EVECharacterInfo* characterInfo = account.account.characterInfo;
 		EVECharacterSheet* characterSheet = account.account.characterSheet;
 		
 		if (characterInfo) {
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSize32 error:nil]];
+			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
 			if (characterInfo.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSize32 error:nil]];
+				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
 			
 			if (characterSheet) {
 				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@/%@ SP (%@ skills)", nil),
@@ -176,10 +185,10 @@
 		cell.corporationNameLabel.text = characterInfo.corporation;
 		cell.allianceNameLabel.text = characterInfo.alliance;
 		
-		cell.stationLabel.text = characterInfo.lastKnownLocation;
+		cell.locationLabel.text = characterInfo.lastKnownLocation;
 		cell.shipLabel.text = characterInfo.shipTypeName;
 		
-		if (account.account.accountBalance) {
+/*		if (account.account.accountBalance) {
 			float balance = 0.0;
 			for (EVEAccountBalanceItem* item in account.account.accountBalance.accounts)
 				balance += item.balance;
@@ -187,7 +196,8 @@
 			cell.balanceLabel.text = [NSString shortStringWithFloat:balance unit:NSLocalizedString(@"ISK", nil)];
 		}
 		else
-			cell.balanceLabel.text = nil;
+			cell.balanceLabel.text = nil;*/
+		cell.balanceLabel.text = [NSString shortStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
 		
 		if (account.account.skillQueue) {
 			NSString *text;
@@ -208,11 +218,11 @@
 			}
 			cell.skillQueueLabel.text = text;
 			cell.skillQueueLabel.textColor = color;
-			cell.currentSkill.text = account.currentSkill;
+			cell.currentSkillLabel.text = account.currentSkill;
 		}
 		else {
 			cell.skillQueueLabel.text = nil;
-			cell.currentSkill.text = nil;
+			cell.currentSkillLabel.text = nil;
 		}
 		
 		
@@ -254,9 +264,9 @@
 		
 		if (corporationSheet) {
 			cell.corporationNameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSize128 error:nil]];
+			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina128 error:nil]];
 			if (corporationSheet.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSize32 error:nil]];
+				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
 		}
 		else
 			cell.corporationNameLabel.text = NSLocalizedString(@"Unknown Error", nil);
@@ -269,9 +279,9 @@
 								  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberCount],
 								  [NSNumberFormatter neocomLocalizedStringFromInteger:corporationSheet.memberLimit]];
 		
-		if (account.account.accountBalance) {
+		if (account.accountBalance) {
 			float balance = 0.0;
-			for (EVEAccountBalanceItem* item in account.account.accountBalance.accounts)
+			for (EVEAccountBalanceItem* item in account.accountBalance.accounts)
 				balance += item.balance;
 			
 			cell.balanceLabel.text = [NSString shortStringWithFloat:balance unit:NSLocalizedString(@"ISK", nil)];
@@ -371,8 +381,8 @@
 			height -= 17;
 		if (!account.account.skillQueue)
 			height -= 17;
-		if (!account.account.accountBalance)
-			height -= 17;
+//		if (!account.account.accountBalance)
+//			height -= 17;
 		if (!account.accountStatus)
 			height -= 17;
 		return height;
@@ -427,6 +437,9 @@
                                                  NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
                                                  dataAccount.account = account;
                                                  dataAccount.accountStatus = accountStatuses[@([account.apiKey hash])];
+												 BOOL corporate = account.accountType == NCAccountTypeCorporate;
+												 if (corporate)
+													 dataAccount.accountBalance = [EVEAccountBalance accountBalanceWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID corporate:corporate error:nil progressHandler:nil];
                                                  [data.accounts addObject:dataAccount];
 												 task.progress = p += dp;
 												 

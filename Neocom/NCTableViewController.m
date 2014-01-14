@@ -38,6 +38,10 @@
 	[self update];
 }
 
+- (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -58,6 +62,12 @@
 	self.taskManager.active = NO;
 }
 
+- (void) willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
+	if (!parent)
+		[self.taskManager cancelAllOperations];
+}
+
 - (NCTaskManager*) taskManager {
 	if (!_taskManager)
 		_taskManager = [[NCTaskManager alloc] initWithViewController:self];
@@ -73,33 +83,35 @@
 }
 
 - (void) reloadFromCache {
-	NCCache* cache = [NCCache sharedCache];
-	NSManagedObjectContext* context = cache.managedObjectContext;
-	
-	__block NCCacheRecord* record = nil;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 [context performBlockAndWait:^{
-												 record = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-												 [record data];
-											 }];
+	if (self.recordID) {
+		NCCache* cache = [NCCache sharedCache];
+		NSManagedObjectContext* context = cache.managedObjectContext;
+		
+		__block NCCacheRecord* record = nil;
+		
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 [context performBlockAndWait:^{
+													 record = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+													 [record data];
+												 }];
+											 }
+								 completionHandler:^(NCTask *task) {
+									 if (![task isCancelled]) {
+										 self.cacheRecord = record;
+										 if (!record.data) {
+											 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.cacheRecord = record;
-									 if (!record.data) {
-										 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+										 else {
+											 [self update];
+											 
+											 if ([self shouldReloadData])
+												 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+										 }
 									 }
-									 else {
-										 [self update];
-										 
-										 if ([self shouldReloadData])
-                                             [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
-									 }
-								 }
-							 }];
+								 }];
+	}
 }
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {

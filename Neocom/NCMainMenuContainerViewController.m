@@ -123,16 +123,20 @@
 
 		[self.dropDownViewController willMoveToParentViewController:nil];
 		self.navigationCharacterButton.userInteractionEnabled = NO;
-		[self transitionFromViewController:self.dropDownViewController
+		
+		UIViewController* dropDownViewController = self.dropDownViewController;
+		
+		[self transitionFromViewController:dropDownViewController
 						  toViewController:self.menuViewController
 								  duration:animated ? NCMainMenuDropDownSegueAnimationDuration : 0.0f
 								   options:0
 								animations:^{
 									if (animated)
-										self.dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0, -self.dropDownViewController.view.frame.size.height);
+										dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0, -dropDownViewController.view.frame.size.height);
 								}
 								completion:^(BOOL finished) {
 									self.navigationCharacterButton.userInteractionEnabled = YES;
+									[dropDownViewController removeFromParentViewController];
 								}];
 		self.dropDownViewController = nil;
 		self.navigationCharacterButton.selected = NO;
@@ -143,13 +147,9 @@
 - (IBAction)onAccounts:(id)sender {
 	if (self.dropDownViewController) {
 		[self dismissDropDownViewControllerAnimated:YES];
-		//self.navigationCharacterButton.selected = NO;
-		//[self.sideMenuViewController setFullScreen:NO animated:YES];
-		//[self.dropDownViewController dismissViewControllerAnimated:YES completion:nil];
 	}
 	else {
 		[self performSegueWithIdentifier:@"NCMainMenuDropDownSegue" sender:nil];
-		//[self.sideMenuViewController setFullScreen:YES animated:YES];
 	}
 }
 

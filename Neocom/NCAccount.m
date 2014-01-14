@@ -10,6 +10,9 @@
 #import "NCStorage.h"
 #import "NCAPIKey.h"
 #import "NCCache.h"
+#import "EVEDBInvType.h"
+
+#define NCAccountSkillPointsUpdateInterval (60.0 * 10.0)
 
 static NCAccount* currentAccount = nil;
 
@@ -24,6 +27,7 @@ static NCAccount* currentAccount = nil;
 @property (nonatomic, strong, readwrite) EVECorporationSheet* corporationSheet;
 @property (nonatomic, strong, readwrite) EVESkillQueue* skillQueue;
 
+@property (nonatomic, strong) NSDate* lastSkillPointsUpdate;
 
 @end
 
@@ -38,6 +42,8 @@ static NCAccount* currentAccount = nil;
 @synthesize corporationSheetCacheRecord = _corporationSheetCacheRecord;
 @synthesize skillQueueCacheRecord = _skillQueueCacheRecord;
 @synthesize error = _error;
+@synthesize characterAttributes = _characterAttributes;
+@synthesize lastSkillPointsUpdate = _lastSkillPointsUpdate;
 
 + (NSArray*) allAccounts {
 	NCStorage* storage = [NCStorage sharedStorage];
@@ -68,17 +74,27 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	if ([NSThread isMainThread])
 		return NO;
 	
+	__block BOOL shouldStop = NO;
 	NSError* characterInfoError = nil;
 	EVECharacterInfo* characterInfo = self.accountType == NCAccountTypeCharacter ? [EVECharacterInfo characterInfoWithKeyID:self.apiKey.keyID
 																													  vCode:self.apiKey.vCode
 																												cachePolicy:NSURLRequestUseProtocolCachePolicy
 																												characterID:self.characterID
 																													  error:&characterInfoError
-																											progressHandler:nil] : nil;
+																											progressHandler:^(CGFloat progress, BOOL *stop) {
+																												if (progressHandler) {
+																													progressHandler(progress / 4.0f, stop);
+																													if (*stop)
+																														shouldStop = YES;
+																												}
+																											}] : nil;
+	
+	if (shouldStop)
+		return NO;
 	
 	NSError* characterSheetError = nil;
 	EVECharacterSheet* characterSheet = self.accountType == NCAccountTypeCharacter ? [EVECharacterSheet characterSheetWithKeyID:self.apiKey.keyID
@@ -86,7 +102,16 @@ static NCAccount* currentAccount = nil;
 																													cachePolicy:cachePolicy
 																													characterID:self.characterID
 																														  error:&characterSheetError
-																												progressHandler:nil] : nil;
+																												progressHandler:^(CGFloat progress, BOOL *stop) {
+																													if (progressHandler) {
+																														progressHandler((1.0 + progress) / 4.0f, stop);
+																														if (*stop)
+																															shouldStop = YES;
+																													}
+																												}] : nil;
+	
+	if (shouldStop)
+		return NO;
 	
 	NSError* corporationSheetError = nil;
 	EVECorporationSheet* corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:self.apiKey.keyID
@@ -95,16 +120,34 @@ static NCAccount* currentAccount = nil;
 																			   characterID:self.characterID
 																			 corporationID:0
 																					 error:&corporationSheetError
-																		   progressHandler:nil];
+																		   progressHandler:^(CGFloat progress, BOOL *stop) {
+																			   if (progressHandler) {
+																				   progressHandler((1.0 + progress) / 4.0f, stop);
+																				   if (*stop)
+																					   shouldStop = YES;
+																			   }
+																		   }];
 	
+	if (shouldStop)
+		return NO;
+
 	NSError* skillQueueError = nil;
 	EVESkillQueue* skillQueue = self.accountType == NCAccountTypeCharacter ? [EVESkillQueue skillQueueWithKeyID:self.apiKey.keyID
 																										  vCode:self.apiKey.vCode
 																									cachePolicy:cachePolicy
 																									characterID:self.characterID
 																										  error:&skillQueueError
-																								progressHandler:nil] : nil;
+																								progressHandler:^(CGFloat progress, BOOL *stop) {
+																									if (progressHandler) {
+																										progressHandler((1.0 + progress) / 4.0f, stop);
+																										if (*stop)
+																											shouldStop = YES;
+																									}
+																								}] : nil;
 	
+	if (shouldStop)
+		return NO;
+
 	NCCache* cache = [NCCache sharedCache];
 	[cache.managedObjectContext performBlockAndWait:^{
 		if (characterInfo)
@@ -137,6 +180,8 @@ static NCAccount* currentAccount = nil;
 		else if (skillQueueError)
 			*errorPtr = skillQueueError;
 	}
+	_characterAttributes = nil;
+	self.lastSkillPointsUpdate = nil;
 	return YES;
 }
 
@@ -147,7 +192,7 @@ static NCAccount* currentAccount = nil;
 - (EVECharacterInfo*) characterInfo {
 	@synchronized(self) {
 		if (!self.characterInfoCacheRecord.data)
-			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
+			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 		return [self.characterInfoCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterInfoCacheRecord.data;
 	}
 }
@@ -155,15 +200,49 @@ static NCAccount* currentAccount = nil;
 - (EVECharacterSheet*) characterSheet {
 	@synchronized(self) {
 		if (!self.characterSheetCacheRecord.data)
-			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
-		return [self.characterSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data;
+			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
+		
+		EVECharacterSheet* characterSheet = [self.characterSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data;
+
+		if (!_characterAttributes && characterSheet)
+			_characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+		
+		//Update skill points
+		EVESkillQueue* skillQueue = self.skillQueue;
+		if (characterSheet && skillQueue && (!self.lastSkillPointsUpdate || [self.lastSkillPointsUpdate timeIntervalSinceNow] < -NCAccountSkillPointsUpdateInterval)) {
+			NCCharacterAttributes* characterAttributes = self.characterAttributes;
+			NSDate *currentTime = [skillQueue serverTimeWithLocalTime:[NSDate date]];
+			for (EVESkillQueueItem *item in skillQueue.skillQueue) {
+				if (item.endTime && item.startTime) {
+					EVECharacterSheetSkill *skill = characterSheet.skillsMap[@(item.typeID)];
+					if (item.queuePosition == 0) {
+						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+						skill.skillpoints = item.endSP - [item.endTime timeIntervalSinceDate:currentTime] * [characterAttributes skillpointsPerSecondForSkill:type];
+					}
+					else if (item.level - 1 == skill.level) {
+						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+						skill.skillpoints = item.endSP - [item.endTime timeIntervalSinceDate:item.startTime] * [characterAttributes skillpointsPerSecondForSkill:type];
+					}
+				}
+			}
+			
+			if (self.characterInfo) {
+				NSInteger skillPoints = 0;
+				for (EVECharacterSheetSkill* skill in characterSheet.skills)
+					skillPoints += skill.skillpoints;
+				self.characterInfo.skillPoints = skillPoints;
+			}
+			
+			self.lastSkillPointsUpdate = [NSDate date];
+		}
+		return characterSheet;
 	}
 }
 
 - (EVECorporationSheet*) corporationSheet {
 	@synchronized(self) {
 		if (!self.corporationSheetCacheRecord.data)
-			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
+			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 		return [self.corporationSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.corporationSheetCacheRecord.data;
 	}
 }
@@ -171,7 +250,7 @@ static NCAccount* currentAccount = nil;
 - (EVESkillQueue*) skillQueue {
 	@synchronized(self) {
 		if (!self.skillQueueCacheRecord.data)
-			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil];
+			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 		return [self.skillQueueCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.skillQueueCacheRecord.data;
 	}
 }

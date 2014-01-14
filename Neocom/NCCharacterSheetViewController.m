@@ -102,34 +102,22 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 data.characterSheet = [EVECharacterSheet characterSheetWithKeyID:account.apiKey.keyID
-																										vCode:account.apiKey.vCode
-																								  cachePolicy:cachePolicy
-																								  characterID:account.characterID
-																										error:&error
-																							  progressHandler:^(CGFloat progress, BOOL *stop) {
-																								  if ([task isCancelled])
-																									  *stop = YES;
-																								  else
-																									  task.progress = progress / 4.0;
-																							  }];
+											 
+											 [account reloadWithCachePolicy:cachePolicy
+																	  error:&error
+															progressHandler:^(CGFloat progress, BOOL *stop) {
+																task.progress = (2.0 + progress) / 4.0;
+																if (task.isCancelled)
+																	*stop = YES;
+															}];
 											 if ([task isCancelled])
 												 return;
+											 data.characterSheet = account.characterSheet;
+											 data.characterInfo = account.characterInfo;
+											 data.skillQueue = account.skillQueue;
 											 
-											 data.characterInfo = [EVECharacterInfo characterInfoWithKeyID:account.apiKey.keyID
-																									 vCode:account.apiKey.vCode
-																							   cachePolicy:cachePolicy
-																							   characterID:account.characterID
-																									 error:nil
-																						   progressHandler:^(CGFloat progress, BOOL *stop) {
-																							   if ([task isCancelled])
-																								   *stop = YES;
-																							   else
-																								   task.progress = (1.0 + progress) / 4.0;
-																						   }];
 											 if ([task isCancelled])
 												 return;
-											 
 											 data.accountStatus = [EVEAccountStatus accountStatusWithKeyID:account.apiKey.keyID
 																									 vCode:account.apiKey.vCode
 																							   cachePolicy:cachePolicy
@@ -138,23 +126,8 @@
 																							   if ([task isCancelled])
 																								   *stop = YES;
 																							   else
-																								   task.progress = (2.0 + progress) / 4.0;
-																						   }];
-											 if ([task isCancelled])
-												 return;
-											 
-											 data.skillQueue = [EVESkillQueue skillQueueWithKeyID:account.apiKey.keyID
-																									 vCode:account.apiKey.vCode
-																							   cachePolicy:cachePolicy
-																					  characterID:account.characterID
-																									 error:nil
-																						   progressHandler:^(CGFloat progress, BOOL *stop) {
-																							   if ([task isCancelled])
-																								   *stop = YES;
-																							   else
 																								   task.progress = (3.0 + progress) / 4.0;
 																						   }];
-
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {
@@ -207,6 +180,8 @@
 	
 	if (characterInfo) {
 		self.securityStatusLabel.text = [NSString stringWithFormat:@"%.1f", characterInfo.securityStatus];
+		self.securityStatusLabel.textColor = [UIColor colorWithPlayerSecurityStatus:characterInfo.securityStatus];
+		
 		NSCalendar* calendaer = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents* dateComponents = [calendaer components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
 														fromDate:characterInfo.corporationDate
@@ -238,8 +213,6 @@
 		
 		EVEDBMapSolarSystem* solarSystem = [[EVEDBMapSolarSystem alloc] initWithSQLRequest:[NSString stringWithFormat:@"SELECT * from mapSolarSystems WHERE solarSystemName==\"%@\"", characterInfo.lastKnownLocation]
 																					 error:nil];
-		
-		
 		if (solarSystem) {
 			NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
 			NSString* s = [NSString stringWithFormat:@"%@ %@ / %@ / %@", ss, solarSystem.solarSystemName, solarSystem.constellation.constellationName, solarSystem.region.regionName];
@@ -252,11 +225,12 @@
 		
 		self.shipLabel.text = characterInfo.shipTypeName;
 		
-		self.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@/%@ SP (%@ skills)", nil),
-								 [NSString shortStringWithFloat:characterInfo.skillPoints unit:nil],
-								 [NSString shortStringWithFloat:characterSheet.cloneSkillPoints unit:nil],
+		self.cloneLabel.text = characterSheet.cloneName	? [NSString stringWithFormat:@"%@ (%@)", characterSheet.cloneName, [NSString shortStringWithFloat:characterSheet.cloneSkillPoints unit:@"SP"]] : nil;
+		
+		self.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skills)", nil),
+								 [NSString shortStringWithFloat:characterInfo.skillPoints unit:@"SP"],
 								 [NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]];
-		self.skillsLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
+		self.cloneLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
 
 		if (skillQueue) {
 			NSString *text;
@@ -316,6 +290,73 @@
 	else {
 		self.subscriptionLabel.text = nil;
 	}
+	
+	EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
+	EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
+	EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
+	EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
+	EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
+	
+	for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+		switch (enhancer.attribute) {
+			case EVECharacterAttributeCharisma:
+				charismaEnhancer = enhancer;
+				break;
+			case EVECharacterAttributeIntelligence:
+				intelligenceEnhancer = enhancer;
+				break;
+			case EVECharacterAttributeMemory:
+				memoryEnhancer = enhancer;
+				break;
+			case EVECharacterAttributePerception:
+				perceptionEnhancer = enhancer;
+				break;
+			case EVECharacterAttributeWillpower:
+				willpowerEnhancer = enhancer;
+				break;
+		}
+	}
+
+	if (intelligenceEnhancer)
+		self.intelligenceLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
+									   characterSheet.attributes.intelligence + intelligenceEnhancer.augmentatorValue,
+									   characterSheet.attributes.intelligence,
+									   intelligenceEnhancer.augmentatorValue];
+	else
+		self.intelligenceLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.intelligence];
+	
+	if (memoryEnhancer)
+		self.memoryLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
+								 characterSheet.attributes.memory + memoryEnhancer.augmentatorValue,
+								 characterSheet.attributes.memory,
+								 memoryEnhancer.augmentatorValue];
+	else
+		self.memoryLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.memory];
+	
+	
+	if (perceptionEnhancer)
+		self.perceptionLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
+									 characterSheet.attributes.perception + perceptionEnhancer.augmentatorValue,
+									 characterSheet.attributes.perception,
+									 perceptionEnhancer.augmentatorValue];
+	else
+		self.perceptionLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.perception];
+	
+	if (willpowerEnhancer)
+		self.willpowerLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
+									characterSheet.attributes.willpower + willpowerEnhancer.augmentatorValue,
+									characterSheet.attributes.willpower,
+									willpowerEnhancer.augmentatorValue];
+	else
+		self.willpowerLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.willpower];
+	
+	if (charismaEnhancer)
+		self.charismaLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
+								   characterSheet.attributes.charisma + charismaEnhancer.augmentatorValue,
+								   characterSheet.attributes.charisma,
+								   charismaEnhancer.augmentatorValue];
+	else
+		self.charismaLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.charisma];
 	
 	[self.view setNeedsLayout];
 	[self.view layoutIfNeeded];

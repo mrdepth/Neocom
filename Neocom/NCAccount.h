@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "EVEOnlineAPI.h"
+#import "NCCharacterAttributes.h"
 
 #define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
 
@@ -31,12 +32,14 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 @property (nonatomic, strong, readonly) EVECorporationSheet* corporationSheet;
 @property (nonatomic, strong, readonly) EVESkillQueue* skillQueue;
 
+@property (nonatomic, strong, readonly) NCCharacterAttributes* characterAttributes;
+
 @property (nonatomic, strong) NSError* error;
 
 + (NSArray*) allAccounts;
 + (instancetype) currentAccount;
 + (void) setCurrentAccount:(NCAccount*) account;
 
-- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
+- (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
 
 @end

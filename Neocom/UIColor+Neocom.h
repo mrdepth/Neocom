@@ -11,4 +11,6 @@
 @interface UIColor (Neocom)
 
 + (instancetype) colorWithSecurity:(float) security;
++ (instancetype) colorWithPlayerSecurityStatus:(float) securityStatus;
+
 @end

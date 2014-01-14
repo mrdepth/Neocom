@@ -17,4 +17,6 @@
 @property (nonatomic, retain) NSString * skillPlanName;
 @property (nonatomic, retain) NSString * skillPlanSkills;
 
+@property (nonatomic, strong) NSArray* skills;
+
 @end

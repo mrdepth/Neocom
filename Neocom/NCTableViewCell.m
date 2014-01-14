@@ -27,9 +27,15 @@
 }
 
 - (void) layoutSubviews {
+	if (self.imageView.image)
+		self.separatorInset = UIEdgeInsetsMake(0, 15 + 32 + 8, 0, 0);
+	else
+		self.separatorInset = UIEdgeInsetsMake(-1, -1, -1, -1);
+	
 	[super layoutSubviews];
+	
 	if (self.imageView.image) {
-		self.imageView.frame = CGRectMake(self.imageView.frame.origin.x, self.imageView.center.y - 16, 32, 32);
+		self.imageView.frame = CGRectMake(15, self.imageView.center.y - 16, 32, 32);
 		CGRect frame = self.textLabel.frame;
 		CGFloat right = CGRectGetMaxX(frame);
 		frame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8;
@@ -40,7 +46,6 @@
 			frame.origin.x = self.textLabel.frame.origin.x;
 			frame.size.width = self.textLabel.frame.size.width;
 			self.detailTextLabel.frame = frame;
-			self.separatorInset = UIEdgeInsetsMake(0, frame.origin.x, 0, 0);
 		}
 	}
 }

@@ -433,7 +433,14 @@
 												 if (task.isCancelled)
 													 return;
 												 
-												 [account reloadWithCachePolicy:cachePolicy error:&error];
+												 [account reloadWithCachePolicy:cachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
+													 if (task.isCancelled)
+														 *stop = YES;
+												 }];
+												 
+												 if (task.isCancelled)
+													 return;
+												 
                                                  NCAccountsViewControllerDataAccount* dataAccount = [NCAccountsViewControllerDataAccount new];
                                                  dataAccount.account = account;
                                                  dataAccount.accountStatus = accountStatuses[@([account.apiKey hash])];

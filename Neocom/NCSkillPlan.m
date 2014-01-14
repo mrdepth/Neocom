@@ -16,4 +16,6 @@
 @dynamic skillPlanName;
 @dynamic skillPlanSkills;
 
+@synthesize skills = _skills;
+
 @end

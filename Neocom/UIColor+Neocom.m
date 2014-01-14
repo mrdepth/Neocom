@@ -7,16 +7,40 @@
 //
 
 #import "UIColor+Neocom.h"
+#import "UIColor+NSNumber.h"
 
 @implementation UIColor (Neocom)
 
 + (instancetype) colorWithSecurity:(float) security {
-	if (security >= 0.5f)
-		return [UIColor greenColor];
-	else if (security > 0.0f)
-		return [UIColor orangeColor];
+	if (security >= 1.0f)
+		return [UIColor colorWithUInteger:0x2FEFEFFF];
+	else if (security >= 0.9f)
+		return [UIColor colorWithUInteger:0x48F0C0FF];
+	else if (security >= 0.8f)
+		return [UIColor colorWithUInteger:0x00EF47FF];
+	else if (security >= 0.7f)
+		return [UIColor colorWithUInteger:0x00F000FF];
+	else if (security >= 0.6f)
+		return [UIColor colorWithUInteger:0x8FEF2FFF];
+	else if (security >= 0.5f)
+		return [UIColor colorWithUInteger:0xEFEF00FF];
+	else if (security >= 0.4f)
+		return [UIColor colorWithUInteger:0xD77700FF];
+	else if (security >= 0.3f)
+		return [UIColor colorWithUInteger:0xF06000FF];
+	else if (security >= 0.2f)
+		return [UIColor colorWithUInteger:0xF04800FF];
+	else if (security >= 0.1f)
+		return [UIColor colorWithUInteger:0xD73000FF];
 	else
-		return [UIColor redColor];
+		return [UIColor colorWithUInteger:0xF00000FF];
+}
+
++ (instancetype) colorWithPlayerSecurityStatus:(float) securityStatus {
+	if (securityStatus > -2.0f)
+		return [self colorWithSecurity:0.5 + (securityStatus + 2.0f) / 14.0f];
+	else
+		return [self colorWithSecurity:(securityStatus + 5.0f - FLT_EPSILON) / 6.0f];
 }
 
 @end

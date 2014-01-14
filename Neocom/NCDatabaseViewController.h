@@ -1,5 +1,5 @@
 //
-//  NCDatabaseCategoriesViewController.h
+//  NCDatabaseViewController.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 14.01.14.
@@ -7,6 +7,7 @@
 //
 
 #import "NCTableViewController.h"
+#import "EVEDBAPI.h"
 
 typedef NS_ENUM(NSInteger, NCDatabaseFilter) {
 	NCDatabaseFilterAll,
@@ -14,7 +15,9 @@ typedef NS_ENUM(NSInteger, NCDatabaseFilter) {
 	NCDatabaseFilterUnpublished
 };
 
-@interface NCDatabaseCategoriesViewController : NCTableViewController
+@interface NCDatabaseViewController : NCTableViewController
 @property (nonatomic, assign) NCDatabaseFilter filter;
+@property (nonatomic, strong) EVEDBInvCategory* category;
+@property (nonatomic, strong) EVEDBInvGroup* group;
 
 @end

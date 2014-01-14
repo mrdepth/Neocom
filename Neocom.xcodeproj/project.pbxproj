@@ -203,7 +203,7 @@
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
 		128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */; };
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
-		128BCE70188579E8000E1922 /* NCDatabaseCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseCategoriesViewController.m */; };
+		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
 		129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
 		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
@@ -631,8 +631,8 @@
 		128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Neocom.m"; sourceTree = "<group>"; };
 		128BCE67188569EF000E1922 /* NCTrainingQueueDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTrainingQueueDataSource.h; sourceTree = "<group>"; };
 		128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTrainingQueueDataSource.m; sourceTree = "<group>"; };
-		128BCE6E188579E8000E1922 /* NCDatabaseCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCategoriesViewController.h; sourceTree = "<group>"; };
-		128BCE6F188579E8000E1922 /* NCDatabaseCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCategoriesViewController.m; sourceTree = "<group>"; };
+		128BCE6E188579E8000E1922 /* NCDatabaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseViewController.h; sourceTree = "<group>"; };
+		128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseViewController.m; sourceTree = "<group>"; };
 		129421A7187FDF7200977CB8 /* NSString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Neocom.h"; sourceTree = "<group>"; };
 		129421A8187FDF7200977CB8 /* NSString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Neocom.m"; sourceTree = "<group>"; };
 		129421AA187FDFAE00977CB8 /* NSNumberFormatter+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Neocom.h"; sourceTree = "<group>"; };
@@ -1517,8 +1517,7 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				128BCE6E188579E8000E1922 /* NCDatabaseCategoriesViewController.h */,
-				128BCE6F188579E8000E1922 /* NCDatabaseCategoriesViewController.m */,
+				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1832,6 +1831,15 @@
 				84250638187DC566002E691E /* NCSideMenuViewController.m */,
 			);
 			name = NCSideMenuViewController;
+			sourceTree = "<group>";
+		};
+		84E9E6991885B07D003ADB9B /* NCDatabaseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				128BCE6E188579E8000E1922 /* NCDatabaseViewController.h */,
+				128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */,
+			);
+			name = NCDatabaseViewController;
 			sourceTree = "<group>";
 		};
 		84FC4F541878405C0004073C /* Account */ = {
@@ -2148,7 +2156,7 @@
 				129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */,
 				126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */,
 				126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */,
-				128BCE70188579E8000E1922 /* NCDatabaseCategoriesViewController.m in Sources */,
+				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
 				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
 				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,

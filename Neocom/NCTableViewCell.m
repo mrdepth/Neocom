@@ -37,14 +37,14 @@
 	if (self.imageView.image) {
 		self.imageView.frame = CGRectMake(15, self.imageView.center.y - 16, 32, 32);
 		CGRect frame = self.textLabel.frame;
-		CGFloat right = CGRectGetMaxX(frame);
+		//CGFloat right = CGRectGetMaxX(frame);
 		frame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8;
-		frame.size.width = right - frame.origin.x;
+		//frame.size.width = right - frame.origin.x;
 		self.textLabel.frame = frame;
 		if (self.detailTextLabel.text) {
 			frame = self.detailTextLabel.frame;
 			frame.origin.x = self.textLabel.frame.origin.x;
-			frame.size.width = self.textLabel.frame.size.width;
+			//frame.size.width = self.textLabel.frame.size.width;
 			self.detailTextLabel.frame = frame;
 		}
 	}

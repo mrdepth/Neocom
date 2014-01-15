@@ -17,5 +17,6 @@
 @property (nonatomic, assign, readonly) NSInteger targetSkillPoints;
 @property (nonatomic, assign, getter = isActive) BOOL active;
 
+- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 
 @end

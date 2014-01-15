@@ -8,6 +8,7 @@
 
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
+#import "NCStorage.h"
 
 @interface MyOperation : NSOperation
 
@@ -33,6 +34,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//	NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+//								  insertIntoManagedObjectContext:nil];
+//	skillPlan = nil;
 	NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 	NSError* error = nil;
 	//[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];

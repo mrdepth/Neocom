@@ -12,7 +12,7 @@
 
 @implementation NCSkillData
 
-- (NSTimeInterval) timeLeftWithCharacterAttributes:(NCCharacterAttributes*) attributes {
+- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) attributes {
 	return self.targetSkillPoints > self.skillPoints ? (self.targetSkillPoints - self.skillPoints) / [attributes skillpointsPerSecondForSkill:self] : 0.0;
 }
 

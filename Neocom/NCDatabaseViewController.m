@@ -7,6 +7,7 @@
 //
 
 #import "NCDatabaseViewController.h"
+#import "NCDatabaseTypeContainerViewController.h"
 
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSArray* rows;
@@ -88,6 +89,11 @@
 		else if ([row isKindOfClass:[EVEDBInvGroup class]])
 			destinationViewController.group = row;
 	}
+	else {
+		NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
+		destinationViewController.type = self.rows[indexPath.row];
+	}
 }
 
 #pragma mark - Table view data source
@@ -106,7 +112,7 @@
 {
 	id row = self.rows[indexPath.row];
 	if ([row isKindOfClass:[EVEDBInvType class]]) {
-		static NSString *CellIdentifier = @"ItemCell";
+		static NSString *CellIdentifier = @"TypeCell";
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];

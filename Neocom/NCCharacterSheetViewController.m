@@ -81,6 +81,16 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void) viewDidLayoutSubviews {
+	UIView* header = self.tableView.tableHeaderView;
+	CGRect frame = header.frame;
+	frame.size.height = CGRectGetMaxY(self.scrollView.frame);
+	if (!CGRectEqualToRect(header.frame, frame)) {
+		header.frame = frame;
+		self.tableView.tableHeaderView = header;
+	}
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -360,12 +370,6 @@
 	
 	[self.view setNeedsLayout];
 	[self.view layoutIfNeeded];
-
-	UIView* header = self.tableView.tableHeaderView;
-	CGRect frame = header.frame;
-	frame.size.height = CGRectGetMaxY(self.scrollView.frame);
-	header.frame = frame;
-	self.tableView.tableHeaderView = header;
 }
 
 - (void) didChangeAccount:(NCAccount *)account {

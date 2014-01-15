@@ -256,6 +256,10 @@
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
+		12C7EE6618866A0200F90763 /* NCDatabaseTypeContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6518866A0200F90763 /* NCDatabaseTypeContainerViewController.m */; };
+		12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
+		12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */; };
+		12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
 		12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
@@ -730,6 +734,14 @@
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
+		12C7EE6418866A0200F90763 /* NCDatabaseTypeContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeContainerViewController.h; sourceTree = "<group>"; };
+		12C7EE6518866A0200F90763 /* NCDatabaseTypeContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeContainerViewController.m; sourceTree = "<group>"; };
+		12C7EE691886741900F90763 /* NCDatabaseTypeInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeInfoViewController.h; sourceTree = "<group>"; };
+		12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeInfoViewController.m; sourceTree = "<group>"; };
+		12C7EE9C1886B51D00F90763 /* NCTrainingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTrainingQueue.h; sourceTree = "<group>"; };
+		12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTrainingQueue.m; sourceTree = "<group>"; };
+		12C7EEA01886CFB100F90763 /* NCSkillHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillHierarchy.h; sourceTree = "<group>"; };
+		12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillHierarchy.m; sourceTree = "<group>"; };
 		12C9DC9F18617A6300A654C5 /* NCAccountsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsManager.h; sourceTree = "<group>"; };
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
 		12CC8D6A188178570058C5DF /* NCTableViewEmptyHedaerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewEmptyHedaerView.h; sourceTree = "<group>"; };
@@ -1498,6 +1510,8 @@
 		126ED31A188128E10009FA39 /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
+				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
 				125F682618853809005732FA /* NCCharacterAttributes */,
 				125F681718852D8A005732FA /* NCSkillsViewController */,
 				126ED31B188128EF0009FA39 /* NCCharacterSheetViewController */,
@@ -1517,6 +1531,8 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
+				12C7EE63188669CB00F90763 /* NCDatabaseTypeContainerViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 			);
 			name = Database;
@@ -1815,6 +1831,42 @@
 			name = NCTableViewCell;
 			sourceTree = "<group>";
 		};
+		12C7EE63188669CB00F90763 /* NCDatabaseTypeContainerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12C7EE6418866A0200F90763 /* NCDatabaseTypeContainerViewController.h */,
+				12C7EE6518866A0200F90763 /* NCDatabaseTypeContainerViewController.m */,
+			);
+			name = NCDatabaseTypeContainerViewController;
+			sourceTree = "<group>";
+		};
+		12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12C7EE691886741900F90763 /* NCDatabaseTypeInfoViewController.h */,
+				12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */,
+			);
+			name = NCDatabaseTypeInfoViewController;
+			sourceTree = "<group>";
+		};
+		12C7EE9B1886B50900F90763 /* NCTrainingQueue */ = {
+			isa = PBXGroup;
+			children = (
+				12C7EE9C1886B51D00F90763 /* NCTrainingQueue.h */,
+				12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */,
+			);
+			name = NCTrainingQueue;
+			sourceTree = "<group>";
+		};
+		12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */ = {
+			isa = PBXGroup;
+			children = (
+				12C7EEA01886CFB100F90763 /* NCSkillHierarchy.h */,
+				12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */,
+			);
+			name = NCSkillHierarchy;
+			sourceTree = "<group>";
+		};
 		12CC8D69188178290058C5DF /* NCTableViewEmptyHedaerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2008,7 +2060,9 @@
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
 				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
 				126A0E1B185F3B9300A8E8A3 /* EVEDBInvMetaGroup.m in Sources */,
+				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
+				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
@@ -2140,6 +2194,7 @@
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
+				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
 				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
 				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
@@ -2186,6 +2241,7 @@
 				126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */,
 				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,
 				126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */,
+				12C7EE6618866A0200F90763 /* NCDatabaseTypeContainerViewController.m in Sources */,
 				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
 				126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */,
 				126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */,

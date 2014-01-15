@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "EVEDBAPI.h"
 
-
+@class NCAccount;
 @interface NCSkillPlan : NSManagedObject
 
 @property (nonatomic, retain) NSString * attributes;
@@ -17,6 +18,11 @@
 @property (nonatomic, retain) NSString * skillPlanName;
 @property (nonatomic, retain) NSString * skillPlanSkills;
 
-@property (nonatomic, strong) NSArray* skills;
+@property (nonatomic, copy) NSArray* skills;
+@property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
+
++ (instancetype) temporarySkillPlanWithAccount:(NCAccount*) account;
+- (void) addRequiredSkillsForType:(EVEDBInvType*) type;
+- (void) addSkill:(EVEDBInvType*) skill withLevel:(NSInteger) level;
 
 @end

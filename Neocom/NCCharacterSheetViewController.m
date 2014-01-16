@@ -82,6 +82,8 @@
 }
 
 - (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	
 	UIView* header = self.tableView.tableHeaderView;
 	CGRect frame = header.frame;
 	frame.size.height = CGRectGetMaxY(self.scrollView.frame);

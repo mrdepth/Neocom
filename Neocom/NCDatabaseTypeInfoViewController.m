@@ -10,7 +10,13 @@
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "NSString+Neocom.h"
 #import "NCDatabaseTypeContainerViewController.h"
+#import "NCDatabaseTypeVariationsViewController.h"
+#import "NCTrainingQueue.h"
+#import "NCSkillHierarchy.h"
+#import "NCDatabaseViewController.h"
+#import "NSString+HTML.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -37,7 +43,7 @@
 @property (nonatomic, copy) NSString* imageName;
 @property (nonatomic, copy) NSString* accessoryImageName;
 @property (nonatomic, strong) id object;
-@property (nonatomic, assign) SEL selector;
+@property (nonatomic, assign) NSInteger indentationLevel;
 
 @end
 
@@ -73,10 +79,41 @@
 		[self reload];
 }
 
+- (void) viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	UIView* header = self.tableView.tableHeaderView;
+	CGRect frame = header.frame;
+	frame.size.height = CGRectGetMaxY(self.descriptionLabel.frame);
+	if (!CGRectEqualToRect(header.frame, frame)) {
+		header.frame = frame;
+		self.tableView.tableHeaderView = header;
+	}
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
+	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = row.object;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
+		NCDatabaseViewController* destinationViewController = segue.destinationViewController;
+		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
+			destinationViewController.group = row.object;
+		else if ([row.object isKindOfClass:[EVEDBInvCategory class]])
+			destinationViewController.category = row.object;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeVariationsViewController"]) {
+		NCDatabaseTypeVariationsViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	}
 }
 
 #pragma mark - NCTableViewController
@@ -112,33 +149,66 @@
 	cell.textLabel.text = row.title;
 	cell.detailTextLabel.text = row.detail;
 	cell.imageView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
+	cell.indentationLevel = row.indentationLevel;
+	cell.indentationWidth = 16;
 	
 	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
 	if (!cell.accessoryView)
-		cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+		cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] || [row.object isKindOfClass:[NSString class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 	
 	//cell.indentationLevel = cellData.indentationLevel;
 	
 	return cell;
 }
 
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	if (row.object) {
+		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
+			[self performSegueWithIdentifier:@"NCDatabaseViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+		else if ([row.object isKindOfClass:[EVEDBInvType class]])
+			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+		else if ([row.object isKindOfClass:[NSString class]])
+			[self performSegueWithIdentifier:row.object sender:[tableView cellForRowAtIndexPath:indexPath]];
+	}
+}
+
 #pragma mark - Private
 
 - (void) reload {
+	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	NSString* s = [[type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+	NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
+	[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
+	[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
+	[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
+
+	self.titleLabel.text = type.typeName;
+	self.imageView.image = [UIImage imageNamed:type.typeLargeImageName];
+	self.descriptionLabel.text = description;
+	[self.view setNeedsLayout];
 	[self loadItemAttributes];
 }
 
 - (void) loadItemAttributes {
 	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
 	NCAccount *account = [NCAccount currentAccount];
+	NCCharacterAttributes* attributes = [account characterAttributes];
+	if (!attributes)
+		attributes = [NCCharacterAttributes defaultCharacterAttributes];
+	
 	NSMutableArray* sections = [NSMutableArray new];
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 									   title:NCTaskManagerDefaultTitle
 									   block:^(NCTask *task) {
+										   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+										   [trainingQueue addRequiredSkillsForType:type];
 										   //self.trainingTime = [[TrainingQueue trainingQueueWithType:self.type] trainingTime];
-										   //NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 										   
+										   NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 										   
 										   {
 											   EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
@@ -167,74 +237,47 @@
 												   row.title = NSLocalizedString(@"Variations", nil);
 												   row.detail = [NSString stringWithFormat:@"%d", count + 1];
 												   row.imageName = @"Icons/icon09_07.png";
-												   row.selector = @selector(onVariations:);
-												   row.object = type;
+												   row.object = @"NCDatabaseTypeVariationsViewController";
 												   [rows addObject:row];
 												   [sections addObject:section];
 											   }
 										   }
 										   
-										   /*TrainingQueue* requiredSkillsQueue = nil;
-										   TrainingQueue* certificateRecommendationsQueue = nil;
-										   if (account && account.skillPlan && (self.type.requiredSkills.count > 0 || self.type.certificateRecommendations.count > 0 || self.type.group.categoryID == 16)) {
+										   if (account && account.activeSkillPlan && trainingQueue.skills.count > 0) {
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   section[@"title"] = NSLocalizedString(@"Skill Plan", nil);
 											   NSMutableArray* rows = [NSMutableArray array];
 											   section[@"rows"] = rows;
 											   
-											   requiredSkillsQueue = [[TrainingQueue alloc] initWithType:self.type];
-											   certificateRecommendationsQueue = [[TrainingQueue alloc] init];
-											   
-											   for (EVEDBCrtRecommendation* recommendation in self.type.certificateRecommendations) {
-												   for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
-													   [certificateRecommendationsQueue addSkill:skill];
-											   }
-											   
-											   if (self.type.group.categoryID == 16) {
-												   EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(self.type.typeID)];
-												   NSString* romanNumbers[] = {@"0", @"I", @"II", @"III", @"IV", @"V"};
+											   if (type.group.categoryID == 16) {
+												   EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(type.typeID)];
 												   for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
-													   TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
-													   [trainingQueue.skills addObjectsFromArray:requiredSkillsQueue.skills];
-													   EVEDBInvTypeRequiredSkill* skill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:self.type];
-													   skill.requiredLevel = level;
-													   skill.currentLevel = characterSkill.level;
-													   [trainingQueue addSkill:skill];
+													   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+													   [trainingQueue addSkill:type withLevel:level];
 													   
-													   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-													   cellData.title = [NSString stringWithFormat:NSLocalizedString(@"Train to level %@", nil), romanNumbers[level]];
-													   cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-													   cellData.icon = @"Icons/icon50_13.png";
-													   cellData.selector = @selector(onTrain:);
-													   cellData.object = trainingQueue;
+													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													   row.title = [NSString stringWithFormat:NSLocalizedString(@"Train to level %d", nil), level];
+													   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+													   row.imageName = @"Icons/icon50_13.png";
+													   row.object = trainingQueue;
 													   
-													   [rows addObject:cellData];
+													   [rows addObject:row];
 												   }
 											   }
 											   else {
-												   if (requiredSkillsQueue.skills.count) {
-													   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-													   cellData.title = NSLocalizedString(@"Add required skills to training plan", nil);
-													   cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
-													   cellData.icon = @"Icons/icon50_13.png";
-													   cellData.selector = @selector(onTrain:);
-													   cellData.object = requiredSkillsQueue;
-													   [rows addObject:cellData];
-												   }
-												   if (certificateRecommendationsQueue.skills.count) {
-													   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-													   cellData.title = NSLocalizedString(@"Add recommended certificates to training plan", nil);
-													   cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:certificateRecommendationsQueue.trainingTime]];
-													   cellData.icon = @"Icons/icon79_06.png";
-													   cellData.selector = @selector(onTrain:);
-													   cellData.object = certificateRecommendationsQueue;
-													   [rows addObject:cellData];
+												   if (trainingQueue.skills.count) {
+													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													   row.title = NSLocalizedString(@"Add required skills to training plan", nil);
+													   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+													   row.imageName = @"Icons/icon50_13.png";
+													   row.object = trainingQueue;
+													   [rows addObject:row];
 												   }
 											   }
 											   if (rows.count > 0)
-												   [self.sections addObject:section];
+												   [sections addObject:section];
 										   }
-										   */
+										   
 										   if (type.blueprint) {
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   NSMutableArray *rows = [NSMutableArray array];
@@ -243,7 +286,6 @@
 											   row.title = NSLocalizedString(@"Blueprint", nil);
 											   row.detail = [type.blueprint typeName];
 											   row.imageName = [type.blueprint typeSmallImageName];
-											   row.selector = @selector(onTypeInfo:);
 											   row.object = type.blueprint;
 											   [rows addObject:row];
 											   
@@ -256,12 +298,12 @@
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   NSMutableArray *rows = [NSMutableArray array];
 											   
-											   /*if (category.categoryID == 8 && self.trainingTime > 0) {
-												   NSString *title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:self.trainingTime]];
+											   if (category.categoryID == 8 && trainingQueue.trainingTime > 0) {
+												   NSString *title = [NSString stringWithFormat:@"%@ (%@)", category.categoryName, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
 												   section[@"title"] = title;
 											   }
 											   else
-												   section[@"title"] = category.categoryID == 9 ? @"Other" : category.categoryName;*/
+												   section[@"title"] = category.categoryID == 9 ? @"Other" : category.categoryName;
 											   
 											   section[@"rows"] = rows;
 											   
@@ -276,42 +318,46 @@
 													   [rows addObject:row];
 												   }
 												   else if (attribute.attribute.unitID == EVEDBUnitIDTypeID) {
-													   /*int typeID = attribute.value;
+													   NSInteger typeID = attribute.value;
 													   EVEDBInvType *skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 													   if (skill) {
 														   for (NSDictionary *requirementMap in skillRequirementsMap) {
 															   if ([requirementMap[SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
-																   EVEDBDgmTypeAttribute *level = self.type.attributesDictionary[requirementMap[SkillTreeSkillLevelIDKey]];
-																   SkillTree *skillTree = [SkillTree skillTreeWithRootSkill:skill skillLevel:level.value];
-																   for (SkillTreeItem *skill in skillTree.skills) {
-																	   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-																	   cellData.title = [NSString stringWithFormat:@"%@ %@", skill.typeName, [skill romanSkillLevel]];
-																	   cellData.selector = @selector(onTypeInfo:);
-																	   cellData.object = skill;
-																	   cellData.indentationLevel = skill.hierarchyLevel;
+																   EVEDBDgmTypeAttribute* level = type.attributesDictionary[@([requirementMap[SkillTreeSkillLevelIDKey] integerValue])];
+																   NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkill:skill level:level.value account:account];
+																   
+																   for (NCSkillHierarchySkill* skill in hierarchy.skills) {
+																	   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+																	   row.title = [NSString stringWithFormat:@"%@ %d", skill.typeName, skill.targetLevel];
+																	   row.object = skill;
+																	   row.indentationLevel = skill.nestingLevel;
 																	   
-																	   switch (skill.skillAvailability) {
-																		   case SkillTreeItemAvailabilityLearned:
-																			   cellData.icon = @"Icons/icon50_11.png";
-																			   cellData.accessoryImage = @"Icons/icon38_193.png";
+																	   switch (skill.availability) {
+																		   case NCSkillHierarchyAvailabilityLearned:
+																			   row.imageName = @"Icons/icon50_11.png";
+																			   row.accessoryImageName = @"Icons/icon38_193.png";
 																			   break;
-																		   case SkillTreeItemAvailabilityNotLearned:
-																			   cellData.icon = @"Icons/icon50_11.png";
-																			   cellData.accessoryImage = @"Icons/icon38_194.png";
+																		   case NCSkillHierarchyAvailabilityNotLearned:
+																			   row.imageName = @"Icons/icon50_11.png";
+																			   row.accessoryImageName = @"Icons/icon38_194.png";
 																			   break;
-																		   case SkillTreeItemAvailabilityLowLevel:
-																			   cellData.icon = @"Icons/icon50_11.png";
-																			   cellData.accessoryImage = @"Icons/icon38_195.png";
+																		   case NCSkillHierarchyAvailabilityLowLevel:
+																			   row.imageName = @"Icons/icon50_11.png";
+																			   row.accessoryImageName = @"Icons/icon38_195.png";
 																			   break;
 																		   default:
 																			   break;
 																	   }
-																	   [rows addObject:cellData];
+																	   
+																	   if (skill.availability != NCSkillHierarchyAvailabilityLearned)
+																		   row.detail = [NSString stringWithTimeLeft:[skill trainingTimeWithCharacterAttributes:attributes]];
+																	   
+																	   [rows addObject:row];
 																   }
 																   break;
 															   }
 														   }
-													   }*/
+													   }
 												   }
 												   else if (attribute.attribute.unitID == EVEDBUnitIDGroupID) {
 													   EVEDBInvGroup *group = [EVEDBInvGroup invGroupWithGroupID:attribute.value error:nil];
@@ -320,7 +366,6 @@
 													   row.title = attribute.attribute.displayName;
 													   row.detail = group.groupName;
 													   row.imageName = attribute.attribute.icon.iconImageName ? attribute.attribute.icon.iconImageName : group.icon.iconImageName;
-													   row.selector = @selector(onGroupInfo:);
 													   row.object = group;
 													   [rows addObject:row];
 												   }
@@ -392,65 +437,32 @@
 											   if (rows.count > 0)
 												   [sections addObject:section];
 										   }
-/*										   if (self.type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
-											   EVEAccount *account = [EVEAccount currentAccount];
-											   if (!account || account.characterSheet == nil)
-												   account = [EVEAccount dummyAccount];
+										   if (type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   NSMutableArray *rows = [NSMutableArray array];
 											   section[@"title"] = NSLocalizedString(@"Training time", nil);
-											   [self.sections addObject:section];
+											   section[@"rows"] = rows;
 											   
 											   float startSP = 0;
 											   float endSP;
 											   for (int i = 1; i <= 5; i++) {
-												   endSP = [self.type skillPointsAtLevel:i];
-												   NSTimeInterval needsTime = (endSP - startSP) / [account.characterAttributes skillpointsPerSecondForSkill:self.type];
+												   endSP = [type skillPointsAtLevel:i];
+												   NSTimeInterval needsTime = (endSP - startSP) / [attributes skillpointsPerSecondForSkill:type];
 												   NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
 																	 [NSNumberFormatter neocomLocalizedStringFromInteger:endSP],
 																	 [NSString stringWithTimeLeft:needsTime]];
 												   
-												   NSString *rank = (i == 1 ? NSLocalizedString(@"Level I", nil) : (i == 2 ? NSLocalizedString(@"Level II", nil) : (i == 3 ? NSLocalizedString(@"Level III", nil) : (i == 4 ? NSLocalizedString(@"Level IV", nil) : NSLocalizedString(@"Level V", nil)))));
+												   NSString* rank = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i];
 												   
-												   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-												   cellData.title = rank;
-												   cellData.value = text;
-												   cellData.icon = @"Icons/icon50_13.png";
-												   [rows addObject:cellData];
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = rank;
+												   row.detail = text;
+												   row.imageName = @"Icons/icon50_13.png";
+												   [rows addObject:row];
 												   startSP = endSP;
 											   }
-											   [section setValue:rows forKey:@"rows"];
-										   }*/
-										   
-/*										   if (self.type.certificateRecommendations.count > 0) {
-											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-											   NSMutableArray *rows = [NSMutableArray array];
-											   TrainingQueue* trainingQueue = [[TrainingQueue alloc] init];
-											   [self.sections addObject:section];
-											   
-											   for (EVEDBCrtRecommendation* recommendation in self.type.certificateRecommendations) {
-												   ItemInfoCellData* cellData = [[ItemInfoCellData alloc] init];
-												   cellData.title = [NSString stringWithFormat:@"%@ - %@", recommendation.certificate.certificateClass.className, recommendation.certificate.gradeText];
-												   cellData.icon = recommendation.certificate.iconImageName;
-												   cellData.selector = @selector(onTrain:);
-												   cellData.object = recommendation.certificate.trainingQueue;
-												   
-												   if (recommendation.certificate.trainingQueue.trainingTime > 0)
-													   cellData.value = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil),
-																		 [NSString stringWithTimeLeft:recommendation.certificate.trainingQueue.trainingTime]];
-												   cellData.accessoryImage = recommendation.certificate.stateIconImageName;
-												   
-												   for (EVEDBInvTypeRequiredSkill* skill in recommendation.certificate.trainingQueue.skills)
-													   [trainingQueue addSkill:skill];
-												   [rows addObject:cellData];
-											   }
-											   
-											   if (trainingQueue.trainingTime > 0)
-												   section[@"title"] = [NSString stringWithFormat:NSLocalizedString(@"Recommended certificates (%@)", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-											   else
-												   section[@"title"] = NSLocalizedString(@"Recommended certificates", nil);
-											   [section setValue:rows forKey:@"rows"];
-										   }*/
+											   [sections addObject:section];
+										   }
 									   }
 						   completionHandler:^(NCTask *task) {
 							   if (![task isCancelled]) {

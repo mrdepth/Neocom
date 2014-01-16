@@ -9,6 +9,9 @@
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
 
+#define NCSkillPlanTypeIDKey @"typeID"
+#define NCSkillPlanTargetLevelKey @"targetLevel"
+
 @interface NCSkillPlan() {
 	NSMutableArray* _skills;
 }
@@ -17,35 +20,42 @@
 
 @implementation NCSkillPlan
 
-@dynamic attributes;
-@dynamic characterID;
+@dynamic active;
 @dynamic skillPlanName;
-@dynamic skillPlanSkills;
+@dynamic skills;
+@dynamic account;
 
-@synthesize trainingTime = _trainingTime;
+@synthesize trainingQueue = _trainingQueue;
 
-+ (instancetype) temporarySkillPlanWithAccount:(NCAccount*) account {
-	NCSkillPlan* skillPlan = [[self alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
-						   insertIntoManagedObjectContext:nil];
-	return skillPlan;
+- (NCTrainingQueue*) trainingQueue {
+	if (!_trainingQueue) {
+		if (!self.account)
+			return nil;
+		
+		_trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
+		for (NSDictionary* item in self.skills) {
+			NSInteger typeID = [item[NCSkillPlanTypeIDKey] integerValue];
+			NSInteger targetLevel = [item[NCSkillPlanTargetLevelKey] integerValue];
+			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+			if (type)
+				[_trainingQueue addSkill:type withLevel:targetLevel];
+		}
+		
+	}
+	return _trainingQueue;
 }
 
-- (void) addRequiredSkillsForType:(EVEDBInvType*) type {
+- (void) save {
+	NSMutableArray* skills = [NSMutableArray new];
+	for (NCSkillData* skill in self.trainingQueue.skills) {
+		NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
+		[skills addObject:item];
+	}
 	
-}
-
-- (void) addSkill:(EVEDBInvType*) skill withLevel:(NSInteger) level {
-	
-}
-
-- (void) setSkills:(NSArray *)skills {
-	_skills = [[NSMutableArray alloc] initWithArray:skills];
-}
-
-- (NSArray*) skills {
-	if (!_skills)
-		_skills = [NSMutableArray new];
-	return _skills;
+	[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+		self.skills = skills;
+		[[NCStorage sharedStorage] saveContext];
+	}];
 }
 
 @end

@@ -10,7 +10,4 @@
 
 @interface EVEDBInvType (Neocom)
 
-- (NSInteger) skillPointsAtLevel:(NSInteger) level;
-
-
 @end

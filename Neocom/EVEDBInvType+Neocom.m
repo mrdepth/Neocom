@@ -10,7 +10,7 @@
 
 @implementation EVEDBInvType (Neocom)
 
-- (NSInteger) skillPointsAtLevel:(NSInteger) level {
+/*- (NSInteger) skillPointsAtLevel:(NSInteger) level {
 	if (level == 0)
 		return 0;
 	EVEDBDgmTypeAttribute* rank = self.attributesDictionary[@(275)];
@@ -20,6 +20,6 @@
 	}
 	else
 		return 0;
-}
+}*/
 
 @end

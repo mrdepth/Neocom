@@ -27,24 +27,31 @@
 }
 
 - (void) layoutSubviews {
+	CGFloat indentation = self.indentationLevel * self.indentationWidth;
 	if (self.imageView.image)
-		self.separatorInset = UIEdgeInsetsMake(0, 15 + 32 + 8, 0, 0);
+		self.separatorInset = UIEdgeInsetsMake(0, indentation + 15 + 32 + 8, 0, 0);
 	else
 		self.separatorInset = UIEdgeInsetsMake(-1, -1, -1, -1);
 	
 	[super layoutSubviews];
 	
 	if (self.imageView.image) {
-		self.imageView.frame = CGRectMake(15, self.imageView.center.y - 16, 32, 32);
+		self.imageView.frame = CGRectMake(indentation + 15, self.imageView.center.y - 16, 32, 32);
 		CGRect frame = self.textLabel.frame;
-		//CGFloat right = CGRectGetMaxX(frame);
 		frame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8;
-		//frame.size.width = right - frame.origin.x;
+		if (self.accessoryType != UITableViewCellAccessoryNone && self.accessoryView != nil)
+			frame.size.width = self.contentView.frame.size.width - 2 - frame.origin.x;
+		else
+			frame.size.width = self.contentView.frame.size.width - 15 - frame.origin.x;
+		
 		self.textLabel.frame = frame;
 		if (self.detailTextLabel.text) {
 			frame = self.detailTextLabel.frame;
 			frame.origin.x = self.textLabel.frame.origin.x;
-			//frame.size.width = self.textLabel.frame.size.width;
+			if (self.accessoryType != UITableViewCellAccessoryNone && self.accessoryView != nil)
+				frame.size.width = self.contentView.frame.size.width - 2 - frame.origin.x;
+			else
+				frame.size.width = self.contentView.frame.size.width - 15 - frame.origin.x;
 			self.detailTextLabel.frame = frame;
 		}
 	}

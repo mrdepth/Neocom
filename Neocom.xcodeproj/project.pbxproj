@@ -201,6 +201,7 @@
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
+		128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 128217651887D94D002B674E /* skillRequirementsMap.plist */; };
 		128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */; };
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
@@ -262,6 +263,7 @@
 		12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
 		12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */; };
+		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
@@ -631,6 +633,7 @@
 		126ED32C188144370009FA39 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
+		128217651887D94D002B674E /* skillRequirementsMap.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skillRequirementsMap.plist; sourceTree = SOURCE_ROOT; };
 		128BCE64188567E6000E1922 /* EVEDBInvType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Neocom.h"; sourceTree = "<group>"; };
 		128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Neocom.m"; sourceTree = "<group>"; };
 		128BCE67188569EF000E1922 /* NCTrainingQueueDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTrainingQueueDataSource.h; sourceTree = "<group>"; };
@@ -746,6 +749,8 @@
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
 		12CC8D6A188178570058C5DF /* NCTableViewEmptyHedaerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewEmptyHedaerView.h; sourceTree = "<group>"; };
 		12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewEmptyHedaerView.m; sourceTree = "<group>"; };
+		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
+		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		84250637187DC566002E691E /* NCSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSideMenuViewController.h; sourceTree = "<group>"; };
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
@@ -843,6 +848,7 @@
 			children = (
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
+				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
@@ -1534,6 +1540,7 @@
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
 				12C7EE63188669CB00F90763 /* NCDatabaseTypeContainerViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
+				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1876,6 +1883,15 @@
 			name = NCTableViewEmptyHedaerView;
 			sourceTree = "<group>";
 		};
+		12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */,
+				12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */,
+			);
+			name = NCDatabaseTypeVariationsViewController;
+			sourceTree = "<group>";
+		};
 		84250636187DC548002E691E /* NCSideMenuViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1995,6 +2011,7 @@
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				125F6807188526B6005732FA /* level_200.gif in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
+				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
 				125F680A188526B6005732FA /* level_240.gif in Resources */,
 				125F67F3188526B6005732FA /* level_000.gif in Resources */,
@@ -2203,6 +2220,7 @@
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
+				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
 				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,

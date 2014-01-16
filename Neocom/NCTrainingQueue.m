@@ -31,8 +31,12 @@
 
 - (id) initWithAccount:(NCAccount*) account {
 	if (self = [super init]) {
-		self.characterSkills = account.characterSheet.skillsMap;
-		self.attributes = account.characterAttributes;
+		if (account) {
+			self.characterSkills = account.characterSheet.skillsMap;
+			self.attributes = account.characterAttributes;
+		}
+		else
+			self.attributes = [NCCharacterAttributes defaultCharacterAttributes];
 		_skills = [NSMutableArray new];
 	}
 	return self;
@@ -51,8 +55,8 @@
 	BOOL addedDependence = NO;
 	for (NSInteger skillLevel = characterSkill.level + 1; skillLevel <= level; skillLevel++) {
 		BOOL isExist = NO;
-		for (EVEDBInvTypeRequiredSkill *item in self.skills) {
-			if (item.typeID == skill.typeID && item.requiredLevel == skillLevel) {
+		for (NCSkillData *item in self.skills) {
+			if (item.typeID == skill.typeID && item.targetLevel == skillLevel) {
 				isExist = YES;
 				break;
 			}
@@ -63,9 +67,9 @@
 				addedDependence = YES;
 			}
 			NCSkillData* skillData = [NCSkillData invTypeWithInvType:skill];
-			skillData.targetLevel = level;
+			skillData.targetLevel = skillLevel;
 			skillData.currentLevel = characterSkill.level;
-			float sp = [skillData skillPointsAtLevel:level - 1];
+			float sp = [skillData skillPointsAtLevel:skillLevel - 1];
 			skillData.skillPoints = MAX(sp, characterSkill.skillpoints);
 			[_skills addObject:skillData];
 		}

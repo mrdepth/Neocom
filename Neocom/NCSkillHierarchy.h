@@ -8,14 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import "EVEDBAPI.h"
+#import "NCSkillData.h"
 
-@interface EVEDBInvTypeRequiredSkill(NCSkillHierarchy)
+typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
+	NCSkillHierarchyAvailabilityUnavailable,
+	NCSkillHierarchyAvailabilityLearned,
+	NCSkillHierarchyAvailabilityNotLearned,
+	NCSkillHierarchyAvailabilityLowLevel
+};
+
+@interface NCSkillHierarchySkill: NCSkillData
 @property (nonatomic, assign) NSInteger nestingLevel;
+@property (nonatomic, assign) NCSkillHierarchyAvailability availability;
 @end
 
 @class NCAccount;
 @interface NCSkillHierarchy : NSObject
+@property (nonatomic, strong, readonly) NSArray* skills;
 
-- (id) initWithRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill account:(NCAccount*) account;
+- (id) initWithSkill:(EVEDBInvType*) skill level:(NSInteger) level account:(NCAccount*) account;
 
 @end

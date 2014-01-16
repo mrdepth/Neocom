@@ -19,11 +19,15 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 };
 
 @class NCAPIKey;
+@class NCSkillPlan;
 @interface NCAccount : NSManagedObject
 
 @property (nonatomic) int32_t characterID;
 @property (nonatomic) int32_t order;
 @property (nonatomic, retain) NCAPIKey *apiKey;
+@property (nonatomic, strong) NSSet* skillPlans;
+
+@property (nonatomic, strong) NCSkillPlan* activeSkillPlan;
 
 @property (nonatomic, assign, readonly) NCAccountType accountType;
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A598" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="apiKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="APIKey" inverseName="accounts" inverseEntity="APIKey" syncable="YES"/>
+        <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
     </entity>
     <entity name="APIKey" representedClassName="NCAPIKey" syncable="YES">
         <attribute name="apiKeyInfo" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -42,10 +43,10 @@
         <attribute name="subsystems" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES">
-        <attribute name="attributes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="skillPlanName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="skillPlanSkills" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="skillPlans" inverseEntity="Account" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="0" positionY="0" width="0" height="0"/>

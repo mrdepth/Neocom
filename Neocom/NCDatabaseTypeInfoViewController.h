@@ -9,5 +9,7 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseTypeInfoViewController : NCTableViewController
-- (IBAction)onTrain:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView* imageView;
+@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @end

@@ -36,6 +36,7 @@ static NCAccount* currentAccount = nil;
 @dynamic characterID;
 @dynamic order;
 @dynamic apiKey;
+@dynamic skillPlans;
 
 @synthesize characterInfoCacheRecord = _characterInfoCacheRecord;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
@@ -44,6 +45,7 @@ static NCAccount* currentAccount = nil;
 @synthesize error = _error;
 @synthesize characterAttributes = _characterAttributes;
 @synthesize lastSkillPointsUpdate = _lastSkillPointsUpdate;
+@synthesize activeSkillPlan = _activeSkillPlan;
 
 + (NSArray*) allAccounts {
 	NCStorage* storage = [NCStorage sharedStorage];
@@ -308,6 +310,51 @@ static NCAccount* currentAccount = nil;
 			self.skillQueueCacheRecord.date = skillQueue.cacheDate;
 			self.skillQueueCacheRecord.expireDate = skillQueue.cacheExpireDate;
 		}
+	}
+}
+
+- (NCSkillPlan*) activeSkillPlan {
+	@synchronized(self) {
+		if (!_activeSkillPlan) {
+			__block NCSkillPlan* skillPlan = nil;
+
+			NCStorage* storage = [NCStorage sharedStorage];
+			[storage.managedObjectContext performBlockAndWait:^{
+				if (self.skillPlans.count == 0) {
+					skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext]
+									 insertIntoManagedObjectContext:self.managedObjectContext];
+					skillPlan.active = YES;
+					skillPlan.account = self;
+				}
+				else {
+					NSSet* skillPlans = [self.skillPlans filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"active == YES"]];
+					if (skillPlans.count == 0) {
+						skillPlan = [self.skillPlans anyObject];
+						skillPlan.active = YES;
+					}
+					else if (skillPlans.count > 1) {
+						NSMutableSet* set = [[NSMutableSet alloc] initWithSet:skillPlans];
+						skillPlan = [set anyObject];
+						[set removeObject:skillPlan];
+						for (NCSkillPlan* item in set)
+							item.active = NO;
+					}
+					else
+						skillPlan = [skillPlans anyObject];
+				}
+				[storage saveContext];
+			}];
+			_activeSkillPlan = skillPlan;
+		}
+		return _activeSkillPlan;
+	}
+}
+
+- (void) setActiveSkillPlan:(NCSkillPlan *)activeSkillPlan {
+	@synchronized(self) {
+		for (NCSkillPlan* skillPlan in self.skillPlans)
+			skillPlan.active = NO;
+		activeSkillPlan.active = YES;
 	}
 }
 

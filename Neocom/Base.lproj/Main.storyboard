@@ -518,7 +518,7 @@
                                         <constraint firstAttribute="width" constant="64" id="kfl-ny-5Gh"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rRd-YJ-Xpc">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="rRd-YJ-Xpc">
                                     <rect key="frame" x="87" y="53" width="218" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -1298,7 +1298,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="g7F-eE-4lp"/>
+        <segue reference="EzY-CX-4eW"/>
         <segue reference="ucO-dw-3y2"/>
     </inferredMetricsTieBreakers>
 </document>

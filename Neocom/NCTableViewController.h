@@ -11,7 +11,7 @@
 #import "NCStorage.h"
 #import "NCTaskManager.h"
 
-@interface NCTableViewController : UITableViewController
+@interface NCTableViewController : UITableViewController<UISearchDisplayDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
 
@@ -25,5 +25,6 @@
 - (NSTimeInterval) defaultCacheExpireTime;
 - (NSString*) recordID;
 - (void) didChangeAccount:(NCAccount*) account;
+- (void) searchWithSearchString:(NSString*) searchString;
 
 @end

@@ -25,6 +25,9 @@
 		1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1211123C18599396009E5106 /* NCCache.xcdatamodeld */; };
 		121112401859A54D009E5106 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1211123F1859A54D009E5106 /* CoreData.framework */; };
 		1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211124C1859E1AF009E5106 /* NCCacheRecord.m */; };
+		12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
+		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
+		12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
 		125F67F3188526B6005732FA /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67CF188526B5005732FA /* level_000.gif */; };
 		125F67F4188526B6005732FA /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D0188526B5005732FA /* level_010.gif */; };
@@ -307,6 +310,12 @@
 		1211123F1859A54D009E5106 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		1211124B1859E1AF009E5106 /* NCCacheRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecord.h; sourceTree = "<group>"; };
 		1211124C1859E1AF009E5106 /* NCCacheRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecord.m; sourceTree = "<group>"; };
+		12124AA9188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMarketInfoViewController.h; sourceTree = "<group>"; };
+		12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoViewController.m; sourceTree = "<group>"; };
+		12124AAD1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMarketInfoCell.h; sourceTree = "<group>"; };
+		12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoCell.m; sourceTree = "<group>"; };
+		12124AB318893E0100F01C59 /* UINavigationController+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Neocom.h"; sourceTree = "<group>"; };
+		12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Neocom.m"; sourceTree = "<group>"; };
 		12160493187EE2AA00BD1DCF /* NCAccountCharacterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCharacterCell.h; sourceTree = "<group>"; };
 		12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCharacterCell.m; sourceTree = "<group>"; };
 		125F67CF188526B5005732FA /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
@@ -881,6 +890,25 @@
 				1211124C1859E1AF009E5106 /* NCCacheRecord.m */,
 			);
 			name = NCCache;
+			sourceTree = "<group>";
+		};
+		12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12124AAC188914F600F01C59 /* NCDatabaseTypeMarketInfoCell */,
+				12124AA9188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.h */,
+				12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */,
+			);
+			name = NCDatabaseTypeMarketInfoViewController;
+			sourceTree = "<group>";
+		};
+		12124AAC188914F600F01C59 /* NCDatabaseTypeMarketInfoCell */ = {
+			isa = PBXGroup;
+			children = (
+				12124AAD1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.h */,
+				12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */,
+			);
+			name = NCDatabaseTypeMarketInfoCell;
 			sourceTree = "<group>";
 		};
 		12160492187EE24900BD1DCF /* NCAccountCharacterCell */ = {
@@ -1537,10 +1565,11 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
-				12C7EE63188669CB00F90763 /* NCDatabaseTypeContainerViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
+				12C7EE63188669CB00F90763 /* NCDatabaseTypeContainerViewController */,
+				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
+				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1556,6 +1585,8 @@
 				127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */,
 				128BCE64188567E6000E1922 /* EVEDBInvType+Neocom.h */,
 				128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */,
+				12124AB318893E0100F01C59 /* UINavigationController+Neocom.h */,
+				12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2113,6 +2144,7 @@
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
+				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
 				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
 				126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */,
@@ -2207,6 +2239,7 @@
 				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
+				12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
@@ -2256,6 +2289,7 @@
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
 				129D2619187E923300E2062C /* LUISegmentedControl.m in Sources */,
+				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
 				126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */,
 				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,
 				126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */,

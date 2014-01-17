@@ -8,9 +8,11 @@
 
 #import "NCDatabaseViewController.h"
 #import "NCDatabaseTypeContainerViewController.h"
+#import "NCTableViewCell.h"
 
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) NSArray* searchResults;
 @end
 
 @implementation NCDatabaseViewController
@@ -80,8 +82,7 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
-		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-		id row = self.rows[indexPath.row];
+		id row = [sender object];
 		
 		NCDatabaseViewController* destinationViewController = segue.destinationViewController;
 		if ([row isKindOfClass:[EVEDBInvCategory class]])
@@ -91,8 +92,8 @@
 	}
 	else {
 		NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
-		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-		destinationViewController.type = self.rows[indexPath.row];
+		id row = [sender object];
+		destinationViewController.type = row;
 	}
 }
 
@@ -105,24 +106,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.rows.count;
+    return tableView == self.tableView ? self.rows.count : self.searchResults.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id row = self.rows[indexPath.row];
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
 	if ([row isKindOfClass:[EVEDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		cell.textLabel.text = [row typeName];
 		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.object = row;
 		return cell;
 	}
 	else {
 		static NSString *CellIdentifier = @"CategoryGroupCell";
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
@@ -136,6 +138,7 @@
 			cell.imageView.image = [UIImage imageNamed:iconImageName];
 		else
 			cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.object = row;
 		return cell;
 	}
 }
@@ -195,6 +198,50 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (void) searchWithSearchString:(NSString*) searchString {
+	NSMutableArray* searchResults = [NSMutableArray new];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:nil
+										 block:^(NCTask *task) {
+											 if ([task isCancelled])
+												 return;
+											 if (searchString.length >= 2) {
+												 void (^block)(sqlite3_stmt* stmt, BOOL *needsMore) = ^(sqlite3_stmt* stmt, BOOL *needsMore) {
+													 [searchResults addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
+													 if ([task isCancelled])
+														 *needsMore = NO;
+												 };
+												 
+												 if (self.group != nil)
+													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																									 self.group.groupID,
+																									 searchString,
+																									 self.filter == NCDatabaseFilterPublished ? @" AND published=1" :
+																									 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
+																						resultBlock:block];
+												 else if (self.category != nil)
+													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invGroups.categoryID=%d AND invTypes.groupID=invGroups.groupID AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																									 self.category.categoryID,
+																									 searchString,
+																									 self.filter == NCDatabaseFilterPublished ? @" AND invTypes.published=1" :
+																									 self.filter == NCDatabaseFilterUnpublished ? @" AND invTypes.published=0" : @""]
+																						resultBlock:block];
+												 else
+													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
+																									 searchString,
+																									 self.filter == NCDatabaseFilterPublished ? @" AND published=1" :
+																									 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
+																						resultBlock:block];
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.searchResults = searchResults;
+									 [self.searchDisplayController.searchResultsTableView reloadData];
+								 }
+							 }];
 }
 
 @end

@@ -110,10 +110,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
-		self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning

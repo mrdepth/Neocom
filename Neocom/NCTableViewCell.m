@@ -28,10 +28,12 @@
 
 - (void) layoutSubviews {
 	CGFloat indentation = self.indentationLevel * self.indentationWidth;
-	if (self.imageView.image)
-		self.separatorInset = UIEdgeInsetsMake(0, indentation + 15 + 32 + 8, 0, 0);
-	else
-		self.separatorInset = UIEdgeInsetsMake(-1, -1, -1, -1);
+	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
+		if (self.imageView.image)
+			self.separatorInset = UIEdgeInsetsMake(0, indentation + 15 + 32 + 8, 0, 0);
+		else
+			self.separatorInset = UIEdgeInsetsMake(-1, -1, -1, -1);
+	}
 	
 	[super layoutSubviews];
 	

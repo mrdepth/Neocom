@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NCTableViewCell : UITableViewCell
-
+@property (nonatomic, strong) id object;
 @end

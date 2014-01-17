@@ -10,6 +10,7 @@
 #import "UIView+Nib.h"
 #import "NCNavigationCharacterButton.h"
 #import "NCSideMenuViewController.h"
+#import "UINavigationController+Neocom.h"
 
 @interface NCMainMenuDropDownSegue: UIStoryboardSegue
 
@@ -104,6 +105,7 @@
 										animation.duration = 0.5f;
 										[dropDownViewController.view.layer addAnimation:animation forKey:@"transform"];
 									}
+									[self.navigationController updateScrollViewFromViewController:self toViewController:self.dropDownViewController];
 								}
 								completion:^(BOOL finished) {
 									[dropDownViewController didMoveToParentViewController:self];

@@ -7,7 +7,7 @@
 //
 
 #import "NCDatabaseTypeMarketInfoViewController.h"
-#import "NCDatabaseTypeContainerViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 #import "EVEDBAPI.h"
 #import "EVECentralAPI.h"
 #import "NCDatabaseTypeMarketInfoCell.h"
@@ -117,6 +117,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
+
 	// Do any additional setup after loading the view.
 }
 
@@ -156,6 +158,14 @@
 		[button setTitle:NSLocalizedString(@"Sell orders", nil) forState:UIControlStateNormal];
 	else
 		[button setTitle:NSLocalizedString(@"Buy orders", nil) forState:UIControlStateNormal];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = self.type;
+		destinationViewController.navigationItem.rightBarButtonItem = nil;
+	}
 }
 
 #pragma mark - Table view data source
@@ -247,7 +257,7 @@
 #pragma mark - NCTableViewController
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
 	__block NSError* error = nil;
 	
 	NCDatabaseTypeMarketInfoViewControllerData* data = [NCDatabaseTypeMarketInfoViewControllerData new];
@@ -349,7 +359,7 @@
 }
 
 - (NSString*) recordID {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
 	return [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", type.typeID];
 	//return [NSString stringWithFormat:@"%@.%d", [super recordID], type.typeID];
 }

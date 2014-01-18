@@ -11,8 +11,8 @@
 #import "NCStorage.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
-#import "NCDatabaseTypeContainerViewController.h"
 #import "NCDatabaseTypeVariationsViewController.h"
+#import "NCDatabaseTypeMarketInfoViewController.h"
 #import "NCTrainingQueue.h"
 #import "NCSkillHierarchy.h"
 #import "NCDatabaseViewController.h"
@@ -45,6 +45,7 @@
 @property (nonatomic, copy) NSString* imageName;
 @property (nonatomic, copy) NSString* accessoryImageName;
 @property (nonatomic, strong) id object;
+@property (nonatomic, strong) NSString* cellIdentifier;
 @property (nonatomic, assign) NSInteger indentationLevel;
 
 @end
@@ -105,7 +106,7 @@
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = row.object;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
@@ -117,7 +118,12 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeVariationsViewController"]) {
 		NCDatabaseTypeVariationsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+		destinationViewController.type = self.type;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMarketInfoViewController"]) {
+		NCDatabaseTypeMarketInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = self.type;
+		destinationViewController.navigationItem.rightBarButtonItem = nil;
 	}
 }
 
@@ -148,8 +154,11 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *cellIdentifier = @"Cell";
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NSString *cellIdentifier = row.cellIdentifier;
+	if (!cellIdentifier)
+		cellIdentifier = @"Cell";
+	
 	UITableViewCell* cell = (UITableViewCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
 	cell.textLabel.text = row.title;
 	cell.detailTextLabel.text = row.detail;
@@ -158,8 +167,8 @@
 	cell.indentationWidth = 16;
 	
 	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
-	if (!cell.accessoryView)
-		cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] || [row.object isKindOfClass:[NSString class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+	//if (!cell.accessoryView)
+	//	cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] || [row.object isKindOfClass:[NSString class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 	
 	//cell.indentationLevel = row.indentationLevel;
 	
@@ -170,20 +179,20 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	if (row.object) {
+/*	if (row.object) {
 		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
 			[self performSegueWithIdentifier:@"NCDatabaseViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 		else if ([row.object isKindOfClass:[EVEDBInvType class]])
 			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 		else if ([row.object isKindOfClass:[NSString class]])
 			[self performSegueWithIdentifier:row.object sender:[tableView cellForRowAtIndexPath:indexPath]];
-	}
+	}*/
 }
 
 #pragma mark - Private
 
 - (void) reload {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
 	NSString* s = [[type.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
 	NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
 	[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
@@ -204,7 +213,7 @@
 }
 
 - (void) loadItemAttributes {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
 	NCAccount *account = [NCAccount currentAccount];
 	NCCharacterAttributes* attributes = [account characterAttributes];
 	if (!attributes)
@@ -248,7 +257,7 @@
 												   row.title = NSLocalizedString(@"Variations", nil);
 												   row.detail = [NSString stringWithFormat:@"%d", count + 1];
 												   row.imageName = @"Icons/icon09_07.png";
-												   row.object = @"NCDatabaseTypeVariationsViewController";
+												   row.cellIdentifier = @"VariationsCell";
 												   [rows addObject:row];
 												   [sections addObject:section];
 											   }
@@ -298,6 +307,7 @@
 											   row.detail = [type.blueprint typeName];
 											   row.imageName = [type.blueprint typeSmallImageName];
 											   row.object = type.blueprint;
+											   row.cellIdentifier = @"TypeCell";
 											   [rows addObject:row];
 											   
 											   section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
@@ -332,6 +342,7 @@
 																	   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 																	   row.title = [NSString stringWithFormat:@"%@ %d", skill.typeName, skill.targetLevel];
 																	   row.object = skill;
+																	   row.cellIdentifier = @"TypeCell";
 																	   row.indentationLevel = skill.nestingLevel;
 																	   
 																	   switch (skill.availability) {
@@ -379,6 +390,7 @@
 														   row.detail = group.groupName;
 														   row.imageName = attribute.attribute.icon.iconImageName ? attribute.attribute.icon.iconImageName : group.icon.iconImageName;
 														   row.object = group;
+														   row.cellIdentifier = @"GroupCell";
 														   [rows addObject:row];
 													   }
 													   else if (attribute.attribute.unitID == EVEDBUnitIDSizeClass) {
@@ -490,7 +502,7 @@
 }
 
 - (void) loadBlueprintAttributes {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
 	NCAccount *account = [NCAccount currentAccount];
 	NCCharacterAttributes* attributes = [account characterAttributes];
 	if (!attributes)
@@ -512,6 +524,7 @@
 											 row.detail = productType.typeName;
 											 row.imageName = productType.typeSmallImageName;
 											 row.object = productType;
+											 row.cellIdentifier = @"TypeCell";
 											 [rows addObject:row];
 											 
 											 row = [NCDatabaseTypeInfoViewControllerRow new];
@@ -615,6 +628,7 @@
 														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 														 row.title = [NSString stringWithFormat:@"%@ %d", skill.typeName, skill.targetLevel];
 														 row.object = skill;
+														 row.cellIdentifier = @"TypeCell";
 														 row.indentationLevel = skill.nestingLevel;
 														 
 														 switch (skill.availability) {
@@ -652,6 +666,7 @@
 														 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:[requirement quantity]];
 														 row.imageName = [[requirement requiredType] typeSmallImageName];
 														 row.object = [requirement requiredType];
+														 row.cellIdentifier = @"TypeCell";
 														 [rows addObject:row];
 													 }
 													 else {
@@ -675,6 +690,7 @@
 														 row.detail = value;
 														 row.imageName = [material.materialType typeSmallImageName];
 														 row.object = material.materialType;
+														 row.cellIdentifier = @"TypeCell";
 														 [rows addObject:row];
 													 }
 												 }
@@ -692,7 +708,8 @@
 }
 
 - (void) loadNPCAttributes {
-	EVEDBInvType* type = [(NCDatabaseTypeContainerViewController*) self.parentViewController type];
+	EVEDBInvType* type = self.type;
+
 	NCAccount *account = [NCAccount currentAccount];
 	NCCharacterAttributes* attributes = [account characterAttributes];
 	if (!attributes)
@@ -898,6 +915,7 @@
 													 row.detail = missile.typeName;
 													 row.imageName = [missile typeSmallImageName];
 													 row.object = missile;
+													 row.cellIdentifier = @"TypeCell";
 													 [rows addObject:row];
 													 
 													 for (int i = 0; i < 7; i++) {

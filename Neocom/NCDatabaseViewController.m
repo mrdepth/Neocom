@@ -7,7 +7,7 @@
 //
 
 #import "NCDatabaseViewController.h"
-#import "NCDatabaseTypeContainerViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 #import "NCTableViewCell.h"
 
 @interface NCDatabaseViewController ()
@@ -91,7 +91,7 @@
 			destinationViewController.group = row;
 	}
 	else {
-		NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 		id row = [sender object];
 		destinationViewController.type = row;
 	}

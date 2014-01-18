@@ -7,7 +7,7 @@
 //
 
 #import "NCDatabaseTypeVariationsViewController.h"
-#import "NCDatabaseTypeContainerViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCDatabaseTypeVariationsViewController ()
 @property (nonatomic, strong) NSArray* sections;
@@ -85,7 +85,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NCDatabaseTypeContainerViewController* destinationViewController = segue.destinationViewController;
+	NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
 	destinationViewController.type = self.sections[indexPath.section][@"rows"][indexPath.row];
 }

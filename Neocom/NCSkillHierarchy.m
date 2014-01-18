@@ -18,7 +18,7 @@
 @interface NCSkillHierarchy()
 @property (nonatomic, strong, readwrite) NSMutableArray* skills;
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) level account:(NCAccount*) account;
+- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) nestingLevel account:(NCAccount*) account;
 @end
 
 @implementation NCSkillHierarchy
@@ -35,7 +35,7 @@
 
 #pragma mark - Private
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) level account:(NCAccount*) account {
+- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) nestingLevel account:(NCAccount*) account {
 	NCSkillHierarchySkill* skillData = [[NCSkillHierarchySkill alloc] initWithInvType:skill];
 	skillData.targetLevel = skill.requiredLevel;
 
@@ -45,7 +45,7 @@
 		skillData.skillPoints = characterSkill.skillpoints;
 		if (!characterSkill)
 			skillData.availability = NCSkillHierarchyAvailabilityNotLearned;
-		else if (characterSkill.level < level)
+		else if (characterSkill.level < skillData.targetLevel)
 			skillData.availability = NCSkillHierarchyAvailabilityLowLevel;
 		else
 			skillData.availability = NCSkillHierarchyAvailabilityLearned;
@@ -53,10 +53,10 @@
 	else
 		skillData.availability = NCSkillHierarchyAvailabilityUnavailable;
 
-	skillData.nestingLevel = level;
+	skillData.nestingLevel = nestingLevel;
 	[(NSMutableArray*) self.skills addObject:skillData];
 	for (EVEDBInvTypeRequiredSkill* subSkill in skill.requiredSkills)
-		[self addRequiredSkill:subSkill withNestingLevel:level + 1 account:account];
+		[self addRequiredSkill:subSkill withNestingLevel:nestingLevel + 1 account:account];
 }
 
 @end

@@ -8,7 +8,10 @@
 
 #import "NCTableViewController.h"
 
+@class EVEDBInvType;
 @interface NCDatabaseTypeInfoViewController : NCTableViewController
+@property (nonatomic, strong) EVEDBInvType* type;
+
 @property (weak, nonatomic) IBOutlet UIImageView* imageView;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;

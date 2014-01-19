@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NCStorage.h"
 
 @class NCSkillsViewController;
 @interface NCSkillsDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, strong) NSArray* sections;
 @property (weak, nonatomic) NCSkillsViewController* skillsViewController;
 
 - (void) reloadData;

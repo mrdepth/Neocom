@@ -14,8 +14,12 @@
 @property (nonatomic, assign) NSInteger skillPoints;
 @property (nonatomic, assign) NSInteger currentLevel;
 @property (nonatomic, assign) NSInteger targetLevel;
+@property (nonatomic, assign) NSInteger trainedLevel;
 @property (nonatomic, assign, readonly) NSInteger targetSkillPoints;
 @property (nonatomic, assign, getter = isActive) BOOL active;
+@property (nonatomic, strong, readonly) NSString* skillName;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
+@property (nonatomic, assign) NSTimeInterval trainingTime;
 
 - (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 

@@ -76,6 +76,27 @@
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;
 }
 
+#pragma mark - NSCoding
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+	[aCoder encodeInteger:self.charisma forKey:@"charisma"];
+	[aCoder encodeInteger:self.intelligence forKey:@"intelligence"];
+	[aCoder encodeInteger:self.memory forKey:@"memory"];
+	[aCoder encodeInteger:self.perception forKey:@"perception"];
+	[aCoder encodeInteger:self.willpower forKey:@"willpower"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+	if (self = [super init]) {
+		self.charisma = [aDecoder decodeIntegerForKey:@"charisma"];
+		self.intelligence = [aDecoder decodeIntegerForKey:@"intelligence"];
+		self.memory = [aDecoder decodeIntegerForKey:@"memory"];
+		self.perception = [aDecoder decodeIntegerForKey:@"perception"];
+		self.willpower = [aDecoder decodeIntegerForKey:@"willpower"];
+	}
+	return self;
+}
+
 #pragma mark - Private
 
 - (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID {

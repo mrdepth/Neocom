@@ -11,5 +11,6 @@
 @class EVESkillQueue;
 @interface NCTrainingQueueDataSource : NCSkillsDataSource
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
+@property (nonatomic, strong) NCSkillPlan* skillPlan;
 
 @end

@@ -8,6 +8,17 @@
 
 #import "NCTableViewController.h"
 
+typedef NS_ENUM(NSInteger, NCSkillsViewControllerMode) {
+	NCSkillsViewControllerModeTrainingQueue,
+	NCSkillsViewControllerModeKnownSkills,
+	NCSkillsViewControllerModeAllSkills,
+	NCSkillsViewControllerModeNotKnownSkills,
+	NCSkillsViewControllerModeCanTrainSkills
+};
+
 @interface NCSkillsViewController : NCTableViewController
+@property (nonatomic, assign) NCSkillsViewControllerMode mode;
+
+- (IBAction)onChangeMode:(id)sender;
 
 @end

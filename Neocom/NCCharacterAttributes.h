@@ -10,7 +10,7 @@
 
 @class EVEDBInvType;
 @class EVECharacterSheet;
-@interface NCCharacterAttributes : NSObject
+@interface NCCharacterAttributes : NSObject<NSCoding>
 @property (nonatomic, assign) NSInteger intelligence;
 @property (nonatomic, assign) NSInteger memory;
 @property (nonatomic, assign) NSInteger charisma;

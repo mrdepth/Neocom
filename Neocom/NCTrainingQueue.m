@@ -16,6 +16,7 @@
 }
 @property (nonatomic, strong) NSDictionary* characterSkills;
 @property (nonatomic, strong) NCCharacterAttributes* attributes;
+
 @end
 
 @implementation NCTrainingQueue
@@ -68,9 +69,10 @@
 			}
 			NCSkillData* skillData = [NCSkillData invTypeWithInvType:skill];
 			skillData.targetLevel = skillLevel;
-			skillData.currentLevel = characterSkill.level;
-			float sp = [skillData skillPointsAtLevel:skillLevel - 1];
-			skillData.skillPoints = MAX(sp, characterSkill.skillpoints);
+			skillData.currentLevel = skillLevel - 1;
+			skillData.trainedLevel = characterSkill.level;
+			
+			skillData.skillPoints = characterSkill.skillpoints;
 			[_skills addObject:skillData];
 		}
 	}

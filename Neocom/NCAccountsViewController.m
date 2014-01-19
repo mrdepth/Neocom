@@ -201,8 +201,7 @@
 			UIColor *color = nil;
 			EVESkillQueue* skillQueue = account.account.skillQueue;
 			if (skillQueue.skillQueue.count > 0) {
-				NSDate *endTime = [[skillQueue.skillQueue lastObject] endTime];
-				NSTimeInterval timeLeft = [endTime timeIntervalSinceDate:[skillQueue serverTimeWithLocalTime:[NSDate date]]];
+				NSTimeInterval timeLeft = [skillQueue timeLeft];
 				if (timeLeft > 3600 * 24)
 					color = [UIColor greenColor];
 				else

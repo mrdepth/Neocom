@@ -267,8 +267,13 @@
 		12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
+		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */; };
+		84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; };
+		84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */; };
+		84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FA63E2188C5227008FD761 /* ImageIO.framework */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
 		84FC4F6018785CCC0004073C /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
 /* End PBXBuildFile section */
@@ -760,10 +765,18 @@
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		841534EA188A921200B42433 /* NCDatabaseMarketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseMarketViewController.h; sourceTree = "<group>"; };
 		841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseMarketViewController.m; sourceTree = "<group>"; };
+		841534EF188A9A7500B42433 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
 		84250637187DC566002E691E /* NCSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSideMenuViewController.h; sourceTree = "<group>"; };
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		84EC7940188BD4B20001BCE3 /* NSArray+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Neocom.h"; sourceTree = "<group>"; };
+		84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Neocom.m"; sourceTree = "<group>"; };
+		84FA63DC188C4FC1008FD761 /* NCSkillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillCell.h; sourceTree = "<group>"; };
+		84FA63DD188C4FC1008FD761 /* NCSkillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillCell.m; sourceTree = "<group>"; };
+		84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Neocom.h"; sourceTree = "<group>"; };
+		84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Neocom.m"; sourceTree = "<group>"; };
+		84FA63E2188C5227008FD761 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		84FC4F55187840910004073C /* NCAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountsViewController.h; sourceTree = "<group>"; };
 		84FC4F56187840910004073C /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
 		84FC4F5E18785CCC0004073C /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
@@ -775,6 +788,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
 				120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */,
@@ -826,6 +840,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84FA63E2188C5227008FD761 /* ImageIO.framework */,
 				129FEE49186032B100F75FA6 /* libsqlite3.dylib */,
 				1211123F1859A54D009E5106 /* CoreData.framework */,
 				120968521845F0CB00921A37 /* Foundation.framework */,
@@ -859,6 +874,7 @@
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
+				841534EF188A9A7500B42433 /* Database.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
 				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
@@ -977,7 +993,7 @@
 		125F681718852D8A005732FA /* NCSkillsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				125F681F18853223005732FA /* NCSkillData */,
+				84FA63DB188C4FAC008FD761 /* NCSkillCell */,
 				125F681B18853137005732FA /* NCSkillsDataSource */,
 				125F681818852DA9005732FA /* NCSkillsViewController.h */,
 				125F681918852DA9005732FA /* NCSkillsViewController.m */,
@@ -1544,7 +1560,6 @@
 		126ED31A188128E10009FA39 /* Character */ = {
 			isa = PBXGroup;
 			children = (
-				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
 				125F682618853809005732FA /* NCCharacterAttributes */,
 				125F681718852D8A005732FA /* NCSkillsViewController */,
@@ -1565,6 +1580,7 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 				841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */,
 				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
@@ -1587,6 +1603,10 @@
 				128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */,
 				12124AB318893E0100F01C59 /* UINavigationController+Neocom.h */,
 				12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */,
+				84EC7940188BD4B20001BCE3 /* NSArray+Neocom.h */,
+				84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */,
+				84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */,
+				84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1881,6 +1901,7 @@
 		12C7EE9B1886B50900F90763 /* NCTrainingQueue */ = {
 			isa = PBXGroup;
 			children = (
+				125F681F18853223005732FA /* NCSkillData */,
 				12C7EE9C1886B51D00F90763 /* NCTrainingQueue.h */,
 				12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */,
 			);
@@ -1939,6 +1960,15 @@
 				128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */,
 			);
 			name = NCDatabaseViewController;
+			sourceTree = "<group>";
+		};
+		84FA63DB188C4FAC008FD761 /* NCSkillCell */ = {
+			isa = PBXGroup;
+			children = (
+				84FA63DC188C4FC1008FD761 /* NCSkillCell.h */,
+				84FA63DD188C4FC1008FD761 /* NCSkillCell.m */,
+			);
+			name = NCSkillCell;
 			sourceTree = "<group>";
 		};
 		84FC4F541878405C0004073C /* Account */ = {
@@ -2037,6 +2067,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
@@ -2120,6 +2151,7 @@
 				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
 				126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */,
 				126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */,
+				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
@@ -2140,6 +2172,7 @@
 				126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */,
 				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
 				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
+				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
 				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
@@ -2178,6 +2211,7 @@
 				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
 				128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */,
+				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,

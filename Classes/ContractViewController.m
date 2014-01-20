@@ -402,11 +402,11 @@
 }
 
 - (NSString*) stationNameWithID:(NSInteger) stationID {
-	EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:self.contract.startStationID error:nil];
+	EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:stationID error:nil];
 	NSString *stationName = nil;
 	
 	if (!station) {
-		EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(self.contract.startStationID)];
+		EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(stationID)];
 		if (conquerableStation) {
 			EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
 			if (solarSystem)

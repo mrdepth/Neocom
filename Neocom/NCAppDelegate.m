@@ -9,6 +9,7 @@
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
+#import "NSArray+Neocom.h"
 
 @interface MyOperation : NSOperation
 
@@ -34,6 +35,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	NSArray* a = @[@1, @2, @3, @4, @5];
+	NSArray* b = @[@1, @6, @5, @4, @2];
+	NSLog(@"%@", [b transitionFromArray:a]);
+	
 //	NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
 //								  insertIntoManagedObjectContext:nil];
 //	skillPlan = nil;

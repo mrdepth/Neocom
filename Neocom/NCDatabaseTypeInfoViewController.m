@@ -17,6 +17,7 @@
 #import "NCSkillHierarchy.h"
 #import "NCDatabaseViewController.h"
 #import "NSString+HTML.h"
+#import "UIAlertView+Block.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -179,6 +180,20 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	if (row.object && [row.object isKindOfClass:[NCTrainingQueue class]]) {
+		NCTrainingQueue* trainingQueue = row.object;
+		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+								 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
+					   cancelButtonTitle:NSLocalizedString(@"No", nil)
+					   otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
+						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+								 NCSkillPlan* skillPlan = [[NCAccount currentAccount] activeSkillPlan];
+								 [skillPlan mergeWithTrainingQueue:trainingQueue];
+							 }
+						 }
+							 cancelBlock:nil] show];
+	}
 /*	if (row.object) {
 		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
 			[self performSegueWithIdentifier:@"NCDatabaseViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
@@ -263,7 +278,7 @@
 											   }
 										   }
 										   
-										   if (account && account.activeSkillPlan && trainingQueue.skills.count > 0) {
+										   if (account && account.activeSkillPlan) {
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   section[@"title"] = NSLocalizedString(@"Skill Plan", nil);
 											   NSMutableArray* rows = [NSMutableArray array];
@@ -284,15 +299,13 @@
 													   [rows addObject:row];
 												   }
 											   }
-											   else {
-												   if (trainingQueue.skills.count) {
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = NSLocalizedString(@"Add required skills to training plan", nil);
-													   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-													   row.imageName = @"Icons/icon50_13.png";
-													   row.object = trainingQueue;
-													   [rows addObject:row];
-												   }
+											   else if (trainingQueue.skills.count > 0){
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = NSLocalizedString(@"Add required skills to training plan", nil);
+												   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+												   row.imageName = @"Icons/icon50_13.png";
+												   row.object = trainingQueue;
+												   [rows addObject:row];
 											   }
 											   if (rows.count > 0)
 												   [sections addObject:section];

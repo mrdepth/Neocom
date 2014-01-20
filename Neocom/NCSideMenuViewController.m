@@ -20,7 +20,7 @@
 @implementation NCSideMenuViewControllerEmbedSegue
 
 - (void) perform {
-	NCSideMenuViewController* sourceViewController = self.sourceViewController;
+	NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
 	UIViewController* destinationViewController = self.destinationViewController;
 	sourceViewController.menuViewController = destinationViewController;
 }
@@ -30,9 +30,10 @@
 @implementation NCSideMenuViewControllerContentSegue
 
 - (void) perform {
-	NCSideMenuViewController* sourceViewController = self.sourceViewController;
+	NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
 	UIViewController* destinationViewController = self.destinationViewController;
-	sourceViewController.contentViewController = destinationViewController;
+	//sourceViewController.contentViewController = destinationViewController;
+	[sourceViewController setContentViewController:destinationViewController animated:YES];
 }
 
 @end
@@ -52,8 +53,12 @@
 @implementation UIViewController(NCSideMenuViewController)
 
 - (NCSideMenuViewController*) sideMenuViewController {
-	NCSideMenuViewController* sideMenuViewController = objc_getAssociatedObject(self, @"sideMenuViewController");
-	return sideMenuViewController ? sideMenuViewController : self.parentViewController.sideMenuViewController;
+	UIViewController* controller = self;
+	while (controller && ![controller isKindOfClass:[NCSideMenuViewController class]])
+		controller = controller.parentViewController;
+	return (NCSideMenuViewController*) controller;
+//	NCSideMenuViewController* sideMenuViewController = objc_getAssociatedObject(self, @"sideMenuViewController");
+//	return sideMenuViewController ? sideMenuViewController : self.parentViewController.sideMenuViewController;
 }
 
 - (void) setSideMenuViewController:(NCSideMenuViewController *)sideMenuViewController {
@@ -150,6 +155,9 @@
 	contentViewController.view.clipsToBounds = NO;
 	contentViewController.view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:contentViewController.view.bounds] CGPath];
 	contentViewController.sideMenuViewController = self;
+	
+	if (self.menuVisible)
+		[self setMenuVisible:NO animated:animated];
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible {

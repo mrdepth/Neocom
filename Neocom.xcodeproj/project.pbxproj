@@ -258,6 +258,7 @@
 		129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE441860326E00F75FA6 /* NCShipFit.m */; };
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
+		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
@@ -748,6 +749,8 @@
 		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
 		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		12AA87D0188D05B90076CCF0 /* UIStoryboard+Multiple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+Multiple.h"; sourceTree = "<group>"; };
+		12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+Multiple.m"; sourceTree = "<group>"; };
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
@@ -1659,6 +1662,7 @@
 				129D25F6187E923200E2062C /* UIDevice */,
 				129D25F9187E923200E2062C /* UIImage */,
 				129D25FC187E923200E2062C /* UIImageView+URL */,
+				12AA87CF188D05AE0076CCF0 /* UIStoryboard+Multiple */,
 			);
 			path = tools;
 			sourceTree = "<group>";
@@ -1878,6 +1882,15 @@
 				129FEE321860326D00F75FA6 /* NCFit.m */,
 			);
 			name = NCStorage;
+			sourceTree = "<group>";
+		};
+		12AA87CF188D05AE0076CCF0 /* UIStoryboard+Multiple */ = {
+			isa = PBXGroup;
+			children = (
+				12AA87D0188D05B90076CCF0 /* UIStoryboard+Multiple.h */,
+				12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */,
+			);
+			path = "UIStoryboard+Multiple";
 			sourceTree = "<group>";
 		};
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
@@ -2194,6 +2207,7 @@
 				126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */,
 				126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */,
 				126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */,
+				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,

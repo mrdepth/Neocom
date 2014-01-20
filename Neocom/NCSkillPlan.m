@@ -58,4 +58,13 @@
 	}];
 }
 
+- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
+	NCTrainingQueue* newTrainingQueue = [self.trainingQueue copy];
+	for (NCSkillData* skillData in trainingQueue.skills)
+		[newTrainingQueue addSkill:skillData withLevel:skillData.targetLevel];
+	self.trainingQueue = newTrainingQueue;
+	[self save];
+}
+
+
 @end

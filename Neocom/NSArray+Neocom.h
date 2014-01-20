@@ -8,8 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#define NSArrayTransitionInsertKey @"NSArrayTransitionInsertKey"
+#define NSArrayTransitionDeleteKey @"NSArrayTransitionDeleteKey"
+#define NSArrayTransitionMoveKey @"NSArrayTransitionMoveKey"
+
 @interface NSArray (Neocom)
 
 - (NSArray*) arrayGroupedByKey:(NSString*) keyPath;
+
+- (NSDictionary*) transitionFromArray:(NSArray*) from;
 
 @end

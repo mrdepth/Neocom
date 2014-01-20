@@ -22,5 +22,6 @@
 @property (nonatomic, strong) NCTrainingQueue* trainingQueue;
 
 - (void) save;
+- (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
 
 @end

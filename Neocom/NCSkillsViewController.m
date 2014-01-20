@@ -13,6 +13,8 @@
 #import "UIActionSheet+Block.h"
 #import "NCSkillCell.h"
 #import "UIImageView+Neocom.h"
+#import "NCDatabaseTypeInfoViewController.h"
+#import "NSArray+Neocom.h"
 
 @interface NCSkillsViewControllerData : NSObject<NSCoding>
 @property (nonatomic, assign) NCCharacterAttributes* characterAttributes;
@@ -31,6 +33,7 @@
 
 @interface NCSkillsViewController ()
 @property (nonatomic, strong) NCSkillPlan* skillPlan;
+@property (nonatomic, strong) NSMutableArray* skillPlanSkills;
 @end
 
 @implementation NCSkillsViewControllerData
@@ -262,6 +265,57 @@
 	}
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = [sender skillData];
+	}
+}
+
+- (void) setSkillPlan:(NCSkillPlan *)skillPlan {
+	[_skillPlan removeObserver:self forKeyPath:@"trainingQueue"];
+	_skillPlan = skillPlan;
+	self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:skillPlan.trainingQueue.skills];
+	[_skillPlan addObserver:self forKeyPath:@"trainingQueue" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"trainingQueue"]) {
+		NSArray* old = self.skillPlanSkills;
+		NCTrainingQueue* new = change[NSKeyValueChangeNewKey];
+		self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
+		
+		if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
+			NSDictionary* transition = [new.skills transitionFromArray:old];
+			
+			if (transition) {
+				[self.tableView beginUpdates];
+
+				[transition[NSArrayTransitionInsertKey] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+					[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:1]]
+										  withRowAnimation:UITableViewRowAnimationFade];
+				}];
+				
+				[transition[NSArrayTransitionDeleteKey] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+					[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:1]]
+										  withRowAnimation:UITableViewRowAnimationFade];
+				}];
+				
+				[transition[NSArrayTransitionMoveKey] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+					[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:[key integerValue] inSection:0]
+										   toIndexPath:[NSIndexPath indexPathForRow:[obj integerValue] inSection:0]];
+				}];
+
+				[self.tableView endUpdates];
+			}
+		}
+	}
+}
+
+- (void) dealloc {
+	self.skillPlan = nil;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -326,6 +380,7 @@
 	
 	
 	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+	cell.skillData = row;
 	
 	if (row.trainedLevel >= 0) {
 		float progress = 0;

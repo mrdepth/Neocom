@@ -11,7 +11,7 @@
 #import "NCSkillData.h"
 
 @class NCAccount;
-@interface NCTrainingQueue : NSObject
+@interface NCTrainingQueue : NSObject<NSCopying>
 @property (nonatomic, copy) NSArray* skills;
 @property (nonatomic, readonly, assign) NSTimeInterval trainingTime;
 

@@ -43,6 +43,11 @@
 	return self;
 }
 
+- (void) setSkills:(NSArray *)skills {
+	_skills = [[NSMutableArray alloc] initWithArray:skills];
+	_trainingTime = -1;
+}
+
 - (void) addRequiredSkillsForType:(EVEDBInvType*) type {
 	for (EVEDBInvTypeRequiredSkill* skill in type.requiredSkills)
 		[self addSkill:skill withLevel:skill.requiredLevel];
@@ -89,6 +94,17 @@
 		}
 	}
 	return _trainingTime;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	NCTrainingQueue* trainingQueue = [[self.class allocWithZone:zone] init];
+	trainingQueue.characterSkills = self.characterSkills;
+	trainingQueue.attributes = self.attributes;
+	
+	trainingQueue.skills = self.skills;
+	return trainingQueue;
 }
 
 @end

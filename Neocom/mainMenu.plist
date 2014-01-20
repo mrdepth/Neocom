@@ -4,10 +4,8 @@
 <array>
 	<array>
 		<dict>
-			<key>className</key>
-			<string>CharacterSheetViewController</string>
-			<key>nibName</key>
-			<string>CharacterSheetViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCCharacterSheetViewController</string>
 			<key>title</key>
 			<string>Character Sheet</string>
 			<key>image</key>
@@ -54,10 +52,8 @@
 	</array>
 	<array>
 		<dict>
-			<key>className</key>
-			<string>ItemsDBViewController</string>
-			<key>nibName</key>
-			<string>ItemsDBViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCDatabaseViewController</string>
 			<key>title</key>
 			<string>Database</string>
 			<key>image</key>
@@ -82,10 +78,8 @@
 			<integer>0</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>MarketGroupsViewController</string>
-			<key>nibName</key>
-			<string>MarketGroupsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCDatabaseViewController</string>
 			<key>title</key>
 			<string>Market</string>
 			<key>image</key>

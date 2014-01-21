@@ -18,10 +18,8 @@
 			<true/>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>SkillsViewController</string>
-			<key>nibName</key>
-			<string>SkillsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCSkillsViewController</string>
 			<key>title</key>
 			<string>Skills</string>
 			<key>image</key>

@@ -9,36 +9,14 @@
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
-#import "NSArray+Neocom.h"
-
-@interface MyOperation : NSOperation
-
-@end
-
-@implementation MyOperation
-
-- (void) main {
-	
-}
-
-- (void) dealloc {
-	
-}
-
-@end
 
 @interface NCAppDelegate()
-
 @end
 
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	NSArray* a = @[@1, @2, @3, @4, @5];
-	NSArray* b = @[@1, @6, @5, @4, @2];
-	NSLog(@"%@", [b transitionFromArray:a]);
-	
 //	NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
 //								  insertIntoManagedObjectContext:nil];
 //	skillPlan = nil;
@@ -46,6 +24,14 @@
 	NSError* error = nil;
 	//[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
 	//[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
+	
+	NSURL* url = [[NSUserDefaults standardUserDefaults] URLForKey:NCSettingsCurrentAccountKey];
+	if (url) {
+		NCStorage* storage = [NCStorage sharedStorage];
+		NCAccount* account = (NCAccount*) [storage.managedObjectContext objectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url]];
+		if (account)
+			[NCAccount setCurrentAccount:account];
+	}
     return YES;
 }
 							

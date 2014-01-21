@@ -73,6 +73,12 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		currentAccount = account;
 		[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:account];
+		if (account) {
+			[[NSUserDefaults standardUserDefaults] setURL:[account.objectID URIRepresentation] forKey:NCSettingsCurrentAccountKey];
+		}
+		else
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 }
 
@@ -236,7 +242,10 @@ static NCAccount* currentAccount = nil;
 			}
 			
 			self.lastSkillPointsUpdate = [NSDate date];
+			
+			[self.activeSkillPlan updateSkillPoints];
 		}
+		
 		return characterSheet;
 	}
 }

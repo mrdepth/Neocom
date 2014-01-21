@@ -16,6 +16,8 @@
 
 - (IBAction) onRefresh:(id) sender;
 
+- (void) progressStepWithTask:(NCTask*) task;
+
 @end
 
 @implementation NCTableViewController
@@ -93,11 +95,13 @@
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
 												 [context performBlockAndWait:^{
+													 [self performSelectorOnMainThread:@selector(progressStepWithTask:) withObject:task waitUntilDone:NO];
 													 record = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
 													 [record data];
 												 }];
 											 }
 								 completionHandler:^(NCTask *task) {
+									 [NSObject cancelPreviousPerformRequestsWithTarget:self];
 									 if (![task isCancelled]) {
 										 self.cacheRecord = record;
 										 if (!record.data) {
@@ -181,6 +185,12 @@
 
 - (IBAction) onRefresh:(id) sender {
     [self reloadDataWithCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+}
+
+- (void) progressStepWithTask:(NCTask*) task {
+	task.progress += 0.1;
+	if (task.progress < 0.9)
+		[self performSelector:@selector(progressStepWithTask:) withObject:task afterDelay:0.1];
 }
 
 @end

@@ -20,5 +20,6 @@ typedef NS_ENUM(NSInteger, NCSkillsViewControllerMode) {
 @property (nonatomic, assign) NCSkillsViewControllerMode mode;
 
 - (IBAction)onChangeMode:(id)sender;
+- (IBAction)onAction:(id)sender;
 
 @end

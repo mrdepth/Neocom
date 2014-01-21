@@ -15,7 +15,7 @@
 	NSMutableArray* _skills;
 }
 @property (nonatomic, strong) NSDictionary* characterSkills;
-@property (nonatomic, strong) NCCharacterAttributes* attributes;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 
 @end
 
@@ -24,7 +24,7 @@
 
 - (id) init {
 	if (self = [super init]) {
-		self.attributes = [NCCharacterAttributes defaultCharacterAttributes];
+		self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 		_skills = [NSMutableArray new];
 	}
 	return self;
@@ -34,10 +34,10 @@
 	if (self = [super init]) {
 		if (account) {
 			self.characterSkills = account.characterSheet.skillsMap;
-			self.attributes = account.characterAttributes;
+			self.characterAttributes = account.characterAttributes;
 		}
 		else
-			self.attributes = [NCCharacterAttributes defaultCharacterAttributes];
+			self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 		_skills = [NSMutableArray new];
 	}
 	return self;
@@ -76,6 +76,7 @@
 			skillData.targetLevel = skillLevel;
 			skillData.currentLevel = skillLevel - 1;
 			skillData.trainedLevel = characterSkill.level;
+			skillData.characterAttributes = self.characterAttributes;
 			
 			skillData.skillPoints = characterSkill.skillpoints;
 			[_skills addObject:skillData];
@@ -84,13 +85,28 @@
 	_trainingTime = -1;
 }
 
+- (void) removeSkill:(NCSkillData*) skill {
+	NSInteger typeID = skill.typeID;
+	NSInteger level = skill.targetLevel;
+	NSInteger index = 0;
+	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
+	for (NCSkillData* skillData in self.skills) {
+		if (skillData.typeID == typeID && skillData.targetLevel >= level) {
+			_trainingTime -= skillData.trainingTime;
+			[indexes addIndex:index];
+		}
+		index++;
+	}
+	[_skills removeObjectsAtIndexes:indexes];
+}
+
 - (NSTimeInterval) trainingTime {
 	if (_trainingTime < 0) {
 		_trainingTime = 0;
 		
 		for (NCSkillData *skill in self.skills) {
 			if (skill.currentLevel < skill.targetLevel)
-				_trainingTime += [skill trainingTimeWithCharacterAttributes:self.attributes];
+				_trainingTime += skill.trainingTime;
 		}
 	}
 	return _trainingTime;
@@ -101,7 +117,7 @@
 - (id)copyWithZone:(NSZone *)zone {
 	NCTrainingQueue* trainingQueue = [[self.class allocWithZone:zone] init];
 	trainingQueue.characterSkills = self.characterSkills;
-	trainingQueue.attributes = self.attributes;
+	trainingQueue.characterAttributes = self.characterAttributes;
 	
 	trainingQueue.skills = self.skills;
 	return trainingQueue;

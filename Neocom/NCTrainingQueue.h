@@ -18,5 +18,6 @@
 - (id) initWithAccount:(NCAccount*) account;
 - (void) addRequiredSkillsForType:(EVEDBInvType*) type;
 - (void) addSkill:(EVEDBInvType*) skill withLevel:(NSInteger) level;
+- (void) removeSkill:(NCSkillData*) skill;
 
 @end

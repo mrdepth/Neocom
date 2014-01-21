@@ -266,6 +266,10 @@
 		12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
 		12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C9DCA018617A6300A654C5 /* NCAccountsManager.m */; };
 		12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */; };
+		12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DA188E6ABD002079C0 /* murmurhash3.c */; };
+		12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */; };
+		12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */; };
+		12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
 		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
@@ -764,6 +768,14 @@
 		12C9DCA018617A6300A654C5 /* NCAccountsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsManager.m; sourceTree = "<group>"; };
 		12CC8D6A188178570058C5DF /* NCTableViewEmptyHedaerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewEmptyHedaerView.h; sourceTree = "<group>"; };
 		12CC8D6B188178570058C5DF /* NCTableViewEmptyHedaerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewEmptyHedaerView.m; sourceTree = "<group>"; };
+		12CDB7DA188E6ABD002079C0 /* murmurhash3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = murmurhash3.c; sourceTree = "<group>"; };
+		12CDB7DB188E6ABD002079C0 /* murmurhash3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = murmurhash3.h; sourceTree = "<group>"; };
+		12CDB7DE188E7D1C002079C0 /* ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASHTTPServer.h; sourceTree = "<group>"; };
+		12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASHTTPServer.m; sourceTree = "<group>"; };
+		12CDB7ED188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+ASHTTPServer.h"; sourceTree = "<group>"; };
+		12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+ASHTTPServer.m"; sourceTree = "<group>"; };
+		12CDB7F0188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSHTTPURLResponse+ASHTTPServer.h"; sourceTree = "<group>"; };
+		12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSHTTPURLResponse+ASHTTPServer.m"; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		841534EA188A921200B42433 /* NCDatabaseMarketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseMarketViewController.h; sourceTree = "<group>"; };
@@ -1529,6 +1541,7 @@
 				126A0DE9185F3B9200A8E8A3 /* EVECachedURLRequest.m */,
 				126A0DEA185F3B9200A8E8A3 /* NSData+MD5.h */,
 				126A0DEB185F3B9200A8E8A3 /* NSData+MD5.m */,
+				12CDB7D9188E6ABD002079C0 /* MurmurHash3 */,
 				126A0DEC185F3B9200A8E8A3 /* NSMutableString+HTML */,
 				126A0DEF185F3B9200A8E8A3 /* NSString+HTML */,
 				126A0DF2185F3B9200A8E8A3 /* NSString+MD5.h */,
@@ -1646,6 +1659,7 @@
 		129D257F187E923200E2062C /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				12CDB7DD188E7D0B002079C0 /* ASHTTPServer */,
 				129D2581187E923200E2062C /* ASCaptionTextField */,
 				129D25A3187E923200E2062C /* ASInAppPurchase */,
 				129D25A6187E923200E2062C /* CollapsableTableView */,
@@ -1939,6 +1953,28 @@
 			name = NCTableViewEmptyHedaerView;
 			sourceTree = "<group>";
 		};
+		12CDB7D9188E6ABD002079C0 /* MurmurHash3 */ = {
+			isa = PBXGroup;
+			children = (
+				12CDB7DA188E6ABD002079C0 /* murmurhash3.c */,
+				12CDB7DB188E6ABD002079C0 /* murmurhash3.h */,
+			);
+			path = MurmurHash3;
+			sourceTree = "<group>";
+		};
+		12CDB7DD188E7D0B002079C0 /* ASHTTPServer */ = {
+			isa = PBXGroup;
+			children = (
+				12CDB7DE188E7D1C002079C0 /* ASHTTPServer.h */,
+				12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */,
+				12CDB7ED188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.h */,
+				12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */,
+				12CDB7F0188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.h */,
+				12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */,
+			);
+			path = ASHTTPServer;
+			sourceTree = "<group>";
+		};
 		12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2146,6 +2182,7 @@
 			files = (
 				126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */,
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
+				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,
 				126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
 				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
@@ -2189,6 +2226,7 @@
 				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
+				12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
@@ -2299,6 +2337,7 @@
 				126A0E27185F3B9300A8E8A3 /* EVEDBRamInstallationTypeContent.m in Sources */,
 				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
+				12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */,
 				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
@@ -2307,6 +2346,7 @@
 				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,
 				126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */,
 				126A0E4C185F3B9300A8E8A3 /* EVEContainerLog.m in Sources */,
+				12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */,
 				129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */,
 				126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */,
 				126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */,

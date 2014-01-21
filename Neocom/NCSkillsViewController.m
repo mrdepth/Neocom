@@ -195,6 +195,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
+									   animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -265,6 +267,10 @@
 	}
 }
 
+- (IBAction)onAction:(id)sender {
+	
+}
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
@@ -298,12 +304,12 @@
 				
 				[transition[NSArrayTransitionDeleteKey] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 					[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:1]]
-										  withRowAnimation:UITableViewRowAnimationFade];
+										  withRowAnimation:UITableViewRowAnimationMiddle];
 				}];
 				
 				[transition[NSArrayTransitionMoveKey] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-					[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:[key integerValue] inSection:0]
-										   toIndexPath:[NSIndexPath indexPathForRow:[obj integerValue] inSection:0]];
+					[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:[key integerValue] inSection:1]
+										   toIndexPath:[NSIndexPath indexPathForRow:[obj integerValue] inSection:1]];
 				}];
 
 				[self.tableView endUpdates];
@@ -437,12 +443,40 @@
 	}
 }
 
+- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 1;
+}
+
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 1 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		[self.skillPlan removeSkill:self.skillPlanSkills[indexPath.row]];
+	}
+}
+
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [self tableView:tableView canEditRowAtIndexPath:indexPath];
+}
+
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	id object = self.skillPlanSkills[sourceIndexPath.row];
+	[self.skillPlanSkills removeObjectAtIndex:sourceIndexPath.row];
+	[self.skillPlanSkills insertObject:object atIndex:destinationIndexPath.row];
+	NCTrainingQueue* trainingQueue = [self.skillPlan.trainingQueue copy];
+	trainingQueue.skills = self.skillPlanSkills;
+	self.skillPlan.trainingQueue = trainingQueue;
+	[self.skillPlan save];
+}
+
+
 #pragma mark - NCTableViewController
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
 	__block NSError* error = nil;
 	NCAccount* account = [NCAccount currentAccount];
-	self.skillPlan = account.activeSkillPlan;
 	
 	if (!account) {
 		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
@@ -477,6 +511,12 @@
 									 }
 								 }
 							 }];
+}
+
+- (void) update {
+	NCAccount* account = [NCAccount currentAccount];
+	self.skillPlan = account.activeSkillPlan;
+	[super update];
 }
 
 - (void) didChangeAccount:(NCAccount *)account {

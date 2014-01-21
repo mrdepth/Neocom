@@ -9,6 +9,8 @@
 #import "NCSkillData.h"
 #import "NCCharacterAttributes.h"
 #import "EVEDBInvType+Neocom.h"
+#import <objc/runtime.h>
+#import "murmurhash3.h"
 
 @interface NCSkillData()
 @property (nonatomic, strong, readwrite) NSString* skillName;
@@ -30,11 +32,18 @@
 	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
 	_trainingTime = -1.0;
+	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void) setCurrentLevel:(NSInteger)currentLevel {
 	_currentLevel = currentLevel;
 	_trainingTime = -1.0;
+	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void) setTrainedLevel:(NSInteger)trainedLevel {
+	_trainedLevel = trainedLevel;
+	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void) setSkillPoints:(NSInteger)skillPoints {
@@ -63,6 +72,22 @@
 			_trainingTime = [self trainingTimeWithCharacterAttributes:self.characterAttributes];
 	}
 	return _trainingTime;
+}
+
+- (BOOL) isEqual:(id)object {
+	return [object isKindOfClass:[self class]] && self.hash == [object hash];
+}
+
+- (NSUInteger) hash {
+	NSNumber* hash = objc_getAssociatedObject(self, @"hash");
+	if (!hash) {
+		NSInteger data[] = {self.typeID, self.targetLevel, self.currentLevel, self.trainedLevel, self.skillPoints};
+		NSUInteger hash = murmurHash3(data, sizeof(data), (uint32_t)[self class]);
+		objc_setAssociatedObject(self, @"hash", @(hash), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		return hash;
+	}
+	else
+		return [hash unsignedIntegerValue];
 }
 
 #pragma mark - NSCoding

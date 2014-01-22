@@ -92,12 +92,30 @@
 	NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
 	for (NCSkillData* skillData in self.skills) {
 		if (skillData.typeID == typeID && skillData.targetLevel >= level) {
-			_trainingTime -= skillData.trainingTime;
+			_trainingTime -= skillData.trainingTimeToLevelUp;
 			[indexes addIndex:index];
 		}
 		index++;
 	}
 	[_skills removeObjectsAtIndexes:indexes];
+}
+
+- (void) addMastery:(EVEDBCertMastery*) mastery {
+	for (EVEDBCertSkill* skill in mastery.certificate.skills[mastery.masteryLevel]) {
+		[self addSkill:skill.skill withLevel:skill.skillLevel];
+	}
+}
+
+- (void) updateSkillPointsFromAccount:(NCAccount*) account {
+	EVESkillQueueItem* firstSkill = account.skillQueue.skillQueue.count > 0 ? account.skillQueue.skillQueue[0] : nil;
+	for (NCSkillData* skillData in self.skills) {
+		EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(skillData.typeID)];
+		if (characterSkill)
+			skillData.skillPoints = characterSkill.skillpoints;
+		if (firstSkill)
+			skillData.active = skillData.typeID == firstSkill.typeID && skillData.targetLevel == firstSkill.level && skillData.currentLevel == skillData.targetLevel - 1;
+	}
+	_trainingTime = -1.0;
 }
 
 - (NSTimeInterval) trainingTime {
@@ -106,7 +124,7 @@
 		
 		for (NCSkillData *skill in self.skills) {
 			if (skill.currentLevel < skill.targetLevel)
-				_trainingTime += skill.trainingTime;
+				_trainingTime += skill.trainingTimeToLevelUp;
 		}
 	}
 	return _trainingTime;

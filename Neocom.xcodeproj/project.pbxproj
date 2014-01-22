@@ -29,6 +29,11 @@
 		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
 		12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
+		1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E173188F9572003C1361 /* EVEDBCertCertificate.m */; };
+		1222E179188F9572003C1361 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E175188F9572003C1361 /* EVEDBCertMastery.m */; };
+		1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E177188F9572003C1361 /* EVEDBCertSkill.m */; };
+		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
+		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		125F67F3188526B6005732FA /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67CF188526B5005732FA /* level_000.gif */; };
 		125F67F4188526B6005732FA /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D0188526B5005732FA /* level_010.gif */; };
 		125F67F5188526B6005732FA /* level_011.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D1188526B5005732FA /* level_011.gif */; };
@@ -204,6 +209,7 @@
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
+		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 128217651887D94D002B674E /* skillRequirementsMap.plist */; };
 		128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */; };
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
@@ -328,6 +334,16 @@
 		12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Neocom.m"; sourceTree = "<group>"; };
 		12160493187EE2AA00BD1DCF /* NCAccountCharacterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCharacterCell.h; sourceTree = "<group>"; };
 		12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCharacterCell.m; sourceTree = "<group>"; };
+		1222E172188F9572003C1361 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
+		1222E173188F9572003C1361 /* EVEDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertCertificate.m; sourceTree = "<group>"; };
+		1222E174188F9572003C1361 /* EVEDBCertMastery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertMastery.h; sourceTree = "<group>"; };
+		1222E175188F9572003C1361 /* EVEDBCertMastery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertMastery.m; sourceTree = "<group>"; };
+		1222E176188F9572003C1361 /* EVEDBCertSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertSkill.h; sourceTree = "<group>"; };
+		1222E177188F9572003C1361 /* EVEDBCertSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertSkill.m; sourceTree = "<group>"; };
+		122C51EF188FA746000AEC2C /* NCCacheRecordData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCacheRecordData.h; sourceTree = "<group>"; };
+		122C51F0188FA746000AEC2C /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
+		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
+		122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMasteryViewController.m; sourceTree = "<group>"; };
 		125F67CF188526B5005732FA /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
 		125F67D0188526B5005732FA /* level_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_010.gif; sourceTree = "<group>"; };
 		125F67D1188526B5005732FA /* level_011.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_011.gif; sourceTree = "<group>"; };
@@ -652,6 +668,8 @@
 		126ED32C188144370009FA39 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
+		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
+		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
 		128217651887D94D002B674E /* skillRequirementsMap.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skillRequirementsMap.plist; sourceTree = SOURCE_ROOT; };
 		128BCE64188567E6000E1922 /* EVEDBInvType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEDBInvType+Neocom.h"; sourceTree = "<group>"; };
 		128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEDBInvType+Neocom.m"; sourceTree = "<group>"; };
@@ -919,6 +937,8 @@
 				1211123718599339009E5106 /* NCCache.m */,
 				1211124B1859E1AF009E5106 /* NCCacheRecord.h */,
 				1211124C1859E1AF009E5106 /* NCCacheRecord.m */,
+				122C51EF188FA746000AEC2C /* NCCacheRecordData.h */,
+				122C51F0188FA746000AEC2C /* NCCacheRecordData.m */,
 			);
 			name = NCCache;
 			sourceTree = "<group>";
@@ -949,6 +969,15 @@
 				12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */,
 			);
 			name = NCAccountCharacterCell;
+			sourceTree = "<group>";
+		};
+		122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */,
+				122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */,
+			);
+			name = NCDatabaseTypeMasteryViewController;
 			sourceTree = "<group>";
 		};
 		125F67CD18852172005732FA /* MainMenu */ = {
@@ -1159,6 +1188,12 @@
 		126A0CE2185F3B9100A8E8A3 /* EVEDBAPI */ = {
 			isa = PBXGroup;
 			children = (
+				1222E172188F9572003C1361 /* EVEDBCertCertificate.h */,
+				1222E173188F9572003C1361 /* EVEDBCertCertificate.m */,
+				1222E174188F9572003C1361 /* EVEDBCertMastery.h */,
+				1222E175188F9572003C1361 /* EVEDBCertMastery.m */,
+				1222E176188F9572003C1361 /* EVEDBCertSkill.h */,
+				1222E177188F9572003C1361 /* EVEDBCertSkill.m */,
 				126A0CE3185F3B9100A8E8A3 /* EVEDBAPI.h */,
 				126A0CE4185F3B9100A8E8A3 /* EVEDBCrtCategory.h */,
 				126A0CE5185F3B9100A8E8A3 /* EVEDBCrtCategory.m */,
@@ -1593,6 +1628,15 @@
 			name = NCCharacterSheetViewController;
 			sourceTree = "<group>";
 		};
+		127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */,
+				127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */,
+			);
+			name = NCDatabaseCertificatesViewController;
+			sourceTree = "<group>";
+		};
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -1602,6 +1646,8 @@
 				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
 				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
+				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
+				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -2212,6 +2258,7 @@
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
+				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,
 				126A0E25185F3B9300A8E8A3 /* EVEDBRamActivity.m in Sources */,
@@ -2249,6 +2296,7 @@
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,
+				1222E179188F9572003C1361 /* EVEDBCertMastery.m in Sources */,
 				126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */,
 				129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */,
 				126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */,
@@ -2302,6 +2350,7 @@
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
 				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
 				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
+				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
 				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,
 				126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
@@ -2326,6 +2375,7 @@
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
 				12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */,
+				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
@@ -2357,6 +2407,7 @@
 				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
+				1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
@@ -2375,6 +2426,7 @@
 				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
+				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
 				129D2619187E923300E2062C /* LUISegmentedControl.m in Sources */,

@@ -125,7 +125,12 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	if (self.view.window == nil) {
+		self.filteredSellOrdersSections = nil;
+		self.filteredBuyOrdersSections = nil;
+		self.filteredSellSummary = nil;
+		self.filteredBuySummary = nil;
+	}
 }
 
 - (IBAction)onChangeMode:(id)sender {
@@ -171,7 +176,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheRecord.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
 		return 2;
 	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
@@ -182,7 +187,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheRecord.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
 	NSInteger numberOfRows = 0;
 
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
@@ -200,7 +205,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheRecord.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
 		return section == 0 ? NSLocalizedString(@"Sell summary", nil) : NSLocalizedString(@"Buy summary", nil);
 	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
@@ -211,7 +216,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheRecord.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
 	NCDatabaseTypeMarketInfoViewControllerRow* row;
 
 	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
@@ -365,7 +370,7 @@
 }
 
 - (void) searchWithSearchString:(NSString *)searchString {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.cacheRecord.data;
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
 
 	NSMutableArray *filteredSellOrdersSections = [NSMutableArray new];
 	NSMutableArray *filteredBuyOrdersSections = [NSMutableArray new];

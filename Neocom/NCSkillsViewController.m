@@ -17,11 +17,11 @@
 #import "NSArray+Neocom.h"
 
 @interface NCSkillsViewControllerData : NSObject<NSCoding>
-@property (nonatomic, assign) NCCharacterAttributes* characterAttributes;
-@property (nonatomic, assign) EVECharacterSheet* characterSheet;
-@property (nonatomic, assign) EVESkillQueue* skillQueue;
+@property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) EVESkillQueue* skillQueue;
 
-@property (nonatomic, strong) NSDictionary* skillQueueSection;
+@property (nonatomic, strong) NSArray* skillQueueRows;
 @property (nonatomic, strong) NSArray* allSkillsSections;
 @property (nonatomic, strong) NSArray* knownSkillsSections;
 @property (nonatomic, strong) NSArray* notKnownSkillsSections;
@@ -67,7 +67,7 @@
 	
 	[knownSkills sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
 	
-	NSMutableArray* rows = [NSMutableArray new];
+	NSMutableArray* skillQueueRows = [NSMutableArray new];
 	
 	for (EVESkillQueueItem *item in self.skillQueue.skillQueue) {
 		NCSkillData* skillData = allSkills[@(item.typeID)];
@@ -85,11 +85,9 @@
 		queueSkillData.trainedLevel = skillData.trainedLevel;
 		queueSkillData.active = skillData.active;
 		queueSkillData.characterAttributes = self.characterAttributes;
-		[rows addObject:queueSkillData];
+		[skillQueueRows addObject:queueSkillData];
 	}
 
-	NSDictionary* skillQueueSection = @{@"title": [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[self.skillQueue timeLeft]], rows.count],
-										@"rows": rows};
 
 	if ([task isCancelled])
 		return;
@@ -154,7 +152,7 @@
 	self.knownSkillsSections = knownSkillsSections;
 	self.canTrainSkillsSections = canTrainSkillsSection;
 	self.notKnownSkillsSections = notKnownSkillsSections;
-	self.skillQueueSection = skillQueueSection;
+	self.skillQueueRows = skillQueueRows;
 }
 
 #pragma mark - NSCoding
@@ -174,6 +172,7 @@
 		self.characterSheet = [aDecoder decodeObjectForKey:@"characterSheet"];
 		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];
 		self.skillQueue = [aDecoder decodeObjectForKey:@"skillQueue"];
+		
 		[self loadDataInTask:nil];
 	}
 	return self;
@@ -287,32 +286,12 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if ([keyPath isEqualToString:@"trainingQueue"]) {
-		NSArray* old = self.skillPlanSkills;
-		NCTrainingQueue* new = change[NSKeyValueChangeNewKey];
-		self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
-		
-		if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-			NSDictionary* transition = [new.skills transitionFromArray:old];
+		if ([NSThread isMainThread]) {
+			NCTrainingQueue* new = change[NSKeyValueChangeNewKey];
+			self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
 			
-			if (transition) {
-				[self.tableView beginUpdates];
-
-				[transition[NSArrayTransitionInsertKey] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:1]]
-										  withRowAnimation:UITableViewRowAnimationFade];
-				}];
-				
-				[transition[NSArrayTransitionDeleteKey] enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:1]]
-										  withRowAnimation:UITableViewRowAnimationMiddle];
-				}];
-				
-				[transition[NSArrayTransitionMoveKey] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-					[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:[key integerValue] inSection:1]
-										   toIndexPath:[NSIndexPath indexPathForRow:[obj integerValue] inSection:1]];
-				}];
-
-				[self.tableView endUpdates];
+			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
+				[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 			}
 		}
 	}
@@ -325,7 +304,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCSkillsViewControllerData* data = self.cacheRecord.data;
+	NCSkillsViewControllerData* data = self.data;
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
 			return 2.0;
@@ -343,10 +322,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NCSkillsViewControllerData* data = self.cacheRecord.data;
+	NCSkillsViewControllerData* data = self.data;
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
-			return section == 0 ? [data.skillQueueSection[@"rows"] count] : self.skillPlan.trainingQueue.skills.count;
+			return section == 0 ? data.skillQueueRows.count : self.skillPlan.trainingQueue.skills.count;
 		case NCSkillsViewControllerModeKnownSkills:
 			return [data.knownSkillsSections[section][@"rows"] count];
 		case NCSkillsViewControllerModeAllSkills:
@@ -363,10 +342,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCSkillData* row;
 	
-	NCSkillsViewControllerData* data = self.cacheRecord.data;
+	NCSkillsViewControllerData* data = self.data;
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
-			row = indexPath.section == 0 ? data.skillQueueSection[@"rows"][indexPath.row] : self.skillPlan.trainingQueue.skills[indexPath.row];
+			row = indexPath.section == 0 ? data.skillQueueRows[indexPath.row] : self.skillPlan.trainingQueue.skills[indexPath.row];
 			break;
 		case NCSkillsViewControllerModeKnownSkills:
 			row = data.knownSkillsSections[indexPath.section][@"rows"][indexPath.row];
@@ -405,7 +384,7 @@
 									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
 		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
 		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
-		cell.dateLabel.text = row.trainingTime > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTime], progress * 100] : nil;
+		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
 	}
 	else {
 		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
@@ -419,11 +398,11 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NCSkillsViewControllerData* data = self.cacheRecord.data;
+	NCSkillsViewControllerData* data = self.data;
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
 			if (section == 0)
-				return data.skillQueueSection[@"title"];
+				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], data.skillQueueRows.count];
 			else {
 				if (self.skillPlan.trainingQueue.skills.count > 0)
 					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], self.skillPlan.trainingQueue.skills.count];
@@ -516,6 +495,23 @@
 - (void) update {
 	NCAccount* account = [NCAccount currentAccount];
 	self.skillPlan = account.activeSkillPlan;
+	
+	NCSkillsViewControllerData* data = self.data;
+	
+	EVESkillQueue* skillQueue = data.skillQueue;
+	EVECharacterSheet* characterSheet = data.characterSheet;
+	if (characterSheet && skillQueue) {
+		[characterSheet updateSkillPointsFromSkillQueue:skillQueue];
+		for (NCSkillData* skillData in data.skillQueueRows)
+			skillData.skillPoints = [characterSheet.skillsMap[@(skillData.typeID)] skillpoints];
+		for (NSDictionary* section in data.allSkillsSections)
+			for (NCSkillData* skillData in section[@"rows"])
+				skillData.skillPoints = [characterSheet.skillsMap[@(skillData.typeID)] skillpoints];
+	}
+	[account.characterSheet updateSkillPointsFromSkillQueue:account.skillQueue];
+	[self.skillPlan updateSkillPoints];
+
+	
 	[super update];
 }
 

@@ -13,6 +13,7 @@
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
+@property (nonatomic, strong, readwrite) id data;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -47,6 +48,14 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+	if (self.view.window == nil) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+		self.cacheRecord = nil;
+		self.data = nil;
+		self.view = nil;
+		if (self.searchDisplayController && self.searchDisplayController.active)
+			[self.searchDisplayController setActive:NO animated:NO];
+	}
     // Dispose of any resources that can be recreated.
 }
 
@@ -81,33 +90,32 @@
 }
 
 - (BOOL) shouldReloadData {
-	return [[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending;
+	return [[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending && [self isViewLoaded];
 }
 
 - (void) reloadFromCache {
 	if (self.recordID) {
+		self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+
 		NCCache* cache = [NCCache sharedCache];
 		NSManagedObjectContext* context = cache.managedObjectContext;
-		
-		__block NCCacheRecord* record = nil;
 		
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
 												 [context performBlockAndWait:^{
 													 [self performSelectorOnMainThread:@selector(progressStepWithTask:) withObject:task waitUntilDone:NO];
-													 record = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-													 [record data];
+													 [self.cacheRecord.data data];
 												 }];
 											 }
 								 completionHandler:^(NCTask *task) {
 									 [NSObject cancelPreviousPerformRequestsWithTarget:self];
 									 if (![task isCancelled]) {
-										 self.cacheRecord = record;
-										 if (!record.data) {
+										 if (!self.cacheRecord.data.data) {
 											 [self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 										 }
 										 else {
+											 self.data = self.cacheRecord.data.data;
 											 [self update];
 											 
 											 if ([self shouldReloadData])
@@ -120,11 +128,12 @@
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	if (data) {
+		self.data = data;
 		NCCache* cache = [NCCache sharedCache];
 		if (!self.cacheRecord)
 			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
 		self.cacheRecord.recordID = self.recordID;
-		self.cacheRecord.data = data;
+		self.cacheRecord.data.data = data;
 		self.cacheRecord.date = cacheDate;
 		self.cacheRecord.expireDate = expireDate;
 		[cache saveContext];

@@ -14,6 +14,7 @@
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
+@property (nonatomic, strong, readonly) id data;
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) didFailLoadDataWithError:(NSError*) error;

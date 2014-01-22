@@ -19,7 +19,7 @@
 
 @implementation NCSkillData
 
-- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) attributes {
+- (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes {
 	float sp = [self skillPointsAtLevel:self.currentLevel];
 	float targetSP = [self skillPointsAtLevel:self.currentLevel + 1];
 	sp = MAX(sp, self.skillPoints);
@@ -28,16 +28,26 @@
 	return targetSP > sp ? (targetSP - sp) / [attributes skillpointsPerSecondForSkill:self] : 0.0;
 }
 
+- (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes {
+	float sp = [self skillPointsAtLevel:self.currentLevel];
+	float targetSP = self.targetSkillPoints;
+	sp = MAX(sp, self.skillPoints);
+	
+	return targetSP > sp ? (targetSP - sp) / [attributes skillpointsPerSecondForSkill:self] : 0.0;
+}
+
 - (void) setTargetLevel:(NSInteger)targetLevel {
 	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
-	_trainingTime = -1.0;
+	_trainingTimeToLevelUp = -1.0;
+	_trainingTimeToFinish = -1.0;
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void) setCurrentLevel:(NSInteger)currentLevel {
 	_currentLevel = currentLevel;
-	_trainingTime = -1.0;
+	_trainingTimeToLevelUp = -1.0;
+	_trainingTimeToFinish = -1.0;
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -48,7 +58,8 @@
 
 - (void) setSkillPoints:(NSInteger)skillPoints {
 	_skillPoints = skillPoints;
-	_trainingTime = -1.0;
+	_trainingTimeToLevelUp = -1.0;
+	_trainingTimeToFinish = -1.0;
 }
 
 - (NSString*) skillName {
@@ -61,17 +72,29 @@
 
 - (void) setCharacterAttributes:(NCCharacterAttributes *)characterAttributes {
 	_characterAttributes = characterAttributes;
-	_trainingTime = -1.0;
+	_trainingTimeToLevelUp = -1.0;
+	_trainingTimeToLevelUp = -1.0;
+	_trainingTimeToFinish = -1.0;
+}
+
+- (NSTimeInterval) trainingTimeToLevelUp {
+	if (_trainingTimeToLevelUp < 0.0) {
+		if (!_characterAttributes)
+			_trainingTimeToLevelUp = [self trainingTimeToLevelUpWithCharacterAttributes:[NCCharacterAttributes defaultCharacterAttributes]];
+		else
+			_trainingTimeToLevelUp = [self trainingTimeToLevelUpWithCharacterAttributes:self.characterAttributes];
+	}
+	return _trainingTimeToLevelUp;
 }
 
 - (NSTimeInterval) trainingTime {
-	if (_trainingTime < 0.0) {
+	if (_trainingTimeToFinish < 0.0) {
 		if (!_characterAttributes)
-			_trainingTime = [self trainingTimeWithCharacterAttributes:[NCCharacterAttributes defaultCharacterAttributes]];
+			_trainingTimeToFinish = [self trainingTimeToFinishWithCharacterAttributes:[NCCharacterAttributes defaultCharacterAttributes]];
 		else
-			_trainingTime = [self trainingTimeWithCharacterAttributes:self.characterAttributes];
+			_trainingTimeToFinish = [self trainingTimeToFinishWithCharacterAttributes:self.characterAttributes];
 	}
-	return _trainingTime;
+	return _trainingTimeToFinish;
 }
 
 - (BOOL) isEqual:(id)object {

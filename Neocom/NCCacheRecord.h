@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCCacheRecordData.h"
 
 
 @interface NCCacheRecord : NSManagedObject
 @property (nonatomic, retain) NSString * recordID;
-@property (nonatomic, retain) id data;
+@property (nonatomic, retain) NCCacheRecordData* data;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSDate * expireDate;
 @property (nonatomic, retain) NSManagedObject *section;

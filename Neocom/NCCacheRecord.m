@@ -33,6 +33,8 @@
 		record.recordID = recordID;
 		record.date = [NSDate date];
 		record.expireDate = [NSDate distantFuture];
+		record.data = [[NCCacheRecordData alloc] initWithEntity:[NSEntityDescription entityForName:@"RecordData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+
 		return record;
 	}
 }

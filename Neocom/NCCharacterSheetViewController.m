@@ -155,7 +155,7 @@
 
 - (void) update {
 	[super update];
-	NCCharacterSheetViewControllerData* data = self.cacheRecord.data;
+	NCCharacterSheetViewControllerData* data = self.data;
 	self.characterImageView.image = nil;
 	self.corporationImageView.image = nil;
 	self.allianceImageView.image = nil;

@@ -190,6 +190,9 @@ static NCAccount* currentAccount = nil;
 	}
 	_characterAttributes = nil;
 	self.lastSkillPointsUpdate = nil;
+	
+	for (NCSkillPlan* skillPlan in self.skillPlans)
+		[skillPlan reloadIfNeeded];
 	return YES;
 }
 
@@ -199,18 +202,18 @@ static NCAccount* currentAccount = nil;
 
 - (EVECharacterInfo*) characterInfo {
 	@synchronized(self) {
-		if (!self.characterInfoCacheRecord.data)
+		if (!self.characterInfoCacheRecord.data.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-		return [self.characterInfoCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterInfoCacheRecord.data;
+		return [self.characterInfoCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterInfoCacheRecord.data.data;
 	}
 }
 
 - (EVECharacterSheet*) characterSheet {
 	@synchronized(self) {
-		if (!self.characterSheetCacheRecord.data)
+		if (!self.characterSheetCacheRecord.data.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 		
-		EVECharacterSheet* characterSheet = [self.characterSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data;
+		EVECharacterSheet* characterSheet = [self.characterSheetCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data.data;
 
 		if (!_characterAttributes && characterSheet)
 			_characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
@@ -218,21 +221,7 @@ static NCAccount* currentAccount = nil;
 		//Update skill points
 		EVESkillQueue* skillQueue = self.skillQueue;
 		if (characterSheet && skillQueue && (!self.lastSkillPointsUpdate || [self.lastSkillPointsUpdate timeIntervalSinceNow] < -NCAccountSkillPointsUpdateInterval)) {
-			NCCharacterAttributes* characterAttributes = self.characterAttributes;
-			NSDate *currentTime = [skillQueue serverTimeWithLocalTime:[NSDate date]];
-			for (EVESkillQueueItem *item in skillQueue.skillQueue) {
-				if (item.endTime && item.startTime) {
-					EVECharacterSheetSkill *skill = characterSheet.skillsMap[@(item.typeID)];
-					if (item.queuePosition == 0) {
-						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-						skill.skillpoints = item.endSP - [item.endTime timeIntervalSinceDate:currentTime] * [characterAttributes skillpointsPerSecondForSkill:type];
-					}
-					else if (item.level - 1 == skill.level) {
-						EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-						skill.skillpoints = item.endSP - [item.endTime timeIntervalSinceDate:item.startTime] * [characterAttributes skillpointsPerSecondForSkill:type];
-					}
-				}
-			}
+			[characterSheet updateSkillPointsFromSkillQueue:skillQueue];
 			
 			if (self.characterInfo) {
 				NSInteger skillPoints = 0;
@@ -252,23 +241,32 @@ static NCAccount* currentAccount = nil;
 
 - (EVECorporationSheet*) corporationSheet {
 	@synchronized(self) {
-		if (!self.corporationSheetCacheRecord.data)
+		if (!self.corporationSheetCacheRecord.data.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-		return [self.corporationSheetCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.corporationSheetCacheRecord.data;
+		return [self.corporationSheetCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.corporationSheetCacheRecord.data.data;
 	}
 }
 
 - (EVESkillQueue*) skillQueue {
 	@synchronized(self) {
-		if (!self.skillQueueCacheRecord.data)
+		if (!self.skillQueueCacheRecord.data.data)
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-		return [self.skillQueueCacheRecord.data isKindOfClass:[NSError class]] ? nil : self.skillQueueCacheRecord.data;
+		return [self.skillQueueCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.skillQueueCacheRecord.data.data;
+	}
+}
+
+- (NCCharacterAttributes*) characterAttributes {
+	@synchronized(self) {
+		if (!_characterAttributes && self.characterSheet) {
+			_characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:self.characterSheet];
+		}
+		return _characterAttributes;
 	}
 }
 
 - (void) setCharacterInfo:(EVECharacterInfo *)characterInfo {
 	@synchronized(self) {
-		self.characterInfoCacheRecord.data = characterInfo;
+		self.characterInfoCacheRecord.data.data = characterInfo;
 		if ([characterInfo isKindOfClass:[NSError class]]) {
 			self.characterInfoCacheRecord.date = [NSDate date];
 			self.characterInfoCacheRecord.expireDate = nil;
@@ -282,7 +280,7 @@ static NCAccount* currentAccount = nil;
 
 - (void) setCharacterSheet:(EVECharacterSheet *)characterSheet {
 	@synchronized(self) {
-		self.characterSheetCacheRecord.data = characterSheet;
+		self.characterSheetCacheRecord.data.data = characterSheet;
 		if ([characterSheet isKindOfClass:[NSError class]]) {
 			self.characterSheetCacheRecord.date = [NSDate date];
 			self.characterSheetCacheRecord.expireDate = nil;
@@ -296,7 +294,7 @@ static NCAccount* currentAccount = nil;
 
 - (void) setCorporationSheet:(EVECorporationSheet *)corporationSheet {
 	@synchronized(self) {
-		self.corporationSheetCacheRecord.data = corporationSheet;
+		self.corporationSheetCacheRecord.data.data = corporationSheet;
 		if ([corporationSheet isKindOfClass:[NSError class]]) {
 			self.corporationSheetCacheRecord.date = [NSDate date];
 			self.corporationSheetCacheRecord.expireDate = nil;
@@ -310,7 +308,7 @@ static NCAccount* currentAccount = nil;
 
 - (void) setSkillQueue:(EVESkillQueue *)skillQueue {
 	@synchronized(self) {
-		self.skillQueueCacheRecord.data = skillQueue;
+		self.skillQueueCacheRecord.data.data = skillQueue;
 		if ([skillQueue isKindOfClass:[NSError class]]) {
 			self.skillQueueCacheRecord.date = [NSDate date];
 			self.skillQueueCacheRecord.expireDate = nil;
@@ -374,7 +372,7 @@ static NCAccount* currentAccount = nil;
 		if (!_characterInfoCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", [[self objectID] URIRepresentation]]];
-				[_characterInfoCacheRecord data];
+				[[_characterInfoCacheRecord data] data];
 			}];
 		}
 		return _characterInfoCacheRecord;
@@ -386,7 +384,7 @@ static NCAccount* currentAccount = nil;
 		if (!_characterSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", [[self objectID] URIRepresentation]]];
-				[_characterSheetCacheRecord data];
+				[[_characterSheetCacheRecord data] data];
 			}];
 		}
 		return _characterSheetCacheRecord;
@@ -398,7 +396,7 @@ static NCAccount* currentAccount = nil;
 		if (!_corporationSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", [[self objectID] URIRepresentation]]];
-				[_corporationSheetCacheRecord data];
+				[[_corporationSheetCacheRecord data] data];
 			}];
 		}
 		return _corporationSheetCacheRecord;
@@ -410,7 +408,7 @@ static NCAccount* currentAccount = nil;
 		if (!_skillQueueCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_skillQueueCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.skillQueue", [[self objectID] URIRepresentation]]];
-				[_skillQueueCacheRecord data];
+				[[_skillQueueCacheRecord data] data];
 			}];
 		}
 		return _skillQueueCacheRecord;

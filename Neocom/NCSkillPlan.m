@@ -16,6 +16,8 @@
 	NSMutableArray* _skills;
 }
 
+- (void) reload;
+
 @end
 
 @implementation NCSkillPlan
@@ -31,16 +33,7 @@
 	if (!_trainingQueue) {
 		if (!self.account)
 			return nil;
-		
-		NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
-		for (NSDictionary* item in self.skills) {
-			NSInteger typeID = [item[NCSkillPlanTypeIDKey] integerValue];
-			NSInteger targetLevel = [item[NCSkillPlanTargetLevelKey] integerValue];
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
-			if (type)
-				[trainingQueue addSkill:type withLevel:targetLevel];
-		}
-		self.trainingQueue = trainingQueue;
+		[self reload];
 	}
 	return _trainingQueue;
 }
@@ -81,12 +74,30 @@
 }
 
 - (void) updateSkillPoints {
-	EVESkillQueueItem* firstSkill = self.account.skillQueue.skillQueue.count > 0 ? self.account.skillQueue.skillQueue[0] : nil;
-	for (NCSkillData* skillData in self.trainingQueue.skills) {
-		EVECharacterSheetSkill* characterSkill = self.account.characterSheet.skillsMap[@(skillData.typeID)];
-		skillData.skillPoints = characterSkill.skillpoints;
-		skillData.active = skillData.typeID == firstSkill.typeID && skillData.targetLevel == firstSkill.level && skillData.currentLevel == skillData.targetLevel - 1;
+	/*NCTrainingQueue* newTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
+	for (NCSkillData* skillData in self.trainingQueue.skills)
+		[newTrainingQueue addSkill:skillData withLevel:skillData.targetLevel];
+	self.trainingQueue = newTrainingQueue;*/
+	[self.trainingQueue updateSkillPointsFromAccount:self.account];
+}
+
+- (void) reloadIfNeeded {
+	if (_trainingQueue)
+		[self reload];
+}
+
+#pragma mark - Private
+
+- (void) reload {
+	NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
+	for (NSDictionary* item in self.skills) {
+		NSInteger typeID = [item[NCSkillPlanTypeIDKey] integerValue];
+		NSInteger targetLevel = [item[NCSkillPlanTargetLevelKey] integerValue];
+		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+		if (type)
+			[trainingQueue addSkill:type withLevel:targetLevel];
 	}
+	self.trainingQueue = trainingQueue;
 }
 
 

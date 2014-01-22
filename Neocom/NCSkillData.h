@@ -19,8 +19,10 @@
 @property (nonatomic, assign, getter = isActive) BOOL active;
 @property (nonatomic, strong, readonly) NSString* skillName;
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
-@property (nonatomic, assign) NSTimeInterval trainingTime;
+@property (nonatomic, assign) NSTimeInterval trainingTimeToLevelUp;
+@property (nonatomic, assign) NSTimeInterval trainingTimeToFinish;
 
-- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) attributes;
+- (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes;
+- (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 
 @end

@@ -81,8 +81,18 @@
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
 	
-	[self performSegueWithIdentifier:@"NCSideMenuViewControllerEmbedSegue" sender:nil];
-	[self performSegueWithIdentifier:@"NCSideMenuViewControllerContentSegue" sender:nil];
+	@try {
+		[self performSegueWithIdentifier:@"NCSideMenuViewControllerEmbedSegue" sender:nil];
+	}
+	@catch (NSException *exception) {
+	}
+	
+	@try {
+		[self performSegueWithIdentifier:@"NCSideMenuViewControllerContentSegue" sender:nil];
+	}
+	@catch (NSException *exception) {
+	}
+
 }
 
 - (void) viewDidLayoutSubviews {
@@ -127,22 +137,50 @@
 		navigationController.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menuIcon.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
 	}
 
+	[self.menuViewController beginAppearanceTransition:NO animated:animated];
+	[contentViewController beginAppearanceTransition:YES animated:animated];
+
 	[self addChildViewController:contentViewController];
 	[self.view addSubview:contentViewController.view];
-	
-	CGRect frame = self.view.bounds;
-	contentViewController.view.frame = frame;
+	contentViewController.view.frame = self.view.bounds;
+	_menuVisible = NO;
 	
 	if (_contentViewController) {
 		[_contentViewController willMoveToParentViewController:nil];
-		[_contentViewController.view removeFromSuperview];
-		[_contentViewController removeFromParentViewController];
+		contentViewController.view.transform = _contentViewController.view.transform;
+
+		[self transitionFromViewController:_contentViewController
+						  toViewController:contentViewController
+								  duration:animated ? 0.5f : 0.0f
+								   options:UIViewAnimationOptionCurveEaseOut
+								animations:^{
+									_contentViewController = contentViewController;
+									contentViewController.view.transform = [self contentViewTransform];
+								}
+								completion:^(BOOL finished) {
+									[contentViewController didMoveToParentViewController:self];
+									[self.menuViewController endAppearanceTransition];
+								}];
+
+	}
+	else {
+		_contentViewController = contentViewController;
+
+		contentViewController.view.transform = CGAffineTransformMakeTranslation(self.view.frame.size.width, 0.0f);
+		[UIView animateWithDuration:animated ? NCSideMenuViewControllerAnimationDuration : 0.0f
+							  delay:0
+							options:UIViewAnimationOptionCurveEaseOut
+						 animations:^{
+							 contentViewController.view.transform = [self contentViewTransform];
+						 }
+						 completion:^(BOOL finished) {
+							 [contentViewController endAppearanceTransition];
+							 [contentViewController didMoveToParentViewController:self];
+							 [self.menuViewController endAppearanceTransition];
+						 }];
 	}
 	
-	contentViewController.view.transform = [self contentViewTransform];
 
-	_contentViewController = contentViewController;
-	[contentViewController didMoveToParentViewController:self];
 	
 	contentViewController.view.userInteractionEnabled = !self.menuVisible;
 	
@@ -156,8 +194,8 @@
 	contentViewController.view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:contentViewController.view.bounds] CGPath];
 	contentViewController.sideMenuViewController = self;
 	
-	if (self.menuVisible)
-		[self setMenuVisible:NO animated:animated];
+//	if (self.menuVisible)
+//		[self setMenuVisible:NO animated:animated];
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible {
@@ -170,27 +208,15 @@
     
     void (^willAppear)() = ^{
         if (changed) {
-            if (menuVisible) {
-                [self.menuViewController viewWillAppear:animated];
-                [self.contentViewController viewWillDisappear:animated];
-            }
-            else {
-                [self.menuViewController viewWillDisappear:animated];
-                [self.contentViewController viewWillAppear:animated];
-            }
+			[self.menuViewController beginAppearanceTransition:menuVisible animated:animated];
+			[self.contentViewController beginAppearanceTransition:!menuVisible animated:animated];
         }
     };
 
     void (^didAppear)() = ^{
         if (changed) {
-            if (menuVisible) {
-                [self.menuViewController viewDidAppear:animated];
-                [self.contentViewController viewDidDisappear:animated];
-            }
-            else {
-                [self.menuViewController viewDidDisappear:animated];
-                [self.contentViewController viewDidAppear:animated];
-            }
+			[self.menuViewController endAppearanceTransition];
+			[self.contentViewController endAppearanceTransition];
         }
     };
 

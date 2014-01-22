@@ -18,6 +18,7 @@
 #import "NCDatabaseViewController.h"
 #import "NSString+HTML.h"
 #import "UIAlertView+Block.h"
+#import "NCDatabaseTypeMasteryViewController.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -77,13 +78,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[self reload];
 	self.refreshControl = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	if (!self.sections)
-		[self reload];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -100,7 +100,9 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	if (self.view.window == nil) {
+		self.sections = nil;
+	}
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -125,6 +127,11 @@
 		NCDatabaseTypeMarketInfoViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = self.type;
 		destinationViewController.navigationItem.rightBarButtonItem = nil;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {
+		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = self.type;
+		destinationViewController.masteryLevel = [row.object integerValue];
 	}
 }
 
@@ -194,14 +201,6 @@
 						 }
 							 cancelBlock:nil] show];
 	}
-/*	if (row.object) {
-		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
-			[self performSegueWithIdentifier:@"NCDatabaseViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-		else if ([row.object isKindOfClass:[EVEDBInvType class]])
-			[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-		else if ([row.object isKindOfClass:[NSString class]])
-			[self performSegueWithIdentifier:row.object sender:[tableView cellForRowAtIndexPath:indexPath]];
-	}*/
 }
 
 #pragma mark - Private
@@ -311,6 +310,33 @@
 												   [sections addObject:section];
 										   }
 										   
+										   if (type.masteries) {
+											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+											   static NSString* icons[] = {@"Icons/icon79_02.png", @"Icons/icon79_03.png", @"Icons/icon79_04.png", @"Icons/icon79_05.png", @"Icons/icon79_05.png"};
+											   
+											   section[@"title"] = NSLocalizedString(@"Mastery", nil);
+											   NSMutableArray* rows = [NSMutableArray array];
+											   section[@"rows"] = rows;
+											   
+											   NSInteger i = 0;
+											   for (NSArray* masteries in type.masteries) {
+												   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+												   for (EVEDBCertMastery* mastery in masteries)
+													   [trainingQueue addMastery:mastery];
+												   
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), i + 1];
+												   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+												   row.imageName = icons[i];
+												   row.cellIdentifier = @"MasteryCell";
+												   row.object = @(i);
+												   [rows addObject:row];
+												   i++;
+											   }
+											   if (rows.count > 0)
+												   [sections addObject:section];
+										   }
+										   
 										   if (type.blueprint) {
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 											   NSMutableArray *rows = [NSMutableArray array];
@@ -376,7 +402,7 @@
 																	   }
 																	   
 																	   if (skill.availability != NCSkillHierarchyAvailabilityLearned)
-																		   row.detail = [NSString stringWithTimeLeft:[skill trainingTimeWithCharacterAttributes:attributes]];
+																		   row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
 																	   
 																	   [rows addObject:row];
 																   }
@@ -611,7 +637,7 @@
 											 NSArray* activities = [[type.blueprintType activities] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
 											 for (EVEDBRamActivity* activity in activities) {
 												 NSArray* requiredSkills = [type.blueprintType requiredSkillsForActivity:activity.activityID];
-												 NCTrainingQueue* requiredSkillsQueue = [NCTrainingQueue new];
+												 NCTrainingQueue* requiredSkillsQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 												 for (EVEDBInvTypeRequiredSkill* skill in requiredSkills)
 													 [requiredSkillsQueue addSkill:skill withLevel:skill.requiredLevel];
 												 
@@ -662,7 +688,7 @@
 														 }
 														 
 														 if (skill.availability != NCSkillHierarchyAvailabilityLearned)
-															 row.detail = [NSString stringWithTimeLeft:[skill trainingTimeWithCharacterAttributes:attributes]];
+															 row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
 														 
 														 [rows addObject:row];
 													 }

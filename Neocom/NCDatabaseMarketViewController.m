@@ -92,10 +92,12 @@
 	}
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	if (self.view.window == nil) {
+		self.sections = nil;
+		self.searchResults = nil;
+	}
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

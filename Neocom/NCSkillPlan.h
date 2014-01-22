@@ -26,5 +26,6 @@
 - (void) removeSkill:(NCSkillData*) skill;
 
 - (void) updateSkillPoints;
+- (void) reloadIfNeeded;
 
 @end

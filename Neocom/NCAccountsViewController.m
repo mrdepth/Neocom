@@ -122,7 +122,7 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCSelectAccount"]) {
 		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-		NCAccountsViewControllerData* data = self.cacheRecord.data;
+		NCAccountsViewControllerData* data = self.data;
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 		[NCAccount setCurrentAccount:account.account];
 	}
@@ -137,13 +137,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NCAccountsViewControllerData* data = self.cacheRecord.data;
+	NCAccountsViewControllerData* data = self.data;
     return data.accounts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NCAccountsViewControllerData* data = self.cacheRecord.data;
+	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 
 	if (account.account.accountType == NCAccountTypeCharacter) {
@@ -303,7 +303,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		NCAccountsViewControllerData* data = self.cacheRecord.data;
+		NCAccountsViewControllerData* data = self.data;
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 		[[NCAccountsManager defaultManager] removeAccount:account.account];
 		[data.accounts removeObjectAtIndex:indexPath.row];
@@ -311,7 +311,7 @@
 		NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 		updatedData.accounts = data.accounts;
 		updatedData.apiKeys = data.apiKeys;
-		self.cacheRecord.data = updatedData;
+		self.cacheRecord.data.data = updatedData;
 
 		[[NCCache sharedCache] saveContext];
 		
@@ -324,7 +324,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	NCAccountsViewControllerData* data = self.cacheRecord.data;
+	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[fromIndexPath.row];
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
@@ -338,7 +338,7 @@
 	NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 	updatedData.accounts = data.accounts;
 	updatedData.apiKeys = data.apiKeys;
-	self.cacheRecord.data = updatedData;
+	self.cacheRecord.data.data = updatedData;
 	
 	[[NCStorage sharedStorage] saveContext];
 	[[NCCache sharedCache] saveContext];
@@ -364,7 +364,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAccountsViewControllerData* data = self.cacheRecord.data;
+	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	if (account.account.accountType == NCAccountTypeCharacter) {
 		CGFloat height = 185.0;
@@ -474,7 +474,7 @@
 	if (!shouldReloadData) {
 		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
 			BOOL exist = NO;
-			for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data accounts]) {
+			for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data.data accounts]) {
 				if ([accountData.account isEqual:account]) {
 					exist = YES;
 					break;

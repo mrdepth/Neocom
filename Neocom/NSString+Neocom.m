@@ -59,23 +59,36 @@
 	
 	int mins = sec / 60;
 	sec %= 60;
-	
+
+	BOOL space = NO;
 	if (days && componentsLimit) {
-		[text appendFormat:@"%dd ", days];
+		space = YES;
+		[text appendFormat:@"%dd", days];
 		componentsLimit--;
 	}
 	
 	if (hours && componentsLimit) {
-		[text appendFormat:@"%dh ", hours];
+		if (space)
+			[text appendString:@" "];
+		space = YES;
+
+		[text appendFormat:@"%dh", hours];
 		componentsLimit--;
 	}
 	
 	if (mins && componentsLimit) {
-		[text appendFormat:@"%dm ", mins];
+		if (space)
+			[text appendString:@" "];
+		space = YES;
+
+		[text appendFormat:@"%dm", mins];
 		componentsLimit--;
 	}
-	
+
 	if ((sec || text.length == 0) && componentsLimit) {
+		if (space)
+			[text appendString:@" "];
+		space = YES;
 		[text appendFormat:@"%ds", sec];
 	}
 	return text;

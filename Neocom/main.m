@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "NCAppDelegate.h"
+#import "NSObject+Debug.h"
 
 int main(int argc, char * argv[])
 {

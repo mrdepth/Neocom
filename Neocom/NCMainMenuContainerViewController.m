@@ -87,15 +87,16 @@
 		CGRect frame = self.view.bounds;
 		dropDownViewController.view.frame = frame;
 		dropDownViewController.view.layer.zPosition = 1.0;
+		dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0.0f, -frame.size.height);
 		
 		[self addChildViewController:dropDownViewController];
 		self.navigationCharacterButton.userInteractionEnabled = NO;
 		[self transitionFromViewController:self.menuViewController
 						  toViewController:self.dropDownViewController
-								  duration:animated ? NCMainMenuDropDownSegueAnimationDuration / 0.6f : 0.0f
+								  duration:animated ? NCMainMenuDropDownSegueAnimationDuration : 0.0f
 								   options:UIViewAnimationOptionAllowAnimatedContent
 								animations:^{
-									if (animated) {
+/*									if (animated) {
 										CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
 										animation.keyTimes = @[@(0.0), @(0.6), @(0.8), @(1.0)];
 										animation.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0.0f, -frame.size.height, 0.0f)],
@@ -104,7 +105,8 @@
 															 [NSValue valueWithCATransform3D:CATransform3DIdentity]];
 										animation.duration = 0.5f;
 										[dropDownViewController.view.layer addAnimation:animation forKey:@"transform"];
-									}
+									}*/
+									dropDownViewController.view.transform = CGAffineTransformIdentity;
 									[self.navigationController updateScrollViewFromViewController:self toViewController:self.dropDownViewController];
 								}
 								completion:^(BOOL finished) {

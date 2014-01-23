@@ -28,10 +28,13 @@
 		self.viewController = viewController;
 		UINavigationBar* navigationBar = self.viewController.navigationController.navigationBar;
 		if (navigationBar) {
+			BOOL enabled = [UIView areAnimationsEnabled];
+			[UIView setAnimationsEnabled:NO];
 			self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 			self.progressView.frame = CGRectMake(0, navigationBar.frame.size.height - 2, navigationBar.frame.size.width, 2);
 			self.progressView.hidden = YES;
 			self.progressView.trackTintColor = [UIColor clearColor];
+			[UIView setAnimationsEnabled:enabled];
 		}
 		
 		_numberOfTasks = 0;

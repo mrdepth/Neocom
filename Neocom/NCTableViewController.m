@@ -9,6 +9,7 @@
 #import "NCTableViewController.h"
 #import "NCCache.h"
 #import "NCAccount.h"
+#import "NSString+Neocom.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -18,6 +19,7 @@
 - (IBAction) onRefresh:(id) sender;
 
 - (void) progressStepWithTask:(NCTask*) task;
+- (void) updateCacheTime;
 
 @end
 
@@ -36,8 +38,14 @@
 {
     [super viewDidLoad];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
-	self.refreshControl = [UIRefreshControl new];
-    [self.refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
+
+	UIRefreshControl* refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
+	refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@" "
+																		  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+	self.refreshControl = refreshControl;
+
 	[self update];
 }
 
@@ -86,7 +94,7 @@
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-    [self.refreshControl beginRefreshing];
+    //[self.refreshControl beginRefreshing];
 }
 
 - (BOOL) shouldReloadData {
@@ -148,7 +156,9 @@
 
 - (void) update {
 	[self.tableView reloadData];
-    [self.refreshControl endRefreshing];
+	[self.refreshControl endRefreshing];
+	[self updateCacheTime];
+
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {
@@ -189,6 +199,12 @@
 	tableView.backgroundColor = self.tableView.backgroundColor;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	[self updateCacheTime];
+}
+
 
 #pragma mark - Private
 
@@ -200,6 +216,19 @@
 	task.progress += 0.1;
 	if (task.progress < 0.9)
 		[self performSelector:@selector(progressStepWithTask:) withObject:task afterDelay:0.1];
+}
+
+- (void) updateCacheTime {
+	NSTimeInterval time = -[self.cacheRecord.date timeIntervalSinceNow];
+	NSString* title;
+	if (time < 60)
+		title = NSLocalizedString(@"Updated a moment ago", nil);
+	else
+		title = [NSString stringWithFormat:NSLocalizedString(@"Updated %@ ago", nil),  [NSString stringWithTimeLeft:time componentsLimit:1]];
+	
+	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
+																		  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
 @end

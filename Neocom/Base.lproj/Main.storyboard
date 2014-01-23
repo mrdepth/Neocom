@@ -1074,6 +1074,7 @@
                         <segue destination="YKp-nt-ldK" kind="custom" identifier="NCDatabaseViewController" customClass="NCSideMenuViewControllerContentSegue" id="9YX-J9-VSY"/>
                         <segue destination="GK8-oV-aSX" kind="custom" identifier="NCDatabaseMarketViewController" customClass="NCSideMenuViewControllerContentSegue" id="a1A-KF-mEH"/>
                         <segue destination="spX-rM-BWk" kind="custom" identifier="NCSkillsViewController" customClass="NCSideMenuViewControllerContentSegue" id="qcA-TB-3q3"/>
+                        <segue destination="fih-dZ-1AE" kind="custom" identifier="NCDatabaseCertificatesViewController" customClass="NCSideMenuViewControllerContentSegue" id="OWp-YY-MrO"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1137,7 +1138,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ImV-Bu-I4K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1861" y="664"/>
+            <point key="canvasLocation" x="1965" y="636"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="FLd-bb-8LT">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseCertificatesViewController" id="fih-dZ-1AE" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="emL-oA-G2U"/>
+                        <viewControllerLayoutGuide type="bottom" id="X5H-Xh-mQK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QPi-nb-c9A">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lHB-0m-JRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1669" y="-1044"/>
         </scene>
     </scenes>
     <resources>

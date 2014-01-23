@@ -142,7 +142,9 @@
 }
 
 - (void) didChangeAccount:(NCAccount *)account {
-	[self reload];
+	[super didChangeAccount:account];
+	if ([self isViewLoaded])
+		[self reload];
 }
 
 #pragma mark - Table view data source
@@ -202,6 +204,7 @@
 							 cancelBlock:nil] show];
 	}
 }
+
 
 #pragma mark - Private
 
@@ -312,7 +315,7 @@
 										   
 										   if (type.masteries) {
 											   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-											   static NSString* icons[] = {@"Icons/icon79_02.png", @"Icons/icon79_03.png", @"Icons/icon79_04.png", @"Icons/icon79_05.png", @"Icons/icon79_05.png"};
+											   //static NSString* icons[] = {@"Icons/icon79_02.png", @"Icons/icon79_03.png", @"Icons/icon79_04.png", @"Icons/icon79_05.png", @"Icons/icon79_05.png"};
 											   
 											   section[@"title"] = NSLocalizedString(@"Mastery", nil);
 											   NSMutableArray* rows = [NSMutableArray array];
@@ -327,7 +330,7 @@
 												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 												   row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), i + 1];
 												   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-												   row.imageName = icons[i];
+												   row.imageName = [EVEDBCertCertificate iconImageNameWithMasteryLevel:i];
 												   row.cellIdentifier = @"MasteryCell";
 												   row.object = @(i);
 												   [rows addObject:row];

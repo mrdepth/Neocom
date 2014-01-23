@@ -360,7 +360,8 @@
 
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
-	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	if ([self isViewLoaded])
+		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (NSString*) recordID {

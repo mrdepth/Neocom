@@ -7,7 +7,9 @@
 //
 
 #import "NCTableViewController.h"
+#import "EVEDBInvGroup.h"
 
 @interface NCDatabaseCertificatesViewController : NCTableViewController
+@property (nonatomic, strong) EVEDBInvGroup* group;
 
 @end

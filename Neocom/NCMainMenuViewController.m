@@ -117,7 +117,8 @@
 }
 
 - (void) didChangeAccount:(NSNotification*) notification {
-	[self reload];
+	if ([self isViewLoaded])
+		[self reload];
 }
 
 @end

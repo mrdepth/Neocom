@@ -218,6 +218,7 @@
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
 		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
+		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
 		129D257A187E835800E2062C /* menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 129D2579187E835800E2062C /* menuIcon@2x.png */; };
 		129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
 		129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2583187E923200E2062C /* ASCaptionTextField.m */; };
@@ -684,6 +685,8 @@
 		129421B31880265000977CB8 /* evedb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = evedb.sqlite; sourceTree = SOURCE_ROOT; };
 		129421B61880321900977CB8 /* NCAccountCorporationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCorporationCell.h; sourceTree = "<group>"; };
 		129421B71880321900977CB8 /* NCAccountCorporationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCorporationCell.m; sourceTree = "<group>"; };
+		1296C6C01890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificateInfoViewController.h; sourceTree = "<group>"; };
+		1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificateInfoViewController.m; sourceTree = "<group>"; };
 		129D2579187E835800E2062C /* menuIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menuIcon@2x.png"; sourceTree = "<group>"; };
 		129D257C187E8CB400E2062C /* NCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuViewController.h; sourceTree = "<group>"; };
 		129D257D187E8CB400E2062C /* NCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuViewController.m; sourceTree = "<group>"; };
@@ -1648,6 +1651,7 @@
 				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
+				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1680,6 +1684,15 @@
 				129421B71880321900977CB8 /* NCAccountCorporationCell.m */,
 			);
 			name = NCAccountCorporationCell;
+			sourceTree = "<group>";
+		};
+		1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1296C6C01890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.h */,
+				1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */,
+			);
+			name = NCDatabaseCertificateInfoViewController;
 			sourceTree = "<group>";
 		};
 		129D2578187E835800E2062C /* Graphics */ = {
@@ -2239,6 +2252,7 @@
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
 				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
+				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
 				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,

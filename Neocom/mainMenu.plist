@@ -47,6 +47,20 @@
 			<key>detailsKeyPath</key>
 			<string>mailsDetails</string>
 		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCCalendarEventsViewController</string>
+			<key>title</key>
+			<string>Calendar Events</string>
+			<key>image</key>
+			<string>Icons/icon94_12.png</string>
+			<key>charAccessMask</key>
+			<integer>1</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+			<key>detailsKeyPath</key>
+			<string>mailsDetails</string>
+		</dict>
 	</array>
 	<array>
 		<dict>

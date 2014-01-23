@@ -280,6 +280,10 @@
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
 		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
+		8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */; };
+		8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB161891873800B99A7E /* NCCalendarEventCell.m */; };
+		8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 8418BB1B1891970500B99A7E /* eventTemplate.html */; };
+		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */; };
@@ -802,6 +806,13 @@
 		841534EA188A921200B42433 /* NCDatabaseMarketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseMarketViewController.h; sourceTree = "<group>"; };
 		841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseMarketViewController.m; sourceTree = "<group>"; };
 		841534EF188A9A7500B42433 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
+		8418BB12189186D900B99A7E /* NCCalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCalendarEventsViewController.h; sourceTree = "<group>"; };
+		8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCalendarEventsViewController.m; sourceTree = "<group>"; };
+		8418BB151891873800B99A7E /* NCCalendarEventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCalendarEventCell.h; sourceTree = "<group>"; };
+		8418BB161891873800B99A7E /* NCCalendarEventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCalendarEventCell.m; sourceTree = "<group>"; };
+		8418BB1B1891970500B99A7E /* eventTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = eventTemplate.html; sourceTree = "<group>"; };
+		8418BB1E18919C0300B99A7E /* NCCalendarEventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCalendarEventDetailsViewController.h; sourceTree = "<group>"; };
+		8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCalendarEventDetailsViewController.m; sourceTree = "<group>"; };
 		84250637187DC566002E691E /* NCSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSideMenuViewController.h; sourceTree = "<group>"; };
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
@@ -906,6 +917,7 @@
 		120968591845F0CB00921A37 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8418BB1A1891970500B99A7E /* Resources */,
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
@@ -1614,6 +1626,8 @@
 		126ED31A188128E10009FA39 /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				8418BB11189186A500B99A7E /* NCCalendarEventsViewController */,
+				8418BB1D18919BDC00B99A7E /* NCCalendarEventDetailsViewController */,
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
 				125F682618853809005732FA /* NCCharacterAttributes */,
 				125F681718852D8A005732FA /* NCSkillsViewController */,
@@ -2052,6 +2066,42 @@
 			name = NCDatabaseMarketViewController;
 			sourceTree = "<group>";
 		};
+		8418BB11189186A500B99A7E /* NCCalendarEventsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8418BB181891874000B99A7E /* NCCalendarEventCell */,
+				8418BB12189186D900B99A7E /* NCCalendarEventsViewController.h */,
+				8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */,
+			);
+			name = NCCalendarEventsViewController;
+			sourceTree = "<group>";
+		};
+		8418BB181891874000B99A7E /* NCCalendarEventCell */ = {
+			isa = PBXGroup;
+			children = (
+				8418BB151891873800B99A7E /* NCCalendarEventCell.h */,
+				8418BB161891873800B99A7E /* NCCalendarEventCell.m */,
+			);
+			name = NCCalendarEventCell;
+			sourceTree = "<group>";
+		};
+		8418BB1A1891970500B99A7E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8418BB1B1891970500B99A7E /* eventTemplate.html */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8418BB1D18919BDC00B99A7E /* NCCalendarEventDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8418BB1E18919C0300B99A7E /* NCCalendarEventDetailsViewController.h */,
+				8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */,
+			);
+			name = NCCalendarEventDetailsViewController;
+			sourceTree = "<group>";
+		};
 		84250636187DC548002E691E /* NCSideMenuViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2178,6 +2228,7 @@
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
+				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				125F6807188526B6005732FA /* level_200.gif in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
@@ -2261,6 +2312,7 @@
 				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
 				126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */,
 				126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */,
+				8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */,
 				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
@@ -2309,6 +2361,7 @@
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
+				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
 				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,
 				1222E179188F9572003C1361 /* EVEDBCertMastery.m in Sources */,
 				126A0E7E185F3B9300A8E8A3 /* ASURLConnection.m in Sources */,
@@ -2461,6 +2514,7 @@
 				126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */,
 				126A0E1E185F3B9300A8E8A3 /* EVEDBInvType+Skill.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
+				8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
 				126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */,
 				126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */,

@@ -104,7 +104,7 @@
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
 	NCAccount* account = [NCAccount currentAccount];
-	if (!account) {
+	if (!account || account.accountType == NCAccountTypeCorporate) {
 		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 		return;
 	}
@@ -285,7 +285,8 @@
 	if (accountStatus) {
 		UIColor *color;
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateFormat:@"yyyy-MM-dd"];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatter setDateFormat:@"yyyy.MM.dd"];
 		int days = [accountStatus.paidUntil timeIntervalSinceNow] / (60 * 60 * 24);
 		if (days < 0)
 			days = 0;

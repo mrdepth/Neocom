@@ -7,6 +7,7 @@
 //
 
 #import "NSString+Neocom.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @implementation NSString (Neocom)
 
@@ -30,14 +31,22 @@
 
 + (NSString*) stringWithTotalResources:(float) total usedResources:(float) used unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:total];
-	return [NSString stringWithFormat:@"%.1f/%.1f%@ %@", used / dimension, total / dimension, [self unitForDimension:dimension], unit ? unit : @""];
+	used /= dimension;
+	total /= dimension;
+	
+	return [NSString stringWithFormat:@"%@/%@%@ %@",
+			[NSNumberFormatter neocomLocalizedStringFromNumber:@(used)],
+			[NSNumberFormatter neocomLocalizedStringFromNumber:@(total)],
+			[self unitForDimension:dimension]
+			, unit ? unit : @""];
 }
 
 + (NSString*) shortStringWithFloat:(float) value unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:value];
+	value /= dimension;
 	return unit ?
-		[NSString stringWithFormat:@"%.1f%@ %@", value / dimension, [self unitForDimension:dimension], unit] :
-		[NSString stringWithFormat:@"%.1f%@", value / dimension, [self unitForDimension:dimension]];
+		[NSString stringWithFormat:@"%@%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self unitForDimension:dimension], unit] :
+		[NSString stringWithFormat:@"%@%@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self unitForDimension:dimension]];
 }
 
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="apiKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="APIKey" inverseName="accounts" inverseEntity="APIKey" syncable="YES"/>
+        <relationship name="mailBox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MailBox" inverseName="account" inverseEntity="MailBox" syncable="YES"/>
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>
     </entity>
     <entity name="APIKey" representedClassName="NCAPIKey" syncable="YES">
@@ -23,6 +24,11 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skills" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="MailBox" representedClassName="NCMailBox" syncable="YES">
+        <attribute name="readedMessagesIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="mailBox" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="POSFit" representedClassName="NCPOSFit" parentEntity="Fit" syncable="YES">
         <attribute name="structures" optional="YES" attributeType="String" syncable="YES"/>
@@ -57,5 +63,6 @@
         <element name="Setting" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ShipFit" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MailBox" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

@@ -25,18 +25,22 @@
 	[fetchRequest setEntity:entity];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID == %@", recordID]];
 	
-	NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
-	if (fetchedObjects.count > 0)
-		return fetchedObjects[0];
-	else {
-		NCCacheRecord* record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-		record.recordID = recordID;
-		record.date = [NSDate date];
-		record.expireDate = [NSDate distantFuture];
-		record.data = [[NCCacheRecordData alloc] initWithEntity:[NSEntityDescription entityForName:@"RecordData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-
-		return record;
-	}
+	__block NCCacheRecord* record = nil;
+	[context performBlockAndWait:^{
+		NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
+		if (fetchedObjects.count > 0)
+			record = fetchedObjects[0];
+		else {
+			NCCacheRecord* record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+			record.recordID = recordID;
+			record.date = [NSDate date];
+			record.expireDate = [NSDate distantFuture];
+			record.data = [[NCCacheRecordData alloc] initWithEntity:[NSEntityDescription entityForName:@"RecordData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			
+			record = record;
+		}
+	}];
+	return record;
 }
 
 @end

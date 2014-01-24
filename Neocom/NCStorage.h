@@ -15,6 +15,7 @@
 #import "NCSetting.h"
 #import "NCAPIKey.h"
 #import "NCFit.h"
+#import "NCMailBox.h"
 
 @interface NCStorage : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

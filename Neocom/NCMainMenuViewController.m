@@ -15,7 +15,6 @@
 @property (nonatomic, strong) NSMutableArray* allSections;
 @property (nonatomic, strong) NSMutableArray* sections;
 - (void) reload;
-- (void) didChangeAccount:(NSNotification*) notification;
 @end
 
 @implementation NCMainMenuViewController
@@ -29,15 +28,11 @@
     return self;
 }
 
-- (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.refreshControl = nil;
 	[self.tableView registerClass:[NCTableViewEmptyHedaerView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewEmptyHedaerView"];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
 	self.allSections = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
 	[self reload];
 }
@@ -94,6 +89,18 @@
 //	[self.sideMenuViewController setContentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCCharacterSheetViewController"] animated:YES];
 }
 
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (void) didChangeAccount:(NCAccount *)account {
+	[super didChangeAccount:account];
+	if ([self isViewLoaded])
+		[self reload];
+}
+
 #pragma mark - Private
 
 - (void) reload {
@@ -114,11 +121,14 @@
 			[self.sections addObject:section];
 	}
 	[self.tableView reloadData];
-}
-
-- (void) didChangeAccount:(NSNotification*) notification {
-	if ([self isViewLoaded])
-		[self reload];
+	
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+										 }
+							 completionHandler:^(NCTask *task) {
+								 
+							 }];
 }
 
 @end

@@ -222,6 +222,8 @@
 				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d days", nil), dateComponents.day]];
 			self.allianceTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Member for %@", nil), [components componentsJoinedByString:@", "]];
 		}
+		else
+			self.allianceTimeLabel.text = nil;
 		
 		EVEDBMapSolarSystem* solarSystem = [[EVEDBMapSolarSystem alloc] initWithSQLRequest:[NSString stringWithFormat:@"SELECT * from mapSolarSystems WHERE solarSystemName==\"%@\"", characterInfo.lastKnownLocation]
 																					 error:nil];

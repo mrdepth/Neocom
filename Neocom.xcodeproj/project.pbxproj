@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
+		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
+		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
 		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
@@ -305,6 +308,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1206C5E818922FB10010BEE8 /* NCMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBox.h; sourceTree = "<group>"; };
+		1206C5E918922FB20010BEE8 /* NCMailBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBox.m; sourceTree = "<group>"; };
+		1206C5ED189280870010BEE8 /* NCMailBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxViewController.h; sourceTree = "<group>"; };
+		1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxViewController.m; sourceTree = "<group>"; };
+		1206C5F018929B960010BEE8 /* NCMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMessageCell.h; sourceTree = "<group>"; };
+		1206C5F118929B960010BEE8 /* NCMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMessageCell.m; sourceTree = "<group>"; };
 		1209684F1845F0CB00921A37 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968521845F0CB00921A37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		120968541845F0CB00921A37 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -864,6 +873,25 @@
 				12C9DCA018617A6300A654C5 /* NCAccountsManager.m */,
 			);
 			name = NCAccountsManager;
+			sourceTree = "<group>";
+		};
+		1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1206C5F318929B990010BEE8 /* NCMessageCell */,
+				1206C5ED189280870010BEE8 /* NCMailBoxViewController.h */,
+				1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */,
+			);
+			name = NCMailBoxViewController;
+			sourceTree = "<group>";
+		};
+		1206C5F318929B990010BEE8 /* NCMessageCell */ = {
+			isa = PBXGroup;
+			children = (
+				1206C5F018929B960010BEE8 /* NCMessageCell.h */,
+				1206C5F118929B960010BEE8 /* NCMessageCell.m */,
+			);
+			name = NCMessageCell;
 			sourceTree = "<group>";
 		};
 		120968461845F0CB00921A37 = {
@@ -1626,6 +1654,7 @@
 		126ED31A188128E10009FA39 /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */,
 				8418BB11189186A500B99A7E /* NCCalendarEventsViewController */,
 				8418BB1D18919BDC00B99A7E /* NCCalendarEventDetailsViewController */,
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
@@ -1967,6 +1996,8 @@
 				129FEE351860326E00F75FA6 /* NCAPIKey.m */,
 				129FEE311860326D00F75FA6 /* NCFit.h */,
 				129FEE321860326D00F75FA6 /* NCFit.m */,
+				1206C5E818922FB10010BEE8 /* NCMailBox.h */,
+				1206C5E918922FB20010BEE8 /* NCMailBox.m */,
 			);
 			name = NCStorage;
 			sourceTree = "<group>";
@@ -2319,6 +2350,7 @@
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
 				128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
+				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
@@ -2336,6 +2368,7 @@
 				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
 				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
 				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
+				1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */,
 				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
@@ -2385,6 +2418,7 @@
 				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
+				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
 				126A0E26185F3B9300A8E8A3 /* EVEDBRamAssemblyLineType.m in Sources */,
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,

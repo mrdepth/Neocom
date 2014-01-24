@@ -37,6 +37,7 @@ static NCAccount* currentAccount = nil;
 @dynamic order;
 @dynamic apiKey;
 @dynamic skillPlans;
+@dynamic mailBox;
 
 @synthesize characterInfoCacheRecord = _characterInfoCacheRecord;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
@@ -80,6 +81,11 @@ static NCAccount* currentAccount = nil;
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
+}
+
+- (void) awakeFromInsert {
+	self.mailBox = [[NCMailBox alloc] initWithEntity:[NSEntityDescription entityForName:@"MailBox" inManagedObjectContext:self.managedObjectContext]
+					  insertIntoManagedObjectContext:self.managedObjectContext];
 }
 
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {

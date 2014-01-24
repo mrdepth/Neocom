@@ -113,7 +113,9 @@
 											 block:^(NCTask *task) {
 												 [context performBlockAndWait:^{
 													 [self performSelectorOnMainThread:@selector(progressStepWithTask:) withObject:task waitUntilDone:NO];
-													 [self.cacheRecord.data data];
+													 [self.cacheRecord.managedObjectContext performBlockAndWait:^{
+														 [self.cacheRecord.data data];
+													 }];
 												 }];
 											 }
 								 completionHandler:^(NCTask *task) {

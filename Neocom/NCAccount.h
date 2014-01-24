@@ -20,12 +20,14 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 
 @class NCAPIKey;
 @class NCSkillPlan;
+@class NCMailBox;
 @interface NCAccount : NSManagedObject
 
 @property (nonatomic) int32_t characterID;
 @property (nonatomic) int32_t order;
-@property (nonatomic, retain) NCAPIKey *apiKey;
+@property (nonatomic, strong) NCAPIKey *apiKey;
 @property (nonatomic, strong) NSSet* skillPlans;
+@property (nonatomic, strong) NCMailBox* mailBox;
 
 @property (nonatomic, strong) NCSkillPlan* activeSkillPlan;
 

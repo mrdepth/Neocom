@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class NCMailBoxMessage;
 @interface NCMessageCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *subjectLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *senderLabel;
+@property (strong, nonatomic) NCMailBoxMessage* message;
 
 @end

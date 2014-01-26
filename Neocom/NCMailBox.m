@@ -105,7 +105,7 @@
 }
 
 - (BOOL) isRead {
-	return [self.mailBox.readedMessageIDs containsObject:@(self.header.messageID)] || self.header.read;
+	return [self.mailBox.readedMessagesIDs containsObject:@(self.header.messageID)] || self.header.read;
 }
 
 #pragma mark - NSCoding
@@ -123,7 +123,7 @@
 	if (self = [super init]) {
 		self.header = [aDecoder decodeObjectForKey:@"header"];
 		self.sender = [aDecoder decodeObjectForKey:@"sender"];
-		self.sender = [aDecoder decodeObjectForKey:@"sender"];
+		self.recipients = [aDecoder decodeObjectForKey:@"recipients"];
 	}
 	return self;
 }
@@ -137,7 +137,7 @@
 @end
 
 @implementation NCMailBox
-@dynamic readedMessageIDs;
+@dynamic readedMessagesIDs;
 @dynamic account;
 @dynamic updateDate;
 
@@ -295,13 +295,13 @@
 }
 
 - (void) markAsRead:(NSArray*) messages {
-	NSMutableSet* set = [[NSMutableSet alloc] initWithSet:self.readedMessageIDs];
+	NSMutableSet* set = [[NSMutableSet alloc] initWithSet:self.readedMessagesIDs];
 	for (NCMailBoxMessage* message in messages)
 		[set addObject:@(message.header.messageID)];
 	
 	NCStorage* storage = [NCStorage sharedStorage];
 	[storage.managedObjectContext performBlockAndWait:^{
-		self.readedMessageIDs = set;
+		self.readedMessagesIDs = set;
 		[storage saveContext];
 	}];
 	[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];

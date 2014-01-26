@@ -283,12 +283,16 @@
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
 		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
+		8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 8416386C1893BEA000968ADF /* NSDate+Neocom.m */; };
 		8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */; };
 		8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB161891873800B99A7E /* NCCalendarEventCell.m */; };
 		8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 8418BB1B1891970500B99A7E /* eventTemplate.html */; };
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; };
+		84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 84E4331C18951B2400DF2061 /* mailMessageTemplate.html */; };
+		84E4332218951C3500DF2061 /* NCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4332118951C3500DF2061 /* NCViewController.m */; };
 		84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */; };
 		84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; };
 		84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */; };
@@ -815,6 +819,8 @@
 		841534EA188A921200B42433 /* NCDatabaseMarketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseMarketViewController.h; sourceTree = "<group>"; };
 		841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseMarketViewController.m; sourceTree = "<group>"; };
 		841534EF188A9A7500B42433 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
+		8416386B1893BEA000968ADF /* NSDate+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Neocom.h"; sourceTree = "<group>"; };
+		8416386C1893BEA000968ADF /* NSDate+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Neocom.m"; sourceTree = "<group>"; };
 		8418BB12189186D900B99A7E /* NCCalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCalendarEventsViewController.h; sourceTree = "<group>"; };
 		8418BB13189186D900B99A7E /* NCCalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCalendarEventsViewController.m; sourceTree = "<group>"; };
 		8418BB151891873800B99A7E /* NCCalendarEventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCalendarEventCell.h; sourceTree = "<group>"; };
@@ -826,6 +832,11 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		84E4331918951AA800DF2061 /* NCMailBoxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxMessageViewController.h; sourceTree = "<group>"; };
+		84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxMessageViewController.m; sourceTree = "<group>"; };
+		84E4331C18951B2400DF2061 /* mailMessageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mailMessageTemplate.html; sourceTree = "<group>"; };
+		84E4332018951C3500DF2061 /* NCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCViewController.h; sourceTree = "<group>"; };
+		84E4332118951C3500DF2061 /* NCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCViewController.m; sourceTree = "<group>"; };
 		84EC7940188BD4B20001BCE3 /* NSArray+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Neocom.h"; sourceTree = "<group>"; };
 		84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Neocom.m"; sourceTree = "<group>"; };
 		84FA63DC188C4FC1008FD761 /* NCSkillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillCell.h; sourceTree = "<group>"; };
@@ -1128,6 +1139,7 @@
 				12111235185992DD009E5106 /* NCCache */,
 				1200C32218603093008F3C5E /* NCAccountsManager */,
 				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
+				84E4331F18951C1600DF2061 /* NCViewController */,
 				1211122B185989CC009E5106 /* NCTaskManager */,
 			);
 			name = Utility;
@@ -1655,6 +1667,7 @@
 			isa = PBXGroup;
 			children = (
 				1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */,
+				84E4331818951A8C00DF2061 /* NCMailBoxMessageViewController */,
 				8418BB11189186A500B99A7E /* NCCalendarEventsViewController */,
 				8418BB1D18919BDC00B99A7E /* NCCalendarEventDetailsViewController */,
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
@@ -1716,6 +1729,8 @@
 				84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */,
 				84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */,
 				84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */,
+				8416386B1893BEA000968ADF /* NSDate+Neocom.h */,
+				8416386C1893BEA000968ADF /* NSDate+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2119,6 +2134,7 @@
 		8418BB1A1891970500B99A7E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				84E4331C18951B2400DF2061 /* mailMessageTemplate.html */,
 				8418BB1B1891970500B99A7E /* eventTemplate.html */,
 			);
 			path = Resources;
@@ -2140,6 +2156,24 @@
 				84250638187DC566002E691E /* NCSideMenuViewController.m */,
 			);
 			name = NCSideMenuViewController;
+			sourceTree = "<group>";
+		};
+		84E4331818951A8C00DF2061 /* NCMailBoxMessageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84E4331918951AA800DF2061 /* NCMailBoxMessageViewController.h */,
+				84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */,
+			);
+			name = NCMailBoxMessageViewController;
+			sourceTree = "<group>";
+		};
+		84E4331F18951C1600DF2061 /* NCViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84E4332018951C3500DF2061 /* NCViewController.h */,
+				84E4332118951C3500DF2061 /* NCViewController.m */,
+			);
+			name = NCViewController;
 			sourceTree = "<group>";
 		};
 		84E9E6991885B07D003ADB9B /* NCDatabaseViewController */ = {
@@ -2300,6 +2334,7 @@
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				125F67F7188526B6005732FA /* level_021.gif in Resources */,
 				129D257A187E835800E2062C /* menuIcon@2x.png in Resources */,
+				84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */,
 				125F67FD188526B6005732FA /* level_051.gif in Resources */,
 				120968661845F0CB00921A37 /* Main.storyboard in Resources */,
 				125F6809188526B6005732FA /* level_231.gif in Resources */,
@@ -2382,6 +2417,7 @@
 				126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */,
 				126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */,
 				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
+				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
@@ -2401,6 +2437,7 @@
 				129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */,
 				126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */,
 				126A0E20185F3B9300A8E8A3 /* EVEDBInvTypeMaterial.m in Sources */,
+				84E4332218951C3500DF2061 /* NCViewController.m in Sources */,
 				129FEE331860326D00F75FA6 /* NCFit.m in Sources */,
 				126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */,
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
@@ -2547,6 +2584,7 @@
 				126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */,
 				126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */,
 				126A0E1E185F3B9300A8E8A3 /* EVEDBInvType+Skill.m in Sources */,
+				84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
 				8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,

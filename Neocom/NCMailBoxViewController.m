@@ -10,6 +10,8 @@
 #import "NCStorage.h"
 #import "NSArray+Neocom.h"
 #import "NCMessageCell.h"
+#import "NSDate+Neocom.h"
+#import "NCMailBoxMessageViewController.h"
 
 @interface NCMailBoxViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NCMailBox* mailBox;
@@ -113,7 +115,7 @@
 @end
 
 @interface NCMailBoxViewController ()
-
+@property (nonatomic, strong) NCMailBox* mailBox;
 @end
 
 @implementation NCMailBoxViewController
@@ -127,6 +129,10 @@
     return self;
 }
 
+- (void) dealloc {
+	self.mailBox = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -137,6 +143,30 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([NSThread isMainThread]) {
+		NCMailBoxViewControllerData* data = [NCMailBoxViewControllerData new];
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 data.mailBox = self.mailBox;
+												 [data loadDataInTask:task];
+											 }
+								 completionHandler:^(NCTask *task) {
+									 if (!task.isCancelled) {
+										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
+									 }
+								 }];
+	}
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCMailBoxMessageViewController"]) {
+		NCMailBoxMessageViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.message = [(NCMessageCell*) sender message];
+	}
 }
 
 #pragma mark - Table view data source
@@ -164,7 +194,22 @@
 	
 	static NSString *cellIdentifier = @"Cell";
 	NCMessageCell* cell = (NCMessageCell*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	cell.subjectLabel.text = row.header.title;
+	cell.dateLabel.text = [row.header.sentDate messageTimeLocalizedString];
+	cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+	cell.message = row;
 	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCMessageCell* cell = (NCMessageCell*) [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	CGRect frame = cell.frame;
+	frame.size.width = self.tableView.frame.size.width;
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return CGRectGetMaxY(cell.senderLabel.frame);
 }
 
 #pragma mark - NCTableViewController
@@ -172,6 +217,7 @@
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
 	NCAccount* account = [NCAccount currentAccount];
+	self.mailBox = account.mailBox;
 	if (!account || account.accountType == NCAccountTypeCorporate) {
 		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 		return;
@@ -201,6 +247,14 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+}
+
+#pragma mark - Private
+
+- (void) setMailBox:(NCMailBox *)mailBox {
+	if (_mailBox)
+		[_mailBox removeObserver:self forKeyPath:@"numberOfUnreadMessages"];
+	[_mailBox addObserver:self forKeyPath:@"numberOfUnreadMessages" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 @end

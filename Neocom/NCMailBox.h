@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 
 @class NCAccount;
 @interface NCMailBox : NSManagedObject
-@property (nonatomic, strong) NSSet* readedMessageIDs;
+@property (nonatomic, strong) NSSet* readedMessagesIDs;
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, strong) NSDate* updateDate;
 

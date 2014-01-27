@@ -84,6 +84,13 @@
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	
+/*	CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+	
+	if (fabs(size.height - self.tableView.tableHeaderView.frame.size.height) > FLT_EPSILON) {
+		self.tableView.tableHeaderView.frame = (CGRect){.origin = self.tableView.frame.origin, .size = size};
+		self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+	}*/
+
 	UIView* header = self.tableView.tableHeaderView;
 	CGRect frame = header.frame;
 	frame.size.height = CGRectGetMaxY(self.scrollView.frame);

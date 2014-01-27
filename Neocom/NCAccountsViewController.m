@@ -148,7 +148,7 @@
 
 	if (account.account.accountType == NCAccountTypeCharacter) {
 		static NSString *CellIdentifier = @"NCAccountCharacterCell";
-		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		cell.characterImageView.image = nil;
 		cell.corporationImageView.image = nil;
@@ -252,7 +252,7 @@
 	}
 	else {
 		static NSString *CellIdentifier = @"NCAccountCorporationCell";
-		NCAccountCorporationCell *cell = (NCAccountCorporationCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+		NCAccountCorporationCell *cell = (NCAccountCorporationCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		cell.corporationImageView.image = nil;
 		cell.allianceImageView.image = nil;
@@ -365,27 +365,11 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAccountsViewControllerData* data = self.data;
-	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-	if (account.account.accountType == NCAccountTypeCharacter) {
-		CGFloat height = 185.0;
-		
-		EVECharacterInfo* characterInfo = account.account.characterInfo;
-		if (!characterInfo.lastKnownLocation && !characterInfo.shipName)
-			height -= 17;
-		
-		if (!account.currentSkill)
-			height -= 17;
-		if (!account.account.skillQueue)
-			height -= 17;
-//		if (!account.account.accountBalance)
-//			height -= 17;
-		if (!account.accountStatus)
-			height -= 17;
-		return height;
-	}
-	else
-		return 134;
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 /*

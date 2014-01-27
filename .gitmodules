@@ -13,3 +13,6 @@
 [submodule "ThirdParty/tools"]
 	path = ThirdParty/tools
 	url = https://github.com/mrdepth/tools.git
+[submodule "ThirdParty/eufe"]
+	path = ThirdParty/eufe
+	url = ../eufe.git

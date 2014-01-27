@@ -225,7 +225,6 @@
 		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
 		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
-		129D257A187E835800E2062C /* menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 129D2579187E835800E2062C /* menuIcon@2x.png */; };
 		129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
 		129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2583187E923200E2062C /* ASCaptionTextField.m */; };
 		129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
@@ -260,7 +259,6 @@
 		129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2638187E929800E2062C /* NCMainMenuContainerViewController.m */; };
 		129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */; };
 		129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */; };
-		129D2641187E9E8600E2062C /* navigationArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 129D2640187E9E8600E2062C /* navigationArrowUp@2x.png */; };
 		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
 		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
 		129FEE331860326D00F75FA6 /* NCFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE321860326D00F75FA6 /* NCFit.m */; };
@@ -293,10 +291,25 @@
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */; };
 		84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; };
 		84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 84E4331C18951B2400DF2061 /* mailMessageTemplate.html */; };
 		84E4332218951C3500DF2061 /* NCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4332118951C3500DF2061 /* NCViewController.m */; };
 		84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */; };
+		84EEFCE31896C69C007962A0 /* amarrEmpire@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCD51896C69C007962A0 /* amarrEmpire@2x.png */; };
+		84EEFCE41896C69C007962A0 /* angelCartel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCD61896C69C007962A0 /* angelCartel@2x.png */; };
+		84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCD71896C69C007962A0 /* bloodRaider@2x.png */; };
+		84EEFCE61896C69C007962A0 /* caldariState@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCD81896C69C007962A0 /* caldariState@2x.png */; };
+		84EEFCE71896C69C007962A0 /* concord@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCD91896C69C007962A0 /* concord@2x.png */; };
+		84EEFCE81896C69C007962A0 /* guristasPirates@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDA1896C69C007962A0 /* guristasPirates@2x.png */; };
+		84EEFCE91896C69C007962A0 /* khanid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDB1896C69C007962A0 /* khanid@2x.png */; };
+		84EEFCEA1896C69C007962A0 /* minmatarRepublic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDC1896C69C007962A0 /* minmatarRepublic@2x.png */; };
+		84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDD1896C69C007962A0 /* mordusLegion@2x.png */; };
+		84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDE1896C69C007962A0 /* sanshasNation@2x.png */; };
+		84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCDF1896C69C007962A0 /* serpentis@2x.png */; };
+		84EEFCEE1896C69C007962A0 /* thukkerTribe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */; };
+		84EEFCEF1896C69C007962A0 /* menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE11896C69C007962A0 /* menuIcon@2x.png */; };
+		84EEFCF01896C69C007962A0 /* navigationArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */; };
 		84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; };
 		84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */; };
 		84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FA63E2188C5227008FD761 /* ImageIO.framework */; };
@@ -712,7 +725,6 @@
 		129421B71880321900977CB8 /* NCAccountCorporationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCorporationCell.m; sourceTree = "<group>"; };
 		1296C6C01890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificateInfoViewController.h; sourceTree = "<group>"; };
 		1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificateInfoViewController.m; sourceTree = "<group>"; };
-		129D2579187E835800E2062C /* menuIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menuIcon@2x.png"; sourceTree = "<group>"; };
 		129D257C187E8CB400E2062C /* NCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuViewController.h; sourceTree = "<group>"; };
 		129D257D187E8CB400E2062C /* NCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuViewController.m; sourceTree = "<group>"; };
 		129D2582187E923200E2062C /* ASCaptionTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCaptionTextField.h; sourceTree = "<group>"; };
@@ -780,7 +792,6 @@
 		129D263B187E98C100E2062C /* NCNavigationCharacterButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationCharacterButton.h; sourceTree = "<group>"; };
 		129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationCharacterButton.m; sourceTree = "<group>"; };
 		129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCNavigationCharacterButton.xib; sourceTree = "<group>"; };
-		129D2640187E9E8600E2062C /* navigationArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationArrowUp@2x.png"; sourceTree = "<group>"; };
 		129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		129FEE161860313D00F75FA6 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
 		129FEE171860313D00F75FA6 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
@@ -840,6 +851,7 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gallenteFederation@2x.png"; sourceTree = "<group>"; };
 		84E4331918951AA800DF2061 /* NCMailBoxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxMessageViewController.h; sourceTree = "<group>"; };
 		84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxMessageViewController.m; sourceTree = "<group>"; };
 		84E4331C18951B2400DF2061 /* mailMessageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mailMessageTemplate.html; sourceTree = "<group>"; };
@@ -847,6 +859,20 @@
 		84E4332118951C3500DF2061 /* NCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCViewController.m; sourceTree = "<group>"; };
 		84EC7940188BD4B20001BCE3 /* NSArray+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Neocom.h"; sourceTree = "<group>"; };
 		84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Neocom.m"; sourceTree = "<group>"; };
+		84EEFCD51896C69C007962A0 /* amarrEmpire@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "amarrEmpire@2x.png"; sourceTree = "<group>"; };
+		84EEFCD61896C69C007962A0 /* angelCartel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "angelCartel@2x.png"; sourceTree = "<group>"; };
+		84EEFCD71896C69C007962A0 /* bloodRaider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bloodRaider@2x.png"; sourceTree = "<group>"; };
+		84EEFCD81896C69C007962A0 /* caldariState@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "caldariState@2x.png"; sourceTree = "<group>"; };
+		84EEFCD91896C69C007962A0 /* concord@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "concord@2x.png"; sourceTree = "<group>"; };
+		84EEFCDA1896C69C007962A0 /* guristasPirates@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guristasPirates@2x.png"; sourceTree = "<group>"; };
+		84EEFCDB1896C69C007962A0 /* khanid@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "khanid@2x.png"; sourceTree = "<group>"; };
+		84EEFCDC1896C69C007962A0 /* minmatarRepublic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minmatarRepublic@2x.png"; sourceTree = "<group>"; };
+		84EEFCDD1896C69C007962A0 /* mordusLegion@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mordusLegion@2x.png"; sourceTree = "<group>"; };
+		84EEFCDE1896C69C007962A0 /* sanshasNation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sanshasNation@2x.png"; sourceTree = "<group>"; };
+		84EEFCDF1896C69C007962A0 /* serpentis@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "serpentis@2x.png"; sourceTree = "<group>"; };
+		84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thukkerTribe@2x.png"; sourceTree = "<group>"; };
+		84EEFCE11896C69C007962A0 /* menuIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menuIcon@2x.png"; sourceTree = "<group>"; };
+		84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationArrowUp@2x.png"; sourceTree = "<group>"; };
 		84FA63DC188C4FC1008FD761 /* NCSkillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillCell.h; sourceTree = "<group>"; };
 		84FA63DD188C4FC1008FD761 /* NCSkillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillCell.m; sourceTree = "<group>"; };
 		84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Neocom.h"; sourceTree = "<group>"; };
@@ -1779,8 +1805,9 @@
 			children = (
 				125F67CE188526B5005732FA /* Levels */,
 				12BF345B18814B9D00368CD4 /* Icons */,
-				129D2640187E9E8600E2062C /* navigationArrowUp@2x.png */,
-				129D2579187E835800E2062C /* menuIcon@2x.png */,
+				84EEFCD41896C69C007962A0 /* Factions */,
+				84EEFCE11896C69C007962A0 /* menuIcon@2x.png */,
+				84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -2206,6 +2233,26 @@
 			name = NCDatabaseViewController;
 			sourceTree = "<group>";
 		};
+		84EEFCD41896C69C007962A0 /* Factions */ = {
+			isa = PBXGroup;
+			children = (
+				84EEFCD51896C69C007962A0 /* amarrEmpire@2x.png */,
+				84EEFCD61896C69C007962A0 /* angelCartel@2x.png */,
+				84EEFCD71896C69C007962A0 /* bloodRaider@2x.png */,
+				84EEFCD81896C69C007962A0 /* caldariState@2x.png */,
+				84EEFCD91896C69C007962A0 /* concord@2x.png */,
+				849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */,
+				84EEFCDA1896C69C007962A0 /* guristasPirates@2x.png */,
+				84EEFCDB1896C69C007962A0 /* khanid@2x.png */,
+				84EEFCDC1896C69C007962A0 /* minmatarRepublic@2x.png */,
+				84EEFCDD1896C69C007962A0 /* mordusLegion@2x.png */,
+				84EEFCDE1896C69C007962A0 /* sanshasNation@2x.png */,
+				84EEFCDF1896C69C007962A0 /* serpentis@2x.png */,
+				84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */,
+			);
+			path = Factions;
+			sourceTree = "<group>";
+		};
 		84FA63DB188C4FAC008FD761 /* NCSkillCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2311,11 +2358,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84EEFCE91896C69C007962A0 /* khanid@2x.png in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
+				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
+				84EEFCE61896C69C007962A0 /* caldariState@2x.png in Resources */,
+				84EEFCE41896C69C007962A0 /* angelCartel@2x.png in Resources */,
 				125F6807188526B6005732FA /* level_200.gif in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
@@ -2323,14 +2374,18 @@
 				125F680A188526B6005732FA /* level_240.gif in Resources */,
 				125F67F3188526B6005732FA /* level_000.gif in Resources */,
 				12BF345C18814B9D00368CD4 /* Icons in Resources */,
+				84EEFCEE1896C69C007962A0 /* thukkerTribe@2x.png in Resources */,
 				125F6804188526B6005732FA /* level_141.gif in Resources */,
 				125F67FB188526B6005732FA /* level_041.gif in Resources */,
+				84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
 				125F67F4188526B6005732FA /* level_010.gif in Resources */,
+				849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */,
 				1243761C189653980078F526 /* Character.storyboard in Resources */,
 				125F67FE188526B6005732FA /* level_100.gif in Resources */,
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
 				125F6815188526B6005732FA /* level_451.gif in Resources */,
+				84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */,
 				125F6814188526B6005732FA /* level_450.gif in Resources */,
 				125F680D188526B6005732FA /* level_251.gif in Resources */,
 				125F67FC188526B6005732FA /* level_050.gif in Resources */,
@@ -2339,23 +2394,28 @@
 				125F6813188526B6005732FA /* level_400.gif in Resources */,
 				125F67F6188526B6005732FA /* level_020.gif in Resources */,
 				125F67FA188526B6005732FA /* level_040.gif in Resources */,
+				84EEFCF01896C69C007962A0 /* navigationArrowUp@2x.png in Resources */,
 				129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */,
+				84EEFCEF1896C69C007962A0 /* menuIcon@2x.png in Resources */,
 				126ED32D188144370009FA39 /* mainMenu.plist in Resources */,
+				84EEFCE81896C69C007962A0 /* guristasPirates@2x.png in Resources */,
 				125F6801188526B6005732FA /* level_130.gif in Resources */,
 				125F67F5188526B6005732FA /* level_011.gif in Resources */,
 				125F6803188526B6005732FA /* level_140.gif in Resources */,
 				125F6800188526B6005732FA /* level_121.gif in Resources */,
-				129D2641187E9E8600E2062C /* navigationArrowUp@2x.png in Resources */,
 				125F680F188526B6005732FA /* level_340.gif in Resources */,
 				125F680B188526B6005732FA /* level_241.gif in Resources */,
 				125F6812188526B6005732FA /* level_351.gif in Resources */,
+				84EEFCE71896C69C007962A0 /* concord@2x.png in Resources */,
+				84EEFCEA1896C69C007962A0 /* minmatarRepublic@2x.png in Resources */,
+				84EEFCE31896C69C007962A0 /* amarrEmpire@2x.png in Resources */,
 				125F680E188526B6005732FA /* level_300.gif in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
+				84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */,
 				129421B41880265000977CB8 /* evedb.sqlite in Resources */,
 				125F67F9188526B6005732FA /* level_031.gif in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				125F67F7188526B6005732FA /* level_021.gif in Resources */,
-				129D257A187E835800E2062C /* menuIcon@2x.png in Resources */,
 				84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */,
 				125F67FD188526B6005732FA /* level_051.gif in Resources */,
 				120968661845F0CB00921A37 /* Main.storyboard in Resources */,

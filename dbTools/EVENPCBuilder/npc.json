@@ -4,7 +4,7 @@
     "groups": [
       {
         "groupName": "Angel Cartel",
-		"iconID": 10174,
+		"iconName": "angelCartel.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -58,7 +58,7 @@
       },
       {
         "groupName": "Blood Raiders",
-		"iconID": 1441,
+		"iconName": "bloodRaider.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -112,7 +112,7 @@
       },
       {
         "groupName": "Guristas Pirates",
-		"iconID": 1630,
+		"iconName": "guristasPirates.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -223,7 +223,7 @@
       },
       {
         "groupName": "Sansha's Nation",
-		"iconID": 10177,
+		"iconName": "sanshasNation.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -277,7 +277,7 @@
       },
       {
         "groupName": "Serpentis",
-		"iconID": 10178,
+		"iconName": "serpentis.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -336,7 +336,7 @@
     "groups": [
       {
         "groupName": "Angel Cartel",
-		"iconID": 10174,
+		"iconName": "angelCartel.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -362,7 +362,7 @@
       },
       {
         "groupName": "Blood Raiders",
-		"iconID": 1441,
+		"iconName": "bloodRaider.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -388,7 +388,7 @@
       },
       {
         "groupName": "Guristas Pirates",
-		"iconID": 1630,
+		"iconName": "guristasPirates.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -472,7 +472,7 @@
       },
       {
         "groupName": "Sansha's Nation",
-		"iconID": 10177,
+		"iconName": "sanshasNation.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -506,7 +506,7 @@
       },
       {
         "groupName": "Serpentis",
-		"iconID": 10178,
+		"iconName": "serpentis.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -578,7 +578,7 @@
     "groups": [
       {
         "groupName": "Amarr Empire",
-		"iconID": 1442,
+		"iconName": "amarrEmpire.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -600,7 +600,7 @@
       },
       {
         "groupName": "Caldari State",
-		"iconID": 1439,
+		"iconName": "caldariState.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -622,7 +622,7 @@
       },
       {
         "groupName": "Gallente Federation",
-		"iconID": 1441,
+		"iconName": "gallenteFederation.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -644,7 +644,7 @@
       },
       {
         "groupName": "Minmatar Republic",
-		"iconID": 1440,
+		"iconName": "minmatarRepublic.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -675,7 +675,7 @@
     "groups": [
       {
         "groupName": "Angel Cartel",
-		"iconID": 10174,
+		"iconName": "angelCartel.png",
         "groups": [
           {
             "groupName": "Cruiser",
@@ -685,7 +685,7 @@
       },
       {
         "groupName": "Blood Raiders",
-		"iconID": 1441,
+		"iconName": "bloodRaider.png",
         "groups": [
           {
             "groupName": "Cruiser",
@@ -695,7 +695,7 @@
       },
       {
         "groupName": "Guristas Pirates",
-		"iconID": 1630,
+		"iconName": "guristasPirates.png",
         "groups": [
           {
             "groupName": "Cruiser",
@@ -705,7 +705,7 @@
       },
       {
         "groupName": "Sansha's Nation",
-		"iconID": 10177,
+		"iconName": "sanshasNation.png",
         "groups": [
           {
             "groupName": "Cruiser",
@@ -715,7 +715,7 @@
       },
       {
         "groupName": "Serpentis",
-		"iconID": 10178,
+		"iconName": "serpentis.png",
         "groups": [
           {
             "groupName": "Cruiser",
@@ -730,7 +730,7 @@
     "groups": [
       {
         "groupName": "Sansha's Nation",
-		"iconID": 10177,
+		"iconName": "sanshasNation.png",
         "groups": [
           {
             "groupName": "Battleship",
@@ -761,7 +761,7 @@
     "groups": [
       {
         "groupName": "Amarr Empire",
-		"iconID": 1442,
+		"iconName": "amarrEmpire.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -795,7 +795,7 @@
       },
       {
         "groupName": "CONCORD Assembly",
-		"iconID": 1434,
+		"iconName": "concord.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -825,7 +825,7 @@
       },
       {
         "groupName": "Caldari State",
-		"iconID": 1439,
+		"iconName": "caldariState.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -859,7 +859,7 @@
       },
       {
         "groupName": "Gallente Federation",
-		"iconID": 1441,
+		"iconName": "gallenteFederation.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -893,7 +893,7 @@
       },
       {
         "groupName": "Minmatar Republic",
-		"iconID": 1440,
+		"iconName": "minmatarRepublic.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -927,7 +927,7 @@
       },
       {
         "groupName": "Khanid Kingdom",
-		"iconID": 10173,
+		"iconName": "khanidKingdom.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -957,7 +957,7 @@
       },
       {
         "groupName": "Mordu's Legion",
-		"iconID": 1722,
+		"iconName": "mordusLegion.png",
         "groups": [
           {
             "groupName": "Battlecruiser",
@@ -987,7 +987,7 @@
       },
       {
         "groupName": "Thukker Tribe",
-		"iconID": 10175,
+		"iconName": "thukkerTribe.png",
         "groups": [
           {
             "groupName": "Battlecruiser",

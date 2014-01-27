@@ -16,7 +16,7 @@ int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 					   groupID,
 					   parentGroupID ? @(parentGroupID): @"NULL",
 					   group[@"groupName"],
-					   group[@"iconID"] ? group[@"iconID"] : @"NULL",
+					   group[@"iconName"] ? [NSString stringWithFormat:@"\"%@\"", group[@"iconName"]] : @"NULL",
 					   group[@"groupID"] ? group[@"groupID"] : @"NULL"];
 		[rows addObject:s];
 		groupID = parse(rows, group[@"groups"], groupID);
@@ -26,23 +26,22 @@ int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 
 int main(int argc, const char * argv[])
 {
-
 	@autoreleasepool {
-		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.json"]
+		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"/Users/admin/Work/git/Neocom/dbTools/EVENPCBuilder/npc.json"]
 													   options:0
 														 error:nil];
 		NSMutableArray* rows = [NSMutableArray new];
 		[rows addObject:@"DROP TABLE IF EXISTS npcGroup;\n\
 CREATE TABLE \"npcGroup\" (\n\
-\"npcGroupID\"  INTEGER NOT NULL,\n\
+\"npcGroupID\" INTEGER NOT NULL,\n\
 \"parentNpcGroupID\" INTEGER DEFAULT NULL,\n\
-\"npcGroupName\"  TEXT,\n\
-\"iconID\"  INTEGER DEFAULT NULL,\n\
-\"groupID\"  INTEGER DEFAULT NULL,\n\
+\"npcGroupName\" TEXT,\n\
+\"iconName\" TEXT NULL,\n\
+\"groupID\" INTEGER DEFAULT NULL,\n\
 PRIMARY KEY (\"npcGroupID\")\n\
 );\n"];
 		parse(rows, npc, 0);
-		[[rows componentsJoinedByString:@"\n"] writeToFile:@"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.sql"
+		[[rows componentsJoinedByString:@"\n"] writeToFile:@"/Users/admin/Work/git/Neocom/dbTools/EVENPCBuilder/npc.sql"
 												atomically:YES
 												  encoding:NSUTF8StringEncoding
 													 error:nil];

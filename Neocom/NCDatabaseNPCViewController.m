@@ -120,7 +120,7 @@
 		
 		cell.textLabel.text = [row npcGroupName];
 		
-		NSString* iconImageName = [row icon].iconImageName;
+		NSString* iconImageName = [row iconName];
 		if (iconImageName)
 			cell.imageView.image = [UIImage imageNamed:iconImageName];
 		else

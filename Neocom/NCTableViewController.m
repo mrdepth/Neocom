@@ -53,8 +53,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 	if (self.view.window == nil) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
@@ -184,6 +183,10 @@
 	
 }
 
+- (NSDate*) cacheDate {
+	return self.cacheRecord.date;
+}
+
 #pragma mark - UISearchDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -221,7 +224,7 @@
 }
 
 - (void) updateCacheTime {
-	NSTimeInterval time = -[self.cacheRecord.date timeIntervalSinceNow];
+	NSTimeInterval time = -[[self cacheDate] timeIntervalSinceNow];
 	NSString* title;
 	if (time < 60)
 		title = NSLocalizedString(@"Updated a moment ago", nil);

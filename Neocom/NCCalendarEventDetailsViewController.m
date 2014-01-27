@@ -77,4 +77,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+		[[UIApplication sharedApplication] openURL:request.URL];
+		return NO;
+	}
+	else
+		return YES;
+}
+
 @end

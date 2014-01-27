@@ -10,7 +10,7 @@
 #import "NCStorage.h"
 #import "NCCache.h"
 
-#define NCMailBoxMessagesLimit 100
+#define NCMailBoxMessagesLimit 200
 
 @interface NCMailBoxCacheData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* messages;
@@ -60,7 +60,12 @@
 
 - (EVEMailBodiesItem*) body {
 	if (!_body) {
-		NCCacheRecord* cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
+		__block NCCacheRecord* cacheRecord;
+		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
+			 cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBoxMessage.%d", self.header.messageID]];
+			[cacheRecord data];
+		}];
+		
 		if (cacheRecord.data.data)
 			_body = cacheRecord.data.data;
 		else {
@@ -162,7 +167,7 @@
 		return;
 	
 	NSMutableDictionary* messagesDic = [NSMutableDictionary new];
-	for (NCMailBoxMessage* message in messagesDic)
+	for (NCMailBoxMessage* message in data.messages)
 		messagesDic[@(message.header.messageID)] = message;
 
 	for (EVEMailMessagesItem* header in messageHeaders.mailMessages) {
@@ -170,6 +175,7 @@
 		if (!message) {
 			NCMailBoxMessage* message = [NCMailBoxMessage new];
 			message.header = header;
+			message.mailBox = self;
 			messagesDic[@(message.header.messageID)] = message;
 		}
 	}
@@ -295,32 +301,41 @@
 }
 
 - (void) markAsRead:(NSArray*) messages {
-	NSMutableSet* set = [[NSMutableSet alloc] initWithSet:self.readedMessagesIDs];
-	for (NCMailBoxMessage* message in messages)
-		[set addObject:@(message.header.messageID)];
-	
-	NCStorage* storage = [NCStorage sharedStorage];
-	[storage.managedObjectContext performBlockAndWait:^{
-		self.readedMessagesIDs = set;
-		[storage saveContext];
-	}];
-	[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
+	@synchronized(self) {
+		NSMutableSet* set = [[NSMutableSet alloc] initWithSet:self.readedMessagesIDs];
+		for (NCMailBoxMessage* message in messages)
+			[set addObject:@(message.header.messageID)];
+		
+		NCStorage* storage = [NCStorage sharedStorage];
+		[storage.managedObjectContext performBlockAndWait:^{
+			self.readedMessagesIDs = set;
+			[storage saveContext];
+		}];
+		[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
+	}
 }
 
 - (NSArray*) messages {
-	NCMailBoxCacheData* data = self.cacheRecord.data.data;
-	if (!data && ![NSThread isMainThread]) {
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy inTask:nil];
-		data = self.cacheRecord.data.data;
+	@synchronized(self) {
+		NCMailBoxCacheData* data = self.cacheRecord.data.data;
+		if (!data && ![NSThread isMainThread]) {
+			[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy inTask:nil];
+			data = self.cacheRecord.data.data;
+		}
+		return data.messages;
 	}
-	return data.messages;
 }
 
 #pragma mark - Private
 
 - (NCCacheRecord*) cacheRecord {
 	if (!_cacheRecord) {
-		_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", [self.account.objectID URIRepresentation]]];
+		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
+			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", [self.account.objectID URIRepresentation]]];
+			for (NCMailBoxMessage* message in [_cacheRecord.data.data messages]) {
+				message.mailBox = self;
+			}
+		}];
 		[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 	}
 	return _cacheRecord;

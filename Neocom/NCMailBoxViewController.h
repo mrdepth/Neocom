@@ -8,6 +8,6 @@
 
 #import "NCTableViewController.h"
 
-@interface NCMailBoxViewController : NCTableViewController
+@interface NCMailBoxViewController : NCTableViewController<UIWebViewDelegate>
 
 @end

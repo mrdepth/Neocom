@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCViewController.h"
 
 @class EVEUpcomingCalendarEventsItem;
-@interface NCCalendarEventDetailsViewController : UIViewController
+@interface NCCalendarEventDetailsViewController : NCViewController<UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (strong, nonatomic) EVEUpcomingCalendarEventsItem* event;
 @end

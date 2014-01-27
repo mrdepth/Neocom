@@ -27,5 +27,6 @@
 - (NSString*) recordID;
 - (void) didChangeAccount:(NCAccount*) account;
 - (void) searchWithSearchString:(NSString*) searchString;
+- (NSDate*) cacheDate;
 
 @end

@@ -98,10 +98,8 @@
 			<integer>0</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>NPCGroupsViewController</string>
-			<key>nibName</key>
-			<string>NPCGroupsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCDatabaseNPCViewController</string>
 			<key>title</key>
 			<string>NPC</string>
 			<key>image</key>

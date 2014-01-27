@@ -31,65 +31,63 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	
-	if (1) {
-		__block NSArray* sections = nil;
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 NSMutableArray* marketGroups = [NSMutableArray new];
-
-												 if (self.marketGroup == nil) {
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM invMarketGroups WHERE parentGroupID IS NULL ORDER BY marketGroupName;"
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[marketGroups addObject:[[EVEDBInvMarketGroup alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-													 sections = @[@{@"rows" : marketGroups}];
-												 }
-												 else {
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMarketGroups WHERE parentGroupID=%d ORDER BY marketGroupName;", self.marketGroup.marketGroupID]
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[marketGroups addObject:[[EVEDBInvMarketGroup alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-													 if (marketGroups.count == 0) {
-														 NSMutableDictionary* dic = [NSMutableDictionary dictionary];
-														 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.metaGroupID, c.metaGroupName, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d ORDER BY d.value, typeName;", self.marketGroup.marketGroupID]
-																							resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																								EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-																								int metaGroupID = sqlite3_column_int(stmt, 0);
-																								NSNumber* key = @(metaGroupID);
-																								NSMutableDictionary* section = dic[key];
-																								if (!section) {
-																									const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 1);
-																									NSString* title = metaGroupName ? [NSString stringWithCString:metaGroupName encoding:NSUTF8StringEncoding] : @"";
-																									
-																									section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																											   title, @"title",
-																											   [NSMutableArray arrayWithObject:type], @"rows",
-																											   key, @"order", nil];
-																									dic[key] = section;
-																								}
-																								else
-																									[section[@"rows"] addObject:type];
-																								
-																								if ([task isCancelled])
-																									*needsMore = NO;
-																							}];
-														 sections = [[dic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
-													 }
-													 else
-														 sections = @[@{@"rows" : marketGroups}];
-												 }
+	__block NSArray* sections = nil;
+	
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSMutableArray* marketGroups = [NSMutableArray new];
+											 
+											 if (self.marketGroup == nil) {
+												 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM invMarketGroups WHERE parentGroupID IS NULL ORDER BY marketGroupName;"
+																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																						[marketGroups addObject:[[EVEDBInvMarketGroup alloc] initWithStatement:stmt]];
+																						if ([task isCancelled])
+																							*needsMore = NO;
+																					}];
+												 sections = @[@{@"rows" : marketGroups}];
 											 }
-								 completionHandler:^(NCTask *task) {
-									 self.sections = sections;
-									 [self.tableView reloadData];
-								 }];
-	}
+											 else {
+												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invMarketGroups WHERE parentGroupID=%d ORDER BY marketGroupName;", self.marketGroup.marketGroupID]
+																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																						[marketGroups addObject:[[EVEDBInvMarketGroup alloc] initWithStatement:stmt]];
+																						if ([task isCancelled])
+																							*needsMore = NO;
+																					}];
+												 if (marketGroups.count == 0) {
+													 NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT c.metaGroupID, c.metaGroupName, a.* from invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE marketGroupID = %d ORDER BY d.value, typeName;", self.marketGroup.marketGroupID]
+																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																							EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+																							int metaGroupID = sqlite3_column_int(stmt, 0);
+																							NSNumber* key = @(metaGroupID);
+																							NSMutableDictionary* section = dic[key];
+																							if (!section) {
+																								const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 1);
+																								NSString* title = metaGroupName ? [NSString stringWithCString:metaGroupName encoding:NSUTF8StringEncoding] : @"";
+																								
+																								section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																										   title, @"title",
+																										   [NSMutableArray arrayWithObject:type], @"rows",
+																										   key, @"order", nil];
+																								dic[key] = section;
+																							}
+																							else
+																								[section[@"rows"] addObject:type];
+																							
+																							if ([task isCancelled])
+																								*needsMore = NO;
+																						}];
+													 sections = [[dic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+												 }
+												 else
+													 sections = @[@{@"rows" : marketGroups}];
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.sections = sections;
+								 [self.tableView reloadData];
+							 }];
 }
 
 - (void)didReceiveMemoryWarning {

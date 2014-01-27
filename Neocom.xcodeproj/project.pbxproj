@@ -38,6 +38,8 @@
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
+		1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771018969E030078F526 /* EVEDBNpcGroup.m */; };
+		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
 		125F67F3188526B6005732FA /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67CF188526B5005732FA /* level_000.gif */; };
 		125F67F4188526B6005732FA /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D0188526B5005732FA /* level_010.gif */; };
 		125F67F5188526B6005732FA /* level_011.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D1188526B5005732FA /* level_011.gif */; };
@@ -364,6 +366,10 @@
 		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
 		122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMasteryViewController.m; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
+		1243770F18969E030078F526 /* EVEDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBNpcGroup.h; sourceTree = "<group>"; };
+		1243771018969E030078F526 /* EVEDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBNpcGroup.m; sourceTree = "<group>"; };
+		1243771318969E590078F526 /* NCDatabaseNPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseNPCViewController.h; sourceTree = "<group>"; };
+		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
 		125F67CF188526B5005732FA /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
 		125F67D0188526B5005732FA /* level_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_010.gif; sourceTree = "<group>"; };
 		125F67D1188526B5005732FA /* level_011.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_011.gif; sourceTree = "<group>"; };
@@ -1037,6 +1043,15 @@
 			name = NCDatabaseTypeMasteryViewController;
 			sourceTree = "<group>";
 		};
+		1243771218969E390078F526 /* NCDatabaseNPCViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1243771318969E590078F526 /* NCDatabaseNPCViewController.h */,
+				1243771418969E590078F526 /* NCDatabaseNPCViewController.m */,
+			);
+			name = NCDatabaseNPCViewController;
+			sourceTree = "<group>";
+		};
 		125F67CD18852172005732FA /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1321,6 +1336,8 @@
 				126A0D25185F3B9200A8E8A3 /* EVEDBRamTypeRequirement.m */,
 				126A0D26185F3B9200A8E8A3 /* EVEDBStaStation.h */,
 				126A0D27185F3B9200A8E8A3 /* EVEDBStaStation.m */,
+				1243770F18969E030078F526 /* EVEDBNpcGroup.h */,
+				1243771018969E030078F526 /* EVEDBNpcGroup.m */,
 				126A0D28185F3B9200A8E8A3 /* Utility */,
 			);
 			name = EVEDBAPI;
@@ -1710,6 +1727,7 @@
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
+				1243771218969E390078F526 /* NCDatabaseNPCViewController */,
 				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);
 			name = Database;
@@ -2487,6 +2505,7 @@
 				125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
 				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
+				1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
@@ -2501,6 +2520,7 @@
 				126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */,
 				126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */,
 				126A0E0C185F3B9300A8E8A3 /* EVEDBCrtRelationship.m in Sources */,
+				1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
 				126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */,
 				126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */,

@@ -18,7 +18,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdE-d5-SAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1071" y="2090"/>
+            <point key="canvasLocation" x="-1371" y="446"/>
         </scene>
         <!--Database View Controller-->
         <scene sceneID="VPG-1H-jaK">
@@ -111,7 +111,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-555" y="2090"/>
+            <point key="canvasLocation" x="-855" y="446"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="EL6-jd-GTK">
@@ -126,7 +126,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0lb-2b-9WR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1071" y="2812"/>
+            <point key="canvasLocation" x="-1371" y="1168"/>
         </scene>
         <!--Database Market View Controller - Root View Controller-->
         <scene sceneID="jEJ-dz-n4I">
@@ -206,7 +206,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-555" y="2812"/>
+            <point key="canvasLocation" x="-855" y="1168"/>
         </scene>
         <!--Database Certificates View Controller - Root View Controller-->
         <scene sceneID="5tt-L0-cHf">
@@ -272,7 +272,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te0-4J-OJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-555" y="3512"/>
+            <point key="canvasLocation" x="-855" y="1868"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="I00-dz-wQ1">
@@ -287,7 +287,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wts-Zn-1Bz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1071" y="3512"/>
+            <point key="canvasLocation" x="-1371" y="1868"/>
         </scene>
         <!--Database Type Info View Controller-->
         <scene sceneID="rfB-z4-tJP">
@@ -497,7 +497,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="79" y="2090"/>
+            <point key="canvasLocation" x="-221" y="446"/>
         </scene>
         <!--Database Type Market Info View Controller-->
         <scene sceneID="rAT-aI-Ucb">
@@ -634,7 +634,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="79" y="2820"/>
+            <point key="canvasLocation" x="-221" y="1176"/>
         </scene>
         <!--Database Type Variations View Controller-->
         <scene sceneID="WxF-GY-BVg">
@@ -677,7 +677,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X44-R4-PR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="591" y="2090"/>
+            <point key="canvasLocation" x="291" y="446"/>
         </scene>
         <!--Database Type Mastery View Controller-->
         <scene sceneID="Qgr-cU-BXc">
@@ -752,7 +752,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8R-2l-rFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="591" y="2812"/>
+            <point key="canvasLocation" x="291" y="1168"/>
         </scene>
         <!--Database Certificate Info View Controller-->
         <scene sceneID="vv0-Cz-Kwk">
@@ -885,7 +885,102 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="REX-7Y-dR2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="79" y="3512"/>
+            <point key="canvasLocation" x="-221" y="1868"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eHp-nh-qwt">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseNPCViewController" definesPresentationContext="YES" id="Akf-cN-gq9" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ReS-oE-a5w">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="7iv-ne-LEg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KJO-Vn-frZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="2666"/>
+        </scene>
+        <!--DatabaseNPC View Controller - Root View Controller-->
+        <scene sceneID="ytX-d2-sFZ">
+            <objects>
+                <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="opI-2D-O7f">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="RxM-EB-Sff">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="dG5-dx-SwW" id="yVR-2K-HDR"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NpcGroupCell" textLabel="aWJ-n4-YPY" style="IBUITableViewCellStyleDefault" id="8Ba-fa-lqe" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Ba-fa-lqe" id="dAT-Z9-wDZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="aWJ-n4-YPY">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dG5-dx-SwW" kind="push" identifier="NCDatabaseNPCViewController" id="TcL-A8-s90"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" textLabel="a7A-wh-qop" style="IBUITableViewCellStyleDefault" id="hIL-ed-Opm" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hIL-ed-Opm" id="CnK-4u-vZw">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="a7A-wh-qop">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="r4q-Am-NEf"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="0Cx-9e-L36"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="jl9-gW-d3I" id="sUl-5C-dIv"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x9g-WC-pWP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="jl9-gW-d3I">
+                    <connections>
+                        <outlet property="delegate" destination="dG5-dx-SwW" id="EXS-5K-nNI"/>
+                        <outlet property="searchBar" destination="RxM-EB-Sff" id="sit-us-KjN"/>
+                        <outlet property="searchContentsController" destination="dG5-dx-SwW" id="Kcf-Eb-7OM"/>
+                        <outlet property="searchResultsDataSource" destination="dG5-dx-SwW" id="9BZ-it-GQ5"/>
+                        <outlet property="searchResultsDelegate" destination="dG5-dx-SwW" id="nJc-Nw-vjl"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-823" y="2666"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -894,10 +989,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="r4q-Am-NEf"/>
+        <segue reference="7iv-ne-LEg"/>
+        <segue reference="LHH-Wy-jrm"/>
         <segue reference="edv-w8-2To"/>
-        <segue reference="raC-Em-4AD"/>
-        <segue reference="Vbq-vg-5yp"/>
         <segue reference="6M7-4Q-PK5"/>
-        <segue reference="dFJ-0K-RGe"/>
+        <segue reference="Vbq-vg-5yp"/>
     </inferredMetricsTieBreakers>
 </document>

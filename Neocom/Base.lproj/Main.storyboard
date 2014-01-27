@@ -458,6 +458,7 @@
                         <segue destination="Gdr-It-lLS" kind="custom" identifier="NCSkillsViewController" customClass="NCSideMenuViewControllerContentSegue" id="WiZ-LQ-n8m"/>
                         <segue destination="U5l-2T-qFN" kind="custom" identifier="NCMailBoxViewController" customClass="NCSideMenuViewControllerContentSegue" id="X6S-LX-mAK"/>
                         <segue destination="yy3-qu-qnj" kind="custom" identifier="NCCalendarEventsViewController" customClass="NCSideMenuViewControllerContentSegue" id="yQX-FM-QYv"/>
+                        <segue destination="dWV-ML-Win" kind="custom" identifier="NCDatabaseNPCViewController" customClass="NCSideMenuViewControllerContentSegue" id="R74-cw-z5x"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -605,6 +606,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yK3-rs-mdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2222" y="915"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="c8M-mU-bSp">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseNPCViewController" id="dWV-ML-Win" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="40c-nZ-Oli"/>
+                        <viewControllerLayoutGuide type="bottom" id="dZO-oC-eGh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tQ0-a3-TSp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UY2-KN-srn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2246" y="4"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

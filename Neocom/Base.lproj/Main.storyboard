@@ -1291,7 +1291,13 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Messages" id="jCZ-RF-Sw3"/>
+                    <navigationItem key="navigationItem" title="Messages" id="jCZ-RF-Sw3">
+                        <barButtonItem key="rightBarButtonItem" title="Mark as read" id="WjT-RU-YXi">
+                            <connections>
+                                <action selector="markAsRead:" destination="x69-04-0Te" id="SZg-CT-DKy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d59-No-cHp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

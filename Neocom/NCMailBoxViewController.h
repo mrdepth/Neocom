@@ -9,5 +9,6 @@
 #import "NCTableViewController.h"
 
 @interface NCMailBoxViewController : NCTableViewController<UIWebViewDelegate>
+- (IBAction)markAsRead:(id)sender;
 
 @end

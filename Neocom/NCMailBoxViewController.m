@@ -171,6 +171,12 @@
 	}
 }
 
+- (IBAction)markAsRead:(id)sender {
+	NCMailBoxViewControllerData* data = self.data;
+	[self.mailBox markAsRead:data.messages];
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

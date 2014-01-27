@@ -147,7 +147,7 @@
 										 [self didFailLoadDataWithError:error];
 									 }
 									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
+										 [self didFinishLoadData:data withCacheDate:data.characterSheet.cacheDate expireDate:data.characterSheet.cacheExpireDate];
 									 }
 								 }
 							 }];
@@ -256,17 +256,19 @@
 				else
 					color = [UIColor yellowColor];
 				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+
+				EVESkillQueueItem* item = skillQueue.skillQueue[0];
+				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+				self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 			}
 			else {
 				text = NSLocalizedString(@"Training queue is inactive", nil);
 				color = [UIColor redColor];
+				self.currentSkillLabel.text = nil;
 			}
 			self.skillQueueLabel.text = text;
 			self.skillQueueLabel.textColor = color;
 			
-			EVESkillQueueItem* item = skillQueue.skillQueue[0];
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-			self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 		}
 		else {
 			self.skillQueueLabel.text = nil;

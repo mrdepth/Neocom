@@ -32,10 +32,8 @@
 			<string>skillsDetails</string>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>MessagesViewController</string>
-			<key>nibName</key>
-			<string>MessagesViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCMailBoxViewController</string>
 			<key>title</key>
 			<string>EVE Mail</string>
 			<key>image</key>

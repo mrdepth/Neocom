@@ -37,6 +37,7 @@
 		1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E177188F9572003C1361 /* EVEDBCertSkill.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
+		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		125F67F3188526B6005732FA /* level_000.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67CF188526B5005732FA /* level_000.gif */; };
 		125F67F4188526B6005732FA /* level_010.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D0188526B5005732FA /* level_010.gif */; };
 		125F67F5188526B6005732FA /* level_011.gif in Resources */ = {isa = PBXBuildFile; fileRef = 125F67D1188526B5005732FA /* level_011.gif */; };
@@ -362,6 +363,7 @@
 		122C51F0188FA746000AEC2C /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
 		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
 		122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMasteryViewController.m; sourceTree = "<group>"; };
+		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		125F67CF188526B5005732FA /* level_000.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_000.gif; sourceTree = "<group>"; };
 		125F67D0188526B5005732FA /* level_010.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_010.gif; sourceTree = "<group>"; };
 		125F67D1188526B5005732FA /* level_011.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = level_011.gif; sourceTree = "<group>"; };
@@ -962,6 +964,7 @@
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
+				1243761B189653980078F526 /* Character.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
 				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
@@ -1666,14 +1669,14 @@
 		126ED31A188128E10009FA39 /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				126ED31B188128EF0009FA39 /* NCCharacterSheetViewController */,
+				125F681718852D8A005732FA /* NCSkillsViewController */,
 				1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */,
 				84E4331818951A8C00DF2061 /* NCMailBoxMessageViewController */,
 				8418BB11189186A500B99A7E /* NCCalendarEventsViewController */,
 				8418BB1D18919BDC00B99A7E /* NCCalendarEventDetailsViewController */,
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
 				125F682618853809005732FA /* NCCharacterAttributes */,
-				125F681718852D8A005732FA /* NCSkillsViewController */,
-				126ED31B188128EF0009FA39 /* NCCharacterSheetViewController */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -1699,15 +1702,15 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 				841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */,
-				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
 				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
+				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
+				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -2306,6 +2309,7 @@
 				125F67FB188526B6005732FA /* level_041.gif in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
 				125F67F4188526B6005732FA /* level_010.gif in Resources */,
+				1243761C189653980078F526 /* Character.storyboard in Resources */,
 				125F67FE188526B6005732FA /* level_100.gif in Resources */,
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
 				125F6815188526B6005732FA /* level_451.gif in Resources */,

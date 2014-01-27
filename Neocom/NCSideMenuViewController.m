@@ -151,7 +151,7 @@
 
 		[self transitionFromViewController:_contentViewController
 						  toViewController:contentViewController
-								  duration:animated ? 0.5f : 0.0f
+								  duration:animated ? NCSideMenuViewControllerAnimationDuration : 0.0f
 								   options:UIViewAnimationOptionCurveEaseOut
 								animations:^{
 									_contentViewController = contentViewController;

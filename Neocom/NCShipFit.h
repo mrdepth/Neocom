@@ -10,7 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "NCFit.h"
 
-
 @interface NCShipFit : NCFit
 
 @property (nonatomic, retain) NSString * boosters;
@@ -23,4 +22,5 @@
 @property (nonatomic, retain) NSString * rigSlots;
 @property (nonatomic, retain) NSString * subsystems;
 
+//@property (nonatomic, weak) eufe::Character* character;
 @end

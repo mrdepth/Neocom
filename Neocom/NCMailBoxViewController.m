@@ -214,7 +214,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 38;
+	return 46;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -261,6 +261,7 @@
 	[super update];
 	NCMailBoxViewControllerData* data = self.data;
 	NCMailBox* mailBox = self.mailBox;
+	NCAccount* account = mailBox.account;
 
 	NSMutableArray* sections = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -271,7 +272,7 @@
 											 NSMutableDictionary* corps = [NSMutableDictionary new];
 											 NSMutableDictionary* mailingLists = [NSMutableDictionary new];
 											 
-											 NSInteger myID = mailBox.account.characterID;
+											 NSInteger myID = account.characterID;
 											 for (NCMailBoxMessage* message in data.messages) {
 												 if (!message.mailBox)
 													 message.mailBox = mailBox;

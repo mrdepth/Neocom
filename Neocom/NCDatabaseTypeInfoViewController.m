@@ -219,6 +219,7 @@
 	self.titleLabel.text = type.typeName;
 	self.imageView.image = [UIImage imageNamed:type.typeLargeImageName];
 	self.descriptionLabel.text = description;
+	self.typeIDLabel.text = [NSString stringWithFormat:@"%d", type.typeID];
 	[self.view setNeedsLayout];
 	
 	if (type.group.categoryID == 9)

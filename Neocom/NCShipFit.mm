@@ -21,4 +21,6 @@
 @dynamic rigSlots;
 @dynamic subsystems;
 
+//@synthesize character = _character;
+
 @end

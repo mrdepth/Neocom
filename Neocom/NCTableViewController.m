@@ -46,7 +46,8 @@
 																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
 	self.refreshControl = refreshControl;
 
-	[self update];
+	[self performSelector:@selector(update) withObject:nil afterDelay:0];
+	//[self update];
 }
 
 - (void) dealloc {

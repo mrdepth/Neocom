@@ -12,6 +12,8 @@
 	<dict>
 		<key>9F99D383-5B58-4B17-A552-C39236B71C79</key>
 		<string>ssh://github.com/mrdepth/EVEUniverse.git</string>
+		<key>B25A1C38-C268-4D2B-AEC5-17811028C488</key>
+		<string>ssh://github.com/mrdepth/eufe.git</string>
 		<key>B642EC0C-2295-4A71-A2F2-9C1CE80F777B</key>
 		<string>https://github.com/mrdepth/EVEOnlineAPI.git</string>
 	</dict>
@@ -21,6 +23,8 @@
 	<dict>
 		<key>9F99D383-5B58-4B17-A552-C39236B71C79</key>
 		<string>../..</string>
+		<key>B25A1C38-C268-4D2B-AEC5-17811028C488</key>
+		<string>../../ThirdParty/eufe</string>
 		<key>B642EC0C-2295-4A71-A2F2-9C1CE80F777B</key>
 		<string>../../ThirdParty/EVEOnlineAPI</string>
 	</dict>
@@ -32,6 +36,14 @@
 	<string>9F99D383-5B58-4B17-A552-C39236B71C79</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B25A1C38-C268-4D2B-AEC5-17811028C488</string>
+			<key>IDESourceControlWCCName</key>
+			<string>eufe</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

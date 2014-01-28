@@ -214,6 +214,16 @@
 		126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0DF5185F3B9200A8E8A3 /* NSURL+MD5.m */; };
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
+		1271238118977E8C005F46EE /* NCFittingModuleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1271238018977E8C005F46EE /* NCFittingModuleCell.m */; };
+		1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1271238418978148005F46EE /* NCFittingShipViewController.mm */; };
+		127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127123881897818D005F46EE /* NCFittingShipModulesDataSource.mm */; };
+		1271238C189781BB005F46EE /* NCFittingShipDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1271238B189781BB005F46EE /* NCFittingShipDataSource.mm */; };
+		1271239B189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239A189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib */; };
+		1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1271239D18979712005F46EE /* NCFittingShipModulesTableHeaderView.m */; };
+		127123A018979E40005F46EE /* NCFittingSectionGenericHedaerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1271239F18979E40005F46EE /* NCFittingSectionGenericHedaerView.xib */; };
+		127123A318979F55005F46EE /* NCFittingSectionGenericHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A218979F55005F46EE /* NCFittingSectionGenericHedaerView.m */; };
+		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
+		127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 128217651887D94D002B674E /* skillRequirementsMap.plist */; };
@@ -266,7 +276,7 @@
 		129FEE391860326E00F75FA6 /* NCSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE381860326E00F75FA6 /* NCSetting.m */; };
 		129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
 		129FEE421860326E00F75FA6 /* NCPOSFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE411860326E00F75FA6 /* NCPOSFit.m */; };
-		129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE441860326E00F75FA6 /* NCShipFit.m */; };
+		129FEE451860326E00F75FA6 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE441860326E00F75FA6 /* NCShipFit.mm */; };
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
@@ -375,6 +385,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1209684E1845F0CB00921A37;
 			remoteInfo = Neocom;
+		};
+		1271239218978236005F46EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12A3C723177C2FAF0067E00C;
+			remoteInfo = compiler;
+		};
+		1271239418978236005F46EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12A3C724177C2FAF0067E00C;
+			remoteInfo = eufe;
+		};
+		127123AB1897ABF8005F46EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 12A3C6AE177C283E0067E00C;
+			remoteInfo = eufe;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -756,6 +787,23 @@
 		126ED31C188129080009FA39 /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
 		126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterSheetViewController.m; sourceTree = "<group>"; };
 		126ED32C188144370009FA39 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
+		1271237F18977E8C005F46EE /* NCFittingModuleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingModuleCell.h; sourceTree = "<group>"; };
+		1271238018977E8C005F46EE /* NCFittingModuleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingModuleCell.m; sourceTree = "<group>"; };
+		1271238318978148005F46EE /* NCFittingShipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipViewController.h; sourceTree = "<group>"; };
+		1271238418978148005F46EE /* NCFittingShipViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipViewController.mm; sourceTree = "<group>"; };
+		127123871897818D005F46EE /* NCFittingShipModulesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipModulesDataSource.h; sourceTree = "<group>"; };
+		127123881897818D005F46EE /* NCFittingShipModulesDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipModulesDataSource.mm; sourceTree = "<group>"; };
+		1271238A189781BB005F46EE /* NCFittingShipDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipDataSource.h; sourceTree = "<group>"; };
+		1271238B189781BB005F46EE /* NCFittingShipDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipDataSource.mm; sourceTree = "<group>"; };
+		1271238D18978235005F46EE /* eufe.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = eufe.xcodeproj; path = eufe/eufe.xcodeproj; sourceTree = "<group>"; };
+		1271239A189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingShipModulesTableHeaderView.xib; sourceTree = "<group>"; };
+		1271239C18979712005F46EE /* NCFittingShipModulesTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipModulesTableHeaderView.h; sourceTree = "<group>"; };
+		1271239D18979712005F46EE /* NCFittingShipModulesTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipModulesTableHeaderView.m; sourceTree = "<group>"; };
+		1271239F18979E40005F46EE /* NCFittingSectionGenericHedaerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingSectionGenericHedaerView.xib; sourceTree = "<group>"; };
+		127123A118979F55005F46EE /* NCFittingSectionGenericHedaerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSectionGenericHedaerView.h; sourceTree = "<group>"; };
+		127123A218979F55005F46EE /* NCFittingSectionGenericHedaerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingSectionGenericHedaerView.m; sourceTree = "<group>"; };
+		127123A71897A94E005F46EE /* NCProgressLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressLabel.h; sourceTree = "<group>"; };
+		127123A81897A94E005F46EE /* NCProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCProgressLabel.m; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
@@ -857,7 +905,7 @@
 		129FEE401860326E00F75FA6 /* NCPOSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSFit.h; sourceTree = "<group>"; };
 		129FEE411860326E00F75FA6 /* NCPOSFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPOSFit.m; sourceTree = "<group>"; };
 		129FEE431860326E00F75FA6 /* NCShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipFit.h; sourceTree = "<group>"; };
-		129FEE441860326E00F75FA6 /* NCShipFit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShipFit.m; sourceTree = "<group>"; };
+		129FEE441860326E00F75FA6 /* NCShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCShipFit.mm; sourceTree = "<group>"; };
 		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
 		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -992,6 +1040,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
@@ -1290,6 +1339,7 @@
 				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
 				84E4331F18951C1600DF2061 /* NCViewController */,
 				1211122B185989CC009E5106 /* NCTaskManager */,
+				127123A61897A939005F46EE /* NCProgressLabel */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1306,6 +1356,7 @@
 		126A0CC4185F3B9100A8E8A3 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				1271238D18978235005F46EE /* eufe.xcodeproj */,
 				129D257F187E923200E2062C /* tools */,
 				126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */,
 			);
@@ -1838,6 +1889,83 @@
 			name = NCCharacterSheetViewController;
 			sourceTree = "<group>";
 		};
+		1271237E18977E6F005F46EE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1271237F18977E8C005F46EE /* NCFittingModuleCell.h */,
+				1271238018977E8C005F46EE /* NCFittingModuleCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		127123821897811F005F46EE /* NCFittingShipViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1271238618978177005F46EE /* Datasources */,
+				1271238318978148005F46EE /* NCFittingShipViewController.h */,
+				1271238418978148005F46EE /* NCFittingShipViewController.mm */,
+			);
+			name = NCFittingShipViewController;
+			sourceTree = "<group>";
+		};
+		1271238618978177005F46EE /* Datasources */ = {
+			isa = PBXGroup;
+			children = (
+				1271238A189781BB005F46EE /* NCFittingShipDataSource.h */,
+				1271238B189781BB005F46EE /* NCFittingShipDataSource.mm */,
+				127123871897818D005F46EE /* NCFittingShipModulesDataSource.h */,
+				127123881897818D005F46EE /* NCFittingShipModulesDataSource.mm */,
+			);
+			name = Datasources;
+			sourceTree = "<group>";
+		};
+		1271238E18978235005F46EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1271239318978236005F46EE /* compiler */,
+				1271239518978236005F46EE /* libeufe.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		127123991897968E005F46EE /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				127123A418979F95005F46EE /* NCFittingShipModulesTableHeaderView */,
+				127123A518979F9B005F46EE /* NCFittingSectionGenericHedaerView */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		127123A418979F95005F46EE /* NCFittingShipModulesTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				1271239C18979712005F46EE /* NCFittingShipModulesTableHeaderView.h */,
+				1271239D18979712005F46EE /* NCFittingShipModulesTableHeaderView.m */,
+				1271239A189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib */,
+			);
+			name = NCFittingShipModulesTableHeaderView;
+			sourceTree = "<group>";
+		};
+		127123A518979F9B005F46EE /* NCFittingSectionGenericHedaerView */ = {
+			isa = PBXGroup;
+			children = (
+				127123A118979F55005F46EE /* NCFittingSectionGenericHedaerView.h */,
+				127123A218979F55005F46EE /* NCFittingSectionGenericHedaerView.m */,
+				1271239F18979E40005F46EE /* NCFittingSectionGenericHedaerView.xib */,
+			);
+			name = NCFittingSectionGenericHedaerView;
+			sourceTree = "<group>";
+		};
+		127123A61897A939005F46EE /* NCProgressLabel */ = {
+			isa = PBXGroup;
+			children = (
+				127123A71897A94E005F46EE /* NCProgressLabel.h */,
+				127123A81897A94E005F46EE /* NCProgressLabel.m */,
+			);
+			name = NCProgressLabel;
+			sourceTree = "<group>";
+		};
 		127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2155,7 +2283,7 @@
 				129FEE461860326E00F75FA6 /* NCFitCharacter.h */,
 				129FEE471860326E00F75FA6 /* NCFitCharacter.m */,
 				129FEE431860326E00F75FA6 /* NCShipFit.h */,
-				129FEE441860326E00F75FA6 /* NCShipFit.m */,
+				129FEE441860326E00F75FA6 /* NCShipFit.mm */,
 				129FEE401860326E00F75FA6 /* NCPOSFit.h */,
 				129FEE411860326E00F75FA6 /* NCPOSFit.m */,
 				129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */,
@@ -2371,7 +2499,10 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				127123991897968E005F46EE /* Headers */,
+				1271237E18977E6F005F46EE /* Cells */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
+				127123821897811F005F46EE /* NCFittingShipViewController */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -2474,6 +2605,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				127123AC1897ABF8005F46EE /* PBXTargetDependency */,
 			);
 			name = Neocom;
 			productName = Neocom;
@@ -2524,6 +2656,12 @@
 			mainGroup = 120968461845F0CB00921A37;
 			productRefGroup = 120968501845F0CB00921A37 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1271238E18978235005F46EE /* Products */;
+					ProjectRef = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1209684E1845F0CB00921A37 /* Neocom */,
@@ -2531,6 +2669,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1271239318978236005F46EE /* compiler */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = compiler;
+			remoteRef = 1271239218978236005F46EE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1271239518978236005F46EE /* libeufe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libeufe.a;
+			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1209684D1845F0CB00921A37 /* Resources */ = {
@@ -2569,6 +2724,7 @@
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
 				125F680A188526B6005732FA /* level_240.gif in Resources */,
+				127123A018979E40005F46EE /* NCFittingSectionGenericHedaerView.xib in Resources */,
 				125F67F3188526B6005732FA /* level_000.gif in Resources */,
 				12BF345C18814B9D00368CD4 /* Icons in Resources */,
 				849B9FAD1896D24A00D4DD2B /* active.png in Resources */,
@@ -2626,6 +2782,7 @@
 				125F680B188526B6005732FA /* level_241.gif in Resources */,
 				849B9FBA1896D24A00D4DD2B /* drone.png in Resources */,
 				125F6812188526B6005732FA /* level_351.gif in Resources */,
+				1271239B189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib in Resources */,
 				849B9FB61896D24A00D4DD2B /* cargo.png in Resources */,
 				84EEFCE71896C69C007962A0 /* concord@2x.png in Resources */,
 				84EEFCEA1896C69C007962A0 /* minmatarRepublic@2x.png in Resources */,
@@ -2719,6 +2876,7 @@
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
 				12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */,
+				1271238118977E8C005F46EE /* NCFittingModuleCell.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
@@ -2728,6 +2886,7 @@
 				126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */,
 				126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */,
 				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
+				127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */,
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
@@ -2754,11 +2913,12 @@
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
 				125F6825188537FF005732FA /* NCCharacterAttributes.m in Sources */,
-				129FEE451860326E00F75FA6 /* NCShipFit.m in Sources */,
+				129FEE451860326E00F75FA6 /* NCShipFit.mm in Sources */,
 				126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */,
 				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
 				128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */,
+				1271238C189781BB005F46EE /* NCFittingShipDataSource.mm in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
@@ -2768,6 +2928,7 @@
 				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
 				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
 				126A0E26185F3B9300A8E8A3 /* EVEDBRamAssemblyLineType.m in Sources */,
+				1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */,
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,
 				1211123118598B09009E5106 /* NCTask.m in Sources */,
@@ -2835,14 +2996,17 @@
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
 				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
 				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
+				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				126A0E27185F3B9300A8E8A3 /* EVEDBRamInstallationTypeContent.m in Sources */,
 				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
 				12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */,
+				127123A318979F55005F46EE /* NCFittingSectionGenericHedaerView.m in Sources */,
 				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
+				127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */,
 				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
 				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,
@@ -2921,6 +3085,11 @@
 			isa = PBXTargetDependency;
 			target = 1209684E1845F0CB00921A37 /* Neocom */;
 			targetProxy = 120968751845F0CB00921A37 /* PBXContainerItemProxy */;
+		};
+		127123AC1897ABF8005F46EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = eufe;
+			targetProxy = 127123AB1897ABF8005F46EE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3021,11 +3190,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Developer/Tools/boost,
+				);
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3035,11 +3213,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "libc++";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/Developer/Tools/boost,
+				);
 				INFOPLIST_FILE = "Neocom/Neocom-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -151,15 +151,20 @@
 @synthesize numberOfUnreadMessages = _numberOfUnreadMessages;
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task {
-	if (self.account.accountType == NCAccountTypeCorporate)
+	__block NCAccount* account = nil;
+	[self.managedObjectContext performBlockAndWait:^{
+		account = self.account;
+	}];
+
+	if (account.accountType == NCAccountTypeCorporate)
 		return;
 	
 	NCMailBoxCacheData* data = self.cacheRecord.data.data;
 	
-	EVEMailMessages* messageHeaders = [EVEMailMessages mailMessagesWithKeyID:self.account.apiKey.keyID
-																	   vCode:self.account.apiKey.vCode
+	EVEMailMessages* messageHeaders = [EVEMailMessages mailMessagesWithKeyID:account.apiKey.keyID
+																	   vCode:account.apiKey.vCode
 																 cachePolicy:cachePolicy
-																 characterID:self.account.characterID
+																 characterID:account.characterID
 																	   error:nil
 															 progressHandler:^(CGFloat progress, BOOL *stop) {
 															 }];
@@ -271,10 +276,10 @@
 	}
 	
 	if (mailingListIDs.count > 0) {
-		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:self.account.apiKey.keyID
-																		 vCode:self.account.apiKey.vCode
+		EVEMailingLists* mailingLists = [EVEMailingLists mailingListsWithKeyID:account.apiKey.keyID
+																		 vCode:account.apiKey.vCode
 																   cachePolicy:cachePolicy
-																   characterID:self.account.characterID
+																   characterID:account.characterID
 																		 error:nil
 															   progressHandler:^(CGFloat progress, BOOL *stop) {
 															   }];
@@ -330,8 +335,13 @@
 
 - (NCCacheRecord*) cacheRecord {
 	if (!_cacheRecord) {
+		__block NCAccount* account = nil;
+		[self.managedObjectContext performBlockAndWait:^{
+			account = self.account;
+		}];
+
 		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", [self.account.objectID URIRepresentation]]];
+			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", [account.objectID URIRepresentation]]];
 			for (NCMailBoxMessage* message in [_cacheRecord.data.data messages]) {
 				message.mailBox = self;
 			}

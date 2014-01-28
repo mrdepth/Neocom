@@ -353,6 +353,9 @@
 		849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAC1896D24A00D4DD2B /* velocity.png */; };
 		849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
 		849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FE31896D44700D4DD2B /* eufe.sqlite */; };
+		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
+		84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */; };
+		84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182F1898457E00A35516 /* UIViewController+Neocom.m */; };
 		84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */; };
 		84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = 84E4331C18951B2400DF2061 /* mailMessageTemplate.html */; };
 		84E4332218951C3500DF2061 /* NCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E4332118951C3500DF2061 /* NCViewController.m */; };
@@ -1003,6 +1006,12 @@
 		849B9FDF1896D31B00D4DD2B /* NCFittingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingMenuViewController.h; sourceTree = "<group>"; };
 		849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingMenuViewController.mm; sourceTree = "<group>"; };
 		849B9FE31896D44700D4DD2B /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = SOURCE_ROOT; };
+		84C1182618983B2D00A35516 /* NCDatabaseTypePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerViewController.h; sourceTree = "<group>"; };
+		84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypePickerViewController.m; sourceTree = "<group>"; };
+		84C1182B1898443900A35516 /* NCDatabaseTypePickerContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerContentViewController.h; sourceTree = "<group>"; };
+		84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypePickerContentViewController.m; sourceTree = "<group>"; };
+		84C1182E1898457E00A35516 /* UIViewController+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Neocom.h"; sourceTree = "<group>"; };
+		84C1182F1898457E00A35516 /* UIViewController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Neocom.m"; sourceTree = "<group>"; };
 		84E4331918951AA800DF2061 /* NCMailBoxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxMessageViewController.h; sourceTree = "<group>"; };
 		84E4331A18951AA800DF2061 /* NCMailBoxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxMessageViewController.m; sourceTree = "<group>"; };
 		84E4331C18951B2400DF2061 /* mailMessageTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mailMessageTemplate.html; sourceTree = "<group>"; };
@@ -1978,6 +1987,8 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
+				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 				841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */,
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
@@ -2011,6 +2022,8 @@
 				84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */,
 				8416386B1893BEA000968ADF /* NSDate+Neocom.h */,
 				8416386C1893BEA000968ADF /* NSDate+Neocom.m */,
+				84C1182E1898457E00A35516 /* UIViewController+Neocom.h */,
+				84C1182F1898457E00A35516 /* UIViewController+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2516,6 +2529,24 @@
 			name = NCFittingMenuViewController;
 			sourceTree = "<group>";
 		};
+		84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84C1182618983B2D00A35516 /* NCDatabaseTypePickerViewController.h */,
+				84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */,
+			);
+			name = NCDatabaseTypePickerViewController;
+			sourceTree = "<group>";
+		};
+		84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84C1182B1898443900A35516 /* NCDatabaseTypePickerContentViewController.h */,
+				84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */,
+			);
+			name = NCDatabaseTypePickerContentViewController;
+			sourceTree = "<group>";
+		};
 		84E4331818951A8C00DF2061 /* NCMailBoxMessageViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2875,6 +2906,7 @@
 				126A0E53185F3B9300A8E8A3 /* EVEMemberMedals.m in Sources */,
 				126A0E3A185F3B9300A8E8A3 /* EVEContactNotifications.m in Sources */,
 				84FC4F6018785CCC0004073C /* NCAccount.m in Sources */,
+				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
 				12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */,
 				1271238118977E8C005F46EE /* NCFittingModuleCell.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
@@ -2938,6 +2970,7 @@
 				126A0E1C185F3B9300A8E8A3 /* EVEDBInvType+ControlTower.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
 				126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */,
+				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
 				126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
@@ -2975,6 +3008,7 @@
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
 				126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */,
 				126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */,
+				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */,
 				126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,

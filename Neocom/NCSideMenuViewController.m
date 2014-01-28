@@ -33,7 +33,7 @@
 	NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
 	UIViewController* destinationViewController = self.destinationViewController;
 	//sourceViewController.contentViewController = destinationViewController;
-	[sourceViewController setContentViewController:destinationViewController animated:YES];
+	[sourceViewController setContentViewController:destinationViewController animated:sourceViewController.contentViewController != nil];
 }
 
 @end

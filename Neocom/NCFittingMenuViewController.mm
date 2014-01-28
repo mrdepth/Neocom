@@ -8,6 +8,8 @@
 
 #import "NCFittingMenuViewController.h"
 #import "NCTableViewCell.h"
+#import "NCDatabaseTypePickerViewController.h"
+#import "UIViewController+Neocom.h"
 
 @interface NCFittingMenuViewController ()
 
@@ -61,6 +63,22 @@
 		return nil;
 }
 
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0) {
+		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+		NCDatabaseTypePickerViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
+		[controller presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
+						 inViewController:self
+								 fromRect:cell.bounds
+								   inView:cell
+								 animated:YES
+						completionHandler:^(EVEDBInvType *type) {
+							[self dismissAnimated];
+						}];
+	}
+}
 
 #pragma mark - NCTableViewController
 

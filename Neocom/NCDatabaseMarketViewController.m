@@ -154,7 +154,6 @@
 		cell.object = row;
 		return cell;
 	}
-	return nil;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

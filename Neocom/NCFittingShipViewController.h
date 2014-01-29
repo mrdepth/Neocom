@@ -6,16 +6,22 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCTableViewController.h"
+#import "NCViewController.h"
 #import "eufe.h"
 #import "NCStorage.h"
+#import "NCDatabaseTypePickerViewController.h"
+#import "NCFittingShipWorkspaceViewController.h"
 
-@interface NCFittingShipViewController : NCTableViewController
-//@property (nonatomic, weak) IBOutlet UITableView* tableView;
+@interface NCFittingShipViewController : NCViewController
+@property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
+@property (nonatomic, weak) NCFittingShipWorkspaceViewController* workspaceViewController;
 @property (nonatomic, assign) std::shared_ptr<eufe::Engine> engine;
 @property (nonatomic, strong) NCShipFit* fit;
 @property (nonatomic, assign) eufe::Character* character;
+@property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
+- (IBAction)onChangeSection:(id)sender;
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item;
+- (void) reload;
 
 @end

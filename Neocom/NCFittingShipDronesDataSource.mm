@@ -1,0 +1,363 @@
+//
+//  NCFittingShipDronesDataSource.m
+//  Neocom
+//
+//  Created by Артем Шиманский on 29.01.14.
+//  Copyright (c) 2014 Artem Shimanski. All rights reserved.
+//
+
+#import "NCFittingShipDronesDataSource.h"
+#import "NCFittingShipViewController.h"
+#import "NCFittingDroneCell.h"
+#import "NCTableViewCell.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "UIActionSheet+Block.h"
+
+#define ActionButtonActivate NSLocalizedString(@"Activate", nil)
+#define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
+#define ActionButtonAmount NSLocalizedString(@"Set Amount", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDelete NSLocalizedString(@"Delete", nil)
+#define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
+#define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
+#define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
+
+@interface NCFittingShipDronesDataSourceRow : NSObject {
+	eufe::DronesList _drones;
+}
+@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, readonly) eufe::DronesList& drones;
+@end
+
+@implementation NCFittingShipDronesDataSourceRow
+
+@end
+
+@interface NCFittingShipDronesDataSource()
+@property (nonatomic, strong) NSArray* rows;
+
+@end
+
+@implementation NCFittingShipDronesDataSource
+
+- (void) reload {
+	__block float totalDB;
+	__block float usedDB;
+	__block float totalBandwidth;
+	__block float usedBandwidth;
+	__block int maxActiveDrones;
+	__block int activeDrones;
+	
+	__block NSArray* rows = nil;
+	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+													title:NCTaskManagerDefaultTitle
+													block:^(NCTask *task) {
+														eufe::Ship* ship = self.controller.character->getShip();
+														
+														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+														
+														for (auto drone: ship->getDrones()) {
+															NSInteger typeID = drone->getTypeID();
+															NCFittingShipDronesDataSourceRow* row = dronesDic[@(typeID)];
+															if (!row) {
+																row = [NCFittingShipDronesDataSourceRow new];
+																row.type = [self.controller typeWithItem:drone];
+																dronesDic[@(typeID)] = row;
+															}
+															row.drones.push_back(drone);
+														}
+														
+														totalDB = ship->getTotalDroneBay();
+														usedDB = ship->getDroneBayUsed();
+														
+														totalBandwidth = ship->getTotalDroneBandwidth();
+														usedBandwidth = ship->getDroneBandwidthUsed();
+														
+														maxActiveDrones = ship->getMaxActiveDrones();
+														activeDrones = ship->getActiveDrones();
+														rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+													}
+										completionHandler:^(NCTask *task) {
+											if (![task isCancelled]) {
+												self.rows = rows;
+												
+												if (self.tableView.dataSource == self)
+													[self.tableView reloadData];
+											}
+										}];
+}
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.rows.count + 1;
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+	if (indexPath.row >= self.rows.count) {
+		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		cell.imageView.image = [UIImage imageNamed:@"drone.png"];
+		cell.textLabel.text = NSLocalizedString(@"Add Drone", nil);
+
+		return cell;
+	}
+	else {
+		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
+		eufe::Drone* drone = row.drones.front();
+		
+		int optimal = (int) drone->getMaxRange();
+		int falloff = (int) drone->getFalloff();
+		float trackingSpeed = drone->getTrackingSpeed();
+		
+		NCFittingDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingDroneCell"];
+		
+		cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
+		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		
+		if (optimal > 0) {
+			NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+			if (falloff > 0)
+				s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+			if (trackingSpeed > 0)
+				s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+			cell.optimalLabel.text = s;
+		}
+		else
+			cell.optimalLabel.text = nil;
+		
+		if (drone->isActive())
+			cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+		else
+			cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+		
+		cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+		return cell;
+	}
+}
+
+
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 44;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row >= self.rows.count) {
+		return 44;
+	}
+	else {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+	if (indexPath.row >= self.rows.count) {
+		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
+		
+		[self.controller.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"]
+													   inViewController:self.controller
+															   fromRect:cell.bounds
+																 inView:cell
+															   animated:YES
+													  completionHandler:^(EVEDBInvType *type) {
+														  eufe::TypeID typeID = type.typeID;
+														  eufe::Ship* ship = self.controller.character->getShip();
+														  
+														  const eufe::DronesList& drones = ship->getDrones();
+														  eufe::Drone* sameDrone = NULL;
+														  eufe::DronesList::const_iterator i, end = drones.end();
+														  for (i = drones.begin(); i != end; i++) {
+															  if ((*i)->getTypeID() == typeID) {
+																  sameDrone = *i;
+																  break;
+															  }
+														  }
+														  eufe::Drone* drone = ship->addDrone(type.typeID);
+														  
+														  if (sameDrone)
+															  drone->setTarget(sameDrone->getTarget());
+														  else {
+															  int dronesLeft = ship->getMaxActiveDrones() - 1;
+															  for (;dronesLeft > 0; dronesLeft--)
+																  ship->addDrone(new eufe::Drone(*drone));
+														  }
+														  
+														  [self.controller reload];
+														  [self.controller dismissAnimated];
+													  }];
+	}
+	else {
+		[self performActionForRowAtIndexPath:indexPath];
+	}
+}
+
+#pragma mark - Private
+
+- (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
+	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
+	
+	eufe::Ship* ship = self.controller.character->getShip();
+	eufe::Drone* drone = row.drones.front();
+	
+	void (^remove)(eufe::DronesList) = ^(eufe::DronesList drones){
+		for (auto drone: drones)
+			ship->removeDrone(drone);
+		[self.controller reload];
+	};
+	
+	void (^activate)(eufe::DronesList) = ^(eufe::DronesList drones){
+		for (auto drone: drones)
+			drone->setActive(true);
+		[self.controller reload];
+	};
+	
+	void (^deactivate)(eufe::DronesList) = ^(eufe::DronesList drones){
+		for (auto drone: drones)
+			drone->setActive(false);
+		[self.controller reload];
+	};
+	
+	void (^setTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
+/*		TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
+		controller.currentTarget = drone->getTarget();
+		controller.fittingViewController = self.fittingViewController;
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		controller.completionHandler = ^(eufe::Ship* target) {
+			for (ItemInfo* itemInfo in drones) {
+				eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
+				drone->setTarget(target);
+			}
+			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
+		};
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[self.fittingViewController presentViewControllerInPopover:navigationController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		}
+		else
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
+	};
+	
+	void (^clearTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
+		for (auto drone: drones)
+			drone->clearTarget();
+		[self.controller reload];
+	};
+	
+	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
+/*		AmountViewController *controller = [[AmountViewController alloc] initWithNibName:@"AmountViewController" bundle:nil];
+		controller.amount = drones.count;
+		int maxActiveDrones = ship->getMaxActiveDrones();
+		controller.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
+		
+		controller.completionHandler = ^(NSInteger amount) {
+			int left = drones.count - amount;
+			if (left < 0) {
+				ItemInfo* itemInfo = [drones objectAtIndex:0];
+				eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
+				for (;left < 0; left++)
+					ship->addDrone(new eufe::Drone(*drone))->setTarget(drone->getTarget());
+			}
+			else if (left > 0) {
+				int i = drones.count - 1;
+				for (; left > 0; left--) {
+					ItemInfo* itemInfo = [drones objectAtIndex:i--];
+					eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
+					ship->removeDrone(drone);
+				}
+			}
+			[self.fittingViewController update];
+			[self.fittingViewController dismiss];
+		};
+		
+		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			[self.fittingViewController presentViewControllerInPopover:navigationController
+															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
+																inView:self.tableView
+											  permittedArrowDirections:UIPopoverArrowDirectionAny
+															  animated:YES];
+		else {
+			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
+		}*/
+	};
+	
+	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
+/*		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
+		[itemInfo updateAttributes];
+		itemViewController.type = itemInfo;
+		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
+		}
+		else
+			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
+	};
+	
+	NSMutableArray* buttons = [NSMutableArray new];
+	NSMutableArray* actions = [NSMutableArray new];
+	
+	[actions addObject:remove];
+	
+	[buttons addObject:ActionButtonShowInfo];
+	[actions addObject:showInfo];
+	if (drone->isActive()) {
+		[buttons addObject:ActionButtonDeactivate];
+		[actions addObject:deactivate];
+	}
+	else {
+		[buttons addObject:ActionButtonActivate];
+		[actions addObject:activate];
+	}
+	
+	[buttons addObject:ActionButtonAmount];
+	[actions addObject:setAmount];
+	
+/*	if (self.fittingViewController.fits.count > 1) {
+		[buttons addObject:ActionButtonSetTarget];
+		[actions addObject:setTarget];
+		if (drone->getTarget() != NULL) {
+			[buttons addObject:ActionButtonClearTarget];
+			[actions addObject:clearTarget];
+		}
+	}*/
+	
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
+				  destructiveButtonTitle:ActionButtonDelete
+					   otherButtonTitles:buttons
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+								 void (^block)(eufe::DronesList) = actions[selectedButtonIndex];
+								 block(row.drones);
+							 }
+						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+	
+}
+
+@end

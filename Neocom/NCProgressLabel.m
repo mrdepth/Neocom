@@ -51,6 +51,8 @@
 	
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 1);
 	CGContextStrokeRectWithWidth(context, rect, 1);
+	
+	CGContextSetFillColorWithColor(context, [self.textColor CGColor]);
 	[self.text drawInRect:rect withFont:self.font lineBreakMode:self.lineBreakMode alignment:self.textAlignment];
 	//[super drawRect:rect];
 }
@@ -58,6 +60,12 @@
 - (void) setProgress:(float)value {
 	_progress = value;
 	[self setNeedsDisplay];
+}
+
+- (CGSize) intrinsicContentSize {
+	CGSize size = [super intrinsicContentSize];
+	size.width += 10;
+	return size;
 }
 
 @end

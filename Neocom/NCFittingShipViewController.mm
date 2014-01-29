@@ -8,10 +8,15 @@
 
 #import "NCFittingShipViewController.h"
 #import "NCFittingShipModulesDataSource.h"
+#import "NCFittingShipDronesDataSource.h"
+#import "NCFittingShipImplantsDataSource.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
+@property (nonatomic, strong) NCFittingShipDronesDataSource* dronesDataSource;
+@property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
+@property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @end
 
 @implementation NCFittingShipViewController
@@ -28,14 +33,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHedaerView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHedaerView"];
+	self.workspaceViewController = self.childViewControllers[0];
+	
 	self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	self.character = self.engine->getGang()->addPilot();
 	self.character->setShip(645)->addModule(11301);
 	self.modulesDataSource = [NCFittingShipModulesDataSource new];
 	self.modulesDataSource.controller = self;
-	self.tableView.dataSource = self.modulesDataSource;
-	self.tableView.delegate = self.modulesDataSource;
+	self.modulesDataSource.tableView = self.workspaceViewController.tableView;
+	self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
+	self.workspaceViewController.tableView.delegate = self.modulesDataSource;
+	self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+	
+	self.dronesDataSource = [NCFittingShipDronesDataSource new];
+	self.dronesDataSource.controller = self;
+	self.dronesDataSource.tableView = self.workspaceViewController.tableView;
+	
+	self.implantsDataSource = [NCFittingShipImplantsDataSource new];
+	self.implantsDataSource.controller = self;
+	self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+
 	[self.modulesDataSource reload];
 }
 
@@ -46,18 +63,53 @@
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
-	if (!self.typesCache)
-		self.typesCache = [NSMutableDictionary new];
-	int typeID = item->getTypeID();
-	
-	EVEDBInvType* type = self.typesCache[@(typeID)];
-	if (!type) {
-		type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
-		if (type)
-			self.typesCache[@(typeID)] = type;
+	if (!item)
+		return nil;
+	@synchronized(self) {
+		if (!self.typesCache)
+			self.typesCache = [NSMutableDictionary new];
+		int typeID = item->getTypeID();
+		
+		EVEDBInvType* type = self.typesCache[@(typeID)];
+		if (!type) {
+			type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+			if (type)
+				self.typesCache[@(typeID)] = type;
+		}
+		return type;
 	}
-	return type;
 }
 
+- (void) reload {
+	[(id) self.workspaceViewController.tableView.dataSource reload];
+}
+
+- (NCDatabaseTypePickerViewController*) typePickerViewController {
+	if (!_typePickerViewController) {
+		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
+	}
+	return _typePickerViewController;
+}
+
+- (IBAction)onChangeSection:(id)sender {
+	if (self.sectionSegmentedControl.selectedSegmentIndex == 0) {
+		self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
+		self.workspaceViewController.tableView.delegate = self.modulesDataSource;
+		self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+		[self.modulesDataSource reload];
+	}
+	else if (self.sectionSegmentedControl.selectedSegmentIndex == 1) {
+		self.workspaceViewController.tableView.dataSource = self.dronesDataSource;
+		self.workspaceViewController.tableView.delegate = self.dronesDataSource;
+		self.workspaceViewController.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
+		[self.dronesDataSource reload];
+	}
+	else {
+		self.workspaceViewController.tableView.dataSource = self.implantsDataSource;
+		self.workspaceViewController.tableView.delegate = self.implantsDataSource;
+		self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
+		[self.implantsDataSource reload];
+	}
+}
 
 @end

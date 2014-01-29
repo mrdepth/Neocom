@@ -49,9 +49,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.conditions = @[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"];
-	
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,12 +64,13 @@
 - (void) presentWithConditions:(NSArray*) conditions inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(EVEDBInvType* type)) completion {
 	[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 
-	 if (![self.conditions isEqualToArray:conditions]) {
+	if (![self.conditions isEqualToArray:conditions]) {
 		self.conditions = conditions;
 		if (self.viewControllers.count > 1)
 			[self popToRootViewControllerAnimated:NO];
 		if ([[self.viewControllers[0] searchDisplayController] isActive])
 			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
+		[self.viewControllers[0] setGroups:nil];
 		self.groups = nil;
 		self.conditionsTables = nil;
 	}

@@ -10,6 +10,9 @@
 #import <CoreData/CoreData.h>
 #import "EVEOnlineAPI.h"
 #import "NCCharacterAttributes.h"
+#import "NCAPIKey.h"
+#import "NCMailBox.h"
+#import "NCSkillPlan.h"
 
 #define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
 
@@ -18,9 +21,6 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCorporate
 };
 
-@class NCAPIKey;
-@class NCSkillPlan;
-@class NCMailBox;
 @interface NCAccount : NSManagedObject
 
 @property (nonatomic) int32_t characterID;

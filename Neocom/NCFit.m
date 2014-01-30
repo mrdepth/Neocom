@@ -8,7 +8,6 @@
 
 #import "NCFit.h"
 
-
 @implementation NCFit
 
 @dynamic fitName;
@@ -16,5 +15,11 @@
 @dynamic typeID;
 @dynamic typeName;
 @dynamic url;
+@dynamic loadout;
+
+- (void) awakeFromInsert {
+	if (!self.loadout.managedObjectContext)
+		[self.managedObjectContext insertObject:self.loadout];
+}
 
 @end

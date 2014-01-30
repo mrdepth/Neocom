@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EVEDBAPI.h"
 
 @class NCFittingShipViewController;
 @class NCTask;

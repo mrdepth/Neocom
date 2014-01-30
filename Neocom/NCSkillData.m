@@ -10,7 +10,6 @@
 #import "NCCharacterAttributes.h"
 #import "EVEDBInvType+Neocom.h"
 #import <objc/runtime.h>
-#import "murmurhash3.h"
 
 @interface NCSkillData()
 @property (nonatomic, strong, readwrite) NSString* skillName;
@@ -105,7 +104,7 @@
 	NSNumber* hash = objc_getAssociatedObject(self, @"hash");
 	if (!hash) {
 		NSInteger data[] = {self.typeID, self.targetLevel, self.currentLevel, self.trainedLevel, self.skillPoints};
-		NSUInteger hash = murmurHash3(data, sizeof(data), (uint32_t)[self class]);
+		NSUInteger hash = [[NSData dataWithBytes:data length:sizeof(data)] hash];
 		objc_setAssociatedObject(self, @"hash", @(hash), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		return hash;
 	}

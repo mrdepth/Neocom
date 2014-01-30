@@ -31,17 +31,19 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														eufe::Character* character = self.controller.character;
-														for (auto implant: character->getImplants()) {
-															int slot = implant->getSlot() - 1;
-															if (slot >= 0 && slot < 10)
-																implants[slot] = implant;
-														}
-
-														for (auto booster: character->getBoosters()) {
-															int slot = booster->getSlot() - 1;
-															if (slot >= 0 && slot < 4)
-																boosters[slot] = booster;
+														@synchronized(self.controller) {
+															eufe::Character* character = self.controller.character;
+															for (auto implant: character->getImplants()) {
+																int slot = implant->getSlot() - 1;
+																if (slot >= 0 && slot < 10)
+																	implants[slot] = implant;
+															}
+															
+															for (auto booster: character->getBoosters()) {
+																int slot = booster->getSlot() - 1;
+																if (slot >= 0 && slot < 4)
+																	boosters[slot] = booster;
+															}
 														}
 													}
 										completionHandler:^(NCTask *task) {

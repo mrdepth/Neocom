@@ -17,6 +17,7 @@
 		1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204156B189A454A00B15BB5 /* NCFittingShipPriceCell.m */; };
 		1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */; };
 		12041572189A4C3D00B15BB5 /* NCFittingShipEHPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041571189A4C3D00B15BB5 /* NCFittingShipEHPCell.m */; };
+		12041582189A6CAF00B15BB5 /* NCFitLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041581189A6CAF00B15BB5 /* NCFitLoadout.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
 		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
@@ -449,6 +450,8 @@
 		1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipStatsDataSource.mm; sourceTree = "<group>"; };
 		12041570189A4C3D00B15BB5 /* NCFittingShipEHPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipEHPCell.h; sourceTree = "<group>"; };
 		12041571189A4C3D00B15BB5 /* NCFittingShipEHPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipEHPCell.m; sourceTree = "<group>"; };
+		12041580189A6CAF00B15BB5 /* NCFitLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitLoadout.h; sourceTree = "<group>"; };
+		12041581189A6CAF00B15BB5 /* NCFitLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitLoadout.m; sourceTree = "<group>"; };
 		1206C5E818922FB10010BEE8 /* NCMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBox.h; sourceTree = "<group>"; };
 		1206C5E918922FB20010BEE8 /* NCMailBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBox.m; sourceTree = "<group>"; };
 		1206C5ED189280870010BEE8 /* NCMailBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxViewController.h; sourceTree = "<group>"; };
@@ -2383,6 +2386,8 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				12041580189A6CAF00B15BB5 /* NCFitLoadout.h */,
+				12041581189A6CAF00B15BB5 /* NCFitLoadout.m */,
 				84FC4F5E18785CCC0004073C /* NCAccount.h */,
 				84FC4F5F18785CCC0004073C /* NCAccount.m */,
 				129FEE161860313D00F75FA6 /* NCStorage.h */,
@@ -3168,6 +3173,7 @@
 				1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
+				12041582189A6CAF00B15BB5 /* NCFitLoadout.m in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
 				128A1F411899403000005C4F /* NCFittingShipImplantsDataSource.mm in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "NCMailBox.h"
+#import "NCAccount.h"
 #import "NCStorage.h"
 #import "NCCache.h"
 

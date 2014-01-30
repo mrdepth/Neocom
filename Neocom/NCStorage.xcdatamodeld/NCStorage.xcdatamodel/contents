@@ -19,35 +19,28 @@
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="typeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="loadout" maxCount="1" deletionRule="Cascade" destinationEntity="FitLoadout" inverseName="fit" inverseEntity="FitLoadout" syncable="YES"/>
     </entity>
     <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skills" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="FitLoadout" representedClassName="NCFitLoadout" syncable="YES">
+        <attribute name="loadout" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="fit" maxCount="1" deletionRule="Nullify" destinationEntity="Fit" inverseName="loadout" inverseEntity="Fit" syncable="YES"/>
+    </entity>
     <entity name="MailBox" representedClassName="NCMailBox" syncable="YES">
         <attribute name="readedMessagesIDs" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="mailBox" inverseEntity="Account" syncable="YES"/>
     </entity>
-    <entity name="POSFit" representedClassName="NCPOSFit" parentEntity="Fit" syncable="YES">
-        <attribute name="structures" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
+    <entity name="POSFit" representedClassName="NCPOSFit" parentEntity="Fit" syncable="YES"/>
     <entity name="Setting" representedClassName="NCSetting" syncable="YES">
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="ShipFit" representedClassName="NCShipFit" parentEntity="Fit" syncable="YES">
-        <attribute name="boosters" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="cargo" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="drones" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="hiSlots" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="implants" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="lowSlots" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="medSlots" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rigSlots" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subsystems" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
+    <entity name="ShipFit" representedClassName="NCShipFit" parentEntity="Fit" syncable="YES"/>
     <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="skillPlanName" optional="YES" attributeType="String" syncable="YES"/>
@@ -59,10 +52,11 @@
         <element name="APIKey" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Fit" positionX="0" positionY="0" width="0" height="0"/>
         <element name="FitCharacter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MailBox" positionX="0" positionY="0" width="0" height="0"/>
         <element name="POSFit" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Setting" positionX="0" positionY="0" width="0" height="0"/>
         <element name="ShipFit" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="MailBox" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="FitLoadout" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

@@ -8,7 +8,7 @@
 
 #import "NCViewController.h"
 #import "eufe.h"
-#import "NCStorage.h"
+#import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
 

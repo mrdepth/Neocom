@@ -78,38 +78,40 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														eufe::Ship* ship = self.controller.character->getShip();
-														
-														eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-														int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-														
-														for (int i = 0; i < n; i++) {
-															int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-															if (numberOfSlots > 0) {
-																eufe::ModulesList modules;
-																ship->getModules(slots[i], std::inserter(modules, modules.end()));
-																
-																NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
-																section.slot = slots[i];
-																section.numberOfSlots = numberOfSlots;
-																section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-																[sections addObject:section];
+														@synchronized(self.controller) {
+															eufe::Ship* ship = self.controller.character->getShip();
+															
+															eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+															int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+															
+															for (int i = 0; i < n; i++) {
+																int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+																if (numberOfSlots > 0) {
+																	eufe::ModulesList modules;
+																	ship->getModules(slots[i], std::inserter(modules, modules.end()));
+																	
+																	NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
+																	section.slot = slots[i];
+																	section.numberOfSlots = numberOfSlots;
+																	section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
+																	[sections addObject:section];
+																}
 															}
+															
+															totalPG = ship->getTotalPowerGrid();
+															usedPG = ship->getPowerGridUsed();
+															
+															totalCPU = ship->getTotalCpu();
+															usedCPU = ship->getCpuUsed();
+															
+															totalCalibration = ship->getTotalCalibration();
+															usedCalibration = ship->getCalibrationUsed();
+															
+															self.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
+															self.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
+															self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
+															self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 														}
-														
-														totalPG = ship->getTotalPowerGrid();
-														usedPG = ship->getPowerGridUsed();
-														
-														totalCPU = ship->getTotalCpu();
-														usedCPU = ship->getCpuUsed();
-														
-														totalCalibration = ship->getTotalCalibration();
-														usedCalibration = ship->getCalibrationUsed();
-														
-														self.usedTurretHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_TURRET);
-														self.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
-														self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-														self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {

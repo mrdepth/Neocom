@@ -52,30 +52,32 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														eufe::Ship* ship = self.controller.character->getShip();
-														
-														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
-														
-														for (auto drone: ship->getDrones()) {
-															NSInteger typeID = drone->getTypeID();
-															NCFittingShipDronesDataSourceRow* row = dronesDic[@(typeID)];
-															if (!row) {
-																row = [NCFittingShipDronesDataSourceRow new];
-																row.type = [self.controller typeWithItem:drone];
-																dronesDic[@(typeID)] = row;
+														@synchronized(self.controller) {
+															eufe::Ship* ship = self.controller.character->getShip();
+															
+															NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+															
+															for (auto drone: ship->getDrones()) {
+																NSInteger typeID = drone->getTypeID();
+																NCFittingShipDronesDataSourceRow* row = dronesDic[@(typeID)];
+																if (!row) {
+																	row = [NCFittingShipDronesDataSourceRow new];
+																	row.type = [self.controller typeWithItem:drone];
+																	dronesDic[@(typeID)] = row;
+																}
+																row.drones.push_back(drone);
 															}
-															row.drones.push_back(drone);
+															
+															totalDB = ship->getTotalDroneBay();
+															usedDB = ship->getDroneBayUsed();
+															
+															totalBandwidth = ship->getTotalDroneBandwidth();
+															usedBandwidth = ship->getDroneBandwidthUsed();
+															
+															maxActiveDrones = ship->getMaxActiveDrones();
+															activeDrones = ship->getActiveDrones();
+															rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 														}
-														
-														totalDB = ship->getTotalDroneBay();
-														usedDB = ship->getDroneBayUsed();
-														
-														totalBandwidth = ship->getTotalDroneBandwidth();
-														usedBandwidth = ship->getDroneBandwidthUsed();
-														
-														maxActiveDrones = ship->getMaxActiveDrones();
-														activeDrones = ship->getActiveDrones();
-														rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {

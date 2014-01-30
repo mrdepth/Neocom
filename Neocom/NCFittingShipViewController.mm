@@ -11,6 +11,8 @@
 #import "NCFittingShipDronesDataSource.h"
 #import "NCFittingShipImplantsDataSource.h"
 #import "NCFittingShipStatsDataSource.h"
+#import "EVEDBAPI.h"
+#import "NCStorage.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
@@ -35,6 +37,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.fit = [NCShipFit emptyFit];
+	[[[NCStorage sharedStorage] managedObjectContext] insertObject:self.fit];
+	
 	self.workspaceViewController = self.childViewControllers[0];
 	
 	self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
@@ -66,6 +71,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) willMoveToParentViewController:(UIViewController *)parent {
+	if (parent == nil) {
+		if (self.fit.managedObjectContext) {
+			[self.fit saveFromCharacter:self.character];
+		}
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {

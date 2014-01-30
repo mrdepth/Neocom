@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NCStorage.h"
 
+@class NCAccount;
 @class NCSkillsViewController;
 @interface NCSkillsDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) NCAccount* account;

@@ -14,5 +14,6 @@
 @interface NCPOSFit : NCFit
 
 @property (nonatomic, retain) NSString * structures;
++ (NSArray*) allFits;
 
 @end

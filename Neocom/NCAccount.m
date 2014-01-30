@@ -8,7 +8,6 @@
 
 #import "NCAccount.h"
 #import "NCStorage.h"
-#import "NCAPIKey.h"
 #import "NCCache.h"
 #import "EVEDBInvType.h"
 

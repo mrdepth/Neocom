@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NCCache.h"
-#import "NCStorage.h"
+#import "NCAccount.h"
 #import "NCTaskManager.h"
 
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate>

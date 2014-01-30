@@ -10,9 +10,13 @@
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "UIViewController+Neocom.h"
+#import "NCStorage.h"
+#import "NCShipFit.h"
+#import "NCPOSFit.h"
+#import "NSArray+Neocom.h"
 
 @interface NCFittingMenuViewController ()
-
+@property (nonatomic, strong) NSArray* fits;
 @end
 
 @implementation NCFittingMenuViewController
@@ -43,12 +47,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.fits.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 5 : 0;
+    return section == 0 ? 5 : [self.fits[section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -59,8 +63,14 @@
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		return cell;
 	}
-	else
-		return nil;
+	else {
+		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FitCell"];
+		NCFit* fit = self.fits[indexPath.section - 1][indexPath.row];
+		cell.textLabel.text = fit.typeName;
+		cell.detailTextLabel.text = fit.fitName;
+		cell.imageView.image = [UIImage imageNamed:fit.imageName];
+		return cell;
+	}
 }
 
 #pragma mark - Table view delegate
@@ -85,5 +95,42 @@
 - (NSString*) recordID {
 	return nil;
 }
+
+#pragma mark - Private
+
+- (void) reload {
+	NSMutableArray* fits = [NSMutableArray new];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 [storage.managedObjectContext performBlockAndWait:^{
+												 NSArray* shipFits = [NCShipFit allFits];
+												 task.progress = 0.25;
+												 
+												 [fits addObjectsFromArray:[shipFits arrayGroupedByKey:@"type.groupID"]];
+												 task.progress = 0.5;
+												 [fits sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+													 NCShipFit* a = [obj1 objectAtIndex:0];
+													 NCShipFit* b = [obj2 objectAtIndex:0];
+													 return [a.type.group.groupName compare:b.type.group.groupName];
+												 }];
+												 
+												 task.progress = 0.75;
+												 
+												 NSMutableArray* posFits = [NSMutableArray arrayWithArray:[NCPOSFit allFits]];
+												 if (posFits.count > 0)
+													 [fits addObject:posFits];
+												 
+												 task.progress = 1.0;
+											 }];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.fits = fits;
+								 [self.tableView reloadData];
+								 
+							 }];
+}
+
 
 @end

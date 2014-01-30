@@ -1,5 +1,5 @@
 //
-//  NCFittingModuleCell.h
+//  NCFittingShipModuleCell.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 28.01.14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCFittingModuleCell : UITableViewCell
+@interface NCFittingShipModuleCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *typeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *typeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *chargeLabel;

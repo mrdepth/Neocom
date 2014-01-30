@@ -10,11 +10,13 @@
 #import "NCFittingShipModulesDataSource.h"
 #import "NCFittingShipDronesDataSource.h"
 #import "NCFittingShipImplantsDataSource.h"
+#import "NCFittingShipStatsDataSource.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
 @property (nonatomic, strong) NCFittingShipDronesDataSource* dronesDataSource;
 @property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
+@property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @end
@@ -52,6 +54,10 @@
 	self.implantsDataSource = [NCFittingShipImplantsDataSource new];
 	self.implantsDataSource.controller = self;
 	self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+
+	self.statsDataSource = [NCFittingShipStatsDataSource new];
+	self.statsDataSource.controller = self;
+	self.statsDataSource.tableView = self.workspaceViewController.tableView;
 
 	[self.modulesDataSource reload];
 }
@@ -104,11 +110,17 @@
 		self.workspaceViewController.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
 		[self.dronesDataSource reload];
 	}
-	else {
+	else if (self.sectionSegmentedControl.selectedSegmentIndex == 2) {
 		self.workspaceViewController.tableView.dataSource = self.implantsDataSource;
 		self.workspaceViewController.tableView.delegate = self.implantsDataSource;
 		self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
 		[self.implantsDataSource reload];
+	}
+	else {
+		self.workspaceViewController.tableView.dataSource = self.statsDataSource;
+		self.workspaceViewController.tableView.delegate = self.statsDataSource;
+		self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
+		[self.statsDataSource reload];
 	}
 }
 

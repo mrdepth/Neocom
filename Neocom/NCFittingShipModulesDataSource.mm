@@ -13,7 +13,7 @@
 #import "NSString+Neocom.h"
 #import <algorithm>
 #import "NCTableViewCell.h"
-#import "NCFittingModuleCell.h"
+#import "NCFittingShipModuleCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingSectionGenericHedaerView.h"
 #import "UIActionSheet+Block.h"
@@ -177,7 +177,7 @@
 		return cell;
 	}
 	else {
-		NCFittingModuleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingModuleCell"];
+		NCFittingShipModuleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipModuleCell"];
 		eufe::Module* module = section.modules[indexPath.row];
 		EVEDBInvType* type = [self.controller typeWithItem:module];
 		cell.typeNameLabel.text = type.typeName;

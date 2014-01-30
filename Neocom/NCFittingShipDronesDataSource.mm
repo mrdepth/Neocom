@@ -8,7 +8,7 @@
 
 #import "NCFittingShipDronesDataSource.h"
 #import "NCFittingShipViewController.h"
-#import "NCFittingDroneCell.h"
+#import "NCFittingShipDroneCell.h"
 #import "NCTableViewCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIActionSheet+Block.h"
@@ -118,7 +118,7 @@
 		int falloff = (int) drone->getFalloff();
 		float trackingSpeed = drone->getTrackingSpeed();
 		
-		NCFittingDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingDroneCell"];
+		NCFittingShipDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
 		
 		cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
 		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];

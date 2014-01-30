@@ -10,6 +10,7 @@
 
 @interface NSString (Neocom)
 
++ (NSString*) stringWithResource:(float) resource unit:(NSString*) unit;
 + (NSString*) stringWithTotalResources:(float) total usedResources:(float) used unit:(NSString*) unit;
 + (NSString*) shortStringWithFloat:(float) value unit:(NSString*) unit;
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft;

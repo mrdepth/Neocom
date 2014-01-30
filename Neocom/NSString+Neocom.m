@@ -29,6 +29,11 @@
 		return @"";
 }
 
++ (NSString*) stringWithResource:(float) resource unit:(NSString*) unit {
+	NSInteger dimension = [self dimensionForValue:resource];
+	return [NSString stringWithFormat:@"%.1f%@ %@", resource / dimension, [self unitForDimension:dimension], unit ? unit : @""];
+}
+
 + (NSString*) stringWithTotalResources:(float) total usedResources:(float) used unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:total];
 	used /= dimension;

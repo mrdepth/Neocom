@@ -1,14 +1,14 @@
 //
-//  NCFittingDroneCell.m
+//  NCFittingShipFirepowerCell.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 29.01.14.
+//  Created by Артем Шиманский on 30.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingDroneCell.h"
+#import "NCFittingShipFirepowerCell.h"
 
-@implementation NCFittingDroneCell
+@implementation NCFittingShipFirepowerCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

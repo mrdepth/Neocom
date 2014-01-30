@@ -34,9 +34,6 @@
 	return [NSString stringWithFormat:@"%.1f/%.1f%@ %@", used / dimension, total / dimension, [self unitForDimension:dimension], unit ? unit : @""];
 }
 
-+ (NSString*) stringWithResource:(float) resource unit:(NSString*) unit {
-	NSInteger dimension = [self dimensionForValue:resource];
-	return [NSString stringWithFormat:@"%.1f%@ %@", resource / dimension, [self unitForDimension:dimension], unit ? unit : @""];
-}
+$(SRCROOT)/Scanner/ThirdParty/Flurry
 
 @end

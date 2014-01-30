@@ -1,5 +1,5 @@
 //
-//  NCFittingDroneCell.h
+//  NCFittingShipDroneCell.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 29.01.14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCFittingDroneCell : UITableViewCell
+@interface NCFittingShipDroneCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *typeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *typeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *optimalLabel;

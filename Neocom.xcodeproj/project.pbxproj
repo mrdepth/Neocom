@@ -318,6 +318,10 @@
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
+		84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
+		84521914189AEEA800E7E3C1 /* NCShipLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521913189AEEA800E7E3C1 /* NCShipLoadout.m */; };
+		84521917189AEEA800E7E3C1 /* NCPOSLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521916189AEEA800E7E3C1 /* NCPOSLoadout.m */; };
 		849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */; };
 		849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */; };
 		849B9FAD1896D24A00D4DD2B /* active.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F7C1896D24900D4DD2B /* active.png */; };
@@ -1003,6 +1007,14 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		8452190C189AEEA700E7E3C1 /* NCLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadout.h; sourceTree = "<group>"; };
+		8452190D189AEEA700E7E3C1 /* NCLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLoadout.m; sourceTree = "<group>"; };
+		8452190F189AEEA800E7E3C1 /* NCLoadoutData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadoutData.h; sourceTree = "<group>"; };
+		84521910189AEEA800E7E3C1 /* NCLoadoutData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLoadoutData.m; sourceTree = "<group>"; };
+		84521912189AEEA800E7E3C1 /* NCShipLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipLoadout.h; sourceTree = "<group>"; };
+		84521913189AEEA800E7E3C1 /* NCShipLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShipLoadout.m; sourceTree = "<group>"; };
+		84521915189AEEA800E7E3C1 /* NCPOSLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSLoadout.h; sourceTree = "<group>"; };
+		84521916189AEEA800E7E3C1 /* NCPOSLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPOSLoadout.m; sourceTree = "<group>"; };
 		849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gallenteFederation@2x.png"; sourceTree = "<group>"; };
 		849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battleclinic@2x.png"; sourceTree = "<group>"; };
 		849B9F7C1896D24900D4DD2B /* active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = active.png; sourceTree = "<group>"; };
@@ -2386,6 +2398,14 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				84521915189AEEA800E7E3C1 /* NCPOSLoadout.h */,
+				84521916189AEEA800E7E3C1 /* NCPOSLoadout.m */,
+				84521912189AEEA800E7E3C1 /* NCShipLoadout.h */,
+				84521913189AEEA800E7E3C1 /* NCShipLoadout.m */,
+				8452190F189AEEA800E7E3C1 /* NCLoadoutData.h */,
+				84521910189AEEA800E7E3C1 /* NCLoadoutData.m */,
+				8452190C189AEEA700E7E3C1 /* NCLoadout.h */,
+				8452190D189AEEA700E7E3C1 /* NCLoadout.m */,
 				12041580189A6CAF00B15BB5 /* NCFitLoadout.h */,
 				12041581189A6CAF00B15BB5 /* NCFitLoadout.m */,
 				84FC4F5E18785CCC0004073C /* NCAccount.h */,
@@ -3026,6 +3046,7 @@
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
+				84521914189AEEA800E7E3C1 /* NCShipLoadout.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,
 				129D262C187E923300E2062C /* UIActionSheet+Block.m in Sources */,
 				126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */,
@@ -3105,6 +3126,7 @@
 				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,
 				126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
+				84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */,
 				12041566189A451E00B15BB5 /* NCFittingShipTankCell.m in Sources */,
 				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
 				126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */,
@@ -3138,6 +3160,7 @@
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
 				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
 				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
+				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */,
@@ -3164,6 +3187,7 @@
 				126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
 				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
+				84521917189AEEA800E7E3C1 /* NCPOSLoadout.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHedaerView.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
 				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,

@@ -14,8 +14,10 @@
 #import "NCShipFit.h"
 #import "NCPOSFit.h"
 #import "NSArray+Neocom.h"
+#import "NCFittingShipViewController.h"
 
 @interface NCFittingMenuViewController ()
+@property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NSArray* fits;
 @end
 
@@ -41,6 +43,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCFittingShipViewController"]) {
+		NCFittingShipViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.fit = sender;
+	}
 }
 
 #pragma mark - Table view data source
@@ -76,17 +85,19 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0) {
-		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-		NCDatabaseTypePickerViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
-		[controller presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-						 inViewController:self
-								 fromRect:cell.bounds
-								   inView:cell
-								 animated:YES
-						completionHandler:^(EVEDBInvType *type) {
-							[self dismissAnimated];
-						}];
+	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+	if (indexPath.row == 3) {
+		[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
+											inViewController:self
+													fromRect:cell.bounds
+													  inView:cell
+													animated:YES
+										   completionHandler:^(EVEDBInvType *type) {
+											   NCShipFit* fit = [NCShipFit emptyFit];
+											   fit.typeID = type.typeID;
+											   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+											   [self dismissAnimated];
+										   }];
 	}
 }
 
@@ -132,5 +143,11 @@
 							 }];
 }
 
+- (NCDatabaseTypePickerViewController*) typePickerViewController {
+	if (!_typePickerViewController) {
+		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
+	}
+	return _typePickerViewController;
+}
 
 @end

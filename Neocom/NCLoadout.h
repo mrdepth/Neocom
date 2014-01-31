@@ -8,19 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCLoadoutData.h"
 
-@class NCLoadoutData;
+typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
+	NCLoadoutCategoryShip,
+	NCLoadoutCategoryPOS
+};
+
 @class EVEDBInvType;
 
 @interface NCLoadout : NSManagedObject
 
 @property (nonatomic, retain) NSString * loadoutName;
-@property (nonatomic, retain) NSString * imageName;
 @property (nonatomic) int32_t typeID;
-@property (nonatomic, retain) NSString * typeName;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NCLoadoutData *data;
 
 @property (nonatomic, readonly, strong) EVEDBInvType* type;
+@property (nonatomic, readonly) NCLoadoutCategory category;
+
++ (NSArray*) loadouts;
++ (NSArray*) shipLoadouts;
++ (NSArray*) posLoadouts;
 
 @end

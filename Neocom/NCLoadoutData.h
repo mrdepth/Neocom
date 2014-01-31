@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCLoadout;
 
+@class NCLoadout;
 @interface NCLoadoutData : NSManagedObject
 
 @property (nonatomic, retain) id data;

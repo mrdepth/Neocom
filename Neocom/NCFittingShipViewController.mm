@@ -10,14 +10,20 @@
 #import "NCFittingShipModulesDataSource.h"
 #import "NCFittingShipDronesDataSource.h"
 #import "NCFittingShipImplantsDataSource.h"
+#import "NCFittingShipFleetDataSource.h"
 #import "NCFittingShipStatsDataSource.h"
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
+#import "NCFitCharacter.h"
 
 @interface NCFittingShipViewController ()
+@property (nonatomic, strong, readwrite) NSMutableArray* fits;
+@property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
+
 @property (nonatomic, strong) NCFittingShipModulesDataSource* modulesDataSource;
 @property (nonatomic, strong) NCFittingShipDronesDataSource* dronesDataSource;
 @property (nonatomic, strong) NCFittingShipImplantsDataSource* implantsDataSource;
+@property (nonatomic, strong) NCFittingShipFleetDataSource* fleetDataSource;
 @property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
@@ -37,47 +43,88 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.fit = [NCShipFit emptyFit];
-	[[[NCStorage sharedStorage] managedObjectContext] insertObject:self.fit];
 	
 	self.workspaceViewController = self.childViewControllers[0];
 	
-	self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
-	self.character = self.engine->getGang()->addPilot();
-	self.character->setShip(645)->addModule(11301);
-	self.modulesDataSource = [NCFittingShipModulesDataSource new];
-	self.modulesDataSource.controller = self;
-	self.modulesDataSource.tableView = self.workspaceViewController.tableView;
-	self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
-	self.workspaceViewController.tableView.delegate = self.modulesDataSource;
-	self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+	if (!self.engine)
+		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
 	
-	self.dronesDataSource = [NCFittingShipDronesDataSource new];
-	self.dronesDataSource.controller = self;
-	self.dronesDataSource.tableView = self.workspaceViewController.tableView;
-	
-	self.implantsDataSource = [NCFittingShipImplantsDataSource new];
-	self.implantsDataSource.controller = self;
-	self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+	if (!self.fits)
+		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 
-	self.statsDataSource = [NCFittingShipStatsDataSource new];
-	self.statsDataSource.controller = self;
-	self.statsDataSource.tableView = self.workspaceViewController.tableView;
-
-	[self.modulesDataSource reload];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 @synchronized(self) {
+												 if (!self.fit.character) {
+													 self.fit.character = self.engine->getGang()->addPilot();
+													 NCFitCharacter* character = [NCFitCharacter characterWithSkillsLevel:5];
+													 [self.fit setSkillLevels:character.skills];
+													 self.fit.character->setCharacterName([character.name UTF8String]);
+													 [self.fit load];
+												 }
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
+								 self.modulesDataSource.controller = self;
+								 self.modulesDataSource.tableView = self.workspaceViewController.tableView;
+								 
+								 self.dronesDataSource = [NCFittingShipDronesDataSource new];
+								 self.dronesDataSource.controller = self;
+								 self.dronesDataSource.tableView = self.workspaceViewController.tableView;
+								 
+								 self.implantsDataSource = [NCFittingShipImplantsDataSource new];
+								 self.implantsDataSource.controller = self;
+								 self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+								 
+								 self.fleetDataSource = [NCFittingShipFleetDataSource new];
+								 self.fleetDataSource.controller = self;
+								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
+								 
+								 self.statsDataSource = [NCFittingShipStatsDataSource new];
+								 self.statsDataSource.controller = self;
+								 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+								 
+								 self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
+								 self.workspaceViewController.tableView.delegate = self.modulesDataSource;
+								 self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+								 
+								 [self.modulesDataSource reload];
+							 }];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	if (self.view.window == nil) {
+		self.modulesDataSource = nil;
+		self.dronesDataSource = nil;
+		self.implantsDataSource = nil;
+		self.fleetDataSource = nil;
+		self.statsDataSource = nil;
+		self.typePickerViewController = nil;
+	}
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
 	if (parent == nil) {
-		if (self.fit.managedObjectContext) {
-			[self.fit saveFromCharacter:self.character];
-		}
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 @synchronized(self) {
+													 [[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+														 for (NCFitShip* fit in self.fits) {
+															 if (fit.loadout)
+																 [fit save];
+														 }
+														 [[NCStorage sharedStorage] saveContext];
+													 }];
+												 }
+											 }
+								 completionHandler:^(NCTask *task) {
+									 
+								 }];
 	}
 }
 
@@ -128,6 +175,12 @@
 		self.workspaceViewController.tableView.delegate = self.implantsDataSource;
 		self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
 		[self.implantsDataSource reload];
+	}
+	else if (self.sectionSegmentedControl.selectedSegmentIndex == 3) {
+		self.workspaceViewController.tableView.dataSource = self.fleetDataSource;
+		self.workspaceViewController.tableView.delegate = self.fleetDataSource;
+		self.workspaceViewController.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
+		[self.fleetDataSource reload];
 	}
 	else {
 		self.workspaceViewController.tableView.dataSource = self.statsDataSource;

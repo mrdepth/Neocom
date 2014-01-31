@@ -9,6 +9,9 @@
 #import "NCLoadout.h"
 #import "NCLoadoutData.h"
 #import "EVEDBAPI.h"
+#import "NCStorage.h"
+
+#define NCCategoryIDShip 6
 
 @interface NCLoadout()
 
@@ -18,11 +21,28 @@
 @synthesize type = _type;
 
 @dynamic loadoutName;
-@dynamic imageName;
 @dynamic typeID;
-@dynamic typeName;
 @dynamic url;
 @dynamic data;
+
++ (NSArray*) loadouts {
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext];
+	[fetchRequest setEntity:entity];
+	
+	NSError *error = nil;
+	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	return fetchedObjects;
+}
+
++ (NSArray*) shipLoadouts {
+	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryShip]];
+}
+
++ (NSArray*) posLoadouts {
+	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryPOS]];
+}
 
 - (EVEDBInvType*) type {
 	if (!_type) {
@@ -36,6 +56,10 @@
 	[self setPrimitiveValue:@(typeID) forKey:@"typeID"];
 	_type = nil;
 	[self didChangeValueForKey:@"typeID"];
+}
+
+- (NCLoadoutCategory) category {
+	return self.type.group.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
 }
 
 @end

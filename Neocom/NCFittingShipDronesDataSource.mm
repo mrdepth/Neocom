@@ -53,7 +53,7 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
-															eufe::Ship* ship = self.controller.character->getShip();
+															eufe::Ship* ship = self.controller.fit.character->getShip();
 															
 															NSMutableDictionary* dronesDic = [NSMutableDictionary new];
 															
@@ -180,7 +180,7 @@
 															   animated:YES
 													  completionHandler:^(EVEDBInvType *type) {
 														  eufe::TypeID typeID = type.typeID;
-														  eufe::Ship* ship = self.controller.character->getShip();
+														  eufe::Ship* ship = self.controller.fit.character->getShip();
 														  
 														  const eufe::DronesList& drones = ship->getDrones();
 														  eufe::Drone* sameDrone = NULL;
@@ -216,7 +216,7 @@
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
 	
-	eufe::Ship* ship = self.controller.character->getShip();
+	eufe::Ship* ship = self.controller.fit.character->getShip();
 	eufe::Drone* drone = row.drones.front();
 	
 	void (^remove)(eufe::DronesList) = ^(eufe::DronesList drones){

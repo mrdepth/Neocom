@@ -32,7 +32,7 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
-															eufe::Character* character = self.controller.character;
+															eufe::Character* character = self.controller.fit.character;
 															for (auto implant: character->getImplants()) {
 																int slot = implant->getSlot() - 1;
 																if (slot >= 0 && slot < 10)
@@ -141,7 +141,7 @@
 																	 inView:cell
 																   animated:YES
 														  completionHandler:^(EVEDBInvType *type) {
-															  self.controller.character->addImplant(type.typeID);
+															  self.controller.fit.character->addImplant(type.typeID);
 															  [self.controller reload];
 															  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 																  [self.controller dismissAnimated];
@@ -159,7 +159,7 @@
 																	 inView:cell
 																   animated:YES
 														  completionHandler:^(EVEDBInvType *type) {
-															  self.controller.character->addBooster(type.typeID);
+															  self.controller.fit.character->addBooster(type.typeID);
 															  [self.controller reload];
 															  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 																  [self.controller dismissAnimated];
@@ -175,9 +175,9 @@
 							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 								 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
 									 if (indexPath.section == 0)
-										 self.controller.character->removeImplant(self.implants[indexPath.row]);
+										 self.controller.fit.character->removeImplant(self.implants[indexPath.row]);
 									 else
-										 self.controller.character->removeBooster(self.boosters[indexPath.row]);
+										 self.controller.fit.character->removeBooster(self.boosters[indexPath.row]);
 									 [self.controller reload];
 								 }
 								 else if (selectedButtonIndex != actionSheet.cancelButtonIndex) {

@@ -11,14 +11,13 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "UIViewController+Neocom.h"
 #import "NCStorage.h"
-#import "NCShipFit.h"
-#import "NCPOSFit.h"
+#import "NCFitShip.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
 
 @interface NCFittingMenuViewController ()
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
-@property (nonatomic, strong) NSArray* fits;
+@property (nonatomic, strong) NSArray* sections;
 @end
 
 @implementation NCFittingMenuViewController
@@ -39,6 +38,11 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self reload];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -56,12 +60,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.fits.count + 1;
+    return self.sections.count + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 5 : [self.fits[section] count];
+    return section == 0 ? 5 : [self.sections[section - 1] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -73,11 +77,11 @@
 		return cell;
 	}
 	else {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FitCell"];
-		NCFit* fit = self.fits[indexPath.section - 1][indexPath.row];
-		cell.textLabel.text = fit.typeName;
-		cell.detailTextLabel.text = fit.fitName;
-		cell.imageView.image = [UIImage imageNamed:fit.imageName];
+		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
+		cell.textLabel.text = loadout.type.typeName;
+		cell.detailTextLabel.text = loadout.loadoutName;
+		cell.imageView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
 		return cell;
 	}
 }
@@ -86,18 +90,28 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	if (indexPath.row == 3) {
-		[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-											inViewController:self
-													fromRect:cell.bounds
-													  inView:cell
-													animated:YES
-										   completionHandler:^(EVEDBInvType *type) {
-											   NCShipFit* fit = [NCShipFit emptyFit];
-											   fit.typeID = type.typeID;
-											   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-											   [self dismissAnimated];
-										   }];
+	if (indexPath.section == 0) {
+		if (indexPath.row == 2) {
+			[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
+												inViewController:self
+														fromRect:cell.bounds
+														  inView:cell
+														animated:YES
+											   completionHandler:^(EVEDBInvType *type) {
+												   NCFitShip* fit = [[NCFitShip alloc] initWithType:type];
+												   NCStorage* storage = [NCStorage sharedStorage];
+												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												   
+												   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+												   [self dismissAnimated];
+											   }];
+		}
+	}
+	else {
+		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
+		NCFitShip* fit = [[NCFitShip alloc] initWithLoadout:loadout];
+		[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 	}
 }
 
@@ -110,34 +124,34 @@
 #pragma mark - Private
 
 - (void) reload {
-	NSMutableArray* fits = [NSMutableArray new];
+	NSMutableArray* sections = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
 											 [storage.managedObjectContext performBlockAndWait:^{
-												 NSArray* shipFits = [NCShipFit allFits];
+												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
-												 [fits addObjectsFromArray:[shipFits arrayGroupedByKey:@"type.groupID"]];
+												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];
 												 task.progress = 0.5;
-												 [fits sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-													 NCShipFit* a = [obj1 objectAtIndex:0];
-													 NCShipFit* b = [obj2 objectAtIndex:0];
+												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+													 NCLoadout* a = [obj1 objectAtIndex:0];
+													 NCLoadout* b = [obj2 objectAtIndex:0];
 													 return [a.type.group.groupName compare:b.type.group.groupName];
 												 }];
 												 
 												 task.progress = 0.75;
 												 
-												 NSMutableArray* posFits = [NSMutableArray arrayWithArray:[NCPOSFit allFits]];
-												 if (posFits.count > 0)
-													 [fits addObject:posFits];
+												 NSArray* posLoadouts = [[NCLoadout posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+												 if (posLoadouts.count > 0)
+													 [sections addObject:posLoadouts];
 												 
 												 task.progress = 1.0;
 											 }];
 										 }
 							 completionHandler:^(NCTask *task) {
-								 self.fits = fits;
+								 self.sections = sections;
 								 [self.tableView reloadData];
 								 
 							 }];

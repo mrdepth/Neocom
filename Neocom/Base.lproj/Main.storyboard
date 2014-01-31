@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -535,11 +535,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FitCell" textLabel="VCs-UG-Glc" detailTextLabel="IHq-Lq-FWC" style="IBUITableViewCellStyleSubtitle" id="21Z-uB-gvq" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="VCs-UG-Glc" detailTextLabel="IHq-Lq-FWC" style="IBUITableViewCellStyleSubtitle" id="21Z-uB-gvq" customClass="NCTableViewCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="21Z-uB-gvq" id="ery-OW-y9L">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VCs-UG-Glc">
@@ -602,15 +602,15 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem2Cell" textLabel="w9b-d2-bVd" imageView="rU1-U5-z35" style="IBUITableViewCellStyleDefault" id="9u7-vC-dZw" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem2Cell" textLabel="w9b-d2-bVd" imageView="rU1-U5-z35" style="IBUITableViewCellStyleDefault" id="9u7-vC-dZw" customClass="NCTableViewCell">
                                 <rect key="frame" x="0.0" y="218" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9u7-vC-dZw" id="D9n-K4-8IJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w9b-d2-bVd">
-                                            <rect key="frame" x="46" y="0.0" width="239" height="43"/>
+                                            <rect key="frame" x="46" y="0.0" width="259" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -623,9 +623,6 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="zDn-zn-7zX" kind="push" identifier="NCFittingShipViewController" id="zvA-BZ-28F"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem3Cell" textLabel="TXz-hN-wpW" imageView="nbq-eM-wfX" style="IBUITableViewCellStyleDefault" id="SHy-FH-NFE" customClass="NCTableViewCell">
                                 <rect key="frame" x="0.0" y="262" width="320" height="44"/>
@@ -674,6 +671,9 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="GX4-9z-cdJ"/>
+                    <connections>
+                        <segue destination="zDn-zn-7zX" kind="push" identifier="NCFittingShipViewController" id="Cgg-C1-5er"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ezd-f7-9SD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -689,7 +689,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingModuleCell" rowHeight="81" id="svD-oW-wEX" customClass="NCFittingShipModuleCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingShipModuleCell" rowHeight="81" id="svD-oW-wEX" customClass="NCFittingShipModuleCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="81"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="svD-oW-wEX" id="kmZ-mr-mBH">
@@ -875,8 +875,33 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingShipFleetCell" textLabel="Xa3-7s-fi0" detailTextLabel="HIf-A4-y29" rowHeight="44" style="IBUITableViewCellStyleSubtitle" id="vhA-Vo-ZAm" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="194" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vhA-Vo-ZAm" id="bYh-Yg-b8D">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xa3-7s-fi0">
+                                            <rect key="frame" x="15" y="4" width="33" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HIf-A4-y29">
+                                            <rect key="frame" x="15" y="25" width="43" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipWeaponsCell" rowHeight="29" id="hq8-9V-1sz" customClass="NCFittingShipWeaponsCell">
-                                <rect key="frame" x="0.0" y="194" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="238" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hq8-9V-1sz" id="Dcf-L4-GaK">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -975,7 +1000,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipResourcesCell" rowHeight="53" id="1rg-05-ylB" customClass="NCFittingShipResourcesCell">
-                                <rect key="frame" x="0.0" y="223" width="320" height="53"/>
+                                <rect key="frame" x="0.0" y="267" width="320" height="53"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1rg-05-ylB" id="D5i-Kt-dtf">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
@@ -1077,7 +1102,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipResistancesHeaderCell" rowHeight="29" id="ydQ-yb-zRh">
-                                <rect key="frame" x="0.0" y="276" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="320" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ydQ-yb-zRh" id="vOI-uy-KRk">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -1146,7 +1171,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipResistancesCell" rowHeight="29" id="RH9-Qp-HPl" customClass="NCFittingShipResistancesCell">
-                                <rect key="frame" x="0.0" y="305" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="349" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RH9-Qp-HPl" id="Xh5-pJ-iSv">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -1242,7 +1267,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFittingShipEHPCell" rowHeight="29" id="CZh-BO-xDN" customClass="NCFittingShipEHPCell">
-                                <rect key="frame" x="0.0" y="334" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="378" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CZh-BO-xDN" id="l6N-zy-uDT">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -1272,7 +1297,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipMiscCell" rowHeight="125" id="Ta3-gk-s1X" customClass="NCFittingShipMiscCell">
-                                <rect key="frame" x="0.0" y="363" width="320" height="125"/>
+                                <rect key="frame" x="0.0" y="407" width="320" height="125"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ta3-gk-s1X" id="Cld-5i-uLQ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
@@ -1605,7 +1630,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipCapacitorCell" rowHeight="35" id="IU3-ql-ctJ" customClass="NCFittingShipCapacitorCell">
-                                <rect key="frame" x="0.0" y="488" width="320" height="35"/>
+                                <rect key="frame" x="0.0" y="532" width="320" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IU3-ql-ctJ" id="73e-Qx-Tko">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -1676,7 +1701,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipTankHeaderCell" rowHeight="29" id="LVh-xm-m2P">
-                                <rect key="frame" x="0.0" y="523" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="567" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LVh-xm-m2P" id="R5f-RG-bue">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -1733,7 +1758,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipTankCell" rowHeight="29" id="cz8-z1-yZO" customClass="NCFittingShipTankCell">
-                                <rect key="frame" x="0.0" y="552" width="320" height="29"/>
+                                <rect key="frame" x="0.0" y="596" width="320" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cz8-z1-yZO" id="w0z-ek-aZe">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
@@ -1811,7 +1836,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipFirepowerCell" rowHeight="35" id="h1m-i4-TN9" customClass="NCFittingShipFirepowerCell">
-                                <rect key="frame" x="0.0" y="581" width="320" height="35"/>
+                                <rect key="frame" x="0.0" y="625" width="320" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h1m-i4-TN9" id="LI3-RY-hmH">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -1943,7 +1968,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipPriceCell" rowHeight="35" id="dQZ-c7-0bT" customClass="NCFittingShipPriceCell">
-                                <rect key="frame" x="0.0" y="616" width="320" height="35"/>
+                                <rect key="frame" x="0.0" y="660" width="320" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dQZ-c7-0bT" id="Bmo-GP-dnj">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -2140,9 +2165,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="mGz-9g-Gzw">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="9rC-xe-O9r" id="NkX-aZ-Rhc"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" textLabel="n5e-OK-AYP" style="IBUITableViewCellStyleDefault" id="fwB-yU-54c" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fwB-yU-54c" id="1N5-cY-f0e">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -2163,7 +2196,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" textLabel="eVR-75-Zff" style="IBUITableViewCellStyleDefault" id="YF1-c4-cQd" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YF1-c4-cQd" id="ewv-i1-WIc">
                                     <rect key="frame" x="0.0" y="0.0" width="273" height="43"/>
@@ -2186,8 +2219,20 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="x5K-zZ-ryS"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="8No-fn-qky" id="qu7-I4-0po"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tEY-EC-hUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="8No-fn-qky">
+                    <connections>
+                        <outlet property="delegate" destination="9rC-xe-O9r" id="M64-sB-Ex7"/>
+                        <outlet property="searchBar" destination="mGz-9g-Gzw" id="KmQ-zM-b43"/>
+                        <outlet property="searchContentsController" destination="9rC-xe-O9r" id="1Cu-87-v5P"/>
+                        <outlet property="searchResultsDataSource" destination="9rC-xe-O9r" id="dxa-or-P9t"/>
+                        <outlet property="searchResultsDelegate" destination="9rC-xe-O9r" id="MkB-8E-oae"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="323" y="2432"/>
         </scene>
@@ -2352,6 +2397,113 @@
             </objects>
             <point key="canvasLocation" x="787" y="2443"/>
         </scene>
+        <!--Fitting Character Picker Characters View Controller - Characters-->
+        <scene sceneID="ZPm-qa-tSL">
+            <objects>
+                <tableViewController id="DXJ-PB-2ha" customClass="NCFittingCharacterPickerCharactersViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ndQ-zn-0py">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" editingAccessoryType="disclosureIndicator" textLabel="mc6-ta-adB" style="IBUITableViewCellStyleDefault" id="ZDd-wY-Bjq" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZDd-wY-Bjq" id="GYo-lT-UeR">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="mc6-ta-adB">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Characters" id="pli-P2-wqa"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="8No-fn-qky" id="2Dr-C0-oUz"/>
+                        <segue destination="2du-RW-FVT" kind="push" identifier="NCFittingCharacterEditorViewController" id="QJu-uU-JSK"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mYK-YI-7LD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2067" y="1956"/>
+        </scene>
+        <!--Fitting Character Editor View Controller-->
+        <scene sceneID="vqp-XC-sg4">
+            <objects>
+                <tableViewController id="2du-RW-FVT" customClass="NCFittingCharacterEditorViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pqi-pt-MqQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="uiS-sB-9z5" detailTextLabel="xS0-Tj-hfF" style="IBUITableViewCellStyleValue1" id="rCL-y3-yHr">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rCL-y3-yHr" id="8Ct-Dg-vWQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="uiS-sB-9z5">
+                                            <rect key="frame" x="15" y="11" width="33" height="21"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xS0-Tj-hfF">
+                                            <rect key="frame" x="234" y="13" width="39" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="rpH-WS-8Wd" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="qik-JT-7Ap"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="2du-RW-FVT" id="6Um-Ux-Zym"/>
+                            <outlet property="delegate" destination="2du-RW-FVT" id="YpA-kt-GbQ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Kvf-Cr-1JV">
+                        <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="bnW-aU-s5e"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yyG-yY-M0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2485" y="1956"/>
+        </scene>
+        <!--Fitting Character Picker View Controller-->
+        <scene sceneID="ClT-tH-Kez">
+            <objects>
+                <navigationController storyboardIdentifier="NCFittingCharacterPickerViewController" definesPresentationContext="YES" id="Bid-zl-CKe" customClass="NCFittingCharacterPickerViewController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KUV-3Y-oor">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="DXJ-PB-2ha" kind="relationship" relationship="rootViewController" id="oFE-1b-XPX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gNl-GF-HQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1567" y="1956"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Gravimetric.png" width="32" height="32"/>
@@ -2397,6 +2549,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="qik-JT-7Ap"/>
         <segue reference="1XU-zB-qW0"/>
     </inferredMetricsTieBreakers>
 </document>

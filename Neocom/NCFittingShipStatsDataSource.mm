@@ -103,7 +103,7 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
-															eufe::Character* character = self.controller.character;
+															eufe::Character* character = self.controller.fit.character;
 															eufe::Ship* ship = character->getShip();
 															
 															stats.totalPG = ship->getTotalPowerGrid();

@@ -20,7 +20,7 @@
 		return 1;
 }
 
-+ (NSString*) unitForDimension:(NSInteger) dimension {
++ (NSString*) dimensionSuffix:(NSInteger) dimension {
 	if (dimension == 1000000)
 		return @"M";
 	else if (dimension == 1000)
@@ -31,27 +31,28 @@
 
 + (NSString*) stringWithResource:(float) resource unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:resource];
-	return [NSString stringWithFormat:@"%.1f%@ %@", resource / dimension, [self unitForDimension:dimension], unit ? unit : @""];
+	return [NSString stringWithFormat:@"%.1f%@ %@", resource / dimension, [self dimensionSuffix:dimension], unit ? unit : @""];
 }
 
 + (NSString*) stringWithTotalResources:(float) total usedResources:(float) used unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:total];
 	used /= dimension;
 	total /= dimension;
-	
-	return [NSString stringWithFormat:@"%@/%@%@ %@",
+	NSString* dimensionSuffix = [self dimensionSuffix:dimension];
+	return [NSString stringWithFormat:@"%@%@/%@%@ %@",
 			[NSNumberFormatter neocomLocalizedStringFromNumber:@(used)],
+			dimensionSuffix,
 			[NSNumberFormatter neocomLocalizedStringFromNumber:@(total)],
-			[self unitForDimension:dimension]
-			, unit ? unit : @""];
+			dimensionSuffix,
+			unit ? unit : @""];
 }
 
 + (NSString*) shortStringWithFloat:(float) value unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:value];
 	value /= dimension;
 	return unit ?
-		[NSString stringWithFormat:@"%@%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self unitForDimension:dimension], unit] :
-		[NSString stringWithFormat:@"%@%@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self unitForDimension:dimension]];
+		[NSString stringWithFormat:@"%@%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self dimensionSuffix:dimension], unit] :
+		[NSString stringWithFormat:@"%@%@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self dimensionSuffix:dimension]];
 }
 
 + (NSString*) stringWithTimeLeft:(NSTimeInterval) timeLeft {

@@ -167,6 +167,52 @@
 	return nil;
 }
 
+- (void) searchWithSearchString:(NSString*) searchString {
+	if (searchString.length > 1) {
+		NSString* searchRequest = [NSString stringWithFormat:self.searchRequest, searchString];
+		__block NSArray* searchResults = nil;
+		
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
+												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
+												 [database execSQLRequest:searchRequest resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+													 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+													 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
+													 
+													 NSNumber* key = @(metaGroup.metaGroupID);
+													 NSDictionary* section = sectionsDic[key];
+													 if (!section) {
+														 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
+														 
+														 section = @{@"title": title, @"rows": [NSMutableArray arrayWithObject:type], @"order": key};
+														 sectionsDic[key] = section;
+													 }
+													 else
+														 [section[@"rows"] addObject:type];
+													 if ([task isCancelled])
+														 *needsMore = NO;
+												 }];
+												 
+												 if ([task isCancelled])
+													 return;
+												 
+												 searchResults = [[sectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];;
+											 }
+								 completionHandler:^(NCTask *task) {
+									 if (![task isCancelled]) {
+										 self.searchResult = searchResults;
+										 [self.searchDisplayController.searchResultsTableView reloadData];
+									 }
+								 }];
+	}
+	else {
+		self.searchResult = nil;
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	}
+}
+
 #pragma mark - Private
 
 - (void) reload {
@@ -251,52 +297,6 @@
 		
 	}
 	return _searchRequest;
-}
-
-- (void) searchWithSearchString:(NSString*) searchString {
-	if (searchString.length > 1) {
-		NSString* searchRequest = [NSString stringWithFormat:self.searchRequest, searchString];
-		__block NSArray* searchResults = nil;
-
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-												 [database execSQLRequest:searchRequest resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-													 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-													 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
-													 
-													 NSNumber* key = @(metaGroup.metaGroupID);
-													 NSDictionary* section = sectionsDic[key];
-													 if (!section) {
-														 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
-														 
-														 section = @{@"title": title, @"rows": [NSMutableArray arrayWithObject:type], @"order": key};
-														 sectionsDic[key] = section;
-													 }
-													 else
-														 [section[@"rows"] addObject:type];
-													 if ([task isCancelled])
-														 *needsMore = NO;
-												 }];
-												 
-												 if ([task isCancelled])
-													 return;
-												 
-												 searchResults = [[sectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];;
-											 }
-								 completionHandler:^(NCTask *task) {
-									 if (![task isCancelled]) {
-										 self.searchResult = searchResults;
-										 [self.searchDisplayController.searchResultsTableView reloadData];
-									 }
-								 }];
-	}
-	else {
-		self.searchResult = nil;
-		[self.searchDisplayController.searchResultsTableView reloadData];
-	}
 }
 
 @end

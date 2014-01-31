@@ -79,7 +79,7 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
-															eufe::Ship* ship = self.controller.character->getShip();
+															eufe::Ship* ship = self.controller.fit.character->getShip();
 															
 															eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
 															int n = sizeof(slots) / sizeof(eufe::Module::Slot);
@@ -301,7 +301,7 @@
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= section.modules.size()) {
-		eufe::Ship* ship = self.controller.character->getShip();
+		eufe::Ship* ship = self.controller.fit.character->getShip();
 		NSString* title;
 		NSArray* conditions;
 		switch (section.slot) {
@@ -371,7 +371,7 @@
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	
-	eufe::Ship* ship = self.controller.character->getShip();
+	eufe::Ship* ship = self.controller.fit.character->getShip();
 	eufe::Module* module = section.modules[indexPath.row];
 	EVEDBInvType* type = [self.controller typeWithItem:module];
 	

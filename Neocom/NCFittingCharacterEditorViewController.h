@@ -8,6 +8,8 @@
 
 #import "NCTableViewController.h"
 
+@class NCFitCharacter;
 @interface NCFittingCharacterEditorViewController : NCTableViewController
+@property (nonatomic, strong) NCFitCharacter* character;
 
 @end

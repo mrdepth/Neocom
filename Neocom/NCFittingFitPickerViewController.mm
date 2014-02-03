@@ -10,7 +10,7 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCTableViewCell.h"
 #import "NCLoadout.h"
-#import "NCFitShip.h"
+#import "NCShipFit.h"
 #import "NCStorage.h"
 #import "NSArray+Neocom.h"
 
@@ -34,12 +34,32 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	// Do any additional setup after loading the view.
-}
 
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[self reload];
+	NSMutableArray* sections = [NSMutableArray new];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 [storage.managedObjectContext performBlockAndWait:^{
+												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+												 task.progress = 0.25;
+												 
+												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];
+												 task.progress = 0.5;
+												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+													 NCLoadout* a = [obj1 objectAtIndex:0];
+													 NCLoadout* b = [obj2 objectAtIndex:0];
+													 return [a.type.group.groupName compare:b.type.group.groupName];
+												 }];
+												 
+												 task.progress = 1.0;
+											 }];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.sections = sections;
+								 [self.tableView reloadData];
+								 
+							 }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,7 +116,7 @@
 								   inView:cell
 								 animated:YES
 						completionHandler:^(EVEDBInvType *type) {
-							NCFitShip* fit = [[NCFitShip alloc] initWithType:type];
+							NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
 							NCStorage* storage = [NCStorage sharedStorage];
 							fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 							fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
@@ -107,7 +127,7 @@
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		NCFitShip* fit = [[NCFitShip alloc] initWithLoadout:loadout];
+		NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 		self.selectedFit = fit;
 		[self performSegueWithIdentifier:@"Unwind" sender:cell];
 	}
@@ -117,36 +137,6 @@
 
 - (NSString*) recordID {
 	return nil;
-}
-
-#pragma mark - Private
-
-- (void) reload {
-	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 [storage.managedObjectContext performBlockAndWait:^{
-												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-												 task.progress = 0.25;
-												 
-												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];
-												 task.progress = 0.5;
-												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-													 NCLoadout* a = [obj1 objectAtIndex:0];
-													 NCLoadout* b = [obj2 objectAtIndex:0];
-													 return [a.type.group.groupName compare:b.type.group.groupName];
-												 }];
-												 
-												 task.progress = 1.0;
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.sections = sections;
-								 [self.tableView reloadData];
-								 
-							 }];
 }
 
 @end

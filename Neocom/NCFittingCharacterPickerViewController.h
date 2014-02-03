@@ -9,9 +9,9 @@
 #import "NCTableViewController.h"
 #import "NCFitCharacter.h"
 
-@class NCFitShip;
+@class NCShipFit;
 @interface NCFittingCharacterPickerViewController : NCTableViewController
-@property (nonatomic, strong) NCFitShip* fit;
+@property (nonatomic, strong) NCShipFit* fit;
 @property (nonatomic, strong) NCFitCharacter* selectedCharacter;
 
 @end

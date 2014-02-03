@@ -11,7 +11,7 @@
 #import "NCDatabaseTypePickerViewController.h"
 #import "UIViewController+Neocom.h"
 #import "NCStorage.h"
-#import "NCFitShip.h"
+#import "NCShipFit.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
@@ -99,7 +99,7 @@
 														  inView:cell
 														animated:YES
 											   completionHandler:^(EVEDBInvType *type) {
-												   NCFitShip* fit = [[NCFitShip alloc] initWithType:type];
+												   NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
 												   NCStorage* storage = [NCStorage sharedStorage];
 												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
@@ -111,7 +111,7 @@
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		NCFitShip* fit = [[NCFitShip alloc] initWithLoadout:loadout];
+		NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
 		[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 	}
 }

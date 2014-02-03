@@ -18,6 +18,7 @@
 #import "NCAccount.h"
 #import "NCFittingCharacterPickerViewController.h"
 #import "NCFittingFitPickerViewController.h"
+#import "NCFittingTargetsViewController.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -54,7 +55,7 @@
 	
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
-	NCFitShip* fit = self.fit;
+	NCShipFit* fit = self.fit;
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -124,7 +125,7 @@
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
 												 @synchronized(self) {
-													 for (NCFitShip* fit in self.fits) {
+													 for (NCShipFit* fit in self.fits) {
 														 if (fit.loadout)
 															 [fit save];
 													 }
@@ -144,6 +145,33 @@
 	if ([segue.identifier isEqualToString:@"NCFittingCharacterPickerViewController"]) {
 		NCFittingCharacterPickerViewController* controller = [[segue destinationViewController] viewControllers][0];
 		controller.fit = sender;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingTargetsViewController"]) {
+		NCFittingTargetsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NSArray* items = sender;
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([items[0] pointerValue]);
+		controller.items = items;
+		
+		eufe::Module* module = dynamic_cast<eufe::Module*>(item);
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
+		
+		eufe::Ship* target = nullptr;
+		if (module)
+			target = module->getTarget();
+		else if (drone)
+			target = drone->getTarget();
+		if (target) {
+			for (NCShipFit* fit in self.fits) {
+				if (fit.pilot->getShip() == target) {
+					controller.selectedTarget = fit;
+					break;
+				}
+			}
+		}
+		
+		NSMutableArray* targets = [[NSMutableArray alloc] initWithArray:self.fits];
+		[targets removeObject:self.fit];
+		controller.targets = targets;
 	}
 }
 
@@ -228,7 +256,7 @@
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
 	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
-	NCFitShip* fit = sourceViewController.selectedFit;
+	NCShipFit* fit = sourceViewController.selectedFit;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
@@ -254,6 +282,23 @@
 								 [self.fits addObject:fit];
 								 [self reload];
 							 }];
+}
+
+- (IBAction) unwindFromTargets:(UIStoryboardSegue*) segue {
+	NCFittingTargetsViewController* sourceViewController = segue.sourceViewController;
+	eufe::Ship* target = sourceViewController.selectedTarget ? sourceViewController.selectedTarget.pilot->getShip() : nullptr;
+
+	for (NSValue* value in sourceViewController.items) {
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([value pointerValue]);
+		eufe::Module* module = dynamic_cast<eufe::Module*>(item);
+		eufe::Drone* drone = dynamic_cast<eufe::Drone*>(item);
+		
+		if (module)
+			module->setTarget(target);
+		else if (drone)
+			drone->setTarget(target);
+	}
+	[self reload];
 }
 
 @end

@@ -1,12 +1,12 @@
 //
-//  NCFitShip.m
+//  NCShipFit.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 31.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFitShip.h"
+#import "NCShipFit.h"
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
 
@@ -209,12 +209,12 @@
 @end
 
 
-@interface NCFitShip()
+@interface NCShipFit()
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
 - (void) setSkillLevels:(NSDictionary*) skillLevels;
 @end
 
-@implementation NCFitShip
+@implementation NCShipFit
 
 - (id) initWithLoadout:(NCLoadout*) loadout {
 	if (self = [super init]) {

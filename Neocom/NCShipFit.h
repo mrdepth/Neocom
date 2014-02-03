@@ -1,5 +1,5 @@
 //
-//  NCFitShip.h
+//  NCShipFit.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 31.01.14.
@@ -11,7 +11,7 @@
 #import "eufe.h"
 #import "NCFitCharacter.h"
 
-@interface NCFitShip : NSObject
+@interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, assign) EVEDBInvType* type;

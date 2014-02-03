@@ -547,6 +547,11 @@
 	};
 	
 	void (^setTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		NSMutableArray* array = [NSMutableArray new];
+		for (auto module: modules) {
+			[array addObject:[NSValue valueWithPointer:module]];
+		}
+		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
 		/*TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
 		controller.currentTarget = module->getTarget();
 		controller.fittingViewController = self.fittingViewController;
@@ -621,14 +626,14 @@
 		[buttons addObject:ActionButtonVariations];
 		[actions addObject:variations];
 		
-/*		if (module->requireTarget() && self.fittingViewController.fits.count > 1) {
+		if (module->requireTarget() && self.controller.fits.count > 1) {
 			[buttons addObject:ActionButtonSetTarget];
 			[actions addObject:setTarget];
 			if (module->getTarget() != NULL) {
 				[buttons addObject:ActionButtonClearTarget];
 				[actions addObject:clearTarget];
 			}
-		}*/
+		}
 		
 		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 									   title:nil
@@ -675,14 +680,14 @@
 			[actions addObject:unloadAmmo];
 		}
 	}
-/*	if (module->requireTarget() && self.fittingViewController.fits.count > 1) {
+	if (module->requireTarget() && self.controller.fits.count > 1) {
 		[buttons addObject:ActionButtonSetTarget];
 		[actions addObject:setTarget];
 		if (module->getTarget() != NULL) {
 			[buttons addObject:ActionButtonClearTarget];
 			[actions addObject:clearTarget];
 		}
-	}*/
+	}
 	[buttons addObject:ActionButtonVariations];
 	[actions addObject:variations];
 	

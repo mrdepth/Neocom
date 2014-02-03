@@ -295,7 +295,7 @@
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
-		12C5074F189B6F170064AC32 /* NCFitShip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCFitShip.mm */; };
+		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
 		12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */; };
 		12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; };
 		12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075E189BCC110064AC32 /* UIImage+Neocom.m */; };
@@ -322,6 +322,7 @@
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
 		8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
 		84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
 		849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */; };
@@ -965,8 +966,8 @@
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
-		12C5074D189B6F170064AC32 /* NCFitShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitShip.h; sourceTree = "<group>"; };
-		12C5074E189B6F170064AC32 /* NCFitShip.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFitShip.mm; sourceTree = "<group>"; };
+		12C5074D189B6F170064AC32 /* NCShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipFit.h; sourceTree = "<group>"; };
+		12C5074E189B6F170064AC32 /* NCShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCShipFit.mm; sourceTree = "<group>"; };
 		12C50750189B94830064AC32 /* NCFittingShipFleetDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipFleetDataSource.h; sourceTree = "<group>"; };
 		12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipFleetDataSource.mm; sourceTree = "<group>"; };
 		12C50755189BAAD30064AC32 /* NCFittingCharacterPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterPickerViewController.h; sourceTree = "<group>"; };
@@ -1017,6 +1018,8 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		84442A5B189FFF230021CB24 /* NCFittingTargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTargetsViewController.h; sourceTree = "<group>"; };
+		84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingTargetsViewController.mm; sourceTree = "<group>"; };
 		8452190C189AEEA700E7E3C1 /* NCLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadout.h; sourceTree = "<group>"; };
 		8452190D189AEEA700E7E3C1 /* NCLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLoadout.m; sourceTree = "<group>"; };
 		8452190F189AEEA800E7E3C1 /* NCLoadoutData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadoutData.h; sourceTree = "<group>"; };
@@ -2449,13 +2452,13 @@
 			name = NCTableViewCell;
 			sourceTree = "<group>";
 		};
-		12C5074C189B6ED70064AC32 /* NCFitShip */ = {
+		12C5074C189B6ED70064AC32 /* NCShipFit */ = {
 			isa = PBXGroup;
 			children = (
-				12C5074D189B6F170064AC32 /* NCFitShip.h */,
-				12C5074E189B6F170064AC32 /* NCFitShip.mm */,
+				12C5074D189B6F170064AC32 /* NCShipFit.h */,
+				12C5074E189B6F170064AC32 /* NCShipFit.mm */,
 			);
-			name = NCFitShip;
+			name = NCShipFit;
 			sourceTree = "<group>";
 		};
 		12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */ = {
@@ -2628,6 +2631,15 @@
 			name = NCSideMenuViewController;
 			sourceTree = "<group>";
 		};
+		84442A59189FFF040021CB24 /* NCFittingTargetsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84442A5B189FFF230021CB24 /* NCFittingTargetsViewController.h */,
+				84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */,
+			);
+			name = NCFittingTargetsViewController;
+			sourceTree = "<group>";
+		};
 		849B9F7B1896D24900D4DD2B /* FittingIcons */ = {
 			isa = PBXGroup;
 			children = (
@@ -2690,7 +2702,8 @@
 				127123821897811F005F46EE /* NCFittingShipViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
-				12C5074C189B6ED70064AC32 /* NCFitShip */,
+				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
+				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
 			);
@@ -3067,6 +3080,7 @@
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */,
+				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
@@ -3243,7 +3257,7 @@
 				1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */,
 				126A0E2E185F3B9300A8E8A3 /* EVEAPIKeyInfo.m in Sources */,
 				128A1F3B1899141200005C4F /* NCFittingShipDroneCell.m in Sources */,
-				12C5074F189B6F170064AC32 /* NCFitShip.mm in Sources */,
+				12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */,
 				12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */,
 				126A0E21185F3B9300A8E8A3 /* EVEDBMapConstellation.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,

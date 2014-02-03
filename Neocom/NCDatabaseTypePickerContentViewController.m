@@ -49,6 +49,10 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void) dealloc {
+	[self.searchDisplayController setActive:NO animated:NO];
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (!self.groups)

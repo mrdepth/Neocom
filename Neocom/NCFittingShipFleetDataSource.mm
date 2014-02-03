@@ -59,7 +59,7 @@
 		return cell;
 	}
 	else {
-		NCFitShip* fit = self.controller.fits[indexPath.row];
+		NCShipFit* fit = self.controller.fits[indexPath.row];
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipFleetCell"];
 		eufe::Gang* gang = self.controller.engine->getGang();
 		
@@ -142,7 +142,7 @@
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-	NCFitShip* fit = self.controller.fits[indexPath.row];
+	NCShipFit* fit = self.controller.fits[indexPath.row];
 	eufe::Character* character = fit.pilot;
 	eufe::Gang* gang = self.controller.engine->getGang();
 	

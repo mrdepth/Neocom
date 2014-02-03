@@ -8,7 +8,7 @@
 
 #import "NCTableViewController.h"
 
-@class NCFitShip;
+@class NCShipFit;
 @interface NCFittingFitPickerViewController : NCTableViewController
-@property (nonatomic, strong) NCFitShip* selectedFit;
+@property (nonatomic, strong) NCShipFit* selectedFit;
 @end

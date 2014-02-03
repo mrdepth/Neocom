@@ -8,7 +8,7 @@
 
 #import "NCViewController.h"
 #import "eufe.h"
-#import "NCFitShip.h"
+#import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
 
@@ -20,7 +20,7 @@
 @property (nonatomic, strong, readonly) NSMutableArray* fits;
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 
-@property (nonatomic, strong) NCFitShip* fit;
+@property (nonatomic, strong) NCShipFit* fit;
 
 
 - (IBAction)onChangeSection:(id)sender;

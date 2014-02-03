@@ -19,6 +19,7 @@
 #import "NCFittingCharacterPickerViewController.h"
 #import "NCFittingFitPickerViewController.h"
 #import "NCFittingTargetsViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -173,6 +174,16 @@
 		[targets removeObject:self.fit];
 		controller.targets = targets;
 	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* destinationViewController = [segue destinationViewController];
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
+		EVEDBInvType* type = [self typeWithItem:item];
+		
+		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
+			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
+		}];
+		destinationViewController.type = type;
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -257,6 +268,8 @@
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
 	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
 	NCShipFit* fit = sourceViewController.selectedFit;
+	if (!fit)
+		return;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {

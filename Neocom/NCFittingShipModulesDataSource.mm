@@ -519,6 +519,7 @@
 	};
 	
 	void (^moduleInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module]];
 /*		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
@@ -532,6 +533,7 @@
 			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
 	};
 	void (^ammoInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module->getCharge()]];
 		/*ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		ItemInfo* ammo = [ItemInfo itemInfoWithItem:module->getCharge() error:nil];
 		[ammo updateAttributes];
@@ -548,9 +550,8 @@
 	
 	void (^setTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		NSMutableArray* array = [NSMutableArray new];
-		for (auto module: modules) {
+		for (auto module: modules)
 			[array addObject:[NSValue valueWithPointer:module]];
-		}
 		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
 		/*TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
 		controller.currentTarget = module->getTarget();

@@ -51,6 +51,10 @@
     [super viewDidLoad];
 }
 
+- (void) dealloc {
+	self.viewControllers = nil;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -67,9 +71,9 @@
 	if (![self.conditions isEqualToArray:conditions]) {
 		self.conditions = conditions;
 		if (self.viewControllers.count > 1)
-			[self popToRootViewControllerAnimated:NO];
-		if ([[self.viewControllers[0] searchDisplayController] isActive])
-			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
+			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
+//		if ([[self.viewControllers[0] searchDisplayController] isActive])
+//			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
 		[self.viewControllers[0] setGroups:nil];
 		self.groups = nil;
 		self.conditionsTables = nil;

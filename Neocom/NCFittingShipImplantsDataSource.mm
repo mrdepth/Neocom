@@ -123,10 +123,12 @@
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	
 	EVEDBInvType* type;
+	eufe::Item* item = nil;
 	if (indexPath.section == 0)
-		type = [self.controller typeWithItem:self.implants[indexPath.row]];
+		item = self.implants[indexPath.row];
 	else
-		type = [self.controller typeWithItem:self.boosters[indexPath.row]];
+		item = self.boosters[indexPath.row];
+	type = [self.controller typeWithItem:item];
 
 	if (!type) {
 		if (indexPath.section == 0) {
@@ -181,17 +183,7 @@
 									 [self.controller reload];
 								 }
 								 else if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-									 /*ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-									 [itemInfo updateAttributes];
-									 itemViewController.type = itemInfo;
-									 [itemViewController setActivePage:ItemViewControllerActivePageInfo];
-									 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-										 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-										 navController.modalPresentationStyle = UIModalPresentationFormSheet;
-										 [self.fittingViewController presentViewController:navController animated:YES completion:nil];
-									 }
-									 else
-										 [self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
+									 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:item]];
 								 }
 							 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	}

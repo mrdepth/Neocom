@@ -238,6 +238,11 @@
 	};
 	
 	void (^setTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
+		NSMutableArray* array = [NSMutableArray new];
+		for (auto drone: drones)
+			[array addObject:[NSValue valueWithPointer:drone]];
+		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
+
 /*		TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
 		controller.currentTarget = drone->getTarget();
 		controller.fittingViewController = self.fittingViewController;
@@ -307,6 +312,8 @@
 	};
 	
 	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:drone]];
+
 /*		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];
 		itemViewController.type = itemInfo;
@@ -339,14 +346,14 @@
 	[buttons addObject:ActionButtonAmount];
 	[actions addObject:setAmount];
 	
-/*	if (self.fittingViewController.fits.count > 1) {
+	if (self.controller.fits.count > 1) {
 		[buttons addObject:ActionButtonSetTarget];
 		[actions addObject:setTarget];
 		if (drone->getTarget() != NULL) {
 			[buttons addObject:ActionButtonClearTarget];
 			[actions addObject:clearTarget];
 		}
-	}*/
+	}
 	
 	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
 								   title:nil

@@ -520,32 +520,9 @@
 	
 	void (^moduleInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module]];
-/*		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		[itemInfo updateAttributes];
-		itemViewController.type = itemInfo;
-		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
-		}
-		else
-			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
 	};
 	void (^ammoInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module->getCharge()]];
-		/*ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		ItemInfo* ammo = [ItemInfo itemInfoWithItem:module->getCharge() error:nil];
-		[ammo updateAttributes];
-		itemViewController.type = ammo;
-		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
-		}
-		else
-			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
 	};
 	
 	void (^setTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
@@ -553,28 +530,6 @@
 		for (auto module: modules)
 			[array addObject:[NSValue valueWithPointer:module]];
 		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
-		/*TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
-		controller.currentTarget = module->getTarget();
-		controller.fittingViewController = self.fittingViewController;
-		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		controller.completionHandler = ^(eufe::Ship* target) {
-			for (ItemInfo* itemInfo in modules) {
-				eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
-				module->setTarget(target);
-			}
-			[self.fittingViewController update];
-			[self.fittingViewController dismiss];
-		};
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[self.fittingViewController presentViewControllerInPopover:navigationController
-															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
-																inView:self.tableView
-											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		}
-		else
-			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
-		
 	};
 	void (^clearTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		for (auto module: modules)

@@ -68,7 +68,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return section == 0 ? 10 : 4;
+    return section == 0 ? self.implants.size() : self.boosters.size();
 }
 
 

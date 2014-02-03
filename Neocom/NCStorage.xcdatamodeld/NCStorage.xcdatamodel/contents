@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A598" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -13,6 +13,7 @@
         <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="apiKey" inverseEntity="Account" syncable="YES"/>
     </entity>
+    <entity name="DamagePattern" syncable="YES"/>
     <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -51,5 +52,6 @@
         <element name="MailBox" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Setting" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DamagePattern" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

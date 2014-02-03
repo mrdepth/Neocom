@@ -51,10 +51,6 @@
     [super viewDidLoad];
 }
 
-- (void) dealloc {
-	self.viewControllers = nil;
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -66,18 +62,20 @@
 }
 
 - (void) presentWithConditions:(NSArray*) conditions inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(EVEDBInvType* type)) completion {
-	[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 
 	if (![self.conditions isEqualToArray:conditions]) {
 		self.conditions = conditions;
-		if (self.viewControllers.count > 1)
-			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
-//		if ([[self.viewControllers[0] searchDisplayController] isActive])
-//			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
-		[self.viewControllers[0] setGroups:nil];
 		self.groups = nil;
 		self.conditionsTables = nil;
+
+		if (self.viewControllers.count > 1)
+			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
+		if ([[self.viewControllers[0] searchDisplayController] isActive])
+			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
+		[self.viewControllers[0] setGroups:nil];
+		[self.viewControllers[0] setGroupID:0];
 	}
+	[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 	
 	self.completionHandler = completion;
 	

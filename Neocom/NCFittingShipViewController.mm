@@ -20,6 +20,7 @@
 #import "NCFittingFitPickerViewController.h"
 #import "NCFittingTargetsViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCFittingAmountViewController.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -184,6 +185,19 @@
 		}];
 		destinationViewController.type = type;
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingAmountViewController"]) {
+		NSArray* drones = sender;
+		eufe::Ship* ship = self.fit.pilot->getShip();
+		NCFittingAmountViewController* controller = [[segue destinationViewController] viewControllers][0];
+		eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([drones[0] pointerValue]);
+		float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+		int droneBay = ship->getTotalDroneBay() / volume;
+		int maxActive = ship->getMaxActiveDrones();
+		
+		controller.range = NSMakeRange(1, std::min(std::max(droneBay, maxActive), 50));
+		controller.amount = drones.count;
+		controller.object = drones;
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -310,6 +324,32 @@
 			module->setTarget(target);
 		else if (drone)
 			drone->setTarget(target);
+	}
+	[self reload];
+}
+
+- (IBAction) unwindFromAmount:(UIStoryboardSegue*) segue {
+	NCFittingAmountViewController* sourceViewController = segue.sourceViewController;
+	NSArray* drones = sourceViewController.object;
+	eufe::Ship* ship = self.fit.pilot->getShip();
+	if (drones.count > sourceViewController.amount) {
+		NSInteger n = drones.count - sourceViewController.amount;
+		for (NSValue* value in drones) {
+			if (n <= 0)
+				break;
+			eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([value pointerValue]);
+			ship->removeDrone(drone);
+			n--;
+		}
+	}
+	else {
+		NSInteger n = sourceViewController.amount - drones.count;
+		eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([drones[0] pointerValue]);
+		for (int i = 0; i < n; i++) {
+			eufe::Drone* newDrone = ship->addDrone(drone->getTypeID());
+			newDrone->setActive(drone->isActive());
+			newDrone->setTarget(drone->getTarget());
+		}
 	}
 	[self reload];
 }

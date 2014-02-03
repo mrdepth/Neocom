@@ -322,6 +322,7 @@
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
+		842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */; };
 		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
 		8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
 		84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
@@ -1018,6 +1019,8 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
+		842A803818A0313700F1F9F9 /* NCFittingAmountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAmountViewController.h; sourceTree = "<group>"; };
+		842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAmountViewController.m; sourceTree = "<group>"; };
 		84442A5B189FFF230021CB24 /* NCFittingTargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTargetsViewController.h; sourceTree = "<group>"; };
 		84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingTargetsViewController.mm; sourceTree = "<group>"; };
 		8452190C189AEEA700E7E3C1 /* NCLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadout.h; sourceTree = "<group>"; };
@@ -2631,6 +2634,15 @@
 			name = NCSideMenuViewController;
 			sourceTree = "<group>";
 		};
+		842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */ = {
+			isa = PBXGroup;
+			children = (
+				842A803818A0313700F1F9F9 /* NCFittingAmountViewController.h */,
+				842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */,
+			);
+			name = NCFittingAmountViewController;
+			sourceTree = "<group>";
+		};
 		84442A59189FFF040021CB24 /* NCFittingTargetsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2703,6 +2715,7 @@
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
+				842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
@@ -3083,6 +3096,7 @@
 				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
+				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,

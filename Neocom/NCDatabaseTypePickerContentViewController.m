@@ -49,6 +49,10 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void) dealloc {
+	[self.searchDisplayController.searchBar removeFromSuperview]; //Avoid crash
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (!self.groups)
@@ -223,8 +227,11 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-											 if (!self.groups)
+											 if (!self.groups) {
 												 groups = groups = [(NCDatabaseTypePickerViewController*) self.navigationController groups];
+												 self.typesRequest = nil;
+												 self.searchRequest = nil;
+											 }
 											 if (groups.count == 1)
 												 self.groupID = [groups[0] marketGroupID];
 											 

@@ -242,28 +242,6 @@
 		for (auto drone: drones)
 			[array addObject:[NSValue valueWithPointer:drone]];
 		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
-
-/*		TargetsViewController* controller = [[TargetsViewController alloc] initWithNibName:@"TargetsViewController" bundle:nil];
-		controller.currentTarget = drone->getTarget();
-		controller.fittingViewController = self.fittingViewController;
-		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		controller.completionHandler = ^(eufe::Ship* target) {
-			for (ItemInfo* itemInfo in drones) {
-				eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
-				drone->setTarget(target);
-			}
-			[self.fittingViewController update];
-			[self.fittingViewController dismiss];
-		};
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[self.fittingViewController presentViewControllerInPopover:navigationController
-															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
-																inView:self.tableView
-											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		}
-		else
-			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
 	};
 	
 	void (^clearTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
@@ -273,6 +251,10 @@
 	};
 	
 	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
+		NSMutableArray* array = [NSMutableArray new];
+		for (auto drone: drones)
+			[array addObject:[NSValue valueWithPointer:drone]];
+		[self.controller performSegueWithIdentifier:@"NCFittingAmountViewController" sender:array];
 /*		AmountViewController *controller = [[AmountViewController alloc] initWithNibName:@"AmountViewController" bundle:nil];
 		controller.amount = drones.count;
 		int maxActiveDrones = ship->getMaxActiveDrones();

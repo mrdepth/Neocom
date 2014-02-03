@@ -102,10 +102,11 @@
 	return 44;
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if (indexPath.row == self.controller.fits.count) {
+		[self.controller performSegueWithIdentifier:@"NCFittingFitPickerViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 /*		FitsViewController* controller = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
 		controller.engine = self.fittingViewController.fittingEngine;
 		controller.delegate = self;
@@ -205,7 +206,8 @@
 	};
 	
 	void (^setCharacter)() = ^(){
-		NCFittingCharacterPickerViewController* controller = [self.controller.storyboard instantiateViewControllerWithIdentifier:@"NCFittingCharacterPickerViewController"];
+		[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController" sender:fit];
+/*		NCFittingCharacterPickerViewController* controller = [self.controller.storyboard instantiateViewControllerWithIdentifier:@"NCFittingCharacterPickerViewController"];
 		[controller presentInViewController:self.controller
 								   fromRect:cell.bounds
 									 inView:cell
@@ -224,7 +226,7 @@
 																	  [self.controller reload];
 																  }];
 							  [self.controller dismissAnimated];
-						  }];
+						  }];*/
 
 /*		CharactersViewController *controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

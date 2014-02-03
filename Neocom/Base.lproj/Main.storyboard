@@ -2151,6 +2151,8 @@
                     <navigationItem key="navigationItem" id="Upd-6p-sZR"/>
                     <connections>
                         <outlet property="sectionSegmentedControl" destination="Tph-re-HdP" id="JT7-g4-U1n"/>
+                        <segue destination="Bid-zl-CKe" kind="modal" identifier="NCFittingCharacterPickerViewController" id="IlV-5J-WXq"/>
+                        <segue destination="o7R-KH-N2s" kind="modal" identifier="NCFittingFitPickerViewController" id="Oub-Ci-qKC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z3E-4F-MKx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2397,10 +2399,10 @@
             </objects>
             <point key="canvasLocation" x="787" y="2443"/>
         </scene>
-        <!--Fitting Character Picker Characters View Controller - Characters-->
+        <!--Fitting Character Picker View Controller - Characters-->
         <scene sceneID="ZPm-qa-tSL">
             <objects>
-                <tableViewController id="DXJ-PB-2ha" customClass="NCFittingCharacterPickerCharactersViewController" sceneMemberID="viewController">
+                <tableViewController id="DXJ-PB-2ha" customClass="NCFittingCharacterPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ndQ-zn-0py">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2426,13 +2428,20 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Characters" id="pli-P2-wqa"/>
+                    <navigationItem key="navigationItem" title="Characters" id="pli-P2-wqa">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="FQ9-bx-tGT">
+                            <connections>
+                                <segue destination="Tnh-kH-bif" kind="unwind" identifier="Unwind" unwindAction="unwindFromCharacterPicker:" id="TCO-fk-mFJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="8No-fn-qky" id="2Dr-C0-oUz"/>
                         <segue destination="2du-RW-FVT" kind="push" identifier="NCFittingCharacterEditorViewController" id="QJu-uU-JSK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mYK-YI-7LD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Tnh-kH-bif" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2067" y="1956"/>
         </scene>
@@ -2502,12 +2511,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yyG-yY-M0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2485" y="1956"/>
+            <point key="canvasLocation" x="2541" y="1956"/>
         </scene>
-        <!--Fitting Character Picker View Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="ClT-tH-Kez">
             <objects>
-                <navigationController storyboardIdentifier="NCFittingCharacterPickerViewController" definesPresentationContext="YES" id="Bid-zl-CKe" customClass="NCFittingCharacterPickerViewController" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="Bid-zl-CKe" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KUV-3Y-oor">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2518,6 +2527,94 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gNl-GF-HQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1567" y="1956"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="R1Y-jh-oE4">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="o7R-KH-N2s" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yT0-jV-hhC">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="F7v-Vn-2nl" kind="relationship" relationship="rootViewController" id="lFq-mJ-Szl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3L5-x0-uOc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1611" y="2759"/>
+        </scene>
+        <!--Fitting Fit Picker View Controller-->
+        <scene sceneID="3Oq-cZ-5DT">
+            <objects>
+                <tableViewController id="F7v-Vn-2nl" customClass="NCFittingFitPickerViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4sp-LV-wI9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="235-Sl-ObZ" detailTextLabel="SM2-Bq-FDp" style="IBUITableViewCellStyleSubtitle" id="A6l-5q-PXi" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A6l-5q-PXi" id="V3Q-Ph-oDC">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="235-Sl-ObZ">
+                                            <rect key="frame" x="15" y="3" width="34" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SM2-Bq-FDp">
+                                            <rect key="frame" x="15" y="25" width="43" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem0Cell" textLabel="A1k-Xw-XDc" imageView="ISI-Pl-ez3" style="IBUITableViewCellStyleDefault" id="EQI-G1-bvb" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EQI-G1-bvb" id="zfC-is-6Ej">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A1k-Xw-XDc">
+                                            <rect key="frame" x="46" y="0.0" width="259" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="Icons/icon17_04.png" id="ISI-Pl-ez3">
+                                            <rect key="frame" x="15" y="13" width="16" height="16"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="F7v-Vn-2nl" id="2IT-vn-gbY"/>
+                            <outlet property="delegate" destination="F7v-Vn-2nl" id="vWY-zx-gkL"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="KZM-RW-ff5">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="Apf-Yh-OrZ">
+                            <connections>
+                                <segue destination="KAJ-yG-HM2" kind="unwind" identifier="Unwind" unwindAction="unwindFromFitPicker:" id="rxc-6t-8Jz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g39-yB-AfO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="KAJ-yG-HM2" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2090" y="2759"/>
         </scene>
     </scenes>
     <resources>

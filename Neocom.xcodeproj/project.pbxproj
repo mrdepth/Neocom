@@ -298,7 +298,6 @@
 		12C5074F189B6F170064AC32 /* NCFitShip.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCFitShip.mm */; };
 		12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */; };
 		12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; };
-		12C5075B189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075A189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.m */; };
 		12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075E189BCC110064AC32 /* UIImage+Neocom.m */; };
 		12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; };
 		12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
@@ -313,6 +312,7 @@
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
+		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
 		841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */; };
 		841534F0188A9A7500B42433 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841534EF188A9A7500B42433 /* Database.storyboard */; };
 		8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 8416386C1893BEA000968ADF /* NSDate+Neocom.m */; };
@@ -971,8 +971,6 @@
 		12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipFleetDataSource.mm; sourceTree = "<group>"; };
 		12C50755189BAAD30064AC32 /* NCFittingCharacterPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterPickerViewController.h; sourceTree = "<group>"; };
 		12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterPickerViewController.m; sourceTree = "<group>"; };
-		12C50759189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterPickerCharactersViewController.h; sourceTree = "<group>"; };
-		12C5075A189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterPickerCharactersViewController.m; sourceTree = "<group>"; };
 		12C5075D189BCC110064AC32 /* UIImage+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Neocom.h"; sourceTree = "<group>"; };
 		12C5075E189BCC110064AC32 /* UIImage+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Neocom.m"; sourceTree = "<group>"; };
 		12C50761189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorViewController.h; sourceTree = "<group>"; };
@@ -1001,6 +999,8 @@
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
 		12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStoryboardPopoverSegue.m; sourceTree = "<group>"; };
+		12FF586F189FC2D100E2D70A /* NCFittingFitPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingFitPickerViewController.h; sourceTree = "<group>"; };
+		12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingFitPickerViewController.mm; sourceTree = "<group>"; };
 		841534EA188A921200B42433 /* NCDatabaseMarketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseMarketViewController.h; sourceTree = "<group>"; };
 		841534EB188A921200B42433 /* NCDatabaseMarketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseMarketViewController.m; sourceTree = "<group>"; };
 		841534EF188A9A7500B42433 /* Database.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database.storyboard; sourceTree = "<group>"; };
@@ -2461,21 +2461,11 @@
 		12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */ = {
 			isa = PBXGroup;
 			children = (
-				12C50758189BAB710064AC32 /* NCFittingCharacterPickerCharactersViewController */,
 				12C50760189BDCF00064AC32 /* NCFittingCharacterEditorViewController */,
 				12C50755189BAAD30064AC32 /* NCFittingCharacterPickerViewController.h */,
 				12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */,
 			);
 			name = NCFittingCharacterPickerViewController;
-			sourceTree = "<group>";
-		};
-		12C50758189BAB710064AC32 /* NCFittingCharacterPickerCharactersViewController */ = {
-			isa = PBXGroup;
-			children = (
-				12C50759189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.h */,
-				12C5075A189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.m */,
-			);
-			name = NCFittingCharacterPickerCharactersViewController;
 			sourceTree = "<group>";
 		};
 		12C50760189BDCF00064AC32 /* NCFittingCharacterEditorViewController */ = {
@@ -2572,6 +2562,15 @@
 				12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */,
 			);
 			name = NCStoryboardPopoverSegue;
+			sourceTree = "<group>";
+		};
+		12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12FF586F189FC2D100E2D70A /* NCFittingFitPickerViewController.h */,
+				12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */,
+			);
+			name = NCFittingFitPickerViewController;
 			sourceTree = "<group>";
 		};
 		841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */ = {
@@ -2690,6 +2689,7 @@
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
+				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				12C5074C189B6ED70064AC32 /* NCFitShip */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
@@ -3131,7 +3131,6 @@
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
 				128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.m in Sources */,
 				1271238C189781BB005F46EE /* NCFittingShipDataSource.mm in Sources */,
-				12C5075B189BAB870064AC32 /* NCFittingCharacterPickerCharactersViewController.m in Sources */,
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
@@ -3177,6 +3176,7 @@
 				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
 				1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */,
 				12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */,
+				12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */,
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,

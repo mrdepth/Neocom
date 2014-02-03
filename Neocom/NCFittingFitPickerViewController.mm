@@ -1,27 +1,25 @@
 //
-//  NCFittingMenuViewController.m
+//  NCFittingFitPickerViewController.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 27.01.14.
+//  Created by Артем Шиманский on 03.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingMenuViewController.h"
-#import "NCTableViewCell.h"
+#import "NCFittingFitPickerViewController.h"
 #import "NCDatabaseTypePickerViewController.h"
-#import "UIViewController+Neocom.h"
-#import "NCStorage.h"
+#import "NCTableViewCell.h"
+#import "NCLoadout.h"
 #import "NCFitShip.h"
+#import "NCStorage.h"
 #import "NSArray+Neocom.h"
-#import "NCFittingShipViewController.h"
-#import "NCFittingCharacterPickerViewController.h"
 
-@interface NCFittingMenuViewController ()
-@property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
+@interface NCFittingFitPickerViewController ()
 @property (nonatomic, strong) NSArray* sections;
 @end
 
-@implementation NCFittingMenuViewController
+@implementation NCFittingFitPickerViewController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,8 +50,6 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCFittingShipViewController"]) {
-		NCFittingShipViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.fit = sender;
 	}
 }
 
@@ -66,7 +62,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 5 : [self.sections[section - 1] count];
+    return section == 0 ? 1 : [self.sections[section - 1] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -92,27 +88,28 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
-		if (indexPath.row == 2) {
-			[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-												inViewController:self
-														fromRect:cell.bounds
-														  inView:cell
-														animated:YES
-											   completionHandler:^(EVEDBInvType *type) {
-												   NCFitShip* fit = [[NCFitShip alloc] initWithType:type];
-												   NCStorage* storage = [NCStorage sharedStorage];
-												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   
-												   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-												   [self dismissAnimated];
-											   }];
-		}
+		
+		NCDatabaseTypePickerViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
+		[controller presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
+						 inViewController:self
+								 fromRect:cell.bounds
+								   inView:cell
+								 animated:YES
+						completionHandler:^(EVEDBInvType *type) {
+							NCFitShip* fit = [[NCFitShip alloc] initWithType:type];
+							NCStorage* storage = [NCStorage sharedStorage];
+							fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+							fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+							self.selectedFit = fit;
+							[self performSegueWithIdentifier:@"Unwind" sender:cell];
+							[self dismissAnimated];
+						}];
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
 		NCFitShip* fit = [[NCFitShip alloc] initWithLoadout:loadout];
-		[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+		self.selectedFit = fit;
+		[self performSegueWithIdentifier:@"Unwind" sender:cell];
 	}
 }
 
@@ -142,12 +139,6 @@
 													 return [a.type.group.groupName compare:b.type.group.groupName];
 												 }];
 												 
-												 task.progress = 0.75;
-												 
-												 NSArray* posLoadouts = [[NCLoadout posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-												 if (posLoadouts.count > 0)
-													 [sections addObject:posLoadouts];
-												 
 												 task.progress = 1.0;
 											 }];
 										 }
@@ -156,13 +147,6 @@
 								 [self.tableView reloadData];
 								 
 							 }];
-}
-
-- (NCDatabaseTypePickerViewController*) typePickerViewController {
-	if (!_typePickerViewController) {
-		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
-	}
-	return _typePickerViewController;
 }
 
 @end

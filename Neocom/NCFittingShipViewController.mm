@@ -16,6 +16,8 @@
 #import "NCStorage.h"
 #import "NCFitCharacter.h"
 #import "NCAccount.h"
+#import "NCFittingCharacterPickerViewController.h"
+#import "NCFittingFitPickerViewController.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -69,8 +71,6 @@
 														 character = [NCFitCharacter characterWithSkillsLevel:5];
 													 
 													 fit.character = character;
-													 //[self.fit setSkillLevels:character.skills];
-													 //self.fit.pilot->setCharacterName([character.name UTF8String]);
 													 [fit load];
 												 }
 											 }
@@ -118,16 +118,18 @@
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
 	if (parent == nil) {
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
 												 @synchronized(self) {
+													 for (NCFitShip* fit in self.fits) {
+														 if (fit.loadout)
+															 [fit save];
+													 }
+
 													 [[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-														 for (NCFitShip* fit in self.fits) {
-															 if (fit.loadout)
-																 [fit save];
-														 }
 														 [[NCStorage sharedStorage] saveContext];
 													 }];
 												 }
@@ -135,6 +137,13 @@
 								 completionHandler:^(NCTask *task) {
 									 
 								 }];
+	}
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCFittingCharacterPickerViewController"]) {
+		NCFittingCharacterPickerViewController* controller = [[segue destinationViewController] viewControllers][0];
+		controller.fit = sender;
 	}
 }
 
@@ -198,6 +207,53 @@
 		self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
 		[self.statsDataSource reload];
 	}
+}
+
+#pragma mark - Private
+
+- (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
+	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 @synchronized(self) {
+												 if (sourceViewController.selectedCharacter)
+													 sourceViewController.fit.character = sourceViewController.selectedCharacter;
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 [self reload];
+							 }];
+}
+
+- (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {
+	NCFittingFitPickerViewController* sourceViewController = segue.sourceViewController;
+	NCFitShip* fit = sourceViewController.selectedFit;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 @synchronized(self) {
+												 if (!fit.pilot) {
+													 fit.pilot = self.engine->getGang()->addPilot();
+													 NCAccount* account = [NCAccount currentAccount];
+													 NCFitCharacter* character;
+													 
+													 if (account.characterSheet)
+														 character = [NCFitCharacter characterWithAccount:account];
+													 else
+														 character = [NCFitCharacter characterWithSkillsLevel:5];
+													 
+													 fit.character = character;
+													 [fit load];
+												 }
+
+												 
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 [self.fits addObject:fit];
+								 [self reload];
+							 }];
 }
 
 @end

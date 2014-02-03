@@ -9,20 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "NCLoadout.h"
 #import "eufe.h"
+#import "NCFitCharacter.h"
 
 @interface NCFitShip : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
-@property (nonatomic, assign) eufe::Character* character;
+@property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, assign) EVEDBInvType* type;
 @property (nonatomic, strong) NSString* loadoutName;
+@property (nonatomic, strong) NCFitCharacter* character;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;
 
 - (void) save;
 - (void) load;
-
-- (void) setSkillLevels:(NSDictionary*) skillLevels;
-
 
 @end

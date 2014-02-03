@@ -11,6 +11,8 @@
 #import "EVEDBAPI.h"
 #import "NSArray+Neocom.h"
 #import "UIActionSheet+Block.h"
+#import "NCFittingCharacterEditorCell.h"
+#import "UIAlertView+Block.h"
 
 @interface NCFittingCharacterEditorViewController ()
 @property (nonatomic, strong) NSArray* sections;
@@ -32,7 +34,8 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	
+	self.title = self.character.name;
+
 	NSMutableDictionary* skills = [NSMutableDictionary new];
 	NSMutableArray* sections = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -65,10 +68,46 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+	NSMutableDictionary* skills = [NSMutableDictionary new];
+	[self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
+		skills[typeID] = @(skillData.currentLevel);
+	}];
+	self.character.skills = skills;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)onAction:(id)sender {
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+								 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
+																				  message:nil
+																		cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+																		otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+																		  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+																			  if (selectedButtonIndex != alertView.cancelButtonIndex) {
+																				  UITextField* textField = [alertView textFieldAtIndex:0];
+																				  self.character.name = textField.text;
+																				  self.title = self.character.name;
+																			  }
+																		  } cancelBlock:nil];
+								 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+								 UITextField* textField = [alertView textFieldAtIndex:0];
+								 textField.text = self.character.name;
+								 [alertView show];
+							 }
+						 }
+							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -83,11 +122,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *CellIdentifier = @"Cell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	NCFittingCharacterEditorCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
 	
-	cell.textLabel.text = skill.typeName;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
+	cell.skillNameLabel.text = skill.typeName;
+	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
 	return cell;
 }
 

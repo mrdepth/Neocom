@@ -211,6 +211,7 @@
 
 @interface NCFitShip()
 @property (nonatomic, strong) NCLoadoutDataShip* loadoutData;
+- (void) setSkillLevels:(NSDictionary*) skillLevels;
 @end
 
 @implementation NCFitShip
@@ -238,10 +239,10 @@
 
 
 - (void) save {
-	if (!self.character)
+	if (!self.pilot)
 		return;
 	
-	eufe::Ship* ship = self.character->getShip();
+	eufe::Ship* ship = self.pilot->getShip();
 	if (!ship)
 		return;
 	
@@ -318,13 +319,13 @@
 	for (NSDictionary* record in [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]])
 		[drones addObject:record[@"drone"]];
 	
-	for (auto i : self.character->getImplants()) {
+	for (auto i : self.pilot->getImplants()) {
 		NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 		implant.typeID = i->getTypeID();
 		[implants addObject:implant];
 	}
 	
-	for (auto i : self.character->getBoosters()) {
+	for (auto i : self.pilot->getBoosters()) {
 		NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 		booster.typeID = i->getTypeID();
 		[boosters addObject:booster];
@@ -351,7 +352,7 @@
 }
 
 - (void) load {
-	eufe::Ship* ship = self.character->setShip(self.type.typeID);
+	eufe::Ship* ship = self.pilot->setShip(self.type.typeID);
 	if (ship) {
 		for (NSString* key in @[@"subsystems", @"rigSlots", @"lowSlots", @"medSlots", @"hiSlots"]) {
 			for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
@@ -374,10 +375,10 @@
 		}
 		
 		for (NCLoadoutDataShipImplant* item in self.loadoutData.implants)
-			self.character->addImplant(item.typeID);
+			self.pilot->addImplant(item.typeID);
 		
 		for (NCLoadoutDataShipBooster* item in self.loadoutData.boosters)
-			self.character->addBooster(item.typeID);
+			self.pilot->addBooster(item.typeID);
 		
 		for (NCLoadoutDataShipCargoItem* item in self.loadoutData.cargo) {
 			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
@@ -391,12 +392,30 @@
 	}
 }
 
+- (void) setCharacter:(NCFitCharacter *)character {
+	_character = character;
+	if (self.pilot) {
+		self.pilot->setCharacterName([character.name UTF8String]);
+		[self setSkillLevels:character.skills];
+	}
+}
+
+- (void) setPilot:(eufe::Character *)pilot {
+	_pilot = pilot;
+	if (self.character && pilot) {
+		self.pilot->setCharacterName([self.character.name UTF8String]);
+		[self setSkillLevels:self.character.skills];
+	}
+}
+
+#pragma mark - Private
+
 - (void) setSkillLevels:(NSDictionary*) skillLevels {
 	__block std::map<eufe::TypeID, int> levels;
 	[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 		levels[[typeID integerValue]] = [level integerValue];
 	}];
-	self.character->setSkillLevels(levels);
+	self.pilot->setSkillLevels(levels);
 
 }
 

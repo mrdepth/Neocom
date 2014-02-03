@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "NCFitCharacter.h"
 
+@class NCFitShip;
 @interface NCFittingCharacterPickerViewController : UINavigationController
+@property (nonatomic, strong) NCFitShip* fit;
+@property (nonatomic, strong) NCFitCharacter* selectedCharacter;
 
 - (void) presentInViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCFitCharacter* character)) completion;
 

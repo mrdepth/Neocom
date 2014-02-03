@@ -15,6 +15,7 @@
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "NCFitCharacter.h"
+#import "NCAccount.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -51,17 +52,26 @@
 	
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
+	NCFitShip* fit = self.fit;
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 @synchronized(self) {
-												 if (!self.fit.character) {
-													 self.fit.character = self.engine->getGang()->addPilot();
-													 NCFitCharacter* character = [NCFitCharacter characterWithSkillsLevel:5];
-													 [self.fit setSkillLevels:character.skills];
-													 self.fit.character->setCharacterName([character.name UTF8String]);
-													 [self.fit load];
+												 if (!fit.pilot) {
+													 fit.pilot = self.engine->getGang()->addPilot();
+													 NCAccount* account = [NCAccount currentAccount];
+													 NCFitCharacter* character;
+													 
+													 if (account.characterSheet)
+														 character = [NCFitCharacter characterWithAccount:account];
+													 else
+														 character = [NCFitCharacter characterWithSkillsLevel:5];
+													 
+													 fit.character = character;
+													 //[self.fit setSkillLevels:character.skills];
+													 //self.fit.pilot->setCharacterName([character.name UTF8String]);
+													 [fit load];
 												 }
 											 }
 										 }

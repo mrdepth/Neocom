@@ -69,17 +69,17 @@
 
 		NSString *booster = nil;
 		
-		if (fit.character == fleetBooster)
+		if (fit.pilot == fleetBooster)
 			booster = NSLocalizedString(@" (Fleet Booster)", nil);
-		else if (fit.character == wingBooster)
+		else if (fit.pilot == wingBooster)
 			booster = NSLocalizedString(@" (Wing Booster)", nil);
-		else if (fit.character == squadBooster)
+		else if (fit.pilot == squadBooster)
 			booster = NSLocalizedString(@" (Squad Booster)", nil);
 		else
 			booster = @"";
 
 		
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.character->getCharacterName(), booster];
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
 		cell.detailTextLabel.text = fit.loadoutName;
 		cell.imageView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
 		if (self.controller.fit == fit)
@@ -142,7 +142,7 @@
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	NCFitShip* fit = self.controller.fits[indexPath.row];
-	eufe::Character* character = fit.character;
+	eufe::Character* character = fit.pilot;
 	eufe::Gang* gang = self.controller.engine->getGang();
 	
 	void (^setFleetBooster)() = ^(){
@@ -215,8 +215,9 @@
 																			  title:NCTaskManagerDefaultTitle
 																			  block:^(NCTask *task) {
 																				  @synchronized(self.controller) {
-																					  fit.character->setCharacterName([character.name UTF8String]);
-																					  [fit setSkillLevels:character.skills];
+																					  fit.character = character;
+																					  //fit.pilot->setCharacterName([character.name UTF8String]);
+																					  //[fit setSkillLevels:character.skills];
 																				  }
 																			  }
 																  completionHandler:^(NCTask *task) {

@@ -60,6 +60,11 @@
 	self.customCharacters = [NSMutableArray arrayWithArray:[NCFitCharacter characters]];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.tableView reloadData];
+}
+
 - (void) dealloc {
 	[[NCStorage sharedStorage] saveContext];
 }

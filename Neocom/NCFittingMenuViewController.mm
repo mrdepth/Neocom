@@ -14,6 +14,7 @@
 #import "NCFitShip.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
+#import "NCFittingCharacterPickerViewController.h"
 
 @interface NCFittingMenuViewController ()
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
@@ -162,6 +163,20 @@
 		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
 	}
 	return _typePickerViewController;
+}
+
+- (void) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
+	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 @synchronized(self) {
+												 sourceViewController.fit.character = sourceViewController.selectedCharacter;
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 [self reload];
+							 }];
 }
 
 @end

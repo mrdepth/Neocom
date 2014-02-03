@@ -12,4 +12,5 @@
 @interface NCFittingCharacterEditorViewController : NCTableViewController
 @property (nonatomic, strong) NCFitCharacter* character;
 
+- (IBAction)onAction:(id)sender;
 @end

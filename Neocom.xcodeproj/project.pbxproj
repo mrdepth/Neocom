@@ -293,6 +293,10 @@
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
+		12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
+		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
+		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
+		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
@@ -964,6 +968,13 @@
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		12AA87D0188D05B90076CCF0 /* UIStoryboard+Multiple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+Multiple.h"; sourceTree = "<group>"; };
 		12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+Multiple.m"; sourceTree = "<group>"; };
+		12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDamagePattern.h; sourceTree = "<group>"; };
+		12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDamagePattern.m; sourceTree = "<group>"; };
+		12ACDCA418A0AD2600566DFE /* NCFittingDamagePatternsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternsViewController.h; sourceTree = "<group>"; };
+		12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternsViewController.m; sourceTree = "<group>"; };
+		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
+		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
+		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
@@ -1240,6 +1251,7 @@
 				1209685B1845F0CB00921A37 /* InfoPlist.strings */,
 				1209685E1845F0CB00921A37 /* main.m */,
 				120968601845F0CB00921A37 /* Neocom-Prefix.pch */,
+				12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2415,6 +2427,8 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */,
+				12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */,
 				8452190F189AEEA800E7E3C1 /* NCLoadoutData.h */,
 				84521910189AEEA800E7E3C1 /* NCLoadoutData.m */,
 				8452190C189AEEA700E7E3C1 /* NCLoadout.h */,
@@ -2444,6 +2458,25 @@
 				12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */,
 			);
 			path = "UIStoryboard+Multiple";
+			sourceTree = "<group>";
+		};
+		12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12ACDCA718A0B10C00566DFE /* NCFittingDamagePatternCell */,
+				12ACDCA418A0AD2600566DFE /* NCFittingDamagePatternsViewController.h */,
+				12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */,
+			);
+			name = NCFittingDamagePatternsViewController;
+			sourceTree = "<group>";
+		};
+		12ACDCA718A0B10C00566DFE /* NCFittingDamagePatternCell */ = {
+			isa = PBXGroup;
+			children = (
+				12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */,
+				12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */,
+			);
+			name = NCFittingDamagePatternCell;
 			sourceTree = "<group>";
 		};
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
@@ -2716,6 +2749,7 @@
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
 				842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */,
+				12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
@@ -2927,6 +2961,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84EEFCE91896C69C007962A0 /* khanid@2x.png in Resources */,
+				12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				849B9FD31896D24A00D4DD2B /* slotLow.png in Resources */,
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
@@ -3244,6 +3279,7 @@
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
+				12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
@@ -3288,11 +3324,13 @@
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,
 				128A1F411899403000005C4F /* NCFittingShipImplantsDataSource.mm in Sources */,
+				12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */,
 				84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */,
 				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
 				125F681E1885315A005732FA /* NCSkillsDataSource.m in Sources */,
 				12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
+				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
 				12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */,
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,

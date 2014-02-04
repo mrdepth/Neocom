@@ -68,7 +68,7 @@
 @property (nonatomic, assign) float signature;
 @property (nonatomic, assign) float cargo;
 @property (nonatomic, strong) UIImage *sensorImage;
-//@property (nonatomic, strong) DamagePattern* damagePattern;
+@property (nonatomic, strong) NCDamagePattern* damagePattern;
 @property (nonatomic, assign) float droneRange;
 @property (nonatomic, assign) float warpSpeed;
 
@@ -182,7 +182,7 @@
 															stats.droneRange = character->getAttribute(eufe::DRONE_CONTROL_DISTANCE_ATTRIBUTE_ID)->getValue() / 1000;
 															stats.warpSpeed = ship->getWarpSpeed();
 															
-															//stats.damagePattern = self.fittingViewController.damagePattern;
+															stats.damagePattern = self.controller.damagePattern;
 														}
 													}
 										completionHandler:^(NCTask *task) {
@@ -306,10 +306,10 @@
 					imageName = @"hull.png";
 				}
 				else if (indexPath.row == 4) {
-//					values[0] = self.shipStats.damagePattern.emAmount;
-//					values[1] = self.shipStats.damagePattern.thermalAmount;
-//					values[2] = self.shipStats.damagePattern.kineticAmount;
-//					values[3] = self.shipStats.damagePattern.explosiveAmount;
+					values[0] = self.shipStats.damagePattern.em;
+					values[1] = self.shipStats.damagePattern.thermal;
+					values[2] = self.shipStats.damagePattern.kinetic;
+					values[3] = self.shipStats.damagePattern.explosive;
 					values[4] = 0;
 					imageName = @"damagePattern.png";
 				}
@@ -454,6 +454,11 @@
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 1 && indexPath.row == 4)
+		[self.controller performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
 }
 
 

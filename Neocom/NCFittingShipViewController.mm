@@ -354,4 +354,7 @@
 	[self reload];
 }
 
+- (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
+}
+
 @end

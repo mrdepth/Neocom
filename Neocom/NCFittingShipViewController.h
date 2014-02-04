@@ -11,6 +11,7 @@
 #import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
+#import "NCDamagePattern.h"
 
 @interface NCFittingShipViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
@@ -21,6 +22,8 @@
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;
 
 @property (nonatomic, strong) NCShipFit* fit;
+
+@property (nonatomic, strong) NCDamagePattern* damagePattern;
 
 
 - (IBAction)onChangeSection:(id)sender;

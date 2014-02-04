@@ -97,7 +97,7 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
 		cell.textLabel.text = loadout.type.typeName;
-		cell.detailTextLabel.text = loadout.loadoutName;
+		cell.detailTextLabel.text = loadout.name;
 		cell.imageView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
 		return cell;
 	}

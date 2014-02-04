@@ -20,7 +20,7 @@
 @implementation NCLoadout
 @synthesize type = _type;
 
-@dynamic loadoutName;
+@dynamic name;
 @dynamic typeID;
 @dynamic url;
 @dynamic data;

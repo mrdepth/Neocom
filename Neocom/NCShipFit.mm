@@ -221,7 +221,7 @@
 		NCStorage* storage = [NCStorage sharedStorage];
 		[storage.managedObjectContext performBlockAndWait:^{
 			self.loadout = loadout;
-			self.loadoutName = loadout.loadoutName;
+			self.loadoutName = loadout.name;
 			self.loadoutData = loadout.data.data;
 			self.type = self.loadout.type;
 		}];
@@ -346,8 +346,8 @@
 			self.loadout.data.data = self.loadoutData;
 		if (self.loadout.typeID != type.typeID)
 			self.loadout.typeID = type.typeID;
-		if (![self.loadoutName isEqualToString:self.loadout.loadoutName])
-			self.loadout.loadoutName = self.loadoutName;
+		if (![self.loadoutName isEqualToString:self.loadout.name])
+			self.loadout.name = self.loadoutName;
 	}];
 }
 

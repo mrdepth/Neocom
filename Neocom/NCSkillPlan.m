@@ -23,7 +23,7 @@
 @implementation NCSkillPlan
 
 @dynamic active;
-@dynamic skillPlanName;
+@dynamic name;
 @dynamic skills;
 @dynamic account;
 

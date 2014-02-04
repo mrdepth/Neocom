@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A598" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -13,13 +13,19 @@
         <attribute name="vCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Account" inverseName="apiKey" inverseEntity="Account" syncable="YES"/>
     </entity>
-    <entity name="DamagePattern" syncable="YES"/>
+    <entity name="DamagePattern" representedClassName="NCDamagePattern" syncable="YES">
+        <attribute name="em" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="explosive" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="kinetic" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thermal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+    </entity>
     <entity name="FitCharacter" representedClassName="NCFitCharacter" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="Loadout" representedClassName="NCLoadout" syncable="YES">
-        <attribute name="loadoutName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" maxCount="1" deletionRule="Cascade" destinationEntity="LoadoutData" inverseName="loadout" inverseEntity="LoadoutData" syncable="YES"/>
@@ -39,19 +45,19 @@
     </entity>
     <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="skillPlanName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="skills" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="skillPlans" inverseEntity="Account" syncable="YES"/>
     </entity>
     <elements>
         <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
         <element name="APIKey" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="DamagePattern" positionX="0" positionY="0" width="0" height="0"/>
         <element name="FitCharacter" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Loadout" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LoadoutData" positionX="0" positionY="0" width="0" height="0"/>
         <element name="MailBox" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Setting" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="DamagePattern" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

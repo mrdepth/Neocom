@@ -15,7 +15,7 @@
 @interface NCSkillPlan : NSManagedObject
 
 @property (nonatomic, assign) BOOL active;
-@property (nonatomic, retain) NSString * skillPlanName;
+@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSArray* skills;
 @property (nonatomic, strong) NCAccount* account;
 

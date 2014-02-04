@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 
 @interface NCLoadout : NSManagedObject
 
-@property (nonatomic, retain) NSString * loadoutName;
+@property (nonatomic, retain) NSString * name;
 @property (nonatomic) int32_t typeID;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NCLoadoutData *data;

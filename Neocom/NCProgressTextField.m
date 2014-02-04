@@ -1,19 +1,19 @@
 //
-//  NCProgressLabel.m
+//  NCProgressTextField.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 28.01.14.
+//  Created by Shimanski Artem on 04.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCProgressLabel.h"
+#import "NCProgressTextField.h"
 
-@interface NCProgressLabel()
+@interface NCProgressTextField()
 @property (nonatomic, strong) UIColor* color;
 
 @end
 
-@implementation NCProgressLabel
+@implementation NCProgressTextField
 
 - (void) awakeFromNib {
 	[super setBackgroundColor:[UIColor clearColor]];
@@ -21,8 +21,7 @@
 }
 
 - (void) setBackgroundColor:(UIColor *)backgroundColor {
-	if (!self.color)
-		self.color = backgroundColor;
+	self.color = backgroundColor;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -66,12 +65,6 @@
 - (void) setProgress:(float)value {
 	_progress = value;
 	[self setNeedsDisplay];
-}
-
-- (CGSize) intrinsicContentSize {
-	CGSize size = [super intrinsicContentSize];
-	size.width += 10;
-	return size;
 }
 
 @end

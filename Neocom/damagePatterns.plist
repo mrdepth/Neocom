@@ -118,7 +118,7 @@
 		<key>thermal</key>
 		<real>0.39</real>
 		<key>kinetic</key>
-		<real>0.6899999999999999</real>
+		<real>0.6</real>
 		<key>explosive</key>
 		<real>0</real>
 	</dict>

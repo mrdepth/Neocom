@@ -8,6 +8,7 @@
 
 #import "NCFittingDamagePatternsViewController.h"
 #import "NCFittingDamagePatternCell.h"
+#import "NCFittingDamagePatternEditorViewController.h"
 #import "NCStorage.h"
 
 @interface NCFittingDamagePatternsViewController ()
@@ -28,6 +29,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSMutableArray* builtInDamagePatterns = [NSMutableArray new];
 	for (NSDictionary* dic in [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"damagePatterns" ofType:@"plist"]]) {
@@ -47,6 +53,21 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCFittingDamagePatternEditorViewController"]) {
+		NCFittingDamagePatternEditorViewController* destinationViewController = segue.destinationViewController;
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
+		NCDamagePattern* damagePattern;
+		if (indexPath.section == 0)
+			damagePattern = self.customDamagePatterns[indexPath.row];
+		else {
+			damagePattern = self.builtInDamagePatterns[indexPath.row];
+			[[[NCStorage sharedStorage] managedObjectContext] insertObject:damagePattern];
+		}
+		destinationViewController.damagePattern = damagePattern;
+	}
 }
 
 #pragma mark - Table view data source
@@ -72,13 +93,18 @@
 		return cell;
 	}
 	else {
-		NCDamagePattern* damagePattern = self.builtInDamagePatterns[indexPath.row];
+		NCDamagePattern* damagePattern;
+		if (indexPath.section == 1)
+			damagePattern = self.customDamagePatterns[indexPath.row];
+		else
+			damagePattern = self.builtInDamagePatterns[indexPath.row];
+		
 		NCFittingDamagePatternCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		
-		cell.emLabel.text = [NSString stringWithFormat:@"%.2f", damagePattern.em];
-		cell.kineticLabel.text = [NSString stringWithFormat:@"%.2f", damagePattern.kinetic];
-		cell.thermalLabel.text = [NSString stringWithFormat:@"%.2f", damagePattern.thermal];
-		cell.explosiveLabel.text = [NSString stringWithFormat:@"%.2f", damagePattern.explosive];
+		cell.emLabel.text = [NSString stringWithFormat:@"%.0f%%", damagePattern.em * 100];
+		cell.kineticLabel.text = [NSString stringWithFormat:@"%.0f%%", damagePattern.kinetic * 100];
+		cell.thermalLabel.text = [NSString stringWithFormat:@"%.0f%%", damagePattern.thermal * 100];
+		cell.explosiveLabel.text = [NSString stringWithFormat:@"%.0f%%", damagePattern.explosive * 100];
 		
 		cell.emLabel.progress = damagePattern.em;
 		cell.kineticLabel.progress = damagePattern.kinetic;
@@ -140,6 +166,17 @@
 
 #pragma mark -
 #pragma mark Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section > 0) {
+		if (self.editing) {
+			[self performSegueWithIdentifier:@"NCFittingDamagePatternEditorViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+		}
+		else {
+			
+		}
+	}
+}
 
 /*- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
  NSString* title = [self tableView:tableView titleForHeaderInSection:section];

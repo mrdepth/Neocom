@@ -382,6 +382,8 @@
 		849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAC1896D24A00D4DD2B /* velocity.png */; };
 		849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
 		849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FE31896D44700D4DD2B /* eufe.sqlite */; };
+		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
+		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
 		84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */; };
 		84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182F1898457E00A35516 /* UIViewController+Neocom.m */; };
@@ -1091,6 +1093,10 @@
 		849B9FDF1896D31B00D4DD2B /* NCFittingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingMenuViewController.h; sourceTree = "<group>"; };
 		849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingMenuViewController.mm; sourceTree = "<group>"; };
 		849B9FE31896D44700D4DD2B /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = SOURCE_ROOT; };
+		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
+		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
+		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
+		84A6E52018A174F100231735 /* NCProgressTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCProgressTextField.m; sourceTree = "<group>"; };
 		84C1182618983B2D00A35516 /* NCDatabaseTypePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerViewController.h; sourceTree = "<group>"; };
 		84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypePickerViewController.m; sourceTree = "<group>"; };
 		84C1182B1898443900A35516 /* NCDatabaseTypePickerContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerContentViewController.h; sourceTree = "<group>"; };
@@ -1445,6 +1451,7 @@
 				84E4331F18951C1600DF2061 /* NCViewController */,
 				1211122B185989CC009E5106 /* NCTaskManager */,
 				127123A61897A939005F46EE /* NCProgressLabel */,
+				84A6E51E18A174D900231735 /* NCProgressTextField */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -2463,6 +2470,7 @@
 		12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */,
 				12ACDCA718A0B10C00566DFE /* NCFittingDamagePatternCell */,
 				12ACDCA418A0AD2600566DFE /* NCFittingDamagePatternsViewController.h */,
 				12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */,
@@ -2764,6 +2772,24 @@
 				849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */,
 			);
 			name = NCFittingMenuViewController;
+			sourceTree = "<group>";
+		};
+		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */,
+				84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */,
+			);
+			name = NCFittingDamagePatternEditorViewController;
+			sourceTree = "<group>";
+		};
+		84A6E51E18A174D900231735 /* NCProgressTextField */ = {
+			isa = PBXGroup;
+			children = (
+				84A6E51F18A174F100231735 /* NCProgressTextField.h */,
+				84A6E52018A174F100231735 /* NCProgressTextField.m */,
+			);
+			name = NCProgressTextField;
 			sourceTree = "<group>";
 		};
 		84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */ = {
@@ -3126,6 +3152,7 @@
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
+				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */,
 				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
@@ -3336,6 +3363,7 @@
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,
 				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
 				126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */,
+				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */,
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="g7F-Lq-llb">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -2516,7 +2516,7 @@
         <scene sceneID="JNv-WL-0pw">
             <objects>
                 <tableViewController id="4XD-5q-K2y" customClass="NCFittingDamagePatternsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l1b-iH-F7x">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l1b-iH-F7x">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2529,38 +2529,38 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Damage Pattern name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="cte-v9-prg">
-                                            <rect key="frame" x="15" y="2" width="290" height="19"/>
+                                            <rect key="frame" x="15" y="2" width="290" height="18"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="aUq-aY-si2" customClass="NCProgressLabel">
-                                            <rect key="frame" x="236" y="23" width="69" height="18"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="aUq-aY-si2" customClass="NCProgressLabel">
+                                            <rect key="frame" x="235" y="22" width="70" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.60000002379999995" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="6Rg-VI-cZa" customClass="NCProgressLabel">
-                                            <rect key="frame" x="162" y="23" width="70" height="18"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="6Rg-VI-cZa" customClass="NCProgressLabel">
+                                            <rect key="frame" x="162" y="22" width="69" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="XHY-gl-oR5" customClass="NCProgressLabel">
-                                            <rect key="frame" x="89" y="23" width="69" height="18"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="XHY-gl-oR5" customClass="NCProgressLabel">
+                                            <rect key="frame" x="88" y="22" width="70" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.231372565" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="8tL-8E-gPW" customClass="NCProgressLabel">
-                                            <rect key="frame" x="15" y="23" width="70" height="18"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="8tL-8E-gPW" customClass="NCProgressLabel">
+                                            <rect key="frame" x="15" y="22" width="69" height="19"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.25098040700000002" green="0.58823531870000001" blue="0.81568634510000004" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -2631,11 +2631,140 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="sL0-mo-m1z" kind="push" identifier="NCFittingDamagePatternEditorViewController" id="uF0-WZ-rGC"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lzi-aj-t7a" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="B0h-LL-T8G" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2046" y="4067"/>
+        </scene>
+        <!--Fitting Damage Pattern Editor View Controller-->
+        <scene sceneID="8jv-Uh-YiT">
+            <objects>
+                <tableViewController id="sL0-mo-m1z" customClass="NCFittingDamagePatternEditorViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="urc-Qw-1Lk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="erl-XS-hfy">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <sections>
+                            <tableViewSection id="vRW-TO-Knn">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" editingAccessoryType="disclosureIndicator" rowHeight="32" id="eG1-Fe-4C4">
+                                        <rect key="frame" x="0.0" y="108" width="320" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eG1-Fe-4C4" id="a64-4T-JLb">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="31"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Em0-lJ-0Sl" customClass="NCProgressTextField">
+                                                    <rect key="frame" x="15" y="2" width="51" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.25098040700000002" green="0.58823531870000001" blue="0.81568634510000004" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="sL0-mo-m1z" id="swz-uL-gQE"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RoH-AK-Ida" customClass="NCProgressTextField">
+                                                    <rect key="frame" x="70" y="2" width="51" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.8078432083" green="0.231372565" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="sL0-mo-m1z" id="EyT-9V-lLK"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vgo-Z8-ZUd" customClass="NCProgressTextField">
+                                                    <rect key="frame" x="125" y="2" width="51" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="sL0-mo-m1z" id="KpA-eS-Yuq"/>
+                                                    </connections>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-E8-D9C" customClass="NCProgressTextField">
+                                                    <rect key="frame" x="180" y="2" width="51" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.8078432083" green="0.60000002379999995" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="sL0-mo-m1z" id="Px0-GV-DmJ"/>
+                                                    </connections>
+                                                </textField>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Total: 100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KcL-0J-xgL" customClass="NCProgressLabel">
+                                                    <rect key="frame" x="235" y="2" width="70" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="PCr-GI-tWl"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="KcL-0J-xgL" secondAttribute="trailing" constant="15" id="1YK-0A-3Ts"/>
+                                                <constraint firstItem="KcL-0J-xgL" firstAttribute="leading" secondItem="wkP-E8-D9C" secondAttribute="trailing" constant="4" id="8ka-df-RfZ"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="bottom" secondItem="Vgo-Z8-ZUd" secondAttribute="bottom" id="BgA-NH-3Hf"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="width" secondItem="Em0-lJ-0Sl" secondAttribute="width" id="EYQ-Dw-cqj"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="leading" secondItem="Vgo-Z8-ZUd" secondAttribute="trailing" constant="4" id="F0a-wA-6gd"/>
+                                                <constraint firstItem="Em0-lJ-0Sl" firstAttribute="top" secondItem="a64-4T-JLb" secondAttribute="top" constant="2" id="MLX-po-wYk"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="top" secondItem="RoH-AK-Ida" secondAttribute="top" id="SaK-eh-qKM"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="bottom" secondItem="Em0-lJ-0Sl" secondAttribute="bottom" id="X03-2O-vmP"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="bottom" secondItem="RoH-AK-Ida" secondAttribute="bottom" id="dlR-C6-7Xw"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="width" secondItem="RoH-AK-Ida" secondAttribute="width" id="jQS-mQ-c15"/>
+                                                <constraint firstItem="Vgo-Z8-ZUd" firstAttribute="leading" secondItem="RoH-AK-Ida" secondAttribute="trailing" constant="4" id="n5H-I1-F2A"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="width" secondItem="Vgo-Z8-ZUd" secondAttribute="width" id="oSr-F4-OaA"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="top" secondItem="Em0-lJ-0Sl" secondAttribute="top" id="p3o-sf-R0X"/>
+                                                <constraint firstAttribute="bottom" secondItem="Em0-lJ-0Sl" secondAttribute="bottom" constant="2" id="pxI-1L-GE9"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="top" secondItem="Vgo-Z8-ZUd" secondAttribute="top" id="r1v-oO-mL6"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="bottom" secondItem="KcL-0J-xgL" secondAttribute="bottom" id="rMm-11-oaR"/>
+                                                <constraint firstItem="wkP-E8-D9C" firstAttribute="top" secondItem="KcL-0J-xgL" secondAttribute="top" id="sLi-EB-R5o"/>
+                                                <constraint firstItem="Em0-lJ-0Sl" firstAttribute="leading" secondItem="a64-4T-JLb" secondAttribute="leading" constant="15" id="udD-dS-Kji"/>
+                                                <constraint firstItem="RoH-AK-Ida" firstAttribute="leading" secondItem="Em0-lJ-0Sl" secondAttribute="trailing" constant="4" id="wOI-8T-2Un"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="sL0-mo-m1z" id="0zQ-V0-VhY"/>
+                            <outlet property="delegate" destination="sL0-mo-m1z" id="Y1E-HE-oYJ"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="DDv-3c-Tru">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="gfG-eU-nse"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="emTextField" destination="Em0-lJ-0Sl" id="x1q-wC-BJ9"/>
+                        <outlet property="explosiveTextField" destination="wkP-E8-D9C" id="8Gf-nG-fvn"/>
+                        <outlet property="kineticTextField" destination="Vgo-Z8-ZUd" id="37w-OW-oPu"/>
+                        <outlet property="thermalTextField" destination="RoH-AK-Ida" id="pdM-eK-8Jf"/>
+                        <outlet property="totalLabel" destination="KcL-0J-xgL" id="LWH-ep-2MC"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mKy-71-Esq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2460" y="4067"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jwc-zR-Rfo">

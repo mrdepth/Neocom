@@ -306,10 +306,18 @@
 					imageName = @"hull.png";
 				}
 				else if (indexPath.row == 4) {
-					values[0] = self.shipStats.damagePattern.em;
-					values[1] = self.shipStats.damagePattern.thermal;
-					values[2] = self.shipStats.damagePattern.kinetic;
-					values[3] = self.shipStats.damagePattern.explosive;
+					if (self.shipStats.damagePattern) {
+						values[0] = self.shipStats.damagePattern.em;
+						values[1] = self.shipStats.damagePattern.thermal;
+						values[2] = self.shipStats.damagePattern.kinetic;
+						values[3] = self.shipStats.damagePattern.explosive;
+					}
+					else {
+						values[0] = 0.25;
+						values[1] = 0.25;
+						values[2] = 0.25;
+						values[3] = 0.25;
+					}
 					values[4] = 0;
 					imageName = @"damagePattern.png";
 				}

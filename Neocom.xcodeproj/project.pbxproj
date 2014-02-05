@@ -313,6 +313,9 @@
 		12CDB7E0188E7D1C002079C0 /* ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7DF188E7D1C002079C0 /* ASHTTPServer.m */; };
 		12CDB7EF188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */; };
 		12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */; };
+		12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */; };
+		12D011BF18A2101400C0A228 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BD18A2101400C0A228 /* checkmark.png */; };
+		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
@@ -1008,6 +1011,10 @@
 		12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+ASHTTPServer.m"; sourceTree = "<group>"; };
 		12CDB7F0188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSHTTPURLResponse+ASHTTPServer.h"; sourceTree = "<group>"; };
 		12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSHTTPURLResponse+ASHTTPServer.m"; sourceTree = "<group>"; };
+		12D011BA18A20BE600C0A228 /* NCFittingNPCPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingNPCPickerViewController.h; sourceTree = "<group>"; };
+		12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingNPCPickerViewController.m; sourceTree = "<group>"; };
+		12D011BD18A2101400C0A228 /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
+		12D011BE18A2101400C0A228 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
@@ -2198,6 +2205,8 @@
 				12BF345B18814B9D00368CD4 /* Icons */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
+				12D011BD18A2101400C0A228 /* checkmark.png */,
+				12D011BE18A2101400C0A228 /* checkmark@2x.png */,
 				84EEFCE11896C69C007962A0 /* menuIcon@2x.png */,
 				84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */,
 				849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */,
@@ -2584,6 +2593,15 @@
 			path = ASHTTPServer;
 			sourceTree = "<group>";
 		};
+		12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12D011BA18A20BE600C0A228 /* NCFittingNPCPickerViewController.h */,
+				12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */,
+			);
+			name = NCFittingNPCPickerViewController;
+			sourceTree = "<group>";
+		};
 		12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2751,6 +2769,7 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
@@ -2992,6 +3011,7 @@
 				849B9FD31896D24A00D4DD2B /* slotLow.png in Resources */,
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
 				849B9FD51896D24A00D4DD2B /* slotRig.png in Resources */,
+				12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */,
 				849B9FB41896D24A00D4DD2B /* calibration.png in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				849B9FD41896D24A00D4DD2B /* slotMed.png in Resources */,
@@ -3029,6 +3049,7 @@
 				84EEFCEE1896C69C007962A0 /* thukkerTribe@2x.png in Resources */,
 				125F6804188526B6005732FA /* level_141.gif in Resources */,
 				849B9FDC1896D24A00D4DD2B /* turrets.png in Resources */,
+				12D011BF18A2101400C0A228 /* checkmark.png in Resources */,
 				125F67FB188526B6005732FA /* level_041.gif in Resources */,
 				84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
@@ -3163,6 +3184,7 @@
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,
 				126A0E25185F3B9300A8E8A3 /* EVEDBRamActivity.m in Sources */,
+				12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */,
 				126A0E17185F3B9300A8E8A3 /* EVEDBInvControlTowerResource.m in Sources */,
 				126A0E18185F3B9300A8E8A3 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
 				126A0E15185F3B9300A8E8A3 /* EVEDBInvBlueprintType.m in Sources */,

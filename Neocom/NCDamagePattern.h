@@ -18,4 +18,5 @@
 @property (nonatomic) float explosive;
 @property (nonatomic, retain) NSString * name;
 
++ (NSArray*) damagePatterns;
 @end

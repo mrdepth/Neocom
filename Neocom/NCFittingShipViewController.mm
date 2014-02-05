@@ -21,6 +21,7 @@
 #import "NCFittingTargetsViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingAmountViewController.h"
+#import "NCFittingDamagePatternsViewController.h"
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -58,7 +59,7 @@
 	if (!self.fits)
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
-
+	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
@@ -197,6 +198,10 @@
 		controller.range = NSMakeRange(1, std::min(std::max(droneBay, maxActive), 50));
 		controller.amount = drones.count;
 		controller.object = drones;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
+		NCFittingDamagePatternsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		controller.selectedDamagePattern = self.damagePattern;
 	}
 }
 
@@ -355,6 +360,21 @@
 }
 
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
+	NCFittingDamagePatternsViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedDamagePattern) {
+		eufe::DamagePattern damagePattern;
+		damagePattern.emAmount = sourceViewController.selectedDamagePattern.em;
+		damagePattern.thermalAmount = sourceViewController.selectedDamagePattern.thermal;
+		damagePattern.kineticAmount = sourceViewController.selectedDamagePattern.kinetic;
+		damagePattern.explosiveAmount = sourceViewController.selectedDamagePattern.explosive;
+		
+		self.damagePattern = sourceViewController.selectedDamagePattern;
+		for (NCShipFit* fit in self.fits) {
+			eufe::Ship* ship = fit.pilot->getShip();
+			ship->setDamagePattern(damagePattern);
+		}
+		[self reload];
+	}
 }
 
 @end

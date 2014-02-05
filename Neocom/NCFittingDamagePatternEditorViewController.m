@@ -9,6 +9,8 @@
 #import "NCFittingDamagePatternEditorViewController.h"
 #import "NCDamagePattern.h"
 #import "NCStorage.h"
+#import "UIActionSheet+Block.h"
+#import "UIAlertView+Block.h"
 
 @interface NCFittingDamagePatternEditorViewController ()
 
@@ -28,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.title = self.damagePattern.name;
 
 	self.emTextField.progress = self.damagePattern.em;
 	self.thermalTextField.progress = self.damagePattern.thermal;
@@ -48,7 +51,11 @@
 	self.damagePattern.thermal = self.thermalTextField.progress;
 	self.damagePattern.kinetic = self.kineticTextField.progress;
 	self.damagePattern.explosive = self.explosiveTextField.progress;
-	[[NCStorage sharedStorage] saveContext];
+	//[[NCStorage sharedStorage] saveContext];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[self.emTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,6 +63,35 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)onAction:(id)sender {
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+								 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
+																				  message:nil
+																		cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+																		otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+																		  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+																			  if (selectedButtonIndex != alertView.cancelButtonIndex) {
+																				  UITextField* textField = [alertView textFieldAtIndex:0];
+																				  self.damagePattern.name = textField.text;
+																				  self.title = self.damagePattern.name;
+																			  }
+																		  } cancelBlock:nil];
+								 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+								 UITextField* textField = [alertView textFieldAtIndex:0];
+								 textField.text = self.damagePattern.name;
+								 [alertView show];
+							 }
+						 }
+							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+}
+
 
 #pragma mark UITextFieldDelegate
 

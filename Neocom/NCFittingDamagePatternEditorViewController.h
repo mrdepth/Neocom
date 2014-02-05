@@ -19,4 +19,5 @@
 @property (weak, nonatomic) IBOutlet NCProgressLabel *totalLabel;
 @property (strong, nonatomic) NCDamagePattern* damagePattern;
 
+- (IBAction)onAction:(id)sender;
 @end

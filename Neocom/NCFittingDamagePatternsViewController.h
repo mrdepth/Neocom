@@ -10,5 +10,5 @@
 #import "NCDamagePattern.h"
 
 @interface NCFittingDamagePatternsViewController : UITableViewController
-
+@property (nonatomic, strong) NCDamagePattern* selectedDamagePattern;
 @end

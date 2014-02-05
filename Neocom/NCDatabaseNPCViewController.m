@@ -81,7 +81,7 @@
 		NCDatabaseNPCViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.npcGroup = row;
 	}
-	else {
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = row;
 	}

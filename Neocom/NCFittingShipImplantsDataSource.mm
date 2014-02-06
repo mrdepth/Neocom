@@ -10,6 +10,7 @@
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
 #import "UIActionSheet+Block.h"
+#import "NCFittingSectionGenericHedaerView.h"
 
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -98,12 +99,17 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return nil;
-/*	if (section == 0)
-		return self.implantsHeaderView;
-	else
-		return self.boostersHeaderView;*/
+- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
+	NCFittingSectionGenericHedaerView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHedaerView"];
+	if (sectionIndex == 0) {
+		header.imageView.image = [UIImage imageNamed:@"implant.png"];
+		header.titleLabel.text = NSLocalizedString(@"Implants", nil);
+	}
+	else {
+		header.imageView.image = [UIImage imageNamed:@"booster.png"];
+		header.titleLabel.text = NSLocalizedString(@"Boosters", nil);
+	}
+	return header;
 }
 
 /*- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

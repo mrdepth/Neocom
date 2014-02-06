@@ -12,6 +12,9 @@
 #import "NCTableViewCell.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "UIActionSheet+Block.h"
+#import "NCFittingShipDronesTableHeaderView.h"
+#import "UIView+Nib.h"
+#import "NSString+Neocom.h"
 
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
 #define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
@@ -35,10 +38,11 @@
 
 @interface NCFittingShipDronesDataSource()
 @property (nonatomic, strong) NSArray* rows;
-
+@property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
 @end
 
 @implementation NCFittingShipDronesDataSource
+@synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
 	__block float totalDB;
@@ -85,8 +89,27 @@
 												
 												if (self.tableView.dataSource == self)
 													[self.tableView reloadData];
+												
+												self.tableHeaderView.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
+												self.tableHeaderView.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
+												self.tableHeaderView.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
+												self.tableHeaderView.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
+												self.tableHeaderView.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
+												if (activeDrones > maxActiveDrones)
+													self.tableHeaderView.dronesCountLabel.textColor = [UIColor redColor];
+												else
+													self.tableHeaderView.dronesCountLabel.textColor = [UIColor whiteColor];
+
 											}
 										}];
+}
+
+
+- (NCFittingShipDronesTableHeaderView*) tableHeaderView {
+	if (!_tableHeaderView) {
+		_tableHeaderView = [NCFittingShipDronesTableHeaderView viewWithNibName:@"NCFittingShipDronesTableHeaderView" bundle:nil];
+	}
+	return _tableHeaderView;
 }
 
 #pragma mark -

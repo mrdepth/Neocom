@@ -385,6 +385,9 @@
 		849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAC1896D24A00D4DD2B /* velocity.png */; };
 		849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
 		849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FE31896D44700D4DD2B /* eufe.sqlite */; };
+		849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3118A419A200A4F85E /* Fitting.storyboard */; };
+		849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */; };
+		849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
@@ -1100,6 +1103,10 @@
 		849B9FDF1896D31B00D4DD2B /* NCFittingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingMenuViewController.h; sourceTree = "<group>"; };
 		849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingMenuViewController.mm; sourceTree = "<group>"; };
 		849B9FE31896D44700D4DD2B /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = SOURCE_ROOT; };
+		849FEE3118A419A200A4F85E /* Fitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting.storyboard; sourceTree = "<group>"; };
+		849FEE3618A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipDronesTableHeaderView.h; sourceTree = "<group>"; };
+		849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipDronesTableHeaderView.m; sourceTree = "<group>"; };
+		849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingShipDronesTableHeaderView.xib; sourceTree = "<group>"; };
 		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
@@ -1254,6 +1261,7 @@
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
+				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
@@ -2080,6 +2088,7 @@
 			isa = PBXGroup;
 			children = (
 				127123A418979F95005F46EE /* NCFittingShipModulesTableHeaderView */,
+				849FEE3518A41B6600A4F85E /* NCFittingShipDronesTableHeaderView */,
 				127123A518979F9B005F46EE /* NCFittingSectionGenericHedaerView */,
 				128A1F3318990D7B00005C4F /* NCFittingSectionHiSlotHedaerView */,
 			);
@@ -2793,6 +2802,16 @@
 			name = NCFittingMenuViewController;
 			sourceTree = "<group>";
 		};
+		849FEE3518A41B6600A4F85E /* NCFittingShipDronesTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				849FEE3618A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.h */,
+				849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */,
+				849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */,
+			);
+			name = NCFittingShipDronesTableHeaderView;
+			sourceTree = "<group>";
+		};
 		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3025,6 +3044,7 @@
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
 				849B9FBE1896D24A00D4DD2B /* explosion.png in Resources */,
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
+				849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */,
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				849B9FD11896D24A00D4DD2B /* signature.png in Resources */,
@@ -3083,6 +3103,7 @@
 				125F67F6188526B6005732FA /* level_020.gif in Resources */,
 				125F67FA188526B6005732FA /* level_040.gif in Resources */,
 				84EEFCF01896C69C007962A0 /* navigationArrowUp@2x.png in Resources */,
+				849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */,
 				849B9FC11896D24A00D4DD2B /* hullRepairer.png in Resources */,
 				849B9FAE1896D24A00D4DD2B /* add.png in Resources */,
 				129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */,
@@ -3293,6 +3314,7 @@
 				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
 				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
+				849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */,
 				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
 				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,

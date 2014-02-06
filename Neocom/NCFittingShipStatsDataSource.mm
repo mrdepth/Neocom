@@ -342,7 +342,7 @@
 			else
 				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capState]];
 			cell.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capacitorRechargeTime]];
-			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%.2f GJ/s", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", self.shipStats.delta];
+			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%@", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", [NSString stringWithResource:self.shipStats.delta unit:@"GJ/s"]];
 		}
 		return cell;
 	}

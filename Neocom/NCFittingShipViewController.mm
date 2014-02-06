@@ -23,6 +23,7 @@
 #import "NCFittingAmountViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
 #import "NCFittingAreaEffectPickerViewController.h"
+#import "NCFittingTypeVariationsViewController.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
 
@@ -228,6 +229,14 @@
 		if (area)
 			controller.selectedAreaEffect = [EVEDBInvType invTypeWithTypeID:area->getTypeID() error:nil];
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingTypeVariationsViewController"]) {
+		NCFittingTypeVariationsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NSArray* modules = sender;
+		controller.object = modules;
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
+		controller.type = [self typeWithItem:item];
+	}
+	
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -548,6 +557,20 @@
 	NCFittingAreaEffectPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedAreaEffect) {
 		self.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
+		[self reload];
+	}
+}
+
+- (IBAction) unwindFromTypeVariations:(UIStoryboardSegue*) segue {
+	NCFittingTypeVariationsViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedType) {
+		eufe::Ship* ship = self.fit.pilot->getShip();
+		eufe::TypeID typeID = sourceViewController.selectedType.typeID;
+
+		for (NSValue* value in sourceViewController.object) {
+			eufe::Module* module = reinterpret_cast<eufe::Module*>([value pointerValue]);
+			ship->replaceModule(module, typeID);
+		}
 		[self reload];
 	}
 }

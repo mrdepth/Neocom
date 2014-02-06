@@ -673,7 +673,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="dFj-mD-7QZ" kind="push" id="itz-y8-GPm"/>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="itz-y8-GPm"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1002,8 +1002,8 @@
         <segue reference="Vbq-vg-5yp"/>
         <segue reference="6M7-4Q-PK5"/>
         <segue reference="dFJ-0K-RGe"/>
-        <segue reference="r4q-Am-NEf"/>
-        <segue reference="7iv-ne-LEg"/>
+        <segue reference="itz-y8-GPm"/>
         <segue reference="edv-w8-2To"/>
+        <segue reference="7iv-ne-LEg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -26,6 +26,11 @@
 @implementation NCFittingShipImplantsDataSource
 
 - (void) reload {
+	self.implants.clear();
+	self.boosters.clear();
+	if (self.tableView.dataSource == self)
+		[self.tableView reloadData];
+
 	__block std::vector<eufe::Implant*> implants(10, nullptr);
 	__block std::vector<eufe::Booster*> boosters(4, nullptr);
 	

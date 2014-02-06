@@ -8,6 +8,7 @@
 
 #import "NCDatabaseTypeVariationsViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCTableViewCell.h"
 
 @interface NCDatabaseTypeVariationsViewController ()
 @property (nonatomic, strong) NSArray* sections;
@@ -87,9 +88,10 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-	destinationViewController.type = self.sections[indexPath.section][@"rows"][indexPath.row];
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = [sender object];
+	}
 }
 
 #pragma mark - Table view data source
@@ -108,11 +110,12 @@
 {
 	EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	static NSString *CellIdentifier = @"Cell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	cell.textLabel.text = [row typeName];
 	cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	cell.object = row;
 	return cell;
 }
 

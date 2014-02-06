@@ -45,6 +45,10 @@
 @synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
+	self.rows = nil;
+	if (self.tableView.dataSource == self)
+		[self.tableView reloadData];
+
 	__block float totalDB;
 	__block float usedDB;
 	__block float totalBandwidth;

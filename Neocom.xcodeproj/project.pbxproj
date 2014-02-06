@@ -389,6 +389,7 @@
 		849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */; };
 		849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */; };
 		849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */; };
+		849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
@@ -1110,6 +1111,8 @@
 		849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingShipDronesTableHeaderView.xib; sourceTree = "<group>"; };
 		849FEE3C18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAreaEffectPickerViewController.h; sourceTree = "<group>"; };
 		849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAreaEffectPickerViewController.m; sourceTree = "<group>"; };
+		849FEE4018A42C4300A4F85E /* NCFittingTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTypeVariationsViewController.h; sourceTree = "<group>"; };
+		849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTypeVariationsViewController.m; sourceTree = "<group>"; };
 		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
@@ -2781,6 +2784,7 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */,
 				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
@@ -2823,6 +2827,15 @@
 				849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */,
 			);
 			name = NCFittingAreaEffectPickerViewController;
+			sourceTree = "<group>";
+		};
+		849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				849FEE4018A42C4300A4F85E /* NCFittingTypeVariationsViewController.h */,
+				849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */,
+			);
+			name = NCFittingTypeVariationsViewController;
 			sourceTree = "<group>";
 		};
 		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
@@ -3368,6 +3381,7 @@
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,
+				849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */,
 				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
 				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,

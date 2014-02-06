@@ -74,6 +74,10 @@
 	__block float totalCalibration;
 	__block float usedCalibration;
 	
+	self.sections = nil;
+	if (self.tableView.dataSource == self)
+		[self.tableView reloadData];
+
 	NSMutableArray* sections = [NSMutableArray new];
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
@@ -538,6 +542,11 @@
 	};
 	
 	void (^variations)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		NSMutableArray* array = [NSMutableArray new];
+		for (auto module: modules)
+			[array addObject:[NSValue valueWithPointer:module]];
+		
+		[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController" sender:array];
 /*		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
 		controller.type = itemInfo;
 		

@@ -386,7 +386,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sv7-k5-8k5">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sv7-k5-8k5">
                                             <rect key="frame" x="39" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -401,18 +401,18 @@
                                                 <constraint firstAttribute="width" constant="24" id="cAo-7v-vf5"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="o2R-lC-9Y7">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="o2R-lC-9Y7">
                                             <rect key="frame" x="113" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="5f1-EG-5KY">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="5f1-EG-5KY">
                                             <rect key="frame" x="90" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Gnm-ev-0eg">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Gnm-ev-0eg">
                                             <rect key="frame" x="188" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -423,7 +423,7 @@
                                             <rect key="frame" x="164" y="2" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JKy-1b-fnw">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JKy-1b-fnw">
                                             <rect key="frame" x="262" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
@@ -431,7 +431,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="koz-ui-DcV">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="koz-ui-DcV">
                                             <rect key="frame" x="239" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
@@ -1643,6 +1643,7 @@
                         <segue destination="sG9-pq-s0M" kind="modal" identifier="NCFittingAmountViewController" id="i6c-xx-fOE"/>
                         <segue destination="ini-Rb-Cas" kind="modal" identifier="NCFittingDamagePatternsViewController" id="3e0-5m-NYB"/>
                         <segue destination="Tpl-Ll-Xr9" kind="modal" identifier="NCFittingAreaEffectPickerViewController" id="YX5-Nj-6LO"/>
+                        <segue destination="aXU-Iw-TW0" kind="modal" identifier="NCFittingTypeVariationsViewController" id="PWt-gw-15R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubE-eJ-BSQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2565,6 +2566,71 @@
             </objects>
             <point key="canvasLocation" x="-1652" y="277"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Gka-Xv-LHp">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="aXU-Iw-TW0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aT4-nK-p1P">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ocf-9f-DBE" kind="relationship" relationship="rootViewController" id="Aa5-Op-gZo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y7b-HA-9Tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1008" y="-2164"/>
+        </scene>
+        <!--Fitting Type Variations View Controller - Title-->
+        <scene sceneID="5Xg-pa-zAA">
+            <objects>
+                <tableViewController id="ocf-9f-DBE" customClass="NCFittingTypeVariationsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6Tj-z4-zXI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="9kN-yu-trS" style="IBUITableViewCellStyleDefault" id="8DO-4U-wVP" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8DO-4U-wVP" id="ff9-GL-Tdk">
+                                    <rect key="frame" x="0.0" y="0.0" width="273" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="9kN-yu-trS">
+                                            <rect key="frame" x="15" y="0.0" width="258" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="b8K-jZ-NCB" kind="unwind" identifier="Unwind" unwindAction="unwindFromTypeVariations:" id="jsC-YW-rHD"/>
+                                    <segue destination="Th5-2r-9Sq" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="Z7k-Id-S1X"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ocf-9f-DBE" id="kPu-Xf-wAQ"/>
+                            <outlet property="delegate" destination="ocf-9f-DBE" id="bNn-TF-Xrp"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="xnI-1c-8k1">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="hYi-KN-TAV">
+                            <connections>
+                                <segue destination="b8K-jZ-NCB" kind="unwind" unwindAction="unwindFromTypeVariations:" id="s12-WH-jjp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bD1-lr-4b6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="b8K-jZ-NCB" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-497" y="-2164"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Gravimetric.png" width="32" height="32"/>
@@ -2611,8 +2677,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Z7k-Id-S1X"/>
         <segue reference="UC1-Km-8Lt"/>
-        <segue reference="YlF-8k-gwk"/>
         <segue reference="rAQ-Ic-pZV"/>
     </inferredMetricsTieBreakers>
 </document>

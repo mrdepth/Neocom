@@ -278,58 +278,10 @@
 		for (auto drone: drones)
 			[array addObject:[NSValue valueWithPointer:drone]];
 		[self.controller performSegueWithIdentifier:@"NCFittingAmountViewController" sender:array];
-/*		AmountViewController *controller = [[AmountViewController alloc] initWithNibName:@"AmountViewController" bundle:nil];
-		controller.amount = drones.count;
-		int maxActiveDrones = ship->getMaxActiveDrones();
-		controller.maxAmount = maxActiveDrones > 0 ? maxActiveDrones : 5;
-		
-		controller.completionHandler = ^(NSInteger amount) {
-			int left = drones.count - amount;
-			if (left < 0) {
-				ItemInfo* itemInfo = [drones objectAtIndex:0];
-				eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
-				for (;left < 0; left++)
-					ship->addDrone(new eufe::Drone(*drone))->setTarget(drone->getTarget());
-			}
-			else if (left > 0) {
-				int i = drones.count - 1;
-				for (; left > 0; left--) {
-					ItemInfo* itemInfo = [drones objectAtIndex:i--];
-					eufe::Drone* drone = dynamic_cast<eufe::Drone*>(itemInfo.item);
-					ship->removeDrone(drone);
-				}
-			}
-			[self.fittingViewController update];
-			[self.fittingViewController dismiss];
-		};
-		
-		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			[self.fittingViewController presentViewControllerInPopover:navigationController
-															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
-																inView:self.tableView
-											  permittedArrowDirections:UIPopoverArrowDirectionAny
-															  animated:YES];
-		else {
-			controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
-			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];
-		}*/
 	};
 	
 	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:drone]];
-
-/*		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
-		[itemInfo updateAttributes];
-		itemViewController.type = itemInfo;
-		[itemViewController setActivePage:ItemViewControllerActivePageInfo];
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemViewController];
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self.fittingViewController presentViewController:navController animated:YES completion:nil];
-		}
-		else
-			[self.fittingViewController.navigationController pushViewController:itemViewController animated:YES];*/
 	};
 	
 	NSMutableArray* buttons = [NSMutableArray new];

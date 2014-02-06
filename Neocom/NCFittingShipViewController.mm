@@ -22,6 +22,23 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingAmountViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
+#import "NCFittingAreaEffectPickerViewController.h"
+#import "UIActionSheet+Block.h"
+#import "UIAlertView+Block.h"
+
+#define ActionButtonBack NSLocalizedString(@"Back", nil)
+#define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
+#define ActionButtonSave NSLocalizedString(@"Save Fit", nil)
+#define ActionButtonCharacter NSLocalizedString(@"Switch Character", nil)
+#define ActionButtonViewInBrowser NSLocalizedString(@"View in Browser", nil)
+#define ActionButtonAreaEffect NSLocalizedString(@"Select Area Effect", nil)
+#define ActionButtonClearAreaEffect NSLocalizedString(@"Clear Area Effect", nil)
+#define ActionButtonSetDamagePattern NSLocalizedString(@"Set Damage Pattern", nil)
+#define ActionButtonRequiredSkills NSLocalizedString(@"Required Skills", nil)
+#define ActionButtonExport NSLocalizedString(@"Export", nil)
+#define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
+#define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
+#define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -34,6 +51,8 @@
 @property (nonatomic, strong) NCFittingShipStatsDataSource* statsDataSource;
 @property (nonatomic, strong) NSMutableDictionary* typesCache;
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
+
+@property (nonatomic, strong) UIActionSheet* actionSheet;
 @end
 
 @implementation NCFittingShipViewController
@@ -203,6 +222,12 @@
 		NCFittingDamagePatternsViewController* controller = [[segue destinationViewController] viewControllers][0];
 		controller.selectedDamagePattern = self.damagePattern;
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {
+		NCFittingAreaEffectPickerViewController* controller = [[segue destinationViewController] viewControllers][0];
+		eufe::Area* area = self.engine->getArea();
+		if (area)
+			controller.selectedAreaEffect = [EVEDBInvType invTypeWithTypeID:area->getTypeID() error:nil];
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -265,6 +290,148 @@
 		self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
 		[self.statsDataSource reload];
 	}
+}
+
+- (IBAction)onAction:(id)sender {
+	NSMutableArray* buttons = [NSMutableArray new];
+	NSMutableArray* actions = [NSMutableArray new];
+	
+	void (^clearAreaEffect)() = ^() {
+		self.engine->clearArea();
+		[self reload];
+	};
+	
+	void (^shipInfo)() = ^() {
+		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:self.fit.pilot->getShip()]];
+	};
+	
+	void (^rename)() = ^() {
+		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
+														 message:nil
+											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+														 UITextField* textField = [alertView textFieldAtIndex:0];
+														 self.fit.loadoutName = textField.text;
+														 self.title = self.fit.loadoutName;
+													 }
+												 } cancelBlock:nil];
+		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+		UITextField* textField = [alertView textFieldAtIndex:0];
+		textField.text = self.fit.loadoutName;
+		[alertView show];
+	};
+	
+	void (^save)() = ^() {
+		[self.fit save];
+	};
+	
+	void (^duplicate)() = ^() {
+/*		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.fit.managedObjectContext] insertIntoManagedObjectContext:self.fit.managedObjectContext];
+		shipFit.typeID = self.fit.typeID;
+		shipFit.typeName = self.fit.typeName;
+		shipFit.imageName = self.fit.imageName;
+		shipFit.fitName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.fitName ? self.fit.fitName : @""];
+		shipFit.character = self.fit.character;
+		[self.fits replaceObjectAtIndex:[self.fits indexOfObject:self.fit] withObject:shipFit];
+		self.fit = shipFit;
+		self.fitNameTextField.text = shipFit.fitName;
+		[self update];*/
+	};
+	
+	void (^setCharacter)() = ^() {
+		[self performSegueWithIdentifier:@"NCFittingCharacterPickerViewController" sender:self.fit];
+	};
+	
+	void (^viewInBrowser)() = ^() {
+/*		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
+		//controller.delegate = self;
+		controller.startPageURL = [NSURL URLWithString:self.fit.url];
+		[self presentViewController:controller animated:YES completion:nil];*/
+	};
+	
+	void (^setAreaEffect)() = ^() {
+		[self performSegueWithIdentifier:@"NCFittingAreaEffectPickerViewController" sender:sender];
+	};
+	
+	void (^setDamagePattern)() = ^() {
+		[self performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:sender];
+	};
+	
+	void (^requiredSkills)() = ^() {
+/*		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
+		requiredSkillsViewController.fit = self.fit;
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
+		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			navController.modalPresentationStyle = UIModalPresentationFormSheet;
+		
+		[self presentViewController:navController animated:YES completion:nil];*/
+	};
+	
+	void (^exportFit)() = ^() {
+		//[self performExport];
+	};
+	
+	if (self.engine->getArea() != NULL)
+		[actions addObject:clearAreaEffect];
+	
+	[actions addObject:shipInfo];
+	[buttons addObject:ActionButtonShowShipInfo];
+	
+	[actions addObject:rename];
+	[buttons addObject:ActionButtonSetName];
+	
+	if (!self.fit.loadout.managedObjectContext) {
+		[actions addObject:save];
+		[buttons addObject:ActionButtonSave];
+	}
+	else {
+		[actions addObject:duplicate];
+		[buttons addObject:ActionButtonDuplicate];
+	}
+	
+	[actions addObject:setCharacter];
+	[buttons addObject:ActionButtonCharacter];
+	
+	if (self.fit.loadout.url) {
+		[actions addObject:viewInBrowser];
+		[buttons addObject:ActionButtonViewInBrowser];
+	}
+	
+	[actions addObject:setAreaEffect];
+	[buttons addObject:ActionButtonAreaEffect];
+	
+	[actions addObject:setDamagePattern];
+	[buttons addObject:ActionButtonSetDamagePattern];
+	
+	[actions addObject:requiredSkills];
+	[buttons addObject:ActionButtonRequiredSkills];
+	
+	[actions addObject:exportFit];
+	[buttons addObject:ActionButtonExport];
+	
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
+		self.actionSheet = nil;
+	}
+	
+	
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+													 title:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:self.engine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
+										 otherButtonTitles:buttons
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   void (^action)() = actions[selectedButtonIndex];
+												   action();
+											   }
+											   self.actionSheet = nil;
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark - Private
@@ -373,6 +540,14 @@
 			eufe::Ship* ship = fit.pilot->getShip();
 			ship->setDamagePattern(damagePattern);
 		}
+		[self reload];
+	}
+}
+
+- (IBAction) unwindFromAreaEffectPicker:(UIStoryboardSegue*) segue {
+	NCFittingAreaEffectPickerViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedAreaEffect) {
+		self.engine->setArea(sourceViewController.selectedAreaEffect.typeID);
 		[self reload];
 	}
 }

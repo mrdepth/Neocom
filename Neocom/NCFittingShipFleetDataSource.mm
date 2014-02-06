@@ -207,39 +207,6 @@
 	
 	void (^setCharacter)() = ^(){
 		[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController" sender:fit];
-/*		NCFittingCharacterPickerViewController* controller = [self.controller.storyboard instantiateViewControllerWithIdentifier:@"NCFittingCharacterPickerViewController"];
-		[controller presentInViewController:self.controller
-								   fromRect:cell.bounds
-									 inView:cell
-								   animated:YES
-						  completionHandler:^(NCFitCharacter *character) {
-							  [[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-																			  title:NCTaskManagerDefaultTitle
-																			  block:^(NCTask *task) {
-																				  @synchronized(self.controller) {
-																					  fit.character = character;
-																					  //fit.pilot->setCharacterName([character.name UTF8String]);
-																					  //[fit setSkillLevels:character.skills];
-																				  }
-																			  }
-																  completionHandler:^(NCTask *task) {
-																	  [self.controller reload];
-																  }];
-							  [self.controller dismissAnimated];
-						  }];*/
-
-/*		CharactersViewController *controller = [[CharactersViewController alloc] initWithNibName:@"CharactersViewController" bundle:nil];
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		
-		controller.completionHandler = ^(id<Character> character) {
-			eufe::Character* eufeCharacter = fit.character;
-			eufeCharacter->setSkillLevels(*[character skillsMap]);
-			eufeCharacter->setCharacterName([character.name cStringUsingEncoding:NSUTF8StringEncoding]);
-			[self.fittingViewController update];
-		};
-		
-		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
 	};
 	
 	

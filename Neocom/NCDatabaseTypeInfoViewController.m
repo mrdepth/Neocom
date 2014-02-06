@@ -80,6 +80,8 @@
     [super viewDidLoad];
 	[self reload];
 	self.refreshControl = nil;
+	if (self.type.marketGroupID == 0)
+		self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {

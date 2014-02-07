@@ -2054,8 +2054,6 @@
 		127123821897811F005F46EE /* NCFittingShipViewController */ = {
 			isa = PBXGroup;
 			children = (
-				123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */,
-				1271238618978177005F46EE /* Datasources */,
 				1271238318978148005F46EE /* NCFittingShipViewController.h */,
 				1271238418978148005F46EE /* NCFittingShipViewController.mm */,
 			);
@@ -2784,16 +2782,18 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
-				849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */,
-				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
+				1271238618978177005F46EE /* Datasources */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
+				123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
 				842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */,
 				12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */,
 				849FEE3B18A421A700A4F85E /* NCFittingAreaEffectPickerViewController */,
+				849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */,
+				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,

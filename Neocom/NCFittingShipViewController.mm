@@ -337,6 +337,12 @@
 	};
 	
 	void (^duplicate)() = ^() {
+		[self.fit save];
+		NCStorage* storage = [NCStorage sharedStorage];
+		self.fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+		self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
+		self.title = self.fit.loadoutName;
 /*		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.fit.managedObjectContext] insertIntoManagedObjectContext:self.fit.managedObjectContext];
 		shipFit.typeID = self.fit.typeID;
 		shipFit.typeName = self.fit.typeName;
@@ -441,6 +447,11 @@
 											   self.actionSheet = nil;
 										   } cancelBlock:nil];
 	[self.actionSheet showFromBarButtonItem:sender animated:YES];
+}
+
+- (void) setFit:(NCShipFit *)fit {
+	_fit = fit;
+	self.title = fit.loadoutName;
 }
 
 #pragma mark - Private

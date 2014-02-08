@@ -27,6 +27,7 @@
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
 #import "NCFittingRequiredSkillsViewController.h"
+#import "NCFittingImplantsImportViewController.h"
 
 #include <set>
 
@@ -623,6 +624,26 @@
 			eufe::Module* module = reinterpret_cast<eufe::Module*>([value pointerValue]);
 			ship->replaceModule(module, typeID);
 		}
+		[self reload];
+	}
+}
+
+- (IBAction) unwindFromImplantsImport:(UIStoryboardSegue*) segue {
+	NCFittingImplantsImportViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedFit) {
+		eufe::Character* character = self.fit.pilot;
+		eufe::ImplantsList implants = character->getImplants();
+		for (auto implant: implants)
+			character->removeImplant(implant);
+		for (NCLoadoutDataShipImplant* implant in [(NCLoadoutDataShip*) sourceViewController.selectedFit.loadout.data.data implants])
+			character->addImplant(implant.typeID);
+		
+		eufe::BoostersList boosters = character->getBoosters();
+		for (auto booster: boosters)
+			character->removeBooster(booster);
+		for (NCLoadoutDataShipBooster* booster in [(NCLoadoutDataShip*) sourceViewController.selectedFit.loadout.data.data boosters])
+			character->addBooster(booster.typeID);
+
 		[self reload];
 	}
 }

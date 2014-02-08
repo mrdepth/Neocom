@@ -56,11 +56,13 @@
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		cell.imageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
 		cell.textLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
+		cell.detailTextLabel.text = nil;
+		cell.accessoryView = nil;
 		return cell;
 	}
 	else {
 		NCShipFit* fit = self.controller.fits[indexPath.row];
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipFleetCell"];
+		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		eufe::Gang* gang = self.controller.engine->getGang();
 		
 		eufe::Character* fleetBooster = gang->getFleetBooster();

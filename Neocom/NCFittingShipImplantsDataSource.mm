@@ -26,8 +26,9 @@
 @implementation NCFittingShipImplantsDataSource
 
 - (void) reload {
-	self.implants.clear();
-	self.boosters.clear();
+	self.implants = std::vector<eufe::Implant*>(10, nullptr);
+	self.boosters = std::vector<eufe::Booster*>(4, nullptr);
+	
 	if (self.tableView.dataSource == self)
 		[self.tableView reloadData];
 
@@ -68,36 +69,49 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return section == 0 ? self.implants.size() : self.boosters.size();
+	if (section == 0)
+		return 1;
+	else if (section == 1)
+		return self.implants.size();
+	else
+		return self.boosters.size();
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	EVEDBInvType* type;
-	if (indexPath.section == 0)
-		type = [self.controller typeWithItem:self.implants[indexPath.row]];
-	else
-		type = [self.controller typeWithItem:self.boosters[indexPath.row]];
-	
 	NCTableViewCell *cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	cell.detailTextLabel.text = nil;
+	cell.accessoryView = nil;
 	
-	if (!type) {
-		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), indexPath.row + 1];
-		cell.imageView.image = [UIImage imageNamed:indexPath.section == 0 ? @"implant.png" : @"booster.png"];
+	if (indexPath.section == 0) {
+		cell.textLabel.text = NSLocalizedString(@"Import Implants", nil);
+		cell.imageView.image = [UIImage imageNamed:@"implant.png"];
 	}
 	else {
-		cell.textLabel.text = type.typeName;
-		cell.imageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+		EVEDBInvType* type;
+		if (indexPath.section == 1)
+			type = [self.controller typeWithItem:self.implants[indexPath.row]];
+		else
+			type = [self.controller typeWithItem:self.boosters[indexPath.row]];
+		
+		
+		if (!type) {
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), indexPath.row + 1];
+			cell.imageView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
+		}
+		else {
+			cell.textLabel.text = type.typeName;
+			cell.imageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+		}
 	}
 	return cell;
-	
 }
 
 
@@ -105,16 +119,20 @@
 #pragma mark Table view delegate
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
-	NCFittingSectionGenericHedaerView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHedaerView"];
-	if (sectionIndex == 0) {
-		header.imageView.image = [UIImage imageNamed:@"implant.png"];
-		header.titleLabel.text = NSLocalizedString(@"Implants", nil);
-	}
+	if (sectionIndex == 0)
+		return nil;
 	else {
-		header.imageView.image = [UIImage imageNamed:@"booster.png"];
-		header.titleLabel.text = NSLocalizedString(@"Boosters", nil);
+		NCFittingSectionGenericHedaerView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHedaerView"];
+		if (sectionIndex == 1) {
+			header.imageView.image = [UIImage imageNamed:@"implant.png"];
+			header.titleLabel.text = NSLocalizedString(@"Implants", nil);
+		}
+		else {
+			header.imageView.image = [UIImage imageNamed:@"booster.png"];
+			header.titleLabel.text = NSLocalizedString(@"Boosters", nil);
+		}
+		return header;
 	}
-	return header;
 }
 
 /*- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -133,70 +151,76 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	
-	EVEDBInvType* type;
-	eufe::Item* item = nil;
-	if (indexPath.section == 0)
-		item = self.implants[indexPath.row];
-	else
-		item = self.boosters[indexPath.row];
-	type = [self.controller typeWithItem:item];
-
-	if (!type) {
-		if (indexPath.section == 0) {
-			NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
-									@"dgmTypeAttributes.attributeID = 331",
-									[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
-			
-			self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
-			[self.controller.typePickerViewController presentWithConditions:conditions
-														   inViewController:self.controller
-																   fromRect:cell.bounds
-																	 inView:cell
-																   animated:YES
-														  completionHandler:^(EVEDBInvType *type) {
-															  self.controller.fit.pilot->addImplant(type.typeID);
-															  [self.controller reload];
-															  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-																  [self.controller dismissAnimated];
-														  }];
-		}
-		else {
-			NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
-									@"dgmTypeAttributes.attributeID = 1087",
-									[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
-			
-			self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
-			[self.controller.typePickerViewController presentWithConditions:conditions
-														   inViewController:self.controller
-																   fromRect:cell.bounds
-																	 inView:cell
-																   animated:YES
-														  completionHandler:^(EVEDBInvType *type) {
-															  self.controller.fit.pilot->addBooster(type.typeID);
-															  [self.controller reload];
-															  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-																  [self.controller dismissAnimated];
-														  }];
-		}
+	if (indexPath.section == 0) {
+		[self.controller performSegueWithIdentifier:@"NCFittingImplantsImportViewController" sender:cell];
 	}
 	else {
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
-									   title:nil
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					  destructiveButtonTitle:ActionButtonDelete
-						   otherButtonTitles:@[ActionButtonShowInfo]
-							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
-									 if (indexPath.section == 0)
-										 self.controller.fit.pilot->removeImplant(self.implants[indexPath.row]);
-									 else
-										 self.controller.fit.pilot->removeBooster(self.boosters[indexPath.row]);
-									 [self.controller reload];
-								 }
-								 else if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-									 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:item]];
-								 }
-							 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+		EVEDBInvType* type;
+		eufe::Item* item = nil;
+		
+		if (indexPath.section == 1)
+			item = self.implants[indexPath.row];
+		else
+			item = self.boosters[indexPath.row];
+		type = [self.controller typeWithItem:item];
+		
+		if (!type) {
+			if (indexPath.section == 1) {
+				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
+										@"dgmTypeAttributes.attributeID = 331",
+										[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
+				
+				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
+				[self.controller.typePickerViewController presentWithConditions:conditions
+															   inViewController:self.controller
+																	   fromRect:cell.bounds
+																		 inView:cell
+																	   animated:YES
+															  completionHandler:^(EVEDBInvType *type) {
+																  self.controller.fit.pilot->addImplant(type.typeID);
+																  [self.controller reload];
+																  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+																	  [self.controller dismissAnimated];
+															  }];
+			}
+			else {
+				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
+										@"dgmTypeAttributes.attributeID = 1087",
+										[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
+				
+				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
+				[self.controller.typePickerViewController presentWithConditions:conditions
+															   inViewController:self.controller
+																	   fromRect:cell.bounds
+																		 inView:cell
+																	   animated:YES
+															  completionHandler:^(EVEDBInvType *type) {
+																  self.controller.fit.pilot->addBooster(type.typeID);
+																  [self.controller reload];
+																  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+																	  [self.controller dismissAnimated];
+															  }];
+			}
+		}
+		else {
+			[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+										   title:nil
+							   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+						  destructiveButtonTitle:ActionButtonDelete
+							   otherButtonTitles:@[ActionButtonShowInfo]
+								 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+									 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
+										 if (indexPath.section == 0)
+											 self.controller.fit.pilot->removeImplant(self.implants[indexPath.row]);
+										 else
+											 self.controller.fit.pilot->removeBooster(self.boosters[indexPath.row]);
+										 [self.controller reload];
+									 }
+									 else if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+										 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:item]];
+									 }
+								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+		}
 	}
 }
 

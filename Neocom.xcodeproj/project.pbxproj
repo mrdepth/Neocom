@@ -391,6 +391,8 @@
 		849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */; };
 		849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */; };
 		849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */; };
+		84A076F218A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */; };
+		84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
@@ -1116,6 +1118,10 @@
 		849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAreaEffectPickerViewController.m; sourceTree = "<group>"; };
 		849FEE4018A42C4300A4F85E /* NCFittingTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTypeVariationsViewController.h; sourceTree = "<group>"; };
 		849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTypeVariationsViewController.m; sourceTree = "<group>"; };
+		84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantsImportViewController.h; sourceTree = "<group>"; };
+		84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingImplantsImportViewController.mm; sourceTree = "<group>"; };
+		84A076F418A6BAFC00FBCC33 /* NCFittingImplantsImportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantsImportCell.h; sourceTree = "<group>"; };
+		84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingImplantsImportCell.m; sourceTree = "<group>"; };
 		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
@@ -2807,6 +2813,7 @@
 				849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */,
 				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				8435C87318A6909E00D11FC9 /* NCFittingRequiredSkillsViewController */,
+				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
@@ -2849,6 +2856,25 @@
 				849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */,
 			);
 			name = NCFittingTypeVariationsViewController;
+			sourceTree = "<group>";
+		};
+		84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84A076F318A6BAE100FBCC33 /* NCFittingImplantsImportCell */,
+				84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */,
+				84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */,
+			);
+			name = NCFittingImplantsImportViewController;
+			sourceTree = "<group>";
+		};
+		84A076F318A6BAE100FBCC33 /* NCFittingImplantsImportCell */ = {
+			isa = PBXGroup;
+			children = (
+				84A076F418A6BAFC00FBCC33 /* NCFittingImplantsImportCell.h */,
+				84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */,
+			);
+			name = NCFittingImplantsImportCell;
 			sourceTree = "<group>";
 		};
 		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
@@ -3228,6 +3254,7 @@
 				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
+				84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
 				128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
@@ -3387,6 +3414,7 @@
 				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
+				84A076F218A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm in Sources */,
 				12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */,
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,

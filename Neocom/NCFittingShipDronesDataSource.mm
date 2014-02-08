@@ -136,6 +136,8 @@
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		cell.imageView.image = [UIImage imageNamed:@"drone.png"];
 		cell.textLabel.text = NSLocalizedString(@"Add Drone", nil);
+		cell.detailTextLabel.text = nil;
+		cell.accessoryView = nil;
 
 		return cell;
 	}

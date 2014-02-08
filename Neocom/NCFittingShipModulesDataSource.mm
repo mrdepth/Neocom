@@ -155,6 +155,8 @@
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size()) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		cell.detailTextLabel.text = nil;
+		cell.accessoryView = nil;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
 				cell.imageView.image = [UIImage imageNamed:@"slotHigh.png"];

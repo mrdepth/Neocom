@@ -26,6 +26,9 @@
 #import "NCFittingTypeVariationsViewController.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
+#import "NCFittingRequiredSkillsViewController.h"
+
+#include <set>
 
 #define ActionButtonBack NSLocalizedString(@"Back", nil)
 #define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
@@ -236,7 +239,10 @@
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
 		controller.type = [self typeWithItem:item];
 	}
-	
+	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
+		NCFittingRequiredSkillsViewController* destinationViewController = [segue destinationViewController];
+		destinationViewController.trainingQueue = sender;
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -375,6 +381,41 @@
 	};
 	
 	void (^requiredSkills)() = ^() {
+		NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount]];
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 @synchronized(self) {
+													 std::set<eufe::TypeID> typeIDs;
+													 eufe::Character* character = self.fit.pilot;
+													 eufe::Ship* ship = character->getShip();
+													 typeIDs.insert(ship->getTypeID());
+													 
+													 for (auto module: ship->getModules()) {
+														 typeIDs.insert(module->getTypeID());
+														 eufe::Charge* charge = module->getCharge();
+														 if (charge)
+															 typeIDs.insert(charge->getTypeID());
+													 }
+													 
+													 for (auto drone: ship->getDrones())
+														 typeIDs.insert(drone->getTypeID());
+
+													 for (auto implant: character->getImplants())
+														 typeIDs.insert(implant->getTypeID());
+
+													 for (auto booster: character->getBoosters())
+														 typeIDs.insert(booster->getTypeID());
+
+													 for (auto typeID: typeIDs)
+														 [trainingQueue addRequiredSkillsForType:[EVEDBInvType invTypeWithTypeID:typeID error:nil]];
+												 }
+											 }
+								 completionHandler:^(NCTask *task) {
+									 if (![task isCancelled]) {
+										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController" sender:trainingQueue];
+									 }
+								 }];
 /*		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
 		requiredSkillsViewController.fit = self.fit;
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];

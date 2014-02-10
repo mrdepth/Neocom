@@ -396,6 +396,7 @@
 		84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
+		84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AC540C18A94034000C308C /* ShipFitting.storyboard */; };
 		84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */; };
 		84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182C1898443900A35516 /* NCDatabaseTypePickerContentViewController.m */; };
 		84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1182F1898457E00A35516 /* UIViewController+Neocom.m */; };
@@ -1129,6 +1130,7 @@
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
 		84A6E52018A174F100231735 /* NCProgressTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCProgressTextField.m; sourceTree = "<group>"; };
+		84AC540C18A94034000C308C /* ShipFitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShipFitting.storyboard; sourceTree = "<group>"; };
 		84C1182618983B2D00A35516 /* NCDatabaseTypePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerViewController.h; sourceTree = "<group>"; };
 		84C1182718983B2D00A35516 /* NCDatabaseTypePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypePickerViewController.m; sourceTree = "<group>"; };
 		84C1182B1898443900A35516 /* NCDatabaseTypePickerContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypePickerContentViewController.h; sourceTree = "<group>"; };
@@ -1289,6 +1291,7 @@
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
+				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
@@ -3116,6 +3119,7 @@
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
+				84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */,
 				849B9FC21896D24A00D4DD2B /* implant.png in Resources */,
 				849B9FC81896D24A00D4DD2B /* offline.png in Resources */,
 				849B9FB31896D24A00D4DD2B /* booster.png in Resources */,

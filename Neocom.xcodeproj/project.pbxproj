@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */; };
 		12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041556189A449E00B15BB5 /* NCFittingShipWeaponsCell.m */; };
 		1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041559189A44AC00B15BB5 /* NCFittingShipResourcesCell.m */; };
 		1204155D189A44CF00B15BB5 /* NCFittingShipResistancesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204155C189A44CF00B15BB5 /* NCFittingShipResistancesCell.m */; };
@@ -455,6 +456,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1202FC7418A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipAffectingSkillsViewController.h; sourceTree = "<group>"; };
+		1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipAffectingSkillsViewController.m; sourceTree = "<group>"; };
 		12041555189A449E00B15BB5 /* NCFittingShipWeaponsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipWeaponsCell.h; sourceTree = "<group>"; };
 		12041556189A449E00B15BB5 /* NCFittingShipWeaponsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipWeaponsCell.m; sourceTree = "<group>"; };
 		12041558189A44AC00B15BB5 /* NCFittingShipResourcesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipResourcesCell.h; sourceTree = "<group>"; };
@@ -1199,6 +1202,15 @@
 				12C9DCA018617A6300A654C5 /* NCAccountsManager.m */,
 			);
 			name = NCAccountsManager;
+			sourceTree = "<group>";
+		};
+		1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1202FC7418A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.h */,
+				1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */,
+			);
+			name = NCFittingShipAffectingSkillsViewController;
 			sourceTree = "<group>";
 		};
 		1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */ = {
@@ -2814,6 +2826,7 @@
 				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				8435C87318A6909E00D11FC9 /* NCFittingRequiredSkillsViewController */,
 				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
+				1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
@@ -3256,6 +3269,7 @@
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
 				84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
+				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,

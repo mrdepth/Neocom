@@ -27,12 +27,15 @@
 
 + (NSArray*) loadouts {
 	NCStorage* storage = [NCStorage sharedStorage];
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext];
-	[fetchRequest setEntity:entity];
-	
-	NSError *error = nil;
-	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	__block NSArray *fetchedObjects = nil;
+	[storage.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		
+		NSError *error = nil;
+		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	}];
 	return fetchedObjects;
 }
 

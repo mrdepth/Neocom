@@ -15,6 +15,7 @@
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
 #define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
+#define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 
 @interface NCFittingShipImplantsDataSource()
@@ -207,7 +208,7 @@
 										   title:nil
 							   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 						  destructiveButtonTitle:ActionButtonDelete
-							   otherButtonTitles:@[ActionButtonShowInfo]
+							   otherButtonTitles:@[ActionButtonShowInfo, ActionButtonAffectingSkills]
 								 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 									 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
 										 if (indexPath.section == 0)
@@ -216,8 +217,11 @@
 											 self.controller.fit.pilot->removeBooster(self.boosters[indexPath.row]);
 										 [self.controller reload];
 									 }
-									 else if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+									 else if (selectedButtonIndex == 1) {
 										 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:item]];
+									 }
+									 else if (selectedButtonIndex == 2) {
+										 [self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:item]];
 									 }
 								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 		}

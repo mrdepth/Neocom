@@ -28,6 +28,7 @@
 #import "UIAlertView+Block.h"
 #import "NCFittingRequiredSkillsViewController.h"
 #import "NCFittingImplantsImportViewController.h"
+#import "NCFittingShipAffectingSkillsViewController.h"
 
 #include <set>
 
@@ -44,6 +45,7 @@
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDuplicate NSLocalizedString(@"Duplicate Fit", nil)
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
+#define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 @interface NCFittingShipViewController ()
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
@@ -244,6 +246,21 @@
 		NCFittingRequiredSkillsViewController* destinationViewController = [segue destinationViewController];
 		destinationViewController.trainingQueue = sender;
 	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipAffectingSkillsViewController"]) {
+		NCFittingShipAffectingSkillsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		
+		NSMutableArray* typeIDs = [NSMutableArray new];
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
+		for (auto item: item->getAffectors()) {
+			eufe::Skill* skill = dynamic_cast<eufe::Skill*>(item);
+			if (skill) {
+				[typeIDs addObject:@((NSInteger) item->getTypeID())];
+			}
+		}
+		
+		controller.affectingSkillsTypeIDs = typeIDs;
+		controller.character = self.fit.character;
+	}
 }
 
 - (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
@@ -350,16 +367,6 @@
 		self.fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 		self.fit.loadoutName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.loadoutName ? self.fit.loadoutName : @""];
 		self.title = self.fit.loadoutName;
-/*		ShipFit* shipFit = [[ShipFit alloc] initWithEntity:[NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.fit.managedObjectContext] insertIntoManagedObjectContext:self.fit.managedObjectContext];
-		shipFit.typeID = self.fit.typeID;
-		shipFit.typeName = self.fit.typeName;
-		shipFit.imageName = self.fit.imageName;
-		shipFit.fitName = [NSString stringWithFormat:NSLocalizedString(@"%@ copy", nil), self.fit.fitName ? self.fit.fitName : @""];
-		shipFit.character = self.fit.character;
-		[self.fits replaceObjectAtIndex:[self.fits indexOfObject:self.fit] withObject:shipFit];
-		self.fit = shipFit;
-		self.fitNameTextField.text = shipFit.fitName;
-		[self update];*/
 	};
 	
 	void (^setCharacter)() = ^() {
@@ -417,20 +424,16 @@
 										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController" sender:trainingQueue];
 									 }
 								 }];
-/*		RequiredSkillsViewController *requiredSkillsViewController = [[RequiredSkillsViewController alloc] initWithNibName:@"RequiredSkillsViewController" bundle:nil];
-		requiredSkillsViewController.fit = self.fit;
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:requiredSkillsViewController];
-		navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-			navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[self presentViewController:navController animated:YES completion:nil];*/
 	};
 	
 	void (^exportFit)() = ^() {
 		//[self performExport];
 	};
+	
+	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:self.fit.pilot->getShip()]];
+	};
+
 	
 	if (self.engine->getArea() != NULL)
 		[actions addObject:clearAreaEffect];
@@ -470,6 +473,9 @@
 	[actions addObject:exportFit];
 	[buttons addObject:ActionButtonExport];
 	
+	[buttons addObject:ActionButtonAffectingSkills];
+	[actions addObject:affectingSkills];
+
 	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
 		self.actionSheet = nil;
@@ -506,6 +512,9 @@
 											 @synchronized(self) {
 												 if (sourceViewController.selectedCharacter)
 													 sourceViewController.fit.character = sourceViewController.selectedCharacter;
+												 else if ([sourceViewController.fit.character isDeleted]) {
+													 sourceViewController.fit.character = [NCFitCharacter characterWithSkillsLevel:5];
+												 }
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -645,6 +654,22 @@
 			character->addBooster(booster.typeID);
 
 		[self reload];
+	}
+}
+
+- (IBAction) unwindFromAffectingSkills:(UIStoryboardSegue*) segue {
+	NCFittingShipAffectingSkillsViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.modified) {
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 @synchronized(self) {
+													 self.fit.character = sourceViewController.character;
+												 }
+											 }
+								 completionHandler:^(NCTask *task) {
+									 [self reload];
+								 }];
 	}
 }
 

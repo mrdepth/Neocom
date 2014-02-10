@@ -36,6 +36,7 @@
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
 #define ActionButtonVariations NSLocalizedString(@"Variations", nil)
 #define ActionButtonAllSimilarModules NSLocalizedString(@"All Similar Modules", nil)
+#define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 
 @interface NCFittingShipModulesDataSourceSection : NSObject {
@@ -549,28 +550,6 @@
 			[array addObject:[NSValue valueWithPointer:module]];
 		
 		[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController" sender:array];
-/*		FittingVariationsViewController* controller = [[FittingVariationsViewController alloc] initWithNibName:@"VariationsViewController" bundle:nil];
-		controller.type = itemInfo;
-		
-		controller.completionHandler = ^(EVEDBInvType* type) {
-			for (ItemInfo* itemInfo in modules) {
-				eufe::Module* module = dynamic_cast<eufe::Module*>(itemInfo.item);
-				ship->replaceModule(module, type.typeID);
-			}
-			[self.fittingViewController dismiss];
-			[self.fittingViewController update];
-		};
-		
-		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		
-		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-			[self.fittingViewController presentViewControllerInPopover:navigationController
-															  fromRect:[self.tableView rectForRowAtIndexPath:indexPath]
-																inView:self.tableView
-											  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		}
-		else
-			[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
 	};
 	
 	void (^similarModules)(eufe::ModulesList) = ^(eufe::ModulesList modules){
@@ -615,6 +594,10 @@
 							 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	};
 	
+	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
+		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:module]];
+	};
+	
 	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	
@@ -657,7 +640,10 @@
 	}
 	[buttons addObject:ActionButtonVariations];
 	[actions addObject:variations];
-	
+
+	[buttons addObject:ActionButtonAffectingSkills];
+	[actions addObject:affectingSkills];
+
 	if (multiple) {
 		[buttons addObject:ActionButtonAllSimilarModules];
 		[actions addObject:similarModules];

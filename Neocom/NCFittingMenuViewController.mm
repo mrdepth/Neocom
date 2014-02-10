@@ -87,6 +87,18 @@
 	}
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return nil;
+	else {
+		NSArray* rows = self.sections[section - 1];
+		if (rows.count > 0)
+			return [rows[0] valueForKeyPath:@"type.group.groupName"];
+		else
+			return nil;
+	}
+}
+
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

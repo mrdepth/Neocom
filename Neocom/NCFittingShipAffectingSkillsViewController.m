@@ -1,30 +1,29 @@
 //
-//  NCFittingCharacterEditorViewController.m
+//  NCFittingShipAffectingSkillsViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 31.01.14.
+//  Created by Артем Шиманский on 10.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingCharacterEditorViewController.h"
-#import "NCFitCharacter.h"
-#import "EVEDBAPI.h"
+#import "NCFittingShipAffectingSkillsViewController.h"
 #import "NSArray+Neocom.h"
-#import "UIActionSheet+Block.h"
 #import "NCFittingCharacterEditorCell.h"
-#import "UIAlertView+Block.h"
+#import "UIActionSheet+Block.h"
+#import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
 
-@interface NCFittingCharacterEditorViewController ()
+@interface NCFittingShipAffectingSkillsViewController ()
 @property (nonatomic, strong) NSArray* sections;
 @property (nonatomic, strong) NSDictionary* skills;
+
 @end
 
-@implementation NCFittingCharacterEditorViewController
+@implementation NCFittingShipAffectingSkillsViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
     }
@@ -36,7 +35,7 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	self.title = self.character.name;
-
+	
 	NSMutableDictionary* skills = [NSMutableDictionary new];
 	NSMutableArray* sections = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -50,32 +49,29 @@
 																					skillData.trainedLevel = -1;
 																					skills[@(skillData.typeID)] = skillData;
 																				}];
-											 for (NSArray* array in [[[skills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
+
+											 NSMutableDictionary* visibleSkills = [NSMutableDictionary new];
+											 for (NSNumber* typeID in self.affectingSkillsTypeIDs) {
+												 visibleSkills[typeID] = skills[typeID];
+											 }
+											 
+											 for (NSArray* array in [[[visibleSkills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
 												 NSString* title = [[array[0] group] groupName];
 												 [sections addObject:@{@"title": title, @"rows": array}];
 											 }
+											 
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 												 NCSkillData* skillData = skills[typeID];
 												 skillData.currentLevel = [level integerValue];
 											 }];
 											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-
+											 
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.skills = skills;
 								 self.sections = sections;
 								 [self.tableView reloadData];
 							 }];
-	// Do any additional setup after loading the view.
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	NSMutableDictionary* skills = [NSMutableDictionary new];
-	[self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
-		skills[typeID] = @(skillData.currentLevel);
-	}];
-	self.character.skills = skills;
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,32 +80,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)onAction:(id)sender {
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
-								   title:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-																				  message:nil
-																		cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-																		otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-																		  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-																			  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-																				  UITextField* textField = [alertView textFieldAtIndex:0];
-																				  self.character.name = textField.text;
-																				  self.title = self.character.name;
-																			  }
-																		  } cancelBlock:nil];
-								 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-								 UITextField* textField = [alertView textFieldAtIndex:0];
-								 textField.text = self.character.name;
-								 [alertView show];
-							 }
-						 }
-							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	if (self.modified) {
+		NSMutableDictionary* skills = [NSMutableDictionary new];
+		[self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
+			skills[typeID] = @(skillData.currentLevel);
+		}];
+		self.character.skills = skills;
+		if (!self.character.managedObjectContext) {
+			NCStorage* storage = [NCStorage sharedStorage];
+			[storage.managedObjectContext insertObject:self.character];
+			[storage saveContext];
+		}
+	}
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -118,6 +102,7 @@
 		destinationViewController.type = [sender skillData];
 	}
 }
+
 
 #pragma mark - Table view data source
 
@@ -161,6 +146,7 @@
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 								 skill.currentLevel = selectedButtonIndex;
 								 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+								 self.modified = YES;
 							 }
 						 }
 							 cancelBlock:^{

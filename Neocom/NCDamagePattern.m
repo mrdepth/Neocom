@@ -19,13 +19,15 @@
 
 + (NSArray*) damagePatterns {
 	NCStorage* storage = [NCStorage sharedStorage];
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext];
-	[fetchRequest setEntity:entity];
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-	
-	NSError *error = nil;
-	NSArray *fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	__block NSArray *fetchedObjects = nil;
+	[storage.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+		
+		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	}];
 	return fetchedObjects;
 }
 

@@ -24,6 +24,7 @@
 #define ActionButtonShowInfo NSLocalizedString(@"Show Info", nil)
 #define ActionButtonSetTarget NSLocalizedString(@"Set Target", nil)
 #define ActionButtonClearTarget NSLocalizedString(@"Clear Target", nil)
+#define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
 @interface NCFittingShipDronesDataSourceRow : NSObject {
 	eufe::DronesList _drones;
@@ -290,6 +291,11 @@
 		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:drone]];
 	};
 	
+	void (^affectingSkills)(eufe::DronesList) = ^(eufe::DronesList drones){
+		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:drone]];
+	};
+	
+	
 	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	
@@ -308,6 +314,9 @@
 	
 	[buttons addObject:ActionButtonAmount];
 	[actions addObject:setAmount];
+	
+	[buttons addObject:ActionButtonAffectingSkills];
+	[actions addObject:affectingSkills];
 	
 	if (self.controller.fits.count > 1) {
 		[buttons addObject:ActionButtonSetTarget];

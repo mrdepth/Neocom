@@ -12,6 +12,7 @@
 #import "UIViewController+Neocom.h"
 #import "NCStorage.h"
 #import "NCShipFit.h"
+#import "NCPOSFit.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
@@ -105,6 +106,7 @@
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
 		if (indexPath.row == 2) {
+			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
 			[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
 												inViewController:self
 														fromRect:cell.bounds
@@ -117,6 +119,23 @@
 												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
 												   
 												   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+												   [self dismissAnimated];
+											   }];
+		}
+		else if (indexPath.row == 3) {
+			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
+			[self.typePickerViewController presentWithConditions:@[@"invTypes.marketGroupID = 478"]
+												inViewController:self
+														fromRect:cell.bounds
+														  inView:cell
+														animated:YES
+											   completionHandler:^(EVEDBInvType *type) {
+												   NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
+												   NCStorage* storage = [NCStorage sharedStorage];
+												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												   
+												   [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
 												   [self dismissAnimated];
 											   }];
 		}

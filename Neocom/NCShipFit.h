@@ -50,10 +50,10 @@
 
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
-@property (nonatomic, assign) eufe::Character* pilot;
-@property (nonatomic, assign) EVEDBInvType* type;
 @property (nonatomic, strong) NSString* loadoutName;
+@property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
+@property (nonatomic, strong) EVEDBInvType* type;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;

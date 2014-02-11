@@ -252,6 +252,10 @@
 		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
 		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
+		129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 129C585618AA02B200CA8787 /* POSFitting.storyboard */; };
+		129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 129C585C18AA06AA00CA8787 /* NCPOSFit.mm */; };
+		129C586218AA2CF900CA8787 /* NCFittingPOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129C586118AA2CF900CA8787 /* NCFittingPOSViewController.m */; };
+		129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129C586418AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m */; };
 		129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D257D187E8CB400E2062C /* NCMainMenuViewController.m */; };
 		129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2583187E923200E2062C /* ASCaptionTextField.m */; };
 		129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D25A5187E923200E2062C /* ASInAppPurchase.m */; };
@@ -904,6 +908,13 @@
 		129421B71880321900977CB8 /* NCAccountCorporationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCorporationCell.m; sourceTree = "<group>"; };
 		1296C6C01890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificateInfoViewController.h; sourceTree = "<group>"; };
 		1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificateInfoViewController.m; sourceTree = "<group>"; };
+		129C585618AA02B200CA8787 /* POSFitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = POSFitting.storyboard; sourceTree = "<group>"; };
+		129C585B18AA06AA00CA8787 /* NCPOSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPOSFit.h; sourceTree = "<group>"; };
+		129C585C18AA06AA00CA8787 /* NCPOSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCPOSFit.mm; sourceTree = "<group>"; };
+		129C586018AA2CF900CA8787 /* NCFittingPOSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSViewController.h; sourceTree = "<group>"; };
+		129C586118AA2CF900CA8787 /* NCFittingPOSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSViewController.m; sourceTree = "<group>"; };
+		129C586318AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSWorkspaceViewController.h; sourceTree = "<group>"; };
+		129C586418AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSWorkspaceViewController.m; sourceTree = "<group>"; };
 		129D257C187E8CB400E2062C /* NCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMainMenuViewController.h; sourceTree = "<group>"; };
 		129D257D187E8CB400E2062C /* NCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMainMenuViewController.m; sourceTree = "<group>"; };
 		129D2582187E923200E2062C /* ASCaptionTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCaptionTextField.h; sourceTree = "<group>"; };
@@ -1292,6 +1303,7 @@
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
+				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
@@ -2235,6 +2247,33 @@
 			name = NCDatabaseCertificateInfoViewController;
 			sourceTree = "<group>";
 		};
+		129C585A18AA068F00CA8787 /* NCPOSFit */ = {
+			isa = PBXGroup;
+			children = (
+				129C585B18AA06AA00CA8787 /* NCPOSFit.h */,
+				129C585C18AA06AA00CA8787 /* NCPOSFit.mm */,
+			);
+			name = NCPOSFit;
+			sourceTree = "<group>";
+		};
+		129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */ = {
+			isa = PBXGroup;
+			children = (
+				129C586018AA2CF900CA8787 /* NCFittingPOSViewController.h */,
+				129C586118AA2CF900CA8787 /* NCFittingPOSViewController.m */,
+			);
+			name = NCFittingPOSViewController;
+			sourceTree = "<group>";
+		};
+		129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				129C586318AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.h */,
+				129C586418AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m */,
+			);
+			name = NCFittingPOSWorkspaceViewController;
+			sourceTree = "<group>";
+		};
 		129D2578187E835800E2062C /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -2815,6 +2854,8 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
+				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
 				1271238618978177005F46EE /* Datasources */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
@@ -2831,6 +2872,7 @@
 				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
 				1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */,
 				12C5074C189B6ED70064AC32 /* NCShipFit */,
+				129C585A18AA068F00CA8787 /* NCPOSFit */,
 				127123991897968E005F46EE /* Headers */,
 				1271237E18977E6F005F46EE /* Cells */,
 			);
@@ -3169,6 +3211,7 @@
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
 				125F6815188526B6005732FA /* level_451.gif in Resources */,
 				849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */,
+				129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */,
 				849B9FBF1896D24A00D4DD2B /* Gravimetric.png in Resources */,
 				849B9FD61896D24A00D4DD2B /* slotSubsystem.png in Resources */,
 				84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */,
@@ -3256,6 +3299,8 @@
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
 				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
+				129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */,
+				129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
@@ -3501,6 +3546,7 @@
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
 				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
+				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.m in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,

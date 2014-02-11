@@ -130,7 +130,36 @@
 								 self.workspaceViewController.tableView.delegate = self.modulesDataSource;
 								 self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
 								 
-								 [self.modulesDataSource reload];
+								 if (self.sectionSegmentedControl.selectedSegmentIndex == 0) {
+									 self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
+									 self.workspaceViewController.tableView.delegate = self.modulesDataSource;
+									 self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+									 [self.modulesDataSource reload];
+								 }
+								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 1) {
+									 self.workspaceViewController.tableView.dataSource = self.dronesDataSource;
+									 self.workspaceViewController.tableView.delegate = self.dronesDataSource;
+									 self.workspaceViewController.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
+									 [self.dronesDataSource reload];
+								 }
+								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 2) {
+									 self.workspaceViewController.tableView.dataSource = self.implantsDataSource;
+									 self.workspaceViewController.tableView.delegate = self.implantsDataSource;
+									 self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
+									 [self.implantsDataSource reload];
+								 }
+								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 3) {
+									 self.workspaceViewController.tableView.dataSource = self.fleetDataSource;
+									 self.workspaceViewController.tableView.delegate = self.fleetDataSource;
+									 self.workspaceViewController.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
+									 [self.fleetDataSource reload];
+								 }
+								 else {
+									 self.workspaceViewController.tableView.dataSource = self.statsDataSource;
+									 self.workspaceViewController.tableView.delegate = self.statsDataSource;
+									 self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
+									 [self.statsDataSource reload];
+								 }
 							 }];
 }
 

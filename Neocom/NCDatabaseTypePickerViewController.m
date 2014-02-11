@@ -76,6 +76,7 @@
 		[self.viewControllers[0] setGroupID:0];
 	}
 	[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
+	[self.viewControllers[0] setTitle:self.title];
 	
 	self.completionHandler = completion;
 	
@@ -83,6 +84,12 @@
 		[controller presentViewControllerInPopover:self fromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
 	else
 		[controller presentViewController:self animated:animated completion:nil];
+}
+
+- (void) setTitle:(NSString *)title {
+	[super setTitle:title];
+	if (self.viewControllers.count > 0)
+		[self.viewControllers[0] setTitle:self.title];
 }
 
 #pragma mark - Private

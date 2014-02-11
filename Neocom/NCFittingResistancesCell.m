@@ -1,14 +1,14 @@
 //
-//  NCFittingShipResistancesCell.m
+//  NCFittingResistancesCell.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 30.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipResistancesCell.h"
+#import "NCFittingResistancesCell.h"
 
-@implementation NCFittingShipResistancesCell
+@implementation NCFittingResistancesCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

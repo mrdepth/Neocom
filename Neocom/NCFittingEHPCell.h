@@ -1,5 +1,5 @@
 //
-//  NCFittingShipEHPCell.h
+//  NCFittingEHPCell.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 30.01.14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCFittingShipEHPCell : UITableViewCell
+@interface NCFittingEHPCell : UITableViewCell
 @property (nonatomic, strong) IBOutlet UILabel* ehpLabel;
 @end

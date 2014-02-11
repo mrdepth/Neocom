@@ -1,5 +1,5 @@
 //
-//  NCFittingShipResistancesCell.h
+//  NCFittingResistancesCell.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 30.01.14.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NCProgressLabel.h"
 
-@interface NCFittingShipResistancesCell : UITableViewCell
+@interface NCFittingResistancesCell : UITableViewCell
 @property (nonatomic, weak) IBOutlet UIImageView* categoryImageView;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *emLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *thermalLabel;

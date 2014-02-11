@@ -1,14 +1,14 @@
 //
-//  NCFittingShipEHPCell.m
+//  NCFittingPOSResourcesCell.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 30.01.14.
+//  Created by Shimanski Artem on 11.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipEHPCell.h"
+#import "NCFittingPOSResourcesCell.h"
 
-@implementation NCFittingShipEHPCell
+@implementation NCFittingPOSResourcesCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

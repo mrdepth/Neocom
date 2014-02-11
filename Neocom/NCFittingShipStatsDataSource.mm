@@ -10,8 +10,8 @@
 #import "NCFittingShipViewController.h"
 #import "NCFittingShipWeaponsCell.h"
 #import "NCFittingShipResourcesCell.h"
-#import "NCFittingShipResistancesCell.h"
-#import "NCFittingShipEHPCell.h"
+#import "NCFittingResistancesCell.h"
+#import "NCFittingEHPCell.h"
 #import "NCFittingShipCapacitorCell.h"
 #import "NCFittingShipFirepowerCell.h"
 #import "NCFittingShipTankCell.h"
@@ -268,16 +268,16 @@
 	}
 	else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
-			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipResistancesHeaderCell"];
+			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesHeaderCell"];
 			return cell;
 		}
 		else if (indexPath.row == 5) {
-			NCFittingShipEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipEHPCell"];
+			NCFittingEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingEHPCell"];
 			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:self.shipStats.ehp unit:nil]];
 			return cell;
 		}
 		else {
-			NCFittingShipResistancesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipResistancesCell"];
+			NCFittingResistancesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesCell"];
 			if (self.shipStats) {
 				float values[5] = {0};
 				NSString* imageName = nil;

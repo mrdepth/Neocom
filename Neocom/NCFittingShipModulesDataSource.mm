@@ -472,13 +472,11 @@
 	}
 	
 	void (^setAmmo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		const std::vector<eufe::TypeID>& chargeGroups = module->getChargeGroups();
-		std::vector<eufe::TypeID>::const_iterator i, end = chargeGroups.end();
 		int chargeSize = module->getChargeSize();
 		
 		NSMutableArray *groups = [NSMutableArray new];
-		for (i = chargeGroups.begin(); i != end; i++)
-			[groups addObject:[NSString stringWithFormat:@"%d", *i]];
+		for (auto i: module->getChargeGroups())
+			[groups addObject:[NSString stringWithFormat:@"%d", i]];
 		
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
 		NSArray* conditions;

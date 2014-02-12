@@ -13,6 +13,8 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
 #import "UIActionSheet+Block.h"
+#import "NCFittingPOSStructuresTableHeaderView.h"
+#import "UIView+Nib.h"
 
 #define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)
 #define ActionButtonOnline NSLocalizedString(@"Put Online", nil)
@@ -42,10 +44,11 @@
 
 @interface NCFittingPOSStructuresDataSource()
 @property (nonatomic, strong) NSArray* rows;
-//@property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
+@property (nonatomic, strong, readwrite) NCFittingPOSStructuresTableHeaderView* tableHeaderView;
 @end
 
 @implementation NCFittingPOSStructuresDataSource
+@synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
 	self.rows = nil;
@@ -93,27 +96,22 @@
 												if (self.tableView.dataSource == self)
 													[self.tableView reloadData];
 												
-/*												self.tableHeaderView.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
-												self.tableHeaderView.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
-												self.tableHeaderView.droneBandwidthLabel.text = [NSString stringWithTotalResources:totalBandwidth usedResources:usedBandwidth unit:@"Mbit/s"];
-												self.tableHeaderView.droneBandwidthLabel.progress = totalBandwidth > 0 ? usedBandwidth / totalBandwidth : 0;
-												self.tableHeaderView.dronesCountLabel.text = [NSString stringWithFormat:@"%d/%d", activeDrones, maxActiveDrones];
-												if (activeDrones > maxActiveDrones)
-													self.tableHeaderView.dronesCountLabel.textColor = [UIColor redColor];
-												else
-													self.tableHeaderView.dronesCountLabel.textColor = [UIColor whiteColor];*/
+												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
+												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
+												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
+												self.tableHeaderView.cpuLabel.progress = usedCPU > 0 ? usedCPU / totalCPU : 0;
 												
 											}
 										}];
 }
 
 
-/*- (NCFittingShipDronesTableHeaderView*) tableHeaderView {
+- (NCFittingPOSStructuresTableHeaderView*) tableHeaderView {
 	if (!_tableHeaderView) {
-		_tableHeaderView = [NCFittingShipDronesTableHeaderView viewWithNibName:@"NCFittingShipDronesTableHeaderView" bundle:nil];
+		_tableHeaderView = [NCFittingPOSStructuresTableHeaderView viewWithNibName:@"NCFittingPOSStructuresTableHeaderView" bundle:nil];
 	}
 	return _tableHeaderView;
-}*/
+}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -152,6 +150,16 @@
 		
 		cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
 		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		
+		eufe::Charge* charge = structure->getCharge();
+		
+		if (charge) {
+			EVEDBInvType* type = [self.controller typeWithItem:charge];
+			cell.chargeLabel.text = type.typeName;
+		}
+		else
+			cell.chargeLabel.text = nil;
+
 		
 		if (optimal > 0) {
 			NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];

@@ -126,40 +126,13 @@
 								 self.statsDataSource.controller = self;
 								 self.statsDataSource.tableView = self.workspaceViewController.tableView;
 								 
-								 self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
-								 self.workspaceViewController.tableView.delegate = self.modulesDataSource;
-								 self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
+								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
+								 NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
 								 
-								 if (self.sectionSegmentedControl.selectedSegmentIndex == 0) {
-									 self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
-									 self.workspaceViewController.tableView.delegate = self.modulesDataSource;
-									 self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
-									 [self.modulesDataSource reload];
-								 }
-								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 1) {
-									 self.workspaceViewController.tableView.dataSource = self.dronesDataSource;
-									 self.workspaceViewController.tableView.delegate = self.dronesDataSource;
-									 self.workspaceViewController.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
-									 [self.dronesDataSource reload];
-								 }
-								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 2) {
-									 self.workspaceViewController.tableView.dataSource = self.implantsDataSource;
-									 self.workspaceViewController.tableView.delegate = self.implantsDataSource;
-									 self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
-									 [self.implantsDataSource reload];
-								 }
-								 else if (self.sectionSegmentedControl.selectedSegmentIndex == 3) {
-									 self.workspaceViewController.tableView.dataSource = self.fleetDataSource;
-									 self.workspaceViewController.tableView.delegate = self.fleetDataSource;
-									 self.workspaceViewController.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
-									 [self.fleetDataSource reload];
-								 }
-								 else {
-									 self.workspaceViewController.tableView.dataSource = self.statsDataSource;
-									 self.workspaceViewController.tableView.delegate = self.statsDataSource;
-									 self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
-									 [self.statsDataSource reload];
-								 }
+								 self.workspaceViewController.tableView.dataSource = dataSource;
+								 self.workspaceViewController.tableView.delegate = dataSource;
+								 self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+								 [dataSource reload];
 							 }];
 }
 
@@ -173,6 +146,9 @@
 		self.fleetDataSource = nil;
 		self.statsDataSource = nil;
 		self.typePickerViewController = nil;
+		@synchronized(self) {
+			self.typesCache = nil;
+		}
 	}
 }
 
@@ -322,39 +298,19 @@
 }
 
 - (IBAction)onChangeSection:(id)sender {
-	if (self.sectionSegmentedControl.selectedSegmentIndex == 0) {
-		self.workspaceViewController.tableView.dataSource = self.modulesDataSource;
-		self.workspaceViewController.tableView.delegate = self.modulesDataSource;
-		self.workspaceViewController.tableView.tableHeaderView = self.modulesDataSource.tableHeaderView;
-		[self.modulesDataSource reload];
-	}
-	else if (self.sectionSegmentedControl.selectedSegmentIndex == 1) {
-		self.workspaceViewController.tableView.dataSource = self.dronesDataSource;
-		self.workspaceViewController.tableView.delegate = self.dronesDataSource;
-		self.workspaceViewController.tableView.tableHeaderView = self.dronesDataSource.tableHeaderView;
-		[self.dronesDataSource reload];
-	}
-	else if (self.sectionSegmentedControl.selectedSegmentIndex == 2) {
-		self.workspaceViewController.tableView.dataSource = self.implantsDataSource;
-		self.workspaceViewController.tableView.delegate = self.implantsDataSource;
-		self.workspaceViewController.tableView.tableHeaderView = self.implantsDataSource.tableHeaderView;
-		[self.implantsDataSource reload];
-	}
-	else if (self.sectionSegmentedControl.selectedSegmentIndex == 3) {
-		self.workspaceViewController.tableView.dataSource = self.fleetDataSource;
-		self.workspaceViewController.tableView.delegate = self.fleetDataSource;
-		self.workspaceViewController.tableView.tableHeaderView = self.fleetDataSource.tableHeaderView;
-		[self.fleetDataSource reload];
-	}
-	else {
-		self.workspaceViewController.tableView.dataSource = self.statsDataSource;
-		self.workspaceViewController.tableView.delegate = self.statsDataSource;
-		self.workspaceViewController.tableView.tableHeaderView = self.statsDataSource.tableHeaderView;
-		[self.statsDataSource reload];
-	}
+	NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
+	NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
+	
+	self.workspaceViewController.tableView.dataSource = dataSource;
+	self.workspaceViewController.tableView.delegate = dataSource;
+	self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+	[dataSource reload];
 }
 
 - (IBAction)onAction:(id)sender {
+	if (!self.fit.character)
+		return;
+	
 	NSMutableArray* buttons = [NSMutableArray new];
 	NSMutableArray* actions = [NSMutableArray new];
 	

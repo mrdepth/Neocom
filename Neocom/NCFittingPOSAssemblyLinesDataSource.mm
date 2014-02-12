@@ -62,7 +62,7 @@
 																	}
 																}
 															}
-															sections = [[assemblyLinesTypes allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"assemblyLinesType.assemblyLineTypeName" ascending:YES]]];
+															sections = [[assemblyLinesTypes allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"assemblyLineType.assemblyLineTypeName" ascending:YES]]];
 															sections = [sections arrayGroupedByKey:@"assemblyLineType.activityID"];
 															sections = [sections sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 																NCFittingPOSAssemblyLinesDataSourceRow* a = [obj1 objectAtIndex:0];
@@ -129,11 +129,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	return 44;
 }
 
 @end

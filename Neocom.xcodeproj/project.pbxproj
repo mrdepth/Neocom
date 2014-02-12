@@ -302,6 +302,8 @@
 		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
 		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
+		12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */; };
+		12B97D2C18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
@@ -1010,6 +1012,9 @@
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
+		12B97D2818AB465800ECCFC3 /* NCFittingPOSStructuresTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStructuresTableHeaderView.h; sourceTree = "<group>"; };
+		12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStructuresTableHeaderView.m; sourceTree = "<group>"; };
+		12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingPOSStructuresTableHeaderView.xib; sourceTree = "<group>"; };
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
@@ -2144,6 +2149,7 @@
 		127123991897968E005F46EE /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				12B97D2718AB463900ECCFC3 /* NCFittingPOSStructuresTableHeaderView */,
 				127123A418979F95005F46EE /* NCFittingShipModulesTableHeaderView */,
 				849FEE3518A41B6600A4F85E /* NCFittingShipDronesTableHeaderView */,
 				127123A518979F9B005F46EE /* NCFittingSectionGenericHedaerView */,
@@ -2587,6 +2593,16 @@
 				12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */,
 			);
 			name = NCFittingDamagePatternCell;
+			sourceTree = "<group>";
+		};
+		12B97D2718AB463900ECCFC3 /* NCFittingPOSStructuresTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				12B97D2818AB465800ECCFC3 /* NCFittingPOSStructuresTableHeaderView.h */,
+				12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */,
+				12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */,
+			);
+			name = NCFittingPOSStructuresTableHeaderView;
 			sourceTree = "<group>";
 		};
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
@@ -3316,6 +3332,7 @@
 				84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */,
 				125F67FD188526B6005732FA /* level_051.gif in Resources */,
 				849B9FDB1896D24A00D4DD2B /* thumbsUp.png in Resources */,
+				12B97D2C18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib in Resources */,
 				120968661845F0CB00921A37 /* Main.storyboard in Resources */,
 				849B9FB91896D24A00D4DD2B /* dps.png in Resources */,
 				125F6809188526B6005732FA /* level_231.gif in Resources */,
@@ -3603,6 +3620,7 @@
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
 				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
+				12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */,
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,

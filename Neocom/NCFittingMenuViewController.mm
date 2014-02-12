@@ -15,6 +15,7 @@
 #import "NCPOSFit.h"
 #import "NSArray+Neocom.h"
 #import "NCFittingShipViewController.h"
+#import "NCFittingPOSViewController.h"
 #import "NCFittingCharacterPickerViewController.h"
 
 @interface NCFittingMenuViewController ()
@@ -54,6 +55,10 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCFittingShipViewController"]) {
 		NCFittingShipViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.fit = sender;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingPOSViewController"]) {
+		NCFittingPOSViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.fit = sender;
 	}
 }
@@ -142,8 +147,14 @@
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
-		[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+		if (loadout.category == NCLoadoutCategoryShip) {
+			NCShipFit* fit = [[NCShipFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+		}
+		else {
+			NCPOSFit* fit = [[NCPOSFit alloc] initWithLoadout:loadout];
+			[self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+		}
 	}
 }
 

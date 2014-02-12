@@ -640,7 +640,7 @@
 													 [sections addObject:@{@"title" : title, @"rows" : rows}];
 											 }
 											 
-											 NSArray* activities = [[type.blueprintType activities] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
+											 NSArray* activities = [[type.blueprintType activities] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"activityID" ascending:YES]]];
 											 for (EVEDBRamActivity* activity in activities) {
 												 NSArray* requiredSkills = [type.blueprintType requiredSkillsForActivity:activity.activityID];
 												 NCTrainingQueue* requiredSkillsQueue = [[NCTrainingQueue alloc] initWithAccount:account];

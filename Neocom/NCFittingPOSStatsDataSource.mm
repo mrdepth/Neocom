@@ -15,7 +15,7 @@
 #import "NCFittingEHPCell.h"
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
-
+#import "NCFittingPOSStructuresTableHeaderView.h"
 
 
 @interface NCFittingPOSStatsDataSourcePOSStats : NSObject
@@ -286,11 +286,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (indexPath.section == 3)
+		return 44;
+	else {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

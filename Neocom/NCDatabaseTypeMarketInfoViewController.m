@@ -285,11 +285,11 @@
 												 if ([task isCancelled])
 													 return;
 												 
-												 NSMutableDictionary *sellOrdersSectionsDic = [NSMutableDictionary dictionary];
-												 NSMutableDictionary *buyOrdersSectionsDic = [NSMutableDictionary dictionary];
+												 NSMutableDictionary *sellOrdersSectionsDic = [NSMutableDictionary new];
+												 NSMutableDictionary *buyOrdersSectionsDic = [NSMutableDictionary new];
 												 
-												 [quickLook.sellOrders sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
-												 [quickLook.buyOrders sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
+												 [quickLook.sellOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:YES]]];
+												 [quickLook.buyOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"price" ascending:NO]]];
 												 
 												 for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
 													 NCDatabaseTypeMarketInfoViewControllerSection* section = sellOrdersSectionsDic[@(order.regionID)];
@@ -325,8 +325,8 @@
 												 if ([task isCancelled])
 													 return;
 
-												 data.sellOrdersSections = [[sellOrdersSectionsDic allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-												 data.buyOrdersSections = [[buyOrdersSectionsDic allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+												 data.sellOrdersSections = [[sellOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+												 data.buyOrdersSections = [[buyOrdersSectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 												 
 												 NSMutableArray* sellOrders = [NSMutableArray new];
 												 for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {

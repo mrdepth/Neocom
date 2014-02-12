@@ -439,6 +439,7 @@
 		84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FA63E2188C5227008FD761 /* ImageIO.framework */; };
 		84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F56187840910004073C /* NCAccountsViewController.m */; };
 		84FC4F6018785CCC0004073C /* NCAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC4F5F18785CCC0004073C /* NCAccount.m */; };
+		84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FFB56C18ABD31700A30772 /* NCFittingAPIViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1213,6 +1214,8 @@
 		84FC4F56187840910004073C /* NCAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountsViewController.m; sourceTree = "<group>"; };
 		84FC4F5E18785CCC0004073C /* NCAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccount.h; sourceTree = "<group>"; };
 		84FC4F5F18785CCC0004073C /* NCAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccount.m; sourceTree = "<group>"; };
+		84FFB56B18ABD31700A30772 /* NCFittingAPIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPIViewController.h; sourceTree = "<group>"; };
+		84FFB56C18ABD31700A30772 /* NCFittingAPIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAPIViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2989,6 +2992,7 @@
 				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
 				1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */,
 				12B97D3018AB759C00ECCFC3 /* NCFittingBattleClinic */,
+				84FFB56818ABD2ED00A30772 /* NCFittingAPI */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -3158,6 +3162,23 @@
 				84FC4F56187840910004073C /* NCAccountsViewController.m */,
 			);
 			name = NCAccountsViewController;
+			sourceTree = "<group>";
+		};
+		84FFB56818ABD2ED00A30772 /* NCFittingAPI */ = {
+			isa = PBXGroup;
+			children = (
+				84FFB56A18ABD2FB00A30772 /* NCFittingAPIViewController */,
+			);
+			name = NCFittingAPI;
+			sourceTree = "<group>";
+		};
+		84FFB56A18ABD2FB00A30772 /* NCFittingAPIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84FFB56B18ABD31700A30772 /* NCFittingAPIViewController.h */,
+				84FFB56C18ABD31700A30772 /* NCFittingAPIViewController.m */,
+			);
+			name = NCFittingAPIViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3556,6 +3577,7 @@
 				126A0E67185F3B9300A8E8A3 /* EVESkillTree.m in Sources */,
 				126A0E09185F3B9300A8E8A3 /* EVEDBCrtCertificate.m in Sources */,
 				125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */,
+				84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
 				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
 				1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */,

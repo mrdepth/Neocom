@@ -275,6 +275,7 @@
 																											  systemID:0
 																												 hours:0
 																												  minQ:0
+																										   cachePolicy:cachePolicy
 																												 error:&error
 																									   progressHandler:^(CGFloat progress, BOOL *stop) {
 																										   task.progress = progress;

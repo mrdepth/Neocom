@@ -48,6 +48,7 @@
 @property (nonatomic, assign) int32_t count;
 @end
 
+@class BCEveLoadout;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
@@ -57,6 +58,7 @@
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;
+- (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 
 - (void) save;
 - (void) load;

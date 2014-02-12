@@ -304,6 +304,9 @@
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
 		12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */; };
 		12B97D2C18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */; };
+		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
+		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
+		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
@@ -1015,6 +1018,12 @@
 		12B97D2818AB465800ECCFC3 /* NCFittingPOSStructuresTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStructuresTableHeaderView.h; sourceTree = "<group>"; };
 		12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStructuresTableHeaderView.m; sourceTree = "<group>"; };
 		12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingPOSStructuresTableHeaderView.xib; sourceTree = "<group>"; };
+		12B97D3118AB75F900ECCFC3 /* NCFittingBattleClinicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicViewController.h; sourceTree = "<group>"; };
+		12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingBattleClinicViewController.m; sourceTree = "<group>"; };
+		12B97D3618AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsViewController.h; sourceTree = "<group>"; };
+		12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBattleClinicSearchResultsViewController.mm; sourceTree = "<group>"; };
+		12B97D3A18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsCell.h; sourceTree = "<group>"; };
+		12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingBattleClinicSearchResultsCell.m; sourceTree = "<group>"; };
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
@@ -2605,6 +2614,43 @@
 			name = NCFittingPOSStructuresTableHeaderView;
 			sourceTree = "<group>";
 		};
+		12B97D3018AB759C00ECCFC3 /* NCFittingBattleClinic */ = {
+			isa = PBXGroup;
+			children = (
+				12B97D3418AB79E800ECCFC3 /* NCFittingBattleClinicViewController */,
+				12B97D3518AB7A0800ECCFC3 /* NCFittingBattleClinicSearchResultsViewController */,
+			);
+			name = NCFittingBattleClinic;
+			sourceTree = "<group>";
+		};
+		12B97D3418AB79E800ECCFC3 /* NCFittingBattleClinicViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12B97D3118AB75F900ECCFC3 /* NCFittingBattleClinicViewController.h */,
+				12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */,
+			);
+			name = NCFittingBattleClinicViewController;
+			sourceTree = "<group>";
+		};
+		12B97D3518AB7A0800ECCFC3 /* NCFittingBattleClinicSearchResultsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12B97D3918AB803100ECCFC3 /* NCFittingBattleClinicSearchResultsCell */,
+				12B97D3618AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.h */,
+				12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */,
+			);
+			name = NCFittingBattleClinicSearchResultsViewController;
+			sourceTree = "<group>";
+		};
+		12B97D3918AB803100ECCFC3 /* NCFittingBattleClinicSearchResultsCell */ = {
+			isa = PBXGroup;
+			children = (
+				12B97D3A18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.h */,
+				12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */,
+			);
+			name = NCFittingBattleClinicSearchResultsCell;
+			sourceTree = "<group>";
+		};
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2921,12 +2967,16 @@
 		849B9FDE1896D2F900D4DD2B /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
-				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
-				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
 				1271238618978177005F46EE /* Datasources */,
+				12C5074C189B6ED70064AC32 /* NCShipFit */,
+				129C585A18AA068F00CA8787 /* NCPOSFit */,
+				127123991897968E005F46EE /* Headers */,
+				1271237E18977E6F005F46EE /* Cells */,
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
 				123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */,
+				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
+				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
@@ -2938,10 +2988,7 @@
 				8435C87318A6909E00D11FC9 /* NCFittingRequiredSkillsViewController */,
 				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
 				1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */,
-				12C5074C189B6ED70064AC32 /* NCShipFit */,
-				129C585A18AA068F00CA8787 /* NCPOSFit */,
-				127123991897968E005F46EE /* Headers */,
-				1271237E18977E6F005F46EE /* Cells */,
+				12B97D3018AB759C00ECCFC3 /* NCFittingBattleClinic */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -3372,6 +3419,7 @@
 				8456E87218AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
+				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				8456E86F18AAA712000DAE75 /* NCFittingPOSAssemblyLinesDataSource.mm in Sources */,
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
@@ -3398,6 +3446,7 @@
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */,
 				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
+				12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */,
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
 				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
@@ -3622,6 +3671,7 @@
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
 				12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */,
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
+				12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,

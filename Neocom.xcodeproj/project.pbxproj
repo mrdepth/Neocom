@@ -345,6 +345,7 @@
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
 		842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */; };
 		8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */; };
+		843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C2F0118AD41CF00221721 /* NCAssetsViewController.m */; };
 		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
 		8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452190D189AEEA700E7E3C1 /* NCLoadout.m */; };
 		84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84521910189AEEA800E7E3C1 /* NCLoadoutData.m */; };
@@ -1100,6 +1101,8 @@
 		842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAmountViewController.m; sourceTree = "<group>"; };
 		8435C87518A690C000D11FC9 /* NCFittingRequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRequiredSkillsViewController.h; sourceTree = "<group>"; };
 		8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingRequiredSkillsViewController.m; sourceTree = "<group>"; };
+		843C2F0018AD41CF00221721 /* NCAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsViewController.h; sourceTree = "<group>"; };
+		843C2F0118AD41CF00221721 /* NCAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAssetsViewController.m; sourceTree = "<group>"; };
 		84442A5B189FFF230021CB24 /* NCFittingTargetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTargetsViewController.h; sourceTree = "<group>"; };
 		84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingTargetsViewController.mm; sourceTree = "<group>"; };
 		8452190C189AEEA700E7E3C1 /* NCLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadout.h; sourceTree = "<group>"; };
@@ -1337,6 +1340,7 @@
 				126ED31A188128E10009FA39 /* Character */,
 				128BCE6A18856F67000E1922 /* Database */,
 				849B9FDE1896D2F900D4DD2B /* Fitting */,
+				843C2EFC18AD34CE00221721 /* Market */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.m */,
 				120968591845F0CB00921A37 /* Supporting Files */,
@@ -2919,6 +2923,23 @@
 			name = NCFittingRequiredSkillsViewController;
 			sourceTree = "<group>";
 		};
+		843C2EFC18AD34CE00221721 /* Market */ = {
+			isa = PBXGroup;
+			children = (
+				843C2EFF18AD41B300221721 /* NCAssetsViewController */,
+			);
+			name = Market;
+			sourceTree = "<group>";
+		};
+		843C2EFF18AD41B300221721 /* NCAssetsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				843C2F0018AD41CF00221721 /* NCAssetsViewController.h */,
+				843C2F0118AD41CF00221721 /* NCAssetsViewController.m */,
+			);
+			name = NCAssetsViewController;
+			sourceTree = "<group>";
+		};
 		84442A59189FFF040021CB24 /* NCFittingTargetsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3497,6 +3518,7 @@
 				8456E86F18AAA712000DAE75 /* NCFittingPOSAssemblyLinesDataSource.mm in Sources */,
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
 				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,
+				843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */,
 				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,
 				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,

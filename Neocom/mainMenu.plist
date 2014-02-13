@@ -112,10 +112,8 @@
 	</array>
 	<array>
 		<dict>
-			<key>className</key>
-			<string>FittingServiceMenuViewController</string>
-			<key>nibName</key>
-			<string>FittingServiceMenuViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCFittingMenuViewController</string>
 			<key>title</key>
 			<string>Fitting</string>
 			<key>image</key>

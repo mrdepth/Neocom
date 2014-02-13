@@ -20,7 +20,7 @@
 
 @interface NCFittingMenuViewController ()
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
-@property (nonatomic, strong) NSArray* sections;
+@property (nonatomic, strong) NSMutableArray* sections;
 @end
 
 @implementation NCFittingMenuViewController
@@ -38,6 +38,7 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	// Do any additional setup after loading the view.
 }
 
@@ -105,7 +106,35 @@
 	}
 }
 
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return indexPath.section == 0 ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSMutableArray* array = self.sections[indexPath.section - 1];
+		NCLoadout* loadout = array[indexPath.row];
+		[loadout.managedObjectContext performBlockAndWait:^{
+			[loadout.managedObjectContext deleteObject:loadout];
+			[[NCStorage sharedStorage] saveContext];
+		}];
+		
+		if (array.count == 1) {
+			[self.sections removeObjectAtIndex:indexPath.section - 1];
+			[tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationMiddle];
+		}
+		else {
+			[array removeObjectAtIndex:indexPath.row];
+			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+		}
+	}
+}
+
 #pragma mark - Table view delegate
+
+- (BOOL) tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+	return indexPath.section != 0;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -176,7 +205,9 @@
 												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
-												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];
+												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.groupID"])
+													 [sections addObject:[array mutableCopy]];
+												 
 												 task.progress = 0.5;
 												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 													 NCLoadout* a = [obj1 objectAtIndex:0];
@@ -188,7 +219,7 @@
 												 
 												 NSArray* posLoadouts = [[NCLoadout posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 if (posLoadouts.count > 0)
-													 [sections addObject:posLoadouts];
+													 [sections addObject:[posLoadouts mutableCopy]];
 												 
 												 task.progress = 1.0;
 											 }];

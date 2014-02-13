@@ -439,6 +439,7 @@
 		84EEFCEE1896C69C007962A0 /* thukkerTribe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */; };
 		84EEFCEF1896C69C007962A0 /* menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE11896C69C007962A0 /* menuIcon@2x.png */; };
 		84EEFCF01896C69C007962A0 /* navigationArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */; };
+		84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F8E2C818AD75A3005D968F /* EVEAssetListItem+Neocom.m */; };
 		84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63DD188C4FC1008FD761 /* NCSkillCell.m */; };
 		84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FA63E0188C50A2008FD761 /* UIImageView+Neocom.m */; };
 		84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FA63E2188C5227008FD761 /* ImageIO.framework */; };
@@ -1220,6 +1221,8 @@
 		84EEFCE01896C69C007962A0 /* thukkerTribe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thukkerTribe@2x.png"; sourceTree = "<group>"; };
 		84EEFCE11896C69C007962A0 /* menuIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menuIcon@2x.png"; sourceTree = "<group>"; };
 		84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationArrowUp@2x.png"; sourceTree = "<group>"; };
+		84F8E2C718AD75A3005D968F /* EVEAssetListItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEAssetListItem+Neocom.h"; sourceTree = "<group>"; };
+		84F8E2C818AD75A3005D968F /* EVEAssetListItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEAssetListItem+Neocom.m"; sourceTree = "<group>"; };
 		84FA63DC188C4FC1008FD761 /* NCSkillCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillCell.h; sourceTree = "<group>"; };
 		84FA63DD188C4FC1008FD761 /* NCSkillCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillCell.m; sourceTree = "<group>"; };
 		84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Neocom.h"; sourceTree = "<group>"; };
@@ -2936,6 +2939,8 @@
 			children = (
 				843C2F0018AD41CF00221721 /* NCAssetsViewController.h */,
 				843C2F0118AD41CF00221721 /* NCAssetsViewController.m */,
+				84F8E2C718AD75A3005D968F /* EVEAssetListItem+Neocom.h */,
+				84F8E2C818AD75A3005D968F /* EVEAssetListItem+Neocom.m */,
 			);
 			name = NCAssetsViewController;
 			sourceTree = "<group>";
@@ -3761,6 +3766,7 @@
 				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
 				126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
+				84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */,
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,

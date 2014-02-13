@@ -8,20 +8,26 @@
 
 #import "NCAssetsViewController.h"
 
-@interface NCAssetsViewControllerDataLocation : NSObject<NSCoding>
+@interface NCAssetsViewControllerDataAssetDetails : NSObject<NSCoding>
+@property (nonatomic, strong) EVELocationsItem* location;
+@property (nonatomic, strong) NSString* title;
+@end
+
+
+@interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
 @property (nonatomic, strong) NSString* title;
-
 @end
 
 @interface NCAssetsViewControllerData : NSObject<NSCoding>
-@property (nonatomic, strong) NSArray* locations;
+@property (nonatomic, strong) NSArray* sections;
 @property (nonatomic, strong) NSDictionary* types;
+@property (nonatomic, strong) NSDictionary* assetsDetails;
 @end
 
 
 @interface NCAssetsViewController ()
-
+@property (nonatomic, strong) NSArray* accounts;
 @end
 
 @implementation NCAssetsViewController
@@ -56,10 +62,25 @@
 		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 		return;
 	}
+	NSArray* accounts = self.accounts;
 	NSMutableArray* rows = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
+											 float totalProgress = 0;
+											 float dp = 1.0 / accounts.count;
+											 for (NCAccount* account in accounts) {
+												 BOOL corporate = account.accountType == NCAccountTypeCorporate;
+												 EVEAssetList* assetsList = [EVEAssetList assetListWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID corporate:corporate error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
+													 task.progress = totalProgress + progress * dp;
+												 }];
+												 totalProgress += dp;
+												 task.progress = totalProgress;
+												 
+												 NSMutableDictionary* types = [NSMutableDictionary new];
+												 NSMutableDictionary* groups = [NSMutableDictionary new];
+												 NSMutableDictionary* categories = [NSMutableDictionary new];
+											 }
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {

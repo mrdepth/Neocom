@@ -104,6 +104,8 @@
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
 															eufe::Character* character = self.controller.fit.pilot;
+															if (!character)
+																return;
 															eufe::Ship* ship = character->getShip();
 															
 															stats.totalPG = ship->getTotalPowerGrid();

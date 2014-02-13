@@ -19,3 +19,10 @@
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 
 #define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
+
+
+#define NCShipCategoryID 6
+#define NCChargeCategoryID 8
+#define NCModuleCategoryID 7
+#define NCSubsystemCategoryID 32
+#define NCDroneCategoryID 18

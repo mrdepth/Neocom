@@ -10,11 +10,7 @@
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "BattleClinicAPI.h"
-
-#define NCChargeCategoryID 8
-#define NCModuleCategoryID 7
-#define NCSubsystemCategoryID 32
-#define NCDroneCategoryID 18
+#import "NeocomAPI.h"
 
 typedef NS_ENUM(NSInteger, NCTypeCategory) {
 	NCTypeCategoryUnknown,
@@ -354,6 +350,130 @@ typedef NS_ENUM(NSInteger, NCTypeCategory) {
 			self.loadoutData.implants = @[];
 			self.loadoutData.boosters = @[];
 		}
+	}
+	return self;
+}
+
+- (id) initWithAPILoadout:(NAPISearchItem*) apiLoadout {
+	if (self = [super init]) {
+		NSArray* components = [apiLoadout.canonicalName componentsSeparatedByString:@"|"];
+		if (components.count > 0) {
+			NSInteger shipID = [components[0] integerValue];
+			
+			self.type = [EVEDBInvType invTypeWithTypeID:shipID error:nil];
+			if (!self.type)
+				return nil;
+			self.loadoutName = apiLoadout.typeName;
+			self.loadoutData = [NCLoadoutDataShip new];
+
+			
+			NSMutableArray* hiSlots = [NSMutableArray new];
+			NSMutableArray* medSlots = [NSMutableArray new];
+			NSMutableArray* lowSlots = [NSMutableArray new];
+			NSMutableArray* rigSlots = [NSMutableArray new];
+			NSMutableArray* subsystems = [NSMutableArray new];
+			NSMutableArray* implants = [NSMutableArray new];
+			NSMutableArray* boosters = [NSMutableArray new];
+			NSArray* drones = nil;
+			NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+			
+			
+			if (components.count > 1) {
+				for (NSString* component in [components[1] componentsSeparatedByString:@";"]) {
+					NSArray* array = [component componentsSeparatedByString:@":"];
+					eufe::TypeID typeID = array.count > 0 ? [array[0] integerValue] : 0;
+					eufe::TypeID chargeID = array.count > 1 ? [array[1] integerValue] : 0;
+					int count = array.count > 2 ? [array[2] integerValue] : 1;
+					if (!typeID)
+						continue;
+					
+					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+					
+					NSMutableArray* modules = nil;
+					switch (type.slot) {
+						case eufe::Module::SLOT_LOW:
+							modules = lowSlots;
+							break;
+						case eufe::Module::SLOT_MED:
+							modules = medSlots;
+							break;
+						case eufe::Module::SLOT_HI:
+							modules = hiSlots;
+							break;
+						case eufe::Module::SLOT_RIG:
+							modules = rigSlots;
+							break;
+						case eufe::Module::SLOT_SUBSYSTEM:
+							modules = subsystems;
+							break;
+						default:
+							break;
+					}
+					for (int i = 0; i < count; i++) {
+						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+						module.typeID = typeID;
+						module.state = eufe::Module::STATE_ACTIVE;
+						module.chargeID = chargeID;
+						[modules addObject:module];
+					}
+				}
+			}
+			
+			if (components.count > 2) {
+				for (NSString* component in [components[2] componentsSeparatedByString:@";"]) {
+					NSArray* array = [component componentsSeparatedByString:@":"];
+					eufe::TypeID typeID = array.count > 0 ? [array[0] integerValue] : 0;
+					int count = array.count > 1 ? [array[1] integerValue] : 0;
+					if (!typeID)
+						continue;
+					
+					NCLoadoutDataShipDrone* drone = dronesDic[@(typeID)];
+					if (!drone) {
+						drone = [NCLoadoutDataShipDrone new];
+						drone.typeID = typeID;
+						drone.active = true;
+						dronesDic[@(typeID)] = drone;
+					}
+					drone.count += count;
+				}
+			}
+			
+			if (components.count > 3) {
+				for (NSString* component in [components[3] componentsSeparatedByString:@";"]) {
+					eufe::TypeID typeID = [component integerValue];
+					if (typeID) {
+						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
+						implant.typeID = typeID;
+						[implants addObject:implant];
+					}
+				}
+			}
+			
+			if (components.count > 4) {
+				for (NSString* component in [components[4] componentsSeparatedByString:@";"]) {
+					eufe::TypeID typeID = [component integerValue];
+					if (typeID) {
+						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
+						booster.typeID = typeID;
+						[boosters addObject:booster];
+					}
+				}
+			}
+			drones = [dronesDic allValues];
+			
+			self.loadoutData.hiSlots = hiSlots;
+			self.loadoutData.medSlots = medSlots;
+			self.loadoutData.lowSlots = lowSlots;
+			self.loadoutData.rigSlots = rigSlots;
+			self.loadoutData.subsystems = subsystems;
+			self.loadoutData.drones = drones;
+			self.loadoutData.cargo = @[];
+			self.loadoutData.implants = implants;
+			self.loadoutData.boosters = boosters;
+
+		}
+		else
+			return nil;
 	}
 	return self;
 }

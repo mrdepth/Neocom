@@ -32,9 +32,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.view = nil;
-	}
 }
 
 

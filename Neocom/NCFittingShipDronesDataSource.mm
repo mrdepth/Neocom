@@ -50,18 +50,21 @@
 	if (self.tableView.dataSource == self)
 		[self.tableView reloadData];
 
-	__block float totalDB;
-	__block float usedDB;
-	__block float totalBandwidth;
-	__block float usedBandwidth;
-	__block int maxActiveDrones;
-	__block int activeDrones;
+	__block float totalDB = 0;
+	__block float usedDB = 0;
+	__block float totalBandwidth = 0;
+	__block float usedBandwidth = 0;
+	__block int maxActiveDrones = 0;
+	__block int activeDrones = 0;
 	
 	__block NSArray* rows = nil;
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
+															if (!self.controller.fit.pilot)
+																return;
+
 															eufe::Ship* ship = self.controller.fit.pilot->getShip();
 															
 															NSMutableDictionary* dronesDic = [NSMutableDictionary new];

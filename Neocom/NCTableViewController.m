@@ -56,15 +56,12 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+	if ([self isViewLoaded] && self.view.window == nil) {
 		self.cacheRecord = nil;
 		self.data = nil;
-		self.view = nil;
 		if (self.searchDisplayController && self.searchDisplayController.active)
 			[self.searchDisplayController setActive:NO animated:NO];
 	}
-    // Dispose of any resources that can be recreated.
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -139,10 +136,11 @@
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
 	if (data) {
 		self.data = data;
+		NSString* recordID = self.recordID;
 		NCCache* cache = [NCCache sharedCache];
-		if (!self.cacheRecord)
-			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
-		self.cacheRecord.recordID = self.recordID;
+		if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
+			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
+		self.cacheRecord.recordID = recordID;
 		self.cacheRecord.data.data = data;
 		self.cacheRecord.date = cacheDate;
 		self.cacheRecord.expireDate = expireDate;

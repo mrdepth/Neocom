@@ -41,6 +41,9 @@
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
 															eufe::Character* character = self.controller.fit.pilot;
+															if (!character)
+																return;
+															
 															for (auto implant: character->getImplants()) {
 																int slot = implant->getSlot() - 1;
 																if (slot >= 0 && slot < 10)

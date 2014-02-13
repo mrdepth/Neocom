@@ -41,10 +41,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.rows = nil;
-		self.searchResults = nil;
-	}
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

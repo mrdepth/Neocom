@@ -125,12 +125,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.filteredSellOrdersSections = nil;
-		self.filteredBuyOrdersSections = nil;
-		self.filteredSellSummary = nil;
-		self.filteredBuySummary = nil;
-	}
 }
 
 - (IBAction)onChangeMode:(id)sender {

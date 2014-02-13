@@ -139,17 +139,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.modulesDataSource = nil;
-		self.dronesDataSource = nil;
-		self.implantsDataSource = nil;
-		self.fleetDataSource = nil;
-		self.statsDataSource = nil;
-		self.typePickerViewController = nil;
-		@synchronized(self) {
-			self.typesCache = nil;
-		}
-	}
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {

@@ -40,11 +40,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.allSections = nil;
-		self.sections = nil;
-	}
-    // Dispose of any resources that can be recreated.
 }
 
 

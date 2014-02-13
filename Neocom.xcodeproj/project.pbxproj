@@ -327,6 +327,10 @@
 		12D011BF18A2101400C0A228 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BD18A2101400C0A228 /* checkmark.png */; };
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
+		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
+		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
+		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
+		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -1062,6 +1066,14 @@
 		12D011BE18A2101400C0A228 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
+		12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupPickerViewContoller.h; sourceTree = "<group>"; };
+		12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseGroupPickerViewContoller.m; sourceTree = "<group>"; };
+		12F82A5218AC98B100A967B5 /* NCFittingAPIFlagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPIFlagsViewController.h; sourceTree = "<group>"; };
+		12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAPIFlagsViewController.m; sourceTree = "<group>"; };
+		12F82A5818ACA89C00A967B5 /* NCFittingAPISearchResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPISearchResultsCell.h; sourceTree = "<group>"; };
+		12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAPISearchResultsCell.m; sourceTree = "<group>"; };
+		12F82A5B18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPISearchResultsViewController.h; sourceTree = "<group>"; };
+		12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAPISearchResultsViewController.mm; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -2221,6 +2233,7 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */,
 				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
 				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
@@ -2769,6 +2782,43 @@
 			name = NCDatabaseTypeVariationsViewController;
 			sourceTree = "<group>";
 		};
+		12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */ = {
+			isa = PBXGroup;
+			children = (
+				12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */,
+				12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */,
+			);
+			name = NCDatabaseGroupPickerViewContoller;
+			sourceTree = "<group>";
+		};
+		12F82A5118AC989D00A967B5 /* NCFittingAPIFlagsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F82A5218AC98B100A967B5 /* NCFittingAPIFlagsViewController.h */,
+				12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */,
+			);
+			name = NCFittingAPIFlagsViewController;
+			sourceTree = "<group>";
+		};
+		12F82A5618ACA86600A967B5 /* NCFittingAPISearchResultsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F82A5718ACA88700A967B5 /* NCFittingAPISearchResultsCell */,
+				12F82A5B18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.h */,
+				12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */,
+			);
+			name = NCFittingAPISearchResultsViewController;
+			sourceTree = "<group>";
+		};
+		12F82A5718ACA88700A967B5 /* NCFittingAPISearchResultsCell */ = {
+			isa = PBXGroup;
+			children = (
+				12F82A5818ACA89C00A967B5 /* NCFittingAPISearchResultsCell.h */,
+				12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */,
+			);
+			name = NCFittingAPISearchResultsCell;
+			sourceTree = "<group>";
+		};
 		12FF5862189F6D7900E2D70A /* NCFittingCharacterEditorCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3167,7 +3217,9 @@
 		84FFB56818ABD2ED00A30772 /* NCFittingAPI */ = {
 			isa = PBXGroup;
 			children = (
+				12F82A5118AC989D00A967B5 /* NCFittingAPIFlagsViewController */,
 				84FFB56A18ABD2FB00A30772 /* NCFittingAPIViewController */,
+				12F82A5618ACA86600A967B5 /* NCFittingAPISearchResultsViewController */,
 			);
 			name = NCFittingAPI;
 			sourceTree = "<group>";
@@ -3525,6 +3577,7 @@
 				126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */,
 				126A0E20185F3B9300A8E8A3 /* EVEDBInvTypeMaterial.m in Sources */,
 				84E4332218951C3500DF2061 /* NCViewController.m in Sources */,
+				12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */,
 				126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */,
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
@@ -3695,6 +3748,7 @@
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
 				12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
+				12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */,
 				122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */,
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
@@ -3704,6 +3758,8 @@
 				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,
 				126A0E63185F3B9300A8E8A3 /* EVEErrorList.m in Sources */,
 				129D257E187E8CB400E2062C /* NCMainMenuViewController.m in Sources */,
+				12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */,
+				12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */,
 				126A0E4D185F3B9300A8E8A3 /* EVECorpContactList.m in Sources */,
 				126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */,
 				126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */,

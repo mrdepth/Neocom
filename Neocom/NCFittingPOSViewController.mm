@@ -96,16 +96,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	if (self.view.window == nil) {
-		self.structuresDataSource = nil;
-		self.assemblyLinesDataSource = nil;
-		self.statsDataSource = nil;
-		self.statsDataSource = nil;
-		self.typePickerViewController = nil;
-		@synchronized(self) {
-			self.typesCache = nil;
-		}
-	}
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {

@@ -68,12 +68,12 @@
 @synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
-	__block float totalPG;
-	__block float usedPG;
-	__block float totalCPU;
-	__block float usedCPU;
-	__block float totalCalibration;
-	__block float usedCalibration;
+	__block float totalPG = 0;
+	__block float usedPG = 0;
+	__block float totalCPU = 0;
+	__block float usedCPU = 0;
+	__block float totalCalibration = 0;
+	__block float usedCalibration = 0;
 	
 	self.sections = nil;
 	if (self.tableView.dataSource == self)
@@ -84,6 +84,9 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
+															if (!self.controller.fit.pilot)
+																return;
+															
 															eufe::Ship* ship = self.controller.fit.pilot->getShip();
 															
 															eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};

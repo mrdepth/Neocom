@@ -494,7 +494,6 @@
 													 [notKnownSkillsSections addObject:@{@"title": section[@"title"], @"rows": canTrain}];
 												 }
 											 }
-											 
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
@@ -511,7 +510,7 @@
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[self reloadFromCache];
 }
 
 - (NSDate*) cacheDate {

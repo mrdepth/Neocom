@@ -26,3 +26,10 @@
 #define NCModuleCategoryID 7
 #define NCSubsystemCategoryID 32
 #define NCDroneCategoryID 18
+
+#define NCStructureCategoryID 23
+
+#define NCControlTowerGroupID 365
+#define NCSecureContainerGroupID 340
+#define NCHangarOrOfficeGroupID 471
+#define NCShipMaintenanceArrayGroupID 363

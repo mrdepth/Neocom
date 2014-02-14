@@ -8,6 +8,7 @@
 
 #import "EVEAssetListItem+Neocom.h"
 #import <objc/runtime.h>
+#import "NSNumberFormatter+Neocom.h"
 
 @implementation EVEAssetListItem (Neocom)
 
@@ -31,11 +32,38 @@
 
 - (NSString*) title {
 	NSString* title = objc_getAssociatedObject(self, @"title");
+	if (title)
+		return title;
+	
+	if (!title)
+		title = self.type.typeName;
+	if (!title)
+		title = NSLocalizedString(@"Unknown", nil);
+
+	if (self.quantity > 1)
+		title = [NSString stringWithFormat:@"%@ (x%@)", title, [NSNumberFormatter neocomLocalizedStringFromInteger:self.quantity]];
+	else if (self.contents.count == 1)
+		title = [NSString stringWithFormat:NSLocalizedString(@"%@ (1 item)", nil), title];
+	else if (self.contents.count > 1)
+		title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ items)", nil), title, [NSNumberFormatter neocomLocalizedStringFromInteger:self.contents.count]];
+	else {
+		if (!title)
+			title = @"";
+	}
+	self.title = title;
 	return title;
 }
 
 - (void) setTitle:(NSString *)title {
 	objc_setAssociatedObject(self, @"title", title, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString*) owner {
+	return objc_getAssociatedObject(self, @"owner");
+}
+
+- (void) setOwner:(NSString *)owner {
+	objc_setAssociatedObject(self, @"owner", owner, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

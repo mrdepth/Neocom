@@ -339,7 +339,7 @@
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
-		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+		[self reloadFromCache];
 }
 
 #pragma mark - Private

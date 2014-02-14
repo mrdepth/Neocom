@@ -15,6 +15,7 @@
 @property (nonatomic, strong) EVEDBInvType* type;
 @property (nonatomic, strong) EVELocationsItem* location;
 @property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSString* owner;
 
 
 @end

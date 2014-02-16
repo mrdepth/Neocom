@@ -20,6 +20,7 @@
 
 - (void) progressStepWithTask:(NCTask*) task;
 - (void) updateCacheTime;
+- (void) didChangeAccountNotification:(NSNotification*) notification;
 
 @end
 
@@ -37,7 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 
 	UIRefreshControl* refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -233,6 +234,10 @@
 	self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
 																		  attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
 																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
+}
+
+- (void) didChangeAccountNotification:(NSNotification*) notification {
+	[self didChangeAccount:notification.object];
 }
 
 @end

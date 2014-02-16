@@ -9,6 +9,8 @@
 #import "NCPOSFit.h"
 #import "NCStorage.h"
 #import "EVEDBAPI.h"
+#import "EVEOnlineAPI.h"
+#import "EVEAssetListItem+Neocom.h"
 
 @implementation NCLoadoutDataPOS
 
@@ -88,6 +90,35 @@
 	if (self = [super init]) {
 		self.loadoutName = type.typeName;
 		self.type = type;
+	}
+	return self;
+}
+
+- (id) initWithAsset:(EVEAssetListItem*) asset {
+	if (self = [super init]) {
+		self.type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+		if (!self.type)
+			return nil;
+		self.loadoutName = asset.location ? asset.location.itemName : self.type.typeName;
+		self.loadoutData = [NCLoadoutDataPOS new];
+		
+		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
+		
+		for (EVEAssetListItem* item in asset.contents) {
+			EVEDBInvType* type = item.type;
+			if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
+				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
+				if (!structure) {
+					structure = [NCLoadoutDataPOSStructure new];
+					structure.typeID = item.typeID;
+					structuresDic[@(item.typeID)] = structure;
+				}
+				structure.count += item.quantity;
+			}
+
+		}
+		
+		self.loadoutData.structures = [structuresDic allValues];
 	}
 	return self;
 }

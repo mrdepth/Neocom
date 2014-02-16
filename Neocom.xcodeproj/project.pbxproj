@@ -331,7 +331,7 @@
 		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
 		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
 		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
-		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.m */; };
+		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -1078,7 +1078,7 @@
 		12F82A5B18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPISearchResultsViewController.h; sourceTree = "<group>"; };
 		12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAPISearchResultsViewController.mm; sourceTree = "<group>"; };
 		12F82A6518ADFAB500A967B5 /* NCAssetsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsContainerViewController.h; sourceTree = "<group>"; };
-		12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAssetsContainerViewController.m; sourceTree = "<group>"; };
+		12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAssetsContainerViewController.mm; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -2833,7 +2833,7 @@
 			isa = PBXGroup;
 			children = (
 				12F82A6518ADFAB500A967B5 /* NCAssetsContainerViewController.h */,
-				12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.m */,
+				12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */,
 			);
 			name = NCAssetsContainerViewController;
 			sourceTree = "<group>";
@@ -3598,7 +3598,7 @@
 				8416386D1893BEA000968ADF /* NSDate+Neocom.m in Sources */,
 				126A0E5E185F3B9300A8E8A3 /* EVECertificateTree.m in Sources */,
 				126A0E6B185F3B9300A8E8A3 /* EVESovereignty.m in Sources */,
-				12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.m in Sources */,
+				12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */,
 				125F682218853230005732FA /* NCSkillData.m in Sources */,
 				129D2628187E923300E2062C /* NSBundle+Retina4.m in Sources */,
 				121112341859929E009E5106 /* NCTableViewController.m in Sources */,

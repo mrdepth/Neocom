@@ -12,6 +12,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCFittingShipViewController.h"
 
 @interface NCAssetsContainerViewControllerSection: NSObject
 @property (nonatomic, strong) NSString* title;
@@ -43,6 +44,10 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	NSMutableArray* sections = [NSMutableArray new];
+	
+	if (self.asset.type.group.categoryID != NCShipCategoryID &&
+		self.asset.type.group.groupID != NCControlTowerGroupID)
+		self.navigationItem.rightBarButtonItem = nil;
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -193,6 +198,11 @@
 		NCAssetsContainerViewController* destinationViewController = segue.destinationViewController;
 		EVEAssetListItem* asset = [sender object];
 		destinationViewController.asset = asset;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingShipViewController"]) {
+		NCFittingShipViewController* destinationViewController = segue.destinationViewController;
+		NCShipFit* fit = [[NCShipFit alloc] initWithAsset:self.asset];
+		destinationViewController.fit = fit;
 	}
 }
 

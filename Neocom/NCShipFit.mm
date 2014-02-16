@@ -11,6 +11,8 @@
 #import "NCStorage.h"
 #import "BattleClinicAPI.h"
 #import "NeocomAPI.h"
+#import "EVEOnlineAPI.h"
+#import "EVEAssetListItem+Neocom.h"
 
 typedef NS_ENUM(NSInteger, NCTypeCategory) {
 	NCTypeCategoryUnknown,
@@ -478,6 +480,101 @@ typedef NS_ENUM(NSInteger, NCTypeCategory) {
 	return self;
 }
 
+- (id) initWithAsset:(EVEAssetListItem*) asset {
+	if (self = [super init]) {
+		self.type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+		if (!self.type)
+			return nil;
+		self.loadoutName = asset.location ? asset.location.itemName : self.type.typeName;
+		self.loadoutData = [NCLoadoutDataShip new];
+		
+		NSMutableArray* hiSlots = [NSMutableArray new];
+		NSMutableArray* medSlots = [NSMutableArray new];
+		NSMutableArray* lowSlots = [NSMutableArray new];
+		NSMutableArray* rigSlots = [NSMutableArray new];
+		NSMutableArray* subsystems = [NSMutableArray new];
+		NSArray* drones = nil;
+		NSArray* cargo = nil;
+		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+		NSMutableDictionary* cargoDic = [NSMutableDictionary new];
+		
+		for (EVEAssetListItem* item in asset.contents) {
+			if (item.flag >= EVEInventoryFlagHiSlot0 && item.flag <= EVEInventoryFlagHiSlot7) {
+				for (int i = 0; i < item.quantity; i++) {
+					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+					module.typeID = item.typeID;
+					module.state = eufe::Module::STATE_ACTIVE;
+					[hiSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagMedSlot0 && item.flag <= EVEInventoryFlagMedSlot7) {
+				for (int i = 0; i < item.quantity; i++) {
+					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+					module.typeID = item.typeID;
+					module.state = eufe::Module::STATE_ACTIVE;
+					[medSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagLoSlot0 && item.flag <= EVEInventoryFlagLoSlot7) {
+				for (int i = 0; i < item.quantity; i++) {
+					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+					module.typeID = item.typeID;
+					module.state = eufe::Module::STATE_ACTIVE;
+					[lowSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagRigSlot0 && item.flag <= EVEInventoryFlagRigSlot7) {
+				for (int i = 0; i < item.quantity; i++) {
+					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+					module.typeID = item.typeID;
+					module.state = eufe::Module::STATE_ACTIVE;
+					[rigSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagSubSystem0 && item.flag <= EVEInventoryFlagSubSystem7) {
+				for (int i = 0; i < item.quantity; i++) {
+					NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+					module.typeID = item.typeID;
+					module.state = eufe::Module::STATE_ACTIVE;
+					[subsystems addObject:module];
+				}
+			}
+			else if (item.flag == EVEInventoryFlagDroneBay) {
+				NCLoadoutDataShipDrone* drone = dronesDic[@(item.typeID)];
+				if (!drone) {
+					drone = [NCLoadoutDataShipDrone new];
+					drone.typeID = item.typeID;
+					drone.active = true;
+					dronesDic[@(item.typeID)] = drone;
+				}
+				drone.count += item.quantity;
+			}
+			else {
+				NCLoadoutDataShipCargoItem* cargo = cargoDic[@(item.typeID)];
+				if (!cargo) {
+					cargo = [NCLoadoutDataShipCargoItem new];
+					cargo.typeID = item.typeID;
+					cargoDic[@(item.typeID)] = cargo;
+				}
+				cargo.count += item.quantity;
+			}
+		}
+		
+		drones = [dronesDic allValues];
+		cargo = [cargoDic allValues];
+		
+		self.loadoutData.hiSlots = hiSlots;
+		self.loadoutData.medSlots = medSlots;
+		self.loadoutData.lowSlots = lowSlots;
+		self.loadoutData.rigSlots = rigSlots;
+		self.loadoutData.subsystems = subsystems;
+		self.loadoutData.drones = drones;
+		self.loadoutData.cargo = cargo;
+		self.loadoutData.implants = @[];
+		self.loadoutData.boosters = @[];
+	}
+	return self;
+}
 
 - (void) save {
 	if (!self.pilot)

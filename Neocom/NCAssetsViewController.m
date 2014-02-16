@@ -158,7 +158,7 @@
 	if (account) {
 		NSArray* accounts = self.accounts;
 		if (!accounts)
-			self.accounts = accounts = @[account];
+			self.accounts = @[account];
 	}
 
 	// Do any additional setup after loading the view.
@@ -244,6 +244,15 @@
 }
 
 #pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	NSMutableArray* ids = [NSMutableArray new];
+	for (NCAccount* account in self.accounts)
+		[ids addObject:[[account objectID] URIRepresentation]];
+	[ids sortedArrayUsingSelector:@selector(compare:)];
+	
+	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];
+}
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
@@ -446,6 +455,12 @@
 
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
+	
+	if (account) {
+		self.accounts = @[account];
+	}
+
+	
 	if ([self isViewLoaded])
 		[self reloadFromCache];
 }

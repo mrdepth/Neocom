@@ -50,6 +50,7 @@
 
 @class BCEveLoadout;
 @class NAPISearchItem;
+@class EVEAssetListItem;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
@@ -61,6 +62,7 @@
 - (id) initWithType:(EVEDBInvType*) type;
 - (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 - (id) initWithAPILoadout:(NAPISearchItem*) apiLoadout;
+- (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;
 - (void) load;

@@ -21,6 +21,7 @@
 @property (nonatomic, assign) int count;
 @end
 
+@class EVEAssetListItem;
 @interface NCPOSFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
@@ -29,6 +30,7 @@
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;
+- (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;
 - (void) load;

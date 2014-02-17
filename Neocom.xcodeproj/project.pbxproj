@@ -34,6 +34,7 @@
 		120968741845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
 		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
+		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -529,6 +530,8 @@
 		120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLocationsManager.m; sourceTree = "<group>"; };
 		120D5B4518B203BD007ED9B4 /* NCMarketOrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersViewController.h; sourceTree = "<group>"; };
 		120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersViewController.m; sourceTree = "<group>"; };
+		120D5B5118B22AC0007ED9B4 /* NCMarketOrdersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersCell.h; sourceTree = "<group>"; };
+		120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersCell.m; sourceTree = "<group>"; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -1397,10 +1400,20 @@
 		120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */ = {
 			isa = PBXGroup;
 			children = (
+				120D5B4F18B22AAA007ED9B4 /* NCMarketOrdersCell */,
 				120D5B4518B203BD007ED9B4 /* NCMarketOrdersViewController.h */,
 				120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */,
 			);
 			name = NCMarketOrdersViewController;
+			sourceTree = "<group>";
+		};
+		120D5B4F18B22AAA007ED9B4 /* NCMarketOrdersCell */ = {
+			isa = PBXGroup;
+			children = (
+				120D5B5118B22AC0007ED9B4 /* NCMarketOrdersCell.h */,
+				120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */,
+			);
+			name = NCMarketOrdersCell;
 			sourceTree = "<group>";
 		};
 		1211122B185989CC009E5106 /* NCTaskManager */ = {
@@ -3686,6 +3699,7 @@
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
 				126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */,
 				126A0E14185F3B9300A8E8A3 /* EVEDBEveUnit.m in Sources */,
+				120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */,
 				126A0E2B185F3B9300A8E8A3 /* NSDictionary+EVEDBAPI.m in Sources */,
 				126A0E24185F3B9300A8E8A3 /* EVEDBMapSolarSystem.m in Sources */,
 				129D2620187E923300E2062C /* UITableViewCell+Nib.m in Sources */,

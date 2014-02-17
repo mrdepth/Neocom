@@ -258,7 +258,7 @@
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
 	NCAccount* account = [NCAccount currentAccount];
-	if (!account || account.accountType == NCAccountTypeCorporate) {
+	if (!account) {
 		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 		return;
 	}

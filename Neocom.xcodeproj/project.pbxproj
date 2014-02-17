@@ -32,6 +32,8 @@
 		120968721845F0CB00921A37 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968711845F0CB00921A37 /* XCTest.framework */; };
 		120968731845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968741845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
+		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
+		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -523,6 +525,10 @@
 		1209686A1845F0CB00921A37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		120968701845F0CB00921A37 /* NeocomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeocomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968711845F0CB00921A37 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		120D5B4018B1FE5B007ED9B4 /* NCLocationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLocationsManager.h; sourceTree = "<group>"; };
+		120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLocationsManager.m; sourceTree = "<group>"; };
+		120D5B4518B203BD007ED9B4 /* NCMarketOrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersViewController.h; sourceTree = "<group>"; };
+		120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersViewController.m; sourceTree = "<group>"; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -1377,6 +1383,24 @@
 				12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		120D5B3E18B1FE40007ED9B4 /* NCLocationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				120D5B4018B1FE5B007ED9B4 /* NCLocationsManager.h */,
+				120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */,
+			);
+			name = NCLocationsManager;
+			sourceTree = "<group>";
+		};
+		120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */ = {
+			isa = PBXGroup;
+			children = (
+				120D5B4518B203BD007ED9B4 /* NCMarketOrdersViewController.h */,
+				120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */,
+			);
+			name = NCMarketOrdersViewController;
 			sourceTree = "<group>";
 		};
 		1211122B185989CC009E5106 /* NCTaskManager */ = {
@@ -2941,6 +2965,8 @@
 		843C2EFC18AD34CE00221721 /* Market */ = {
 			isa = PBXGroup;
 			children = (
+				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
+				120D5B3E18B1FE40007ED9B4 /* NCLocationsManager */,
 				12F82A6318ADFA8D00A967B5 /* NCAssetsContainerViewController */,
 				843C2EFF18AD41B300221721 /* NCAssetsViewController */,
 			);
@@ -3607,6 +3633,7 @@
 				126A0E78185F3B9300A8E8A3 /* RSSEnclosure.m in Sources */,
 				126A0E39185F3B9300A8E8A3 /* EVECharWalletTransactions.m in Sources */,
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
+				120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
@@ -3809,6 +3836,7 @@
 				126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */,
+				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
 				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,
 				8456E86618AA9F90000DAE75 /* NCFittingPOSDataSource.mm in Sources */,
 				126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */,

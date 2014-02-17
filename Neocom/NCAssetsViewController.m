@@ -12,6 +12,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCAssetsContainerViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCLocationsManager.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -410,25 +411,28 @@
 											 }
 											 
 											 if (locationIDs.count > 0) {
-												 EVECharacterName* locationNames = [EVECharacterName characterNameWithIDs:[locationIDs allObjects] cachePolicy:cachePolicy error:nil progressHandler:nil];
-												 if (locationNames) {
-													 [locationNames.characters enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NSString* title, BOOL *stop) {
-														 
-														 NSMutableArray* locationAssets = [NSMutableArray new];
-														 long long locationID = [key longLongValue];
-														 for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
-															 if (asset.locationID == locationID) {
-																 [locationAssets addObject:asset];
-																 [topLevelAssets removeObject:asset];
-															 }
+												 NSDictionary* locationsNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationIDs allObjects]];
+												 [locationsNames enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCLocationsManagerItem* item, BOOL *stop) {
+													 
+													 NSMutableArray* locationAssets = [NSMutableArray new];
+													 long long locationID = [key longLongValue];
+													 for (EVEAssetListItem* asset in [NSArray arrayWithArray:topLevelAssets]) {
+														 if (asset.locationID == locationID) {
+															 [locationAssets addObject:asset];
+															 [topLevelAssets removeObject:asset];
 														 }
-														 [locationAssets sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
-														 NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
-														 section.assets = locationAssets;
-														 section.title = title ? title : NSLocalizedString(@"Unknown location", nil);
-														 [sections addObject:section];
-													 }];
-												 }
+													 }
+													 [locationAssets sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+													 NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
+													 section.assets = locationAssets;
+													 if (item.name)
+														 section.title = item.name;
+													 else if (item.solarSystem)
+														 section.title = item.solarSystem.solarSystemName;
+													 else
+														 section.title = NSLocalizedString(@"Unknown location", nil);
+													 [sections addObject:section];
+												 }];
 											 }
 											 
 											 if (topLevelAssets.count > 0) {

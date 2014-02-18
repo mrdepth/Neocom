@@ -9,13 +9,19 @@
 #import "NCAppDelegate.h"
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
+#import "UIAlertView+Error.h"
+#import "UIAlertView+Block.h"
 
 @interface NCAppDelegate()
+@property (nonatomic, strong) NCTaskManager* taskManager;
+- (void) addAPIKeyWithURL:(NSURL*) url;
+- (void) openFitWithURL:(NSURL*) url;
 @end
 
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	self.taskManager = [NCTaskManager new];
 //	NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
 //								  insertIntoManagedObjectContext:nil];
 //	skillPlan = nil;
@@ -62,9 +68,59 @@
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-	NSLog(@"%@", url);
-	return NO;
+- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+	NSString* scheme = [url scheme];
+	if ([scheme isEqualToString:@"eve"]) {
+		[self addAPIKeyWithURL:url];
+	}
+	else if ([scheme isEqualToString:@"fitting"])
+		[self openFitWithURL:url];
+	return YES;
+}
+
+#pragma mark - Private
+
+- (void) addAPIKeyWithURL:(NSURL*) url {
+	NSString *query = [url query];
+	NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+	
+	if (query) {
+		for (NSString *subquery in [query componentsSeparatedByString:@"&"]) {
+			NSArray *components = [subquery componentsSeparatedByString:@"="];
+			if (components.count == 2) {
+				NSString *value = [[components objectAtIndex:1] stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+				value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				[properties setValue:value forKey:[[components objectAtIndex:0] lowercaseString]];
+			}
+		}
+	}
+	__block NSError* error = nil;
+	__block BOOL success = NO;
+	[[self taskManager] addTaskWithIndentifier:nil
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSInteger keyID = [properties[@"keyid"] integerValue];
+											 NSString* vCode = properties[@"vcode"];
+											 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
+											 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (!success) {
+									 [[UIAlertView alertViewWithError:error] show];
+								 }
+								 else {
+								 [[UIAlertView alertViewWithTitle:nil
+														  message:NSLocalizedString(@"API Key added", nil)
+												cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+												otherButtonTitles:nil
+												  completionBlock:nil
+													  cancelBlock:nil] show];
+								 }
+							 }];
+}
+
+- (void) openFitWithURL:(NSURL*) url {
 }
 
 @end

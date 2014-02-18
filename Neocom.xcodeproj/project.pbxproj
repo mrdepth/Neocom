@@ -300,6 +300,13 @@
 		129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
+		12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9518B33AC500343D25 /* NCAddAPIKeyViewController.m */; };
+		12A7DB9918B3497B00343D25 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 12A7DB9818B3497B00343D25 /* index.html */; };
+		12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9B18B34B0900343D25 /* NSString+ASHTTPServer.m */; };
+		12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9E18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m */; };
+		12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DBA518B36B1A00343D25 /* NCWalletTransactionsViewController.m */; };
+		12A7DBA818B36B2F00343D25 /* Market.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12A7DBA718B36B2F00343D25 /* Market.storyboard */; };
+		12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DBAE18B3739B00343D25 /* NCWalletTransactionsCell.m */; };
 		12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */; };
 		12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */; };
 		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
@@ -1023,6 +1030,18 @@
 		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
 		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		12A7DB9418B33AC500343D25 /* NCAddAPIKeyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAddAPIKeyViewController.h; sourceTree = "<group>"; };
+		12A7DB9518B33AC500343D25 /* NCAddAPIKeyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAddAPIKeyViewController.m; sourceTree = "<group>"; };
+		12A7DB9818B3497B00343D25 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		12A7DB9A18B34B0900343D25 /* NSString+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASHTTPServer.h"; sourceTree = "<group>"; };
+		12A7DB9B18B34B0900343D25 /* NSString+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASHTTPServer.m"; sourceTree = "<group>"; };
+		12A7DB9D18B34D6200343D25 /* NSURLRequest+ASHTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ASHTTPServer.h"; sourceTree = "<group>"; };
+		12A7DB9E18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ASHTTPServer.m"; sourceTree = "<group>"; };
+		12A7DBA418B36B1A00343D25 /* NCWalletTransactionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWalletTransactionsViewController.h; sourceTree = "<group>"; };
+		12A7DBA518B36B1A00343D25 /* NCWalletTransactionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWalletTransactionsViewController.m; sourceTree = "<group>"; };
+		12A7DBA718B36B2F00343D25 /* Market.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Market.storyboard; sourceTree = "<group>"; };
+		12A7DBAD18B3739B00343D25 /* NCWalletTransactionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWalletTransactionsCell.h; sourceTree = "<group>"; };
+		12A7DBAE18B3739B00343D25 /* NCWalletTransactionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWalletTransactionsCell.m; sourceTree = "<group>"; };
 		12AA87D0188D05B90076CCF0 /* UIStoryboard+Multiple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIStoryboard+Multiple.h"; sourceTree = "<group>"; };
 		12AA87D1188D05B90076CCF0 /* UIStoryboard+Multiple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+Multiple.m"; sourceTree = "<group>"; };
 		12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDamagePattern.h; sourceTree = "<group>"; };
@@ -1370,12 +1389,13 @@
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
+				120968641845F0CB00921A37 /* Main.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
-				120968641845F0CB00921A37 /* Main.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
+				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
 				849B9FE31896D44700D4DD2B /* eufe.sqlite */,
@@ -2638,6 +2658,34 @@
 			name = NCStorage;
 			sourceTree = "<group>";
 		};
+		12A7DB9318B33A7900343D25 /* NCAddAPIKeyViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12A7DB9418B33AC500343D25 /* NCAddAPIKeyViewController.h */,
+				12A7DB9518B33AC500343D25 /* NCAddAPIKeyViewController.m */,
+			);
+			name = NCAddAPIKeyViewController;
+			sourceTree = "<group>";
+		};
+		12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12A7DBAC18B3738300343D25 /* NCWalletTransactionsCell */,
+				12A7DBA418B36B1A00343D25 /* NCWalletTransactionsViewController.h */,
+				12A7DBA518B36B1A00343D25 /* NCWalletTransactionsViewController.m */,
+			);
+			name = NCWalletTransactionsViewController;
+			sourceTree = "<group>";
+		};
+		12A7DBAC18B3738300343D25 /* NCWalletTransactionsCell */ = {
+			isa = PBXGroup;
+			children = (
+				12A7DBAD18B3739B00343D25 /* NCWalletTransactionsCell.h */,
+				12A7DBAE18B3739B00343D25 /* NCWalletTransactionsCell.m */,
+			);
+			name = NCWalletTransactionsCell;
+			sourceTree = "<group>";
+		};
 		12AA87CF188D05AE0076CCF0 /* UIStoryboard+Multiple */ = {
 			isa = PBXGroup;
 			children = (
@@ -2807,6 +2855,10 @@
 				12CDB7EE188EA35D002079C0 /* NSMutableURLRequest+ASHTTPServer.m */,
 				12CDB7F0188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.h */,
 				12CDB7F1188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m */,
+				12A7DB9A18B34B0900343D25 /* NSString+ASHTTPServer.h */,
+				12A7DB9B18B34B0900343D25 /* NSString+ASHTTPServer.m */,
+				12A7DB9D18B34D6200343D25 /* NSURLRequest+ASHTTPServer.h */,
+				12A7DB9E18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m */,
 			);
 			path = ASHTTPServer;
 			sourceTree = "<group>";
@@ -2933,6 +2985,7 @@
 		8418BB1A1891970500B99A7E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12A7DB9818B3497B00343D25 /* index.html */,
 				84E4331C18951B2400DF2061 /* mailMessageTemplate.html */,
 				8418BB1B1891970500B99A7E /* eventTemplate.html */,
 			);
@@ -2978,10 +3031,11 @@
 		843C2EFC18AD34CE00221721 /* Market */ = {
 			isa = PBXGroup;
 			children = (
-				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
 				120D5B3E18B1FE40007ED9B4 /* NCLocationsManager */,
-				12F82A6318ADFA8D00A967B5 /* NCAssetsContainerViewController */,
 				843C2EFF18AD41B300221721 /* NCAssetsViewController */,
+				12F82A6318ADFA8D00A967B5 /* NCAssetsContainerViewController */,
+				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
+				12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -3276,6 +3330,7 @@
 		84FC4F541878405C0004073C /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				12A7DB9318B33A7900343D25 /* NCAddAPIKeyViewController */,
 				84FC4F5A187841C50004073C /* NCAccountsViewController */,
 			);
 			name = Account;
@@ -3422,6 +3477,7 @@
 				849B9FB41896D24A00D4DD2B /* calibration.png in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				849B9FD41896D24A00D4DD2B /* slotMed.png in Resources */,
+				12A7DB9918B3497B00343D25 /* index.html in Resources */,
 				849B9FC61896D24A00D4DD2B /* Magnetometric.png in Resources */,
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
@@ -3481,6 +3537,7 @@
 				849B9FD61896D24A00D4DD2B /* slotSubsystem.png in Resources */,
 				84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */,
 				849B9FD81896D24A00D4DD2B /* targets.png in Resources */,
+				12A7DBA818B36B2F00343D25 /* Market.storyboard in Resources */,
 				125F6814188526B6005732FA /* level_450.gif in Resources */,
 				125F680D188526B6005732FA /* level_251.gif in Resources */,
 				849B9FCA1896D24A00D4DD2B /* overheated.png in Resources */,
@@ -3591,6 +3648,7 @@
 				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
+				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
@@ -3623,6 +3681,7 @@
 				84C118301898457E00A35516 /* UIViewController+Neocom.m in Sources */,
 				12CDB7DC188E6ABD002079C0 /* murmurhash3.c in Sources */,
 				1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */,
+				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
 				128A1F3E18992E4700005C4F /* NCFittingShipDronesDataSource.mm in Sources */,
@@ -3648,6 +3707,7 @@
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
+				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
 				126A0E82185F3B9300A8E8A3 /* NSString+HTML.m in Sources */,
@@ -3733,6 +3793,7 @@
 				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
 				126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */,
 				1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */,
+				12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */,
 				8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */,
 				126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */,
 				126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */,
@@ -3771,6 +3832,7 @@
 				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */,
+				12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */,
 				126A0E27185F3B9300A8E8A3 /* EVEDBRamInstallationTypeContent.m in Sources */,
 				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,

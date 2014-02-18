@@ -154,10 +154,8 @@
 	</array>
 	<array>
 		<dict>
-			<key>className</key>
-			<string>AssetsViewController</string>
-			<key>nibName</key>
-			<string>AssetsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCAssetsViewController</string>
 			<key>title</key>
 			<string>Assets</string>
 			<key>image</key>
@@ -168,10 +166,8 @@
 			<integer>2</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>MarketOrdersViewController</string>
-			<key>nibName</key>
-			<string>MarketOrdersViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCMarketOrdersViewController</string>
 			<key>title</key>
 			<string>Market Orders</string>
 			<key>image</key>
@@ -196,10 +192,8 @@
 			<integer>8388608</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>WalletTransactionsViewController</string>
-			<key>nibName</key>
-			<string>WalletTransactionsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCWalletTransactionsViewController</string>
 			<key>title</key>
 			<string>Wallet Transactions</string>
 			<key>image</key>

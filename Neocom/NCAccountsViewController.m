@@ -132,17 +132,25 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NCAccountsViewControllerData* data = self.data;
-    return data.accounts.count;
+	if (section == 0) {
+		NCAccountsViewControllerData* data = self.data;
+		return data.accounts.count;
+	}
+	else
+		return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (indexPath.section == 1) {
+		return [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+	}
+	
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 
@@ -185,15 +193,6 @@
 		cell.locationLabel.text = characterInfo.lastKnownLocation;
 		cell.shipLabel.text = characterInfo.shipTypeName;
 		
-/*		if (account.account.accountBalance) {
-			float balance = 0.0;
-			for (EVEAccountBalanceItem* item in account.account.accountBalance.accounts)
-				balance += item.balance;
-			
-			cell.balanceLabel.text = [NSString shortStringWithFloat:balance unit:NSLocalizedString(@"ISK", nil)];
-		}
-		else
-			cell.balanceLabel.text = nil;*/
 		cell.balanceLabel.text = [NSString shortStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
 		
 		if (account.account.skillQueue) {
@@ -246,8 +245,6 @@
 		
 		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
 		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
-		//NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
-		//[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
 		return cell;
 	}
 	else {
@@ -288,8 +285,6 @@
 		
 		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
 		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
-		//NSAttributedString* title = [[NSAttributedString alloc] initWithString:string attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)}];
-		//[cell.apiKeyButton setAttributedTitle:title forState:UIControlStateNormal];
 		return cell;
 	}
 }
@@ -364,12 +359,20 @@
 
 #pragma mark - Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
+	return section == 0 ? UITableViewAutomaticDimension : 44;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (indexPath.section == 0) {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
+	else
+		return 44;
 }
 
 /*

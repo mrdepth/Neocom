@@ -275,7 +275,7 @@
 		}
 		else if (indexPath.row == 5) {
 			NCFittingEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingEHPCell"];
-			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:self.shipStats.ehp unit:nil]];
+			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.shipStats.ehp unit:nil]];
 			return cell;
 		}
 		else {
@@ -329,7 +329,7 @@
 					labels[i].progress = values[i];
 					labels[i].text = [NSString stringWithFormat:@"%.1f%%", values[i] * 100];
 				}
-				cell.hpLabel.text = values[4] > 0 ? [NSString stringWithResource:values[4] unit:nil] : nil;
+				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
 				cell.categoryImageView.image = [UIImage imageNamed:imageName];
 			}
 			return cell;
@@ -338,13 +338,13 @@
 	else if (indexPath.section == 2) {
 		NCFittingShipCapacitorCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipCapacitorCell"];
 		if (self.shipStats) {
-			cell.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString stringWithResource:self.shipStats.capCapacity unit:@"GJ"]];
+			cell.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString shortStringWithFloat:self.shipStats.capCapacity unit:@"GJ"]];
 			if (self.shipStats.capStable)
 				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), self.shipStats.capState];
 			else
 				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capState]];
 			cell.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capacitorRechargeTime]];
-			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%@", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", [NSString stringWithResource:self.shipStats.delta unit:@"GJ/s"]];
+			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%@", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", [NSString shortStringWithFloat:self.shipStats.delta unit:@"GJ/s"]];
 		}
 		return cell;
 	}
@@ -396,7 +396,7 @@
 			cell.speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", self.shipStats.speed];
 			cell.alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", self.shipStats.alignTime];
 			cell.signatureLabel.text = [NSString stringWithFormat:@"%.0f", self.shipStats.signature];
-			cell.cargoLabel.text = [NSString stringWithResource:self.shipStats.cargo unit:@"m3"];
+			cell.cargoLabel.text = [NSString shortStringWithFloat:self.shipStats.cargo unit:@"m3"];
 			cell.sensorImageView.image = self.shipStats.sensorImage;
 			cell.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.droneRange];
 			cell.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", self.shipStats.warpSpeed];
@@ -406,9 +406,9 @@
 	else if (indexPath.section == 6) {
 		NCFittingShipPriceCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipPriceCell"];
 		if (self.priceStats) {
-			cell.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:self.priceStats.shipPrice unit:nil]];
-			cell.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:self.priceStats.fittingsPrice unit:nil]];
-			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString stringWithResource:self.priceStats.totalPrice unit:nil]];
+			cell.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.shipPrice unit:nil]];
+			cell.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.fittingsPrice unit:nil]];
+			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.totalPrice unit:nil]];
 		}
 		return cell;
 	}

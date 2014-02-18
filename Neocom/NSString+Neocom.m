@@ -29,11 +29,11 @@
 		return @"";
 }
 
-+ (NSString*) stringWithResource:(float) resource unit:(NSString*) unit {
+/*+ (NSString*) stringWithResource:(float) resource unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:resource];
 	float value = resource / dimension;
 	return [NSString stringWithFormat:@"%@%@ %@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)], [self dimensionSuffix:dimension], unit ? unit : @""];
-}
+}*/
 
 + (NSString*) stringWithTotalResources:(float) total usedResources:(float) used unit:(NSString*) unit {
 	NSInteger dimension = [self dimensionForValue:total];

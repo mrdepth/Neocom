@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Neocom</title>
+
+<style type="text/css">
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		font-family: Verdana,Arial;
+		font-size: 8pt;
+		color: white;
+		
+		background-color: black;
+	}
+	h2 {font-size: 11pt;}
+	
+	A:link{color: #ffa500;text-decoration: none}
+	A:visited{color: #ffa500;text-decoration: none}
+	A:active{color: #ffa500;text-decoration: none}
+	A:hover{color: #ffa500;text-decoration: underline}
+	
+	.form {
+		width: 400px;
+		height: 220px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -120px 0 0 -210px;
+		background-color: #2C2C38;
+		padding: 10px;
+		border: 1px solid #444444;
+	}
+	.formItem {
+		margin: 8px 0px 0px 0px;
+		padding: 4px;
+	}
+	.formSection {
+		border-top: 1px solid #444444;
+	}
+	.formItemHeader {
+		font-weight: bold;
+		margin: 0px 0px 2px 0px;
+	}
+</style>
+</head>
+
+<body>
+	<div class="form">
+		<h2>Add key</h2>
+		Copy your API Key from <a href="https://support.eveonline.com/api" target="_blank">https://support.eveonline.com/api</a><br>
+		{error}
+		<form action="submit" method="get">
+			<div class="formSection">
+				<div class="formItem">
+					<div class="formItemHeader">
+						KeyID:
+					</div>
+					<input id="keyID" maxlength="64" name="keyID" value="{keyID}" type="text" style="width:50%;"/>
+				</div>
+				
+				<div class="formItem">
+					<div class="formItemHeader">
+						Verification Code:
+					</div>
+					<input id="vCode" maxlength="64" name="vCode" value="{vCode}" type="text" style="width:100%;"/>
+				</div>
+				<div class="formItem" style="float: right;">
+					<button type="submit">Submit</button>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+
+</body>
+</html>

@@ -211,8 +211,8 @@
 	else
 		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
 	
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@", nil), [NSString stringWithResource:row.marketOrder.price unit:@"ISK"]];
-	cell.qualityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@ / %@", nil), [NSString stringWithResource:row.marketOrder.volRemaining unit:nil], [NSString stringWithResource:row.marketOrder.volEntered unit:nil]];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@", nil), [NSString shortStringWithFloat:row.marketOrder.price unit:@"ISK"]];
+	cell.qualityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSString stringWithTotalResources:row.marketOrder.volEntered usedResources:row.marketOrder.volRemaining unit:nil]];
 	
 	if (row.characterName)
 		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];
@@ -293,25 +293,32 @@
 												 [rows addObject:row];
 												 
 												 if (order.orderState == EVEOrderStateOpen)
-													 [openOrders addObject:order];
+													 [openOrders addObject:row];
 												 else
-													 [closedOrders addObject:order];
+													 [closedOrders addObject:row];
 												 
 												 row.expireDate = [order.issued dateByAddingTimeInterval:order.duration * 24 * 3600];
 											 }
 
-											 NSDictionary* locationNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationsIDs allObjects]];
-											 EVECharacterName* characterName = [EVECharacterName characterNameWithIDs:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]
+											 NSDictionary* locationNames = nil;
+											 if (locationsIDs.count > 0)
+												 locationNames = [[NCLocationsManager defaultManager] locationsNamesWithIDs:[locationsIDs allObjects]];
+											 
+											 EVECharacterName* characterName = nil;
+											 if (characterIDs.count > 0)
+												 characterName = [EVECharacterName characterNameWithIDs:[characterIDs sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(compare:)]]]
 																										  cachePolicy:NSURLRequestUseProtocolCachePolicy
 																												error:nil
 																									  progressHandler:nil];
+											 
 											 for (NCMarketOrdersViewControllerDataRow* row in rows) {
 												 row.location = locationNames[@(row.marketOrder.stationID)];
-												 row.characterName = characterName.characters[@(row.marketOrder.charID)];
+												 if (characterName)
+													 row.characterName = characterName.characters[@(row.marketOrder.charID)];
 											 }
 											 
-											 [openOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order.expireDate" ascending:YES]]];
-											 [closedOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order.expireDate" ascending:NO]]];
+											 [openOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"expireDate" ascending:YES]]];
+											 [closedOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"expireDate" ascending:NO]]];
 											 data.openOrders = openOrders;
 											 data.closedOrders = closedOrders;
 										 }

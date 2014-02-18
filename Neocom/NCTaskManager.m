@@ -23,8 +23,15 @@
 
 @implementation NCTaskManager
 
-- (id) initWithViewController:(UIViewController*) viewController {
+- (id) init {
 	if (self = [super init]) {
+		_numberOfTasks = 0;
+	}
+	return self;
+}
+
+- (id) initWithViewController:(UIViewController*) viewController {
+	if (self = [self init]) {
 		self.viewController = viewController;
 		UINavigationBar* navigationBar = self.viewController.navigationController.navigationBar;
 		if (navigationBar) {
@@ -36,8 +43,6 @@
 			self.progressView.trackTintColor = [UIColor clearColor];
 			[UIView setAnimationsEnabled:enabled];
 		}
-		
-		_numberOfTasks = 0;
 	}
 	return self;
 }
@@ -66,15 +71,17 @@
 
 - (void) setActive:(BOOL)active {
 	_active = active;
-	if (active) {
-		if (!self.progressView.superview) {
-			UINavigationBar* navigationBar = self.viewController.navigationController.navigationBar;
-			[navigationBar addSubview:self.progressView];
+	if (self.progressView) {
+		if (active) {
+			if (!self.progressView.superview) {
+				UINavigationBar* navigationBar = self.viewController.navigationController.navigationBar;
+				[navigationBar addSubview:self.progressView];
+			}
 		}
-	}
-	else {
-		if (self.progressView.superview)
-			[self.progressView removeFromSuperview];
+		else {
+			if (self.progressView.superview)
+				[self.progressView removeFromSuperview];
+		}
 	}
 }
 
@@ -103,14 +110,16 @@
 			if (operations.count > 0)
 				_activeTask = operations[0];
 		}
-		if (_activeTask) {
-			self.progressView.hidden = NO;
-			self.progressView.progress = _activeTask.progress;
+		if (self.progressView) {
+			if (_activeTask) {
+				self.progressView.hidden = NO;
+				self.progressView.progress = _activeTask.progress;
+			}
+			else
+				self.progressView.hidden = YES;
 		}
-		else
-			self.progressView.hidden = YES;
 	}
-	else {
+	else if (self.progressView) {
 		self.progressView.hidden = YES;
 	}
 }

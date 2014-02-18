@@ -140,7 +140,7 @@
 		}
 		else if (indexPath.row == 5) {
 			NCFittingEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingEHPCell"];
-			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString stringWithResource:self.posStats.ehp unit:nil]];
+			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.posStats.ehp unit:nil]];
 			return cell;
 		}
 		else {
@@ -194,7 +194,7 @@
 					labels[i].progress = values[i];
 					labels[i].text = [NSString stringWithFormat:@"%.1f%%", values[i] * 100];
 				}
-				cell.hpLabel.text = values[4] > 0 ? [NSString stringWithResource:values[4] unit:nil] : nil;
+				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
 				cell.categoryImageView.image = [UIImage imageNamed:imageName];
 			}
 			return cell;

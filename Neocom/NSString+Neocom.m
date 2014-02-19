@@ -12,6 +12,7 @@
 @implementation NSString (Neocom)
 
 + (NSInteger) dimensionForValue:(float) value {
+	value = fabs(value);
 	if (value >= 10000000)
 		return 1000000;
 	else if (value >= 10000)

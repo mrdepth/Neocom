@@ -212,8 +212,10 @@
 	else
 		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
 	
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@", nil), [NSString shortStringWithFloat:row.marketOrder.price unit:@"ISK"]];
-	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSString stringWithTotalResources:row.marketOrder.volEntered usedResources:row.marketOrder.volRemaining unit:nil]];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.marketOrder.price)]];
+	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@ / %@", nil),
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volEntered],
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volRemaining]];
 	
 	if (row.characterName)
 		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];

@@ -158,9 +158,9 @@
 	NCWalletTransactionsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
 	NCWalletTransactionsViewControllerDataAccount* account = data.accounts[section];
 	if (account.accountName)
-		return [NSString stringWithFormat:@"%@: %@", account.accountName, [NSString shortStringWithFloat:account.balance.balance unit:@"ISK"]];
+		return [NSString stringWithFormat:@"%@: %@ ISK", account.accountName, [NSNumberFormatter neocomLocalizedStringFromNumber:@(account.balance.balance)]];
 	else
-		return [NSString stringWithFormat:@"%@", [NSString shortStringWithFloat:account.balance.balance unit:@"ISK"]];
+		return [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(account.balance.balance)]];
 }
 
 // Customize the appearance of table view cells.
@@ -187,9 +187,9 @@
 	
 	float price = [row.transaction price];
 	NSInteger quantity = [row.transaction quantity];
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@", nil), [NSString shortStringWithFloat:price unit:@"ISK"]];
-	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSString shortStringWithFloat:quantity unit:nil]];
-	cell.amountLabel.text = [NSString shortStringWithFloat:price * quantity unit:@"ISK"];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
+	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]];
+	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(price * quantity)]];
 
 	if ([[row.transaction transactionType] isEqualToString:@"sell"])
 		cell.amountLabel.textColor = [UIColor greenColor];

@@ -34,7 +34,7 @@
 	NSURL* url = [[NSUserDefaults standardUserDefaults] URLForKey:NCSettingsCurrentAccountKey];
 	if (url) {
 		NCStorage* storage = [NCStorage sharedStorage];
-		NCAccount* account = (NCAccount*) [storage.managedObjectContext objectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url]];
+		NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
 		if (account)
 			[NCAccount setCurrentAccount:account];
 	}

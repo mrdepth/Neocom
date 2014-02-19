@@ -32,8 +32,10 @@
 		NSURL* url = [aDecoder decodeObjectForKey:@"account"];
 		if ([url isKindOfClass:[NSURL class]]) {
 			[storage.managedObjectContext performBlockAndWait:^{
-				self.account = (NCAccount*) [storage.managedObjectContext objectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url]];
+					self.account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
 			}];
+			if (!self.account)
+				return nil;
 			
 			self.accountStatus = [aDecoder decodeObjectForKey:@"accountStatus"];
 			if (![self.accountStatus isKindOfClass:[EVEAccountStatus class]])
@@ -60,6 +62,10 @@
 		[aCoder encodeObject:self.currentSkill forKey:@"currentSkill"];
 }
 
+- (NSString*) description {
+	return [self.account description];
+}
+
 @end
 
 @interface NCAccountsViewControllerData : NSObject<NSCoding>
@@ -75,8 +81,7 @@
 	if (self = [super init]) {
 		NCStorage* storage = [NCStorage sharedStorage];
         
-		NSArray* accounts = [aDecoder decodeObjectForKey:@"accounts"];
-        self.accounts = [NSMutableArray arrayWithArray:accounts];
+        self.accounts = [[aDecoder decodeObjectForKey:@"accounts"] mutableCopy];
         [storage.managedObjectContext performBlockAndWait:^{
             self.apiKeys = [NSMutableArray arrayWithArray:[NCAPIKey allAPIKeys]];
         }];
@@ -153,7 +158,7 @@
 	
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-
+	
 	if (account.account.accountType == NCAccountTypeCharacter) {
 		static NSString *CellIdentifier = @"NCAccountCharacterCell";
 		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -307,9 +312,7 @@
 		NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 		updatedData.accounts = data.accounts;
 		updatedData.apiKeys = data.apiKeys;
-		self.cacheRecord.data.data = updatedData;
-
-		[[NCCache sharedCache] saveContext];
+		[self didUpdateData:updatedData];
 		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
@@ -325,19 +328,21 @@
 	[data.accounts removeObjectAtIndex:fromIndexPath.row];
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
 	
-	int32_t order = 0;
-	for (NCAccountsViewControllerDataAccount* account in data.accounts)
-		account.account.order = order++;
-	//[self.cacheRecord willChangeValueForKey:@"data"];
-	//[self.cacheRecord didChangeValueForKey:@"data"];
+	NCStorage* storage = [NCStorage sharedStorage];
 	
+	[storage.managedObjectContext performBlockAndWait:^{
+		int32_t order = 0;
+		for (NCAccountsViewControllerDataAccount* account in data.accounts)
+			account.account.order = order++;
+		
+		[storage saveContext];
+	}];
+
 	NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
 	updatedData.accounts = data.accounts;
 	updatedData.apiKeys = data.apiKeys;
-	self.cacheRecord.data.data = updatedData;
+	[self didUpdateData:updatedData];
 	
-	[[NCStorage sharedStorage] saveContext];
-	[[NCCache sharedCache] saveContext];
 	[[NCAccountsManager defaultManager] reload];
 }
 
@@ -358,6 +363,14 @@
  */
 
 #pragma mark - Table view delegate
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.section == 1)
+		return sourceIndexPath;
+	else
+		return proposedDestinationIndexPath;
+}
+
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
 	return section == 0 ? UITableViewAutomaticDimension : 44;
@@ -388,6 +401,10 @@
  */
 
 #pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return NSStringFromClass(self.class);
+}
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;

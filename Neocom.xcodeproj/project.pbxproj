@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */; };
+		1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1203B69618B4A4FC003A0D72 /* NCWalletJournalViewController.m */; };
 		12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041556189A449E00B15BB5 /* NCFittingShipWeaponsCell.m */; };
 		1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041559189A44AC00B15BB5 /* NCFittingShipResourcesCell.m */; };
 		1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204155C189A44CF00B15BB5 /* NCFittingResistancesCell.m */; };
@@ -493,6 +494,8 @@
 /* Begin PBXFileReference section */
 		1202FC7418A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipAffectingSkillsViewController.h; sourceTree = "<group>"; };
 		1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipAffectingSkillsViewController.m; sourceTree = "<group>"; };
+		1203B69518B4A4FC003A0D72 /* NCWalletJournalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCWalletJournalViewController.h; sourceTree = "<group>"; };
+		1203B69618B4A4FC003A0D72 /* NCWalletJournalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCWalletJournalViewController.m; sourceTree = "<group>"; };
 		12041555189A449E00B15BB5 /* NCFittingShipWeaponsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipWeaponsCell.h; sourceTree = "<group>"; };
 		12041556189A449E00B15BB5 /* NCFittingShipWeaponsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipWeaponsCell.m; sourceTree = "<group>"; };
 		12041558189A44AC00B15BB5 /* NCFittingShipResourcesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipResourcesCell.h; sourceTree = "<group>"; };
@@ -1311,6 +1314,15 @@
 				1202FC7518A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m */,
 			);
 			name = NCFittingShipAffectingSkillsViewController;
+			sourceTree = "<group>";
+		};
+		1203B69318B4A4DA003A0D72 /* NCWalletJournalViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1203B69518B4A4FC003A0D72 /* NCWalletJournalViewController.h */,
+				1203B69618B4A4FC003A0D72 /* NCWalletJournalViewController.m */,
+			);
+			name = NCWalletJournalViewController;
 			sourceTree = "<group>";
 		};
 		1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */ = {
@@ -3036,6 +3048,7 @@
 				12F82A6318ADFA8D00A967B5 /* NCAssetsContainerViewController */,
 				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
 				12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */,
+				1203B69318B4A4DA003A0D72 /* NCWalletJournalViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -3864,6 +3877,7 @@
 				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
+				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
 				1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,

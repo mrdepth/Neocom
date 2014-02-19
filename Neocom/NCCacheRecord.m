@@ -29,7 +29,7 @@
 	NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
 	if (fetchedObjects.count > 0)
 		record = fetchedObjects[0];
-	else {
+	if (!record) {
 		NCCacheRecord* record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
 		record.recordID = recordID;
 		record.date = [NSDate date];

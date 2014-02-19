@@ -229,7 +229,7 @@
 	
 	NCDatabaseTypeMarketInfoCell* cell = (NCDatabaseTypeMarketInfoCell*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	cell.priceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.order.price)]];
-	cell.qualityLabel.text = [NSString stringWithFormat:@"Qty: %@", [NSNumberFormatter neocomLocalizedStringFromInteger:row.order.volRemain]];
+	cell.quantityLabel.text = [NSString stringWithFormat:@"Qty: %@", [NSNumberFormatter neocomLocalizedStringFromInteger:row.order.volRemain]];
 	
 	NSString* ss = [NSString stringWithFormat:@"%.1f", row.order.security];
 	NSString* s;

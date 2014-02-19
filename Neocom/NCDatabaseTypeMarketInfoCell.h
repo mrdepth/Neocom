@@ -10,7 +10,7 @@
 
 @interface NCDatabaseTypeMarketInfoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
-@property (weak, nonatomic) IBOutlet UILabel *qualityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *quantityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *solarSystemlabel;
 @property (weak, nonatomic) IBOutlet UILabel *jumpsLabel;

@@ -17,6 +17,7 @@
 @property (nonatomic, strong, readonly) id data;
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
+- (void) didUpdateData:(id) data;
 - (void) didFailLoadDataWithError:(NSError*) error;
 
 #pragma mark - Override

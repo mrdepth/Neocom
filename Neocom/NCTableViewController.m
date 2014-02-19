@@ -139,16 +139,30 @@
 		self.data = data;
 		NSString* recordID = self.recordID;
 		NCCache* cache = [NCCache sharedCache];
-		if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
-			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
-		self.cacheRecord.recordID = recordID;
-		self.cacheRecord.data.data = data;
-		self.cacheRecord.date = cacheDate;
-		self.cacheRecord.expireDate = expireDate;
-		[cache saveContext];
+		[cache.managedObjectContext performBlockAndWait:^{
+			if (!self.cacheRecord || ![self.cacheRecord.recordID isEqualToString:recordID])
+				self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:recordID];
+			self.cacheRecord.recordID = recordID;
+			self.cacheRecord.data.data = data;
+			self.cacheRecord.date = cacheDate;
+			self.cacheRecord.expireDate = expireDate;
+			[cache saveContext];
+		}];
 	}
 	[self update];
 	return self.cacheRecord;
+}
+
+- (void) didUpdateData:(id) data {
+	if (data) {
+		self.data = data;
+		NCCache* cache = [NCCache sharedCache];
+		[cache.managedObjectContext performBlockAndWait:^{
+			self.cacheRecord.data.data = data;
+			[cache saveContext];
+		}];
+
+	}
 }
 
 - (void) didFailLoadDataWithError:(NSError*) error {

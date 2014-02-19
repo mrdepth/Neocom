@@ -818,10 +818,11 @@
             </objects>
             <point key="canvasLocation" x="787" y="1648"/>
         </scene>
-        <!--Wallet Transactions View Controller-->
+        <!--Wallet Journal View Controller-->
         <scene sceneID="ErF-Pi-yg0">
             <objects>
-                <tableViewController id="uG7-gi-rk5" customClass="NCWalletTransactionsViewController" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JRo-N3-zEE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="uG7-gi-rk5" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="Yz8-sM-eW2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -927,7 +928,7 @@
                                     <outlet property="dateLabel" destination="HTJ-9z-nom" id="I18-i9-OrD"/>
                                     <outlet property="locationLabel" destination="h31-le-VpV" id="bap-9D-xU3"/>
                                     <outlet property="priceLabel" destination="tpb-0c-uvr" id="EJb-mJ-JVB"/>
-                                    <outlet property="qualityLabel" destination="IST-Ui-PgF" id="o5V-pu-eaK"/>
+                                    <outlet property="quantityLabel" destination="IST-Ui-PgF" id="PSi-lK-dXL"/>
                                     <outlet property="titleLabel" destination="VbL-R2-ptK" id="h8w-sC-Q9N"/>
                                     <outlet property="typeImageView" destination="2pk-X7-xdg" id="sy0-6H-x7Z"/>
                                 </connections>
@@ -938,13 +939,13 @@
                         <nil key="title"/>
                     </navigationItem>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JRo-N3-zEE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-479" y="475"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rhm-iP-Cct">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zjx-TZ-ZX8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="NCMarketOrdersViewController" definesPresentationContext="YES" id="hPR-g7-nc1" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aZU-9y-mb4">
                         <autoresizingMask key="autoresizingMask"/>
@@ -953,7 +954,6 @@
                         <segue destination="uG7-gi-rk5" kind="relationship" relationship="rootViewController" id="Jty-Ce-2Vf"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zjx-TZ-ZX8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1015" y="475"/>
         </scene>

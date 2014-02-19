@@ -87,6 +87,7 @@
 	if (self.closedOrders)
 		[aCoder encodeObject:self.closedOrders forKey:@"closedOrders"];
 }
+
 @end
 
 @interface NCMarketOrdersViewController ()
@@ -110,8 +111,8 @@
 {
     [super viewDidLoad];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
-	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
-	// Do any additional setup after loading the view.
+	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -212,7 +213,7 @@
 		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
 	
 	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@", nil), [NSString shortStringWithFloat:row.marketOrder.price unit:@"ISK"]];
-	cell.qualityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSString stringWithTotalResources:row.marketOrder.volEntered usedResources:row.marketOrder.volRemaining unit:nil]];
+	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSString stringWithTotalResources:row.marketOrder.volEntered usedResources:row.marketOrder.volRemaining unit:nil]];
 	
 	if (row.characterName)
 		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];
@@ -278,6 +279,9 @@
 											 NSMutableArray* openOrders = [NSMutableArray new];
 											 NSMutableArray* closedOrders = [NSMutableArray new];
 											 for (EVEMarketOrdersItem* order in marketOrders.orders) {
+												 if (order.duration == 0) //Market operations
+													 continue;
+												 
 												 NCMarketOrdersViewControllerDataRow* row = [NCMarketOrdersViewControllerDataRow new];
 												 row.marketOrder = order;
 												 [locationsIDs addObject:@(order.stationID)];
@@ -338,6 +342,12 @@
 	[super update];
 	NCMarketOrdersViewControllerData* data = self.data;
 	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
+}
+
+- (void) didChangeAccount:(NCAccount *)account {
+	[super didChangeAccount:account];
+	if ([self isViewLoaded])
+		[self reloadFromCache];
 }
 
 @end

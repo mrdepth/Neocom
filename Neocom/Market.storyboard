@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="NqN-qQ-eq1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="NqN-qQ-eq1">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -487,6 +487,122 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vRY-j3-QG0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2427" y="-417"/>
+        </scene>
+        <!--Wallet Journal View Controller-->
+        <scene sceneID="N47-BF-31I">
+            <objects>
+                <tableViewController id="EVq-4f-yEN" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="r1T-Ep-Pnp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="Cell" rowHeight="87" id="Zgb-QP-gka" customClass="NCWalletJournalCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="87"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zgb-QP-gka" id="uVs-P4-DSy">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" text="Date" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fW7-ga-zfn">
+                                            <rect key="frame" x="67" y="22" width="238" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" numberOfLines="2" minimumScaleFactor="0.5" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="pdj-JK-yWy">
+                                            <rect key="frame" x="15" y="4" width="290" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Balance" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VF2-57-3ak">
+                                            <rect key="frame" x="15" y="37" width="290" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Amount" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CgA-NJ-ZBI">
+                                            <rect key="frame" x="15" y="22" width="44" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="Tax:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CCN-aa-o5W">
+                                            <rect key="frame" x="15" y="52" width="290" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Character Name -> Client Name" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="buX-tY-BBr">
+                                            <rect key="frame" x="15" y="67" width="290" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="leading" secondItem="CCN-aa-o5W" secondAttribute="leading" id="244-LR-4Jr"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="trailing" secondItem="pdj-JK-yWy" secondAttribute="trailing" id="2mv-Lj-rag"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="leading" secondItem="pdj-JK-yWy" secondAttribute="leading" id="C6l-GY-FBp"/>
+                                        <constraint firstAttribute="trailing" secondItem="pdj-JK-yWy" secondAttribute="trailing" constant="15" id="UZY-Qn-aI0"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="trailing" secondItem="VF2-57-3ak" secondAttribute="trailing" id="XIc-P3-qIf"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="trailing" secondItem="CCN-aa-o5W" secondAttribute="trailing" id="Ycz-he-4aa"/>
+                                        <constraint firstItem="fW7-ga-zfn" firstAttribute="leading" secondItem="CgA-NJ-ZBI" secondAttribute="trailing" constant="8" id="fa7-MB-ITp"/>
+                                        <constraint firstItem="fW7-ga-zfn" firstAttribute="top" secondItem="CgA-NJ-ZBI" secondAttribute="top" id="gcR-Tb-Yxu"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="leading" secondItem="VF2-57-3ak" secondAttribute="leading" id="il4-UH-9d1"/>
+                                        <constraint firstItem="VF2-57-3ak" firstAttribute="top" secondItem="CgA-NJ-ZBI" secondAttribute="bottom" id="mm4-oo-UkV"/>
+                                        <constraint firstAttribute="bottom" secondItem="buX-tY-BBr" secondAttribute="bottom" constant="4" id="p8m-19-zaw"/>
+                                        <constraint firstItem="pdj-JK-yWy" firstAttribute="leading" secondItem="uVs-P4-DSy" secondAttribute="leading" constant="15" id="qPG-qV-5qW"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="leading" secondItem="CgA-NJ-ZBI" secondAttribute="leading" id="qdb-qr-Pvs"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="top" secondItem="CCN-aa-o5W" secondAttribute="bottom" id="qtB-V0-240"/>
+                                        <constraint firstItem="buX-tY-BBr" firstAttribute="trailing" secondItem="fW7-ga-zfn" secondAttribute="trailing" id="tgP-vG-EMe"/>
+                                        <constraint firstItem="fW7-ga-zfn" firstAttribute="height" secondItem="CgA-NJ-ZBI" secondAttribute="height" id="vFZ-5V-BAl"/>
+                                        <constraint firstItem="CCN-aa-o5W" firstAttribute="top" secondItem="VF2-57-3ak" secondAttribute="bottom" id="w83-h0-UsX"/>
+                                        <constraint firstItem="CgA-NJ-ZBI" firstAttribute="top" secondItem="pdj-JK-yWy" secondAttribute="bottom" id="x2K-wF-fgy"/>
+                                        <constraint firstItem="pdj-JK-yWy" firstAttribute="top" secondItem="uVs-P4-DSy" secondAttribute="top" constant="4" id="yxI-Uf-rOi"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="amountLabel" destination="CgA-NJ-ZBI" id="D60-5b-w3a"/>
+                                    <outlet property="balanceLabel" destination="VF2-57-3ak" id="tnP-wh-oKL"/>
+                                    <outlet property="characterNameLabel" destination="buX-tY-BBr" id="PjC-Aq-uXi"/>
+                                    <outlet property="dateLabel" destination="fW7-ga-zfn" id="DSY-DS-FvH"/>
+                                    <outlet property="taxLabel" destination="CCN-aa-o5W" id="aqw-7h-UqR"/>
+                                    <outlet property="titleLabel" destination="pdj-JK-yWy" id="b78-Fs-34b"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Uum-dM-npZ">
+                        <nil key="title"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9YX-mQ-uk6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-569" y="-417"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hfH-gY-08p">
+            <objects>
+                <navigationController storyboardIdentifier="NCWalletJournalViewController" definesPresentationContext="YES" id="odi-IN-ooe" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="28E-e4-als">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="EVq-4f-yEN" kind="relationship" relationship="rootViewController" id="gvJ-nC-QSh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Gg-oZ-6TM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1105" y="-417"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

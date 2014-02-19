@@ -369,6 +369,8 @@
 		8456E87218AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8456E87118AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm */; };
 		8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456E87418AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m */; };
 		8456E87818AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8456E87718AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m */; };
+		845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845B7C6E18B53F64006DA157 /* NCContractsViewController.m */; };
+		845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 845B7C7218B54247006DA157 /* EVEContractsItem+Neocom.m */; };
 		849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */; };
 		849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */; };
 		849B9FAD1896D24A00D4DD2B /* active.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9F7C1896D24900D4DD2B /* active.png */; };
@@ -1161,6 +1163,10 @@
 		8456E87418AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSResourcesCell.m; sourceTree = "<group>"; };
 		8456E87618AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSDefenseOffenseCell.h; sourceTree = "<group>"; };
 		8456E87718AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSDefenseOffenseCell.m; sourceTree = "<group>"; };
+		845B7C6D18B53F64006DA157 /* NCContractsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsViewController.h; sourceTree = "<group>"; };
+		845B7C6E18B53F64006DA157 /* NCContractsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsViewController.m; sourceTree = "<group>"; };
+		845B7C7118B54247006DA157 /* EVEContractsItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEContractsItem+Neocom.h"; sourceTree = "<group>"; };
+		845B7C7218B54247006DA157 /* EVEContractsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEContractsItem+Neocom.m"; sourceTree = "<group>"; };
 		849B9F761896CA5400D4DD2B /* gallenteFederation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gallenteFederation@2x.png"; sourceTree = "<group>"; };
 		849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "battleclinic@2x.png"; sourceTree = "<group>"; };
 		849B9F7C1896D24900D4DD2B /* active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = active.png; sourceTree = "<group>"; };
@@ -3062,6 +3068,7 @@
 				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
 				12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */,
 				1203B69318B4A4DA003A0D72 /* NCWalletJournalViewController */,
+				845B7C6B18B53F2C006DA157 /* NCContractsViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -3118,6 +3125,17 @@
 				8456E87118AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm */,
 			);
 			name = POS;
+			sourceTree = "<group>";
+		};
+		845B7C6B18B53F2C006DA157 /* NCContractsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				845B7C6D18B53F64006DA157 /* NCContractsViewController.h */,
+				845B7C6E18B53F64006DA157 /* NCContractsViewController.m */,
+				845B7C7118B54247006DA157 /* EVEContractsItem+Neocom.h */,
+				845B7C7218B54247006DA157 /* EVEContractsItem+Neocom.m */,
+			);
+			name = NCContractsViewController;
 			sourceTree = "<group>";
 		};
 		849B9F7B1896D24900D4DD2B /* FittingIcons */ = {
@@ -3802,6 +3820,7 @@
 				84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
 				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
+				845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */,
 				1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */,
 				12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */,
 				12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */,
@@ -3824,6 +3843,7 @@
 				8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */,
 				126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */,
 				126A0E79185F3B9300A8E8A3 /* RSSFeed.m in Sources */,
+				845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */,
 				126A0E0C185F3B9300A8E8A3 /* EVEDBCrtRelationship.m in Sources */,
 				1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,

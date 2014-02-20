@@ -53,6 +53,11 @@
 		1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E177188F9572003C1361 /* EVEDBCertSkill.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
+		122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98A218B5DC3800386EDE /* NCContractsCell.m */; };
+		122C98A718B5DD5700386EDE /* NCIndustryJobsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98A618B5DD5700386EDE /* NCIndustryJobsViewController.m */; };
+		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
+		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
+		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771018969E030078F526 /* EVEDBNpcGroup.m */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
@@ -577,6 +582,16 @@
 		122C51F0188FA746000AEC2C /* NCCacheRecordData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCacheRecordData.m; sourceTree = "<group>"; };
 		122C51F3188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMasteryViewController.h; sourceTree = "<group>"; };
 		122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMasteryViewController.m; sourceTree = "<group>"; };
+		122C98A118B5DC3800386EDE /* NCContractsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsCell.h; sourceTree = "<group>"; };
+		122C98A218B5DC3800386EDE /* NCContractsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsCell.m; sourceTree = "<group>"; };
+		122C98A518B5DD5700386EDE /* NCIndustryJobsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsViewController.h; sourceTree = "<group>"; };
+		122C98A618B5DD5700386EDE /* NCIndustryJobsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsViewController.m; sourceTree = "<group>"; };
+		122C98A918B5EAF900386EDE /* NCIndustryJobsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsCell.h; sourceTree = "<group>"; };
+		122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsCell.m; sourceTree = "<group>"; };
+		122C98AC18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEIndustryJobsItem+Neocom.h"; sourceTree = "<group>"; };
+		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
+		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
+		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		1243770F18969E030078F526 /* EVEDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBNpcGroup.h; sourceTree = "<group>"; };
 		1243771018969E030078F526 /* EVEDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBNpcGroup.m; sourceTree = "<group>"; };
@@ -1527,6 +1542,45 @@
 				122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */,
 			);
 			name = NCDatabaseTypeMasteryViewController;
+			sourceTree = "<group>";
+		};
+		122C989F18B5DC2800386EDE /* NCContractsCell */ = {
+			isa = PBXGroup;
+			children = (
+				122C98A118B5DC3800386EDE /* NCContractsCell.h */,
+				122C98A218B5DC3800386EDE /* NCContractsCell.m */,
+			);
+			name = NCContractsCell;
+			sourceTree = "<group>";
+		};
+		122C98A418B5DD3500386EDE /* NCIndustryJobsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122C98A818B5E76900386EDE /* NCIndustryJobsCell */,
+				122C98A518B5DD5700386EDE /* NCIndustryJobsViewController.h */,
+				122C98A618B5DD5700386EDE /* NCIndustryJobsViewController.m */,
+				122C98AC18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.h */,
+				122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */,
+			);
+			name = NCIndustryJobsViewController;
+			sourceTree = "<group>";
+		};
+		122C98A818B5E76900386EDE /* NCIndustryJobsCell */ = {
+			isa = PBXGroup;
+			children = (
+				122C98A918B5EAF900386EDE /* NCIndustryJobsCell.h */,
+				122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */,
+			);
+			name = NCIndustryJobsCell;
+			sourceTree = "<group>";
+		};
+		122C98B018B6024700386EDE /* NCIndustryJobsDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */,
+				122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */,
+			);
+			name = NCIndustryJobsDetailsViewController;
 			sourceTree = "<group>";
 		};
 		123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */ = {
@@ -3068,6 +3122,8 @@
 				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
 				12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */,
 				1203B69318B4A4DA003A0D72 /* NCWalletJournalViewController */,
+				122C98A418B5DD3500386EDE /* NCIndustryJobsViewController */,
+				122C98B018B6024700386EDE /* NCIndustryJobsDetailsViewController */,
 				845B7C6B18B53F2C006DA157 /* NCContractsViewController */,
 			);
 			name = Market;
@@ -3130,6 +3186,7 @@
 		845B7C6B18B53F2C006DA157 /* NCContractsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				122C989F18B5DC2800386EDE /* NCContractsCell */,
 				845B7C6D18B53F64006DA157 /* NCContractsViewController.h */,
 				845B7C6E18B53F64006DA157 /* NCContractsViewController.m */,
 				845B7C7118B54247006DA157 /* EVEContractsItem+Neocom.h */,
@@ -3686,6 +3743,7 @@
 				8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */,
 				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
+				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
 				84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
@@ -3777,6 +3835,7 @@
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
+				122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */,
 				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				12041563189A450200B15BB5 /* NCFittingShipFirepowerCell.m in Sources */,
@@ -3839,6 +3898,7 @@
 				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
 				126A0E44185F3B9300A8E8A3 /* EVEMarketOrders.m in Sources */,
 				1204155D189A44CF00B15BB5 /* NCFittingResistancesCell.m in Sources */,
+				122C98A718B5DD5700386EDE /* NCIndustryJobsViewController.m in Sources */,
 				12A7DBA618B36B1A00343D25 /* NCWalletTransactionsViewController.m in Sources */,
 				8456E87518AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m in Sources */,
 				126A0E0A185F3B9300A8E8A3 /* EVEDBCrtClass.m in Sources */,
@@ -3931,6 +3991,7 @@
 				8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */,
 				126A0E2C185F3B9300A8E8A3 /* EVEKillNetLog.m in Sources */,
 				84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */,
+				122C98A318B5DC3800386EDE /* NCContractsCell.m in Sources */,
 				84F8E2C918AD75A3005D968F /* EVEAssetListItem+Neocom.m in Sources */,
 				129D2631187E923300E2062C /* UIImage+Resize.m in Sources */,
 				841534EC188A921200B42433 /* NCDatabaseMarketViewController.m in Sources */,
@@ -3969,6 +4030,7 @@
 				84E4331B18951AA800DF2061 /* NCMailBoxMessageViewController.m in Sources */,
 				1211123818599339009E5106 /* NCCache.m in Sources */,
 				8418BB171891873800B99A7E /* NCCalendarEventCell.m in Sources */,
+				122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
 				126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */,
 				126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */,

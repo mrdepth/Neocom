@@ -60,6 +60,8 @@
 	if (self = [super init]) {
 		self.openOrders = [aDecoder decodeObjectForKey:@"openOrders"];
 		self.closedOrders = [aDecoder decodeObjectForKey:@"closedOrders"];
+		self.currentTime = [aDecoder decodeObjectForKey:@"currentTime"];
+		self.cacheDate = [aDecoder decodeObjectForKey:@"cacheDate"];
 		NSMutableDictionary* typesDic = [NSMutableDictionary new];
 		if (!self.openOrders)
 			self.openOrders = @[];
@@ -86,6 +88,10 @@
 		[aCoder encodeObject:self.openOrders forKey:@"openOrders"];
 	if (self.closedOrders)
 		[aCoder encodeObject:self.closedOrders forKey:@"closedOrders"];
+	if (self.currentTime)
+		[aCoder encodeObject:self.currentTime forKey:@"currentTime"];
+	if (self.cacheDate)
+		[aCoder encodeObject:self.cacheDate forKey:@"cacheDate"];
 }
 
 @end
@@ -327,6 +333,9 @@
 											 [closedOrders sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"expireDate" ascending:NO]]];
 											 data.openOrders = openOrders;
 											 data.closedOrders = closedOrders;
+											 
+											 data.currentTime = marketOrders.currentTime;
+											 data.cacheDate = marketOrders.cacheDate;
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {

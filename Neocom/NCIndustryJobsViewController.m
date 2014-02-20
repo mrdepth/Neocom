@@ -145,7 +145,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	self.dateFormatter = [[NSDateFormatter alloc] init];
+	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 }
 
 - (void)didReceiveMemoryWarning

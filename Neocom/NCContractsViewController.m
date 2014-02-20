@@ -8,30 +8,100 @@
 
 #import "NCContractsViewController.h"
 #import "EVEContractsItem+Neocom.h"
+#import "NCContractsCell.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "NSString+Neocom.h"
+#import "NCContractsDetailsViewController.h"
 
 
 @interface NCContractsViewControllerData : NSObject<NSCoding>
-@property (nonatomic, strong) NSArray* contracts;
+@property (nonatomic, strong) NSArray* activeContracts;
+@property (nonatomic, strong) NSArray* finishedContracts;
+@property (nonatomic, strong) NSDate* currentTime;
+@property (nonatomic, strong) NSDate* cacheDate;
 @end
 
 @implementation NCContractsViewControllerData
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.contracts = [aDecoder decodeObjectForKey:@"contracts"];
+		self.activeContracts = [aDecoder decodeObjectForKey:@"activeContracts"];
+		self.finishedContracts = [aDecoder decodeObjectForKey:@"finishedContracts"];
+		if (!self.activeContracts)
+			self.activeContracts = @[];
+		if (!self.finishedContracts)
+			self.finishedContracts = @[];
+		
+		self.currentTime = [aDecoder decodeObjectForKey:@"currentTime"];
+		self.cacheDate = [aDecoder decodeObjectForKey:@"cacheDate"];
+		
+		NSDictionary* locations = [aDecoder decodeObjectForKey:@"locations"];
+		NSDictionary* names = [aDecoder decodeObjectForKey:@"names"];
+		
+		for (NSArray* array in @[self.activeContracts, self.finishedContracts]) {
+			for (EVEContractsItem* contract in array) {
+				contract.startStation = locations[@(contract.startStationID)];
+				contract.endStation = locations[@(contract.endStationID)];
+				contract.issuerName = names[@(contract.issuerID)];
+				contract.issuerCorpName = names[@(contract.issuerCorpID)];
+				contract.assigneeName = names[@(contract.assigneeID)];
+				contract.acceptorName = names[@(contract.acceptorID)];
+				contract.forCorpName = names[@(contract.forCorp)];
+			}
+		}
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.contracts)
-		[aCoder encodeObject:self.contracts forKey:@"contracts"];
+	if (self.activeContracts)
+		[aCoder encodeObject:self.activeContracts forKey:@"activeContracts"];
+	else
+		self.activeContracts = @[];
+	
+	if (self.finishedContracts)
+		[aCoder encodeObject:self.finishedContracts forKey:@"finishedContracts"];
+	else
+		self.finishedContracts = @[];
+	
+	if (self.currentTime)
+		[aCoder encodeObject:self.currentTime forKey:@"currentTime"];
+	if (self.cacheDate)
+		[aCoder encodeObject:self.cacheDate forKey:@"cacheDate"];
+	
+	NSMutableDictionary* locations = [NSMutableDictionary new];
+	NSMutableDictionary* names = [NSMutableDictionary new];
+	
+	for (NSArray* array in @[self.activeContracts, self.finishedContracts]) {
+		for (EVEContractsItem* contract in array) {
+			if (contract.startStation)
+				locations[@(contract.startStationID)] = contract.startStation;
+			if (contract.endStation)
+				locations[@(contract.endStationID)] = contract.endStation;
+			
+			if (contract.issuerName)
+				names[@(contract.issuerID)] = contract.issuerName;
+			if (contract.issuerCorpName)
+				names[@(contract.issuerCorpID)] = contract.issuerCorpName;
+			if (contract.assigneeName)
+				names[@(contract.assigneeID)] = contract.assigneeName;
+			if (contract.acceptorName)
+				names[@(contract.acceptorID)] = contract.acceptorName;
+			if (contract.forCorpName)
+				names[@(contract.forCorp)] = contract.forCorpName;
+		}
+	}
+	[aCoder encodeObject:locations forKey:@"locations"];
+	[aCoder encodeObject:names forKey:@"names"];
+
+	
 }
 
 @end
 
 @interface NCContractsViewController ()
-
+@property (nonatomic, strong) NSDate* currentDate;
+@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 @end
 
 @implementation NCContractsViewController
@@ -48,7 +118,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	self.dateFormatter = [[NSDateFormatter alloc] init];
+	[self.dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,56 +129,66 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCContractsDetailsViewController"]) {
+		NCContractsDetailsViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.contract = [sender object];
+		destinationViewController.currentDate = self.currentDate;
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NCContractsViewControllerData* data = self.data;
-	return data.contracts.count;
+	return section == 0 ? data.activeContracts.count : data.finishedContracts.count;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCContractsViewControllerData* data = self.data;
-	EVEContractsItem* contract = data.contracts[indexPath.row];
-	
-/*	NCWalletJournalCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	if (!cell)
-		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	EVEContractsItem* row = indexPath.section == 0 ? data.activeContracts[indexPath.row] : data.finishedContracts[indexPath.row];
+	NCContractsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+
 	cell.object = row;
+	cell.titleLabel.text = row.title;
+	cell.typeLabel.text = [row localizedTypeString];
+	cell.locationLabel.text = row.startStation.name;
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.price)]];
+	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.buyout)]];
+	cell.issuerLabel.text = row.issuerName;
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.dateIssued];
 	
-	cell.titleLabel.text = row.refType ? row.refType.refTypeName : [NSString stringWithFormat:NSLocalizedString(@"Unknown refTypeID %d", nil), [row.item refTypeID]];
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.item date]];
+	UIColor* color = nil;
+	NSString* status = nil;
+	if (row.status <= EVEContractStatusCompletedByContractor) {
+		status = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), [row localizedStatusString], [self.dateFormatter stringFromDate:row.dateCompleted]];
+		color = [UIColor greenColor];
+	}
+	else if (row.status >= EVEContractStatusCancelled) {
+		status = [row localizedStatusString];
+		color = [UIColor redColor];
+	}
+	else {
+		NSTimeInterval remainsTime = [row.dateExpired timeIntervalSinceDate:self.currentDate];
+		if (remainsTime > 0) {
+			status = [NSString stringWithFormat:@"%@: %@", [row localizedStatusString], [NSString stringWithTimeLeft:remainsTime]];
+			color = [UIColor yellowColor];
+		}
+		else {
+			status = [row localizedStatusString];
+			color = [UIColor greenColor];
+		}
+	}
+	cell.statusLabel.text = status;
+	cell.statusLabel.textColor = color;
 	
-	
-	cell.balanceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Balance: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([row.item balance])]];
-	
-	float amount = [row.item amount];
-	float taxAmount = 0;
-	if ([row.item isKindOfClass:[EVECharWalletTransactionsItem class]])
-		taxAmount = [row.item taxAmount];
-	
-	//cell.amountLabel.text = [NSString shortStringWithFloat:amount + taxAmount unit:@"ISK"];
-	cell.amountLabel.textColor = amount > 0 ? [UIColor greenColor] : [UIColor redColor];
-	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(amount + taxAmount)]];
-	
-	if (taxAmount > 0)
-		cell.taxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tax: -%@ ISK (%d%%)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(taxAmount)], (int)(taxAmount / (taxAmount + amount) * 100)];
-	else
-		cell.taxLabel.text = nil;
-	
-	NSString* ownerName1 = [row.item ownerName1];
-	NSString* ownerName2 = [row.item ownerName2];
-	if (ownerName1.length > 0 && ownerName2.length > 0)
-		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", ownerName1, ownerName2];
-	else
-		cell.characterNameLabel.text = ownerName1;
-	return cell;*/
-	return nil;
+	return cell;
 }
 
 #pragma mark -
@@ -158,6 +240,9 @@
 												 NSMutableSet* locationsIDs = [NSMutableSet new];
 												 NSMutableSet* characterIDs = [NSMutableSet new];
 												 
+												 NSMutableArray* activeContracts = [NSMutableArray new];
+												 NSMutableArray* finishedContracts = [NSMutableArray new];
+
 												 for (EVEContractsItem* contract in contracts.contractList) {
 													 if (contract.startStationID)
 														 [locationsIDs addObject:@(contract.startStationID)];
@@ -173,6 +258,11 @@
 														 [characterIDs addObject:@(contract.assigneeID)];
 													 if (contract.forCorp)
 														 [characterIDs addObject:@(contract.forCorp)];
+													 if (contract.status <= EVEContractStatusCompletedByContractor || contract.status >= EVEContractStatusCancelled)
+														 [finishedContracts addObject:contract];
+													 else
+														 [activeContracts addObject:contract];
+
 												 }
 												 
 												 NSDictionary* locationNames = nil;
@@ -194,8 +284,20 @@
 													 contract.acceptorName = characterName.characters[@(contract.acceptorID)];
 													 contract.assigneeName = characterName.characters[@(contract.assigneeID)];
 													 contract.forCorpName = characterName.characters[@(contract.forCorp)];
+													 
+													 
 												 }
-												 data.contracts = contracts.contractList;
+												 [activeContracts sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateExpired" ascending:YES]]];
+												 [finishedContracts sortUsingComparator:^NSComparisonResult(EVEContractsItem* obj1, EVEContractsItem* obj2) {
+													 NSDate* a = obj1.dateCompleted ? obj1.dateCompleted : obj1.dateExpired;
+													 NSDate* b = obj2.dateCompleted ? obj2.dateCompleted : obj2.dateExpired;
+													 return [b compare:a];
+												 }];
+												 
+												 data.activeContracts = activeContracts;
+												 data.finishedContracts = finishedContracts;
+												 data.currentTime = contracts.currentTime;
+												 data.cacheDate = contracts.cacheDate;
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -208,6 +310,12 @@
 									 }
 								 }
 							 }];
+}
+
+- (void) update {
+	[super update];
+	NCContractsViewControllerData* data = self.data;
+	self.currentDate = [NSDate dateWithTimeInterval:[data.currentTime timeIntervalSinceDate:data.cacheDate] sinceDate:[NSDate date]];
 }
 
 - (void) didChangeAccount:(NCAccount *)account {

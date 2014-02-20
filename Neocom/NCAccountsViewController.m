@@ -372,9 +372,9 @@
 }
 
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
-	return section == 0 ? UITableViewAutomaticDimension : 44;
-}
+//- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
+//	return section == 0 ? UITableViewAutomaticDimension : 44;
+//}
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {

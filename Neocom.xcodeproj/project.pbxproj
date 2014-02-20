@@ -344,6 +344,7 @@
 		12D011BF18A2101400C0A228 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BD18A2101400C0A228 /* checkmark.png */; };
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
+		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
 		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
 		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
@@ -1120,6 +1121,8 @@
 		12D011BE18A2101400C0A228 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
+		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
+		12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsDetailsViewController.m; sourceTree = "<group>"; };
 		12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupPickerViewContoller.h; sourceTree = "<group>"; };
 		12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseGroupPickerViewContoller.m; sourceTree = "<group>"; };
 		12F82A5218AC98B100A967B5 /* NCFittingAPIFlagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAPIFlagsViewController.h; sourceTree = "<group>"; };
@@ -2966,6 +2969,15 @@
 			name = NCDatabaseTypeVariationsViewController;
 			sourceTree = "<group>";
 		};
+		12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */,
+				12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */,
+			);
+			name = NCContractsDetailsViewController;
+			sourceTree = "<group>";
+		};
 		12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */ = {
 			isa = PBXGroup;
 			children = (
@@ -3125,6 +3137,7 @@
 				122C98A418B5DD3500386EDE /* NCIndustryJobsViewController */,
 				122C98B018B6024700386EDE /* NCIndustryJobsDetailsViewController */,
 				845B7C6B18B53F2C006DA157 /* NCContractsViewController */,
+				12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -3727,6 +3740,7 @@
 				129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m in Sources */,
 				8456E87218AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
+				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,

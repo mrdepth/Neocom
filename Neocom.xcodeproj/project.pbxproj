@@ -105,6 +105,8 @@
 		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
 		12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0318B74048005C311D /* NCStarbasesCell.m */; };
 		12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */; };
+		12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0D18B77A2D005C311D /* NCKillMailsViewController.m */; };
+		12640B1218B77B87005C311D /* NCKillMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1118B77B87005C311D /* NCKillMail.m */; };
 		126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */; };
 		126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */; };
 		126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */; };
@@ -654,6 +656,10 @@
 		12640B0318B74048005C311D /* NCStarbasesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesCell.m; sourceTree = "<group>"; };
 		12640B0718B74CBF005C311D /* NCStarbasesDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesDetailsViewController.h; sourceTree = "<group>"; };
 		12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesDetailsViewController.m; sourceTree = "<group>"; };
+		12640B0C18B77A2D005C311D /* NCKillMailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailsViewController.h; sourceTree = "<group>"; };
+		12640B0D18B77A2D005C311D /* NCKillMailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailsViewController.m; sourceTree = "<group>"; };
+		12640B1018B77B87005C311D /* NCKillMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMail.h; sourceTree = "<group>"; };
+		12640B1118B77B87005C311D /* NCKillMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMail.m; sourceTree = "<group>"; };
 		126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleClinicAPI.h; sourceTree = "<group>"; };
 		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
 		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
@@ -1744,8 +1750,28 @@
 		12640B0A18B75EBF005C311D /* KillBoard */ = {
 			isa = PBXGroup;
 			children = (
+				12640B0F18B77B4C005C311D /* NCKillMail */,
+				12640B0B18B77A15005C311D /* NCKillMailsViewController */,
 			);
 			name = KillBoard;
+			sourceTree = "<group>";
+		};
+		12640B0B18B77A15005C311D /* NCKillMailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12640B0C18B77A2D005C311D /* NCKillMailsViewController.h */,
+				12640B0D18B77A2D005C311D /* NCKillMailsViewController.m */,
+			);
+			name = NCKillMailsViewController;
+			sourceTree = "<group>";
+		};
+		12640B0F18B77B4C005C311D /* NCKillMail */ = {
+			isa = PBXGroup;
+			children = (
+				12640B1018B77B87005C311D /* NCKillMail.h */,
+				12640B1118B77B87005C311D /* NCKillMail.m */,
+			);
+			name = NCKillMail;
 			sourceTree = "<group>";
 		};
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
@@ -3908,6 +3934,7 @@
 				1211122E185989E1009E5106 /* NCTaskManager.m in Sources */,
 				12041563189A450200B15BB5 /* NCFittingShipFirepowerCell.m in Sources */,
 				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
+				12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */,
 				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
 				1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */,
 				126A0E26185F3B9300A8E8A3 /* EVEDBRamAssemblyLineType.m in Sources */,
@@ -3958,6 +3985,7 @@
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
 				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
 				849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */,
+				12640B1218B77B87005C311D /* NCKillMail.m in Sources */,
 				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,
 				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,

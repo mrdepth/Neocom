@@ -204,55 +204,70 @@
 		NSMutableArray* recipients = [NSMutableArray new];
 		
 		for (NSNumber* charID in message.header.toCharacterIDs) {
-			NCMailBoxContact* recipient = data.contacts[charID];
-			if (!recipient.name) {
-				recipient = [NCMailBoxContact new];
-				recipient.contactID = [charID integerValue];
-				recipient.type = NCMailBoxContactTypeCharacter;
-				ids[charID] = recipient;
+			NCMailBoxContact* recipient = contacts[charID];
+			if (!recipient) {
+				recipient = data.contacts[charID];
+				
+				if (!recipient.name) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = [charID integerValue];
+					recipient.type = NCMailBoxContactTypeCharacter;
+					ids[charID] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
 			}
-			contacts[@(recipient.contactID)] = recipient;
 			[recipients addObject:recipient];
 		}
 		for (NSNumber* mailingListID in message.header.toListID) {
-			NCMailBoxContact* recipient = data.contacts[mailingListID];
-			if (!recipient.name) {
-				recipient = [NCMailBoxContact new];
-				recipient.contactID = [mailingListID integerValue];
-				recipient.type = NCMailBoxContactTypeMailingList;
-				mailingListIDs[mailingListID] = recipient;
+			NCMailBoxContact* recipient = contacts[mailingListID];
+			if (!recipient) {
+				recipient = data.contacts[mailingListID];
+			
+				if (!recipient.name) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = [mailingListID integerValue];
+					recipient.type = NCMailBoxContactTypeMailingList;
+					mailingListIDs[mailingListID] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
 			}
-			contacts[@(recipient.contactID)] = recipient;
 			[recipients addObject:recipient];
 		}
 		if (message.header.toCorpOrAllianceID) {
-			NCMailBoxContact* recipient = data.contacts[@(message.header.toCorpOrAllianceID)];
+			NCMailBoxContact* recipient = contacts[@(message.header.toCorpOrAllianceID)];
 			if (!recipient) {
-				recipient = [NCMailBoxContact new];
-				recipient.contactID = message.header.toCorpOrAllianceID;
-				recipient.type = NCMailBoxContactTypeCorporation;
-				ids[@(message.header.toCorpOrAllianceID)] = recipient;
+				recipient = data.contacts[@(message.header.toCorpOrAllianceID)];
+
+				if (!recipient) {
+					recipient = [NCMailBoxContact new];
+					recipient.contactID = message.header.toCorpOrAllianceID;
+					recipient.type = NCMailBoxContactTypeCorporation;
+					ids[@(message.header.toCorpOrAllianceID)] = recipient;
+				}
+				contacts[@(recipient.contactID)] = recipient;
 			}
-			contacts[@(recipient.contactID)] = recipient;
 			[recipients addObject:recipient];
 		}
 		message.recipients = recipients;
 		
-		NCMailBoxContact* sender = data.contacts[@(message.header.senderID)];
+		NCMailBoxContact* sender = contacts[@(message.header.senderID)];
 		if (!sender) {
-			sender = [NCMailBoxContact new];
-			sender.contactID = message.header.senderID;
-			
-			if (message.header.senderTypeID > 0) {
-				sender.type = NCMailBoxContactTypeCharacter;
-				ids[@(message.header.senderID)] = sender;
-			}
-			else {
-				sender.type = NCMailBoxContactTypeMailingList;
-				mailingListIDs[@(message.header.senderTypeID)] = sender;
+			sender = data.contacts[@(message.header.senderID)];
+			if (!sender) {
+				sender = [NCMailBoxContact new];
+				sender.contactID = message.header.senderID;
+				
+				if (message.header.senderTypeID > 0) {
+					sender.type = NCMailBoxContactTypeCharacter;
+					ids[@(message.header.senderID)] = sender;
+				}
+				else {
+					sender.type = NCMailBoxContactTypeMailingList;
+					mailingListIDs[@(message.header.senderTypeID)] = sender;
+				}
+				contacts[@(sender.contactID)] = sender;
 			}
 		}
-		contacts[@(sender.contactID)] = sender;
 		message.sender = sender;
 	}
 

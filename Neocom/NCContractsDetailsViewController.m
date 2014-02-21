@@ -338,7 +338,7 @@
 					_contractBids = contractBids;
 					NCCache* cache = [NCCache sharedCache];
 					[cache.managedObjectContext performBlockAndWait:^{
-						self.cacheRecord.data.data = _contractBids;
+						self.cacheRecord.data.data = contractBids;
 						self.cacheRecord.date = contractBids.cacheDate;
 						self.cacheRecord.expireDate = contractBids.cacheExpireDate;
 						[cache saveContext];

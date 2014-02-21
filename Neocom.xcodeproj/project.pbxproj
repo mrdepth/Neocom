@@ -101,6 +101,10 @@
 		125F681E1885315A005732FA /* NCSkillsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681D1885315A005732FA /* NCSkillsDataSource.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.m */; };
+		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
+		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
+		12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0318B74048005C311D /* NCStarbasesCell.m */; };
+		12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */; };
 		126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */; };
 		126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */; };
 		126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */; };
@@ -642,6 +646,14 @@
 		125F682118853230005732FA /* NCSkillData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillData.m; sourceTree = "<group>"; };
 		125F6823188537FF005732FA /* NCCharacterAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributes.h; sourceTree = "<group>"; };
 		125F6824188537FF005732FA /* NCCharacterAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterAttributes.m; sourceTree = "<group>"; };
+		12640AF818B72E43005C311D /* NCStarbasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesViewController.h; sourceTree = "<group>"; };
+		12640AF918B72E43005C311D /* NCStarbasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesViewController.m; sourceTree = "<group>"; };
+		12640AFF18B7306C005C311D /* EVEStarbaseListItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEStarbaseListItem+Neocom.h"; sourceTree = "<group>"; };
+		12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEStarbaseListItem+Neocom.m"; sourceTree = "<group>"; };
+		12640B0218B74048005C311D /* NCStarbasesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesCell.h; sourceTree = "<group>"; };
+		12640B0318B74048005C311D /* NCStarbasesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesCell.m; sourceTree = "<group>"; };
+		12640B0718B74CBF005C311D /* NCStarbasesDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesDetailsViewController.h; sourceTree = "<group>"; };
+		12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesDetailsViewController.m; sourceTree = "<group>"; };
 		126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleClinicAPI.h; sourceTree = "<group>"; };
 		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
 		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
@@ -1424,6 +1436,7 @@
 				128BCE6A18856F67000E1922 /* Database */,
 				849B9FDE1896D2F900D4DD2B /* Fitting */,
 				843C2EFC18AD34CE00221721 /* Market */,
+				12640B0A18B75EBF005C311D /* KillBoard */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.m */,
 				120968591845F0CB00921A37 /* Supporting Files */,
@@ -1696,6 +1709,43 @@
 				125F6824188537FF005732FA /* NCCharacterAttributes.m */,
 			);
 			name = NCCharacterAttributes;
+			sourceTree = "<group>";
+		};
+		12640AF618B72E01005C311D /* NCStarbasesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12640B0518B7404D005C311D /* NCStarbasesCell */,
+				12640AF818B72E43005C311D /* NCStarbasesViewController.h */,
+				12640AF918B72E43005C311D /* NCStarbasesViewController.m */,
+				12640AFF18B7306C005C311D /* EVEStarbaseListItem+Neocom.h */,
+				12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */,
+			);
+			name = NCStarbasesViewController;
+			sourceTree = "<group>";
+		};
+		12640B0518B7404D005C311D /* NCStarbasesCell */ = {
+			isa = PBXGroup;
+			children = (
+				12640B0218B74048005C311D /* NCStarbasesCell.h */,
+				12640B0318B74048005C311D /* NCStarbasesCell.m */,
+			);
+			name = NCStarbasesCell;
+			sourceTree = "<group>";
+		};
+		12640B0618B74C9F005C311D /* NCStarbasesDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12640B0718B74CBF005C311D /* NCStarbasesDetailsViewController.h */,
+				12640B0818B74CBF005C311D /* NCStarbasesDetailsViewController.m */,
+			);
+			name = NCStarbasesDetailsViewController;
+			sourceTree = "<group>";
+		};
+		12640B0A18B75EBF005C311D /* KillBoard */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = KillBoard;
 			sourceTree = "<group>";
 		};
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
@@ -3138,6 +3188,8 @@
 				122C98B018B6024700386EDE /* NCIndustryJobsDetailsViewController */,
 				845B7C6B18B53F2C006DA157 /* NCContractsViewController */,
 				12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */,
+				12640AF618B72E01005C311D /* NCStarbasesViewController */,
+				12640B0618B74C9F005C311D /* NCStarbasesDetailsViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -3739,6 +3791,7 @@
 				129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */,
 				129C586518AA2D0C00CA8787 /* NCFittingPOSWorkspaceViewController.m in Sources */,
 				8456E87218AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm in Sources */,
+				12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
@@ -3800,6 +3853,7 @@
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
 				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
+				12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */,
 				128A1F3E18992E4700005C4F /* NCFittingShipDronesDataSource.mm in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,
 				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
@@ -3868,8 +3922,10 @@
 				126A0E1C185F3B9300A8E8A3 /* EVEDBInvType+ControlTower.m in Sources */,
 				129D2624187E923300E2062C /* NSString+Email.m in Sources */,
 				126A0E47185F3B9300A8E8A3 /* EVEResearch.m in Sources */,
+				12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */,
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
 				126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */,
+				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,

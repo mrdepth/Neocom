@@ -161,27 +161,28 @@ static NCAccount* currentAccount = nil;
 	if (shouldStop)
 		return NO;
 
+	if (characterInfo)
+		self.characterInfo = characterInfo;
+	else if (!self.characterSheetCacheRecord.data)
+		self.characterInfo = (id) characterInfoError;
+	
+	if (characterSheet)
+		self.characterSheet = characterSheet;
+	else if (!self.characterSheetCacheRecord.data)
+		self.characterSheet = (id) characterSheetError;
+	
+	if (corporationSheet)
+		self.corporationSheet = corporationSheet;
+	else if (!self.corporationSheetCacheRecord.data)
+		self.corporationSheet = (id) corporationSheetError;
+	
+	if (skillQueue)
+		self.skillQueue = skillQueue;
+	else if (!self.skillQueueCacheRecord.data)
+		self.skillQueue = (id) skillQueueError;
+
 	NCCache* cache = [NCCache sharedCache];
 	[cache.managedObjectContext performBlockAndWait:^{
-		if (characterInfo)
-			self.characterInfo = characterInfo;
-		else if (!self.characterSheetCacheRecord.data)
-			self.characterInfo = (id) characterInfoError;
-		
-		if (characterSheet)
-			self.characterSheet = characterSheet;
-		else if (!self.characterSheetCacheRecord.data)
-			self.characterSheet = (id) characterSheetError;
-		
-		if (corporationSheet)
-			self.corporationSheet = corporationSheet;
-		else if (!self.corporationSheetCacheRecord.data)
-			self.corporationSheet = (id) corporationSheetError;
-		
-		if (skillQueue)
-			self.skillQueue = skillQueue;
-		else if (!self.skillQueueCacheRecord.data)
-			self.skillQueue = (id) skillQueueError;
 		[cache saveContext];
 	}];
 	

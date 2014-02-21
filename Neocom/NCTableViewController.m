@@ -101,10 +101,12 @@
 
 - (void) reloadFromCache {
 	if (self.recordID) {
-		self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
 
 		NCCache* cache = [NCCache sharedCache];
 		NSManagedObjectContext* context = cache.managedObjectContext;
+		[context performBlockAndWait:^{
+			self.cacheRecord = [NCCacheRecord cacheRecordWithRecordID:self.recordID];
+		}];
 		
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle

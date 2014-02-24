@@ -9,5 +9,7 @@
 #import "NCTableViewController.h"
 
 @interface NCKillMailsViewController : NCTableViewController
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+- (IBAction)onChangeMode:(id)sender;
 
 @end

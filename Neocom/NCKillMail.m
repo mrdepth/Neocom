@@ -7,7 +7,9 @@
 //
 
 #import "NCKillMail.h"
-
+#import "EVEOnlineAPI.h"
+#import "EVEKillLogKill+Neocom.h"
+#import "EVEKillLogVictim+Neocom.h"
 
 @implementation NCKillMailPilot
 
@@ -146,6 +148,168 @@
 
 - (id) initWithKillLogKill:(EVEKillLogKill*) kill {
 	if (self = [super init]) {
+		self.victim = [NCKillMailVictim new];
+		self.victim.characterName = kill.victim.characterName;
+		self.victim.characterID = kill.victim.characterID;
+		self.victim.corporationName = kill.victim.corporationName;
+		self.victim.corporationID = kill.victim.corporationID;
+		self.victim.allianceName = kill.victim.allianceName;
+		self.victim.allianceID = kill.victim.allianceID;
+		self.victim.shipType =  kill.victim.shipType;
+		self.victim.damageTaken = kill.victim.damageTaken;
+
+		self.solarSystem = kill.solarSystem;
+		self.killTime = kill.killTime;
+		
+		NSMutableArray* hiSlots = [NSMutableArray new];
+		NSMutableArray* medSlots = [NSMutableArray new];
+		NSMutableArray* lowSlots = [NSMutableArray new];
+		NSMutableArray* rigSlots = [NSMutableArray new];
+		NSMutableArray* subsystems = [NSMutableArray new];
+		NSMutableArray* drones = [NSMutableArray new];
+		NSMutableArray* cargo = [NSMutableArray new];
+		
+		for (EVEKillLogItem* item in kill.items) {
+			if (item.flag >= EVEInventoryFlagHiSlot0 && item.flag <= EVEInventoryFlagHiSlot7) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDestroyed;
+					module.destroyed = YES;
+					[hiSlots addObject:module];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDropped;
+					module.destroyed = NO;
+					[hiSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagMedSlot0 && item.flag <= EVEInventoryFlagMedSlot7) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDestroyed;
+					module.destroyed = YES;
+					[medSlots addObject:module];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDropped;
+					module.destroyed = NO;
+					[medSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagLoSlot0 && item.flag <= EVEInventoryFlagLoSlot7) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDestroyed;
+					module.destroyed = YES;
+					[lowSlots addObject:module];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDropped;
+					module.destroyed = NO;
+					[lowSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagRigSlot0 && item.flag <= EVEInventoryFlagRigSlot7) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDestroyed;
+					module.destroyed = YES;
+					[rigSlots addObject:module];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDropped;
+					module.destroyed = NO;
+					[rigSlots addObject:module];
+				}
+			}
+			else if (item.flag >= EVEInventoryFlagSubSystem0 && item.flag <= EVEInventoryFlagSubSystem7) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDestroyed;
+					module.destroyed = YES;
+					[subsystems addObject:module];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* module = [NCKillMailItem new];
+					module.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					module.qty = item.qtyDropped;
+					module.destroyed = NO;
+					[subsystems addObject:module];
+				}
+			}
+			else if (item.flag == EVEInventoryFlagDroneBay) {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* drone = [NCKillMailItem new];
+					drone.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					drone.qty = item.qtyDestroyed;
+					drone.destroyed = YES;
+					[drones addObject:drone];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* drone = [NCKillMailItem new];
+					drone.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					drone.qty = item.qtyDropped;
+					drone.destroyed = NO;
+					[drones addObject:drone];
+				}
+			}
+			else {
+				if (item.qtyDestroyed) {
+					NCKillMailItem* cargoItem = [NCKillMailItem new];
+					cargoItem.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					cargoItem.qty = item.qtyDestroyed;
+					cargoItem.destroyed = YES;
+					[cargo addObject:cargoItem];
+				}
+				if (item.qtyDropped) {
+					NCKillMailItem* cargoItem = [NCKillMailItem new];
+					cargoItem.type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+					cargoItem.qty = item.qtyDropped;
+					cargoItem.destroyed = NO;
+					[cargo addObject:cargoItem];
+				}
+			}
+		}
+		self.hiSlots = hiSlots;
+		self.medSlots = medSlots;
+		self.lowSlots = lowSlots;
+		self.rigSlots = rigSlots;
+		self.subsystemSlots = subsystems;
+		self.droneBay = drones;
+		self.cargo = cargo;
+		
+		NSMutableArray* attackers = [NSMutableArray new];
+		for (EVEKillLogAttacker* item in kill.attackers) {
+			NCKillMailAttacker* attacker = [NCKillMailAttacker new];
+			attacker.characterName = item.characterName;
+			attacker.characterID = item.characterID;
+			attacker.corporationName = item.corporationName;
+			attacker.corporationID = item.corporationID;
+			attacker.allianceName = item.allianceName;
+			attacker.allianceID = item.allianceID;
+			attacker.shipType = [EVEDBInvType invTypeWithTypeID:item.shipTypeID error:nil];
+			attacker.weaponType = [EVEDBInvType invTypeWithTypeID:item.weaponTypeID error:nil];
+			attacker.securityStatus = item.securityStatus;
+			attacker.damageDone = item.damageDone;
+			attacker.finalBlow = item.finalBlow;
+			[attackers addObject:attacker];
+		}
+		[attackers sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"finalBlow" ascending:NO],
+										  [NSSortDescriptor sortDescriptorWithKey:@"damageDone" ascending:NO]]];
+		self.attackers = attackers;
 	}
 	return self;
 }

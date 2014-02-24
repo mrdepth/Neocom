@@ -7,7 +7,16 @@
 //
 
 #import "EVEDBAPI.h"
+#import "eufe.h"
+
+typedef NS_ENUM(NSInteger, NCTypeCategory) {
+	NCTypeCategoryUnknown,
+	NCTypeCategoryModule,
+	NCTypeCategoryCharge,
+	NCTypeCategoryDrone
+};
 
 @interface EVEDBInvType (Neocom)
-
+- (eufe::Module::Slot) slot;
+- (NCTypeCategory) category;
 @end

@@ -8,7 +8,6 @@
 
 #import "NCSkillData.h"
 #import "NCCharacterAttributes.h"
-#import "EVEDBInvType+Neocom.h"
 #import <objc/runtime.h>
 
 @interface NCSkillData()

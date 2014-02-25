@@ -14,6 +14,7 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+Neocom.h"
 #import "EVEDBInvType+Neocom.h"
+#import "NCKillMail.h"
 
 @implementation NCLoadoutDataShip
 
@@ -514,6 +515,87 @@
 			}
 		}
 		
+		drones = [dronesDic allValues];
+		cargo = [cargoDic allValues];
+		
+		self.loadoutData.hiSlots = hiSlots;
+		self.loadoutData.medSlots = medSlots;
+		self.loadoutData.lowSlots = lowSlots;
+		self.loadoutData.rigSlots = rigSlots;
+		self.loadoutData.subsystems = subsystems;
+		self.loadoutData.drones = drones;
+		self.loadoutData.cargo = cargo;
+		self.loadoutData.implants = @[];
+		self.loadoutData.boosters = @[];
+	}
+	return self;
+}
+
+- (id) initWithKillMail:(NCKillMail*) killMail {
+	if (self = [super init]) {
+		self.type = killMail.victim.shipType;
+		if (!self.type)
+			return nil;
+		self.loadoutName = [NSString stringWithFormat:@"%@ - %@", self.type.typeName , killMail.victim.characterName];
+		self.loadoutData = [NCLoadoutDataShip new];
+		
+		NSMutableArray* hiSlots = [NSMutableArray new];
+		NSMutableArray* medSlots = [NSMutableArray new];
+		NSMutableArray* lowSlots = [NSMutableArray new];
+		NSMutableArray* rigSlots = [NSMutableArray new];
+		NSMutableArray* subsystems = [NSMutableArray new];
+		NSArray* drones = nil;
+		NSArray* cargo = nil;
+		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+		NSMutableDictionary* cargoDic = [NSMutableDictionary new];
+		
+		NSMutableArray* slots[] = {hiSlots, medSlots, lowSlots, rigSlots, subsystems};
+		NSMutableDictionary* modules = [NSMutableDictionary new];
+		NSMutableDictionary* charges = [NSMutableDictionary new];
+		
+		NSArray* items[] = {killMail.hiSlots, killMail.medSlots, killMail.lowSlots, killMail.rigSlots, killMail.subsystemSlots};
+		for (int i = 0; i < 5; i++) {
+			for (NCKillMailItem* item in items[i]) {
+				if (item.type.category == NCTypeCategoryModule) {
+					for (int j = 0; j < item.qty; j++) {
+						NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+						module.typeID = item.type.typeID;
+						module.state = eufe::Module::STATE_ACTIVE;
+						[slots[i] addObject:module];
+						modules[@(item.flag)] = module;
+					}
+				}
+				else
+					charges[@(item.flag)] = item.type;
+			}
+		}
+		
+		[charges enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVEDBInvType* obj, BOOL *stop) {
+			NCLoadoutDataShipModule* module = modules[key];
+			if (module)
+				module.chargeID = obj.typeID;
+		}];
+		
+		for (NCKillMailItem* item in killMail.droneBay) {
+			NCLoadoutDataShipDrone* drone = dronesDic[@(item.type.typeID)];
+			if (!drone) {
+				drone = [NCLoadoutDataShipDrone new];
+				drone.typeID = item.type.typeID;
+				drone.active = true;
+				dronesDic[@(item.type.typeID)] = drone;
+			}
+			drone.count += item.qty;
+		}
+		for (NCKillMailItem* item in killMail.cargo) {
+			NCLoadoutDataShipCargoItem* cargo = cargoDic[@(item.type.typeID)];
+			if (!cargo) {
+				cargo = [NCLoadoutDataShipCargoItem new];
+				cargo.typeID = item.type.typeID;
+				cargoDic[@(item.type.typeID)] = cargo;
+			}
+			cargo.count += item.qty;
+		}
+
 		drones = [dronesDic allValues];
 		cargo = [cargoDic allValues];
 		

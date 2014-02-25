@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "EVEDBAPI.h"
+#import "EVEOnlineAPI.h"
 
-@class EVEKillLogKill;
 @class EVEKillNetLogEntry;
 @interface NCKillMailPilot : NSObject<NSCoding>
 @property (nonatomic, assign) NSInteger allianceID;
@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL destroyed;
 @property (nonatomic, assign) NSInteger qty;
 @property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, assign) EVEInventoryFlag flag;
 @end
 
 @interface NCKillMail : NSObject<NSCoding>

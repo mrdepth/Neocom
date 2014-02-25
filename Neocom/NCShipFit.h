@@ -51,6 +51,7 @@
 @class BCEveLoadout;
 @class NAPISearchItem;
 @class EVEAssetListItem;
+@class NCKillMail;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
@@ -63,6 +64,7 @@
 - (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 - (id) initWithAPILoadout:(NAPISearchItem*) apiLoadout;
 - (id) initWithAsset:(EVEAssetListItem*) asset;
+- (id) initWithKillMail:(NCKillMail*) killMail;
 
 - (void) save;
 - (void) load;

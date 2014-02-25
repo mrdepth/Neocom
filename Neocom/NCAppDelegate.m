@@ -11,6 +11,7 @@
 #import "NCStorage.h"
 #import "UIAlertView+Error.h"
 #import "UIAlertView+Block.h"
+#import "EVEOnlineAPI.h"
 
 @interface NCAppDelegate()
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -22,14 +23,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	self.taskManager = [NCTaskManager new];
+	
+/*	EVECachedURLRequest* request = [[EVECachedURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://request.urih.com/"]
+																cachePolicy:NSURLRequestUseProtocolCachePolicy
+																	  error:nil
+															progressHandler:nil];*/
+	
+	
 //	NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
 //								  insertIntoManagedObjectContext:nil];
 //	skillPlan = nil;
 	NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 	NSError* error = nil;
-	[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-	[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-	[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
+//	[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
+//	[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
+//	[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
 	
 	NSURL* url = [[NSUserDefaults standardUserDefaults] URLForKey:NCSettingsCurrentAccountKey];
 	if (url) {

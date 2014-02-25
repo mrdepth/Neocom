@@ -92,7 +92,7 @@
 													 if (array.count > 0) {
 														 NCAssetsContainerViewControllerSection* section = [NCAssetsContainerViewControllerSection new];
 														 section.title = titles[i];
-														 section.assets = arrays[i];
+														 section.assets = array;
 														 [sections addObject:section];
 													 }
 												 }

@@ -30,13 +30,11 @@
 	if (fetchedObjects.count > 0)
 		record = fetchedObjects[0];
 	if (!record) {
-		NCCacheRecord* record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+		record = [[NCCacheRecord alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
 		record.recordID = recordID;
 		record.date = [NSDate date];
 		record.expireDate = [NSDate distantFuture];
 		record.data = [[NCCacheRecordData alloc] initWithEntity:[NSEntityDescription entityForName:@"RecordData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-		
-		record = record;
 	}
 	return record;
 }

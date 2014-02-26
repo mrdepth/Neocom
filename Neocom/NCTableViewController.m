@@ -10,11 +10,18 @@
 #import "NCCache.h"
 #import "NCAccount.h"
 #import "NSString+Neocom.h"
+#import "NCTableViewHeaderView.h"
+#import "NCTableViewCollapsedHeaderView.h"
+#import "CollapsableTableView.h"
+#import "NCSetting.h"
+#import "NCStorage.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
 @property (nonatomic, strong, readwrite) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readwrite) id data;
+@property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
+@property (nonatomic, strong) NSDictionary* previousCollapsState;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -48,11 +55,38 @@
 	self.refreshControl = refreshControl;
 
 	[self performSelector:@selector(update) withObject:nil afterDelay:0];
+	//[self.tableView registerNib:[UINib nibWithNibName:@"NCTableViewHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]])
+		[self.tableView registerClass:[NCTableViewCollapsedHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	else
+		[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
+		NSString* key = NSStringFromClass(self.class);
+		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+			NCSetting* setting = [NCSetting settingWithKey:key];
+			self.previousCollapsState = setting.value;
+		}];
+	}
+	self.sectionsCollapsState = [NSMutableDictionary new];
 	//[self update];
 }
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+	[self.taskManager cancelAllOperations];
+	
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
+		NSString* key = NSStringFromClass(self.class);
+		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+			NCSetting* setting = [NCSetting settingWithKey:key];
+			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
+				setting.value = self.sectionsCollapsState;
+				[[NCStorage sharedStorage] saveContext];
+			}
+		}];
+	}
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,8 +115,9 @@
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
 	[super willMoveToParentViewController:parent];
-	if (!parent)
+	if (!parent) {
 		[self.taskManager cancelAllOperations];
+	}
 }
 
 - (NCTaskManager*) taskManager {
@@ -172,6 +207,7 @@
 }
 
 - (void) update {
+
 	[self.tableView reloadData];
 	[self.refreshControl endRefreshing];
 	[self updateCacheTime];
@@ -203,6 +239,14 @@
 	return self.cacheRecord.date;
 }
 
+- (id) identifierForSection:(NSInteger)section {
+	return nil;
+}
+
+- (BOOL) initiallySectionIsCollapsed:(NSInteger) section {
+	return NO;
+}
+
 #pragma mark - UISearchDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -226,6 +270,57 @@
 	[self updateCacheTime];
 }
 
+#pragma mark - UITableViewDelegate
+
+- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	if ([self respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+		NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+		if (title) {
+			NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+			return view;
+		}
+		else
+			return nil;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return UITableViewAutomaticDimension;
+}
+
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView sectionIsCollapsed:(NSInteger) section {
+	id identifier = [self identifierForSection:section];
+	if (identifier) {
+		NSNumber* state = self.sectionsCollapsState[identifier];
+		if (!state)
+			state = self.previousCollapsState[identifier];
+		if (!state)
+			self.sectionsCollapsState[identifier] = state = @([self initiallySectionIsCollapsed:section]);
+		return [state boolValue];
+	}
+	else
+		return NO;
+}
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return YES;
+}
+
+- (void) tableView:(UITableView *)tableView didCollapsSection:(NSInteger) section {
+	id identifier = [self identifierForSection:section];
+	if (identifier)
+		self.sectionsCollapsState[identifier] = @(YES);
+}
+
+- (void) tableView:(UITableView *)tableView didExpandSection:(NSInteger) section {
+	id identifier = [self identifierForSection:section];
+	if (identifier)
+		self.sectionsCollapsState[identifier] = @(NO);
+}
 
 #pragma mark - Private
 

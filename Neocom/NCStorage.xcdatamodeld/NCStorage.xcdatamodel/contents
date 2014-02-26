@@ -41,7 +41,7 @@
     </entity>
     <entity name="Setting" representedClassName="NCSetting" syncable="YES">
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="SkillPlan" representedClassName="NCSkillPlan" syncable="YES">
         <attribute name="active" optional="YES" attributeType="Boolean" syncable="YES"/>

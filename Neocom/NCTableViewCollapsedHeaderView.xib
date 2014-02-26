@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NCTableViewCollapsedHeaderView">
+            <connections>
+                <outlet property="imageView" destination="QD5-iy-KHL" id="4TT-oy-vSf"/>
+                <outlet property="textLabel" destination="8HC-e1-iVZ" id="jVS-T9-CNp"/>
+            </connections>
+        </placeholder>
+        <view opaque="NO" contentMode="scaleToFill" id="T6A-oh-aTz">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="751" image="Icons/icon105_04.png" translatesAutoresizingMaskIntoConstraints="NO" id="QD5-iy-KHL">
+                    <rect key="frame" x="4" y="0.0" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="FzW-MJ-icJ"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8HC-e1-iVZ">
+                    <rect key="frame" x="28" y="0.0" width="277" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.20000000000000001" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="8HC-e1-iVZ" firstAttribute="top" secondItem="T6A-oh-aTz" secondAttribute="top" id="0Pp-NM-Eqn"/>
+                <constraint firstAttribute="bottom" secondItem="8HC-e1-iVZ" secondAttribute="bottom" id="P2i-Sv-5RK"/>
+                <constraint firstItem="QD5-iy-KHL" firstAttribute="leading" secondItem="T6A-oh-aTz" secondAttribute="leading" constant="4" id="RfW-Am-h1f"/>
+                <constraint firstItem="QD5-iy-KHL" firstAttribute="top" secondItem="T6A-oh-aTz" secondAttribute="top" id="X6K-bV-K0p"/>
+                <constraint firstItem="8HC-e1-iVZ" firstAttribute="leading" secondItem="QD5-iy-KHL" secondAttribute="trailing" id="cHM-Q9-FOs"/>
+                <constraint firstAttribute="bottom" secondItem="QD5-iy-KHL" secondAttribute="bottom" id="dPq-fh-NHE"/>
+                <constraint firstAttribute="trailing" secondItem="8HC-e1-iVZ" secondAttribute="trailing" constant="15" id="g4T-Ei-YXK"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="Icons/icon105_04.png" width="64" height="64"/>
+    </resources>
+</document>

@@ -269,6 +269,11 @@
 		128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.mm */; };
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
+		128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */; };
+		128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */; };
+		128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */; };
+		128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */; };
+		128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */; };
 		129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
 		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
@@ -996,6 +1001,14 @@
 		128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTrainingQueueDataSource.m; sourceTree = "<group>"; };
 		128BCE6E188579E8000E1922 /* NCDatabaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseViewController.h; sourceTree = "<group>"; };
 		128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseViewController.m; sourceTree = "<group>"; };
+		128D29A918BDAE6D003B8E03 /* NCZKillBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardViewController.h; sourceTree = "<group>"; };
+		128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardViewController.m; sourceTree = "<group>"; };
+		128D29AF18BDBD23003B8E03 /* NCTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewHeaderView.h; sourceTree = "<group>"; };
+		128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewHeaderView.m; sourceTree = "<group>"; };
+		128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCTableViewCollapsedHeaderView.xib; sourceTree = "<group>"; };
+		128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCTableViewHeaderView.xib; sourceTree = "<group>"; };
+		128D29B818BDC794003B8E03 /* NCTableViewCollapsedHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCollapsedHeaderView.h; sourceTree = "<group>"; };
+		128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCollapsedHeaderView.m; sourceTree = "<group>"; };
 		129421A7187FDF7200977CB8 /* NSString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Neocom.h"; sourceTree = "<group>"; };
 		129421A8187FDF7200977CB8 /* NSString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Neocom.m"; sourceTree = "<group>"; };
 		129421AA187FDFAE00977CB8 /* NSNumberFormatter+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Neocom.h"; sourceTree = "<group>"; };
@@ -1792,6 +1805,7 @@
 				12640B0F18B77B4C005C311D /* NCKillMail */,
 				12640B0B18B77A15005C311D /* NCKillMailsViewController */,
 				12640C4918BB737B005C311D /* NCKillMailDetailsViewController */,
+				128D29A718BDAE2F003B8E03 /* NCZKillBoardViewController */,
 			);
 			name = KillBoard;
 			sourceTree = "<group>";
@@ -1849,6 +1863,7 @@
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,
 				1200C32218603093008F3C5E /* NCAccountsManager */,
+				128D29B218BDBD26003B8E03 /* NCTableViewHeaderView */,
 				126A0CC3185F399F00A8E8A3 /* NCTableViewController */,
 				84E4331F18951C1600DF2061 /* NCViewController */,
 				1211122B185989CC009E5106 /* NCTaskManager */,
@@ -2544,6 +2559,28 @@
 				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		128D29A718BDAE2F003B8E03 /* NCZKillBoardViewController */ = {
+			isa = PBXGroup;
+			children = (
+				128D29A918BDAE6D003B8E03 /* NCZKillBoardViewController.h */,
+				128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */,
+			);
+			name = NCZKillBoardViewController;
+			sourceTree = "<group>";
+		};
+		128D29B218BDBD26003B8E03 /* NCTableViewHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				128D29AF18BDBD23003B8E03 /* NCTableViewHeaderView.h */,
+				128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */,
+				128D29B618BDC73A003B8E03 /* NCTableViewHeaderView.xib */,
+				128D29B818BDC794003B8E03 /* NCTableViewCollapsedHeaderView.h */,
+				128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */,
+				128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */,
+			);
+			name = NCTableViewHeaderView;
 			sourceTree = "<group>";
 		};
 		129421A6187FDF5D00977CB8 /* Categories */ = {
@@ -3726,6 +3763,7 @@
 			files = (
 				84EEFCE91896C69C007962A0 /* khanid@2x.png in Resources */,
 				12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */,
+				128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
 				849B9FD31896D24A00D4DD2B /* slotLow.png in Resources */,
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
@@ -3836,6 +3874,7 @@
 				84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */,
 				129421B41880265000977CB8 /* evedb.sqlite in Resources */,
 				125F67F9188526B6005732FA /* level_031.gif in Resources */,
+				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
@@ -3887,6 +3926,7 @@
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
+				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
 				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				8456E86F18AAA712000DAE75 /* NCFittingPOSAssemblyLinesDataSource.mm in Sources */,
@@ -4087,6 +4127,7 @@
 				126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */,
 				129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */,
 				126A0E6E185F3B9300A8E8A3 /* EVERequest.m in Sources */,
+				128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */,
 				126A0E4E185F3B9300A8E8A3 /* EVECorpFacWarStats.m in Sources */,
 				129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */,
 				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
@@ -4097,6 +4138,7 @@
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
+				128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */,
 				12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,

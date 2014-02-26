@@ -16,6 +16,12 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSArray+Neocom.h"
 
+@interface NCSkillsViewControllerDataSection : NSObject
+@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, strong) EVEDBInvGroup* group;
+@end
+
 @interface NCSkillsViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
@@ -32,6 +38,10 @@
 @property (nonatomic, strong) NSArray* knownSkillsSections;
 @property (nonatomic, strong) NSArray* notKnownSkillsSections;
 @property (nonatomic, strong) NSArray* canTrainSkillsSections;
+
+@end
+
+@implementation NCSkillsViewControllerDataSection;
 
 @end
 
@@ -205,13 +215,13 @@
 		case NCSkillsViewControllerModeTrainingQueue:
 			return section == 0 ? self.skillQueueRows.count : self.skillPlan.trainingQueue.skills.count;
 		case NCSkillsViewControllerModeKnownSkills:
-			return [self.knownSkillsSections[section][@"rows"] count];
+			return [[self.knownSkillsSections[section] rows] count];
 		case NCSkillsViewControllerModeAllSkills:
-			return [self.allSkillsSections[section][@"rows"] count];
+			return [[self.allSkillsSections[section] rows] count];
 		case NCSkillsViewControllerModeNotKnownSkills:
-			return [self.notKnownSkillsSections[section][@"rows"] count];
+			return [[self.notKnownSkillsSections[section] rows] count];
 		case NCSkillsViewControllerModeCanTrainSkills:
-			return [self.canTrainSkillsSections[section][@"rows"] count];
+			return [[self.canTrainSkillsSections[section] rows] count];
 		default:
 			return 0;
 	}
@@ -226,16 +236,16 @@
 			row = indexPath.section == 0 ? self.skillQueueRows[indexPath.row] : self.skillPlan.trainingQueue.skills[indexPath.row];
 			break;
 		case NCSkillsViewControllerModeKnownSkills:
-			row = self.knownSkillsSections[indexPath.section][@"rows"][indexPath.row];
+			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
 			break;
 		case NCSkillsViewControllerModeAllSkills:
-			row = self.allSkillsSections[indexPath.section][@"rows"][indexPath.row];
+			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
 			break;
 		case NCSkillsViewControllerModeNotKnownSkills:
-			row = self.notKnownSkillsSections[indexPath.section][@"rows"][indexPath.row];
+			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
 			break;
 		case NCSkillsViewControllerModeCanTrainSkills:
-			row = self.canTrainSkillsSections[indexPath.section][@"rows"][indexPath.row];
+			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
 			break;
 		default:
 			break;
@@ -288,13 +298,13 @@
 					return NSLocalizedString(@"Skill plan in empty", nil);
 			}
 		case NCSkillsViewControllerModeKnownSkills:
-			return self.knownSkillsSections[section][@"title"];
+			return [self.knownSkillsSections[section] title];
 		case NCSkillsViewControllerModeAllSkills:
-			return self.allSkillsSections[section][@"title"];
+			return [self.allSkillsSections[section] title];
 		case NCSkillsViewControllerModeNotKnownSkills:
-			return self.notKnownSkillsSections[section][@"title"];
+			return [self.notKnownSkillsSections[section] title];
 		case NCSkillsViewControllerModeCanTrainSkills:
-			return self.canTrainSkillsSections[section][@"title"];
+			return [self.canTrainSkillsSections[section] title];
 		default:
 			return 0;
 	}
@@ -452,7 +462,11 @@
 												 NSString* title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil),
 																	[[skills[0] group] groupName],
 																	[NSNumberFormatter neocomLocalizedStringFromNumber:@(skillPoints)]];
-												 [knownSkillsSections addObject:@{@"title": title, @"rows": skills}];
+												 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+												 section.title = title;
+												 section.rows = skills;
+												 section.group = [skills[0] group];
+												 [knownSkillsSections addObject:section];
 											 }
 											 [knownSkillsSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 											 
@@ -467,7 +481,11 @@
 												 NSString* title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil),
 																	[[skills[0] group] groupName],
 																	[NSNumberFormatter neocomLocalizedStringFromNumber:@(skillPoints)]];
-												 [allSkillsSections addObject:@{@"title": title, @"rows": skills}];
+												 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+												 section.title = title;
+												 section.rows = skills;
+												 section.group = [skills[0] group];
+												 [allSkillsSections addObject:section];
 											 }
 											 [allSkillsSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 											 
@@ -477,10 +495,14 @@
 											 NSPredicate* predicate = nil;
 											 
 											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 5 AND trainedLevel >= 0"];
-											 for (NSDictionary* section in allSkillsSections) {
-												 NSArray* canTrain = [section[@"rows"] filteredArrayUsingPredicate:predicate];
+											 for (NCSkillsViewControllerDataSection* section in allSkillsSections) {
+												 NSArray* canTrain = [section.rows filteredArrayUsingPredicate:predicate];
 												 if (canTrain.count > 0) {
-													 [canTrainSkillsSection addObject:@{@"title": section[@"title"], @"rows": canTrain}];
+													 NCSkillsViewControllerDataSection* canTrainSection = [NCSkillsViewControllerDataSection new];
+													 canTrainSection.title = section.title;
+													 canTrainSection.rows = canTrain;
+													 canTrainSection.group = section.group;
+													 [canTrainSkillsSection addObject:canTrainSection];
 												 }
 											 }
 											 
@@ -488,10 +510,14 @@
 												 return;
 											 
 											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 0"];
-											 for (NSDictionary* section in allSkillsSections) {
-												 NSArray* canTrain = [section[@"rows"] filteredArrayUsingPredicate:predicate];
+											 for (NCSkillsViewControllerDataSection* section in allSkillsSections) {
+												 NSArray* canTrain = [section.rows filteredArrayUsingPredicate:predicate];
 												 if (canTrain.count > 0) {
-													 [notKnownSkillsSections addObject:@{@"title": section[@"title"], @"rows": canTrain}];
+													 NCSkillsViewControllerDataSection* notKnownSection = [NCSkillsViewControllerDataSection new];
+													 notKnownSection.title = section.title;
+													 notKnownSection.rows = canTrain;
+													 notKnownSection.group = section.group;
+													 [notKnownSkillsSections addObject:notKnownSection];
 												 }
 											 }
 										 }
@@ -516,6 +542,30 @@
 - (NSDate*) cacheDate {
 	NCAccount* account = [NCAccount currentAccount];
 	return account.characterSheet.cacheDate;
+}
+
+- (id) identifierForSection:(NSInteger)section {
+	switch (self.mode) {
+		case NCSkillsViewControllerModeTrainingQueue:
+			return @(section);
+		case NCSkillsViewControllerModeKnownSkills:
+			return @([[self.knownSkillsSections[section] group] groupID]);
+		case NCSkillsViewControllerModeAllSkills:
+			return @([[self.allSkillsSections[section] group] groupID]);
+		case NCSkillsViewControllerModeNotKnownSkills:
+			return @([[self.notKnownSkillsSections[section] group] groupID]);
+		case NCSkillsViewControllerModeCanTrainSkills:
+			return @([[self.canTrainSkillsSections[section] group] groupID]);
+		default:
+			return nil;
+	}
+}
+
+- (BOOL) initiallySectionIsCollapsed:(NSInteger)section {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue)
+		return NO;
+	else
+		return YES;
 }
 
 #pragma mark - Private

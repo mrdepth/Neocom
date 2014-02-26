@@ -30,5 +30,6 @@
 - (void) didChangeAccount:(NCAccount*) account;
 - (void) searchWithSearchString:(NSString*) searchString;
 - (NSDate*) cacheDate;
-
+- (id) identifierForSection:(NSInteger) section;
+- (BOOL) initiallySectionIsCollapsed:(NSInteger) section;
 @end

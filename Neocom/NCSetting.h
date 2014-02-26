@@ -13,6 +13,8 @@
 @interface NCSetting : NSManagedObject
 
 @property (nonatomic, retain) NSString * key;
-@property (nonatomic, retain) NSString * value;
+@property (nonatomic, retain) id value;
+
++ (instancetype) settingWithKey:(NSString*) key;
 
 @end

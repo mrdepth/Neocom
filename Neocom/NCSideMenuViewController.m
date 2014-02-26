@@ -148,6 +148,7 @@
 	if (_contentViewController) {
 		[_contentViewController willMoveToParentViewController:nil];
 		contentViewController.view.transform = _contentViewController.view.transform;
+		UIViewController* toRemove = _contentViewController;
 
 		[self transitionFromViewController:_contentViewController
 						  toViewController:contentViewController
@@ -159,6 +160,7 @@
 								}
 								completion:^(BOOL finished) {
 									[contentViewController didMoveToParentViewController:self];
+									[toRemove removeFromParentViewController];
 									[self.menuViewController endAppearanceTransition];
 								}];
 

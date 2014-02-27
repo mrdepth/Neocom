@@ -326,7 +326,7 @@
 		if (!_contractBids) {
 			_contractBids = self.contractBidsCacheRecord.data.data;
 		
-			if (!_contractBids || [self.contractBidsCacheRecord.expireDate earlierDate:[NSDate date]] == self.contractBidsCacheRecord.expireDate) {
+			if (!_contractBids || [self.contractBidsCacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
 				EVEContractBids* contractBids = [EVEContractBids contractBidsWithKeyID:self.account.apiKey.keyID
 																				 vCode:self.account.apiKey.vCode
 																		   cachePolicy:NSURLRequestUseProtocolCachePolicy

@@ -431,7 +431,7 @@
 		if (!_sovereignty) {
 			_sovereignty = self.sovereigntyCacheRecord.data.data;
 			
-			if (!_sovereignty || [self.sovereigntyCacheRecord.expireDate earlierDate:[NSDate date]] == self.sovereigntyCacheRecord.expireDate) {
+			if (!_sovereignty || [self.sovereigntyCacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
 				EVESovereignty* sovereignty = [EVESovereignty sovereigntyWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 				if (sovereignty) {
 					_sovereignty = sovereignty;

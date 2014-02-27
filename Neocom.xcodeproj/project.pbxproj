@@ -269,6 +269,7 @@
 		128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.mm */; };
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
+		128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0318BF034E0086F7B3 /* NCCharacterID.m */; };
 		128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */; };
 		128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */; };
 		128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */; };
@@ -1001,6 +1002,8 @@
 		128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTrainingQueueDataSource.m; sourceTree = "<group>"; };
 		128BCE6E188579E8000E1922 /* NCDatabaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseViewController.h; sourceTree = "<group>"; };
 		128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseViewController.m; sourceTree = "<group>"; };
+		128C9B0218BF034E0086F7B3 /* NCCharacterID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterID.h; sourceTree = "<group>"; };
+		128C9B0318BF034E0086F7B3 /* NCCharacterID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterID.m; sourceTree = "<group>"; };
 		128D29A918BDAE6D003B8E03 /* NCZKillBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardViewController.h; sourceTree = "<group>"; };
 		128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardViewController.m; sourceTree = "<group>"; };
 		128D29AF18BDBD23003B8E03 /* NCTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewHeaderView.h; sourceTree = "<group>"; };
@@ -1802,6 +1805,7 @@
 		12640B0A18B75EBF005C311D /* KillBoard */ = {
 			isa = PBXGroup;
 			children = (
+				128C9B0018BF03210086F7B3 /* NCCharacterID */,
 				12640B0F18B77B4C005C311D /* NCKillMail */,
 				12640B0B18B77A15005C311D /* NCKillMailsViewController */,
 				12640C4918BB737B005C311D /* NCKillMailDetailsViewController */,
@@ -2559,6 +2563,15 @@
 				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		128C9B0018BF03210086F7B3 /* NCCharacterID */ = {
+			isa = PBXGroup;
+			children = (
+				128C9B0218BF034E0086F7B3 /* NCCharacterID.h */,
+				128C9B0318BF034E0086F7B3 /* NCCharacterID.m */,
+			);
+			name = NCCharacterID;
 			sourceTree = "<group>";
 		};
 		128D29A718BDAE2F003B8E03 /* NCZKillBoardViewController */ = {
@@ -4211,6 +4224,7 @@
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
 				12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */,
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
+				128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */,
 				12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */,
 				126A0E35185F3B9300A8E8A3 /* EVECharContactList.m in Sources */,
 				12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */,

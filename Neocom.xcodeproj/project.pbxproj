@@ -270,6 +270,7 @@
 		128BCE69188569EF000E1922 /* NCTrainingQueueDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE68188569EF000E1922 /* NCTrainingQueueDataSource.m */; };
 		128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */; };
 		128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0318BF034E0086F7B3 /* NCCharacterID.m */; };
+		128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128C9B0818BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m */; };
 		128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */; };
 		128D29B118BDBD23003B8E03 /* NCTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B018BDBD23003B8E03 /* NCTableViewHeaderView.m */; };
 		128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128D29B318BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib */; };
@@ -1004,6 +1005,8 @@
 		128BCE6F188579E8000E1922 /* NCDatabaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseViewController.m; sourceTree = "<group>"; };
 		128C9B0218BF034E0086F7B3 /* NCCharacterID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterID.h; sourceTree = "<group>"; };
 		128C9B0318BF034E0086F7B3 /* NCCharacterID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterID.m; sourceTree = "<group>"; };
+		128C9B0718BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseSolarSystemPickerViewController.h; sourceTree = "<group>"; };
+		128C9B0818BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseSolarSystemPickerViewController.m; sourceTree = "<group>"; };
 		128D29A918BDAE6D003B8E03 /* NCZKillBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardViewController.h; sourceTree = "<group>"; };
 		128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardViewController.m; sourceTree = "<group>"; };
 		128D29AF18BDBD23003B8E03 /* NCTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewHeaderView.h; sourceTree = "<group>"; };
@@ -2548,6 +2551,7 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */,
 				12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */,
 				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
 				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
@@ -2572,6 +2576,15 @@
 				128C9B0318BF034E0086F7B3 /* NCCharacterID.m */,
 			);
 			name = NCCharacterID;
+			sourceTree = "<group>";
+		};
+		128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				128C9B0718BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.h */,
+				128C9B0818BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m */,
+			);
+			name = NCDatabaseSolarSystemPickerViewController;
 			sourceTree = "<group>";
 		};
 		128D29A718BDAE2F003B8E03 /* NCZKillBoardViewController */ = {
@@ -3946,6 +3959,7 @@
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
 				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,
 				843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */,
+				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,
 				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,

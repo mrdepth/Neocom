@@ -17,7 +17,6 @@
 + (void) cleanup;
 
 - (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
-- (void) removeAPIKeyWithKeyID:(NSInteger) keyID;
 - (void) removeAccount:(NCAccount*) account;
 - (void) reload;
 @end

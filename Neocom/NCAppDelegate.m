@@ -12,7 +12,7 @@
 #import "UIAlertView+Error.h"
 #import "UIAlertView+Block.h"
 #import "EVEOnlineAPI.h"
-#import "NCCharacterID.h"
+#import "NCNotificationsManager.h"
 
 @interface NCAppDelegate()
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -36,35 +36,53 @@
 //	skillPlan = nil;
 	NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 	NSError* error = nil;
-	//[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-	//[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-	//[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
+	[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
+	[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
+	[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
 	
-	NSURL* url = [[NSUserDefaults standardUserDefaults] URLForKey:NCSettingsCurrentAccountKey];
-	if (url) {
-		NCStorage* storage = [NCStorage sharedStorage];
-		NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
-		if (account)
-			[NCAccount setCurrentAccount:account];
+	NCAccount* account = nil;
+	NCStorage* storage = [NCStorage sharedStorage];
+
+	if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+		UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+		NSString* urlString = notification.userInfo[NCSettingsCurrentAccountKey];
+		NSURL* url = [NSURL URLWithString:urlString];
+		if (url)
+			account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
 	}
+	
+	if (!account) {
+		NSURL* url = [[NSUserDefaults standardUserDefaults] URLForKey:NCSettingsCurrentAccountKey];
+		if (url)
+			account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
+	}
+	if (account)
+		[NCAccount setCurrentAccount:account];
+	
+	if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
+		[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
+		
     return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-	// Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-	// Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-	// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-	// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+	UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
+		
+	}];
+	
+	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
+		[application endBackgroundTask:task];
+	}];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-	// Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -85,6 +103,19 @@
 	else if ([scheme isEqualToString:@"fitting"])
 		[self openFitWithURL:url];
 	return YES;
+}
+
+- (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
+		completionHandler(newData ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
+	}];
+}
+
+- (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+	if (application.applicationState == UIApplicationStateActive) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+		[alert show];
+	}
 }
 
 #pragma mark - Private

@@ -365,6 +365,7 @@
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
+		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
 		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
@@ -1182,6 +1183,8 @@
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
+		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
+		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
 		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
 		12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsDetailsViewController.m; sourceTree = "<group>"; };
 		12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupPickerViewContoller.h; sourceTree = "<group>"; };
@@ -1892,6 +1895,7 @@
 				1211122B185989CC009E5106 /* NCTaskManager */,
 				127123A61897A939005F46EE /* NCProgressLabel */,
 				84A6E51E18A174D900231735 /* NCProgressTextField */,
+				12EC0AC318C0BA680010169C /* NCNotificationsManager */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -3189,6 +3193,15 @@
 			name = NCDatabaseTypeVariationsViewController;
 			sourceTree = "<group>";
 		};
+		12EC0AC318C0BA680010169C /* NCNotificationsManager */ = {
+			isa = PBXGroup;
+			children = (
+				12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */,
+				12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */,
+			);
+			name = NCNotificationsManager;
+			sourceTree = "<group>";
+		};
 		12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4191,6 +4204,7 @@
 				849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */,
 				126A0E28185F3B9300A8E8A3 /* EVEDBRamTypeRequirement.m in Sources */,
 				126A0E0B185F3B9300A8E8A3 /* EVEDBCrtRecommendation.m in Sources */,
+				12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,

@@ -9,6 +9,7 @@
 #import "NCAccountsManager.h"
 #import "NCStorage.h"
 #import "NCCache.h"
+#import "NCNotificationsManager.h"
 
 static NCAccountsManager* defaultManager = nil;
 
@@ -41,7 +42,7 @@ static NCAccountsManager* defaultManager = nil;
 	
 	if (apiKeyInfo) {
 		__block NCAPIKey* apiKey = nil;
-
+		
 		[context performBlockAndWait:^{
 			apiKey = [NCAPIKey apiKeyWithKeyID:keyID];
 			if (apiKey && ![apiKey.vCode isEqualToString:vCode]) {
@@ -77,28 +78,13 @@ static NCAccountsManager* defaultManager = nil;
 			
 			[storage saveContext];
 		}];
+		[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
 		return YES;
 	}
 	else
 		return NO;
 }
 
-- (void) removeAPIKeyWithKeyID:(NSInteger) keyID {
-	NCStorage* storage = [NCStorage sharedStorage];
-	[storage.managedObjectContext performBlockAndWait:^{
-		NCAPIKey* apiKey = [NCAPIKey apiKeyWithKeyID:keyID];
-		if (apiKey)
-			[storage.managedObjectContext deleteObject:apiKey];
-		
-		self.accounts = [NCAccount allAccounts];
-		self.apiKeys = [NCAPIKey allAPIKeys];
-		NSInteger order = 0;
-		for (NCAccount* account in self.accounts)
-			account.order = order++;
-
-		[storage saveContext];
-	}];
-}
 
 - (void) removeAccount:(NCAccount*) account {
 	NCStorage* storage = [NCStorage sharedStorage];
@@ -117,6 +103,7 @@ static NCAccountsManager* defaultManager = nil;
 		
 		[storage saveContext];
 	}];
+	[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
 }
 
 - (void) reload {

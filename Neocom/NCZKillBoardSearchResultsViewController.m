@@ -1,30 +1,31 @@
 //
-//  NCKillMailsViewController.m
+//  NCZKillBoardSearchResultsViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 21.02.14.
+//  Created by Артем Шиманский on 28.02.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCKillMailsViewController.h"
+#import "NCZKillBoardSearchResultsViewController.h"
 #import "EVEKillLogKill+Neocom.h"
 #import "EVEKillLogVictim+Neocom.h"
+#import "EVEzKillBoardAPI.h"
 #import "NCKillMailsCell.h"
 #import "UIColor+Neocom.h"
+#import "UIAlertView+Error.h"
 #import "NCKillMailDetailsViewController.h"
 
-@interface NCKillMailsViewControllerDataSection : NSObject<NSCoding>
+@interface NCZKillBoardSearchResultsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* kills;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSDate* date;
 @end
 
-@interface NCKillMailsViewControllerData : NSObject<NSCoding>
-@property (nonatomic, strong) NSArray* kills;
-@property (nonatomic, strong) NSArray* losses;
+@interface NCZKillBoardSearchResultsViewControllerData : NSObject<NSCoding>
+@property (nonatomic, strong) NSArray* sections;
 @end
 
-@implementation NCKillMailsViewControllerDataSection
+@implementation NCZKillBoardSearchResultsViewControllerDataSection
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
@@ -45,39 +46,35 @@
 	
 	if (self.title)
 		[aCoder encodeObject:self.title forKey:@"title"];
-
+	
 	if (self.date)
 		[aCoder encodeObject:self.date forKey:@"date"];
 }
 
 @end
 
-@implementation NCKillMailsViewControllerData
+@implementation NCZKillBoardSearchResultsViewControllerData
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.kills = [aDecoder decodeObjectForKey:@"kills"];
-		self.losses = [aDecoder decodeObjectForKey:@"losses"];
+		self.sections = [aDecoder decodeObjectForKey:@"sections"];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	if (self.kills)
-		[aCoder encodeObject:self.kills forKey:@"kills"];
-	
-	if (self.losses)
-		[aCoder encodeObject:self.losses forKey:@"losses"];
+	if (self.sections)
+		[aCoder encodeObject:self.sections forKey:@"sections"];
 }
 
 @end
 
-@interface NCKillMailsViewController ()
-@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 
+@interface NCZKillBoardSearchResultsViewController ()
+@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 @end
 
-@implementation NCKillMailsViewController
+@implementation NCZKillBoardSearchResultsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -102,41 +99,37 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)onChangeMode:(id)sender {
-	[self.tableView reloadData];
-}
-
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCKillMailDetailsViewController"]) {
 		NCKillMailDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.killMail = [[NCKillMail alloc] initWithKillLogKill:[sender object]];
+		destinationViewController.killMail = [[NCKillMail alloc] initWithKillLogKill:sender];
 	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NCKillMailsViewControllerData* data = self.data;
-	return self.segmentedControl.selectedSegmentIndex == 0 ? data.kills.count : data.losses.count;
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+	return data.sections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-	NCKillMailsViewControllerData* data = self.data;
-	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[sectionIndex] : data.losses[sectionIndex];
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+	NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[sectionIndex];
 	return section.kills.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCKillMailsViewControllerData* data = self.data;
-	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[sectionIndex] : data.losses[sectionIndex];
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+	NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[sectionIndex];
 	return section.title;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCKillMailsViewControllerData* data = self.data;
-	NCKillMailsViewControllerDataSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? data.kills[indexPath.section] : data.losses[indexPath.section];
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+	NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEKillLogKill* row = section.kills[indexPath.row];
 	
 	NCKillMailsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
@@ -157,14 +150,7 @@
 	}
 	
 	
-	EVEKillLogAttacker* attacker = nil;
-	for (attacker in row.attackers)
-		if (attacker.finalBlow == YES)
-			break;
-	if (!attacker && row.attackers.count > 0)
-		attacker = row.attackers[0];
-
-	cell.characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ kills %@", nil), attacker.characterName, row.victim.characterName];
+	cell.characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Victim: %@", nil), row.victim.characterName];
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.killTime];
 	return cell;
 }
@@ -183,71 +169,101 @@
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+
+	EVEKillLogKill* kill = nil;
+	if (indexPath.row > 0) {
+		NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[indexPath.section];
+		kill = section.kills[indexPath.row - 1];
+	}
+	else if (indexPath.section > 0) {
+		NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[indexPath.section - 1];
+		kill = [section.kills lastObject];
+	}
+
+	__block NSError* error = nil;
+	__block EVEzKillBoardSearch* search = nil;
+	
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSMutableDictionary* filter = [self.filter mutableCopy];
+											 filter[EVEzKillBoardSearchFilterLimitKey] = @(1);
+											 if (kill)
+												 filter[EVEzKillBoardSearchFilterBeforeKillIDKey] = @(kill.killID);
+											 search = [EVEzKillBoardSearch searchWithFilter:filter
+																					  error:&error
+																			progressHandler:^(CGFloat progress, BOOL *stop) {
+																				task.progress = progress;
+																			}];
+											 for (EVEKillLogKill* kill in search.kills) {
+												 kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
+												 kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 if (error)
+										 [UIAlertView alertViewWithError:error];
+									 else {
+										 if (search.kills.count > 0)
+											 [self performSegueWithIdentifier:@"NCKillMailDetailsViewController" sender:search.kills[0]];
+									 }
+								 }
+							 }];
+}
+
 #pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	NSMutableArray* components = [NSMutableArray new];
+	[self.filter enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		[components addObject:[NSString stringWithFormat:@"%@=%@", key, obj]];
+	}];
+	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), @([[components componentsJoinedByString:@","] hash])];
+}
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
-	NCAccount* account = [NCAccount currentAccount];
-	if (!account) {
-		[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
-		return;
-	}
-	
-	NCKillMailsViewControllerData* data = [NCKillMailsViewControllerData new];
+	NCZKillBoardSearchResultsViewControllerData* data = [NCZKillBoardSearchResultsViewControllerData new];
 	__block NSDate* cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 BOOL corporate = account.accountType == NCAccountTypeCorporate;
-											 EVEKillLog* killLog = [EVEKillLog killLogWithKeyID:account.apiKey.keyID
-																						  vCode:account.apiKey.vCode
-																					cachePolicy:cachePolicy
-																					characterID:account.characterID
-																				   beforeKillID:0
-																					  corporate:corporate
-																						  error:&error
-																				progressHandler:^(CGFloat progress, BOOL *stop) {
-																					task.progress = progress;
-																				}];
+											 NSMutableDictionary* filter = [self.filter mutableCopy];
+											 filter[EVEzKillBoardSearchFilterNoItemsIDKey] = @"";
+											 filter[EVEzKillBoardSearchFilterNoAttackersIDKey] = @"";
+											 EVEzKillBoardSearch* search = [EVEzKillBoardSearch searchWithFilter:filter
+																										   error:&error
+																								 progressHandler:^(CGFloat progress, BOOL *stop) {
+																									 task.progress = progress;
+																								 }];
 											 
-											 if (killLog) {
-												 cacheExpireDate = killLog.cacheExpireDate;
+											 if (search) {
 												 NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
 												 [dateFormatter setDateFormat:@"yyyy.MM.dd"];
 												 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-												 NSMutableDictionary* kills = [NSMutableDictionary new];
-												 NSMutableDictionary* losses = [NSMutableDictionary new];
-
-												 for (EVEKillLogKill* kill in killLog.kills) {
+												 NSMutableDictionary* sections = [NSMutableDictionary new];
+												 
+												 for (EVEKillLogKill* kill in search.kills) {
 													 kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
 													 kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
 													 
-													 NCKillMailsViewControllerDataSection* section = nil;
+													 NCZKillBoardSearchResultsViewControllerDataSection* section = nil;
 													 NSString* key = [dateFormatter stringFromDate:kill.killTime];
-													 if ((corporate && kill.victim.corporationID == account.corporationSheet.corporationID) ||
-														 (!corporate && kill.victim.characterID == account.characterID)) {
-														 section = losses[key];
-														 if (!section) {
-															 losses[key] = section = [NCKillMailsViewControllerDataSection new];
-															 section.title = key;
-															 section.kills = [NSMutableArray new];
-															 section.date = kill.killTime;
-														 }
+													 section = sections[key];
+													 if (!section) {
+														 sections[key] = section = [NCZKillBoardSearchResultsViewControllerDataSection new];
+														 section.title = key;
+														 section.kills = [NSMutableArray new];
+														 section.date = kill.killTime;
 													 }
-													 else {
-														 section = kills[key];
-														 if (!section) {
-															 kills[key] = section = [NCKillMailsViewControllerDataSection new];
-															 section.title = key;
-															 section.kills = [NSMutableArray new];
-															 section.date = kill.killTime;
-														 }
-													 }
+
 													 [(NSMutableArray*) section.kills addObject:kill];
 												 }
-												 data.kills = [[kills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-												 data.losses = [[losses allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+												 data.sections = [[sections allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -262,11 +278,8 @@
 							 }];
 }
 
-- (void) didChangeAccount:(NCAccount *)account {
-	[super didChangeAccount:account];
-	if ([self isViewLoaded])
-		[self reloadFromCache];
+- (NSTimeInterval) defaultCacheExpireTime {
+	return 60 * 60 * 24;
 }
-
 
 @end

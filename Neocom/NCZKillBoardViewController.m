@@ -12,19 +12,13 @@
 #import "NCDatabaseSolarSystemPickerViewController.h"
 #import "UIAlertView+Block.h"
 #import "NCCharacterID.h"
+#import "NCZKillBoardSearchResultsViewController.h"
+#import "EVEzKillBoardAPI.h"
 
 typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	NCZKillBoardViewControllerFilterAll,
 	NCZKillBoardViewControllerFilterKills,
 	NCZKillBoardViewControllerFilterLosses
-};
-
-typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
-	NCZKillBoardViewControllerSecurityAll,
-	NCZKillBoardViewControllerSecurityHi,
-	NCZKillBoardViewControllerSecurityLow,
-	NCZKillBoardViewControllerSecurityNull,
-	NCZKillBoardViewControllerSecurityWH
 };
 
 @interface NCZKillBoardViewController ()
@@ -35,8 +29,8 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 @property (nonatomic, strong) NCCharacterID* characterID;
 @property (nonatomic, strong) NSDate* date;
 @property (nonatomic, assign) NCZKillBoardViewControllerFilter filter;
-@property (nonatomic, assign) NCZKillBoardViewControllerSecurity security;
 @property (nonatomic, assign) BOOL soloKills;
+@property (nonatomic, assign) BOOL whKills;
 
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 
@@ -62,7 +56,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.dateFormatter = [[NSDateFormatter alloc] init];
+	self.dateFormatter = [NSDateFormatter new];
 	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 
@@ -73,7 +67,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 	[self.cellIdentifiers addObject:@"CharacterCell"];
 	[self.cellIdentifiers addObject:@"SolarSystemCell"];
 	[self.cellIdentifiers addObject:@"KillsCell"];
-	[self.cellIdentifiers addObject:@"SecurityCell"];
+	[self.cellIdentifiers addObject:@"WHCell"];
 	[self.cellIdentifiers addObject:@"SoloKillsCell"];
 	[self.cellIdentifiers addObject:@"DateCell"];
 	// Do any additional setup after loading the view.
@@ -90,6 +84,47 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 		NCDatabaseGroupPickerViewContoller* destinationViewController = segue.destinationViewController;
 		destinationViewController.categoryID = NCShipCategoryID;
 	}
+	else if ([segue.identifier isEqualToString:@"NCZKillBoardSearchResultsViewController"]) {
+		NCZKillBoardSearchResultsViewController* destinationViewController = segue.destinationViewController;
+		NSMutableDictionary* filter = [NSMutableDictionary new];
+		filter[EVEzKillBoardSearchFilterOrderDirectionKey] = EVEzKillBoardSearchFilterOrderDirectionDescending;
+		if (self.group)
+			filter[EVEzKillBoardSearchFilterGroupIDKey] = @(self.group.groupID);
+		if (self.type)
+			filter[EVEzKillBoardSearchFilterShipTypeIDKey] = @(self.type.typeID);
+		if (self.solarSystem)
+			filter[EVEzKillBoardSearchFilterSolarSystemIDKey] = @(self.solarSystem.solarSystemID);
+		if (self.region)
+			filter[EVEzKillBoardSearchFilterRegionIDKey] = @(self.region.regionID);
+		
+		if (self.characterID) {
+			if (self.characterID.type == NCCharacterIDTypeCharacter)
+				filter[EVEzKillBoardSearchFilterCharacterIDKey] = @(self.characterID.characterID);
+			else if (self.characterID.type == NCCharacterIDTypeCorporation)
+				filter[EVEzKillBoardSearchFilterCorporationIDKey] = @(self.characterID.characterID);
+			else if (self.characterID.type == NCCharacterIDTypeAlliance)
+				filter[EVEzKillBoardSearchFilterAllianceIDKey] = @(self.characterID.characterID);
+		}
+		
+		if (self.filter == NCZKillBoardViewControllerFilterKills)
+			filter[EVEzKillBoardSearchFilterKillsKey] = @"";
+		else if (self.filter == NCZKillBoardViewControllerFilterLosses)
+			filter[EVEzKillBoardSearchFilterLossesKey] = @"";
+		
+		if (self.whKills)
+			filter[EVEzKillBoardSearchFilterWSpaceKey] = @"";
+		
+		if (self.soloKills)
+			filter[EVEzKillBoardSearchFilterSoloKey] = @"";
+		
+		if (self.date) {
+			NSDateFormatter* dateFormatter = [NSDateFormatter new];
+			[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+			[dateFormatter setDateFormat:@"yyyyMMdd'T'HHmmss"];
+			filter[EVEzKillBoardSearchFilterStartTimeKey] = [dateFormatter stringFromDate:self.date];
+		}
+		destinationViewController.filter = filter;
+	}
 }
 
 - (IBAction)onChangeDate:(UIDatePicker*)sender {
@@ -103,8 +138,8 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 	self.filter = sender.selectedSegmentIndex;
 }
 
-- (IBAction)onChangeSecurity:(UISegmentedControl*)sender {
-	self.security = sender.selectedSegmentIndex;
+- (IBAction)onChangeWHKills:(UISwitch*)sender {
+	self.whKills = sender.on;
 }
 
 - (IBAction)onChangeSoloKills:(UISwitch*)sender {
@@ -200,9 +235,9 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 		UISegmentedControl* control = (UISegmentedControl*) [cell.contentView viewWithTag:1];
 		control.selectedSegmentIndex = self.filter;
 	}
-	else if ([cellIdentifier isEqualToString:@"SecurityCell"]) {
-		UISegmentedControl* control = (UISegmentedControl*) [cell.contentView viewWithTag:1];
-		control.selectedSegmentIndex = self.security;
+	else if ([cellIdentifier isEqualToString:@"WHCell"]) {
+		UISwitch* switchView = (UISwitch*) cell.accessoryView;
+		switchView.on = self.whKills;
 	}
 	else if ([cellIdentifier isEqualToString:@"SoloKillsCell"]) {
 		UISwitch* switchView = (UISwitch*) cell.accessoryView;
@@ -247,6 +282,10 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 											   self.type = type;
 											   [self dismissAnimated];
 											   [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+											   if (self.group) {
+												   self.group = nil;
+												   [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+											   }
 										   }];
 
 	}
@@ -286,6 +325,12 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerSecurity) {
 	if (sourceViewController.selectedGroup) {
 		self.group = sourceViewController.selectedGroup;
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+
+		if (self.type) {
+			self.type = nil;
+			[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		}
+
 	}
 }
 

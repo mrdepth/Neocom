@@ -11,6 +11,6 @@
 @interface NCZKillBoardViewController : NCTableViewController
 - (IBAction)onChangeDate:(UIDatePicker*)sender;
 - (IBAction)onChangeFilter:(UISegmentedControl*)sender;
-- (IBAction)onChangeSecurity:(UISegmentedControl*)sender;
+- (IBAction)onChangeWHKills:(UISwitch*)sender;
 - (IBAction)onChangeSoloKills:(UISwitch*)sender;
 @end

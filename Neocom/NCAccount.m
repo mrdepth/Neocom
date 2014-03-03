@@ -328,7 +328,7 @@ static NCAccount* currentAccount = nil;
 
 - (NCSkillPlan*) activeSkillPlan {
 	@synchronized(self) {
-		if (!_activeSkillPlan) {
+		if (!_activeSkillPlan || [_activeSkillPlan isDeleted]) {
 			__block NCSkillPlan* skillPlan = nil;
 
 			NCStorage* storage = [NCStorage sharedStorage];
@@ -338,6 +338,7 @@ static NCAccount* currentAccount = nil;
 									 insertIntoManagedObjectContext:self.managedObjectContext];
 					skillPlan.active = YES;
 					skillPlan.account = self;
+					skillPlan.name = NSLocalizedString(@"Default Skill Plan", nil);
 				}
 				else {
 					NSSet* skillPlans = [self.skillPlans filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"active == YES"]];

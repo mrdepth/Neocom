@@ -24,6 +24,7 @@
 - (void) save;
 - (void) mergeWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
 - (void) removeSkill:(NCSkillData*) skill;
+- (void) clear;
 
 - (void) updateSkillPoints;
 - (void) reloadIfNeeded;

@@ -19,5 +19,6 @@ typedef NS_ENUM(NSInteger, NCDatabaseFilter) {
 @property (nonatomic, assign) NCDatabaseFilter filter;
 @property (nonatomic, strong) EVEDBInvCategory* category;
 @property (nonatomic, strong) EVEDBInvGroup* group;
+- (IBAction)onFilter:(id)sender;
 
 @end

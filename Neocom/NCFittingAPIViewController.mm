@@ -14,6 +14,11 @@
 #import "NCFittingAPIFlagsViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingAPISearchResultsViewController.h"
+#import "UIAlertView+Block.h"
+#import "NCShipFit.h"
+#import "NCLoadout.h"
+#import "NSString+Neocom.h"
+#import "UIActionSheet+Block.h"
 
 @interface NCFittingAPIViewController ()
 @property (nonatomic, strong) EVEDBInvType* type;
@@ -23,11 +28,13 @@
 
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NAPILookup* lookup;
+@property (nonatomic, strong) UIActionSheet* actionSheet;
 
 
 - (IBAction)onClear:(id)sender;
 - (IBAction)onSwitch:(id)sender;
 - (void) update;
+- (void) uploadFits;
 @end
 
 @implementation NCFittingAPIViewController
@@ -44,9 +51,31 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.flags = NeocomAPIFlagComplete | NeocomAPIFlagValid;
+	self.flags = static_cast<NeocomAPIFlag>(NeocomAPIFlagComplete | NeocomAPIFlagValid);
 	self.refreshControl = nil;
 	[self update];
+	
+	NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDate];
+	if (!date || [date earlierDate:[NSDate date]] == date) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFits])
+			[self uploadFits];
+		else {
+			[[UIAlertView alertViewWithTitle:nil
+									 message:NSLocalizedString(@"Would you like to make your contribution to the Neocom community by sharing your fit?", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Don't share this time", nil)
+						   otherButtonTitles:@[NSLocalizedString(@"Share this time", nil), NSLocalizedString(@"Always share", nil)]
+							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+								 if (selectedButtonIndex == 2)
+									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFits];
+								 if (selectedButtonIndex != alertView.cancelButtonIndex)
+									 [self uploadFits];
+								 else {
+									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFits];
+								 }
+							 } cancelBlock:^{
+							 }] show];
+		}
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,6 +128,32 @@
 		destinationViewController.criteria = self.criteria;
 	}
 	
+}
+
+
+- (IBAction)onAction:(id)sender {
+	NSDate* nextSyncDate = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDate];
+	BOOL alwaysUpload =[[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFits];
+	NSString* title = nil;
+	if (nextSyncDate) {
+		NSInteger timeInterval = [nextSyncDate timeIntervalSinceNow];
+		if (timeInterval > 0)
+			title = [NSString stringWithFormat:@"Next sync in %@", [NSString stringWithTimeLeft:timeInterval]];
+	}
+	[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:NO];
+	
+	self.actionSheet = [UIActionSheet actionSheetWithTitle:title
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:@[NSLocalizedString(@"Sync now", nil), alwaysUpload ? NSLocalizedString(@"Disable auto sync", nil) : NSLocalizedString(@"Enable auto sync", nil)]
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   if (selectedButtonIndex == 0)
+												   [self uploadFits];
+											   else if (selectedButtonIndex == 1) {
+												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFits];
+											   }
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -284,7 +339,7 @@
 		NSInteger flags = 0;
 		for (NSNumber* flag in sourceViewController.values)
 			flags |= [flag integerValue];
-		self.flags = (self.flags & (-1 ^ flags)) | [sourceViewController.selectedValue integerValue];
+		self.flags = static_cast<NeocomAPIFlag>((self.flags & (-1 ^ flags)) | [sourceViewController.selectedValue integerValue]);
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0], [NSIndexPath indexPathForRow:3 inSection:0]]  withRowAnimation:UITableViewRowAnimationFade];
 		[self update];
 	}
@@ -304,18 +359,18 @@
 	else if (indexPath.row == 1)
 		self.group = nil;
 	else if (indexPath.row == 2)
-		self.flags = self.flags & (-1 ^ (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
+		self.flags = static_cast<NeocomAPIFlag>(self.flags & (-1 ^ (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers)));
 	else if (indexPath.row == 3)
-		self.flags = self.flags & (-1 ^ (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
+		self.flags = static_cast<NeocomAPIFlag>(self.flags & (-1 ^ (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank)));
 	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	[self update];
 }
 
 - (IBAction)onSwitch:(id)sender {
 	if ([sender isOn])
-		self.flags |= NeocomAPIFlagCapStable;
+		self.flags = static_cast<NeocomAPIFlag>(self.flags | NeocomAPIFlagCapStable);
 	else
-		self.flags = self.flags & (-1 ^ (NeocomAPIFlagCapStable));
+		self.flags = static_cast<NeocomAPIFlag>(self.flags & (-1 ^ (NeocomAPIFlagCapStable)));
 	[self update];
 }
 
@@ -351,6 +406,30 @@
 		_typePickerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
 	}
 	return _typePickerViewController;
+}
+
+- (void) uploadFits {
+	__block NSError* error = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NSMutableArray* canonicalNames = [NSMutableArray new];
+											 for (NCLoadout* loadout in [NCLoadout shipLoadouts]) {
+												 NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
+												 NSString* canonicalName = shipFit.canonicalName;
+												 [canonicalNames addObject:canonicalName];
+											 }
+											 if (canonicalNames.count > 0)
+												 [NAPIUpload uploadFitsWithCannonicalNames:canonicalNames
+																					userID:NCSettingsUDID
+																			   cachePolicy:NSURLRequestUseProtocolCachePolicy
+																					 error:&error
+																		   progressHandler:nil];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled] && !error)
+									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDate];
+							 }];
 }
 
 @end

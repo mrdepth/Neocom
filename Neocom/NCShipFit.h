@@ -58,6 +58,7 @@
 @property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
 @property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, readonly) NSString* canonicalName;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;

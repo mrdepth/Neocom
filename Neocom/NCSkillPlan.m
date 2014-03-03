@@ -73,6 +73,12 @@
 	[self save];
 }
 
+- (void) clear {
+	self.skills = nil;
+	self.trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
+	[self updateSkillPoints];
+}
+
 - (void) updateSkillPoints {
 	/*NCTrainingQueue* newTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
 	for (NCSkillData* skillData in self.trainingQueue.skills)

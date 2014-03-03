@@ -157,7 +157,28 @@
 }
 
 - (IBAction)onAction:(id)sender {
-	
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:NSLocalizedString(@"Clear Skill Plan", nil)
+					   otherButtonTitles:@[NSLocalizedString(@"Import Skill Plan", nil), NSLocalizedString(@"Switch Skill Plan", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
+								 [self.skillPlan clear];
+								 [self.skillPlan save];
+								 [self.tableView reloadData];
+							 }
+							 else if (selectedButtonIndex == 1) {
+/*								 SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
+								 controller.delegate = self;
+								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+								 
+								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
+								 [self presentViewController:navController animated:YES completion:nil];*/
+							 }
+						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -295,7 +316,7 @@
 				if (self.skillPlan.trainingQueue.skills.count > 0)
 					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], self.skillPlan.trainingQueue.skills.count];
 				else
-					return NSLocalizedString(@"Skill plan in empty", nil);
+					return NSLocalizedString(@"Skill plan is empty", nil);
 			}
 		case NCSkillsViewControllerModeKnownSkills:
 			return [self.knownSkillsSections[section] title];

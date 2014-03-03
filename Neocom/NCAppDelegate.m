@@ -13,6 +13,7 @@
 #import "UIAlertView+Block.h"
 #import "EVEOnlineAPI.h"
 #import "NCNotificationsManager.h"
+#import "NSString+UUID.h"
 
 @interface NCAppDelegate()
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -23,6 +24,9 @@
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDID])
+		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDID];
+
 	self.taskManager = [NCTaskManager new];
 	
 /*	EVECachedURLRequest* request = [[EVECachedURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://request.urih.com/"]

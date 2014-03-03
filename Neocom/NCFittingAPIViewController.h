@@ -10,4 +10,6 @@
 
 @interface NCFittingAPIViewController : NCTableViewController
 
+- (IBAction)onAction:(id)sender;
+
 @end

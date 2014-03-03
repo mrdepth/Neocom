@@ -18,6 +18,9 @@
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
+#define NCSettingsAPINextSyncDate @"NCSettingsAPINextSyncDate"
+#define NCSettingsAPIAlwaysUploadFits @"NCSettingsAPIAlwaysUploadFits"
+#define NCSettingsUDID @"NCSettingsUDID"
 
 #define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
 

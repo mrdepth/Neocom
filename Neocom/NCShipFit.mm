@@ -782,6 +782,56 @@
 	}
 }
 
+- (NSString*) canonicalName {
+	NSMutableArray* modules = [[NSMutableArray alloc] init];
+	
+	std::vector<std::pair<eufe::TypeID, eufe::TypeID> > modulePairs;
+	std::map<std::pair<eufe::TypeID, eufe::TypeID>, int> moduleCounts;
+	
+	for (NSString* key in @[@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"]) {
+		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:key]) {
+			std::pair<eufe::TypeID, eufe::TypeID> pair(item.typeID, item.chargeID);
+			int count = 1;
+			if (moduleCounts.find(pair) == moduleCounts.end()) {
+				moduleCounts[pair] = count;
+				modulePairs.push_back(pair);
+			}
+			else
+				moduleCounts[pair] += count;
+		}
+	}
+
+	std::sort(modulePairs.begin(), modulePairs.end());
+	for (auto pair: modulePairs) {
+		NSString* s;
+		if (pair.second > 0)
+			s = [NSString stringWithFormat:@"%d:%d:%d", pair.first, pair.second, moduleCounts[pair]];
+		else
+			s = [NSString stringWithFormat:@"%d::%d", pair.first, moduleCounts[pair]];
+		[modules addObject:s];
+	}
+	
+	NSMutableArray* drones = [[NSMutableArray alloc] init];
+	std::vector<std::pair<eufe::TypeID, int> > dronePairs;
+	
+	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
+		if (!drone.active)
+			continue;
+		eufe::TypeID typeID = drone.typeID;
+		int count = drone.count;
+		dronePairs.push_back(std::pair<eufe::TypeID, int>(typeID, count));
+	}
+	std::sort(dronePairs.begin(), dronePairs.end());
+	
+	for (auto pair: dronePairs) {
+		NSString* s;
+		s = [NSString stringWithFormat:@"%d:%d", pair.first, pair.second];
+		[drones addObject:s];
+	}
+	NSString* s = [NSString stringWithFormat:@"%d|%@|%@", self.type.typeID, [modules componentsJoinedByString:@";"],  [drones componentsJoinedByString:@";"]];
+	return s;
+}
+
 #pragma mark - Private
 
 - (void) setSkillLevels:(NSDictionary*) skillLevels {

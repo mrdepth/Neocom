@@ -145,7 +145,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (section == 1) {
+	if (section == 0) {
+		return [NCAccount currentAccount] != nil ? 1 : 0;
+	}
+	else if (section == 1) {
 		NCAccountsViewControllerData* data = self.data;
 		return data.accounts.count;
 	}

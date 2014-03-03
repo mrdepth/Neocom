@@ -226,7 +226,13 @@
                             <outlet property="delegate" destination="Fue-9f-KvO" id="cdT-tJ-rh1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ew3-Ab-4tG"/>
+                    <navigationItem key="navigationItem" id="ew3-Ab-4tG">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="IvT-YD-6RV">
+                            <connections>
+                                <action selector="onAction:" destination="Fue-9f-KvO" id="gsH-pi-4LR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="w25-rV-onS" kind="push" identifier="NCFittingAPIFlagsViewController" id="9pU-zR-sgX"/>
                         <segue destination="yRZ-Vo-V45" kind="push" identifier="NCDatabaseGroupPickerViewContoller" id="l9G-FT-4hn"/>

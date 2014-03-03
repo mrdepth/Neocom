@@ -9,10 +9,12 @@
 #import "NCDatabaseViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCTableViewCell.h"
+#import "UIActionSheet+Block.h"
 
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong) NSArray* searchResults;
+- (void) reload;
 @end
 
 @implementation NCDatabaseViewController
@@ -31,47 +33,14 @@
 	self.refreshControl = nil;
 	
 	if (!self.rows) {
-		NSMutableArray* rows = [NSMutableArray new];
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 if (self.group) {
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", self.group.groupID,
-																									 self.filter == NCDatabaseFilterPublished ? @"WHERE published=1":
-																									 self.filter == NCDatabaseFilterUnpublished ? @"WHERE published=0" : @""]
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[rows addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-												 }
-												 else if (self.category) {
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", self.category.categoryID,
-																									 self.filter == NCDatabaseFilterPublished ? @"WHERE published=1":
-																									 self.filter == NCDatabaseFilterUnpublished ? @"WHERE published=0" : @""]
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[rows addObject:[[EVEDBInvGroup alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-												 }
-												 else {
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories %@ ORDER BY categoryName",
-																									 self.filter == NCDatabaseFilterPublished ? @"WHERE published=1":
-																									 self.filter == NCDatabaseFilterUnpublished ? @"WHERE published=0" : @""]
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[rows addObject:[[EVEDBInvCategory alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-												 }
-											 }
-								 completionHandler:^(NCTask *task) {
-									 self.rows = rows;
-									 [self.tableView reloadData];
-								 }];
+		[self reload];
 	}
+	if (self.filter == NCDatabaseFilterAll)
+		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"All", nil) forState:UIControlStateNormal];
+	else if (self.filter == NCDatabaseFilterPublished)
+		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"Published", nil) forState:UIControlStateNormal];
+	else if (self.filter == NCDatabaseFilterPublished)
+		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"Unpublished", nil) forState:UIControlStateNormal];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -95,12 +64,34 @@
 			destinationViewController.category = row;
 		else if ([row isKindOfClass:[EVEDBInvGroup class]])
 			destinationViewController.group = row;
+		destinationViewController.filter = self.filter;
 	}
 	else {
 		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 		id row = [sender object];
 		destinationViewController.type = row;
 	}
+}
+
+- (IBAction)onFilter:(id)sender {
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:@[NSLocalizedString(@"All", nil), NSLocalizedString(@"Published", nil), NSLocalizedString(@"Unpublished", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+								 if (selectedButtonIndex == 0)
+									 self.filter = NCDatabaseFilterAll;
+								 else if (selectedButtonIndex == 1)
+									 self.filter = NCDatabaseFilterPublished;
+								 else if (selectedButtonIndex == 2)
+									 self.filter = NCDatabaseFilterUnpublished;
+								 [sender setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
+								 [self reload];
+							 }
+						 }
+							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -250,4 +241,48 @@
 							 }];
 }
 
+#pragma mark - Private
+
+- (void) reload {
+	NSMutableArray* rows = [NSMutableArray new];
+	
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 if (self.group) {
+												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", self.group.groupID,
+																								 self.filter == NCDatabaseFilterPublished ? @" AND published=1":
+																								 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
+																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																						[rows addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
+																						if ([task isCancelled])
+																							*needsMore = NO;
+																					}];
+											 }
+											 else if (self.category) {
+												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", self.category.categoryID,
+																								 self.filter == NCDatabaseFilterPublished ? @" AND published=1":
+																								 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
+																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																						[rows addObject:[[EVEDBInvGroup alloc] initWithStatement:stmt]];
+																						if ([task isCancelled])
+																							*needsMore = NO;
+																					}];
+											 }
+											 else {
+												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories %@ ORDER BY categoryName",
+																								 self.filter == NCDatabaseFilterPublished ? @"WHERE published=1":
+																								 self.filter == NCDatabaseFilterUnpublished ? @"WHERE published=0" : @""]
+																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+																						[rows addObject:[[EVEDBInvCategory alloc] initWithStatement:stmt]];
+																						if ([task isCancelled])
+																							*needsMore = NO;
+																					}];
+											 }
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.rows = rows;
+								 [self.tableView reloadData];
+							 }];
+}
 @end

@@ -128,7 +128,7 @@
 	if (self.trainingQueue.skills.count > 0)
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], self.trainingQueue.skills.count];
 	else
-		return NSLocalizedString(@"Skill plan in empty", nil);
+		return NSLocalizedString(@"Skill plan is empty", nil);
 }
 
 

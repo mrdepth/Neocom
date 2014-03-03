@@ -19,7 +19,7 @@
 #import "NCFittingShipPriceCell.h"
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
-
+#import "NCPriceManager.h"
 
 
 @interface NCFittingShipStatsDataSourceShipStats : NSObject
@@ -90,11 +90,18 @@
 @interface NCFittingShipStatsDataSource()
 @property (nonatomic, strong) NCFittingShipStatsDataSourceShipStats* shipStats;
 @property (nonatomic, strong) NCFittingShipStatsDataSourcePriceStats* priceStats;
+@property (nonatomic, strong) NCPriceManager* priceManager;
 @end
 
 
 @implementation NCFittingShipStatsDataSource
 
+- (id) init {
+	if (self = [super init]) {
+		self.priceManager = [NCPriceManager new];
+	}
+	return self;
+}
 
 - (void) reload {
 	NCFittingShipStatsDataSourceShipStats* stats = [NCFittingShipStatsDataSourceShipStats new];
@@ -482,45 +489,35 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
+															NSCountedSet* types = [NSCountedSet set];
+
+															eufe::Character* character = self.controller.fit.pilot;
+															eufe::Ship* ship = character->getShip();
+															
+															[types addObject:@(ship->getTypeID())];
+															
+															for (auto i: ship->getModules())
+																[types addObject:@(i->getTypeID())];
+															
+															for (auto i: ship->getDrones())
+																[types addObject:@(i->getTypeID())];
+															
+															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+															__block float shipPrice = 0;
+															__block float fittingsPrice = 0;
+															
+															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+																NSInteger typeID = [key integerValue];
+																if (typeID == ship->getTypeID())
+																	shipPrice = obj.sell.percentile;
+																else
+																	fittingsPrice += obj.sell.percentile * [types countForObject:key];
+															}];
+															
+															stats.shipPrice = shipPrice;
+															stats.fittingsPrice = fittingsPrice;
+															stats.totalPrice = stats.shipPrice + stats.fittingsPrice;
 														}
-														
-														/*NSCountedSet* types = [NSCountedSet set];
-														ItemInfo* shipInfo = nil;
-														
-														eufe::Character* character = self.fittingViewController.fit.character;
-														eufe::Ship* ship = character->getShip();
-														
-														shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
-														[types addObject:shipInfo];
-														
-														const eufe::ModulesList& modulesList = ship->getModules();
-														eufe::ModulesList::const_iterator i, end = modulesList.end();
-														
-														for (i = modulesList.begin(); i != end; i++) {
-															ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
-															if (itemInfo)
-																[types addObject:itemInfo];
-														}
-														
-														const eufe::DronesList& dronesList = ship->getDrones();
-														eufe::DronesList::const_iterator j, endj = dronesList.end();
-														
-														for (j = dronesList.begin(); j != endj; j++) {
-															ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*j error:nil];
-															if (itemInfo)
-																[types addObject:itemInfo];
-														}
-														NSDictionary* prices = [self.fittingViewController.priceManager pricesWithTypes:[types allObjects]];
-														stats.shipPrice = [self.fittingViewController.priceManager priceWithType:shipInfo];
-														CGFloat fittingsPrice = 0;
-														for (ItemInfo* itemInfo in types) {
-															if (itemInfo != shipInfo) {
-																int count = [types countForObject:itemInfo];
-																fittingsPrice += [prices[@(itemInfo.typeID)] floatValue] * count;
-															}
-														}
-														stats.fittingsPrice = fittingsPrice;
-														stats.totalPrice = stats.shipPrice + stats.fittingsPrice;*/
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {

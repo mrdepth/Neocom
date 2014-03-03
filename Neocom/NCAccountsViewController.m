@@ -131,18 +131,21 @@
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 		[NCAccount setCurrentAccount:account.account];
 	}
+	else if ([segue.identifier isEqualToString:@"Logout"]) {
+		[NCAccount setCurrentAccount:nil];
+	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (section == 0) {
+	if (section == 1) {
 		NCAccountsViewControllerData* data = self.data;
 		return data.accounts.count;
 	}
@@ -152,9 +155,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == 1) {
+	if (indexPath.section == 0)
+		return [tableView dequeueReusableCellWithIdentifier:@"LogoutCell" forIndexPath:indexPath];
+	else if (indexPath.section == 2)
 		return [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-	}
 	
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
@@ -297,7 +301,7 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0;
+	return indexPath.section == 1;
 }
 
 // Override to support editing the table view.
@@ -319,7 +323,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0;
+	return indexPath.section == 1;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
@@ -365,7 +369,7 @@
 #pragma mark - Table view delegate
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-	if (proposedDestinationIndexPath.section == 1)
+	if (proposedDestinationIndexPath.section != 1)
 		return sourceIndexPath;
 	else
 		return proposedDestinationIndexPath;
@@ -377,7 +381,7 @@
 //}
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
+	if (indexPath.section == 1) {
 		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 		[cell setNeedsLayout];

@@ -446,15 +446,6 @@
 	
 	[operation setCompletionBlockInMainThread:^(void) {
 		if (![weakOperation isCancelled]) {
-			/*self.fuelCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
-									   fuelConsumtion,
-									   [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:fuelDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
-			
-			self.infrastructureUpgradesCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
-														 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesCost] numberStyle:NSNumberFormatterDecimalStyle],
-														 [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:upgradesDailyCost] numberStyle:NSNumberFormatterDecimalStyle]];
-			self.posCostLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
-									  [NSNumberFormatter localizedStringFromNumber:[NSNumber numberWithFloat:posCost] numberStyle:NSNumberFormatterDecimalStyle]];*/
 			self.priceStats = priceStats;
 			if (self.tableView.dataSource == self)
 				[self.tableView reloadData];

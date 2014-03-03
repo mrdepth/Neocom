@@ -20,6 +20,7 @@
 		1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204156B189A454A00B15BB5 /* NCFittingShipPriceCell.m */; };
 		1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */; };
 		12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */; };
+		12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
 		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
@@ -549,6 +550,8 @@
 		1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipStatsDataSource.mm; sourceTree = "<group>"; };
 		12041570189A4C3D00B15BB5 /* NCFittingEHPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingEHPCell.h; sourceTree = "<group>"; };
 		12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingEHPCell.m; sourceTree = "<group>"; };
+		12056E5C18C45F2E008D8755 /* NCPriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPriceManager.h; sourceTree = "<group>"; };
+		12056E5D18C45F2E008D8755 /* NCPriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPriceManager.m; sourceTree = "<group>"; };
 		1206C5E818922FB10010BEE8 /* NCMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBox.h; sourceTree = "<group>"; };
 		1206C5E918922FB20010BEE8 /* NCMailBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBox.m; sourceTree = "<group>"; };
 		1206C5ED189280870010BEE8 /* NCMailBoxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBoxViewController.h; sourceTree = "<group>"; };
@@ -1426,6 +1429,15 @@
 			name = NCWalletJournalCell;
 			sourceTree = "<group>";
 		};
+		12056E5B18C45CC4008D8755 /* NCPriceManager */ = {
+			isa = PBXGroup;
+			children = (
+				12056E5C18C45F2E008D8755 /* NCPriceManager.h */,
+				12056E5D18C45F2E008D8755 /* NCPriceManager.m */,
+			);
+			name = NCPriceManager;
+			sourceTree = "<group>";
+		};
 		1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1817,7 +1829,6 @@
 		12640B0A18B75EBF005C311D /* KillBoard */ = {
 			isa = PBXGroup;
 			children = (
-				128C9B0018BF03210086F7B3 /* NCCharacterID */,
 				12640B0F18B77B4C005C311D /* NCKillMail */,
 				12640B0B18B77A15005C311D /* NCKillMailsViewController */,
 				12640C4918BB737B005C311D /* NCKillMailDetailsViewController */,
@@ -1896,6 +1907,8 @@
 				127123A61897A939005F46EE /* NCProgressLabel */,
 				84A6E51E18A174D900231735 /* NCProgressTextField */,
 				12EC0AC318C0BA680010169C /* NCNotificationsManager */,
+				128C9B0018BF03210086F7B3 /* NCCharacterID */,
+				12056E5B18C45CC4008D8755 /* NCPriceManager */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -4084,6 +4097,7 @@
 				129FEE391860326E00F75FA6 /* NCSetting.m in Sources */,
 				125F6825188537FF005732FA /* NCCharacterAttributes.m in Sources */,
 				12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */,
+				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */,
 				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,

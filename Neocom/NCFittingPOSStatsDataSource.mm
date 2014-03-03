@@ -16,6 +16,7 @@
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingPOSStructuresTableHeaderView.h"
+#import "NCPriceManager.h"
 
 
 @interface NCFittingPOSStatsDataSourcePOSStats : NSObject
@@ -39,7 +40,8 @@
 @property (nonatomic, assign) float fuelDailyCost;
 @property (nonatomic, assign) float upgradesCost;
 @property (nonatomic, assign) float upgradesDailyCost;
-@property (nonatomic, assign) float posCost;@end
+@property (nonatomic, assign) float posCost;
+@end
 
 @implementation NCFittingPOSStatsDataSourcePOSStats
 @end
@@ -51,11 +53,19 @@
 @interface NCFittingPOSStatsDataSource()
 @property (nonatomic, strong) NCFittingPOSStatsDataSourcePOSStats* posStats;
 @property (nonatomic, strong) NCFittingPOSStatsDataSourcePriceStats* priceStats;
+@property (nonatomic, strong) NCPriceManager* priceManager;
+@property (nonatomic, strong) EVEDBInvControlTowerResource* posFuelRequirements;
 @end
 
 
 @implementation NCFittingPOSStatsDataSource
 
+- (id) init {
+	if (self = [super init]) {
+		self.priceManager = [NCPriceManager new];
+	}
+	return self;
+}
 
 - (void) reload {
 	NCFittingPOSStatsDataSourcePOSStats* stats = [NCFittingPOSStatsDataSourcePOSStats new];
@@ -216,8 +226,8 @@
 		
 		if (indexPath.row == 0) {
 			if (self.priceStats) {
-//				cell.imageView.image = [UIImage imageNamed:self.posFittingViewController.posFuelRequirements.resourceType.typeSmallImageName];
-//				cell.textLabel.text = self.posFittingViewController.posFuelRequirements.resourceType.typeName;
+				cell.imageView.image = [UIImage imageNamed:self.posFuelRequirements.resourceType.typeSmallImageName];
+				cell.textLabel.text = self.posFuelRequirements.resourceType.typeName;
 				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
 													self.priceStats.fuelConsumtion,
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.fuelDailyCost)]];
@@ -313,45 +323,52 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
+															NSMutableSet* types = [NSMutableSet set];
+															NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
+															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+															EVEDBInvControlTowerResource* resource = self.posFuelRequirements;
+															stats.fuelConsumtion = resource.quantity;
+															
+															[types addObject:@(controlTower->getTypeID())];
+															[types addObject:@(resource.resourceTypeID)];
+															
+															float upgradesDailyCost = 0;
+															for (auto i: controlTower->getStructures()) {
+																[types addObject:@(i->getTypeID())];
+																if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
+																	NSInteger typeID = (NSInteger) i->getAttribute(1595)->getValue();
+																	EVEDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
+																	if (!upgrade) {
+																		upgrade = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+																		if (upgrade) {
+																			[types addObject:@(typeID)];
+																			infrastructureUpgrades[@(typeID)] = upgrade;
+																			[types addObject:@(typeID)];
+																			EVEDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];//sovBillSystemCost
+																			upgradesDailyCost += attribute.value;
+																		}
+																	}
+																}
+															}
+															
+															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+															
+															__block float upgradesCost = 0;
+															__block float posCost = 0;
+															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+																NSInteger typeID = [key integerValue];
+																if (typeID == resource.resourceTypeID)
+																	stats.fuelDailyCost = stats.fuelConsumtion * obj.sell.percentile * 24;
+																else if (infrastructureUpgrades[key] != nil)
+																	upgradesCost += obj.sell.percentile;
+																else
+																	posCost += obj.sell.percentile;
+															}];
+															
+															stats.posCost = posCost;
+															stats.upgradesCost = upgradesCost;
+															stats.upgradesDailyCost = upgradesDailyCost;
 														}
-														
-														/*NSCountedSet* types = [NSCountedSet set];
-														 ItemInfo* shipInfo = nil;
-														 
-														 eufe::Character* character = self.fittingViewController.fit.character;
-														 eufe::Ship* ship = character->getShip();
-														 
-														 shipInfo = [ItemInfo itemInfoWithItem:ship error:nil];
-														 [types addObject:shipInfo];
-														 
-														 const eufe::ModulesList& modulesList = ship->getModules();
-														 eufe::ModulesList::const_iterator i, end = modulesList.end();
-														 
-														 for (i = modulesList.begin(); i != end; i++) {
-														 ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*i error:nil];
-														 if (itemInfo)
-														 [types addObject:itemInfo];
-														 }
-														 
-														 const eufe::DronesList& dronesList = ship->getDrones();
-														 eufe::DronesList::const_iterator j, endj = dronesList.end();
-														 
-														 for (j = dronesList.begin(); j != endj; j++) {
-														 ItemInfo* itemInfo = [ItemInfo itemInfoWithItem:*j error:nil];
-														 if (itemInfo)
-														 [types addObject:itemInfo];
-														 }
-														 NSDictionary* prices = [self.fittingViewController.priceManager pricesWithTypes:[types allObjects]];
-														 stats.shipPrice = [self.fittingViewController.priceManager priceWithType:shipInfo];
-														 CGFloat fittingsPrice = 0;
-														 for (ItemInfo* itemInfo in types) {
-														 if (itemInfo != shipInfo) {
-														 int count = [types countForObject:itemInfo];
-														 fittingsPrice += [prices[@(itemInfo.typeID)] floatValue] * count;
-														 }
-														 }
-														 stats.fittingsPrice = fittingsPrice;
-														 stats.totalPrice = stats.shipPrice + stats.fittingsPrice;*/
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
@@ -362,5 +379,16 @@
 										}];
 }
 
+- (EVEDBInvControlTowerResource*) posFuelRequirements {
+	if (!_posFuelRequirements) {
+		for (EVEDBInvControlTowerResource* resource in self.controller.fit.type.resources) {
+			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
+				_posFuelRequirements = resource;
+				break;
+			}
+		}
+	}
+	return _posFuelRequirements;
+}
 
 @end

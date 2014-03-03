@@ -599,7 +599,7 @@
                                     <outlet property="dateLabel" destination="ekU-dw-Sqg" id="Grn-tt-zzk"/>
                                     <outlet property="jumpsLabel" destination="18a-Z1-FYP" id="11t-2f-pcF"/>
                                     <outlet property="priceLabel" destination="ipV-W6-Vem" id="ZKp-Tm-2gh"/>
-                                    <outlet property="qualityLabel" destination="QHt-kE-cLL" id="iZp-sg-e7k"/>
+                                    <outlet property="quantityLabel" destination="QHt-kE-cLL" id="dWI-RT-WIZ"/>
                                     <outlet property="solarSystemlabel" destination="gfs-K5-hJE" id="imT-I9-XeI"/>
                                     <outlet property="stationLabel" destination="d0L-9z-KIz" id="f8V-1h-e5W"/>
                                 </connections>
@@ -1093,12 +1093,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Vbq-vg-5yp"/>
-        <segue reference="r4q-Am-NEf"/>
         <segue reference="7iv-ne-LEg"/>
+        <segue reference="qyD-gc-O13"/>
+        <segue reference="Vbq-vg-5yp"/>
         <segue reference="LHH-Wy-jrm"/>
+        <segue reference="He4-ED-1Vg"/>
         <segue reference="edv-w8-2To"/>
         <segue reference="6M7-4Q-PK5"/>
-        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
 </document>

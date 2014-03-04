@@ -32,6 +32,7 @@
 @interface NCSkillsViewController ()
 @property (nonatomic, strong) NCSkillPlan* skillPlan;
 @property (nonatomic, strong) NSMutableArray* skillPlanSkills;
+@property (nonatomic, strong) NCAccount* account;
 
 @property (nonatomic, strong) NSArray* skillQueueRows;
 @property (nonatomic, strong) NSArray* allSkillsSections;
@@ -95,65 +96,45 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	/*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		switch (self.segmentedControl.selectedSegmentIndex) {
-			case 0:
-				self.skillsDataSource.mode = SkillsDataSourceModeKnownSkills;
-				break;
-			case 1:
-				self.skillsDataSource.mode = SkillsDataSourceModeAllSkills;
-				break;
-			case 2:
-				self.skillsDataSource.mode = SkillsDataSourceModeNotKnownSkills;
-				break;
-			case 3:
-				self.skillsDataSource.mode = SkillsDataSourceModeCanTrain;
-				break;
-			default:
-				break;
-		}
-	}
-	else*/ {
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
-									   title:nil
-						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					  destructiveButtonTitle:nil
-						   otherButtonTitles:@[NSLocalizedString(@"Skill Queue", nil), NSLocalizedString(@"My Skills", nil), NSLocalizedString(@"All Skills", nil), NSLocalizedString(@"Not Known", nil), NSLocalizedString(@"Can Train", nil)]
-							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
-								 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
-									 return;
-								 UIButton* button = (UIButton*) self.navigationItem.titleView;
-								 
-								 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
-								 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateHighlighted];
-								 switch (selectedButtonIndex) {
-									 case 0:
-										 self.mode = NCSkillsViewControllerModeTrainingQueue;
-										 [self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
-																			animated:YES];
-										 break;
-									 case 1:
-										 self.mode = NCSkillsViewControllerModeKnownSkills;
-										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
-										 break;
-									 case 2:
-										 self.mode = NCSkillsViewControllerModeAllSkills;
-										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
-										 break;
-									 case 3:
-										 self.mode = NCSkillsViewControllerModeNotKnownSkills;
-										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
-										 break;
-									 case 4:
-										 self.mode = NCSkillsViewControllerModeCanTrainSkills;
-										 [self.navigationItem setRightBarButtonItems:nil animated:YES];
-										 break;
-									 default:
-										 break;
-								 }
-								 [self.tableView reloadData];
-							 } cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
-	}
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+								   title:nil
+					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+				  destructiveButtonTitle:nil
+					   otherButtonTitles:@[NSLocalizedString(@"Skill Queue", nil), NSLocalizedString(@"My Skills", nil), NSLocalizedString(@"All Skills", nil), NSLocalizedString(@"Not Known", nil), NSLocalizedString(@"Can Train", nil)]
+						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
+								 return;
+							 UIButton* button = (UIButton*) self.navigationItem.titleView;
+							 
+							 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
+							 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateHighlighted];
+							 switch (selectedButtonIndex) {
+								 case 0:
+									 self.mode = NCSkillsViewControllerModeTrainingQueue;
+									 [self.navigationItem setRightBarButtonItems:@[self.editButtonItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onAction:)]]
+																		animated:YES];
+									 break;
+								 case 1:
+									 self.mode = NCSkillsViewControllerModeKnownSkills;
+									 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+									 break;
+								 case 2:
+									 self.mode = NCSkillsViewControllerModeAllSkills;
+									 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+									 break;
+								 case 3:
+									 self.mode = NCSkillsViewControllerModeNotKnownSkills;
+									 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+									 break;
+								 case 4:
+									 self.mode = NCSkillsViewControllerModeCanTrainSkills;
+									 [self.navigationItem setRightBarButtonItems:nil animated:YES];
+									 break;
+								 default:
+									 break;
+							 }
+							 [self.tableView reloadData];
+						 } cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
 }
 
 - (IBAction)onAction:(id)sender {
@@ -169,6 +150,7 @@
 								 [self.tableView reloadData];
 							 }
 							 else if (selectedButtonIndex == 1) {
+								 [self performSegueWithIdentifier:@"NCSkillPlanImportViewController" sender:nil];
 /*								 SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
 								 controller.delegate = self;
 								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -178,6 +160,9 @@
 									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
 								 [self presentViewController:navController animated:YES completion:nil];*/
 							 }
+							 else if (selectedButtonIndex == 2) {
+								 [self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
+							 }
 						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
@@ -186,13 +171,6 @@
 		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = [sender skillData];
 	}
-}
-
-- (void) setSkillPlan:(NCSkillPlan *)skillPlan {
-	[_skillPlan removeObserver:self forKeyPath:@"trainingQueue"];
-	_skillPlan = skillPlan;
-	self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:skillPlan.trainingQueue.skills];
-	[_skillPlan addObserver:self forKeyPath:@"trainingQueue" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -206,9 +184,26 @@
 			}
 		}
 	}
+	else if ([keyPath isEqualToString:@"activeSkillPlan"]) {
+		if ([NSThread isMainThread]) {
+			self.skillPlan = self.account.activeSkillPlan;
+			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
+				[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+			}
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.skillPlan = self.account.activeSkillPlan;
+				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
+					[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+				}
+			});
+		}
+	}
 }
 
 - (void) dealloc {
+	self.account = nil;
 	self.skillPlan = nil;
 }
 
@@ -402,6 +397,7 @@
 
 - (void) update {
 	NCAccount* account = [NCAccount currentAccount];
+	self.account = account;
 	self.skillPlan = account.activeSkillPlan;
 	
 	NCSkillsViewControllerData* data = self.data;
@@ -589,6 +585,25 @@
 		return YES;
 }
 
+#pragma mark - Unwind
+
+- (IBAction)unwindFromSkillPlanImport:(UIStoryboardSegue*) segue {
+	
+}
+
 #pragma mark - Private
+
+- (void) setSkillPlan:(NCSkillPlan *)skillPlan {
+	[_skillPlan removeObserver:self forKeyPath:@"trainingQueue"];
+	_skillPlan = skillPlan;
+	self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:skillPlan.trainingQueue.skills];
+	[_skillPlan addObserver:self forKeyPath:@"trainingQueue" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+}
+
+- (void) setAccount:(NCAccount *)account {
+	[_account removeObserver:self forKeyPath:@"activeSkillPlan"];
+	_account = account;
+	[_account addObserver:self forKeyPath:@"activeSkillPlan" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+}
 
 @end

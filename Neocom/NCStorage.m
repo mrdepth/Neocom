@@ -131,7 +131,7 @@ static NCStorage* sharedStorage;
 		
 		NSError *error = nil;
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		NSDictionary* options = url ? @{NSPersistentStoreUbiquitousContentNameKey : @"EUStorage",
+		NSDictionary* options = url ? @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
 								  NSPersistentStoreUbiquitousContentURLKey : url,
 								  NSInferMappingModelAutomaticallyOption : @(YES),
 								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} : nil;

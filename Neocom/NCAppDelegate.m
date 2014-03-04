@@ -14,6 +14,7 @@
 #import "EVEOnlineAPI.h"
 #import "NCNotificationsManager.h"
 #import "NSString+UUID.h"
+#import "NSData+Neocom.h"
 
 @interface NCAppDelegate()
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -24,6 +25,10 @@
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	NSData* data = [NSData dataWithContentsOfFile:@"/Users/shimanski/tmp/dbInit.sql"];
+	data = [data uncompressedData];
+	NSString* s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDID])
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDID];
 
@@ -40,9 +45,9 @@
 //	skillPlan = nil;
 	NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 	NSError* error = nil;
-	[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
+	/*[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
 	[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-	[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
+	[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];*/
 	
 	NCAccount* account = nil;
 	NCStorage* storage = [NCStorage sharedStorage];

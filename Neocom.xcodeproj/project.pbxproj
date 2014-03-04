@@ -60,6 +60,11 @@
 		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
 		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
 		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
+		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
+		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
+		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
+		123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */; };
+		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771018969E030078F526 /* EVEDBNpcGroup.m */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
@@ -620,6 +625,14 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
+		123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlansViewController.h; sourceTree = "<group>"; };
+		123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlansViewController.m; sourceTree = "<group>"; };
+		123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Neocom.h"; sourceTree = "<group>"; };
+		123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Neocom.m"; sourceTree = "<group>"; };
+		123F0AD218C5B78500D53602 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		123F0AD618C5BCC700D53602 /* NCSkillPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlanViewController.h; sourceTree = "<group>"; };
+		123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlanViewController.m; sourceTree = "<group>"; };
+		123F0ADA18C5C8AC00D53602 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		1243770F18969E030078F526 /* EVEDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBNpcGroup.h; sourceTree = "<group>"; };
 		1243771018969E030078F526 /* EVEDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBNpcGroup.m; sourceTree = "<group>"; };
@@ -1366,6 +1379,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
@@ -1475,6 +1489,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				123F0AD218C5B78500D53602 /* libz.dylib */,
 				84FA63E2188C5227008FD761 /* ImageIO.framework */,
 				129FEE49186032B100F75FA6 /* libsqlite3.dylib */,
 				1211123F1859A54D009E5106 /* CoreData.framework */,
@@ -1679,6 +1694,24 @@
 				128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */,
 			);
 			name = NCFittingShipWorkspaceViewController;
+			sourceTree = "<group>";
+		};
+		123F0AC718C598C400D53602 /* NCSkillPlansViewController */ = {
+			isa = PBXGroup;
+			children = (
+				123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */,
+				123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */,
+			);
+			name = NCSkillPlansViewController;
+			sourceTree = "<group>";
+		};
+		123F0AD518C5BC7C00D53602 /* NCSkillPlanViewController */ = {
+			isa = PBXGroup;
+			children = (
+				123F0AD618C5BCC700D53602 /* NCSkillPlanViewController.h */,
+				123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */,
+			);
+			name = NCSkillPlanViewController;
 			sourceTree = "<group>";
 		};
 		1243771218969E390078F526 /* NCDatabaseNPCViewController */ = {
@@ -2432,6 +2465,8 @@
 				12C7EE9B1886B50900F90763 /* NCTrainingQueue */,
 				125F682618853809005732FA /* NCCharacterAttributes */,
 				1298CA1518C4B19900F3F550 /* NCSkillPlanImportViewController */,
+				123F0AD518C5BC7C00D53602 /* NCSkillPlanViewController */,
+				123F0AC718C598C400D53602 /* NCSkillPlansViewController */,
 			);
 			name = Character;
 			sourceTree = "<group>";
@@ -2651,6 +2686,8 @@
 				84C1182F1898457E00A35516 /* UIViewController+Neocom.m */,
 				12C5075D189BCC110064AC32 /* UIImage+Neocom.h */,
 				12C5075E189BCC110064AC32 /* UIImage+Neocom.m */,
+				123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */,
+				123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3323,6 +3360,7 @@
 		8418BB1A1891970500B99A7E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				123F0ADA18C5C8AC00D53602 /* evemon.html */,
 				12A7DB9818B3497B00343D25 /* index.html */,
 				84E4331C18951B2400DF2061 /* mailMessageTemplate.html */,
 				8418BB1B1891970500B99A7E /* eventTemplate.html */,
@@ -3924,6 +3962,7 @@
 				125F6800188526B6005732FA /* level_121.gif in Resources */,
 				125F680F188526B6005732FA /* level_340.gif in Resources */,
 				125F680B188526B6005732FA /* level_241.gif in Resources */,
+				123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */,
 				849B9FBA1896D24A00D4DD2B /* drone.png in Resources */,
 				125F6812188526B6005732FA /* level_351.gif in Resources */,
 				1271239B189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib in Resources */,
@@ -4006,6 +4045,7 @@
 				126A0E69185F3B9300A8E8A3 /* EVEJumps.m in Sources */,
 				8418BB14189186D900B99A7E /* NCCalendarEventsViewController.m in Sources */,
 				84FA63DE188C4FC1008FD761 /* NCSkillCell.m in Sources */,
+				123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */,
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
 				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
@@ -4142,6 +4182,7 @@
 				1298CA1818C4B1B700F3F550 /* NCSkillPlanImportViewController.m in Sources */,
 				12640B1518BB274C005C311D /* EVEKillLogKill+Neocom.m in Sources */,
 				849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */,
+				123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */,
 				129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */,
 				126A0E3F185F3B9300A8E8A3 /* EVEKillLog.m in Sources */,
 				126A0E1F185F3B9300A8E8A3 /* EVEDBInvType.m in Sources */,
@@ -4286,6 +4327,7 @@
 				126A0E7C185F3B9300A8E8A3 /* RSSSource.m in Sources */,
 				129D2617187E923300E2062C /* LUILabel.m in Sources */,
 				129D2619187E923300E2062C /* LUISegmentedControl.m in Sources */,
+				123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */,
 				12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */,
 				126A0E04185F3B9300A8E8A3 /* EVEC0rporationFaction.m in Sources */,
 				126A0E61185F3B9300A8E8A3 /* EVECharacterName.m in Sources */,

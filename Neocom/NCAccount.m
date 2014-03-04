@@ -366,9 +366,13 @@ static NCAccount* currentAccount = nil;
 
 - (void) setActiveSkillPlan:(NCSkillPlan *)activeSkillPlan {
 	@synchronized(self) {
+		[self willChangeValueForKey:@"activeSkillPlan"];
 		for (NCSkillPlan* skillPlan in self.skillPlans)
-			skillPlan.active = NO;
+			if (![skillPlan isDeleted])
+				skillPlan.active = NO;
 		activeSkillPlan.active = YES;
+		_activeSkillPlan = activeSkillPlan;
+		[self didChangeValueForKey:@"activeSkillPlan"];
 	}
 }
 

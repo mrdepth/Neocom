@@ -13,6 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *importantImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *eventText;
+@property (weak, nonatomic) IBOutlet UILabel *eventTextLabel;
 @property (strong, nonatomic) EVEUpcomingCalendarEventsItem* event;
 @end

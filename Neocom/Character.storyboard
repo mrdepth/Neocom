@@ -552,7 +552,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dateLabel" destination="0qN-Pf-FA4" id="Xqf-MU-Dyl"/>
-                                    <outlet property="eventText" destination="rAy-R1-n0A" id="RhW-si-GVF"/>
+                                    <outlet property="eventTextLabel" destination="rAy-R1-n0A" id="O32-OK-pcA"/>
                                     <outlet property="titleLabel" destination="0ej-JA-C5w" id="CGD-7l-eTj"/>
                                     <segue destination="XGt-sM-wkk" kind="push" identifier="NCCalendarEventDetailsViewController" id="HW1-EP-7Xn"/>
                                 </connections>

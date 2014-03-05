@@ -62,6 +62,14 @@
 		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
 		123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A97F618C708FE001045F5 /* NSString+Temp.m */; };
+		123A97FC18C714B7001045F5 /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FA18C714B7001045F5 /* rss.png */; };
+		123A97FD18C714B7001045F5 /* rss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FB18C714B7001045F5 /* rss@2x.png */; };
+		123A980218C71516001045F5 /* NCRSSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980118C71516001045F5 /* NCRSSViewController.m */; };
+		123A980418C71548001045F5 /* rssFeeds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 123A980318C71548001045F5 /* rssFeeds.plist */; };
+		123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980718C715EA001045F5 /* NCRSSFeedViewController.m */; };
+		123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980B18C716B9001045F5 /* NCRSSFeedCell.m */; };
+		123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; };
+		123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A981318C721C7001045F5 /* RSSItem+Neocom.m */; };
 		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
 		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
@@ -630,6 +638,19 @@
 		123A97F218C7017E001045F5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		123A97F518C708FE001045F5 /* NSString+Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Temp.h"; sourceTree = "<group>"; };
 		123A97F618C708FE001045F5 /* NSString+Temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Temp.m"; sourceTree = "<group>"; };
+		123A97FA18C714B7001045F5 /* rss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rss.png; sourceTree = "<group>"; };
+		123A97FB18C714B7001045F5 /* rss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rss@2x.png"; sourceTree = "<group>"; };
+		123A980018C71516001045F5 /* NCRSSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRSSViewController.h; sourceTree = "<group>"; };
+		123A980118C71516001045F5 /* NCRSSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRSSViewController.m; sourceTree = "<group>"; };
+		123A980318C71548001045F5 /* rssFeeds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rssFeeds.plist; sourceTree = "<group>"; };
+		123A980618C715EA001045F5 /* NCRSSFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRSSFeedViewController.h; sourceTree = "<group>"; };
+		123A980718C715EA001045F5 /* NCRSSFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRSSFeedViewController.m; sourceTree = "<group>"; };
+		123A980A18C716B9001045F5 /* NCRSSFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRSSFeedCell.h; sourceTree = "<group>"; };
+		123A980B18C716B9001045F5 /* NCRSSFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRSSFeedCell.m; sourceTree = "<group>"; };
+		123A980E18C71F2D001045F5 /* NCRSSItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCRSSItemViewController.h; sourceTree = "<group>"; };
+		123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRSSItemViewController.m; sourceTree = "<group>"; };
+		123A981218C721C7001045F5 /* RSSItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSSItem+Neocom.h"; sourceTree = "<group>"; };
+		123A981318C721C7001045F5 /* RSSItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RSSItem+Neocom.m"; sourceTree = "<group>"; };
 		123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlansViewController.h; sourceTree = "<group>"; };
 		123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlansViewController.m; sourceTree = "<group>"; };
 		123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Neocom.h"; sourceTree = "<group>"; };
@@ -1520,6 +1541,7 @@
 				849B9FDE1896D2F900D4DD2B /* Fitting */,
 				843C2EFC18AD34CE00221721 /* Market */,
 				12640B0A18B75EBF005C311D /* KillBoard */,
+				123A97F918C71452001045F5 /* Help */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
 				120968621845F0CB00921A37 /* NCAppDelegate.m */,
 				120968591845F0CB00921A37 /* Supporting Files */,
@@ -1534,6 +1556,7 @@
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
+				123A980318C71548001045F5 /* rssFeeds.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
@@ -1692,6 +1715,63 @@
 				122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */,
 			);
 			name = NCIndustryJobsDetailsViewController;
+			sourceTree = "<group>";
+		};
+		123A97F918C71452001045F5 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				123A981118C721AD001045F5 /* RSSItem+Neocom */,
+				123A97FE18C714EB001045F5 /* NCRSSViewController */,
+				123A980518C715D9001045F5 /* NCRSSFeedViewController */,
+				123A980D18C71F11001045F5 /* NCRSSItemViewController */,
+			);
+			name = Help;
+			sourceTree = "<group>";
+		};
+		123A97FE18C714EB001045F5 /* NCRSSViewController */ = {
+			isa = PBXGroup;
+			children = (
+				123A980018C71516001045F5 /* NCRSSViewController.h */,
+				123A980118C71516001045F5 /* NCRSSViewController.m */,
+			);
+			name = NCRSSViewController;
+			sourceTree = "<group>";
+		};
+		123A980518C715D9001045F5 /* NCRSSFeedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				123A980918C716A5001045F5 /* NCRSSFeedCell */,
+				123A980618C715EA001045F5 /* NCRSSFeedViewController.h */,
+				123A980718C715EA001045F5 /* NCRSSFeedViewController.m */,
+			);
+			name = NCRSSFeedViewController;
+			sourceTree = "<group>";
+		};
+		123A980918C716A5001045F5 /* NCRSSFeedCell */ = {
+			isa = PBXGroup;
+			children = (
+				123A980A18C716B9001045F5 /* NCRSSFeedCell.h */,
+				123A980B18C716B9001045F5 /* NCRSSFeedCell.m */,
+			);
+			name = NCRSSFeedCell;
+			sourceTree = "<group>";
+		};
+		123A980D18C71F11001045F5 /* NCRSSItemViewController */ = {
+			isa = PBXGroup;
+			children = (
+				123A980E18C71F2D001045F5 /* NCRSSItemViewController.h */,
+				123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */,
+			);
+			name = NCRSSItemViewController;
+			sourceTree = "<group>";
+		};
+		123A981118C721AD001045F5 /* RSSItem+Neocom */ = {
+			isa = PBXGroup;
+			children = (
+				123A981218C721C7001045F5 /* RSSItem+Neocom.h */,
+				123A981318C721C7001045F5 /* RSSItem+Neocom.m */,
+			);
+			name = "RSSItem+Neocom";
 			sourceTree = "<group>";
 		};
 		123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */ = {
@@ -2765,6 +2845,8 @@
 				84EEFCE11896C69C007962A0 /* menuIcon@2x.png */,
 				84EEFCE21896C69C007962A0 /* navigationArrowUp@2x.png */,
 				849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */,
+				123A97FA18C714B7001045F5 /* rss.png */,
+				123A97FB18C714B7001045F5 /* rss@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -3973,6 +4055,7 @@
 				125F680B188526B6005732FA /* level_241.gif in Resources */,
 				123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */,
 				849B9FBA1896D24A00D4DD2B /* drone.png in Resources */,
+				123A97FC18C714B7001045F5 /* rss.png in Resources */,
 				125F6812188526B6005732FA /* level_351.gif in Resources */,
 				1271239B189796FD005F46EE /* NCFittingShipModulesTableHeaderView.xib in Resources */,
 				849B9FB61896D24A00D4DD2B /* cargo.png in Resources */,
@@ -3982,6 +4065,7 @@
 				84EEFCE31896C69C007962A0 /* amarrEmpire@2x.png in Resources */,
 				849B9FC91896D24A00D4DD2B /* online.png in Resources */,
 				125F680E188526B6005732FA /* level_300.gif in Resources */,
+				123A980418C71548001045F5 /* rssFeeds.plist in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
 				84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */,
 				129421B41880265000977CB8 /* evedb.sqlite in Resources */,
@@ -3989,6 +4073,7 @@
 				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
+				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
 				849B9FC71896D24A00D4DD2B /* Multispectral.png in Resources */,
 				125F67F7188526B6005732FA /* level_021.gif in Resources */,
@@ -4076,6 +4161,7 @@
 				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
+				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,
 				126A0E32185F3B9300A8E8A3 /* EVEAssetList.m in Sources */,
 				126A0E25185F3B9300A8E8A3 /* EVEDBRamActivity.m in Sources */,
 				12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */,
@@ -4134,6 +4220,7 @@
 				126A0E0F185F3B9300A8E8A3 /* EVEDBDgmAttributeType.m in Sources */,
 				126A0E20185F3B9300A8E8A3 /* EVEDBInvTypeMaterial.m in Sources */,
 				84E4332218951C3500DF2061 /* NCViewController.m in Sources */,
+				123A980218C71516001045F5 /* NCRSSViewController.m in Sources */,
 				12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */,
 				126A0E56185F3B9300A8E8A3 /* EVEMemberTracking.m in Sources */,
 				129D2630187E923300E2062C /* UIDevice+IP.m in Sources */,
@@ -4142,6 +4229,7 @@
 				12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */,
 				12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */,
 				126A0E22185F3B9300A8E8A3 /* EVEDBMapDenormalize.m in Sources */,
+				123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */,
 				126A0E84185F3B9300A8E8A3 /* NSURL+MD5.m in Sources */,
 				126A0E2A185F3B9300A8E8A3 /* EVEDBObject.m in Sources */,
 				128BCE66188567E6000E1922 /* EVEDBInvType+Neocom.mm in Sources */,
@@ -4149,6 +4237,7 @@
 				84EC7942188BD4B20001BCE3 /* NSArray+Neocom.m in Sources */,
 				129D2611187E923300E2062C /* NSObject+Debug.m in Sources */,
 				129D262D187E923300E2062C /* UIAlertView+Block.m in Sources */,
+				123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */,
 				1211123E18599396009E5106 /* NCCache.xcdatamodeld in Sources */,
 				122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */,
 				126A0E81185F3B9300A8E8A3 /* NSMutableString+HTML.m in Sources */,
@@ -4183,6 +4272,7 @@
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
 				126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */,
 				126A0E14185F3B9300A8E8A3 /* EVEDBEveUnit.m in Sources */,
+				123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */,
 				120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */,
 				126A0E2B185F3B9300A8E8A3 /* NSDictionary+EVEDBAPI.m in Sources */,
 				126A0E24185F3B9300A8E8A3 /* EVEDBMapSolarSystem.m in Sources */,

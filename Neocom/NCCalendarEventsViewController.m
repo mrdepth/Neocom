@@ -111,7 +111,7 @@
 	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ from %@", nil),
 						   [dateFormatter stringFromDate:row.event.eventDate],
 						   row.event.ownerID == 1 ? @"CCP" : row.event.ownerName];
-	cell.eventText.text = row.shortDescription;
+	cell.eventTextLabel.text = row.shortDescription;
 	
 	return cell;
 }

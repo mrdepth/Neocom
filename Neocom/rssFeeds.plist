@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>News</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>ccp: announcements</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=1</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ic: amarr</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=2</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ic: minmatar</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=3</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ccp: roleplayed</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=4</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ic: gallente</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=5</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ic: caldari</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=6</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>ic: alliance</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=7</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Miscellaneous</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Patch Notes</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfpatchnotes.asp</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Dev Blog</string>
+				<key>url</key>
+				<string>http://www.eveonline.com/feed/rdfdevblog.asp</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Partner&apos;s feeds</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Notalotofnews</string>
+				<key>url</key>
+				<string>http://www.notalotofnews.com/feed</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>reddit.com/r/eve</string>
+				<key>url</key>
+				<string>http://www.reddit.com/r/eve/.rss</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Eve News24</string>
+				<key>url</key>
+				<string>http://evenews24.com/feed/</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>TheMittani.com</string>
+				<key>url</key>
+				<string>http://themittani.com/feeds/all/rss.xml</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Russian</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>EVE NEWS | Новости EVE online (evenews.ru)</string>
+				<key>url</key>
+				<string>http://www.evenews.ru/index.php?format=feed&amp;type=rss</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>EVE-RU | Лента новостей (eve-ru.com)</string>
+				<key>url</key>
+				<string>http://eve-ru.com/rss/indexfeed</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Official Blog</string>
+		<key>feeds</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Official Blog</string>
+				<key>url</key>
+				<string>http://www.eveuniverseiphone.com/feeds/posts/default</string>
+			</dict>
+		</array>
+	</dict>
+</array>
+</plist>

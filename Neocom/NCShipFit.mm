@@ -612,7 +612,7 @@
 	return self;
 }
 
-- (void) save {
+- (void) flush {
 	if (!self.pilot)
 		return;
 	
@@ -620,19 +620,8 @@
 	if (!ship)
 		return;
 	
-	NCStorage* storage = [NCStorage sharedStorage];
-	if (!self.loadout) {
-		[storage.managedObjectContext performBlockAndWait:^{
-			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-		}];
-	}
 	self.loadoutData = [NCLoadoutDataShip new];
 
-	EVEDBInvType* type = nil;
-	
-	type = [EVEDBInvType invTypeWithTypeID:ship->getTypeID() error:nil];
-	
 	NSMutableArray* hiSlots = [NSMutableArray new];
 	NSMutableArray* medSlots = [NSMutableArray new];
 	NSMutableArray* lowSlots = [NSMutableArray new];
@@ -714,7 +703,27 @@
 	self.loadoutData.cargo = cargo;
 	self.loadoutData.implants = implants;
 	self.loadoutData.boosters = boosters;
-	
+}
+
+- (void) save {
+	[self flush];
+
+	EVEDBInvType* type;
+
+	eufe::Ship* ship = self.pilot ? self.pilot->getShip() : nullptr;
+	if (ship)
+		type = [EVEDBInvType invTypeWithTypeID:ship->getTypeID() error:nil];
+	else
+		type = self.loadout.type;
+
+	NCStorage* storage = [NCStorage sharedStorage];
+	if (!self.loadout) {
+		[storage.managedObjectContext performBlockAndWait:^{
+			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+		}];
+	}
+
 	[storage.managedObjectContext performBlockAndWait:^{
 		if (![self.loadout.data.data isEqual:self.loadoutData])
 			self.loadout.data.data = self.loadoutData;
@@ -783,6 +792,7 @@
 }
 
 - (NSString*) canonicalName {
+	[self flush];
 	NSMutableArray* modules = [[NSMutableArray alloc] init];
 	
 	std::vector<std::pair<eufe::TypeID, eufe::TypeID> > modulePairs;
@@ -830,6 +840,108 @@
 	}
 	NSString* s = [NSString stringWithFormat:@"%d|%@|%@", self.type.typeID, [modules componentsJoinedByString:@";"],  [drones componentsJoinedByString:@";"]];
 	return s;
+}
+
+- (NSString*) dnaRepresentation {
+	[self flush];
+	NSCountedSet* subsystems = [NSCountedSet set];
+	NSCountedSet* hiSlots = [NSCountedSet set];
+	NSCountedSet* medSlots = [NSCountedSet set];
+	NSCountedSet* lowSlots = [NSCountedSet set];
+	NSCountedSet* rigSlots = [NSCountedSet set];
+	NSCountedSet* drones = [NSCountedSet set];
+	NSCountedSet* charges = [NSCountedSet set];
+	
+	NSString* keys[] = {@"subsystems", @"hiSlots", @"medSlots", @"lowSlots", @"rigSlots"};
+	NSCountedSet* arrays[] = {subsystems, hiSlots, medSlots, lowSlots, rigSlots};
+
+	for (NSInteger i = 0; i < 5; i++) {
+		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:keys[i]]) {
+			if (item.chargeID)
+				[charges addObject:@(item.chargeID)];
+			[arrays[i] addObject:@(item.typeID)];
+		}
+	}
+	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
+		NSNumber* typeID = @(drone.typeID);
+		for (NSInteger i = 0; i < drone.count; i++)
+			[drones addObject:typeID];
+	}
+	
+	NSMutableString* dna = [NSMutableString stringWithFormat:@"%d:", self.type.typeID];
+	
+	for (NSCountedSet* set in @[subsystems, hiSlots, medSlots, lowSlots, rigSlots, drones, charges]) {
+		for (NSNumber* typeID in set) {
+			[dna appendFormat:@"%@;%d:", typeID, [set countForObject:typeID]];
+		}
+	}
+	[dna appendString:@":"];
+
+	return dna;
+}
+
+- (NSString*) eveXMLRepresentation {
+	NSMutableString* xml = [NSMutableString string];
+	[xml appendString:@"<?xml version=\"1.0\" ?>\n<fittings>\n"];
+	[xml appendString:[self eveXMLRecordRepresentation]];
+	[xml appendString:@"</fittings>"];
+	return xml;
+}
+
+- (NSString*) eveXMLRecordRepresentation {
+	[self flush];
+	
+	NSMutableString* xml = [NSMutableString stringWithFormat:@"<fitting name=\"%@\">\n<description value=\"EVEUniverse fitting engine\"/>\n<shipType value=\"%@\"/>\n", self.loadoutName, self.type.typeName];
+	
+	NSString* keys[] = {@"hiSlots", @"medSlots", @"lowSlots", @"rigSlots", @"subsystems"};
+	NSString* slots[] = {@"hi slot", @"med slot", @"low slot", @"rig slot", @"subsystem slot"};
+	
+	for (NSInteger i = 0; i < 5; i++) {
+		int slot = 0;
+		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:keys[i]]) {
+			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			[xml appendFormat:@"<hardware slot=\"%@ %d\" type=\"%@\"/>\n", slots[i], slot++, type.typeName];
+		}
+	}
+	
+	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
+		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:drone.typeID error:nil];
+		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", drone.count, type.typeName];
+	}
+	
+	[xml appendString:@"</fitting>\n"];
+	return xml;
+}
+
+- (NSString*) eftRepresentation {
+	NSMutableString* eft = [NSMutableString stringWithFormat:@"[%@, %@]\n", self.loadoutName, self.type.typeName];
+	
+	for (NSString* key in @[@"lowSlots", @"medSlots", @"hiSlots", @"rigSlots", @"subsystems"]) {
+		NSArray* array = [self.loadoutData valueForKey:key];
+		if (array.count == 0)
+			continue;
+		for (NCLoadoutDataShipModule* item in array) {
+			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			if (item.chargeID) {
+				EVEDBInvType* charge = [EVEDBInvType invTypeWithTypeID:item.chargeID error:nil];
+				[eft appendFormat:@"%@, %@\n", type.typeName, charge.typeName];
+			}
+			else
+				[eft appendFormat:@"%@\n", type.typeName];
+		}
+		[eft appendString:@"\n"];
+	}
+
+	for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
+		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+		[eft appendFormat:@"%@ x%d\n", type.typeName, item.count];
+	}
+	return eft;
+}
+
+- (NSString*) hyperlinkTag {
+	NSString* dna = self.dnaRepresentation;
+	return [NSString stringWithFormat:@"<a href=\"javascript:if (typeof CCPEVE != 'undefined') CCPEVE.showFitting('%@'); else window.open('fitting:%@');\">%@ - %@</a>", dna, dna, self.type.typeName, self.loadoutName];
 }
 
 #pragma mark - Private

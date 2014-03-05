@@ -12,5 +12,6 @@
 
 + (instancetype) dataWithCompressedContentsOfFile:(NSString *)path;
 - (NSData*) uncompressedData;
+- (BOOL)writeCompressedToFile:(NSString *)path;
 
 @end

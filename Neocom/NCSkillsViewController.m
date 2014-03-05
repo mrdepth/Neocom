@@ -15,6 +15,7 @@
 #import "UIImageView+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSArray+Neocom.h"
+#import "NSData+Neocom.h"
 
 @interface NCSkillsViewControllerDataSection : NSObject
 @property (nonatomic, strong) NSString* title;
@@ -39,6 +40,8 @@
 @property (nonatomic, strong) NSArray* knownSkillsSections;
 @property (nonatomic, strong) NSArray* notKnownSkillsSections;
 @property (nonatomic, strong) NSArray* canTrainSkillsSections;
+
+@property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
 
 @end
 
@@ -142,7 +145,7 @@
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:NSLocalizedString(@"Clear Skill Plan", nil)
-					   otherButtonTitles:@[NSLocalizedString(@"Import Skill Plan", nil), NSLocalizedString(@"Switch Skill Plan", nil)]
+					   otherButtonTitles:@[NSLocalizedString(@"Import Skill Plan", nil), NSLocalizedString(@"Switch Skill Plan", nil), NSLocalizedString(@"Export Skill Plan", nil)]
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
 								 [self.skillPlan clear];
@@ -162,6 +165,13 @@
 							 }
 							 else if (selectedButtonIndex == 2) {
 								 [self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
+							 }
+							 else if (selectedButtonIndex == 3) {
+								 NSData* data = [[self.skillPlan.trainingQueue xmlRepresentationWithSkillPlanName:self.skillPlan.name] dataUsingEncoding:NSUTF8StringEncoding];
+								 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.emp", self.skillPlan.name]];
+								 [data writeCompressedToFile:path];
+								 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+								 [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 							 }
 						 } cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }

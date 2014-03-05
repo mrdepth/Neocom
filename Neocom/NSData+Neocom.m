@@ -59,4 +59,11 @@
 	return data.length > 0 ? data : self;
 }
 
+- (BOOL)writeCompressedToFile:(NSString *)path {
+	gzFile file = gzopen([path UTF8String], "wb");
+	gzwrite(file, self.bytes, self.length);
+	gzclose(file);
+	return YES;
+}
+
 @end

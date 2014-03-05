@@ -14,9 +14,8 @@
 #import "UIActionSheet+Block.h"
 #import "NCStorage.h"
 
-@interface NCSkillPlanViewController ()<NSXMLParserDelegate>
+@interface NCSkillPlanViewController ()
 @property (nonatomic, strong) NCTrainingQueue* trainingQueue;
-@property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 @end
 
@@ -43,16 +42,17 @@
 	else
 		self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 
-	self.trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount]];
+	__block NSString* skillPlanName = nil;
+	__block NCTrainingQueue* trainingQueue;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 NSXMLParser* parser = [[NSXMLParser alloc] initWithData:self.xmlData];
-											 parser.delegate = self;
-											 [parser parse];
+											 trainingQueue = [[NCTrainingQueue alloc] initWithAccount:[NCAccount currentAccount] xmlData:self.xmlData skillPlanName:&skillPlanName];
 										 }
 							 completionHandler:^(NCTask *task) {
-								 self.rows = self.trainingQueue.skills;
+								 if (skillPlanName)
+									 self.title = self.skillPlanName = skillPlanName;
+								 self.trainingQueue = trainingQueue;
 								 [self.tableView reloadData];
 							 }];
 }
@@ -107,16 +107,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.rows ? 1 : 0;
+    return self.trainingQueue ? 1 : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.rows.count;
+    return self.trainingQueue.skills.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCSkillData* row = self.rows[indexPath.row];
+	NCSkillData* row = self.trainingQueue.skills[indexPath.row];
 	
 	
 	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
@@ -157,21 +157,6 @@
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], self.trainingQueue.skills.count];
 	else
 		return NSLocalizedString(@"Skill plan is empty", nil);
-}
-
-#pragma mark - NSXMLParserDelegate
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
-	if ([elementName isEqualToString:@"entry"]) {
-		NSInteger typeID = [attributeDict[@"skillID"] integerValue];
-		NSInteger level = [attributeDict[@"level"] integerValue];
-		EVEDBInvType* skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
-		if (skill)
-			[self.trainingQueue addSkill:skill withLevel:level];
-	}
-	else if ([elementName isEqualToString:@"plan"]) {
-		self.skillPlanName = [attributeDict valueForKey:@"name"];
-	}
 }
 
 @end

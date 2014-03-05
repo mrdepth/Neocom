@@ -47,7 +47,7 @@
 #define ActionButtonShowShipInfo NSLocalizedString(@"Ship Info", nil)
 #define ActionButtonAffectingSkills NSLocalizedString(@"Affecting Skills", nil)
 
-@interface NCFittingShipViewController ()
+@interface NCFittingShipViewController ()<MFMailComposeViewControllerDelegate>
 @property (nonatomic, strong, readwrite) NSMutableArray* fits;
 @property (nonatomic, assign, readwrite) std::shared_ptr<eufe::Engine> engine;
 
@@ -60,6 +60,9 @@
 @property (nonatomic, strong, readwrite) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong) UIActionSheet* actionSheet;
+@property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
+
+- (void) performExport;
 @end
 
 @implementation NCFittingShipViewController
@@ -332,6 +335,9 @@
 	
 	void (^save)() = ^() {
 		[self.fit save];
+		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+			[[NCStorage sharedStorage] saveContext];
+		}];
 	};
 	
 	void (^duplicate)() = ^() {
@@ -348,10 +354,7 @@
 	};
 	
 	void (^viewInBrowser)() = ^() {
-/*		BrowserViewController *controller = [[BrowserViewController alloc] initWithNibName:@"BrowserViewController" bundle:nil];
-		//controller.delegate = self;
-		controller.startPageURL = [NSURL URLWithString:self.fit.url];
-		[self presentViewController:controller animated:YES completion:nil];*/
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.fit.loadout.url]];
 	};
 	
 	void (^setAreaEffect)() = ^() {
@@ -401,7 +404,7 @@
 	};
 	
 	void (^exportFit)() = ^() {
-		//[self performExport];
+		[self performExport];
 	};
 	
 	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
@@ -462,11 +465,11 @@
 									destructiveButtonTitle:self.engine->getArea() != NULL ? ActionButtonClearAreaEffect : nil
 										 otherButtonTitles:buttons
 										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   self.actionSheet = nil;
 											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 												   void (^action)() = actions[selectedButtonIndex];
 												   action();
 											   }
-											   self.actionSheet = nil;
 										   } cancelBlock:nil];
 	[self.actionSheet showFromBarButtonItem:sender animated:YES];
 }
@@ -474,6 +477,12 @@
 - (void) setFit:(NCShipFit *)fit {
 	_fit = fit;
 	self.title = fit.loadoutName;
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	[controller dismissAnimated];
 }
 
 #pragma mark - Private
@@ -645,6 +654,67 @@
 									 [self reload];
 								 }];
 	}
+}
+
+- (void) performExport {
+	if (self.actionSheet) {
+		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];
+		self.actionSheet = nil;
+	}
+	
+	NSMutableArray* buttons = [NSMutableArray arrayWithObjects:
+							   NSLocalizedString(@"Copy DNA", nil),
+							   NSLocalizedString(@"Copy EFT", nil),
+							   NSLocalizedString(@"Copy EVE XML", nil),
+							   NSLocalizedString(@"Open EVE XML in ...", nil),
+							   NSLocalizedString(@"Open EFT in ...", nil),
+							   nil];
+	if ([MFMailComposeViewController canSendMail])
+		[buttons addObject:NSLocalizedString(@"Email", nil)];
+		
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
+													 title:nil
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+									destructiveButtonTitle:nil
+										 otherButtonTitles:buttons
+										   completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+											   self.actionSheet = nil;
+											   if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
+												   if (selectedButtonIndex == 0)
+													   [[UIPasteboard generalPasteboard] setString:self.fit.dnaRepresentation];
+												   else if (selectedButtonIndex == 1)
+													   [[UIPasteboard generalPasteboard] setString:self.fit.eftRepresentation];
+												   else if (selectedButtonIndex == 2)
+													   [[UIPasteboard generalPasteboard] setString:self.fit.eveXMLRepresentation];
+												   else if (selectedButtonIndex == 3) {
+													   NSData* data = [[self.fit eveXMLRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.xml", self.fit.type.typeName, self.fit.loadoutName]];
+													   [data writeToFile:path atomically:YES];
+													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+												   }
+												   else if (selectedButtonIndex == 4) {
+													   NSData* data = [[self.fit eftRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+													   NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.cfg", self.fit.type.typeName, self.fit.loadoutName]];
+													   [data writeToFile:path atomically:YES];
+													   self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
+													   [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+												   }
+												   else if (selectedButtonIndex == 5) {
+													   NSString* tag = self.fit.hyperlinkTag;
+													   NSMutableString* message = [NSMutableString stringWithFormat:@"%@\n<pre>\n%@\n</pre>Generated by <a href=\"https://itunes.apple.com/us/app/neocom/id418895101?mt=8\">Neocom</a>", tag, self.fit.eftRepresentation];
+													   MFMailComposeViewController* controller = [MFMailComposeViewController new];
+													   [controller setSubject:[NSString stringWithFormat:@"%@ - %@", self.fit.type.typeName, self.fit.loadoutName]];
+													   [controller setMessageBody:message isHTML:YES];
+													   [controller addAttachmentData:[self.fit.eveXMLRepresentation dataUsingEncoding:NSUTF8StringEncoding]
+																			mimeType:@"application/xml"
+																			fileName:[NSString stringWithFormat:@"%@.xml", self.fit.loadoutName]];
+													   controller.mailComposeDelegate = self;
+													   [self presentViewController:controller animated:YES completion:nil];
+												   }
+											   }
+										   } cancelBlock:nil];
+	[self.actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
 }
 
 @end

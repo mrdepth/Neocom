@@ -60,6 +60,8 @@
 		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
 		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
 		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
+		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
+		123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A97F618C708FE001045F5 /* NSString+Temp.m */; };
 		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
 		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
@@ -625,6 +627,9 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
+		123A97F218C7017E001045F5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		123A97F518C708FE001045F5 /* NSString+Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Temp.h"; sourceTree = "<group>"; };
+		123A97F618C708FE001045F5 /* NSString+Temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Temp.m"; sourceTree = "<group>"; };
 		123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlansViewController.h; sourceTree = "<group>"; };
 		123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlansViewController.m; sourceTree = "<group>"; };
 		123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Neocom.h"; sourceTree = "<group>"; };
@@ -1379,6 +1384,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
@@ -1489,6 +1495,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				123A97F218C7017E001045F5 /* MessageUI.framework */,
 				123F0AD218C5B78500D53602 /* libz.dylib */,
 				84FA63E2188C5227008FD761 /* ImageIO.framework */,
 				129FEE49186032B100F75FA6 /* libsqlite3.dylib */,
@@ -2897,6 +2904,8 @@
 				129D25DA187E923200E2062C /* NSString+UTI.m */,
 				129D25DB187E923200E2062C /* NSString+UUID.h */,
 				129D25DC187E923200E2062C /* NSString+UUID.m */,
+				123A97F518C708FE001045F5 /* NSString+Temp.h */,
+				123A97F618C708FE001045F5 /* NSString+Temp.m */,
 			);
 			path = NSString;
 			sourceTree = "<group>";
@@ -4192,6 +4201,7 @@
 				1203B69B18B4DD7C003A0D72 /* NCWalletJournalCell.m in Sources */,
 				125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */,
 				84FFB56D18ABD31700A30772 /* NCFittingAPIViewController.mm in Sources */,
+				123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */,
 				129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */,
 				126A0E34185F3B9300A8E8A3 /* EVECharacterSheet.m in Sources */,
 				845B7C7318B54247006DA157 /* EVEContractsItem+Neocom.m in Sources */,

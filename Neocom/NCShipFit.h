@@ -59,6 +59,11 @@
 @property (nonatomic, strong) NCFitCharacter* character;
 @property (nonatomic, strong) EVEDBInvType* type;
 @property (nonatomic, readonly) NSString* canonicalName;
+@property (nonatomic, readonly) NSString* dnaRepresentation;
+@property (nonatomic, readonly) NSString* eveXMLRepresentation;
+@property (nonatomic, readonly) NSString* eveXMLRecordRepresentation;
+@property (nonatomic, readonly) NSString* eftRepresentation;
+@property (nonatomic, readonly) NSString* hyperlinkTag;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
 - (id) initWithType:(EVEDBInvType*) type;
@@ -67,6 +72,7 @@
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 - (id) initWithKillMail:(NCKillMail*) killMail;
 
+- (void) flush;
 - (void) save;
 - (void) load;
 

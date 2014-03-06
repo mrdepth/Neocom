@@ -13,6 +13,7 @@
 
 @interface NCNavigationCharacterButton()
 @property (nonatomic, strong) NCAccount* account;
+@property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) didChangeAccount:(NSNotification*) notification;
 - (void) setAccount:(NCAccount *)account animated:(BOOL) animated;
 
@@ -21,6 +22,7 @@
 @implementation NCNavigationCharacterButton
 
 - (void) awakeFromNib {
+	self.taskManager = [NCTaskManager new];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:NCAccountDidChangeNotification object:nil];
 	self.account = [NCAccount currentAccount];
 }
@@ -88,19 +90,33 @@
 	_account = account;
 	self.logoImageView.image = nil;
 	if (account) {
-		if (account.error) {
-			
-		}
-		else if (account.accountType == NCAccountTypeCorporate) {
-			[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
-			self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
-			self.subtitleLabel.text = account.corporationSheet.allianceName;
-		}
-		else {
-			[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
-			self.nameLabel.text = account.characterInfo.characterName;
-			self.subtitleLabel.text = account.characterInfo.corporation;
-		}
+		__block EVECorporationSheet* corporationSheet = nil;
+		__block EVECharacterInfo* characterInfo = nil;
+		
+		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+											 title:NCTaskManagerDefaultTitle
+											 block:^(NCTask *task) {
+												 if (account.accountType == NCAccountTypeCorporate)
+													 corporationSheet = account.corporationSheet;
+												 else
+													 characterInfo = account.characterInfo;
+											 }
+								 completionHandler:^(NCTask *task) {
+									 if (account.error) {
+										 self.nameLabel.text = [account.error localizedDescription];
+										 self.subtitleLabel.text = nil;
+									 }
+									 else if (account.accountType == NCAccountTypeCorporate) {
+										 [self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
+										 self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
+										 self.subtitleLabel.text = account.corporationSheet.allianceName;
+									 }
+									 else {
+										 [self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
+										 self.nameLabel.text = account.characterInfo.characterName;
+										 self.subtitleLabel.text = account.characterInfo.corporation;
+									 }
+								 }];
 	}
 	else {
 		self.nameLabel.text = NSLocalizedString(@"Select account", nil);

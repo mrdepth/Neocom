@@ -185,7 +185,7 @@
 	else
 		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
 	
-	float price = [row.transaction price];
+	float price = [[row.transaction valueForKey:@"price"] floatValue];
 	NSInteger quantity = [row.transaction quantity];
 	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
 	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]];

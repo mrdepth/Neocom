@@ -50,7 +50,7 @@
 		self.notificationsUpdating = YES;
 		NSMutableArray* notifications = [NSMutableArray new];
 		NSMutableSet* accounts = [NSMutableSet new];
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+		[[self taskManager] addTaskWithIndentifier:nil
 											 title:nil
 											 block:^(NCTask *task) {
 												 for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {

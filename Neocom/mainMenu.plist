@@ -16,6 +16,8 @@
 			<integer>-1</integer>
 			<key>modal</key>
 			<true/>
+			<key>detailsKeyPath</key>
+			<string>skillsDetails</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -29,7 +31,7 @@
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
 			<key>detailsKeyPath</key>
-			<string>skillsDetails</string>
+			<string>skillQueueDetails</string>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -56,8 +58,6 @@
 			<integer>1</integer>
 			<key>corpAccessMask</key>
 			<integer>-1</integer>
-			<key>detailsKeyPath</key>
-			<string>mailsDetails</string>
 		</dict>
 	</array>
 	<array>
@@ -124,10 +124,8 @@
 			<integer>0</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>KillboardApiViewController</string>
-			<key>nibName</key>
-			<string>KillboardApiViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCKillMailsViewController</string>
 			<key>title</key>
 			<string>Kill Reports</string>
 			<key>image</key>
@@ -138,12 +136,10 @@
 			<integer>256</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>KillboardKillNetFilterViewController</string>
-			<key>nibName</key>
-			<string>KillboardKillNetFilterViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCZKillBoardViewController</string>
 			<key>title</key>
-			<string>EVE-Kill.net Reports</string>
+			<string>zKillBoard Reports</string>
 			<key>image</key>
 			<string>Icons/icon61_03.png</string>
 			<key>charAccessMask</key>
@@ -240,10 +236,8 @@
 	</array>
 	<array>
 		<dict>
-			<key>className</key>
-			<string>RSSFeedsViewController</string>
-			<key>nibName</key>
-			<string>RSSFeedsViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCRSSViewController</string>
 			<key>title</key>
 			<string>News</string>
 			<key>image</key>
@@ -254,10 +248,8 @@
 			<integer>0</integer>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>AboutViewController</string>
-			<key>nibName</key>
-			<string>AboutViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCAboutViewController</string>
 			<key>title</key>
 			<string>About</string>
 			<key>image</key>
@@ -270,10 +262,8 @@
 			<true/>
 		</dict>
 		<dict>
-			<key>className</key>
-			<string>DonationViewController</string>
-			<key>nibName</key>
-			<string>DonationViewController</string>
+			<key>segueIdentifier</key>
+			<string>NCDonationViewController</string>
 			<key>title</key>
 			<string>Remove Ads</string>
 			<key>image</key>

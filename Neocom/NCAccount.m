@@ -87,6 +87,28 @@ static NCAccount* currentAccount = nil;
 					  insertIntoManagedObjectContext:self.managedObjectContext];
 }
 
+- (void) willSave {
+	if ([self isDeleted]) {
+		NCCache* cache = [NCCache sharedCache];
+		NSManagedObjectContext* context = cache.managedObjectContext;
+		NSURL* url = [self.objectID URIRepresentation];
+		[context performBlock:^{
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
+			[fetchRequest setEntity:entity];
+			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID like %@", [NSString stringWithFormat:@"*%@*", url]]];
+
+			NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
+			for (NCCacheRecord* record in fetchedObjects)
+				[cache.managedObjectContext deleteObject:record];
+
+			[cache saveContext];
+		}];
+	}
+	
+	[super willSave];
+}
+
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	if ([NSThread isMainThread])
 		return NO;

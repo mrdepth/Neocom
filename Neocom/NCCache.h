@@ -17,5 +17,7 @@
 + (instancetype) sharedCache;
 + (void) cleanup;
 - (void) saveContext;
+- (void) clear;
+- (void) clearInvalidData;
 
 @end

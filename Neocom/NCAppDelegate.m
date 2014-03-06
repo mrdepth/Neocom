@@ -15,6 +15,7 @@
 #import "NCNotificationsManager.h"
 #import "NSString+UUID.h"
 #import "NSData+Neocom.h"
+#import "NCCache.h"
 
 @interface NCAppDelegate()
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -74,17 +75,16 @@
     return YES;
 }
 							
-- (void)applicationWillResignActive:(UIApplication *)application
-{
+- (void)applicationWillResignActive:(UIApplication *)application {
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
+- (void)applicationDidEnterBackground:(UIApplication *)application {
 	UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
 		
 	}];
 	
 	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
+		[[NCCache sharedCache] clearInvalidData];
 		[application endBackgroundTask:task];
 	}];
 }

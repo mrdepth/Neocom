@@ -75,6 +75,11 @@
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
 		123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */; };
 		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
+		12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; };
+		12430BB318C875910025D971 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; };
+		12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; };
+		12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12430BB818C87F760025D971 /* StoreKit.framework */; };
+		12430BBB18C881EA0025D971 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12430BBA18C881EA0025D971 /* Help.storyboard */; };
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771118969E030078F526 /* EVEDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771018969E030078F526 /* EVEDBNpcGroup.m */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
@@ -659,6 +664,14 @@
 		123F0AD618C5BCC700D53602 /* NCSkillPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlanViewController.h; sourceTree = "<group>"; };
 		123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlanViewController.m; sourceTree = "<group>"; };
 		123F0ADA18C5C8AC00D53602 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
+		12430BAD18C852550025D971 /* NCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAboutViewController.h; sourceTree = "<group>"; };
+		12430BAE18C852550025D971 /* NCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAboutViewController.m; sourceTree = "<group>"; };
+		12430BB118C875910025D971 /* NCDonationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDonationViewController.h; sourceTree = "<group>"; };
+		12430BB218C875910025D971 /* NCDonationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDonationViewController.m; sourceTree = "<group>"; };
+		12430BB518C87C1B0025D971 /* NCDonationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDonationCell.h; sourceTree = "<group>"; };
+		12430BB618C87C1B0025D971 /* NCDonationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDonationCell.m; sourceTree = "<group>"; };
+		12430BB818C87F760025D971 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		12430BBA18C881EA0025D971 /* Help.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help.storyboard; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		1243770F18969E030078F526 /* EVEDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBNpcGroup.h; sourceTree = "<group>"; };
 		1243771018969E030078F526 /* EVEDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBNpcGroup.m; sourceTree = "<group>"; };
@@ -1405,6 +1418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
@@ -1516,6 +1530,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12430BB818C87F760025D971 /* StoreKit.framework */,
 				123A97F218C7017E001045F5 /* MessageUI.framework */,
 				123F0AD218C5B78500D53602 /* libz.dylib */,
 				84FA63E2188C5227008FD761 /* ImageIO.framework */,
@@ -1565,6 +1580,7 @@
 				1243761B189653980078F526 /* Character.storyboard */,
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
+				12430BBA18C881EA0025D971 /* Help.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
 				849B9FE31896D44700D4DD2B /* eufe.sqlite */,
@@ -1724,6 +1740,8 @@
 				123A97FE18C714EB001045F5 /* NCRSSViewController */,
 				123A980518C715D9001045F5 /* NCRSSFeedViewController */,
 				123A980D18C71F11001045F5 /* NCRSSItemViewController */,
+				12430BAB18C8523F0025D971 /* NCAboutViewController */,
+				12430BB018C875710025D971 /* NCDonationViewController */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -1799,6 +1817,34 @@
 				123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */,
 			);
 			name = NCSkillPlanViewController;
+			sourceTree = "<group>";
+		};
+		12430BAB18C8523F0025D971 /* NCAboutViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12430BAD18C852550025D971 /* NCAboutViewController.h */,
+				12430BAE18C852550025D971 /* NCAboutViewController.m */,
+			);
+			name = NCAboutViewController;
+			sourceTree = "<group>";
+		};
+		12430BB018C875710025D971 /* NCDonationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12430BB418C87C090025D971 /* NCDonationCell */,
+				12430BB118C875910025D971 /* NCDonationViewController.h */,
+				12430BB218C875910025D971 /* NCDonationViewController.m */,
+			);
+			name = NCDonationViewController;
+			sourceTree = "<group>";
+		};
+		12430BB418C87C090025D971 /* NCDonationCell */ = {
+			isa = PBXGroup;
+			children = (
+				12430BB518C87C1B0025D971 /* NCDonationCell.h */,
+				12430BB618C87C1B0025D971 /* NCDonationCell.m */,
+			);
+			name = NCDonationCell;
 			sourceTree = "<group>";
 		};
 		1243771218969E390078F526 /* NCDatabaseNPCViewController */ = {
@@ -4072,6 +4118,7 @@
 				125F67F9188526B6005732FA /* level_031.gif in Resources */,
 				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
+				12430BBB18C881EA0025D971 /* Help.storyboard in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
@@ -4209,6 +4256,8 @@
 				12AA87D2188D05B90076CCF0 /* UIStoryboard+Multiple.m in Sources */,
 				120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */,
 				129D2618187E923300E2062C /* LUISearchBar.m in Sources */,
+				12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */,
+				12430BB318C875910025D971 /* NCDonationViewController.m in Sources */,
 				12A7DB9F18B34D6200343D25 /* NSURLRequest+ASHTTPServer.m in Sources */,
 				126A0E5A185F3B9300A8E8A3 /* EVEStarbaseDetail.m in Sources */,
 				8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */,
@@ -4331,6 +4380,7 @@
 				126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */,
 				126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,
+				12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */,
 				126A0E3E185F3B9300A8E8A3 /* EVEIndustryJobs.m in Sources */,
 				126A0E55185F3B9300A8E8A3 /* EVEMemberSecurityLog.m in Sources */,
 				129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */,

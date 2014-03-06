@@ -13,8 +13,8 @@
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
 	if (self = [super initWithReuseIdentifier:reuseIdentifier]) {
 		self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
-		self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-//		self.frame = CGRectMake(0, 0, 1, 22);
+		//self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+		self.backgroundView.backgroundColor = [UIColor clearColor];
 	}
 	return self;
 }

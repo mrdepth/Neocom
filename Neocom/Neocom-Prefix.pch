@@ -15,6 +15,7 @@
 	#import <Foundation/Foundation.h>
 	#import <CoreData/CoreData.h>
 	#import <MessageUI/MessageUI.h>
+	#import <StoreKit/StoreKit.h>
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
@@ -38,3 +39,8 @@
 #define NCSecureContainerGroupID 340
 #define NCHangarOrOfficeGroupID 471
 #define NCShipMaintenanceArrayGroupID 363
+
+#define NCInAppFullProductID @"com.shimanski.eveuniverse.full"
+#define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
+#define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"
+#define NCInAppDonate10ProductID @"com.shimanski.eveuniverse.donation10"

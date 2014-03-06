@@ -89,6 +89,9 @@ static NCAccountsManager* defaultManager = nil;
 - (void) removeAccount:(NCAccount*) account {
 	NCStorage* storage = [NCStorage sharedStorage];
 	[storage.managedObjectContext performBlockAndWait:^{
+		if ([NCAccount currentAccount] == account)
+			[NCAccount setCurrentAccount:nil];
+
 		NCAPIKey* apiKey = account.apiKey;
 		[storage.managedObjectContext deleteObject:account];
 		

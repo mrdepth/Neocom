@@ -54,17 +54,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? self.skillPlans.count : 1;
+    return self.skillPlans.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == 0) {
+	if (indexPath.row < self.skillPlans.count) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 		NCSkillPlan* skillPlan = self.skillPlans[indexPath.row];
 		cell.object = skillPlan;
@@ -135,13 +135,13 @@
 #pragma mark - Table view delegate
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return indexPath.section == 0 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleInsert;
+	return indexPath.row < self.skillPlans.count ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleInsert;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 1) {
+	if (indexPath.row == self.skillPlans.count) {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:[NSIndexPath indexPathForRow:self.skillPlans.count inSection:0]];
+		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	}
 	else {
 		NCTableViewCell* cell = (NCTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];

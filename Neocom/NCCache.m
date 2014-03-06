@@ -50,6 +50,38 @@ static NCCache* sharedCache;
 	}
 }
 
+- (void) clear {
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		
+		NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+		for (NCCacheRecord* record in fetchedObjects) {
+			record.expireDate = [NSDate distantPast];
+			record.date = [NSDate distantPast];
+			record.data.data = nil;
+		}
+		[self saveContext];
+	}];
+}
+
+- (void) clearInvalidData {
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@ and data.data != nil", [NSDate dateWithTimeIntervalSinceNow:3600 * 24 * 7]];
+		
+		NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+		for (NCCacheRecord* record in fetchedObjects) {
+			record.data.data = nil;
+		}
+		[self saveContext];
+	}];
+}
+
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.

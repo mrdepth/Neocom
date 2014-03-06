@@ -28,6 +28,7 @@
 - (void) progressStepWithTask:(NCTask*) task;
 - (void) updateCacheTime;
 - (void) didChangeAccountNotification:(NSNotification*) notification;
+- (void) didBecomeActive:(NSNotification*) notification;
 
 @end
 
@@ -46,6 +47,7 @@
 {
     [super viewDidLoad];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
 	UIRefreshControl* refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -74,6 +76,7 @@
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self.taskManager cancelAllOperations];
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
@@ -131,7 +134,8 @@
 }
 
 - (BOOL) shouldReloadData {
-	return [[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending && [self isViewLoaded];
+	return [self isViewLoaded] && ([[self.cacheRecord expireDate] compare:[NSDate date]] == NSOrderedAscending ||
+								   (![self.cacheRecord.data isFault] && !self.cacheRecord.data.data));
 }
 
 - (void) reloadFromCache {
@@ -349,6 +353,13 @@
 
 - (void) didChangeAccountNotification:(NSNotification*) notification {
 	[self didChangeAccount:notification.object];
+}
+
+- (void) didBecomeActive:(NSNotification *)notification {
+	if ([self shouldReloadData])
+		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	else
+		[self update];
 }
 
 @end

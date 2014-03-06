@@ -10,11 +10,19 @@
 #import "NCStorage.h"
 #import "NCTableViewEmptyHedaerView.h"
 #import "NCSideMenuViewController.h"
+#import "NSNumberFormatter+Neocom.h"
+#import "NSString+Neocom.h"
 
 @interface NCMainMenuViewController ()
 @property (nonatomic, strong) NSMutableArray* allSections;
 @property (nonatomic, strong) NSMutableArray* sections;
+@property (nonatomic, strong) EVECharacterSheet* characterSheet;
+@property (nonatomic, strong) EVESkillQueue* skillQueue;
+@property (nonatomic, readonly) NSString* skillsDetails;
+@property (nonatomic, readonly) NSString* skillQueueDetails;
+@property (nonatomic, readonly) NSString* mailsDetails;
 - (void) reload;
+
 @end
 
 @implementation NCMainMenuViewController
@@ -42,6 +50,11 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.tableView reloadData];
+}
+
 
 #pragma mark - Table view data source
 
@@ -63,19 +76,27 @@
 	
 	cell.textLabel.text = row[@"title"];
 	cell.imageView.image = [UIImage imageNamed:row[@"image"]];
+	NSString* detailsKeyPath = row[@"detailsKeyPath"];
+	if (detailsKeyPath)
+		cell.detailTextLabel.text = [self valueForKey:detailsKeyPath];
 	return cell;
 }
 
-- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return nil;
-	return @"title";
-}
-
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewEmptyHedaerView"];
+	if (section == 0)
+		return nil;
+	else
+		return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewEmptyHedaerView"];
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return 0;
+	else
+		return 22;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
@@ -94,6 +115,14 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reload];
+}
+
+- (BOOL) shouldReloadData {
+	return YES;
+}
+
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
+	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 }
 
 #pragma mark - Private
@@ -115,15 +144,57 @@
 		if (section.count > 0)
 			[self.sections addObject:section];
 	}
-	[self.tableView reloadData];
 	
+	__block EVECharacterSheet* characterSheet;
+	__block EVESkillQueue* skillQueue;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
+											 characterSheet = account.characterSheet;
+											 skillQueue = account.skillQueue;
+											 [account.mailBox messages];
 										 }
 							 completionHandler:^(NCTask *task) {
-								 
+								 if (![task isCancelled]) {
+									 self.characterSheet = characterSheet;
+									 self.skillQueue = skillQueue;
+									 [self.tableView reloadData];
+								 }
 							 }];
+}
+
+- (NSString*) skillsDetails {
+	if (self.characterSheet) {
+		NSInteger skillPoints = 0;
+		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
+			skillPoints += skill.skillpoints;
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], self.characterSheet.skills.count];
+	}
+	else
+		return nil;
+}
+
+- (NSString*) skillQueueDetails {
+	if (self.skillQueue) {
+		EVESkillQueue* skillQueue = self.skillQueue;
+		if (skillQueue.skillQueue.count > 0) {
+			NSTimeInterval timeLeft = [skillQueue timeLeft];
+			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+		}
+		else
+			return NSLocalizedString(@"Training queue is inactive", nil);
+	}
+	return nil;
+}
+
+- (NSString*) mailsDetails {
+	NCAccount* account = [NCAccount currentAccount];
+	if (account) {
+		NSInteger numberOfUnreadMessages = account.mailBox.numberOfUnreadMessages;
+		if (numberOfUnreadMessages > 0)
+			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), numberOfUnreadMessages];
+	}
+	return nil;
 }
 
 @end

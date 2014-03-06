@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--View Controller - Root View Controller-->
+        <!--View Controller - News-->
         <scene sceneID="ihu-0J-8bJ">
             <objects>
                 <tableViewController id="XGa-bo-1x4" customClass="NCRSSViewController" sceneMemberID="viewController">
@@ -41,7 +41,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Lbe-06-bEN"/>
+                    <navigationItem key="navigationItem" title="News" id="Lbe-06-bEN"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zvi-sR-hNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -51,8 +51,9 @@
         <scene sceneID="3uN-Ui-foc">
             <objects>
                 <navigationController storyboardIdentifier="NCAboutViewController" definesPresentationContext="YES" id="xwa-dj-FPo" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="14h-VP-jK1">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="14h-VP-jK1">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="8Qf-NU-E9D" kind="relationship" relationship="rootViewController" id="fWg-MZ-lIZ"/>
@@ -62,7 +63,7 @@
             </objects>
             <point key="canvasLocation" x="-1573" y="1107"/>
         </scene>
-        <!--About View Controller-->
+        <!--About View Controller - About-->
         <scene sceneID="qWB-gh-FHy">
             <objects>
                 <tableViewController id="8Qf-NU-E9D" customClass="NCAboutViewController" sceneMemberID="viewController">
@@ -295,7 +296,7 @@ Jim Nastik</string>
                             <outlet property="delegate" destination="8Qf-NU-E9D" id="9lN-Fw-IoC"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="hzp-Qm-7oI"/>
+                    <navigationItem key="navigationItem" title="About" id="hzp-Qm-7oI"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="versionLabel" destination="hMI-QK-rpX" id="bPc-uL-o1F"/>
@@ -305,7 +306,7 @@ Jim Nastik</string>
             </objects>
             <point key="canvasLocation" x="-1127" y="1091"/>
         </scene>
-        <!--Donation View Controller - Root View Controller-->
+        <!--Donation View Controller - Donate-->
         <scene sceneID="Y78-M6-YLN">
             <objects>
                 <tableViewController id="j7W-gB-kRW" customClass="NCDonationViewController" sceneMemberID="viewController">
@@ -420,7 +421,7 @@ Jim Nastik</string>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="sCa-Xt-SLZ"/>
+                    <navigationItem key="navigationItem" title="Donate" id="sCa-Xt-SLZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gwt-7a-Rmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -430,8 +431,9 @@ Jim Nastik</string>
         <scene sceneID="dTq-Sc-3Li">
             <objects>
                 <navigationController storyboardIdentifier="NCDonationViewController" definesPresentationContext="YES" id="My3-2T-JT9" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="d7n-yr-hhZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="d7n-yr-hhZ">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="j7W-gB-kRW" kind="relationship" relationship="rootViewController" id="Dwb-7N-TiE"/>
@@ -516,8 +518,9 @@ Jim Nastik</string>
         <scene sceneID="bQl-fw-zhP">
             <objects>
                 <navigationController storyboardIdentifier="NCRSSViewController" definesPresentationContext="YES" id="wR5-7L-7bd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1KB-DS-hyh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1KB-DS-hyh">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="XGa-bo-1x4" kind="relationship" relationship="rootViewController" id="ULj-8e-0VN"/>

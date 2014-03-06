@@ -27,6 +27,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	if (self.region)
+		self.title = self.region.regionName;
+	
 	self.refreshControl = nil;
 	
 	if (!self.rows) {

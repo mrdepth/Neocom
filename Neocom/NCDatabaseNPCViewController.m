@@ -29,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.npcGroup)
+		self.title = self.npcGroup.npcGroupName;
 	self.refreshControl = nil;
 	
 	NSMutableArray* rows = [NSMutableArray new];

@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
+	if (self.marketGroup)
+		self.title = self.marketGroup.marketGroupName;
 	
 	__block NSArray* sections = nil;
 	

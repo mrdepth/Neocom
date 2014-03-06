@@ -79,6 +79,8 @@
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];
 	if (detailsKeyPath)
 		cell.detailTextLabel.text = [self valueForKey:detailsKeyPath];
+	else
+		cell.detailTextLabel.text = nil;
 	return cell;
 }
 

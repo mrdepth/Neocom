@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Assets View Controller-->
+        <!--Assets View Controller - Assets-->
         <scene sceneID="eXL-lR-1hs">
             <objects>
                 <tableViewController id="WPG-Pb-Y5G" customClass="NCAssetsViewController" sceneMemberID="viewController">
@@ -13,7 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="VzY-by-avY">
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="VzY-by-avY">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -56,7 +56,7 @@
                             <outlet property="delegate" destination="WPG-Pb-Y5G" id="8eT-wx-rZJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="5Zf-vh-5Pk"/>
+                    <navigationItem key="navigationItem" title="Assets" id="5Zf-vh-5Pk"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="u7V-24-vab" id="yuo-F3-bre"/>
                         <segue destination="TvR-8U-ty6" kind="push" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
@@ -79,8 +79,9 @@
         <scene sceneID="Zvy-IC-EmL">
             <objects>
                 <navigationController storyboardIdentifier="NCAssetsViewController" definesPresentationContext="YES" id="NqN-qQ-eq1" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JUc-U7-B4o">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="JUc-U7-B4o">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="WPG-Pb-Y5G" kind="relationship" relationship="rootViewController" id="qT6-KY-Gxl"/>
@@ -112,7 +113,7 @@
             </objects>
             <point key="canvasLocation" x="-41" y="879"/>
         </scene>
-        <!--Market Orders View Controller - Root View Controller-->
+        <!--Market Orders View Controller - Market Orders-->
         <scene sceneID="L15-3N-u0g">
             <objects>
                 <tableViewController id="VQG-7T-K43" customClass="NCMarketOrdersViewController" sceneMemberID="viewController">
@@ -229,7 +230,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="FzJ-Lp-FIr"/>
+                    <navigationItem key="navigationItem" title="Market Orders" id="FzJ-Lp-FIr"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5c-SK-98H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -239,8 +240,9 @@
         <scene sceneID="RI7-Ew-JZs">
             <objects>
                 <navigationController storyboardIdentifier="NCMarketOrdersViewController" definesPresentationContext="YES" id="tRt-HT-3t7" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wGN-3n-oP9">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wGN-3n-oP9">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="VQG-7T-K43" kind="relationship" relationship="rootViewController" id="Gfy-dx-jOc"/>
@@ -250,7 +252,7 @@
             </objects>
             <point key="canvasLocation" x="-2415" y="351"/>
         </scene>
-        <!--Assets Container View Controller-->
+        <!--Assets Container View Controller - Assets-->
         <scene sceneID="X3O-Ap-RDL">
             <objects>
                 <tableViewController id="TvR-8U-ty6" customClass="NCAssetsContainerViewController" sceneMemberID="viewController">
@@ -258,7 +260,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="oby-ZF-kbo">
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="oby-ZF-kbo">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -302,7 +304,7 @@
                             <outlet property="delegate" destination="TvR-8U-ty6" id="0IS-ps-JSq"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Gia-Rc-Sgg">
+                    <navigationItem key="navigationItem" title="Assets" id="Gia-Rc-Sgg">
                         <barButtonItem key="rightBarButtonItem" title="Open Fit" id="opM-Eu-TCS">
                             <connections>
                                 <segue destination="eFs-SC-uUC" kind="push" identifier="NCFittingShipViewController" id="CfJ-nZ-WLU"/>
@@ -348,7 +350,7 @@
             </objects>
             <point key="canvasLocation" x="-935" y="1208"/>
         </scene>
-        <!--Wallet Transactions View Controller-->
+        <!--Wallet Transactions View Controller - Wallet Transactions-->
         <scene sceneID="uee-CC-nKM">
             <objects>
                 <tableViewController id="Gll-RC-swb" customClass="NCWalletTransactionsViewController" sceneMemberID="viewController">
@@ -465,9 +467,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" id="etP-qz-qZP">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Wallet Transactions" id="etP-qz-qZP"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cNF-fg-MUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -477,8 +477,9 @@
         <scene sceneID="VnU-cj-n1A">
             <objects>
                 <navigationController storyboardIdentifier="NCWalletTransactionsViewController" definesPresentationContext="YES" id="qQn-VB-CEk" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QGi-HA-5j0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="QGi-HA-5j0">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="Gll-RC-swb" kind="relationship" relationship="rootViewController" id="hrN-Yd-w0P"/>
@@ -488,7 +489,7 @@
             </objects>
             <point key="canvasLocation" x="-2427" y="-417"/>
         </scene>
-        <!--Wallet Journal View Controller-->
+        <!--Wallet Journal View Controller - Wallet Journal-->
         <scene sceneID="N47-BF-31I">
             <objects>
                 <tableViewController id="EVq-4f-yEN" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
@@ -581,9 +582,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Uum-dM-npZ">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Wallet Journal" id="Uum-dM-npZ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9YX-mQ-uk6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -593,8 +592,9 @@
         <scene sceneID="hfH-gY-08p">
             <objects>
                 <navigationController storyboardIdentifier="NCWalletJournalViewController" definesPresentationContext="YES" id="odi-IN-ooe" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="28E-e4-als">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="28E-e4-als">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="EVq-4f-yEN" kind="relationship" relationship="rootViewController" id="gvJ-nC-QSh"/>
@@ -604,7 +604,7 @@
             </objects>
             <point key="canvasLocation" x="-1105" y="-417"/>
         </scene>
-        <!--Industry Jobs View Controller-->
+        <!--Industry Jobs View Controller - Industry Jobs-->
         <scene sceneID="nPf-Cd-G5Q">
             <objects>
                 <tableViewController id="ISd-ft-9N5" customClass="NCIndustryJobsViewController" sceneMemberID="viewController">
@@ -720,15 +720,13 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" id="PBz-B5-Ewv">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Industry Jobs" id="PBz-B5-Ewv"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7O-rU-Ugh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1954" y="1963"/>
         </scene>
-        <!--Industry Jobs Details View Controller-->
+        <!--Industry Jobs Details View Controller - Industry Job-->
         <scene sceneID="PD1-kD-Bgy">
             <objects>
                 <tableViewController id="G9F-gp-iYZ" customClass="NCIndustryJobsDetailsViewController" sceneMemberID="viewController">
@@ -796,7 +794,7 @@
                             <outlet property="delegate" destination="G9F-gp-iYZ" id="yxV-fg-p1p"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="d6g-Iu-W5Q"/>
+                    <navigationItem key="navigationItem" title="Industry Job" id="d6g-Iu-W5Q"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRs-bb-wEQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -806,8 +804,9 @@
         <scene sceneID="VsQ-8r-1u6">
             <objects>
                 <navigationController storyboardIdentifier="NCIndustryJobsViewController" definesPresentationContext="YES" id="Wpc-zm-vaR" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XtA-ES-iqC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="XtA-ES-iqC">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="ISd-ft-9N5" kind="relationship" relationship="rootViewController" id="wbm-lX-3YB"/>
@@ -817,7 +816,7 @@
             </objects>
             <point key="canvasLocation" x="-2367" y="1963"/>
         </scene>
-        <!--Contracts View Controller-->
+        <!--Contracts View Controller - Contracts-->
         <scene sceneID="1e2-O8-f5U">
             <objects>
                 <tableViewController id="QAb-VU-lag" customClass="NCContractsViewController" sceneMemberID="viewController">
@@ -998,15 +997,13 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" id="KIk-da-dZH">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Contracts" id="KIk-da-dZH"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tQU-5D-fQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1818" y="2724"/>
         </scene>
-        <!--Contracts Details View Controller-->
+        <!--Contracts Details View Controller - Contract-->
         <scene sceneID="gYo-p6-Bfh">
             <objects>
                 <tableViewController id="cUm-C2-A9N" customClass="NCContractsDetailsViewController" sceneMemberID="viewController">
@@ -1074,7 +1071,7 @@
                             <outlet property="delegate" destination="cUm-C2-A9N" id="zhC-fQ-YTJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="IYD-dJ-rJS"/>
+                    <navigationItem key="navigationItem" title="Contract" id="IYD-dJ-rJS"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OZI-fL-REZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1084,8 +1081,9 @@
         <scene sceneID="8ZJ-Nw-FgQ">
             <objects>
                 <navigationController storyboardIdentifier="NCContractsViewController" definesPresentationContext="YES" id="VrK-3E-pRH" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1L5-fr-MjC">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1L5-fr-MjC">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="QAb-VU-lag" kind="relationship" relationship="rootViewController" id="1Wc-ZD-pnt"/>
@@ -1095,7 +1093,7 @@
             </objects>
             <point key="canvasLocation" x="-2322" y="2724"/>
         </scene>
-        <!--Starbases View Controller - Root View Controller-->
+        <!--Starbases View Controller - POS'es-->
         <scene sceneID="dHe-HT-a1E">
             <objects>
                 <tableViewController id="gwB-G1-aln" customClass="NCStarbasesViewController" sceneMemberID="viewController">
@@ -1190,7 +1188,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="MfL-0X-ySI"/>
+                    <navigationItem key="navigationItem" title="POS'es" id="MfL-0X-ySI"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rK7-lS-TMv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1200,8 +1198,9 @@
         <scene sceneID="phg-8b-yNT">
             <objects>
                 <navigationController storyboardIdentifier="NCStarbasesViewController" definesPresentationContext="YES" id="L4d-fu-SVF" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iDu-Wu-wm8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="iDu-Wu-wm8">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="gwB-G1-aln" kind="relationship" relationship="rootViewController" id="1fh-Pg-CX2"/>
@@ -1211,7 +1210,7 @@
             </objects>
             <point key="canvasLocation" x="-2322" y="3493"/>
         </scene>
-        <!--Starbases Details View Controller-->
+        <!--Starbases Details View Controller - POS-->
         <scene sceneID="SDT-4b-WJ6">
             <objects>
                 <tableViewController id="kgf-vv-7LZ" customClass="NCStarbasesDetailsViewController" sceneMemberID="viewController">
@@ -1254,7 +1253,7 @@
                             <outlet property="delegate" destination="kgf-vv-7LZ" id="Sb7-WG-kIu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="8Qa-7x-RPO"/>
+                    <navigationItem key="navigationItem" title="POS" id="8Qa-7x-RPO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FcB-jS-W9V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1267,7 +1266,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="BNX-6i-yr8"/>
         <segue reference="Fen-pK-A2o"/>
-        <segue reference="cqV-az-kho"/>
     </inferredMetricsTieBreakers>
 </document>

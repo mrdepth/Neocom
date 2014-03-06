@@ -9,8 +9,9 @@
         <scene sceneID="j3a-oE-aeX">
             <objects>
                 <navigationController storyboardIdentifier="NCDatabaseViewController" definesPresentationContext="YES" id="fMd-jc-Ej0" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bWk-9L-lbA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bWk-9L-lbA">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="fQN-VN-Su3" kind="relationship" relationship="rootViewController" id="NZA-Xm-9UK"/>
@@ -28,7 +29,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="ADb-Gm-4tZ">
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="ADb-Gm-4tZ">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -120,8 +121,9 @@
         <scene sceneID="EL6-jd-GTK">
             <objects>
                 <navigationController storyboardIdentifier="NCDatabaseMarketViewController" definesPresentationContext="YES" id="d0F-gf-Hwr" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="diK-TM-jy4">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="diK-TM-jy4">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="lEO-4A-qIj" kind="relationship" relationship="rootViewController" id="6M7-4Q-PK5"/>
@@ -131,7 +133,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="1168"/>
         </scene>
-        <!--Database Market View Controller - Root View Controller-->
+        <!--Database Market View Controller - Market-->
         <scene sceneID="jEJ-dz-n4I">
             <objects>
                 <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
@@ -192,8 +194,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="zxr-ed-nHP"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <navigationItem key="navigationItem" title="Market" id="zxr-ed-nHP"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="awT-Az-HAp" id="s8V-8z-tBv"/>
                     </connections>
@@ -211,7 +212,7 @@
             </objects>
             <point key="canvasLocation" x="-855" y="1168"/>
         </scene>
-        <!--Database Certificates View Controller - Root View Controller-->
+        <!--Database Certificates View Controller - Certificates-->
         <scene sceneID="5tt-L0-cHf">
             <objects>
                 <tableViewController id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
@@ -271,7 +272,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="ilS-ZM-eW2"/>
+                    <navigationItem key="navigationItem" title="Certificates" id="ilS-ZM-eW2"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te0-4J-OJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -281,8 +282,9 @@
         <scene sceneID="I00-dz-wQ1">
             <objects>
                 <navigationController storyboardIdentifier="NCDatabaseCertificatesViewController" definesPresentationContext="YES" id="oS0-Bs-ODj" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Aj8-R9-741">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Aj8-R9-741">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="igD-MV-bsc" kind="relationship" relationship="rootViewController" id="Vbq-vg-5yp"/>
@@ -292,7 +294,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="1868"/>
         </scene>
-        <!--Database Type Info View Controller-->
+        <!--Database Type Info View Controller - Info-->
         <scene sceneID="rfB-z4-tJP">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="dFj-mD-7QZ" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
@@ -493,7 +495,7 @@
                             <outlet property="delegate" destination="dFj-mD-7QZ" id="fnj-uA-PQ1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="H94-e0-0QE">
+                    <navigationItem key="navigationItem" title="Info" id="H94-e0-0QE">
                         <barButtonItem key="rightBarButtonItem" title="Market" id="mh0-HP-T56">
                             <connections>
                                 <segue destination="4UZ-Rj-aNc" kind="push" identifier="NCDatabaseTypeMarketInfoViewController" id="LHH-Wy-jrm"/>
@@ -649,7 +651,7 @@
             </objects>
             <point key="canvasLocation" x="-221" y="1176"/>
         </scene>
-        <!--Database Type Variations View Controller-->
+        <!--Database Type Variations View Controller - Variations-->
         <scene sceneID="WxF-GY-BVg">
             <objects>
                 <tableViewController id="h8M-vq-ZAF" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
@@ -685,14 +687,14 @@
                             <outlet property="delegate" destination="h8M-vq-ZAF" id="UPn-PG-PlL"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="1oU-gs-Yli"/>
+                    <navigationItem key="navigationItem" title="Variations" id="1oU-gs-Yli"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X44-R4-PR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="291" y="446"/>
         </scene>
-        <!--Database Type Mastery View Controller-->
+        <!--Database Type Mastery View Controller - Mastery-->
         <scene sceneID="Qgr-cU-BXc">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" id="eTY-fq-Zqi" customClass="NCDatabaseTypeMasteryViewController" sceneMemberID="viewController">
@@ -760,7 +762,7 @@
                             <outlet property="delegate" destination="eTY-fq-Zqi" id="LxF-u1-egh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="wg6-9O-bru"/>
+                    <navigationItem key="navigationItem" title="Mastery" id="wg6-9O-bru"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8R-2l-rFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -904,8 +906,9 @@
         <scene sceneID="eHp-nh-qwt">
             <objects>
                 <navigationController storyboardIdentifier="NCDatabaseNPCViewController" definesPresentationContext="YES" id="Akf-cN-gq9" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ReS-oE-a5w">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ReS-oE-a5w">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="7iv-ne-LEg"/>
@@ -915,7 +918,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="2666"/>
         </scene>
-        <!--DatabaseNPC View Controller - Root View Controller-->
+        <!--DatabaseNPC View Controller - NPC-->
         <scene sceneID="ytX-d2-sFZ">
             <objects>
                 <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
@@ -976,7 +979,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="0Cx-9e-L36"/>
+                    <navigationItem key="navigationItem" title="NPC" id="0Cx-9e-L36"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="jl9-gW-d3I" id="sUl-5C-dIv"/>
@@ -995,7 +998,7 @@
             </objects>
             <point key="canvasLocation" x="-823" y="2666"/>
         </scene>
-        <!--Database Type Picker Content View Controller - Root View Controller-->
+        <!--Database Type Picker Content View Controller - Categories-->
         <scene sceneID="2YB-SZ-oay">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypePickerContentViewController" id="zhh-zy-fcT" customClass="NCDatabaseTypePickerContentViewController" sceneMemberID="viewController">
@@ -1003,7 +1006,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="s52-vn-KKk">
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="s52-vn-KKk">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -1056,7 +1059,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="9Wu-uS-gXM"/>
+                    <navigationItem key="navigationItem" title="Categories" id="9Wu-uS-gXM"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="EJa-ky-XRU" id="opS-5Q-Eok"/>
                     </connections>
@@ -1078,8 +1081,9 @@
         <scene sceneID="v9a-vM-rkF">
             <objects>
                 <navigationController storyboardIdentifier="NCDatabaseTypePickerViewController" definesPresentationContext="YES" id="6ie-Hs-w49" customClass="NCDatabaseTypePickerViewController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vJZ-GS-bga">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="vJZ-GS-bga">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="zhh-zy-fcT" kind="relationship" relationship="rootViewController" id="qyD-gc-O13"/>
@@ -1096,12 +1100,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="7iv-ne-LEg"/>
-        <segue reference="qyD-gc-O13"/>
-        <segue reference="Vbq-vg-5yp"/>
-        <segue reference="LHH-Wy-jrm"/>
-        <segue reference="raC-Em-4AD"/>
-        <segue reference="edv-w8-2To"/>
         <segue reference="6M7-4Q-PK5"/>
+        <segue reference="qyD-gc-O13"/>
+        <segue reference="E04-iH-wb4"/>
+        <segue reference="LHH-Wy-jrm"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="7iv-ne-LEg"/>
+        <segue reference="Vbq-vg-5yp"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -675,8 +675,9 @@
         <scene sceneID="fhJ-NE-boH">
             <objects>
                 <navigationController storyboardIdentifier="NCMailBoxViewController" definesPresentationContext="YES" id="mCp-Y5-iAk" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UNb-Ca-DSj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="UNb-Ca-DSj">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="EOg-63-G75" kind="relationship" relationship="rootViewController" id="zil-Jo-Jzj"/>
@@ -739,8 +740,9 @@
         <scene sceneID="MAY-r2-jwp">
             <objects>
                 <navigationController storyboardIdentifier="NCSkillsViewController" definesPresentationContext="YES" id="XbC-yT-GOe" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7n9-eT-vBb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="7n9-eT-vBb">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="J7G-6w-aDZ" kind="relationship" relationship="rootViewController" id="ktd-5S-EHc"/>
@@ -898,7 +900,7 @@
             </objects>
             <point key="canvasLocation" x="604" y="2531"/>
         </scene>
-        <!--Skill Plans View Controller-->
+        <!--Skill Plans View Controller - Skill Plans-->
         <scene sceneID="dPt-JU-eVs">
             <objects>
                 <tableViewController id="AGY-qS-Iku" customClass="NCSkillPlansViewController" sceneMemberID="viewController">
@@ -949,13 +951,13 @@
                             <outlet property="delegate" destination="AGY-qS-Iku" id="Jt1-gd-fvp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Wup-0d-1rk"/>
+                    <navigationItem key="navigationItem" title="Skill Plans" id="Wup-0d-1rk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XdB-gY-3ig" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="82" y="3266"/>
         </scene>
-        <!--Skill Plan Import View Controller-->
+        <!--Skill Plan Import View Controller - Import Skill Plan-->
         <scene sceneID="9M9-v4-Cks">
             <objects>
                 <tableViewController id="Tdv-xs-pKj" customClass="NCSkillPlanImportViewController" sceneMemberID="viewController">
@@ -1016,13 +1018,13 @@
                             <outlet property="delegate" destination="Tdv-xs-pKj" id="fGp-iG-4Lo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="RQi-S0-hwH"/>
+                    <navigationItem key="navigationItem" title="Import Skill Plan" id="RQi-S0-hwH"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gBs-90-dg8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="604" y="3266"/>
         </scene>
-        <!--Skill Plan View Controller-->
+        <!--Skill Plan View Controller - Skill Plan-->
         <scene sceneID="tmM-if-AkK">
             <objects>
                 <tableViewController id="ZHq-2H-EVU" customClass="NCSkillPlanViewController" sceneMemberID="viewController">
@@ -1125,7 +1127,7 @@
                             <outlet property="delegate" destination="ZHq-2H-EVU" id="NN1-aV-aLt"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="h9a-Lg-axx">
+                    <navigationItem key="navigationItem" title="Skill Plan" id="h9a-Lg-axx">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="sZ4-0t-3Uu">
                             <connections>
                                 <action selector="onAction:" destination="ZHq-2H-EVU" id="c6O-YZ-qbI"/>

@@ -219,8 +219,10 @@ static NCAccount* currentAccount = nil;
 	_characterAttributes = nil;
 	self.lastSkillPointsUpdate = nil;
 	
-	for (NCSkillPlan* skillPlan in self.skillPlans)
-		[skillPlan reloadIfNeeded];
+	[self.managedObjectContext performBlockAndWait:^{
+		for (NCSkillPlan* skillPlan in self.skillPlans)
+			[skillPlan reloadIfNeeded];
+	}];
 	return YES;
 }
 

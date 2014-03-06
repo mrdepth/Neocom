@@ -169,11 +169,21 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCFittingCharacterPickerViewController"]) {
-		NCFittingCharacterPickerViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingCharacterPickerViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
 		controller.fit = sender;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTargetsViewController"]) {
-		NCFittingTargetsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingTargetsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		NSArray* items = sender;
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([items[0] pointerValue]);
 		controller.items = items;
@@ -223,17 +233,29 @@
 		controller.object = drones;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
-		NCFittingDamagePatternsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingDamagePatternsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		controller.selectedDamagePattern = self.damagePattern;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAreaEffectPickerViewController"]) {
-		NCFittingAreaEffectPickerViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingAreaEffectPickerViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		eufe::Area* area = self.engine->getArea();
 		if (area)
 			controller.selectedAreaEffect = [EVEDBInvType invTypeWithTypeID:area->getTypeID() error:nil];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTypeVariationsViewController"]) {
-		NCFittingTypeVariationsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingTypeVariationsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		NSArray* modules = sender;
 		controller.object = modules;
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
@@ -244,7 +266,11 @@
 		destinationViewController.trainingQueue = sender;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingShipAffectingSkillsViewController"]) {
-		NCFittingShipAffectingSkillsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingShipAffectingSkillsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		
 		NSMutableArray* typeIDs = [NSMutableArray new];
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);

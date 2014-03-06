@@ -108,6 +108,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIStatusBarStyle) preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
+}
+
 - (void) setMenuViewController:(UIViewController *)menuViewController {
 	if (self.menuViewController) {
 		[self.menuViewController willMoveToParentViewController:nil];

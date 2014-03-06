@@ -512,7 +512,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ix1-5e-JiU">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ix1-5e-JiU">
                                             <rect key="frame" x="39" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -527,29 +527,29 @@
                                                 <constraint firstAttribute="height" constant="24" id="ZDs-6k-snn"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hv1-6W-B6w">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hv1-6W-B6w">
                                             <rect key="frame" x="113" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Zg-6F-y8M">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Zg-6F-y8M">
                                             <rect key="frame" x="90" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ehn-6U-VnV">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ehn-6U-VnV">
                                             <rect key="frame" x="187" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="calibration.png" translatesAutoresizingMaskIntoConstraints="NO" id="vkq-eW-xD8">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="calibration.png" translatesAutoresizingMaskIntoConstraints="NO" id="vkq-eW-xD8">
                                             <rect key="frame" x="164" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WKm-FY-5MH">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WKm-FY-5MH">
                                             <rect key="frame" x="262" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
@@ -557,7 +557,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="mV5-Kj-xZr">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="mV5-Kj-xZr">
                                             <rect key="frame" x="238" y="2" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
@@ -1412,7 +1412,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyE-4C-gbM">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="jyE-4C-gbM">
                                 <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
@@ -1435,6 +1435,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ogc-XB-Hh3"/>
                                 </items>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETv-oZ-Cca">
                                 <rect key="frame" x="0.0" y="108" width="320" height="460"/>
@@ -1466,17 +1467,17 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="sectionSegmentedControl" destination="L60-H4-aIg" id="xXb-Fc-TDY"/>
-                        <segue destination="64J-ao-XlA" kind="modal" identifier="NCFittingCharacterPickerViewController" id="QME-yC-g5G"/>
-                        <segue destination="2R4-zQ-d3u" kind="modal" identifier="NCFittingFitPickerViewController" id="oBc-3A-uVZ"/>
-                        <segue destination="xXa-GM-7e9" kind="modal" identifier="NCFittingTargetsViewController" id="WTU-4k-izo"/>
                         <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" id="M1g-g8-PJm"/>
-                        <segue destination="Jtl-kH-H7n" kind="modal" identifier="NCFittingAreaEffectPickerViewController" id="vXM-cC-yJm"/>
-                        <segue destination="JlH-Fr-pF0" kind="modal" identifier="NCFittingTypeVariationsViewController" id="JhO-X9-SHF"/>
                         <segue destination="GS3-JK-anj" kind="push" identifier="NCFittingRequiredSkillsViewController" id="Ve0-rS-KGn"/>
-                        <segue destination="DC4-ry-xee" kind="modal" identifier="NCFittingImplantsImportViewController" id="JQe-4U-0rr"/>
-                        <segue destination="0WF-oX-01Z" kind="modal" identifier="NCFittingShipAffectingSkillsViewController" id="Ps9-8S-i76"/>
-                        <segue destination="hDJ-ZI-DaS" kind="modal" identifier="NCFittingDamagePatternsViewController" id="QFd-bF-pnS"/>
-                        <segue destination="Qgo-Xh-R3I" kind="modal" identifier="NCFittingAmountViewController" id="Wg9-IG-Ck3"/>
+                        <segue destination="gxe-oV-SlO" kind="push" identifier="NCFittingTypeVariationsViewController" id="1rd-Q3-at6"/>
+                        <segue destination="TEo-Cl-pbK" kind="push" identifier="NCFittingFitPickerViewController" id="gDq-hg-0Ln"/>
+                        <segue destination="xOJ-XJ-7d3" kind="push" identifier="NCFittingCharacterPickerViewController" id="ZgH-rM-bmf"/>
+                        <segue destination="018-ME-IOh" kind="push" identifier="NCFittingTargetsViewController" id="qzw-hE-BVI"/>
+                        <segue destination="s1B-Zc-8t5" kind="push" identifier="NCFittingImplantsImportViewController" id="D7k-l2-ZfU"/>
+                        <segue destination="GwB-XZ-nRV" kind="push" identifier="NCFittingShipAffectingSkillsViewController" id="dr2-fP-c5X"/>
+                        <segue destination="GEQ-B3-aL5" kind="push" identifier="NCFittingAreaEffectPickerViewController" id="dyB-W4-if1"/>
+                        <segue destination="hDJ-ZI-DaS" kind="push" identifier="NCFittingDamagePatternsViewController" id="0OW-q0-5fO"/>
+                        <segue destination="Qgo-Xh-R3I" kind="push" identifier="NCFittingAmountViewController" id="kMa-h2-bZx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DPd-Nb-aoG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1505,7 +1506,7 @@
             </objects>
             <point key="canvasLocation" x="1964" y="1011"/>
         </scene>
-        <!--Fitting Targets View Controller - Root View Controller-->
+        <!--Fitting Targets View Controller - Select Target-->
         <scene sceneID="NFx-WF-dcr">
             <objects>
                 <tableViewController id="018-ME-IOh" customClass="NCFittingTargetsViewController" sceneMemberID="viewController">
@@ -1541,33 +1542,11 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="ITd-Wk-bam">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="isQ-y6-qGY">
-                            <connections>
-                                <segue destination="cky-4n-QBQ" kind="unwind" identifier="Unwind" unwindAction="unwindFromTargets:" id="qNV-Au-Mi9"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Select Target" id="ITd-Wk-bam"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdq-JE-D5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="cky-4n-QBQ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1214" y="-1177"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="yle-4n-7oK">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="xXa-GM-7e9" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Xa-Lp-oWN">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="018-ME-IOh" kind="relationship" relationship="rootViewController" id="Gdo-M2-DZG"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9Gh-aj-mkO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="735" y="-1177"/>
+            <point key="canvasLocation" x="-1018" y="-1585"/>
         </scene>
         <!--Fitting Character Picker View Controller - Characters-->
         <scene sceneID="aKy-5B-ghi">
@@ -1598,21 +1577,16 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Characters" id="xIC-bD-6hh">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="yGs-2l-YU5">
-                            <connections>
-                                <segue destination="3dn-pm-3Fj" kind="unwind" identifier="Unwind" unwindAction="unwindFromCharacterPicker:" id="Yet-tY-Vyw"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Characters" id="xIC-bD-6hh"/>
                     <connections>
                         <segue destination="k7C-Gm-A8O" kind="push" identifier="NCFittingCharacterEditorViewController" id="AkJ-Pr-96d"/>
+                        <segue destination="3dn-pm-3Fj" kind="unwind" identifier="Unwind" unwindAction="unwindFromCharacterPicker:" id="ge1-Xe-e0J"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ere-6h-W0q" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3dn-pm-3Fj" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1235" y="-1860"/>
+            <point key="canvasLocation" x="-677" y="-116"/>
         </scene>
         <!--Fitting Character Editor View Controller-->
         <scene sceneID="GBj-GG-ipM">
@@ -1680,39 +1654,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S1m-4g-vZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1709" y="-1860"/>
+            <point key="canvasLocation" x="-203" y="-116"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="SpW-FP-Qfn">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="64J-ao-XlA" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7pO-Ue-1Qd">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="xOJ-XJ-7d3" kind="relationship" relationship="rootViewController" id="2Fc-GW-Ose"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yk1-Th-kN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="735" y="-1860"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="JyI-gI-Sb4">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="2R4-zQ-d3u" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f4e-7Y-evP">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="TEo-Cl-pbK" kind="relationship" relationship="rootViewController" id="lLT-uu-WdX"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eYy-fo-ycV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1035" y="-2605"/>
-        </scene>
-        <!--Fitting Fit Picker View Controller-->
+        <!--Fitting Fit Picker View Controller - Select Fit-->
         <scene sceneID="Ndd-HB-2RY">
             <objects>
                 <tableViewController id="TEo-Cl-pbK" customClass="NCFittingFitPickerViewController" sceneMemberID="viewController">
@@ -1772,20 +1716,17 @@
                             <outlet property="delegate" destination="TEo-Cl-pbK" id="Rsw-i7-hDz"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="AZk-sz-e8Z">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="w1p-PZ-AVa">
-                            <connections>
-                                <segue destination="4Qq-Pd-S8A" kind="unwind" identifier="Unwind" unwindAction="unwindFromFitPicker:" id="gir-Oh-hQZ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Select Fit" id="AZk-sz-e8Z"/>
+                    <connections>
+                        <segue destination="4Qq-Pd-S8A" kind="unwind" identifier="Unwind" unwindAction="unwindFromFitPicker:" id="85x-Jt-Bbk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iuh-iX-Pej" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="4Qq-Pd-S8A" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1482" y="-2589"/>
+            <point key="canvasLocation" x="-956" y="-2292"/>
         </scene>
-        <!--Fitting Area Effect Picker View Controller - Root View Controller-->
+        <!--Fitting Area Effect Picker View Controller - Area Effects-->
         <scene sceneID="mrV-NP-AyF">
             <objects>
                 <tableViewController id="GEQ-B3-aL5" customClass="NCFittingAreaEffectPickerViewController" sceneMemberID="viewController">
@@ -1818,50 +1759,14 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="meP-ZE-Tp7">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="Z8w-h4-6O1">
-                            <connections>
-                                <segue destination="Zc8-fp-yNI" kind="unwind" unwindAction="unwindFromAreaEffectPicker:" id="U26-pp-0xq"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Area Effects" id="meP-ZE-Tp7"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ahD-ey-zzT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Zc8-fp-yNI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1182" y="277"/>
+            <point key="canvasLocation" x="-1854" y="725"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="z3u-QI-3fa">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="Jtl-kH-H7n" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qzb-24-u1t">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="GEQ-B3-aL5" kind="relationship" relationship="rootViewController" id="hBx-Tx-20i"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6G6-P7-g1e" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1652" y="277"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="4fw-uY-U0L">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="JlH-Fr-pF0" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="020-OL-ZeX">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="gxe-oV-SlO" kind="relationship" relationship="rootViewController" id="HFn-dI-2kO"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1bz-f7-dz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1008" y="-2164"/>
-        </scene>
-        <!--Fitting Type Variations View Controller - Title-->
+        <!--Fitting Type Variations View Controller - Variations-->
         <scene sceneID="g6H-wq-WXj">
             <objects>
                 <tableViewController id="gxe-oV-SlO" customClass="NCFittingTypeVariationsViewController" sceneMemberID="viewController">
@@ -1898,18 +1803,12 @@
                             <outlet property="delegate" destination="gxe-oV-SlO" id="qhp-PG-dWG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="XWS-Ce-7dO">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="ZmV-zf-0oa">
-                            <connections>
-                                <segue destination="bgc-cK-n5O" kind="unwind" unwindAction="unwindFromTypeVariations:" id="89j-bt-cZw"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Variations" id="XWS-Ce-7dO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MTI-fv-dBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bgc-cK-n5O" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-497" y="-2164"/>
+            <point key="canvasLocation" x="-377" y="-2300"/>
         </scene>
         <!--Fitting Required Skills View Controller-->
         <scene sceneID="Fc7-6f-hsZ">
@@ -2026,22 +1925,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lb5-qm-st6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="766" y="-427"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="4DJ-8S-yIU">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="DC4-ry-xee" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="e9u-dZ-NtV">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="s1B-Zc-8t5" kind="relationship" relationship="rootViewController" id="oOf-XC-ybD"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="N2I-PK-d3w" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1709" y="-1177"/>
+            <point key="canvasLocation" x="-370" y="-1603"/>
         </scene>
         <!--Fitting Implants Import View Controller-->
         <scene sceneID="sdv-Mh-APi">
@@ -2111,35 +1995,14 @@
                             <outlet property="delegate" destination="s1B-Zc-8t5" id="npx-5W-NkD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eqE-bI-rZn">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="kf5-1m-nqe">
-                            <connections>
-                                <segue destination="hFg-ap-KOK" kind="unwind" identifier="" unwindAction="unwindFromImplantsImport:" id="6fd-e7-Fje"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="eqE-bI-rZn"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8AC-jP-a9N" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="hFg-ap-KOK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2134" y="-1177"/>
+            <point key="canvasLocation" x="-946" y="-873"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="51s-Z7-Gc3">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="0WF-oX-01Z" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NeC-Qv-Cr1">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="GwB-XZ-nRV" kind="relationship" relationship="rootViewController" id="MD9-TW-vhf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5AK-fL-ZlD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1545" y="-427"/>
-        </scene>
-        <!--Fitting Ship Affecting Skills View Controller - Title-->
+        <!--Fitting Ship Affecting Skills View Controller - Affecting Skills-->
         <scene sceneID="kvv-e2-DAF">
             <objects>
                 <tableViewController id="GwB-XZ-nRV" customClass="NCFittingShipAffectingSkillsViewController" sceneMemberID="viewController">
@@ -2194,18 +2057,11 @@
                             <outlet property="delegate" destination="GwB-XZ-nRV" id="cl9-Ic-uuw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="mhu-07-cEa">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="056-PW-Dee">
-                            <connections>
-                                <segue destination="Y1W-62-3mf" kind="unwind" unwindAction="unwindFromAffectingSkills:" id="N9i-22-A1N"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Affecting Skills" id="mhu-07-cEa"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tR2-Rh-Ekm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Y1W-62-3mf" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1937" y="-427"/>
+            <point key="canvasLocation" x="-1223" y="333"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="G88-1s-ogS">
@@ -2314,6 +2170,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="EYN-HV-DKl"/>
+        <segue reference="emS-f0-N2k"/>
     </inferredMetricsTieBreakers>
 </document>

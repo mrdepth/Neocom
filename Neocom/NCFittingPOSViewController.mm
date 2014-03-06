@@ -131,14 +131,23 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAmountViewController"]) {
 		NSArray* structures = sender;
-		NCFittingAmountViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingAmountViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		
 		controller.range = NSMakeRange(1, 50);
 		controller.amount = structures.count;
 		controller.object = structures;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
-		NCFittingDamagePatternsViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingDamagePatternsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		controller.selectedDamagePattern = self.damagePattern;
 	}
 }

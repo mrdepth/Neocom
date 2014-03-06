@@ -9,6 +9,7 @@
         <scene sceneID="mXH-qe-y3n">
             <objects>
                 <navigationController storyboardIdentifier="NCCharacterSheetViewController" definesPresentationContext="YES" id="pqG-qC-BFW" sceneMemberID="viewController">
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bh5-Pc-862">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

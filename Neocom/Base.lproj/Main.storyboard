@@ -410,7 +410,7 @@
             </objects>
             <point key="canvasLocation" x="991" y="-882"/>
         </scene>
-        <!--AddAPI Key View Controller-->
+        <!--AddAPI Key View Controller - Add API Key-->
         <scene sceneID="OHf-ZJ-6n9">
             <objects>
                 <tableViewController id="dbV-Pp-N4T" customClass="NCAddAPIKeyViewController" sceneMemberID="viewController">
@@ -522,7 +522,7 @@
                             <outlet property="delegate" destination="dbV-Pp-N4T" id="1cC-hU-F9d"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="9bq-HX-aW6">
+                    <navigationItem key="navigationItem" title="Add API Key" id="9bq-HX-aW6">
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Save" id="Ovu-U3-Wn5">
                             <connections>
                                 <action selector="onSave:" destination="dbV-Pp-N4T" id="kh9-nt-Fct"/>
@@ -543,7 +543,7 @@
         <scene sceneID="BAB-bA-gqr">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Au7-AM-TJV" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NG4-wa-NE7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="NG4-wa-NE7">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -650,6 +650,11 @@
                         <segue destination="uFf-iF-kQX" kind="custom" identifier="NCIndustryJobsViewController" customClass="NCSideMenuViewControllerContentSegue" id="3Cw-PO-hVR"/>
                         <segue destination="8tD-PB-tJ3" kind="custom" identifier="NCContractsViewController" customClass="NCSideMenuViewControllerContentSegue" id="Btb-nJ-yo3"/>
                         <segue destination="wwe-Oo-YNC" kind="custom" identifier="NCStarbasesViewController" customClass="NCSideMenuViewControllerContentSegue" id="SzL-O7-bab"/>
+                        <segue destination="SSE-BN-qnC" kind="custom" identifier="NCKillMailsViewController" customClass="NCSideMenuViewControllerContentSegue" id="ZGV-aH-LqV"/>
+                        <segue destination="50u-wl-4Mp" kind="custom" identifier="NCZKillBoardViewController" customClass="NCSideMenuViewControllerContentSegue" id="NuJ-TP-Ynq"/>
+                        <segue destination="jA2-rb-Evy" kind="custom" identifier="NCRSSViewController" customClass="NCSideMenuViewControllerContentSegue" id="K19-At-eMK"/>
+                        <segue destination="mic-we-dmt" kind="custom" identifier="NCAboutViewController" customClass="NCSideMenuViewControllerContentSegue" id="Feg-5E-rRs"/>
+                        <segue destination="l7n-v9-sUl" kind="custom" identifier="NCDonationViewController" customClass="NCSideMenuViewControllerContentSegue" id="mma-Fx-TAR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -986,6 +991,111 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zz4-Z1-Lda" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3319" y="2376"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="RuA-L7-lY7">
+            <objects>
+                <viewController storyboardIdentifier="NCKillMailsViewController" id="SSE-BN-qnC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VdS-Yg-Dmg"/>
+                        <viewControllerLayoutGuide type="bottom" id="JiV-el-2av"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eIS-Nf-L4D">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gze-1w-5a2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="787" y="3120"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="oRD-Gr-Xp5">
+            <objects>
+                <viewController storyboardIdentifier="NCZKillBoardViewController" id="50u-wl-4Mp" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wXa-Lk-1iB"/>
+                        <viewControllerLayoutGuide type="bottom" id="QJE-oH-FhD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WSl-Q1-RSE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xgo-YB-lPu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1231" y="3120"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="jcP-uG-daY">
+            <objects>
+                <viewController storyboardIdentifier="NCRSSViewController" id="jA2-rb-Evy" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VEQ-aW-IIy"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cu9-Km-A4U"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="M8d-cI-n6A">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l1C-uz-Uz5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="787" y="3888"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="hUQ-Ku-7cq">
+            <objects>
+                <viewController storyboardIdentifier="NCAboutViewController" id="mic-we-dmt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iyy-rE-2BS"/>
+                        <viewControllerLayoutGuide type="bottom" id="s1X-52-gyK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bjN-sv-naC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UfQ-iT-TcQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1231" y="3888"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="woN-Ez-7Ai">
+            <objects>
+                <viewController storyboardIdentifier="NCDonationViewController" id="l7n-v9-sUl" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qKj-qI-df0"/>
+                        <viewControllerLayoutGuide type="bottom" id="d2M-kb-kEG"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7gG-EB-v7J">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sHI-SC-NW4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1687" y="3888"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

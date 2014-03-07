@@ -78,18 +78,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self.taskManager cancelAllOperations];
-	
-	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
-		NSString* key = NSStringFromClass(self.class);
-		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-			NCSetting* setting = [NCSetting settingWithKey:key];
-			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
-				setting.value = self.sectionsCollapsState;
-				[[NCStorage sharedStorage] saveContext];
-			}
-		}];
-	}
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,6 +102,20 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	self.taskManager.active = NO;
+	
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
+		NSString* key = NSStringFromClass(self.class);
+		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+			NCSetting* setting = [NCSetting settingWithKey:key];
+			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
+				if (![setting.value isEqualToDictionary:self.sectionsCollapsState]) {
+					setting.value = self.sectionsCollapsState;
+					[[NCStorage sharedStorage] saveContext];
+				}
+			}
+		}];
+	}
+
 }
 
 - (void) willMoveToParentViewController:(UIViewController *)parent {
@@ -300,10 +302,12 @@
 	id identifier = [self identifierForSection:section];
 	if (identifier) {
 		NSNumber* state = self.sectionsCollapsState[identifier];
-		if (!state)
+		if (!state) {
 			state = self.previousCollapsState[identifier];
-		if (!state)
-			self.sectionsCollapsState[identifier] = state = @([self initiallySectionIsCollapsed:section]);
+			if (!state)
+				state = @([self initiallySectionIsCollapsed:section]);
+			self.sectionsCollapsState[identifier] = state;
+		}
 		return [state boolValue];
 	}
 	else

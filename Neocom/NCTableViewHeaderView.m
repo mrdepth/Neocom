@@ -26,9 +26,9 @@
 		
 		view = self.contentView;
 		bindings = NSDictionaryOfVariableBindings(view);
-		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:0 metrics:nil views:bindings];
+		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0@760-[view]-0@760-|" options:0 metrics:nil views:bindings];
 		[self addConstraints:constraints];
-		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|" options:0 metrics:nil views:bindings];
+		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0@760-[view]-0@760-|" options:0 metrics:nil views:bindings];
 		[self addConstraints:constraints];
 		self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 

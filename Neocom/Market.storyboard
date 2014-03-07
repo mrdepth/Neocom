@@ -9,7 +9,7 @@
         <scene sceneID="eXL-lR-1hs">
             <objects>
                 <tableViewController id="WPG-Pb-Y5G" customClass="NCAssetsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LOD-6x-LaA">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LOD-6x-LaA" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -256,7 +256,7 @@
         <scene sceneID="X3O-Ap-RDL">
             <objects>
                 <tableViewController id="TvR-8U-ty6" customClass="NCAssetsContainerViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tBa-hz-QMr">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tBa-hz-QMr" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -354,7 +354,7 @@
         <scene sceneID="uee-CC-nKM">
             <objects>
                 <tableViewController id="Gll-RC-swb" customClass="NCWalletTransactionsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="18f-sy-IBS">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="18f-sy-IBS" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -466,6 +466,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Gll-RC-swb" id="VKw-MN-9tX"/>
+                            <outlet property="delegate" destination="Gll-RC-swb" id="o15-gt-gEQ"/>
+                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wallet Transactions" id="etP-qz-qZP"/>
                 </tableViewController>
@@ -493,7 +497,7 @@
         <scene sceneID="N47-BF-31I">
             <objects>
                 <tableViewController id="EVq-4f-yEN" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="r1T-Ep-Pnp">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="r1T-Ep-Pnp" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -581,6 +585,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="EVq-4f-yEN" id="lD0-5b-SZA"/>
+                            <outlet property="delegate" destination="EVq-4f-yEN" id="htQ-84-ny3"/>
+                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Wallet Journal" id="Uum-dM-npZ"/>
                 </tableViewController>
@@ -594,7 +602,7 @@
                 <navigationController storyboardIdentifier="NCWalletJournalViewController" definesPresentationContext="YES" id="odi-IN-ooe" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="28E-e4-als">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="EVq-4f-yEN" kind="relationship" relationship="rootViewController" id="gvJ-nC-QSh"/>
@@ -806,7 +814,7 @@
                 <navigationController storyboardIdentifier="NCIndustryJobsViewController" definesPresentationContext="YES" id="Wpc-zm-vaR" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="XtA-ES-iqC">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="ISd-ft-9N5" kind="relationship" relationship="rootViewController" id="wbm-lX-3YB"/>
@@ -1083,7 +1091,7 @@
                 <navigationController storyboardIdentifier="NCContractsViewController" definesPresentationContext="YES" id="VrK-3E-pRH" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1L5-fr-MjC">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="QAb-VU-lag" kind="relationship" relationship="rootViewController" id="1Wc-ZD-pnt"/>
@@ -1200,7 +1208,7 @@
                 <navigationController storyboardIdentifier="NCStarbasesViewController" definesPresentationContext="YES" id="L4d-fu-SVF" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="iDu-Wu-wm8">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="gwB-G1-aln" kind="relationship" relationship="rootViewController" id="1fh-Pg-CX2"/>
@@ -1266,7 +1274,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="BNX-6i-yr8"/>
         <segue reference="Fen-pK-A2o"/>
+        <segue reference="tzs-XO-71v"/>
     </inferredMetricsTieBreakers>
 </document>

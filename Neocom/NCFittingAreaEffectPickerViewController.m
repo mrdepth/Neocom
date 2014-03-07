@@ -156,4 +156,8 @@
 	return nil;
 }
 
+- (id) identifierForSection:(NSInteger)section {
+	return @(section);
+}
+
 @end

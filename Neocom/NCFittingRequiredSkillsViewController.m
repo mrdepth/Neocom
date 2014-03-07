@@ -33,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.refreshControl = nil;
 	NCAccount* account = [NCAccount currentAccount];
 	if (account)
 		self.characterAttributes = [account characterAttributes];
@@ -129,6 +130,12 @@
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], self.trainingQueue.skills.count];
 	else
 		return NSLocalizedString(@"Skill plan is empty", nil);
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
 }
 
 

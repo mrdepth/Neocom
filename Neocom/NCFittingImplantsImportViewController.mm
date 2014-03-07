@@ -121,6 +121,11 @@
 	return cell;
 }
 
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NCFittingImplantsImportViewControllerRow* row = self.sections[section][0];
+	return row.loadout.type.group.groupName;
+}
+
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -133,6 +138,17 @@
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (id) identifierForSection:(NSInteger)section {
+	NCFittingImplantsImportViewControllerRow* row = self.sections[section][0];
+	return @(row.loadout.type.groupID);
 }
 
 @end

@@ -443,7 +443,7 @@ Jim Nastik</string>
             </objects>
             <point key="canvasLocation" x="-1573" y="1790"/>
         </scene>
-        <!--Feed View Controller-->
+        <!--Feed View Controller - News-->
         <scene sceneID="mFB-ra-2Ez">
             <objects>
                 <tableViewController id="okg-d3-PGe" customClass="NCRSSFeedViewController" sceneMemberID="viewController">
@@ -508,7 +508,7 @@ Jim Nastik</string>
                             <outlet property="delegate" destination="okg-d3-PGe" id="4D4-eC-f7b"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="kfg-lP-5Ia"/>
+                    <navigationItem key="navigationItem" title="News" id="kfg-lP-5Ia"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lfh-Cu-WX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -530,7 +530,7 @@ Jim Nastik</string>
             </objects>
             <point key="canvasLocation" x="-1560" y="318"/>
         </scene>
-        <!--Item View Controller - Message-->
+        <!--Item View Controller - News-->
         <scene sceneID="bgQ-aK-p80">
             <objects>
                 <viewController id="C29-g5-qOW" customClass="NCRSSItemViewController" sceneMemberID="viewController">
@@ -542,7 +542,7 @@ Jim Nastik</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3o-It-Sbm">
+                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3o-It-Sbm">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -554,7 +554,7 @@ Jim Nastik</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Message" id="ZKC-kk-9Pf"/>
+                    <navigationItem key="navigationItem" title="News" id="ZKC-kk-9Pf"/>
                     <connections>
                         <outlet property="webView" destination="o3o-It-Sbm" id="uMq-7t-6xc"/>
                     </connections>

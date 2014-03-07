@@ -63,15 +63,12 @@
 																							EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
 																							int metaGroupID = sqlite3_column_int(stmt, 0);
 																							NSNumber* key = @(metaGroupID);
-																							NSMutableDictionary* section = dic[key];
+																							NSDictionary* section = dic[key];
 																							if (!section) {
 																								const char* metaGroupName = (const char*) sqlite3_column_text(stmt, 1);
 																								NSString* title = metaGroupName ? [NSString stringWithCString:metaGroupName encoding:NSUTF8StringEncoding] : @"";
 																								
-																								section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																										   title, @"title",
-																										   [NSMutableArray arrayWithObject:type], @"rows",
-																										   key, @"order", nil];
+																								section = @{@"title": title, @"rows": [NSMutableArray arrayWithObject:type], @"order": key};
 																								dic[key] = section;
 																							}
 																							else

@@ -21,92 +21,16 @@
 
 @implementation NCMailBoxViewControllerData
 
-/*- (void) loadDataInTask:(NCTask *)task {
-	NSMutableArray* sent = [NSMutableArray new];
-	NSMutableArray* inbox = [NSMutableArray new];
-	NSMutableDictionary* corps = [NSMutableDictionary new];
-	NSMutableDictionary* mailingLists = [NSMutableDictionary new];
-	
-	
-	NSInteger myID = self.mailBox.account.characterID;
-	for (NCMailBoxMessage* message in self.mailBox.messages) {
-		BOOL inInbox = NO;
-		
-		if (message.sender.contactID == myID)
-			[sent addObject:message];
-		else {
-			for (NCMailBoxContact* contact in message.recipients) {
-				if (contact.type == NCMailBoxContactTypeCharacter)
-					inInbox = YES;
-				else if (contact.type == NCMailBoxContactTypeCorporation) {
-					NSDictionary* corp = corps[@(contact.contactID)];
-					if (!corp)
-						corps[@(contact.contactID)] = corp = @{@"contact": contact, @"messages": [NSMutableArray new]};
-					[corp[@"messages"] addObject:message];
-				}
-				else if (contact.type == NCMailBoxContactTypeMailingList) {
-					NSDictionary* mailingList = mailingLists[@(contact.contactID)];
-					if (!mailingList)
-						mailingLists[@(contact.contactID)] = mailingList = @{@"contact": contact, @"messages": [NSMutableArray new]};
-					[mailingList[@"messages"] addObject:message];
-				}
-			}
-		}
-		if (inInbox)
-			[inbox addObject:message];
-	}
-	
-	NSInteger (^numberOfUnreadMessages)(NSArray*) = ^(NSArray* messages) {
-		NSInteger numberOfUnreadMessages = 0;
-		for (NCMailBoxMessage* message in messages)
-			if (![message isRead])
-				numberOfUnreadMessages++;
-		return numberOfUnreadMessages;
-	};
-	
-	NSMutableArray* sections = [NSMutableArray new];
-	
-	NSInteger n = numberOfUnreadMessages(inbox);
-	NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), n] : NSLocalizedString(@"Inbox", nil);
-	[sections addObject:@{@"title": title, @"rows": inbox}];
-	
-	for (NSDictionary* dictionary in @[corps, mailingLists]) {
-		NSArray* values = [[dictionary allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"contact.name" ascending:YES]]];
-		for (NSDictionary* dic in values) {
-			NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
-			NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], n] : [dic[@"contact"] name];
-			[sections addObject:@{@"title": title, @"rows": dic[@"messages"]}];
-		}
-	}
-	
-	n = numberOfUnreadMessages(sent);
-	title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), n] : NSLocalizedString(@"Sent", nil);
-	[sections addObject:@{@"title": title, @"rows": sent}];
-	self.sections = sections;
-}*/
-
 #pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	if (self.messages)
 		[aCoder encodeObject:self.messages forKey:@"messages"];
-//	[aCoder encodeObject:[self.mailBox.objectID URIRepresentation] forKey:@"mailBox"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-/*		NSURL* url = [aDecoder decodeObjectForKey:@"mailBox"];
-		if (url) {
-			NCStorage* storage = [NCStorage sharedStorage];
-			[storage.managedObjectContext performBlockAndWait:^{
-				NSManagedObjectID* objectID = [storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
-				self.mailBox = (NCMailBox*) [storage.managedObjectContext objectWithID:objectID];
-			}];
-		}*/
 		self.messages = [aDecoder decodeObjectForKey:@"messages"];
-//		for (NSDictionary* section in self.sections)
-//			for (NCMailBoxMessage* message in section[@"rows"])
-//				message.mailBox = self.mailBox;
 	}
 	return self;
 }
@@ -313,20 +237,21 @@
 											 
 											 NSInteger n = numberOfUnreadMessages(inbox);
 											 NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), n] : NSLocalizedString(@"Inbox", nil);
-											 [sections addObject:@{@"title": title, @"rows": inbox}];
+											 [sections addObject:@{@"title": title, @"rows": inbox, @"sectionID": @(0)}];
 											 
 											 for (NSDictionary* dictionary in @[corps, mailingLists]) {
 												 NSArray* values = [[dictionary allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"contact.name" ascending:YES]]];
 												 for (NSDictionary* dic in values) {
 													 NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
-													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], n] : [dic[@"contact"] name];
-													 [sections addObject:@{@"title": title, @"rows": dic[@"messages"]}];
+													 NCMailBoxContact* contact = dic[@"contact"];
+													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], n] : contact.name;
+													 [sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
 												 }
 											 }
 											 
 											 n = numberOfUnreadMessages(sent);
 											 title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), n] : NSLocalizedString(@"Sent", nil);
-											 [sections addObject:@{@"title": title, @"rows": sent}];
+											 [sections addObject:@{@"title": title, @"rows": sent, @"sectionID": @(1)}];
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
@@ -340,6 +265,10 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (id) identifierForSection:(NSInteger)section {
+	return self.sections[section][@"sectionID"];
 }
 
 #pragma mark - Private

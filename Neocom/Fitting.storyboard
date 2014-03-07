@@ -9,7 +9,7 @@
         <scene sceneID="LYA-jm-DFx">
             <objects>
                 <tableViewController id="lhY-Pd-wMi" customClass="NCFittingMenuViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LJT-zf-EVu">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LJT-zf-EVu" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -154,6 +154,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                         </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lhY-Pd-wMi" id="ZW8-QV-ZHf"/>
+                            <outlet property="delegate" destination="lhY-Pd-wMi" id="Rtr-Ze-c5t"/>
+                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Fitting" id="n0C-y8-TNe"/>
                     <connections>
@@ -1231,7 +1235,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LFA-WH-DrQ"/>
         <segue reference="tfi-SB-LwK"/>
+        <segue reference="UFB-q5-l1b"/>
     </inferredMetricsTieBreakers>
 </document>

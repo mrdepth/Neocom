@@ -578,7 +578,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-jy-AU4">
+                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-jy-AU4">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -603,7 +603,7 @@
         <scene sceneID="gQX-i2-1OV">
             <objects>
                 <tableViewController id="EOg-63-G75" customClass="NCMailBoxViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="97" sectionHeaderHeight="22" sectionFooterHeight="22" id="kKU-Sm-kLT">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="97" sectionHeaderHeight="22" sectionFooterHeight="22" id="kKU-Sm-kLT" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -658,6 +658,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="EOg-63-G75" id="BB2-FP-0LH"/>
+                            <outlet property="delegate" destination="EOg-63-G75" id="1ph-cT-bBj"/>
+                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="aKV-S7-QXz">
                         <barButtonItem key="rightBarButtonItem" title="Mark as read" id="bIX-8E-qNc">
@@ -715,7 +719,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9H-yS-IUW">
+                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9H-yS-IUW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1147,7 +1151,7 @@
     <resources>
         <image name="Icons/icon22_01.png" width="156" height="138"/>
         <image name="Icons/icon22_02.png" width="156" height="138"/>
-        <image name="Icons/icon22_03.png" width="32" height="32"/>
+        <image name="Icons/icon22_03.png" width="64" height="64"/>
         <image name="Icons/icon22_04.png" width="156" height="138"/>
         <image name="Icons/icon22_05.png" width="156" height="138"/>
     </resources>

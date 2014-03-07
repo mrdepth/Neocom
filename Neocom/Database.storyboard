@@ -137,7 +137,7 @@
         <scene sceneID="jEJ-dz-n4I">
             <objects>
                 <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="j3L-Vy-TYS">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="j3L-Vy-TYS" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -193,6 +193,10 @@
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lEO-4A-qIj" id="lIr-FJ-G4s"/>
+                            <outlet property="delegate" destination="lEO-4A-qIj" id="V8v-6C-cIx"/>
+                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Market" id="zxr-ed-nHP"/>
                     <connections>
@@ -518,7 +522,7 @@
         <scene sceneID="rAT-aI-Ucb">
             <objects>
                 <tableViewController id="4UZ-Rj-aNc" customClass="NCDatabaseTypeMarketInfoViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" id="o9p-bO-Zi9">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" id="o9p-bO-Zi9" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -655,7 +659,7 @@
         <scene sceneID="WxF-GY-BVg">
             <objects>
                 <tableViewController id="h8M-vq-ZAF" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SN9-mh-0xo">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SN9-mh-0xo" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1075,7 +1079,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-979" y="-292"/>
+            <point key="canvasLocation" x="-921" y="-292"/>
         </scene>
         <!--Database Type Picker View Controller-->
         <scene sceneID="v9a-vM-rkF">
@@ -1100,12 +1104,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="He4-ED-1Vg"/>
+        <segue reference="dFJ-0K-RGe"/>
         <segue reference="6M7-4Q-PK5"/>
-        <segue reference="qyD-gc-O13"/>
-        <segue reference="E04-iH-wb4"/>
-        <segue reference="LHH-Wy-jrm"/>
         <segue reference="edv-w8-2To"/>
-        <segue reference="7iv-ne-LEg"/>
+        <segue reference="qyD-gc-O13"/>
         <segue reference="Vbq-vg-5yp"/>
+        <segue reference="7iv-ne-LEg"/>
     </inferredMetricsTieBreakers>
 </document>

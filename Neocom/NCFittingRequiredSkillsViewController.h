@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 #import "NCTrainingQueue.h"
 
-@interface NCFittingRequiredSkillsViewController : UITableViewController
+@interface NCFittingRequiredSkillsViewController : NCTableViewController
 @property (strong, nonatomic) NCTrainingQueue* trainingQueue;
 
 - (IBAction)onTrain:(id)sender;

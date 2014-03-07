@@ -57,7 +57,7 @@
 											 
 											 for (NSArray* array in [[[visibleSkills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
 												 NSString* title = [[array[0] group] groupName];
-												 [sections addObject:@{@"title": title, @"rows": array}];
+												 [sections addObject:@{@"title": title, @"rows": array, @"sectionID": @([array[0] groupID])}];
 											 }
 											 
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
@@ -159,6 +159,10 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (id) identifierForSection:(NSInteger)section {
+	return self.sections[section][@"sectionID"];
 }
 
 @end

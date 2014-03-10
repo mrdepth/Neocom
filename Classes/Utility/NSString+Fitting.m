@@ -34,6 +34,4 @@
 	return [NSString stringWithFormat:@"%.1f/%.1f%@ %@", used / dimension, total / dimension, [self unitForDimension:dimension], unit ? unit : @""];
 }
 
-$(SRCROOT)/Scanner/ThirdParty/Flurry
-
 @end

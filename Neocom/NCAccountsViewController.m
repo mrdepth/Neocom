@@ -27,13 +27,9 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		NCStorage* storage = [NCStorage sharedStorage];
-		
-		NSURL* url = [aDecoder decodeObjectForKey:@"account"];
-		if ([url isKindOfClass:[NSURL class]]) {
-			[storage.managedObjectContext performBlockAndWait:^{
-					self.account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:[storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url] error:nil];
-			}];
+		NSString* udid = [aDecoder decodeObjectForKey:@"account"];
+		if (udid) {
+			self.account = [NCAccount accountWithUUID:udid];
 			if (!self.account)
 				return nil;
 			
@@ -53,7 +49,7 @@
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	if (self.account)
-		[aCoder encodeObject:[self.account.objectID URIRepresentation] forKey:@"account"];
+		[aCoder encodeObject:self.account.uuid forKey:@"account"];
 	if (self.accountStatus)
 		[aCoder encodeObject:self.accountStatus forKey:@"accountStatus"];
 	if (self.accountBalance)

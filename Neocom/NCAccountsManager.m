@@ -67,6 +67,7 @@ static NCAccountsManager* defaultManager = nil;
 					account.apiKey = apiKey;
 					account.characterID = character.characterID;
 					account.order = NSIntegerMax;
+					account.uuid = [[NSUUID UUID] UUIDString];
 				}
 			}
 			

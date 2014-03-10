@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 @property (nonatomic, strong) NCAPIKey *apiKey;
 @property (nonatomic, strong) NSSet* skillPlans;
 @property (nonatomic, strong) NCMailBox* mailBox;
+@property (nonatomic, strong) NSString* uuid;
 
 @property (nonatomic, strong) NCSkillPlan* activeSkillPlan;
 
@@ -44,6 +45,7 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 
 + (NSArray*) allAccounts;
 + (instancetype) currentAccount;
++ (instancetype) accountWithUUID:(NSString*) uuid;
 + (void) setCurrentAccount:(NCAccount*) account;
 
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;

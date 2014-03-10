@@ -34,6 +34,7 @@
 	if (self = [super init]) {
 		NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 		self.lastUpdate = [defaults valueForKey:NCSettingsNotificationsLastUpdateTimeKey];
+		self.lastUpdate = nil;
 		self.taskManager = [NCTaskManager new];
 		self.skillQueueNotificationTime = NCNotificationsManagerSkillQueueNotificationTimeAll;
 	}
@@ -56,9 +57,7 @@
 												 for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
 													 if (account.accountType != NCAccountTypeCharacter || !account.skillQueue)
 														 continue;
-													 
-													 NSString* url = [[account.objectID URIRepresentation] absoluteString];
-													 [accounts addObject:url];
+													 [accounts addObject:account.uuid];
 													 if (account.skillQueue.skillQueue.count == 0)
 														 continue;
 													 
@@ -71,7 +70,7 @@
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: url};
+															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
 															 [notifications addObject:notification];
 														 }
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime12Hours) && dif > 3600 * 12) {
@@ -79,21 +78,21 @@
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 12 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 12];
 
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: url};
+															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
 															 [notifications addObject:notification];
 														 }
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 4) {
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 4 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 4];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: url};
+															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
 															 [notifications addObject:notification];
 														 }
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 1) {
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 1 hour training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 1];
-															 notification.userInfo = @{NCSettingsCurrentAccountKey: url};
+															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
 															 [notifications addObject:notification];
 														 }
 													 }
@@ -101,18 +100,18 @@
 											 }
 								 completionHandler:^(NCTask *task) {
 									 if (![task isCancelled]) {
+										 if (accounts.count == 0)
+											 return;
+										 
 										 UIApplication* application = [UIApplication sharedApplication];
-										 for (UILocalNotification* notification in application.scheduledLocalNotifications) {
-											 if ([accounts containsObject:notification.userInfo[NCSettingsCurrentAccountKey]])
-												 [application cancelLocalNotification:notification];
-										 }
+										 for (UILocalNotification* notification in application.scheduledLocalNotifications)
+											 [application cancelLocalNotification:notification];
 										 
 										 for (UILocalNotification* notification in notifications)
 											 [application scheduleLocalNotification:notification];
-										 if (accounts.count > 0) {
-											 self.lastUpdate = [NSDate date];
-											 [[NSUserDefaults standardUserDefaults] setValue:self.lastUpdate forKey:NCSettingsNotificationsLastUpdateTimeKey];
-										 }
+										 
+										 self.lastUpdate = [NSDate date];
+										 [[NSUserDefaults standardUserDefaults] setValue:self.lastUpdate forKey:NCSettingsNotificationsLastUpdateTimeKey];
 									 }
 									 if (completionHandler)
 										 completionHandler(accounts.count > 0);

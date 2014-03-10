@@ -126,8 +126,10 @@ static NCStorage* sharedStorage;
 		BOOL useCloud = NO;//[[NSUserDefaults standardUserDefaults] boolForKey:SettingsUseCloud];
 		NSURL* url = useCloud ? [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil] : nil;
 		
-		NSString* documentsDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-		NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:url ? @"cloudStore.sqlite" : @"fallbackStore.sqlite"]];
+		NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+		[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+		
+		NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:url ? @"cloudStore.sqlite" : @"fallbackStore.sqlite"]];
 		
 		NSError *error = nil;
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

@@ -357,7 +357,7 @@
 		}];
 
 		[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", [account.objectID URIRepresentation]]];
+			_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"NCMailBox.%@", account.uuid]];
 			for (NCMailBoxMessage* message in [_cacheRecord.data.data messages]) {
 				message.mailBox = self;
 			}

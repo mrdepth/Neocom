@@ -392,6 +392,14 @@
 		12F82A5A18ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5918ACA89C00A967B5 /* NCFittingAPISearchResultsCell.m */; };
 		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
 		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */; };
+		12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E718CDA2A0005CEAD6 /* EUStorage.m */; };
+		12F955EB18CDA37C005CEAD6 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */; };
+		12F955EE18CDA3A8005CEAD6 /* APIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955ED18CDA3A8005CEAD6 /* APIKey.m */; };
+		12F955F118CDA3BE005CEAD6 /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F018CDA3BE005CEAD6 /* Fit.mm */; };
+		12F955F418CDA3CD005CEAD6 /* ShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F318CDA3CD005CEAD6 /* ShipFit.mm */; };
+		12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F618CDA3DD005CEAD6 /* POSFit.mm */; };
+		12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F918CDA3FC005CEAD6 /* SkillPlan.m */; };
+		12F955FD18CDA5DE005CEAD6 /* NCMigrationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -1249,6 +1257,21 @@
 		12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAPISearchResultsViewController.mm; sourceTree = "<group>"; };
 		12F82A6518ADFAB500A967B5 /* NCAssetsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsContainerViewController.h; sourceTree = "<group>"; };
 		12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAssetsContainerViewController.mm; sourceTree = "<group>"; };
+		12F955E618CDA2A0005CEAD6 /* EUStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUStorage.h; sourceTree = "<group>"; };
+		12F955E718CDA2A0005CEAD6 /* EUStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUStorage.m; sourceTree = "<group>"; };
+		12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
+		12F955EC18CDA3A8005CEAD6 /* APIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKey.h; sourceTree = "<group>"; };
+		12F955ED18CDA3A8005CEAD6 /* APIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKey.m; sourceTree = "<group>"; };
+		12F955EF18CDA3BE005CEAD6 /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
+		12F955F018CDA3BE005CEAD6 /* Fit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Fit.mm; sourceTree = "<group>"; };
+		12F955F218CDA3CD005CEAD6 /* ShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipFit.h; sourceTree = "<group>"; };
+		12F955F318CDA3CD005CEAD6 /* ShipFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShipFit.mm; sourceTree = "<group>"; };
+		12F955F518CDA3DD005CEAD6 /* POSFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSFit.h; sourceTree = "<group>"; };
+		12F955F618CDA3DD005CEAD6 /* POSFit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = POSFit.mm; sourceTree = "<group>"; };
+		12F955F818CDA3FC005CEAD6 /* SkillPlan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkillPlan.h; sourceTree = "<group>"; };
+		12F955F918CDA3FC005CEAD6 /* SkillPlan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkillPlan.m; sourceTree = "<group>"; };
+		12F955FB18CDA5DE005CEAD6 /* NCMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMigrationManager.h; sourceTree = "<group>"; };
+		12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCMigrationManager.mm; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -2043,6 +2066,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12F955E318CDA281005CEAD6 /* NCMigrationManager */,
 				12FF586A189F8ECA00E2D70A /* NCStoryboardPopoverSegue */,
 				12CC8D69188178290058C5DF /* NCTableViewEmptyHedaerView */,
 				12BF345E18814CB400368CD4 /* NCTableViewCell */,
@@ -3439,6 +3463,36 @@
 			name = NCAssetsContainerViewController;
 			sourceTree = "<group>";
 		};
+		12F955E318CDA281005CEAD6 /* NCMigrationManager */ = {
+			isa = PBXGroup;
+			children = (
+				12F955E518CDA28E005CEAD6 /* EUStorage */,
+				12F955FB18CDA5DE005CEAD6 /* NCMigrationManager.h */,
+				12F955FC18CDA5DE005CEAD6 /* NCMigrationManager.mm */,
+			);
+			name = NCMigrationManager;
+			sourceTree = "<group>";
+		};
+		12F955E518CDA28E005CEAD6 /* EUStorage */ = {
+			isa = PBXGroup;
+			children = (
+				12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */,
+				12F955E618CDA2A0005CEAD6 /* EUStorage.h */,
+				12F955E718CDA2A0005CEAD6 /* EUStorage.m */,
+				12F955EC18CDA3A8005CEAD6 /* APIKey.h */,
+				12F955ED18CDA3A8005CEAD6 /* APIKey.m */,
+				12F955EF18CDA3BE005CEAD6 /* Fit.h */,
+				12F955F018CDA3BE005CEAD6 /* Fit.mm */,
+				12F955F218CDA3CD005CEAD6 /* ShipFit.h */,
+				12F955F318CDA3CD005CEAD6 /* ShipFit.mm */,
+				12F955F518CDA3DD005CEAD6 /* POSFit.h */,
+				12F955F618CDA3DD005CEAD6 /* POSFit.mm */,
+				12F955F818CDA3FC005CEAD6 /* SkillPlan.h */,
+				12F955F918CDA3FC005CEAD6 /* SkillPlan.m */,
+			);
+			name = EUStorage;
+			sourceTree = "<group>";
+		};
 		12FF5862189F6D7900E2D70A /* NCFittingCharacterEditorCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4180,6 +4234,7 @@
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,
+				12F955EB18CDA37C005CEAD6 /* EUStorage.xcdatamodeld in Sources */,
 				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,
 				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
 				126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */,
@@ -4201,10 +4256,12 @@
 				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
 				12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */,
+				12F955EE18CDA3A8005CEAD6 /* APIKey.m in Sources */,
 				84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */,
 				12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */,
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
+				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
 				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
@@ -4237,6 +4294,7 @@
 				126A0E43185F3B9300A8E8A3 /* EVEMailMessages.m in Sources */,
 				126A0E7A185F3B9300A8E8A3 /* RSSImage.m in Sources */,
 				126A0E7F185F3B9300A8E8A3 /* EVECachedURLRequest.m in Sources */,
+				12F955FD18CDA5DE005CEAD6 /* NCMigrationManager.mm in Sources */,
 				126A0E16185F3B9300A8E8A3 /* EVEDBInvCategory.m in Sources */,
 				126A0E0D185F3B9300A8E8A3 /* EVEDBDatabase.m in Sources */,
 				126A0E73185F3B9300A8E8A3 /* NSMutableString+RSSParser10.m in Sources */,
@@ -4295,6 +4353,7 @@
 				122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */,
 				126A0E68185F3B9300A8E8A3 /* EVEFacWarSystems.m in Sources */,
 				12640B0E18B77A2D005C311D /* NCKillMailsViewController.m in Sources */,
+				12F955FA18CDA3FC005CEAD6 /* SkillPlan.m in Sources */,
 				1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */,
 				1204155A189A44AC00B15BB5 /* NCFittingShipResourcesCell.m in Sources */,
 				1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */,
@@ -4327,6 +4386,7 @@
 				126A0E24185F3B9300A8E8A3 /* EVEDBMapSolarSystem.m in Sources */,
 				129D2620187E923300E2062C /* UITableViewCell+Nib.m in Sources */,
 				12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */,
+				12F955F418CDA3CD005CEAD6 /* ShipFit.mm in Sources */,
 				1298CA1818C4B1B700F3F550 /* NCSkillPlanImportViewController.m in Sources */,
 				12640B1518BB274C005C311D /* EVEKillLogKill+Neocom.m in Sources */,
 				849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */,
@@ -4451,6 +4511,7 @@
 				12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */,
 				84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */,
 				126A0E52185F3B9300A8E8A3 /* EVECorpWalletTransactions.m in Sources */,
+				12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */,
 				12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
 				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
@@ -4467,6 +4528,7 @@
 				126A0E3B185F3B9300A8E8A3 /* EVEContractBids.m in Sources */,
 				126A0E76185F3B9300A8E8A3 /* RSSParser20.m in Sources */,
 				129D261B187E923300E2062C /* LUITextView.m in Sources */,
+				12F955F118CDA3BE005CEAD6 /* Fit.mm in Sources */,
 				12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */,
 				129C586218AA2CF900CA8787 /* NCFittingPOSViewController.mm in Sources */,
 				128C9B0418BF034E0086F7B3 /* NCCharacterID.m in Sources */,
@@ -4760,6 +4822,17 @@
 			);
 			currentVersion = 129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */;
 			path = NCStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */,
+			);
+			currentVersion = 12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */;
+			name = EUStorage.xcdatamodeld;
+			path = ../EUStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

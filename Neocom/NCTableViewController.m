@@ -227,7 +227,7 @@
 - (NSString*) recordID {
 	NCAccount* account = [NCAccount currentAccount];
 	if (account && !account.error) {
-		return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [[account objectID] URIRepresentation]];
+		return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), account.uuid];
 	}
 	else
 		return NSStringFromClass(self.class);

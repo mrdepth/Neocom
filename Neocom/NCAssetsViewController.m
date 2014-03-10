@@ -249,7 +249,7 @@
 - (NSString*) recordID {
 	NSMutableArray* ids = [NSMutableArray new];
 	for (NCAccount* account in self.accounts)
-		[ids addObject:[[account objectID] URIRepresentation]];
+		[ids addObject:account.uuid];
 	[ids sortedArrayUsingSelector:@selector(compare:)];
 	
 	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];

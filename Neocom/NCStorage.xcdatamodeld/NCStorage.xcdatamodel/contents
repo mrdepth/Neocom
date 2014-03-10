@@ -3,6 +3,7 @@
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="apiKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="APIKey" inverseName="accounts" inverseEntity="APIKey" syncable="YES"/>
         <relationship name="mailBox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MailBox" inverseName="account" inverseEntity="MailBox" syncable="YES"/>
         <relationship name="skillPlans" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlan" inverseName="account" inverseEntity="SkillPlan" syncable="YES"/>

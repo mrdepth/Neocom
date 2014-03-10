@@ -314,7 +314,7 @@
 	@synchronized(self) {
 		if (!_contractBidsCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_contractBidsCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [[self.account objectID] URIRepresentation]]];
+				_contractBidsCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), self.account.uuid]];
 			}];
 		}
 		return _contractBidsCacheRecord;

@@ -37,6 +37,7 @@ static NCAccount* currentAccount = nil;
 @dynamic apiKey;
 @dynamic skillPlans;
 @dynamic mailBox;
+@dynamic uuid;
 
 @synthesize characterInfoCacheRecord = _characterInfoCacheRecord;
 @synthesize characterSheetCacheRecord = _characterSheetCacheRecord;
@@ -69,12 +70,27 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
++ (instancetype) accountWithUUID:(NSString*) uuid {
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = storage.managedObjectContext;
+	
+	__block NSArray* accounts = nil;
+	[context performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+		accounts = [context executeFetchRequest:fetchRequest error:nil];
+	}];
+	return accounts.count > 0 ? accounts[0] : nil;
+}
+
 + (void) setCurrentAccount:(NCAccount*) account {
 	@synchronized(self) {
 		currentAccount = account;
 		[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:account];
 		if (account) {
-			[[NSUserDefaults standardUserDefaults] setURL:[account.objectID URIRepresentation] forKey:NCSettingsCurrentAccountKey];
+			[[NSUserDefaults standardUserDefaults] setValue:account.uuid forKey:NCSettingsCurrentAccountKey];
 		}
 		else
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
@@ -91,12 +107,11 @@ static NCAccount* currentAccount = nil;
 	if ([self isDeleted]) {
 		NCCache* cache = [NCCache sharedCache];
 		NSManagedObjectContext* context = cache.managedObjectContext;
-		NSURL* url = [self.objectID URIRepresentation];
 		[context performBlock:^{
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:context];
 			[fetchRequest setEntity:entity];
-			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID like %@", [NSString stringWithFormat:@"*%@*", url]]];
+			[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"recordID like %@", [NSString stringWithFormat:@"*%@*", self.uuid]]];
 
 			NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
 			for (NCCacheRecord* record in fetchedObjects)
@@ -406,7 +421,7 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		if (!_characterInfoCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", [[self objectID] URIRepresentation]]];
+				_characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", self.uuid]];
 				[[_characterInfoCacheRecord data] data];
 			}];
 		}
@@ -418,7 +433,7 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		if (!_characterSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", [[self objectID] URIRepresentation]]];
+				_characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", self.uuid]];
 				[[_characterSheetCacheRecord data] data];
 			}];
 		}
@@ -430,7 +445,7 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		if (!_corporationSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", [[self objectID] URIRepresentation]]];
+				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", self.uuid]];
 				[[_corporationSheetCacheRecord data] data];
 			}];
 		}
@@ -442,7 +457,7 @@ static NCAccount* currentAccount = nil;
 	@synchronized(self) {
 		if (!_skillQueueCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_skillQueueCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.skillQueue", [[self objectID] URIRepresentation]]];
+				_skillQueueCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.skillQueue", self.uuid]];
 				[[_skillQueueCacheRecord data] data];
 			}];
 		}

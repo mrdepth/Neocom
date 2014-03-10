@@ -88,8 +88,10 @@
 }
 
 - (void) reloadIfNeeded {
-	if (_trainingQueue)
+	if (_trainingQueue) {
+		[self save];
 		[self reload];
+	}
 }
 
 #pragma mark - Private

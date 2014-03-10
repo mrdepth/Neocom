@@ -21,27 +21,34 @@
 + (void) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr;
 + (void) transferShipLoadoutsFromStorage:(EUStorage*) storage;
 + (void) transferPOSLoadoutsFromStorage:(EUStorage*) storage;
++ (void) transferSkillPlansFromStorage:(EUStorage*) storage;
 @end
 
 @implementation NCMigrationManager
 
 + (BOOL) migrateWithError:(NSError**) errorPtr {
-	NSString* path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"fallbackStore.sqlite"];
+	NSFileManager* fileManager = [NSFileManager defaultManager];
+	NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+	NSString* path = [documents stringByAppendingPathComponent:@"fallbackStore.sqlite"];
 	NSError* error = nil;
-	if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL]) {
+	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
 		EUStorage* storage = [EUStorage new];
 		[self transferAPIKeysFromStorage: storage withError:&error];
 		[self transferShipLoadoutsFromStorage:storage];
 		[self transferPOSLoadoutsFromStorage:storage];
+		[self transferSkillPlansFromStorage:storage];
 		NCStorage* ncStorage = [NCStorage sharedStorage];
 		[ncStorage.managedObjectContext performBlockAndWait:^{
 			[ncStorage saveContext];
 		}];
 		storage = nil;
-		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 	}
 	if (errorPtr)
 		*errorPtr = error;
+	
+	for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+		[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+	}
 	return error == nil;
 }
 
@@ -229,6 +236,32 @@
 			loadout.name = posFit.fitName;
 		}];
 
+	}
+}
+
++ (void) transferSkillPlansFromStorage:(EUStorage*) storage {
+	NSFetchRequest* fetchRequest = [NSFetchRequest new];
+	NSEntityDescription* entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext];
+	[fetchRequest setEntity:entity];
+	NSArray* skillPlans = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	
+	for (SkillPlan* skillPlan in skillPlans) {
+		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+			if (account.accountType == NCAccountTypeCharacter && account.characterID == skillPlan.characterID) {
+				NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+				for (NSString* row in [skillPlan.skillPlanSkills componentsSeparatedByString:@";"]) {
+					NSArray* components = [row componentsSeparatedByString:@":"];
+					if (components.count == 2) {
+						NSInteger typeID = [[components objectAtIndex:0] integerValue];
+						NSInteger requiredLevel = [[components objectAtIndex:1] integerValue];
+						EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+						if (type)
+							[trainingQueue addSkill:type withLevel:requiredLevel];
+					}
+				}
+				account.activeSkillPlan.trainingQueue = trainingQueue;
+			}
+		}
 	}
 }
 

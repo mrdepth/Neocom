@@ -108,10 +108,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UIStatusBarStyle) preferredStatusBarStyle {
-	return UIStatusBarStyleLightContent;
-}
-
 - (void) setMenuViewController:(UIViewController *)menuViewController {
 	if (self.menuViewController) {
 		[self.menuViewController willMoveToParentViewController:nil];
@@ -122,7 +118,6 @@
 	_menuViewController = menuViewController;
 	[self addChildViewController:menuViewController];
 	[self.view addSubview:menuViewController.view];
-	
 	CGRect frame = self.view.bounds;
 	if (self.contentViewController)
 		frame.size.width -= NCSideMenuViewControllermMenuEdgeInset;

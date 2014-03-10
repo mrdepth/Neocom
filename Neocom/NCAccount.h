@@ -14,8 +14,6 @@
 #import "NCMailBox.h"
 #import "NCSkillPlan.h"
 
-#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
-
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
 	NCAccountTypeCorporate

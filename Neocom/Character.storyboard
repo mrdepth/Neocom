@@ -578,7 +578,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-jy-AU4">
+                            <webView opaque="NO" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-jy-AU4">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -589,6 +589,12 @@
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dCn-zc-1yS" firstAttribute="top" secondItem="pxB-jy-AU4" secondAttribute="bottom" id="8JN-KD-iRn"/>
+                            <constraint firstItem="pxB-jy-AU4" firstAttribute="top" secondItem="nQ1-NA-aFj" secondAttribute="top" id="BtZ-yu-5mW"/>
+                            <constraint firstItem="pxB-jy-AU4" firstAttribute="leading" secondItem="nQ1-NA-aFj" secondAttribute="leading" id="eL6-dV-ZKm"/>
+                            <constraint firstAttribute="trailing" secondItem="pxB-jy-AU4" secondAttribute="trailing" id="syS-UB-mdd"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Event" id="wOq-hR-LkX"/>
                     <connections>
@@ -719,7 +725,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9H-yS-IUW">
+                            <webView opaque="NO" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S9H-yS-IUW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -730,6 +736,12 @@
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="S9H-yS-IUW" firstAttribute="top" secondItem="Paf-cg-Zci" secondAttribute="top" id="5ug-ye-1nk"/>
+                            <constraint firstItem="S9H-yS-IUW" firstAttribute="leading" secondItem="Paf-cg-Zci" secondAttribute="leading" id="EOz-Vk-MrC"/>
+                            <constraint firstItem="Pc9-a9-yAT" firstAttribute="top" secondItem="S9H-yS-IUW" secondAttribute="bottom" id="aBb-QM-wJf"/>
+                            <constraint firstAttribute="trailing" secondItem="S9H-yS-IUW" secondAttribute="trailing" id="uA9-v3-c4G"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Message" id="3Jz-rg-jNZ"/>
                     <connections>

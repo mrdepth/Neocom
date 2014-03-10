@@ -313,7 +313,7 @@ Jim Nastik</string>
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="161" sectionHeaderHeight="22" sectionFooterHeight="22" id="gpj-rz-3XU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UpgradeCell" rowHeight="150" id="tK1-TH-ay5" customClass="NCDonationCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="150"/>
@@ -542,7 +542,7 @@ Jim Nastik</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3o-It-Sbm">
+                            <webView opaque="NO" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o3o-It-Sbm">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -553,6 +553,12 @@ Jim Nastik</string>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HIf-wv-S38" firstAttribute="top" secondItem="o3o-It-Sbm" secondAttribute="bottom" id="2oi-z7-rGb"/>
+                            <constraint firstAttribute="trailing" secondItem="o3o-It-Sbm" secondAttribute="trailing" id="L4f-F6-czb"/>
+                            <constraint firstItem="o3o-It-Sbm" firstAttribute="top" secondItem="5ds-MB-iBl" secondAttribute="top" id="Wsv-jD-d9z"/>
+                            <constraint firstItem="o3o-It-Sbm" firstAttribute="leading" secondItem="5ds-MB-iBl" secondAttribute="leading" id="a86-xk-3kB"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="News" id="ZKC-kk-9Pf"/>
                     <connections>

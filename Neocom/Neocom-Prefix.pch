@@ -44,3 +44,6 @@
 #define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
 #define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"
 #define NCInAppDonate10ProductID @"com.shimanski.eveuniverse.donation10"
+
+#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"

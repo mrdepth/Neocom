@@ -169,6 +169,8 @@
 											  cancelButtonTitle:NSLocalizedString(@"Close", nil)
 											  otherButtonTitles:nil];
 	[alertView show];
+	self.inAppActive = NO;
+	[self.tableView reloadData];
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
@@ -180,6 +182,8 @@
 												  otherButtonTitles:nil];
 		[alertView show];
 	}
+	self.inAppActive = NO;
+	[self.tableView reloadData];
 }
 
 #pragma mark - Private

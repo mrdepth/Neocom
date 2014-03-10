@@ -17,11 +17,15 @@
 #import "NSData+Neocom.h"
 #import "NCCache.h"
 #import "NCMigrationManager.h"
+#import "ASInAppPurchase.h"
 
-@interface NCAppDelegate()
+@interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
+- (void) completeTransaction: (SKPaymentTransaction *)transaction;
+- (void) restoreTransaction: (SKPaymentTransaction *)transaction;
+- (void) failedTransaction: (SKPaymentTransaction *)transaction;
 @end
 
 @implementation NCAppDelegate
@@ -31,7 +35,9 @@
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDID];
 
 	self.taskManager = [NCTaskManager new];
-	
+	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
+	[paymentQueue addTransactionObserver:self];
+
 	__block NSError* error = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -123,6 +129,27 @@
 	}
 }
 
+#pragma mark - SKPaymentTransactionObserver
+
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+	for (SKPaymentTransaction *transaction in transactions)
+	{
+		switch (transaction.transactionState)
+		{
+			case SKPaymentTransactionStatePurchased:
+				[self completeTransaction:transaction];
+				break;
+			case SKPaymentTransactionStateFailed:
+				[self failedTransaction:transaction];
+				break;
+			case SKPaymentTransactionStateRestored:
+				[self restoreTransaction:transaction];
+			default:
+				break;
+		}
+	}
+}
+
 #pragma mark - Private
 
 - (void) addAPIKeyWithURL:(NSURL*) url {
@@ -166,6 +193,38 @@
 }
 
 - (void) openFitWithURL:(NSURL*) url {
+}
+
+- (void) completeTransaction: (SKPaymentTransaction *)transaction
+{
+	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+	purchase.purchased = YES;
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Thanks for the donation", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+	[alertView show];
+	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
+	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+	
+}
+
+- (void) restoreTransaction: (SKPaymentTransaction *)transaction
+{
+	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+	purchase.purchased = YES;
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:NSLocalizedString(@"Your donation status has been restored", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
+	[alertView show];
+	[[NSNotificationCenter defaultCenter] postNotificationName:NCApplicationDidRemoveAddsNotification object:nil];
+	[[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+	
+}
+
+- (void) failedTransaction: (SKPaymentTransaction *)transaction
+{
+    if (transaction.error.code != SKErrorPaymentCancelled) {
+        [[UIAlertView alertViewWithError:transaction.error] show];
+    }
+    [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
 
 @end

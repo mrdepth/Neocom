@@ -3591,6 +3591,13 @@
 			path = Mediation;
 			sourceTree = "<group>";
 		};
+		12F9562518CDCDE5005CEAD6 /* NCAPIKeyA */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NCAPIKeyA;
+			sourceTree = "<group>";
+		};
 		12FF5862189F6D7900E2D70A /* NCFittingCharacterEditorCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4014,6 +4021,7 @@
 		84FC4F541878405C0004073C /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				12F9562518CDCDE5005CEAD6 /* NCAPIKeyA */,
 				12A7DB9318B33A7900343D25 /* NCAddAPIKeyViewController */,
 				84FC4F5A187841C50004073C /* NCAccountsViewController */,
 			);

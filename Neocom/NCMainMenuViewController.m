@@ -18,11 +18,15 @@
 @property (nonatomic, strong) NSMutableArray* sections;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
+@property (nonatomic, strong) EVEServerStatus* serverStatus;
 @property (nonatomic, readonly) NSString* skillsDetails;
 @property (nonatomic, readonly) NSString* skillQueueDetails;
 @property (nonatomic, readonly) NSString* mailsDetails;
+@property (nonatomic, strong) NSTimer* timer;
+@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 - (void) reload;
-
+- (void) onTimer:(NSTimer*) timer;
+- (void) updateServerStatus;
 @end
 
 @implementation NCMainMenuViewController
@@ -43,6 +47,12 @@
 	[self.tableView registerClass:[NCTableViewEmptyHedaerView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewEmptyHedaerView"];
 	self.allSections = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
 	[self reload];
+	
+	self.dateFormatter = [NSDateFormatter new];
+	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,6 +63,22 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+	if (self.serverStatus) {
+		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+		[self onTimer:self.timer];
+	}
+	else
+		[self updateServerStatus];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	self.timer = nil;
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void) dealloc {
+	self.timer = nil;
 }
 
 
@@ -197,6 +223,48 @@
 			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), numberOfUnreadMessages];
 	}
 	return nil;
+}
+
+- (void) onTimer:(NSTimer*) timer {
+	if (self.serverStatus) {
+		self.serverTimeLabel.text = [self.dateFormatter stringFromDate:[self.serverStatus serverTimeWithLocalTime:[NSDate date]]];
+		if ([[self.serverStatus cacheExpireDate] compare:[NSDate date]] == NSOrderedAscending) {
+			[self updateServerStatus];
+			self.timer = nil;
+		}
+	}
+	else {
+		self.timer = nil;
+	}
+}
+
+- (void) updateServerStatus {
+	__block EVEServerStatus* serverStatus = nil;
+	__block NSError* error = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 serverStatus = [EVEServerStatus serverStatusWithCachePolicy:NSURLRequestUseProtocolCachePolicy
+																								   error:&error
+																						 progressHandler:nil];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 if (serverStatus) {
+										 self.serverStatus = serverStatus;
+										 self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
+										 self.serverStatusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ players online", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:serverStatus.onlinePlayers]];
+										 [self onTimer:self.timer];
+									 }
+									 else {
+										 if (error)
+											 self.serverStatusLabel.text = [error localizedDescription];
+										 else
+											 self.serverStatusLabel.text = NSLocalizedString(@"Server offline", nil);
+										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:30.];
+									 }
+								 }
+							 }];
 }
 
 @end

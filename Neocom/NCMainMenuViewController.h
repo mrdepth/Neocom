@@ -9,5 +9,7 @@
 #import "NCTableViewController.h"
 
 @interface NCMainMenuViewController : NCTableViewController
+@property (weak, nonatomic) IBOutlet UILabel *serverStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *serverTimeLabel;
 
 @end

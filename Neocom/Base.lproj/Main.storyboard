@@ -250,6 +250,9 @@
                                             <state key="highlighted">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCAPIKeyAccessMaskViewController" customClass="NCSideMenuViewControllerContentSegue" id="LOm-NI-BSn"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -384,6 +387,9 @@
                                             <state key="highlighted">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCAPIKeyAccessMaskViewController" customClass="NCSideMenuViewControllerContentSegue" id="R6f-7n-gJ8"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -589,6 +595,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xwX-CC-aAq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1300" y="604"/>
+        </scene>
+        <!--Key Access Mask View Controller - Access Mask-->
+        <scene sceneID="98d-zm-WUU">
+            <objects>
+                <tableViewController id="DJl-gT-OBF" customClass="NCAPIKeyAccessMaskViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="5k9-8t-lRD" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="IGm-Na-RVV" style="IBUITableViewCellStyleDefault" id="3Hs-gJ-iTd">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Hs-gJ-iTd" id="laf-ao-7TF">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IGm-Na-RVV">
+                                            <rect key="frame" x="15" y="0.0" width="290" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="DJl-gT-OBF" id="ngs-Ym-D5Q"/>
+                            <outlet property="delegate" destination="DJl-gT-OBF" id="gm6-jU-Mfg"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Access Mask" id="FnY-8Y-n82"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sfg-oA-4Ho" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1473" y="-83"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="MqY-Pe-F09">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="NN8-Tb-Sof" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="jVd-Lw-KfZ">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="DJl-gT-OBF" kind="relationship" relationship="rootViewController" id="gkb-eE-cLO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7la-Tr-bDX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="-83"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BAB-bA-gqr">
@@ -1185,4 +1246,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="R6f-7n-gJ8"/>
+    </inferredMetricsTieBreakers>
 </document>

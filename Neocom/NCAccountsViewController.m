@@ -15,6 +15,7 @@
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "EVEDBInvType.h"
+#import "NCAPIKeyAccessMaskViewController.h"
 
 @interface NCAccountsViewControllerDataAccount : NSObject<NSCoding>
 @property (nonatomic, strong) NCAccount* account;
@@ -129,6 +130,15 @@
 	}
 	else if ([segue.identifier isEqualToString:@"Logout"]) {
 		[NCAccount setCurrentAccount:nil];
+	}
+	else if ([segue.identifier isEqualToString:@"NCAPIKeyAccessMaskViewController"]) {
+		NCAPIKeyAccessMaskViewController* controller = [segue.destinationViewController viewControllers][0];
+		id cell = [sender superview];
+		for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);
+		NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+		NCAccountsViewControllerData* data = self.data;
+		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+		controller.account = account.account;
 	}
 }
 

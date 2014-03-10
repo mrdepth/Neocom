@@ -409,6 +409,7 @@
 		12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9561F18CDB822005CEAD6 /* AVFoundation.framework */; };
 		12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562118CDB835005CEAD6 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -1306,6 +1307,8 @@
 		12F9561F18CDB822005CEAD6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		12F9562118CDB835005CEAD6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyAccessMaskViewController.h; sourceTree = "<group>"; };
+		12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyAccessMaskViewController.m; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -3591,11 +3594,13 @@
 			path = Mediation;
 			sourceTree = "<group>";
 		};
-		12F9562518CDCDE5005CEAD6 /* NCAPIKeyA */ = {
+		12F9562618CDF10A005CEAD6 /* NCAPIKeyAccessMaskViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */,
+				12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */,
 			);
-			name = NCAPIKeyA;
+			name = NCAPIKeyAccessMaskViewController;
 			sourceTree = "<group>";
 		};
 		12FF5862189F6D7900E2D70A /* NCFittingCharacterEditorCell */ = {
@@ -4021,7 +4026,7 @@
 		84FC4F541878405C0004073C /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				12F9562518CDCDE5005CEAD6 /* NCAPIKeyA */,
+				12F9562618CDF10A005CEAD6 /* NCAPIKeyAccessMaskViewController */,
 				12A7DB9318B33A7900343D25 /* NCAddAPIKeyViewController */,
 				84FC4F5A187841C50004073C /* NCAccountsViewController */,
 			);
@@ -4589,6 +4594,7 @@
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */,
+				12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */,
 				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
 				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,

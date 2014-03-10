@@ -215,10 +215,19 @@
 	[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
 	[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
 
-	self.titleLabel.text = type.typeName;
+	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", type.typeName, type.typeID]];
+	NSRange titleRange = NSMakeRange(0, type.typeName.length);
+	NSRange typeIDRange = NSMakeRange(type.typeName.length + 1, title.length - type.typeName.length - 1);
+	[title addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:21]}
+							  range:titleRange];
+	[title addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12],
+									  (__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
+									  NSForegroundColorAttributeName: [UIColor lightTextColor]}
+							  range:typeIDRange];
+	
+	self.titleLabel.attributedText = title;
 	self.imageView.image = [UIImage imageNamed:type.typeLargeImageName];
 	self.descriptionLabel.text = description;
-	self.typeIDLabel.text = [NSString stringWithFormat:@"%d", type.typeID];
 	[self.view setNeedsLayout];
 	
 	if (type.group.categoryID == 9)

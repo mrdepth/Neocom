@@ -410,6 +410,7 @@
 		12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562118CDB835005CEAD6 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; };
+		12F9562B18CDFC51005CEAD6 /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 12F9562A18CDFC51005CEAD6 /* Types */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -1309,6 +1310,7 @@
 		12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyAccessMaskViewController.h; sourceTree = "<group>"; };
 		12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyAccessMaskViewController.m; sourceTree = "<group>"; };
+		12F9562A18CDFC51005CEAD6 /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -2960,6 +2962,7 @@
 			children = (
 				125F67CE188526B5005732FA /* Levels */,
 				12BF345B18814B9D00368CD4 /* Icons */,
+				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
 				12D011BD18A2101400C0A228 /* checkmark.png */,
@@ -4286,6 +4289,7 @@
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				12430BBB18C881EA0025D971 /* Help.storyboard in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
+				12F9562B18CDFC51005CEAD6 /* Types in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
 				849B9FC71896D24A00D4DD2B /* Multispectral.png in Resources */,

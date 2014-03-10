@@ -333,13 +333,6 @@
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW6-rT-S1d">
-                                    <rect key="frame" x="87" y="35" width="38" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -348,10 +341,8 @@
                                 <constraint firstItem="sH6-hb-ETj" firstAttribute="leading" secondItem="s5t-gK-Wwc" secondAttribute="leading" id="82D-hQ-c8c"/>
                                 <constraint firstItem="sH6-hb-ETj" firstAttribute="top" secondItem="EvT-51-Y7k" secondAttribute="bottom" id="ChT-10-yge"/>
                                 <constraint firstItem="s5t-gK-Wwc" firstAttribute="leading" secondItem="Z7D-M6-dDM" secondAttribute="leading" constant="15" id="CwE-PS-x0e"/>
-                                <constraint firstItem="EvT-51-Y7k" firstAttribute="top" secondItem="DW6-rT-S1d" secondAttribute="bottom" id="G5p-jz-g5p"/>
                                 <constraint firstItem="EvT-51-Y7k" firstAttribute="leading" secondItem="s5t-gK-Wwc" secondAttribute="trailing" constant="8" id="Pda-dT-hw3"/>
                                 <constraint firstItem="sH6-hb-ETj" firstAttribute="trailing" secondItem="EvT-51-Y7k" secondAttribute="trailing" id="YpC-Qo-Etm"/>
-                                <constraint firstItem="DW6-rT-S1d" firstAttribute="leading" secondItem="EvT-51-Y7k" secondAttribute="leading" id="g3a-uG-AXI"/>
                                 <constraint firstItem="s5t-gK-Wwc" firstAttribute="top" secondItem="Z7D-M6-dDM" secondAttribute="top" constant="15" id="zK4-6c-M2X"/>
                             </constraints>
                         </view>
@@ -511,7 +502,6 @@
                         <outlet property="descriptionLabel" destination="sH6-hb-ETj" id="ZaM-FL-6ad"/>
                         <outlet property="imageView" destination="s5t-gK-Wwc" id="WVH-6q-z9J"/>
                         <outlet property="titleLabel" destination="EvT-51-Y7k" id="Fbd-P6-tzb"/>
-                        <outlet property="typeIDLabel" destination="DW6-rT-S1d" id="Uaw-zn-XXB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1104,12 +1094,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="He4-ED-1Vg"/>
-        <segue reference="dFJ-0K-RGe"/>
-        <segue reference="6M7-4Q-PK5"/>
-        <segue reference="edv-w8-2To"/>
-        <segue reference="qyD-gc-O13"/>
         <segue reference="Vbq-vg-5yp"/>
+        <segue reference="6M7-4Q-PK5"/>
+        <segue reference="He4-ED-1Vg"/>
+        <segue reference="LHH-Wy-jrm"/>
+        <segue reference="edv-w8-2To"/>
         <segue reference="7iv-ne-LEg"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
 </document>

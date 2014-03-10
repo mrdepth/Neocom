@@ -16,6 +16,7 @@
 	#import <CoreData/CoreData.h>
 	#import <MessageUI/MessageUI.h>
 	#import <StoreKit/StoreKit.h>
+	#import <CoreText/CoreText.h>
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"

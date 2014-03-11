@@ -279,6 +279,13 @@
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
 		127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
+		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
+		127C50BF18CF550C0074877C /* buttonBackgroundBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B918CF550B0074877C /* buttonBackgroundBlack.png */; };
+		127C50C018CF550C0074877C /* buttonBackgroundBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BA18CF550B0074877C /* buttonBackgroundBlack@2x.png */; };
+		127C50C118CF550C0074877C /* buttonBackgroundDone.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BB18CF550B0074877C /* buttonBackgroundDone.png */; };
+		127C50C218CF550C0074877C /* buttonBackgroundDone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BC18CF550B0074877C /* buttonBackgroundDone@2x.png */; };
+		127C50C318CF550C0074877C /* buttonBackgroundDoneSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BD18CF550B0074877C /* buttonBackgroundDoneSelected.png */; };
+		127C50C418CF550C0074877C /* buttonBackgroundDoneSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BE18CF550B0074877C /* buttonBackgroundDoneSelected@2x.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 128217651887D94D002B674E /* skillRequirementsMap.plist */; };
 		128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */; };
@@ -1069,6 +1076,13 @@
 		127123A81897A94E005F46EE /* NCProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCProgressLabel.m; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
+		127C50B618CF52D90074877C /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
+		127C50B918CF550B0074877C /* buttonBackgroundBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundBlack.png; sourceTree = "<group>"; };
+		127C50BA18CF550B0074877C /* buttonBackgroundBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundBlack@2x.png"; sourceTree = "<group>"; };
+		127C50BB18CF550B0074877C /* buttonBackgroundDone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundDone.png; sourceTree = "<group>"; };
+		127C50BC18CF550B0074877C /* buttonBackgroundDone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundDone@2x.png"; sourceTree = "<group>"; };
+		127C50BD18CF550B0074877C /* buttonBackgroundDoneSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundDoneSelected.png; sourceTree = "<group>"; };
+		127C50BE18CF550B0074877C /* buttonBackgroundDoneSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundDoneSelected@2x.png"; sourceTree = "<group>"; };
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
 		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
 		128217651887D94D002B674E /* skillRequirementsMap.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skillRequirementsMap.plist; sourceTree = SOURCE_ROOT; };
@@ -2985,6 +2999,7 @@
 				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
+				127C50B618CF52D90074877C /* clear.png */,
 				12D011BD18A2101400C0A228 /* checkmark.png */,
 				12D011BE18A2101400C0A228 /* checkmark@2x.png */,
 				84EEFCE11896C69C007962A0 /* menuIcon@2x.png */,
@@ -3002,6 +3017,12 @@
 				12B5AE3D18CF08AF00D05D60 /* buttonBackSelected@2x.png */,
 				12B5AE3E18CF08AF00D05D60 /* navigationBar.png */,
 				12B5AE3F18CF08AF00D05D60 /* navigationBar@2x.png */,
+				127C50B918CF550B0074877C /* buttonBackgroundBlack.png */,
+				127C50BA18CF550B0074877C /* buttonBackgroundBlack@2x.png */,
+				127C50BB18CF550B0074877C /* buttonBackgroundDone.png */,
+				127C50BC18CF550B0074877C /* buttonBackgroundDone@2x.png */,
+				127C50BD18CF550B0074877C /* buttonBackgroundDoneSelected.png */,
+				127C50BE18CF550B0074877C /* buttonBackgroundDoneSelected@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -4206,6 +4227,7 @@
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
 				12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */,
 				849B9FD51896D24A00D4DD2B /* slotRig.png in Resources */,
+				127C50B718CF52DA0074877C /* clear.png in Resources */,
 				12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */,
 				849B9FB41896D24A00D4DD2B /* calibration.png in Resources */,
 				12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */,
@@ -4241,9 +4263,11 @@
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
+				127C50C118CF550C0074877C /* buttonBackgroundDone.png in Resources */,
 				125F680A188526B6005732FA /* level_240.gif in Resources */,
 				127123A018979E40005F46EE /* NCFittingSectionGenericHedaerView.xib in Resources */,
 				128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHedaerView.xib in Resources */,
+				127C50C418CF550C0074877C /* buttonBackgroundDoneSelected@2x.png in Resources */,
 				125F67F3188526B6005732FA /* level_000.gif in Resources */,
 				12BF345C18814B9D00368CD4 /* Icons in Resources */,
 				849B9FAD1896D24A00D4DD2B /* active.png in Resources */,
@@ -4261,6 +4285,7 @@
 				125F67F4188526B6005732FA /* level_010.gif in Resources */,
 				849B9FD91896D24A00D4DD2B /* thermal.png in Resources */,
 				849B9FB51896D24A00D4DD2B /* capacitor.png in Resources */,
+				127C50C018CF550C0074877C /* buttonBackgroundBlack@2x.png in Resources */,
 				849B9FCC1896D24A00D4DD2B /* Radar.png in Resources */,
 				849B9F771896CA5400D4DD2B /* gallenteFederation@2x.png in Resources */,
 				1243761C189653980078F526 /* Character.storyboard in Resources */,
@@ -4272,11 +4297,13 @@
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
 				125F6815188526B6005732FA /* level_451.gif in Resources */,
 				849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */,
+				127C50C218CF550C0074877C /* buttonBackgroundDone@2x.png in Resources */,
 				129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */,
 				849B9FBF1896D24A00D4DD2B /* Gravimetric.png in Resources */,
 				849B9FD61896D24A00D4DD2B /* slotSubsystem.png in Resources */,
 				84EEFCEC1896C69C007962A0 /* sanshasNation@2x.png in Resources */,
 				849B9FD81896D24A00D4DD2B /* targets.png in Resources */,
+				127C50BF18CF550C0074877C /* buttonBackgroundBlack.png in Resources */,
 				12A7DBA818B36B2F00343D25 /* Market.storyboard in Resources */,
 				125F6814188526B6005732FA /* level_450.gif in Resources */,
 				125F680D188526B6005732FA /* level_251.gif in Resources */,
@@ -4284,6 +4311,7 @@
 				12B5AE4118CF08AF00D05D60 /* buttonBackNormal@2x.png in Resources */,
 				849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */,
 				125F67FC188526B6005732FA /* level_050.gif in Resources */,
+				127C50C318CF550C0074877C /* buttonBackgroundDoneSelected.png in Resources */,
 				849B9FD21896D24A00D4DD2B /* slotHigh.png in Resources */,
 				125F6802188526B6005732FA /* level_131.gif in Resources */,
 				125F6805188526B6005732FA /* level_150.gif in Resources */,

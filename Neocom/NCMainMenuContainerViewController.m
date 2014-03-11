@@ -73,16 +73,23 @@
 	[self dismissDropDownViewControllerAnimated:YES];
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if ([keyPath isEqualToString:@"rightBarButtonItem"]) {
+		[self.navigationItem setRightBarButtonItem:[object valueForKey:keyPath] animated:YES];
+	}
+}
+
 #pragma mark - Private
 
 - (void) presentDropDownViewController:(UIViewController *)dropDownViewController animated:(BOOL) animated {
 	if (dropDownViewController) {
+		if (self.dropDownViewController)
+			[self.dropDownViewController.navigationItem removeObserver:self forKeyPath:@"rightBarButtonItem"];
+
 		self.dropDownViewController = dropDownViewController;
 		
-		NSMutableArray* items = [NSMutableArray arrayWithArray:self.navigationController.navigationBar.items];
-		self.dropDownViewController.navigationItem.hidesBackButton = YES;
-		[items addObject:self.dropDownViewController.navigationItem];
-		[self.navigationController.navigationBar setItems:items animated:YES];
+		[self.navigationItem setRightBarButtonItem:dropDownViewController.navigationItem.rightBarButtonItem animated:YES];
+		[dropDownViewController.navigationItem addObserver:self forKeyPath:@"rightBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
 
 		CGRect frame = self.view.bounds;
 		dropDownViewController.view.frame = frame;
@@ -96,16 +103,6 @@
 								  duration:animated ? NCMainMenuDropDownSegueAnimationDuration : 0.0f
 								   options:UIViewAnimationOptionAllowAnimatedContent
 								animations:^{
-/*									if (animated) {
-										CAKeyframeAnimation* animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-										animation.keyTimes = @[@(0.0), @(0.6), @(0.8), @(1.0)];
-										animation.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0.0f, -frame.size.height, 0.0f)],
-															 [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0.0f, 10.0f, 0.0f)],
-															 [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(0.0f, -5.0f, 0.0f)],
-															 [NSValue valueWithCATransform3D:CATransform3DIdentity]];
-										animation.duration = 0.5f;
-										[dropDownViewController.view.layer addAnimation:animation forKey:@"transform"];
-									}*/
 									dropDownViewController.view.transform = CGAffineTransformIdentity;
 									[self.navigationController updateScrollViewFromViewController:self toViewController:self.dropDownViewController];
 								}
@@ -121,9 +118,8 @@
 
 - (void) dismissDropDownViewControllerAnimated:(BOOL) animated {
 	if (self.dropDownViewController) {
-		NSMutableArray* items = [NSMutableArray arrayWithArray:self.navigationController.navigationBar.items];
-		[items removeLastObject];
-		[self.navigationController.navigationBar setItems:items animated:YES];
+		[self.dropDownViewController.navigationItem removeObserver:self forKeyPath:@"rightBarButtonItem"];
+		[self.navigationItem setRightBarButtonItem:nil animated:YES];
 
 		[self.dropDownViewController willMoveToParentViewController:nil];
 		self.navigationCharacterButton.userInteractionEnabled = NO;

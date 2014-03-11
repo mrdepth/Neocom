@@ -359,6 +359,16 @@
 		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
 		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
+		12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3A18CF08AE00D05D60 /* buttonBackNormal.png */; };
+		12B5AE4118CF08AF00D05D60 /* buttonBackNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3B18CF08AE00D05D60 /* buttonBackNormal@2x.png */; };
+		12B5AE4218CF08AF00D05D60 /* buttonBackSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3C18CF08AF00D05D60 /* buttonBackSelected.png */; };
+		12B5AE4318CF08AF00D05D60 /* buttonBackSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3D18CF08AF00D05D60 /* buttonBackSelected@2x.png */; };
+		12B5AE4418CF08AF00D05D60 /* navigationBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3E18CF08AF00D05D60 /* navigationBar.png */; };
+		12B5AE4518CF08AF00D05D60 /* navigationBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3F18CF08AF00D05D60 /* navigationBar@2x.png */; };
+		12B5AE4C18CF0A0D00D05D60 /* buttonBackgroundNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4818CF0A0D00D05D60 /* buttonBackgroundNormal.png */; };
+		12B5AE4D18CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */; };
+		12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */; };
+		12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */; };
 		12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */; };
 		12B97D2C18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */; };
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
@@ -1207,6 +1217,16 @@
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
+		12B5AE3A18CF08AE00D05D60 /* buttonBackNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackNormal.png; sourceTree = "<group>"; };
+		12B5AE3B18CF08AE00D05D60 /* buttonBackNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackNormal@2x.png"; sourceTree = "<group>"; };
+		12B5AE3C18CF08AF00D05D60 /* buttonBackSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackSelected.png; sourceTree = "<group>"; };
+		12B5AE3D18CF08AF00D05D60 /* buttonBackSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackSelected@2x.png"; sourceTree = "<group>"; };
+		12B5AE3E18CF08AF00D05D60 /* navigationBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationBar.png; sourceTree = "<group>"; };
+		12B5AE3F18CF08AF00D05D60 /* navigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBar@2x.png"; sourceTree = "<group>"; };
+		12B5AE4818CF0A0D00D05D60 /* buttonBackgroundNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundNormal.png; sourceTree = "<group>"; };
+		12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundNormal@2x.png"; sourceTree = "<group>"; };
+		12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundSelected.png; sourceTree = "<group>"; };
+		12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundSelected@2x.png"; sourceTree = "<group>"; };
 		12B97D2818AB465800ECCFC3 /* NCFittingPOSStructuresTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStructuresTableHeaderView.h; sourceTree = "<group>"; };
 		12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStructuresTableHeaderView.m; sourceTree = "<group>"; };
 		12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingPOSStructuresTableHeaderView.xib; sourceTree = "<group>"; };
@@ -2972,6 +2992,16 @@
 				849B9F791896D0CF00D4DD2B /* battleclinic@2x.png */,
 				123A97FA18C714B7001045F5 /* rss.png */,
 				123A97FB18C714B7001045F5 /* rss@2x.png */,
+				12B5AE4818CF0A0D00D05D60 /* buttonBackgroundNormal.png */,
+				12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */,
+				12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */,
+				12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */,
+				12B5AE3A18CF08AE00D05D60 /* buttonBackNormal.png */,
+				12B5AE3B18CF08AE00D05D60 /* buttonBackNormal@2x.png */,
+				12B5AE3C18CF08AF00D05D60 /* buttonBackSelected.png */,
+				12B5AE3D18CF08AF00D05D60 /* buttonBackSelected@2x.png */,
+				12B5AE3E18CF08AF00D05D60 /* navigationBar.png */,
+				12B5AE3F18CF08AF00D05D60 /* navigationBar@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -4171,20 +4201,26 @@
 				12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */,
 				128D29B718BDC73A003B8E03 /* NCTableViewHeaderView.xib in Resources */,
 				841534F0188A9A7500B42433 /* Database.storyboard in Resources */,
+				12B5AE4C18CF0A0D00D05D60 /* buttonBackgroundNormal.png in Resources */,
 				849B9FD31896D24A00D4DD2B /* slotLow.png in Resources */,
 				849B9FC31896D24A00D4DD2B /* kinetic.png in Resources */,
+				12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */,
 				849B9FD51896D24A00D4DD2B /* slotRig.png in Resources */,
 				12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */,
 				849B9FB41896D24A00D4DD2B /* calibration.png in Resources */,
+				12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */,
 				125F6816188526B6005732FA /* level_500.gif in Resources */,
 				849B9FD41896D24A00D4DD2B /* slotMed.png in Resources */,
 				12A7DB9918B3497B00343D25 /* index.html in Resources */,
 				849B9FC61896D24A00D4DD2B /* Magnetometric.png in Resources */,
+				12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */,
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
 				84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */,
+				12B5AE4518CF08AF00D05D60 /* navigationBar@2x.png in Resources */,
 				849B9FC21896D24A00D4DD2B /* implant.png in Resources */,
+				12B5AE4418CF08AF00D05D60 /* navigationBar.png in Resources */,
 				849B9FC81896D24A00D4DD2B /* offline.png in Resources */,
 				849B9FB31896D24A00D4DD2B /* booster.png in Resources */,
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
@@ -4194,6 +4230,7 @@
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				849B9FD11896D24A00D4DD2B /* signature.png in Resources */,
+				12B5AE4D18CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png in Resources */,
 				849B9FB71896D24A00D4DD2B /* cpu.png in Resources */,
 				849B9FBC1896D24A00D4DD2B /* droneCapacity.png in Resources */,
 				84EEFCE61896C69C007962A0 /* caldariState@2x.png in Resources */,
@@ -4244,6 +4281,7 @@
 				125F6814188526B6005732FA /* level_450.gif in Resources */,
 				125F680D188526B6005732FA /* level_251.gif in Resources */,
 				849B9FCA1896D24A00D4DD2B /* overheated.png in Resources */,
+				12B5AE4118CF08AF00D05D60 /* buttonBackNormal@2x.png in Resources */,
 				849B9F7A1896D0CF00D4DD2B /* battleclinic@2x.png in Resources */,
 				125F67FC188526B6005732FA /* level_050.gif in Resources */,
 				849B9FD21896D24A00D4DD2B /* slotHigh.png in Resources */,
@@ -4256,6 +4294,7 @@
 				849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */,
 				849B9FC11896D24A00D4DD2B /* hullRepairer.png in Resources */,
 				849B9FAE1896D24A00D4DD2B /* add.png in Resources */,
+				12B5AE4218CF08AF00D05D60 /* buttonBackSelected.png in Resources */,
 				129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */,
 				84EEFCEF1896C69C007962A0 /* menuIcon@2x.png in Resources */,
 				126ED32D188144370009FA39 /* mainMenu.plist in Resources */,
@@ -4276,6 +4315,7 @@
 				849B9FB61896D24A00D4DD2B /* cargo.png in Resources */,
 				84EEFCE71896C69C007962A0 /* concord@2x.png in Resources */,
 				84EEFCEA1896C69C007962A0 /* minmatarRepublic@2x.png in Resources */,
+				12B5AE4318CF08AF00D05D60 /* buttonBackSelected@2x.png in Resources */,
 				849B9FCF1896D24A00D4DD2B /* shieldBooster.png in Resources */,
 				84EEFCE31896C69C007962A0 /* amarrEmpire@2x.png in Resources */,
 				849B9FC91896D24A00D4DD2B /* online.png in Resources */,

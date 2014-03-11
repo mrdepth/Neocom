@@ -26,11 +26,15 @@
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
+
+- (void) setupAppearance;
 @end
 
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[self setupAppearance];
+	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDID])
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDID];
 
@@ -227,4 +231,36 @@
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
 
+- (void) setupAppearance {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+		[[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+/*		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateNormal
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateHighlighted
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDone.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateNormal
+												   style:UIBarButtonItemStyleDone
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundDoneSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												forState:UIControlStateHighlighted
+												   style:UIBarButtonItemStyleDone
+											  barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+														  forState:UIControlStateNormal
+														barMetrics:UIBarMetricsDefault];
+		[[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"buttonBackSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 15, 0, 6)]
+														  forState:UIControlStateHighlighted
+														barMetrics:UIBarMetricsDefault];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar.png"] forBarMetrics:UIBarMetricsDefault];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+		[[UITableView appearance] setSeparatorColor:[UIColor darkGrayColor]];
+		[[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
+		[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
+		[[UISearchBar appearance] setScopeBarBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];*/
+		
+	}
+}
 @end

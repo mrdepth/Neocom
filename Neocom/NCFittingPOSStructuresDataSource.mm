@@ -51,7 +51,6 @@
 @synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
-	self.rows = nil;
 	if (self.tableView.dataSource == self)
 		[self.tableView reloadData];
 	
@@ -288,6 +287,10 @@
 	void (^remove)(eufe::StructuresList) = ^(eufe::StructuresList structures){
 		for (auto structure: structures)
 			controlTower->removeStructure(structure);
+		NSMutableArray* rows = [self.rows mutableCopy];
+		[rows removeObjectAtIndex:indexPath.row];
+		self.rows = rows;
+
 		[self.controller reload];
 	};
 	
@@ -425,7 +428,7 @@
 		}
 	}
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 				  destructiveButtonTitle:ActionButtonDelete

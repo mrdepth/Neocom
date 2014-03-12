@@ -245,6 +245,7 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="KeyID 77777 Access Mask 25555555">
+                                                <color key="titleColor" red="0.98039215686274506" green="0.61960784313725492" blue="0.054901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <state key="highlighted">
@@ -382,6 +383,7 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="KeyID 77777 Access Mask 25555555">
+                                                <color key="titleColor" red="0.98039215690000003" green="0.61960784310000006" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <state key="highlighted">

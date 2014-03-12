@@ -155,6 +155,10 @@
 		[self reload];
 }
 
+- (BOOL) initiallySectionIsCollapsed:(NSInteger)section {
+	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? [self.masteriesSections[section][@"collapsed"] boolValue]: YES;
+}
+
 #pragma mark - Private
 
 - (void) reload {
@@ -214,6 +218,7 @@
 													 [rows addObject:row];
 												 }
 												 NSString* title;
+												 BOOL collapsed;
 												 if (trainingQueue.trainingTime > 0.0) {
 													 NCDatabaseCertificateInfoViewControllerRow* row = [NCDatabaseCertificateInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Add required skills to training plan", nil);
@@ -223,12 +228,14 @@
 													 [rows insertObject:row atIndex:0];
 
 													 title = [NSString stringWithFormat:NSLocalizedString(@"%Mastery %d (%@)", nil), masteryLevel + 1, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+													 collapsed = NO;
 												 }
 												 else {
 													 title = [NSString stringWithFormat:NSLocalizedString(@"%Mastery %d", nil), masteryLevel + 1];
 													 availableMasteryLevel++;
+													 collapsed = YES;
 												 }
-												 [masteriesSections addObject:@{@"title": title, @"rows": rows}];
+												 [masteriesSections addObject:@{@"title": title, @"rows": rows, @"collapsed": @(collapsed)}];
 												 masteryLevel++;
 											 }
 											 

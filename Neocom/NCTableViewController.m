@@ -56,12 +56,16 @@
 																					   NSForegroundColorAttributeName: [UIColor whiteColor]}];
 	self.refreshControl = refreshControl;
 
-	[self performSelector:@selector(update) withObject:nil afterDelay:0];
-	//[self.tableView registerNib:[UINib nibWithNibName:@"NCTableViewHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
-	if ([self.tableView isKindOfClass:[CollapsableTableView class]])
+	
+	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		[self.tableView registerClass:[NCTableViewCollapsedHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
-	else
+	}
+	else {
 		[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	}
+	
+	if (self.searchDisplayController)
+		[self.searchDisplayController.searchResultsTableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
@@ -71,13 +75,18 @@
 		}];
 	}
 	self.sectionsCollapsState = [NSMutableDictionary new];
-	//[self update];
+	
+	[self performSelector:@selector(update) withObject:nil afterDelay:0];
 }
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[self.taskManager cancelAllOperations];
+//	self.searchDisplayController.searchResultsDataSource = nil;
+//	self.searchDisplayController.searchResultsDelegate = nil;
+//	self.searchDisplayController.delegate = nil;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -311,7 +320,7 @@
 		return [state boolValue];
 	}
 	else
-		return NO;
+		return [self initiallySectionIsCollapsed:section];
 }
 
 - (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {

@@ -388,6 +388,11 @@
 		12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50756189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m */; };
 		12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C5075E189BCC110064AC32 /* UIImage+Neocom.m */; };
 		12C50763189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */; };
+		12C66E4E18D026690037124A /* arrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E4D18D026690037124A /* arrowDown@2x.png */; };
+		12C66E5218D034880037124A /* segmentedControlDivider.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E5018D034870037124A /* segmentedControlDivider.png */; };
+		12C66E5318D034880037124A /* segmentedControlDivider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E5118D034870037124A /* segmentedControlDivider@2x.png */; };
+		12C66E5618D0377C0037124A /* toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E5418D0377C0037124A /* toolbar.png */; };
+		12C66E5718D0377C0037124A /* toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C66E5518D0377C0037124A /* toolbar@2x.png */; };
 		12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */; };
 		12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EE9D1886B51D00F90763 /* NCTrainingQueue.m */; };
 		12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C7EEA11886CFB100F90763 /* NCSkillHierarchy.m */; };
@@ -1263,6 +1268,11 @@
 		12C5075E189BCC110064AC32 /* UIImage+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Neocom.m"; sourceTree = "<group>"; };
 		12C50761189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorViewController.h; sourceTree = "<group>"; };
 		12C50762189BDD0F0064AC32 /* NCFittingCharacterEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorViewController.m; sourceTree = "<group>"; };
+		12C66E4D18D026690037124A /* arrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrowDown@2x.png"; sourceTree = "<group>"; };
+		12C66E5018D034870037124A /* segmentedControlDivider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = segmentedControlDivider.png; sourceTree = "<group>"; };
+		12C66E5118D034870037124A /* segmentedControlDivider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segmentedControlDivider@2x.png"; sourceTree = "<group>"; };
+		12C66E5418D0377C0037124A /* toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar.png; sourceTree = "<group>"; };
+		12C66E5518D0377C0037124A /* toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar@2x.png"; sourceTree = "<group>"; };
 		12C7EE691886741900F90763 /* NCDatabaseTypeInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeInfoViewController.h; sourceTree = "<group>"; };
 		12C7EE6A1886741900F90763 /* NCDatabaseTypeInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeInfoViewController.m; sourceTree = "<group>"; };
 		12C7EE9C1886B51D00F90763 /* NCTrainingQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTrainingQueue.h; sourceTree = "<group>"; };
@@ -2999,6 +3009,9 @@
 				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
+				12C66E5418D0377C0037124A /* toolbar.png */,
+				12C66E5518D0377C0037124A /* toolbar@2x.png */,
+				12C66E4D18D026690037124A /* arrowDown@2x.png */,
 				127C50B618CF52D90074877C /* clear.png */,
 				12D011BD18A2101400C0A228 /* checkmark.png */,
 				12D011BE18A2101400C0A228 /* checkmark@2x.png */,
@@ -3023,6 +3036,8 @@
 				127C50BC18CF550B0074877C /* buttonBackgroundDone@2x.png */,
 				127C50BD18CF550B0074877C /* buttonBackgroundDoneSelected.png */,
 				127C50BE18CF550B0074877C /* buttonBackgroundDoneSelected@2x.png */,
+				12C66E5018D034870037124A /* segmentedControlDivider.png */,
+				12C66E5118D034870037124A /* segmentedControlDivider@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -4237,6 +4252,7 @@
 				849B9FC61896D24A00D4DD2B /* Magnetometric.png in Resources */,
 				12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */,
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
+				12C66E5218D034880037124A /* segmentedControlDivider.png in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
 				84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */,
@@ -4260,8 +4276,10 @@
 				849B9FB01896D24A00D4DD2B /* armor.png in Resources */,
 				849B9FDA1896D24A00D4DD2B /* thumbsDown.png in Resources */,
 				125F6807188526B6005732FA /* level_200.gif in Resources */,
+				12C66E5318D034880037124A /* segmentedControlDivider@2x.png in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
+				12C66E5718D0377C0037124A /* toolbar@2x.png in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
 				127C50C118CF550C0074877C /* buttonBackgroundDone.png in Resources */,
 				125F680A188526B6005732FA /* level_240.gif in Resources */,
@@ -4282,6 +4300,7 @@
 				84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
 				849B9FC41896D24A00D4DD2B /* Ladar.png in Resources */,
+				12C66E5618D0377C0037124A /* toolbar.png in Resources */,
 				125F67F4188526B6005732FA /* level_010.gif in Resources */,
 				849B9FD91896D24A00D4DD2B /* thermal.png in Resources */,
 				849B9FB51896D24A00D4DD2B /* capacitor.png in Resources */,
@@ -4356,6 +4375,7 @@
 				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
 				12430BBB18C881EA0025D971 /* Help.storyboard in Resources */,
+				12C66E4E18D026690037124A /* arrowDown@2x.png in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
 				12F9562B18CDFC51005CEAD6 /* Types in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,

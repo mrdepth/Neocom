@@ -75,9 +75,9 @@
 	__block float totalCalibration = 0;
 	__block float usedCalibration = 0;
 	
-	self.sections = nil;
-	if (self.tableView.dataSource == self)
+	if (self.tableView.dataSource == self) {
 		[self.tableView reloadData];
+	}
 
 	NSMutableArray* sections = [NSMutableArray new];
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -131,8 +131,9 @@
 												self.tableHeaderView.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) usedCalibration, (int) totalCalibration];
 												self.tableHeaderView.calibrationLabel.progress = totalCalibration > 0 ? usedCalibration / totalCalibration : 0;
 
-												if (self.tableView.dataSource == self)
+												if (self.tableView.dataSource == self) {
 													[self.tableView reloadData];
+												}
 											}
 										}];
 }
@@ -152,7 +153,10 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
 	NCFittingShipModulesDataSourceSection* section = self.sections[sectionIndex];
-	return std::max(section.numberOfSlots, static_cast<int>(section.modules.size()));
+	if (!section)
+		return 0;
+	else
+		return std::max(section.numberOfSlots, static_cast<int>(section.modules.size()));
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -400,8 +404,10 @@
 	eufe::Module::State state = module->getState();
 	
 	void (^remove)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		for (auto module: modules)
+		for (auto module: modules) {
+			section.modules.erase(std::find(section.modules.begin(), section.modules.end(), module));
 			ship->removeModule(module);
+		}
 		[self.controller reload];
 	};
 	
@@ -511,7 +517,7 @@
 	};
 	
 	void (^changeState)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 					  destructiveButtonTitle:nil
@@ -582,7 +588,7 @@
 			}
 		}
 		
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 					  destructiveButtonTitle:ActionButtonDelete
@@ -650,7 +656,7 @@
 		[actions addObject:similarModules];
 	}
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 				  destructiveButtonTitle:ActionButtonDelete

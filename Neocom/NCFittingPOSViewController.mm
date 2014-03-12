@@ -261,7 +261,7 @@
 	}
 	
 	
-	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+	self.actionSheet = [UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 													 title:nil
 										 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 									destructiveButtonTitle:nil

@@ -20,7 +20,7 @@
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NCPriceManager.h"
-
+#import "NCTableViewHeaderView.h"
 
 @interface NCFittingShipStatsDataSourceShipStats : NSObject
 @property (nonatomic, assign) float totalPG;
@@ -105,7 +105,9 @@
 
 - (void) reload {
 	NCFittingShipStatsDataSourceShipStats* stats = [NCFittingShipStatsDataSourceShipStats new];
-	
+	if (self.tableView.dataSource == self)
+		[self.tableView reloadData];
+
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
@@ -442,15 +444,14 @@
 		return nil;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
 
-/*- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	if (title) {
-		CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
-		view.titleLabel.text = title;
-		view.collapsImageView.hidden = YES;
+		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+		view.textLabel.text = title;
 		return view;
 	}
 	else
@@ -458,8 +459,8 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
-}*/
+	return UITableViewAutomaticDimension;
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44;

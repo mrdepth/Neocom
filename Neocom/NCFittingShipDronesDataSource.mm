@@ -46,9 +46,9 @@
 @synthesize tableHeaderView = _tableHeaderView;
 
 - (void) reload {
-	self.rows = nil;
-	if (self.tableView.dataSource == self)
+	if (self.tableView.dataSource == self) {
 		[self.tableView reloadData];
+	}
 
 	__block float totalDB = 0;
 	__block float usedDB = 0;
@@ -95,8 +95,9 @@
 											if (![task isCancelled]) {
 												self.rows = rows;
 												
-												if (self.tableView.dataSource == self)
+												if (self.tableView.dataSource == self) {
 													[self.tableView reloadData];
+												}
 												
 												self.tableHeaderView.droneBayLabel.text = [NSString stringWithTotalResources:totalDB usedResources:usedDB unit:@"m3"];
 												self.tableHeaderView.droneBayLabel.progress = totalDB > 0 ? usedDB / totalDB : 0;
@@ -255,6 +256,9 @@
 	void (^remove)(eufe::DronesList) = ^(eufe::DronesList drones){
 		for (auto drone: drones)
 			ship->removeDrone(drone);
+		NSMutableArray* rows = [self.rows mutableCopy];
+		[rows removeObjectAtIndex:indexPath.row];
+		self.rows = rows;
 		[self.controller reload];
 	};
 	
@@ -330,7 +334,7 @@
 		}
 	}
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 				  destructiveButtonTitle:ActionButtonDelete

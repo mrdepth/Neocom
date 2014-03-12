@@ -50,7 +50,7 @@
 }
 
 - (void) dealloc {
-	[self.searchDisplayController.searchBar removeFromSuperview]; //Avoid crash
+	//[self.searchDisplayController.searchBar removeFromSuperview]; //Avoid crash
 }
 
 - (void) viewWillAppear:(BOOL)animated {

@@ -17,6 +17,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCFittingPOSStructuresTableHeaderView.h"
 #import "NCPriceManager.h"
+#import "NCTableViewHeaderView.h"
 
 
 @interface NCFittingPOSStatsDataSourcePOSStats : NSObject
@@ -272,24 +273,23 @@
 		return nil;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
 
-/*- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
- NSString* title = [self tableView:tableView titleForHeaderInSection:section];
- if (title) {
- CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
- view.titleLabel.text = title;
- view.collapsImageView.hidden = YES;
- return view;
- }
- else
- return nil;
- }
- 
- - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
- return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
- }*/
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+		view.textLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return UITableViewAutomaticDimension;
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44;

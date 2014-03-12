@@ -68,10 +68,13 @@
 		self.groups = nil;
 		self.conditionsTables = nil;
 
+		for (UIViewController* controller in self.viewControllers)
+			if ([controller.searchDisplayController isActive])
+				[controller.searchDisplayController setActive:NO animated:NO];
+
 		if (self.viewControllers.count > 1)
 			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
-		if ([[self.viewControllers[0] searchDisplayController] isActive])
-			[[self.viewControllers[0] searchDisplayController] setActive:NO animated:NO];
+		
 		[self.viewControllers[0] setGroups:nil];
 		[self.viewControllers[0] setGroupID:0];
 	}

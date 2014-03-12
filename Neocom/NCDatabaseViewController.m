@@ -36,11 +36,11 @@
 		[self reload];
 	}
 	if (self.filter == NCDatabaseFilterAll)
-		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"All", nil) forState:UIControlStateNormal];
+		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"All", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 	else if (self.filter == NCDatabaseFilterPublished)
-		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"Published", nil) forState:UIControlStateNormal];
+		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"Published", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 	else if (self.filter == NCDatabaseFilterPublished)
-		[(UIButton*) self.navigationItem.titleView setTitle:NSLocalizedString(@"Unpublished", nil) forState:UIControlStateNormal];
+		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"Unpublished", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -87,7 +87,7 @@
 									 self.filter = NCDatabaseFilterPublished;
 								 else if (selectedButtonIndex == 2)
 									 self.filter = NCDatabaseFilterUnpublished;
-								 [sender setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
+								 [sender setTitle:[[actionSheet buttonTitleAtIndex:selectedButtonIndex] stringByAppendingString:@"  \u25BE"] forState:UIControlStateNormal];
 								 [self reload];
 							 }
 						 }

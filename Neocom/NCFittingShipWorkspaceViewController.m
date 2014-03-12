@@ -7,6 +7,7 @@
 //
 
 #import "NCFittingShipWorkspaceViewController.h"
+#import "NCTableViewHeaderView.h"
 
 @interface NCFittingShipWorkspaceViewController ()
 
@@ -28,6 +29,7 @@
     [super viewDidLoad];
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHedaerView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHedaerView"];
 	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHedaerView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHedaerView"];
+	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

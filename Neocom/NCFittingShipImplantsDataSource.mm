@@ -27,9 +27,6 @@
 @implementation NCFittingShipImplantsDataSource
 
 - (void) reload {
-	self.implants = std::vector<eufe::Implant*>(10, nullptr);
-	self.boosters = std::vector<eufe::Booster*>(4, nullptr);
-	
 	if (self.tableView.dataSource == self)
 		[self.tableView reloadData];
 
@@ -139,9 +136,9 @@
 	}
 }
 
-/*- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 25;
-}*/
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return section == 0 ? 0 : 24;
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44;
@@ -207,17 +204,21 @@
 			}
 		}
 		else {
-			[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+			[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 										   title:nil
 							   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 						  destructiveButtonTitle:ActionButtonDelete
 							   otherButtonTitles:@[ActionButtonShowInfo, ActionButtonAffectingSkills]
 								 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 									 if (selectedButtonIndex == actionSheet.destructiveButtonIndex) {
-										 if (indexPath.section == 0)
+										 if (indexPath.section == 1) {
 											 self.controller.fit.pilot->removeImplant(self.implants[indexPath.row]);
-										 else
+											 _implants[indexPath.row] = nullptr;
+										 }
+										 else if (indexPath.section == 2) {
 											 self.controller.fit.pilot->removeBooster(self.boosters[indexPath.row]);
+											 _boosters[indexPath.row] = nullptr;
+										 }
 										 [self.controller reload];
 									 }
 									 else if (selectedButtonIndex == 1) {

@@ -10,6 +10,7 @@
 #import "NCFittingPOSViewController.h"
 #import "NCTableViewCell.h"
 #import "NSArray+Neocom.h"
+#import "NCTableViewHeaderView.h"
 
 @interface NCFittingPOSAssemblyLinesDataSourceRow : NSObject
 @property (nonatomic, strong) EVEDBRamAssemblyLineType* assemblyLineType;
@@ -121,8 +122,23 @@
 	return row.assemblyLineType.activity.activityName;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+		view.textLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return UITableViewAutomaticDimension;
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 44;

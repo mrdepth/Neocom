@@ -218,7 +218,7 @@
 	};
 	
 	void (^booster)() = ^(){
-		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+		[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 					  destructiveButtonTitle:isBooster && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? ActionButtonRemoveBooster : nil
@@ -273,7 +273,7 @@
 		[actions addObject:booster];
 	}
 	
-	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackOpaque
+	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", )
 				  destructiveButtonTitle:ActionButtonDelete

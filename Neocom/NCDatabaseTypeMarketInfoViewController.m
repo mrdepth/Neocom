@@ -152,11 +152,11 @@
 	_mode = mode;
 	UIButton* button = (UIButton*) self.navigationItem.titleView;
 	if (mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
-		[button setTitle:NSLocalizedString(@"Summary", nil) forState:UIControlStateNormal];
+		[button setTitle:[NSLocalizedString(@"Summary", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 	else if (mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
-		[button setTitle:NSLocalizedString(@"Sell orders", nil) forState:UIControlStateNormal];
+		[button setTitle:[NSLocalizedString(@"Sell orders", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 	else
-		[button setTitle:NSLocalizedString(@"Buy orders", nil) forState:UIControlStateNormal];
+		[button setTitle:[NSLocalizedString(@"Buy orders", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

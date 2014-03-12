@@ -33,6 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.group)
+		self.title = self.group.groupName;
 	self.refreshControl = nil;
 	
 	[self reload];

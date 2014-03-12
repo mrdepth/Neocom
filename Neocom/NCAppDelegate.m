@@ -261,6 +261,27 @@
 		[[UISearchBar appearance] setSearchFieldBackgroundImage:[[UIImage imageNamed:@"textFieldBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 17, 0, 17)] forState:UIControlStateNormal];
 		[[UISearchBar appearance] setScopeBarBackgroundImage:[UIImage imageNamed:@"toolbar.png"]];
 		
+		
+		[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundNormal.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												   forState:UIControlStateNormal
+												 barMetrics:UIBarMetricsDefault];
+		[[UISegmentedControl appearance] setBackgroundImage:[[UIImage imageNamed:@"buttonBackgroundSelected.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]
+												   forState:UIControlStateSelected
+												 barMetrics:UIBarMetricsDefault];
+		[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+									 forLeftSegmentState:UIControlStateNormal
+									   rightSegmentState:UIControlStateSelected
+											  barMetrics:UIBarMetricsDefault];
+		[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+									 forLeftSegmentState:UIControlStateSelected
+									   rightSegmentState:UIControlStateNormal
+											  barMetrics:UIBarMetricsDefault];
+		[[UISegmentedControl appearance] setDividerImage:[[UIImage imageNamed:@"segmentedControlDivider.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 0, 4, 0)]
+									 forLeftSegmentState:UIControlStateNormal
+									   rightSegmentState:UIControlStateNormal
+											  barMetrics:UIBarMetricsDefault];
+		[[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+
 	}
 }
 @end

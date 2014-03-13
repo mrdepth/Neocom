@@ -18,20 +18,27 @@
 @implementation NCSkillData
 
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes {
+	return [self skillPointsToLevelUp] / [attributes skillpointsPerSecondForSkill:self];
+}
+
+- (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes {
+	return [self skillPointsToFinish] / [attributes skillpointsPerSecondForSkill:self];
+}
+
+- (NSInteger) skillPointsToFinish {
+	float sp = [self skillPointsAtLevel:self.currentLevel];
+	float targetSP = self.targetSkillPoints;
+	sp = MAX(sp, self.skillPoints);
+	return targetSP > sp ? (targetSP - sp) : 0;
+}
+
+- (NSInteger) skillPointsToLevelUp {
 	float sp = [self skillPointsAtLevel:self.currentLevel];
 	float targetSP = [self skillPointsAtLevel:self.currentLevel + 1];
 	sp = MAX(sp, self.skillPoints);
 	targetSP = MIN(self.targetSkillPoints, targetSP);
-
-	return targetSP > sp ? (targetSP - sp) / [attributes skillpointsPerSecondForSkill:self] : 0.0;
-}
-
-- (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes {
-	float sp = [self skillPointsAtLevel:self.currentLevel];
-	float targetSP = self.targetSkillPoints;
-	sp = MAX(sp, self.skillPoints);
 	
-	return targetSP > sp ? (targetSP - sp) / [attributes skillpointsPerSecondForSkill:self] : 0.0;
+	return targetSP > sp ? (targetSP - sp) : 0;
 }
 
 - (void) setTargetLevel:(NSInteger)targetLevel {

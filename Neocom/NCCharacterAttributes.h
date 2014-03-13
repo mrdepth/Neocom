@@ -10,6 +10,7 @@
 
 @class EVEDBInvType;
 @class EVECharacterSheet;
+@class NCTrainingQueue;
 @interface NCCharacterAttributes : NSObject<NSCoding>
 @property (nonatomic, assign) NSInteger intelligence;
 @property (nonatomic, assign) NSInteger memory;
@@ -18,6 +19,7 @@
 @property (nonatomic, assign) NSInteger willpower;
 
 + (instancetype) defaultCharacterAttributes;
++ (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
 - (float) skillpointsPerSecondForSkill:(EVEDBInvType*) skill;
 

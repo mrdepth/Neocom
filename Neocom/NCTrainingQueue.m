@@ -132,12 +132,13 @@
 
 - (NSTimeInterval) trainingTime {
 	if (_trainingTime < 0) {
-		_trainingTime = 0;
+		/*_trainingTime = 0;
 		
 		for (NCSkillData *skill in self.skills) {
 			if (skill.currentLevel < skill.targetLevel)
 				_trainingTime += skill.trainingTimeToLevelUp;
-		}
+		}*/
+		_trainingTime = [self trainingTimeWithCharacterAttributes:self.characterAttributes];
 	}
 	return _trainingTime;
 }
@@ -153,6 +154,15 @@
 	return xml;
 }
 
+- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes {
+	NSTimeInterval trainingTime = 0;
+	
+	for (NCSkillData *skill in self.skills) {
+		if (skill.currentLevel < skill.targetLevel)
+			trainingTime += [skill trainingTimeToLevelUpWithCharacterAttributes:characterAttributes];
+	}
+	return trainingTime;
+}
 
 #pragma mark - NSCopying
 

@@ -16,6 +16,7 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NSArray+Neocom.h"
 #import "NSData+Neocom.h"
+#import "NCCharacterAttributesCell.h"
 
 @interface NCSkillsViewControllerDataSection : NSObject
 @property (nonatomic, strong) NSString* title;
@@ -40,6 +41,9 @@
 @property (nonatomic, strong) NSArray* knownSkillsSections;
 @property (nonatomic, strong) NSArray* notKnownSkillsSections;
 @property (nonatomic, strong) NSArray* canTrainSkillsSections;
+
+@property (nonatomic, strong) NCCharacterAttributes* optimalAttributes;
+@property (nonatomic, assign) NSTimeInterval optimalTrainingTime;
 
 @property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
 
@@ -190,7 +194,7 @@
 			self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
 			
 			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-				[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
 			}
 		}
 	}
@@ -198,14 +202,14 @@
 		if ([NSThread isMainThread]) {
 			self.skillPlan = self.account.activeSkillPlan;
 			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-				[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
 			}
 		}
 		else {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.skillPlan = self.account.activeSkillPlan;
 				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-					[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
 				}
 			});
 		}
@@ -222,7 +226,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
-			return 2.0;
+			return 3;
 		case NCSkillsViewControllerModeKnownSkills:
 			return self.knownSkillsSections.count;
 		case NCSkillsViewControllerModeAllSkills:
@@ -238,8 +242,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	switch (self.mode) {
-		case NCSkillsViewControllerModeTrainingQueue:
-			return section == 0 ? self.skillQueueRows.count : self.skillPlan.trainingQueue.skills.count;
+		case NCSkillsViewControllerModeTrainingQueue: {
+			if (section == 0)
+				return self.skillQueueRows.count;
+			else if (section == 1)
+				return self.skillPlan.trainingQueue.skills.count;
+			else
+				return self.skillPlan.trainingQueue.skills.count > 0 ? 2 : 0;
+		}
 		case NCSkillsViewControllerModeKnownSkills:
 			return [[self.knownSkillsSections[section] rows] count];
 		case NCSkillsViewControllerModeAllSkills:
@@ -254,6 +264,87 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2) {
+		if (indexPath.row == 0) {
+			NCCharacterAttributesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCCharacterAttributesCell"];
+			
+			EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
+			
+			EVECharacterSheet* characterSheet = self.account.characterSheet;
+			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+				switch (enhancer.attribute) {
+					case EVECharacterAttributeCharisma:
+						charismaEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeIntelligence:
+						intelligenceEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeMemory:
+						memoryEnhancer = enhancer;
+						break;
+					case EVECharacterAttributePerception:
+						perceptionEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeWillpower:
+						willpowerEnhancer = enhancer;
+						break;
+				}
+			}
+			
+			NSInteger intelligenceDiff = characterSheet.attributes.intelligence - self.optimalAttributes.intelligence;
+			NSInteger memoryDiff = characterSheet.attributes.memory - self.optimalAttributes.memory;
+			NSInteger perceptionDiff = characterSheet.attributes.perception - self.optimalAttributes.perception;
+			NSInteger willpowerDiff = characterSheet.attributes.willpower - self.optimalAttributes.willpower;
+			NSInteger charismaDiff = characterSheet.attributes.charisma - self.optimalAttributes.charisma;
+			
+			NSAttributedString* (^attributesString)(NSInteger, EVECharacterSheetAttributeEnhancer*, NSInteger) = ^(NSInteger attribute, EVECharacterSheetAttributeEnhancer* enhancer, NSInteger currentAttribute) {
+				NSString* text;
+				if (enhancer)
+					text = [NSString stringWithFormat:@"%d (%d + %d)",
+							attribute + enhancer.augmentatorValue,
+							attribute,
+							enhancer.augmentatorValue];
+				else
+					text = [NSString stringWithFormat:@"%d", attribute];
+				
+				NSInteger dif = attribute - currentAttribute;
+				NSString* difString;
+				UIColor* color = nil;
+				if (dif > 0) {
+					difString = [NSString stringWithFormat:@" +%d", dif];
+					color = [UIColor greenColor];
+				}
+				else if (dif < 0) {
+					difString = [NSString stringWithFormat:@" %d", dif];
+					color = [UIColor redColor];
+				}
+				else
+					difString = @"";
+				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[text stringByAppendingString:difString]];
+				if (color)
+					[s addAttributes:@{NSForegroundColorAttributeName: color} range:NSMakeRange(text.length, difString.length)];
+				return s;
+			};
+
+			cell.intelligenceLabel.attributedText = attributesString(self.optimalAttributes.intelligence, intelligenceEnhancer, characterSheet.attributes.intelligence);
+			cell.memoryLabel.attributedText = attributesString(self.optimalAttributes.memory, memoryEnhancer, characterSheet.attributes.memory);
+			cell.perceptionLabel.attributedText = attributesString(self.optimalAttributes.perception, perceptionEnhancer, characterSheet.attributes.perception);
+			cell.willpowerLabel.attributedText = attributesString(self.optimalAttributes.willpower, willpowerEnhancer, characterSheet.attributes.willpower);
+			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, charismaEnhancer, characterSheet.attributes.charisma);
+			return cell;
+		}
+		else {
+			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime - self.optimalTrainingTime]];
+			return cell;
+		}
+	}
+	
 	NCSkillData* row;
 	
 	NCSkillsViewControllerData* data = self.data;
@@ -278,7 +369,7 @@
 	}
 	
 	
-	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell" forIndexPath:indexPath];
 	cell.skillData = row;
 	
 	if (row.trainedLevel >= 0) {
@@ -317,12 +408,14 @@
 		case NCSkillsViewControllerModeTrainingQueue:
 			if (section == 0)
 				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], self.skillQueueRows.count];
-			else {
+			else if (section == 1) {
 				if (self.skillPlan.trainingQueue.skills.count > 0)
 					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], self.skillPlan.trainingQueue.skills.count];
 				else
 					return NSLocalizedString(@"Skill plan is empty", nil);
 			}
+			else
+				return NSLocalizedString(@"Optimal neural remap", nil);
 		case NCSkillsViewControllerModeKnownSkills:
 			return [self.knownSkillsSections[section] title];
 		case NCSkillsViewControllerModeAllSkills:
@@ -364,6 +457,18 @@
 	[self.skillPlan save];
 }
 
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2) {
+		if (indexPath.row == 0)
+			return 76;
+		else
+			return 44;
+	}
+	else
+		return 42;
+}
 
 #pragma mark - NCTableViewController
 
@@ -614,6 +719,43 @@
 	[_account removeObserver:self forKeyPath:@"activeSkillPlan"];
 	_account = account;
 	[_account addObserver:self forKeyPath:@"activeSkillPlan" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+}
+
+- (void) setSkillPlanSkills:(NSMutableArray *)skillPlanSkills {
+	_skillPlanSkills = skillPlanSkills;
+	_optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:self.skillPlan.trainingQueue];
+	EVECharacterSheet* characterSheet = self.account.characterSheet;
+	
+	NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes new];
+	optimalAttributes.charisma = _optimalAttributes.charisma;
+	optimalAttributes.intelligence = _optimalAttributes.intelligence;
+	optimalAttributes.memory = _optimalAttributes.memory;
+	optimalAttributes.perception = _optimalAttributes.perception;
+	optimalAttributes.willpower = _optimalAttributes.willpower;
+
+	if (characterSheet) {
+		
+		for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+			switch (enhancer.attribute) {
+				case EVECharacterAttributeCharisma:
+					optimalAttributes.charisma += enhancer.augmentatorValue;
+					break;
+				case EVECharacterAttributeIntelligence:
+					optimalAttributes.intelligence += enhancer.augmentatorValue;
+					break;
+				case EVECharacterAttributeMemory:
+					optimalAttributes.memory += enhancer.augmentatorValue;
+					break;
+				case EVECharacterAttributePerception:
+					optimalAttributes.perception += enhancer.augmentatorValue;
+					break;
+				case EVECharacterAttributeWillpower:
+					optimalAttributes.willpower += enhancer.augmentatorValue;
+					break;
+			}
+		}
+	}
+	_optimalTrainingTime = [self.skillPlan.trainingQueue trainingTimeWithCharacterAttributes:optimalAttributes];
 }
 
 @end

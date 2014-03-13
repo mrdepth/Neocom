@@ -23,5 +23,6 @@
 - (void) removeSkill:(NCSkillData*) skill;
 - (void) updateSkillPointsFromAccount:(NCAccount*) account;
 - (NSString*) xmlRepresentationWithSkillPlanName:(NSString*) skillPlanName;
+- (NSTimeInterval) trainingTimeWithCharacterAttributes:(NCCharacterAttributes*) characterAttributes;
 
 @end

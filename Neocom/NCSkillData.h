@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NCCharacterAttributes* characterAttributes;
 @property (nonatomic, assign) NSTimeInterval trainingTimeToLevelUp;
 @property (nonatomic, assign) NSTimeInterval trainingTimeToFinish;
+@property (nonatomic, readonly) NSInteger skillPointsToFinish;
+@property (nonatomic, readonly) NSInteger skillPointsToLevelUp;
 
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes;
 - (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes;

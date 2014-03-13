@@ -9,6 +9,9 @@
 #import "NCCharacterAttributes.h"
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
+#import "NCTrainingQueue.h"
+#include <map>
+#include <limits>
 
 @interface NCCharacterAttributes ()
 - (NSInteger) effectiveAttributeValueWithAttributeID:(NSInteger) attributeID;
@@ -26,11 +29,103 @@
 	return attributes;
 }
 
++ (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
+	std::map<int, NSInteger> skillPoints;
+	for (NCSkillData* skill in trainingQueue.skills) {
+		EVEDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
+		EVEDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
+		int primaryAttributeID = 1 << ((int) primaryAttribute.value - 164);
+		int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - 164);
+		skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
+	}
+	
+	int basePoints = 17;
+	int bonusPoints = 14;
+	int maxPoints = 27;
+	int totalMaxPoints = basePoints * 5 + bonusPoints;
+	float minTrainingTime = std::numeric_limits<float>().max();
+	NCCharacterAttributes* characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
+	
+	for (int intelligence = basePoints; intelligence <= maxPoints; intelligence++) {
+		for (int memory = basePoints; memory <= maxPoints; memory++) {
+			for (int perception = basePoints; perception <= maxPoints; perception++) {
+				if (intelligence + memory + perception > totalMaxPoints - basePoints * 2)
+					break;
+				
+				for (int willpower = basePoints; willpower <= maxPoints; willpower++) {
+					if (intelligence + memory + perception + willpower > totalMaxPoints - basePoints)
+						break;
+					int charisma = totalMaxPoints - (intelligence + memory + perception + willpower);
+					
+					float trainingTime = 0;
+					for (auto i: skillPoints) {
+						int primaryAttribute = 0;
+						int secondaryAttribute = 0;
+						
+						switch (i.first & 0xFF) {
+							case 1 << 0:
+								primaryAttribute = charisma;
+								break;
+							case 1 << 1:
+								primaryAttribute = intelligence;
+								break;
+							case 1 << 2:
+								primaryAttribute = memory;
+								break;
+							case 1 << 3:
+								primaryAttribute = perception;
+								break;
+							case 1 << 4:
+								primaryAttribute = willpower;
+								break;
+								
+							default:
+								break;
+						}
+						switch ((i.first >> 16) & 0xFF) {
+							case 1 << 0:
+								secondaryAttribute = charisma;
+								break;
+							case 1 << 1:
+								secondaryAttribute = intelligence;
+								break;
+							case 1 << 2:
+								secondaryAttribute = memory;
+								break;
+							case 1 << 3:
+								secondaryAttribute = perception;
+								break;
+							case 1 << 4:
+								secondaryAttribute = willpower;
+								break;
+								
+							default:
+								break;
+						}
+						trainingTime += i.second / ((float) primaryAttribute + (float) secondaryAttribute / 2.0) * 60.0;
+						if (trainingTime > minTrainingTime)
+							break;
+					}
+					if (trainingTime < minTrainingTime) {
+						minTrainingTime = trainingTime;
+						characterAttributes.intelligence = intelligence;
+						characterAttributes.memory = memory;
+						characterAttributes.perception = perception;
+						characterAttributes.willpower = willpower;
+						characterAttributes.charisma = charisma;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	return characterAttributes;
+}
+
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet {
 	if (self = [super init]) {
 		if (characterSheet) {
-			self.intelligence = characterSheet.attributes.intelligence;
-			
 			self.charisma = characterSheet.attributes.charisma;
 			self.intelligence = characterSheet.attributes.intelligence;
 			self.memory = characterSheet.attributes.memory;

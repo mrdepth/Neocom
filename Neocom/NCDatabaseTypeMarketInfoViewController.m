@@ -25,7 +25,7 @@
 
 @interface NCDatabaseTypeMarketInfoViewControllerRow : NSObject<NSCoding>
 @property (nonatomic, strong) EVECentralQuickLookOrder* order;
-@property (nonatomic, assign) NSInteger jumps;
+@property (nonatomic, assign) int32_t jumps;
 @end
 
 @interface NCDatabaseTypeMarketInfoViewControllerSection : NSObject<NSCoding>
@@ -71,13 +71,13 @@
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:self.order forKey:@"order"];
-	[aCoder encodeInteger:self.jumps forKey:@"jumps"];
+	[aCoder encodeInt32:self.jumps forKey:@"jumps"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.order = [aDecoder decodeObjectForKey:@"order"];
-		self.jumps = [aDecoder decodeIntegerForKey:@"jumps"];
+		self.jumps = [aDecoder decodeInt32ForKey:@"jumps"];
 	}
 	return self;
 }
@@ -245,7 +245,7 @@
 	cell.stationLabel.text = row.order.stationName;
 	cell.jumpsLabel.text = nil;
 	
-	int reported = [[NSDate date] timeIntervalSinceDate:row.order.reportedTime] / (3600 * 24);
+	int32_t reported = [[NSDate date] timeIntervalSinceDate:row.order.reportedTime] / (3600 * 24);
 	if (reported < 0)
 		reported = 0;
 	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Reported: %dd ago", nil), reported];

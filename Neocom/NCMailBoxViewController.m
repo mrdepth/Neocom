@@ -236,7 +236,7 @@
 											 
 											 
 											 NSInteger n = numberOfUnreadMessages(inbox);
-											 NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), n] : NSLocalizedString(@"Inbox", nil);
+											 NSString* title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Inbox (%d)", nil), (int32_t) n] : NSLocalizedString(@"Inbox", nil);
 											 [sections addObject:@{@"title": title, @"rows": inbox, @"sectionID": @(0)}];
 											 
 											 for (NSDictionary* dictionary in @[corps, mailingLists]) {
@@ -244,13 +244,13 @@
 												 for (NSDictionary* dic in values) {
 													 NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
 													 NCMailBoxContact* contact = dic[@"contact"];
-													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], n] : contact.name;
+													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], (int32_t)n] : contact.name;
 													 [sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
 												 }
 											 }
 											 
 											 n = numberOfUnreadMessages(sent);
-											 title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), n] : NSLocalizedString(@"Sent", nil);
+											 title = n > 0 ? [NSString stringWithFormat:NSLocalizedString(@"Sent (%d)", nil), (int32_t) n] : NSLocalizedString(@"Sent", nil);
 											 [sections addObject:@{@"title": title, @"rows": sent, @"sectionID": @(1)}];
 										 }
 							 completionHandler:^(NCTask *task) {

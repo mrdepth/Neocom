@@ -24,7 +24,7 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.name = [aDecoder decodeObjectForKey:@"name"];
-		NSInteger solarSystemID = [aDecoder decodeIntegerForKey:@"solarSystemID"];
+		int32_t solarSystemID = [aDecoder decodeInt32ForKey:@"solarSystemID"];
 		if (solarSystemID)
 			self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:solarSystemID error:nil];
 	}
@@ -35,7 +35,7 @@
 	if (self.name)
 		[aCoder encodeObject:self.name forKey:@"name"];
 	if (self.solarSystem)
-		[aCoder encodeInteger:self.solarSystem.solarSystemID forKey:@"solarSystemID"];
+		[aCoder encodeInt32:self.solarSystem.solarSystemID forKey:@"solarSystemID"];
 }
 
 @end
@@ -78,19 +78,19 @@
 		NSMutableDictionary* results = [NSMutableDictionary new];
 		
 		for (NSNumber* locationID in ids) {
-			long long locationIDl = [locationID longLongValue];
+			int32_t locationIDl = [locationID intValue];
 			
 			NCLocationsManagerItem* name = locationsNames[locationID];
 			if (!name) {
 				
 				if (66000000 < locationIDl && locationIDl < 66014933) { //staStations
-					NSInteger locationID = (NSInteger) (locationIDl - 6000001);
+					int32_t locationID = locationIDl - 6000001;
 					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:locationID error:nil];
 					if (station)
 						name = [[NCLocationsManagerItem alloc] initWithName:station.stationName solarSystem:station.solarSystem];
 				}
 				else if (66014934 < locationIDl && locationIDl < 67999999) { //staStations
-					NSInteger locationID = (NSInteger) (locationIDl - 6000000);
+					int32_t locationID = locationIDl - 6000000;
 					EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationID)];
 					if (conquerableStation) {
 						EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
@@ -105,7 +105,7 @@
 					}
 				}
 				else if (60000000 < locationIDl && locationIDl < 61000000) { //staStations
-					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:(NSInteger) locationIDl error:nil];
+					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:locationIDl error:nil];
 					name = [[NCLocationsManagerItem alloc] initWithName:station.stationName solarSystem:station.solarSystem];
 				}
 				else if (61000000 <= locationIDl) { //ConqStations
@@ -116,7 +116,7 @@
 					}
 				}
 				else { //mapDenormalize
-					EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:(NSInteger) locationIDl error:nil];
+					EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:locationIDl error:nil];
 					if (denormalize) {
 						name = [[NCLocationsManagerItem alloc] initWithName:denormalize.itemName solarSystem:denormalize.solarSystem];
 					}

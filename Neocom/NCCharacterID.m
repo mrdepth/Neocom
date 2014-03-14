@@ -12,7 +12,7 @@
 
 @interface NCCharacterID()<NSCoding>
 @property (nonatomic, assign, readwrite) NCCharacterIDType type;
-@property (nonatomic, assign, readwrite) NSInteger characterID;
+@property (nonatomic, assign, readwrite) int32_t characterID;
 @property (nonatomic, strong, readwrite) NSString* name;
 @end
 
@@ -51,7 +51,7 @@
 		EVECharacterID* charID = [EVECharacterID characterIDWithNames:@[name] cachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
 		if (!charID || charID.characters.count == 0)
 			return nil;
-		NSInteger identifier = [charID.characters[0] characterID];
+		int32_t identifier = [charID.characters[0] characterID];
 		if (identifier == 0)
 			return nil;
 		
@@ -129,8 +129,8 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.name = [aDecoder decodeObjectForKey:@"name"];
-		self.characterID = [aDecoder decodeIntegerForKey:@"characterID"];
-		self.type = [aDecoder decodeIntegerForKey:@"type"];
+		self.characterID = [aDecoder decodeInt32ForKey:@"characterID"];
+		self.type = [aDecoder decodeInt32ForKey:@"type"];
 	}
 	return self;
 }
@@ -138,8 +138,8 @@
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	if (self.name)
 		[aCoder encodeObject:self.name forKey:@"name"];
-	[aCoder encodeInteger:self.characterID forKey:@"characterID"];
-	[aCoder encodeInteger:self.type forKey:@"type"];
+	[aCoder encodeInt32:self.characterID forKey:@"characterID"];
+	[aCoder encodeInt32:self.type forKey:@"type"];
 }
 
 @end

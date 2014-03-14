@@ -42,7 +42,7 @@
 	self.explosiveTextField.text = [NSString stringWithFormat:@"%d", (int) (self.damagePattern.explosive * 100)];
 	
 	self.totalLabel.progress = self.damagePattern.em + self.damagePattern.thermal + self.damagePattern.kinetic + self.damagePattern.explosive;
-	self.totalLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(self.totalLabel.progress * 100)];
+	self.totalLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int32_t)(self.totalLabel.progress * 100)];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -114,7 +114,7 @@
 	float explosive = [self.explosiveTextField.text floatValue] / 100.0;
 	float total = em + thermal + kinetic + explosive;
 	self.totalLabel.progress = total;
-	self.totalLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int)(total * 100)];
+	self.totalLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %d%%", nil), (int32_t)(total * 100)];
 	self.emTextField.progress = em;
 	self.thermalTextField.progress = thermal;
 	self.kineticTextField.progress = kinetic;

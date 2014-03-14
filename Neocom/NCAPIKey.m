@@ -23,7 +23,7 @@
 
 @synthesize error = _error;
 
-+ (instancetype) apiKeyWithKeyID:(NSInteger) keyID {
++ (instancetype) apiKeyWithKeyID:(int32_t) keyID {
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSManagedObjectContext* context = storage.managedObjectContext;
 

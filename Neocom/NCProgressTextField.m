@@ -39,7 +39,7 @@
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	const float *components = CGColorGetComponents([self.color CGColor]);
+	const CGFloat *components = CGColorGetComponents([self.color CGColor]);
 	CGContextSetRGBFillColor(context, components[0] * 0.4, components[1] * 0.4, components[2] * 0.4, 1);
 	CGContextFillRect(context, rect);
 	

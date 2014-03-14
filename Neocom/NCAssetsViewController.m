@@ -364,10 +364,10 @@
 													 NSMutableDictionary* locations = [NSMutableDictionary dictionary];
 													 NSArray* allIDs = [[itemIDs allObjects] sortedArrayUsingSelector:@selector(compare:)];
 													 
-													 NSInteger first = 0;
-													 NSInteger left = itemIDs.count;
+													 int32_t first = 0;
+													 int32_t left = (int32_t) itemIDs.count;
 													 while (left > 0) {
-														 int length = left > 100 ? 100 : left;
+														 int32_t length = left > 100 ? 100 : left;
 														 NSArray* subArray = [allIDs subarrayWithRange:NSMakeRange(first, length)];
 														 first += length;
 														 left -= length;

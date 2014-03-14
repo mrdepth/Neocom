@@ -22,7 +22,7 @@
 
 @property (nonatomic, strong) NSError* error;
 
-+ (instancetype) apiKeyWithKeyID:(NSInteger) keyID;
++ (instancetype) apiKeyWithKeyID:(int32_t) keyID;
 + (NSArray*) allAPIKeys;
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 

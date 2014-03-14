@@ -40,17 +40,17 @@
 @implementation NCMailBoxContact
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInteger:self.contactID forKey:@"contactID"];
+	[aCoder encodeInt32:self.contactID forKey:@"contactID"];
 	if (self.name)
 		[aCoder encodeObject:self.name forKey:@"name"];
-	[aCoder encodeInteger:self.type forKey:@"type"];
+	[aCoder encodeInt32:self.type forKey:@"type"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.contactID = [aDecoder decodeIntegerForKey:@"contactID"];
+		self.contactID = [aDecoder decodeInt32ForKey:@"contactID"];
 		self.name = [aDecoder decodeObjectForKey:@"name"];
-		self.type = [aDecoder decodeIntegerForKey:@"type"];
+		self.type = [aDecoder decodeInt32ForKey:@"type"];
 	}
 	return self;
 }
@@ -210,7 +210,7 @@
 				
 				if (!recipient.name) {
 					recipient = [NCMailBoxContact new];
-					recipient.contactID = [charID integerValue];
+					recipient.contactID = [charID intValue];
 					recipient.type = NCMailBoxContactTypeCharacter;
 					ids[charID] = recipient;
 				}
@@ -225,7 +225,7 @@
 			
 				if (!recipient.name) {
 					recipient = [NCMailBoxContact new];
-					recipient.contactID = [mailingListID integerValue];
+					recipient.contactID = [mailingListID intValue];
 					recipient.type = NCMailBoxContactTypeMailingList;
 					mailingListIDs[mailingListID] = recipient;
 				}

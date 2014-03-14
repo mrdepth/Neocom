@@ -336,7 +336,7 @@
 															for (auto i: controlTower->getStructures()) {
 																[types addObject:@(i->getTypeID())];
 																if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
-																	NSInteger typeID = (NSInteger) i->getAttribute(1595)->getValue();
+																	int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
 																	EVEDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
 																	if (!upgrade) {
 																		upgrade = [EVEDBInvType invTypeWithTypeID:typeID error:nil];

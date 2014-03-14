@@ -269,7 +269,7 @@ static NCAccount* currentAccount = nil;
 			[characterSheet updateSkillPointsFromSkillQueue:skillQueue];
 			
 			if (self.characterInfo) {
-				NSInteger skillPoints = 0;
+				int32_t skillPoints = 0;
 				for (EVECharacterSheetSkill* skill in characterSheet.skills)
 					skillPoints += skill.skillpoints;
 				self.characterInfo.skillPoints = skillPoints;

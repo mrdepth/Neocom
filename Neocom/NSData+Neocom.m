@@ -30,16 +30,16 @@
 	uLongf destLen = 128;
 	z_stream strm = {0};
 	strm.next_in = (Bytef*) [self bytes];
-	strm.avail_in = [self length];
+	strm.avail_in = (uInt) [self length];
 	strm.next_out = dest;
-	strm.avail_out = destLen;
+	strm.avail_out = (uInt) destLen;
     int ret = inflateInit2(&strm, (15 + 32));
 	
 	NSMutableData* data = [NSMutableData new];
 
 	if (ret == Z_OK) {
 		do {
-			strm.avail_out = destLen;
+			strm.avail_out = (uInt) destLen;
 			strm.next_out = dest;
 			ret = inflate(&strm, Z_NO_FLUSH);
 			if (ret == Z_OK) {
@@ -61,7 +61,7 @@
 
 - (BOOL)writeCompressedToFile:(NSString *)path {
 	gzFile file = gzopen([path UTF8String], "wb");
-	gzwrite(file, self.bytes, self.length);
+	gzwrite(file, self.bytes, (uInt) self.length);
 	gzclose(file);
 	return YES;
 }

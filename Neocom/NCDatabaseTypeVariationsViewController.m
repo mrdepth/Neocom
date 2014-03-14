@@ -39,10 +39,10 @@
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
 												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-												 __block NSInteger parentTypeID = self.type.typeID;
+												 __block int32_t parentTypeID = self.type.typeID;
 												 [database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
 															  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																  NSInteger typeID = sqlite3_column_int(stmt, 0);
+																  int32_t typeID = sqlite3_column_int(stmt, 0);
 																  if (typeID)
 																	  parentTypeID = typeID;
 																  *needsMore = NO;

@@ -65,13 +65,13 @@
 		[self addSkill:skill withLevel:skill.requiredLevel];
 }
 
-- (void) addSkill:(EVEDBInvType*) skill withLevel:(NSInteger) level {
+- (void) addSkill:(EVEDBInvType*) skill withLevel:(int32_t) level {
 	EVECharacterSheetSkill *characterSkill = self.characterSkills[@(skill.typeID)];
 	if (characterSkill.level >= level)
 		return;
 	
 	BOOL addedDependence = NO;
-	for (NSInteger skillLevel = characterSkill.level + 1; skillLevel <= level; skillLevel++) {
+	for (int32_t skillLevel = characterSkill.level + 1; skillLevel <= level; skillLevel++) {
 		BOOL isExist = NO;
 		for (NCSkillData *item in self.skills) {
 			if (item.typeID == skill.typeID && item.targetLevel == skillLevel) {
@@ -179,8 +179,8 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
 	if ([elementName isEqualToString:@"entry"]) {
-		NSInteger typeID = [attributeDict[@"skillID"] integerValue];
-		NSInteger level = [attributeDict[@"level"] integerValue];
+		int32_t typeID = [attributeDict[@"skillID"] intValue];
+		int32_t level = [attributeDict[@"level"] intValue];
 		EVEDBInvType* skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 		if (skill)
 			[self addSkill:skill withLevel:level];

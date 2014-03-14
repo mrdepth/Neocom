@@ -16,7 +16,7 @@
 + (instancetype) defaultManager;
 + (void) cleanup;
 
-- (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
+- (BOOL) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr;
 - (void) removeAccount:(NCAccount*) account;
 - (void) reload;
 @end

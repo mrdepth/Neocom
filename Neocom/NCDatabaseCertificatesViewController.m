@@ -80,7 +80,7 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		cell.textLabel.text = [row name];
-		NSInteger level = [objc_getAssociatedObject(row, @"masteryLevel") integerValue];
+		int32_t level = [objc_getAssociatedObject(row, @"masteryLevel") intValue];
 		cell.imageView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
 		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
 		if (trainingTime > 0)

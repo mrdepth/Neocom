@@ -101,7 +101,7 @@
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Installed by", nil)
 																		   desciption:self.job.installerName
 																			imageName:nil
-																			 imageURL:[EVEImage characterPortraitURLWithCharacterID:(NSInteger) self.job.installerID size:EVEImageSizeRetina32 error:nil]]];
+																			 imageURL:[EVEImage characterPortraitURLWithCharacterID:(int32_t) self.job.installerID size:EVEImageSizeRetina32 error:nil]]];
 	
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Runs", nil)
 																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.runs]

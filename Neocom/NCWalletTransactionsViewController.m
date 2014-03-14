@@ -80,7 +80,7 @@
 		
 		for (NCWalletTransactionsViewControllerDataAccount* account in self.accounts) {
 			for (NCWalletTransactionsViewControllerDataRow* row in account.transactions) {
-				NSInteger typeID = [row.transaction typeID];
+				int32_t typeID = [row.transaction typeID];
 				EVEDBInvType* type = typesDic[@(typeID)];
 				if (!type) {
 					type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
@@ -186,7 +186,7 @@
 		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
 	
 	float price = [[row.transaction valueForKey:@"price"] floatValue];
-	NSInteger quantity = [row.transaction quantity];
+	int32_t quantity = [[row.transaction valueForKey:@"quantity"] intValue];
 	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
 	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]];
 	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(price * quantity)]];
@@ -343,7 +343,7 @@
 											 
 											 NSMutableDictionary* typesDic = [NSMutableDictionary new];
 											 for (NCWalletTransactionsViewControllerDataRow* row in allRows) {
-												 NSInteger typeID = [row.transaction typeID];
+												 int32_t typeID = [row.transaction typeID];
 												 EVEDBInvType* type = typesDic[@(typeID)];
 												 if (!type) {
 													 type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];

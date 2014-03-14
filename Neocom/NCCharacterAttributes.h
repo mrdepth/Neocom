@@ -12,11 +12,11 @@
 @class EVECharacterSheet;
 @class NCTrainingQueue;
 @interface NCCharacterAttributes : NSObject<NSCoding>
-@property (nonatomic, assign) NSInteger intelligence;
-@property (nonatomic, assign) NSInteger memory;
-@property (nonatomic, assign) NSInteger charisma;
-@property (nonatomic, assign) NSInteger perception;
-@property (nonatomic, assign) NSInteger willpower;
+@property (nonatomic, assign) int32_t intelligence;
+@property (nonatomic, assign) int32_t memory;
+@property (nonatomic, assign) int32_t charisma;
+@property (nonatomic, assign) int32_t perception;
+@property (nonatomic, assign) int32_t willpower;
 
 + (instancetype) defaultCharacterAttributes;
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;

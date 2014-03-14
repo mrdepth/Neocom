@@ -208,11 +208,11 @@
 														 options:0];
 		NSMutableArray* components = [NSMutableArray new];
 		if (dateComponents.year)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d years", nil), dateComponents.year]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d years", nil), (int32_t) dateComponents.year]];
 		if (dateComponents.month)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d months", nil), dateComponents.month]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d months", nil), (int32_t) dateComponents.month]];
 		if (dateComponents.day)
-			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d days", nil), dateComponents.day]];
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d days", nil), (int32_t) dateComponents.day]];
 		self.corporationTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Member for %@", nil), [components componentsJoinedByString:@", "]];
 		
 		if (characterInfo.allianceDate) {
@@ -222,11 +222,11 @@
 															 options:0];
 			[components removeAllObjects];
 			if (dateComponents.year)
-				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d years", nil), dateComponents.year]];
+				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d years", nil), (int32_t) dateComponents.year]];
 			if (dateComponents.month)
-				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d months", nil), dateComponents.month]];
+				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d months", nil), (int32_t) dateComponents.month]];
 			if (dateComponents.day)
-				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d days", nil), dateComponents.day]];
+				[components addObject:[NSString stringWithFormat:NSLocalizedString(@"%d days", nil), (int32_t) dateComponents.day]];
 			self.allianceTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Member for %@", nil), [components componentsJoinedByString:@", "]];
 		}
 		else
@@ -262,11 +262,11 @@
 					color = [UIColor greenColor];
 				else
 					color = [UIColor yellowColor];
-				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], (int32_t) skillQueue.skillQueue.count];
 
 				EVESkillQueueItem* item = skillQueue.skillQueue[0];
 				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-				self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
+				self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, (int32_t) item.level];
 			}
 			else {
 				text = NSLocalizedString(@"Training queue is inactive", nil);
@@ -307,7 +307,7 @@
 			color = [UIColor redColor];
 		else
 			color = [UIColor yellowColor];
-		self.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d days remaining)", nil), [dateFormatter stringFromDate:accountStatus.paidUntil], days];
+		self.subscriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d days remaining)", nil), [dateFormatter stringFromDate:accountStatus.paidUntil], (int32_t) days];
 		self.subscriptionLabel.textColor = color;
 	}
 	else {

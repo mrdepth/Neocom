@@ -208,7 +208,7 @@
 	if (self = [super init]) {
 		NSMutableArray* components = [NSMutableArray arrayWithArray:[bcLoadout.fitting componentsSeparatedByString:@":"]];
 		[components removeObjectAtIndex:0];
-		NSInteger shipID = [components[0] integerValue];
+		int32_t shipID = [components[0] intValue];
 		
 		if (!shipID)
 			return nil;
@@ -234,8 +234,8 @@
 				NSArray *fields = [component componentsSeparatedByString:@"*"];
 				if (fields.count == 0)
 					continue;
-				NSInteger typeID = [[fields objectAtIndex:0] integerValue];
-				NSInteger amount = fields.count > 1 ? [[fields objectAtIndex:1] integerValue] : 1;
+				int32_t typeID = [[fields objectAtIndex:0] intValue];
+				int32_t amount = fields.count > 1 ? [[fields objectAtIndex:1] intValue] : 1;
 				EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 				if (type) {
 					switch (type.category) {
@@ -315,7 +315,7 @@
 	if (self = [super init]) {
 		NSArray* components = [apiLoadout.canonicalName componentsSeparatedByString:@"|"];
 		if (components.count > 0) {
-			NSInteger shipID = [components[0] integerValue];
+			int32_t shipID = [components[0] intValue];
 			
 			self.type = [EVEDBInvType invTypeWithTypeID:shipID error:nil];
 			if (!self.type)
@@ -338,9 +338,9 @@
 			if (components.count > 1) {
 				for (NSString* component in [components[1] componentsSeparatedByString:@";"]) {
 					NSArray* array = [component componentsSeparatedByString:@":"];
-					eufe::TypeID typeID = array.count > 0 ? [array[0] integerValue] : 0;
-					eufe::TypeID chargeID = array.count > 1 ? [array[1] integerValue] : 0;
-					int count = array.count > 2 ? [array[2] integerValue] : 1;
+					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					eufe::TypeID chargeID = array.count > 1 ? [array[1] intValue] : 0;
+					int32_t count = array.count > 2 ? [array[2] intValue] : 1;
 					if (!typeID)
 						continue;
 					
@@ -379,8 +379,8 @@
 			if (components.count > 2) {
 				for (NSString* component in [components[2] componentsSeparatedByString:@";"]) {
 					NSArray* array = [component componentsSeparatedByString:@":"];
-					eufe::TypeID typeID = array.count > 0 ? [array[0] integerValue] : 0;
-					int count = array.count > 1 ? [array[1] integerValue] : 0;
+					eufe::TypeID typeID = array.count > 0 ? [array[0] intValue] : 0;
+					int32_t count = array.count > 1 ? [array[1] intValue] : 0;
 					if (!typeID)
 						continue;
 					
@@ -397,7 +397,7 @@
 			
 			if (components.count > 3) {
 				for (NSString* component in [components[3] componentsSeparatedByString:@";"]) {
-					eufe::TypeID typeID = [component integerValue];
+					eufe::TypeID typeID = [component intValue];
 					if (typeID) {
 						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 						implant.typeID = typeID;
@@ -408,7 +408,7 @@
 			
 			if (components.count > 4) {
 				for (NSString* component in [components[4] componentsSeparatedByString:@";"]) {
-					eufe::TypeID typeID = [component integerValue];
+					eufe::TypeID typeID = [component intValue];
 					if (typeID) {
 						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 						booster.typeID = typeID;
@@ -872,7 +872,7 @@
 	
 	for (NSCountedSet* set in @[subsystems, hiSlots, medSlots, lowSlots, rigSlots, drones, charges]) {
 		for (NSNumber* typeID in set) {
-			[dna appendFormat:@"%@;%d:", typeID, [set countForObject:typeID]];
+			[dna appendFormat:@"%@;%d:", typeID, (int32_t) [set countForObject:typeID]];
 		}
 	}
 	[dna appendString:@":"];
@@ -947,9 +947,9 @@
 #pragma mark - Private
 
 - (void) setSkillLevels:(NSDictionary*) skillLevels {
-	__block std::map<eufe::TypeID, int> levels;
+	__block std::map<eufe::TypeID, int32_t> levels;
 	[skillLevels enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
-		levels[[typeID integerValue]] = [level integerValue];
+		levels[[typeID intValue]] = [level intValue];
 	}];
 	self.pilot->setSkillLevels(levels);
 

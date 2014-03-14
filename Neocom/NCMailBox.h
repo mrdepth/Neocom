@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, NCMailBoxContactType){
 };
 
 @interface NCMailBoxContact : NSObject<NSCoding>
-@property (nonatomic, assign) NSInteger contactID;
+@property (nonatomic, assign) int32_t contactID;
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, assign) NCMailBoxContactType type;
 @end

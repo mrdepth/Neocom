@@ -99,8 +99,8 @@
 - (void) reload {
 	NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
 	for (NSDictionary* item in self.skills) {
-		NSInteger typeID = [item[NCSkillPlanTypeIDKey] integerValue];
-		NSInteger targetLevel = [item[NCSkillPlanTargetLevelKey] integerValue];
+		int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
+		int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
 		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 		if (type)
 			[trainingQueue addSkill:type withLevel:targetLevel];

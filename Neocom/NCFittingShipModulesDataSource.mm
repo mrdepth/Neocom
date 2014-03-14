@@ -340,7 +340,7 @@
 				title = NSLocalizedString(@"Rigs", nil);
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM: {
-				NSInteger raceID = static_cast<NSInteger>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
+				int32_t raceID = static_cast<int32_t>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
 				switch(raceID) {
 					case 1: //Caldari
 						title = NSLocalizedString(@"Caldari Subsystems", nil);
@@ -363,6 +363,7 @@
 			default:
 				return;
 		}
+		self.controller.typePickerViewController.title = title;
 		[self.controller.typePickerViewController presentWithConditions:conditions
 													   inViewController:self.controller
 															   fromRect:cell.bounds

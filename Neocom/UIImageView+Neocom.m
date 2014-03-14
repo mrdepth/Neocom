@@ -18,7 +18,7 @@
 	if (!source)
 		return;
 	
-	int n = CGImageSourceGetCount(source);
+	size_t n = CGImageSourceGetCount(source);
 	if (n == 0) {
 		CFRelease(source);
 		return;

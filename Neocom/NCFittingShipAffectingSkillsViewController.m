@@ -62,7 +62,7 @@
 											 
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 												 NCSkillData* skillData = skills[typeID];
-												 skillData.currentLevel = [level integerValue];
+												 skillData.currentLevel = [level intValue];
 											 }];
 											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 											 
@@ -135,7 +135,7 @@
 	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	NSMutableArray* buttons = [NSMutableArray new];
-	for (int i = 0; i <=5; i++)
+	for (int32_t i = 0; i <=5; i++)
 		[buttons addObject:[NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), i]];
 	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
@@ -144,7 +144,7 @@
 					   otherButtonTitles:buttons
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 skill.currentLevel = selectedButtonIndex;
+								 skill.currentLevel = (int32_t) selectedButtonIndex;
 								 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 								 self.modified = YES;
 							 }

@@ -18,7 +18,7 @@
 - (id) initWithAccount:(NCAccount*) account;
 - (id) initWithAccount:(NCAccount*) account xmlData:(NSData*) data skillPlanName:(NSString**) skillPlanName;
 - (void) addRequiredSkillsForType:(EVEDBInvType*) type;
-- (void) addSkill:(EVEDBInvType*) skill withLevel:(NSInteger) level;
+- (void) addSkill:(EVEDBInvType*) skill withLevel:(int32_t) level;
 - (void) addMastery:(EVEDBCertMastery*) mastery;
 - (void) removeSkill:(NCSkillData*) skill;
 - (void) updateSkillPointsFromAccount:(NCAccount*) account;

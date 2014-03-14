@@ -18,12 +18,12 @@
 @interface NCSkillHierarchy()
 @property (nonatomic, strong, readwrite) NSMutableArray* skills;
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) nestingLevel account:(NCAccount*) account;
+- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(int32_t) nestingLevel account:(NCAccount*) account;
 @end
 
 @implementation NCSkillHierarchy
 
-- (id) initWithSkill:(EVEDBInvType*) skill level:(NSInteger) level account:(NCAccount*) account {
+- (id) initWithSkill:(EVEDBInvType*) skill level:(int32_t) level account:(NCAccount*) account {
 	if (self = [super init]) {
 		EVEDBInvTypeRequiredSkill* requiredSkill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:skill];
 		requiredSkill.requiredLevel = level;
@@ -35,7 +35,7 @@
 
 #pragma mark - Private
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(NSInteger) nestingLevel account:(NCAccount*) account {
+- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(int32_t) nestingLevel account:(NCAccount*) account {
 	NCSkillHierarchySkill* skillData = [[NCSkillHierarchySkill alloc] initWithInvType:skill];
 	skillData.targetLevel = skill.requiredLevel;
 

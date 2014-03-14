@@ -54,7 +54,7 @@
 	NCStorage* storage = [NCStorage sharedStorage];
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil];
 	character.skillsLevel = skillsLevel;
-	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), skillsLevel];
+	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
 	return character;
 }
 

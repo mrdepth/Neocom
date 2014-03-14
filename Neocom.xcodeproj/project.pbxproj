@@ -789,7 +789,7 @@
 		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
 		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
 		126A0CCC185F3B9100A8E8A3 /* BCEveLoadoutsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsList.h; sourceTree = "<group>"; };
-		126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadoutsList.m; sourceTree = "<group>"; };
+		126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BCEveLoadoutsList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0CCE185F3B9100A8E8A3 /* BCEveLoadoutsTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadoutsTags.h; sourceTree = "<group>"; };
 		126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadoutsTags.m; sourceTree = "<group>"; };
 		126A0CD1185F3B9100A8E8A3 /* BCGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCGlobals.h; sourceTree = "<group>"; };
@@ -800,9 +800,9 @@
 		126A0CD7185F3B9100A8E8A3 /* EVEC0rporationFaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEC0rporationFaction.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0CD9185F3B9100A8E8A3 /* EVECentralAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralAPI.h; sourceTree = "<group>"; };
 		126A0CDA185F3B9100A8E8A3 /* EVECentralMarketStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralMarketStat.h; sourceTree = "<group>"; };
-		126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralMarketStat.m; sourceTree = "<group>"; };
+		126A0CDB185F3B9100A8E8A3 /* EVECentralMarketStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECentralMarketStat.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0CDC185F3B9100A8E8A3 /* EVECentralQuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralQuickLook.h; sourceTree = "<group>"; };
-		126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralQuickLook.m; sourceTree = "<group>"; };
+		126A0CDD185F3B9100A8E8A3 /* EVECentralQuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECentralQuickLook.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0CDF185F3B9100A8E8A3 /* EVECentralGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralGlobals.h; sourceTree = "<group>"; };
 		126A0CE0185F3B9100A8E8A3 /* EVECentralRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECentralRequest.h; sourceTree = "<group>"; };
 		126A0CE1185F3B9100A8E8A3 /* EVECentralRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECentralRequest.m; sourceTree = "<group>"; };
@@ -886,7 +886,7 @@
 		126A0D34185F3B9200A8E8A3 /* EVEAccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountStatus.h; sourceTree = "<group>"; };
 		126A0D35185F3B9200A8E8A3 /* EVEAccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountStatus.m; sourceTree = "<group>"; };
 		126A0D36185F3B9200A8E8A3 /* EVEAPIKeyInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAPIKeyInfo.h; sourceTree = "<group>"; };
-		126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAPIKeyInfo.m; sourceTree = "<group>"; };
+		126A0D37185F3B9200A8E8A3 /* EVEAPIKeyInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEAPIKeyInfo.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0D38185F3B9200A8E8A3 /* EVECharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacters.h; sourceTree = "<group>"; };
 		126A0D39185F3B9200A8E8A3 /* EVECharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacters.m; sourceTree = "<group>"; };
 		126A0D3B185F3B9200A8E8A3 /* EVECalllist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EVECalllist.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -894,11 +894,11 @@
 		126A0D3E185F3B9200A8E8A3 /* EVEAccountBalance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAccountBalance.h; sourceTree = "<group>"; };
 		126A0D3F185F3B9200A8E8A3 /* EVEAccountBalance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAccountBalance.m; sourceTree = "<group>"; };
 		126A0D40185F3B9200A8E8A3 /* EVEAssetList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEAssetList.h; sourceTree = "<group>"; };
-		126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEAssetList.m; sourceTree = "<group>"; };
+		126A0D41185F3B9200A8E8A3 /* EVEAssetList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEAssetList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0D42185F3B9200A8E8A3 /* EVECalendarEventAttendees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECalendarEventAttendees.h; sourceTree = "<group>"; };
 		126A0D43185F3B9200A8E8A3 /* EVECalendarEventAttendees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECalendarEventAttendees.m; sourceTree = "<group>"; };
 		126A0D44185F3B9200A8E8A3 /* EVECharacterSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharacterSheet.h; sourceTree = "<group>"; };
-		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharacterSheet.m; sourceTree = "<group>"; };
+		126A0D45185F3B9200A8E8A3 /* EVECharacterSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVECharacterSheet.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0D46185F3B9200A8E8A3 /* EVECharContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharContactList.h; sourceTree = "<group>"; };
 		126A0D47185F3B9200A8E8A3 /* EVECharContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECharContactList.m; sourceTree = "<group>"; };
 		126A0D48185F3B9200A8E8A3 /* EVECharFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECharFacWarStats.h; sourceTree = "<group>"; };
@@ -916,7 +916,7 @@
 		126A0D54185F3B9200A8E8A3 /* EVEContractItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContractItems.h; sourceTree = "<group>"; };
 		126A0D55185F3B9200A8E8A3 /* EVEContractItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContractItems.m; sourceTree = "<group>"; };
 		126A0D56185F3B9200A8E8A3 /* EVEContracts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContracts.h; sourceTree = "<group>"; };
-		126A0D57185F3B9200A8E8A3 /* EVEContracts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContracts.m; sourceTree = "<group>"; };
+		126A0D57185F3B9200A8E8A3 /* EVEContracts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEContracts.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0D58185F3B9200A8E8A3 /* EVEIndustryJobs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEIndustryJobs.h; sourceTree = "<group>"; };
 		126A0D59185F3B9200A8E8A3 /* EVEIndustryJobs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEIndustryJobs.m; sourceTree = "<group>"; };
 		126A0D5A185F3B9200A8E8A3 /* EVEKillLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEKillLog.h; sourceTree = "<group>"; };
@@ -946,7 +946,7 @@
 		126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEUpcomingCalendarEvents.h; sourceTree = "<group>"; };
 		126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEUpcomingCalendarEvents.m; sourceTree = "<group>"; };
 		126A0D75185F3B9200A8E8A3 /* EVEContainerLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEContainerLog.h; sourceTree = "<group>"; };
-		126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEContainerLog.m; sourceTree = "<group>"; };
+		126A0D76185F3B9200A8E8A3 /* EVEContainerLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EVEContainerLog.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		126A0D77185F3B9200A8E8A3 /* EVECorpContactList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpContactList.h; sourceTree = "<group>"; };
 		126A0D78185F3B9200A8E8A3 /* EVECorpContactList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVECorpContactList.m; sourceTree = "<group>"; };
 		126A0D79185F3B9200A8E8A3 /* EVECorpFacWarStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVECorpFacWarStats.h; sourceTree = "<group>"; };

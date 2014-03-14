@@ -174,20 +174,20 @@
 #pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInteger:self.charisma forKey:@"charisma"];
-	[aCoder encodeInteger:self.intelligence forKey:@"intelligence"];
-	[aCoder encodeInteger:self.memory forKey:@"memory"];
-	[aCoder encodeInteger:self.perception forKey:@"perception"];
-	[aCoder encodeInteger:self.willpower forKey:@"willpower"];
+	[aCoder encodeInt32:self.charisma forKey:@"charisma"];
+	[aCoder encodeInt32:self.intelligence forKey:@"intelligence"];
+	[aCoder encodeInt32:self.memory forKey:@"memory"];
+	[aCoder encodeInt32:self.perception forKey:@"perception"];
+	[aCoder encodeInt32:self.willpower forKey:@"willpower"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.charisma = [aDecoder decodeIntegerForKey:@"charisma"];
-		self.intelligence = [aDecoder decodeIntegerForKey:@"intelligence"];
-		self.memory = [aDecoder decodeIntegerForKey:@"memory"];
-		self.perception = [aDecoder decodeIntegerForKey:@"perception"];
-		self.willpower = [aDecoder decodeIntegerForKey:@"willpower"];
+		self.charisma = [aDecoder decodeInt32ForKey:@"charisma"];
+		self.intelligence = [aDecoder decodeInt32ForKey:@"intelligence"];
+		self.memory = [aDecoder decodeInt32ForKey:@"memory"];
+		self.perception = [aDecoder decodeInt32ForKey:@"perception"];
+		self.willpower = [aDecoder decodeInt32ForKey:@"willpower"];
 	}
 	return self;
 }

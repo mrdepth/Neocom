@@ -12,29 +12,29 @@
 
 @class EVEKillNetLogEntry;
 @interface NCKillMailPilot : NSObject<NSCoding>
-@property (nonatomic, assign) NSInteger allianceID;
+@property (nonatomic, assign) int32_t allianceID;
 @property (nonatomic, strong) NSString *allianceName;
-@property (nonatomic, assign) NSInteger characterID;
+@property (nonatomic, assign) int32_t characterID;
 @property (nonatomic, strong) NSString *characterName;
-@property (nonatomic, assign) NSInteger corporationID;
+@property (nonatomic, assign) int32_t corporationID;
 @property (nonatomic, strong) NSString *corporationName;
 @property (nonatomic, strong) EVEDBInvType* shipType;
 @end
 
 @interface NCKillMailVictim : NCKillMailPilot
-@property (nonatomic, assign) NSInteger damageTaken;
+@property (nonatomic, assign) int32_t damageTaken;
 @end
 
 @interface NCKillMailAttacker : NCKillMailPilot
 @property (nonatomic, assign) float securityStatus;
-@property (nonatomic, assign) NSInteger damageDone;
+@property (nonatomic, assign) int32_t damageDone;
 @property (nonatomic, assign) BOOL finalBlow;
 @property (nonatomic, strong) EVEDBInvType* weaponType;
 @end
 
 @interface NCKillMailItem : NSObject<NSCoding>
 @property (nonatomic, assign) BOOL destroyed;
-@property (nonatomic, assign) NSInteger qty;
+@property (nonatomic, assign) int32_t qty;
 @property (nonatomic, strong) EVEDBInvType* type;
 @property (nonatomic, assign) EVEInventoryFlag flag;
 @end

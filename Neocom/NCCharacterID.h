@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, NCCharacterIDType) {
 
 @interface NCCharacterID : NSObject
 @property (nonatomic, assign, readonly) NCCharacterIDType type;
-@property (nonatomic, assign, readonly) NSInteger characterID;
+@property (nonatomic, assign, readonly) int32_t characterID;
 @property (nonatomic, strong, readonly) NSString* name;
 
 + (id) characterIDWithName:(NSString*) name;

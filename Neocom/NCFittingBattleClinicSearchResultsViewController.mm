@@ -135,7 +135,7 @@
 }
 
 - (NSString*) recordID {
-	return [NSString stringWithFormat:@"%@.%@.%d", NSStringFromClass(self.class), self.type.typeName, [[self.tags componentsJoinedByString:@","] hash]];
+	return [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), self.type.typeName, (unsigned long)[[self.tags componentsJoinedByString:@","] hash]];
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {

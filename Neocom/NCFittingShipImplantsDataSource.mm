@@ -104,7 +104,7 @@
 		
 		
 		if (!type) {
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), indexPath.row + 1];
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
 			cell.imageView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
 		}
 		else {
@@ -169,7 +169,7 @@
 			if (indexPath.section == 1) {
 				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
 										@"dgmTypeAttributes.attributeID = 331",
-										[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
+										[NSString stringWithFormat:@"dgmTypeAttributes.value = %ld", (long)(indexPath.row + 1)]];
 				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
 				[self.controller.typePickerViewController presentWithConditions:conditions
@@ -187,7 +187,7 @@
 			else {
 				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
 										@"dgmTypeAttributes.attributeID = 1087",
-										[NSString stringWithFormat:@"dgmTypeAttributes.value = %d", indexPath.row + 1]];
+										[NSString stringWithFormat:@"dgmTypeAttributes.value = %ld", (long)(indexPath.row + 1)]];
 				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
 				[self.controller.typePickerViewController presentWithConditions:conditions

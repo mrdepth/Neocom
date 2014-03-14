@@ -84,7 +84,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	NSArray* rows = self.data;
-	return rows.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d events", nil), rows.count] : NSLocalizedString(@"No events", nil);
+	return rows.count > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d events", nil), (int32_t)rows.count] : NSLocalizedString(@"No events", nil);
 }
 
 // Customize the appearance of table view cells.

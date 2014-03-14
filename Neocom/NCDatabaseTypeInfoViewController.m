@@ -258,16 +258,16 @@
 										   
 										   {
 											   EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-											   __block NSInteger parentTypeID = type.typeID;
+											   __block int32_t parentTypeID = type.typeID;
 											   [database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
 															resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																NSInteger typeID = sqlite3_column_int(stmt, 0);
+																int32_t typeID = sqlite3_column_int(stmt, 0);
 																if (typeID)
 																	parentTypeID = typeID;
 																*needsMore = NO;
 															}];
 											   
-											   __block NSInteger count = 0;
+											   __block int32_t count = 0;
 											   [database execSQLRequest:[NSString stringWithFormat:@"SELECT count() as count FROM invMetaTypes WHERE parentTypeID=%d;", parentTypeID]
 															resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 																count = sqlite3_column_int(stmt, 0);
@@ -297,7 +297,7 @@
 											   
 											   if (type.group.categoryID == 16) {
 												   EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(type.typeID)];
-												   for (NSInteger level = characterSkill.level + 1; level <= 5; level++) {
+												   for (int32_t level = characterSkill.level + 1; level <= 5; level++) {
 													   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 													   [trainingQueue addSkill:type withLevel:level];
 													   
@@ -330,7 +330,7 @@
 											   NSMutableArray* rows = [NSMutableArray array];
 											   section[@"rows"] = rows;
 											   
-											   NSInteger i = 0;
+											   int32_t i = 0;
 											   for (NSArray* masteries in type.masteries) {
 												   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 												   for (EVEDBCertMastery* mastery in masteries)
@@ -381,7 +381,7 @@
 											   
 											   for (EVEDBDgmTypeAttribute *attribute in category.publishedAttributes) {
 												   if (attribute.attribute.unitID == EVEDBUnitIDTypeID) {
-													   NSInteger typeID = attribute.value;
+													   int32_t typeID = attribute.value;
 													   EVEDBInvType *skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 													   if (skill) {
 														   for (NSDictionary *requirementMap in skillRequirementsMap) {
@@ -472,7 +472,7 @@
 														   row.imageName = attribute.attribute.icon.iconImageName;
 														   
 														   if (attribute.attributeID == EVEDBAttributeIDSKillLevel) {
-															   NSInteger level = 0;
+															   int32_t level = 0;
 															   EVECharacterSheetSkill *skill = account.characterSheet.skillsMap[@(type.typeID)];
 															   if (skill)
 																   level = skill.level;
@@ -525,7 +525,7 @@
 											   
 											   float startSP = 0;
 											   float endSP;
-											   for (int i = 1; i <= 5; i++) {
+											   for (int32_t i = 1; i <= 5; i++) {
 												   endSP = [type skillPointsAtLevel:i];
 												   NSTimeInterval needsTime = (endSP - startSP) / [attributes skillpointsPerSecondForSkill:type];
 												   NSString *text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@)", nil),
@@ -714,7 +714,7 @@
 													 if ([requirement isKindOfClass:[EVEDBRamTypeRequirement class]]) {
 														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 														 row.title = [requirement requiredType].typeName;
-														 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:[requirement quantity]];
+														 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:[[requirement valueForKey:@"quantity"] intValue]];
 														 row.imageName = [[requirement requiredType] typeSmallImageName];
 														 row.object = [requirement requiredType];
 														 row.cellIdentifier = @"TypeCell";
@@ -761,11 +761,6 @@
 - (void) loadNPCAttributes {
 	EVEDBInvType* type = self.type;
 
-	NCAccount *account = [NCAccount currentAccount];
-	NCCharacterAttributes* attributes = [account characterAttributes];
-	if (!attributes)
-		attributes = [NCCharacterAttributes defaultCharacterAttributes];
-	
 	NSMutableArray* sections = [NSMutableArray new];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
@@ -907,7 +902,7 @@
 											 float totalDamageMissile = 0;
 											 
 											 if (type.effectsDictionary[@(569)]) {
-												 EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
+												 EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value] error:nil];
 												 if (missile) {
 													 NSMutableArray* rows = [[NSMutableArray alloc] init];
 													 

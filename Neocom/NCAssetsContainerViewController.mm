@@ -118,7 +118,7 @@
 													 if (flag == EVEInventoryFlagHangar)
 														 title = NSLocalizedString(@"Hangar 1", nil);
 													 else if (flag >= EVEInventoryFlagCorpSAG2 && flag <= EVEInventoryFlagCorpSAG7) {
-														 int i = flag - EVEInventoryFlagCorpSAG2 + 2;
+														 int32_t i = flag - EVEInventoryFlagCorpSAG2 + 2;
 														 title = [NSString stringWithFormat:NSLocalizedString(@"Hangar %d", nil), i];
 													 }
 													 else

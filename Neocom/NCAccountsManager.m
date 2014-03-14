@@ -34,7 +34,7 @@ static NCAccountsManager* defaultManager = nil;
 	}
 }
 
-- (BOOL) addAPIKeyWithKeyID:(NSInteger) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
+- (BOOL) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSManagedObjectContext* context = storage.managedObjectContext;
 	
@@ -66,14 +66,14 @@ static NCAccountsManager* defaultManager = nil;
 					account = [[NCAccount alloc] initWithEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 					account.apiKey = apiKey;
 					account.characterID = character.characterID;
-					account.order = NSIntegerMax;
+					account.order = INT32_MAX;
 					account.uuid = [[NSUUID UUID] UUIDString];
 				}
 			}
 			
 			self.accounts = [NCAccount allAccounts];
 			self.apiKeys = [NCAPIKey allAPIKeys];
-			NSInteger order = 0;
+			int32_t order = 0;
 			for (NCAccount* account in self.accounts)
 				account.order = order++;
 			
@@ -101,7 +101,7 @@ static NCAccountsManager* defaultManager = nil;
 		
 		self.accounts = [NCAccount allAccounts];
 		self.apiKeys = [NCAPIKey allAPIKeys];
-		NSInteger order = 0;
+		int32_t order = 0;
 		for (NCAccount* account in self.accounts)
 			account.order = order++;
 		

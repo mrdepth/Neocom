@@ -196,7 +196,7 @@
 		NSInteger skillPoints = 0;
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
 			skillPoints += skill.skillpoints;
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], self.characterSheet.skills.count];
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count];
 	}
 	else
 		return nil;
@@ -207,7 +207,7 @@
 		EVESkillQueue* skillQueue = self.skillQueue;
 		if (skillQueue.skillQueue.count > 0) {
 			NSTimeInterval timeLeft = [skillQueue timeLeft];
-			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], skillQueue.skillQueue.count];
+			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], (int32_t) skillQueue.skillQueue.count];
 		}
 		else
 			return NSLocalizedString(@"Training queue is inactive", nil);
@@ -220,7 +220,7 @@
 	if (account) {
 		NSInteger numberOfUnreadMessages = account.mailBox.numberOfUnreadMessages;
 		if (numberOfUnreadMessages > 0)
-			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), numberOfUnreadMessages];
+			return [NSString stringWithFormat:NSLocalizedString(@"%d unread messages", nil), (int32_t) numberOfUnreadMessages];
 	}
 	return nil;
 }

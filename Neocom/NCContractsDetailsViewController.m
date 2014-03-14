@@ -207,7 +207,7 @@
 #pragma mark - NCTableViewController
 
 - (NSString*) recordID {
-	return [NSString stringWithFormat:@"%@.%qi", [super recordID], self.contract.contractID];
+	return [NSString stringWithFormat:@"%@.%d", [super recordID], self.contract.contractID];
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {

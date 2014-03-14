@@ -16,21 +16,21 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		self.allianceID = [aDecoder decodeIntegerForKey:@"allianceID"];
+		self.allianceID = [aDecoder decodeInt32ForKey:@"allianceID"];
 		self.allianceName = [aDecoder decodeObjectForKey:@"allianceName"];
-		self.characterID = [aDecoder decodeIntegerForKey:@"characterID"];
+		self.characterID = [aDecoder decodeInt32ForKey:@"characterID"];
 		self.characterName = [aDecoder decodeObjectForKey:@"characterName"];
-		self.corporationID = [aDecoder decodeIntegerForKey:@"corporationID"];
+		self.corporationID = [aDecoder decodeInt32ForKey:@"corporationID"];
 		self.corporationName = [aDecoder decodeObjectForKey:@"corporationName"];
-		self.shipType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeIntegerForKey:@"shipTypeID"] error:nil];
+		self.shipType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"shipTypeID"] error:nil];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInteger:self.allianceID forKey:@"allianceID"];
-	[aCoder encodeInteger:self.characterID forKey:@"characterID"];
-	[aCoder encodeInteger:self.corporationID forKey:@"corporationID"];
+	[aCoder encodeInt32:self.allianceID forKey:@"allianceID"];
+	[aCoder encodeInt32:self.characterID forKey:@"characterID"];
+	[aCoder encodeInt32:self.corporationID forKey:@"corporationID"];
 	if (self.allianceName)
 		[aCoder encodeObject:self.allianceName forKey:@"allianceName"];
 	if (self.characterName)
@@ -38,7 +38,7 @@
 	if (self.corporationName)
 		[aCoder encodeObject:self.allianceName forKey:@"corporationName"];
 	if (self.shipType)
-		[aCoder encodeInteger:self.shipType.typeID forKey:@"shipTypeID"];
+		[aCoder encodeInt32:self.shipType.typeID forKey:@"shipTypeID"];
 
 }
 
@@ -48,13 +48,13 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super initWithCoder:aDecoder]) {
-		self.damageTaken = [aDecoder decodeIntegerForKey:@"damageTaken"];
+		self.damageTaken = [aDecoder decodeInt32ForKey:@"damageTaken"];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInteger:self.damageTaken forKey:@"damageTaken"];
+	[aCoder encodeInt32:self.damageTaken forKey:@"damageTaken"];
 }
 
 @end
@@ -64,19 +64,19 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super initWithCoder:aDecoder]) {
 		self.securityStatus = [aDecoder decodeFloatForKey:@"securityStatus"];
-		self.damageDone = [aDecoder decodeIntegerForKey:@"damageDone"];
+		self.damageDone = [aDecoder decodeInt32ForKey:@"damageDone"];
 		self.finalBlow = [aDecoder decodeBoolForKey:@"finalBlow"];
-		self.weaponType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeIntegerForKey:@"weaponTypeID"] error:nil];
+		self.weaponType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"weaponTypeID"] error:nil];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeFloat:self.securityStatus forKey:@"securityStatus"];
-	[aCoder encodeInteger:self.damageDone forKey:@"damageDone"];
+	[aCoder encodeInt32:self.damageDone forKey:@"damageDone"];
 	[aCoder encodeBool:self.finalBlow forKey:@"finalBlow"];
 	if (self.weaponType)
-		[aCoder encodeInteger:self.weaponType.typeID forKey:@"weaponTypeID"];
+		[aCoder encodeInt32:self.weaponType.typeID forKey:@"weaponTypeID"];
 }
 
 @end
@@ -86,19 +86,19 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.destroyed = [aDecoder decodeBoolForKey:@"destroyed"];
-		self.qty = [aDecoder decodeIntegerForKey:@"qty"];
-		self.type = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeIntegerForKey:@"typeID"] error:nil];
-		self.flag = static_cast<EVEInventoryFlag>([aDecoder decodeIntegerForKey:@"flag"]);
+		self.qty = [aDecoder decodeInt32ForKey:@"qty"];
+		self.type = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"typeID"] error:nil];
+		self.flag = static_cast<EVEInventoryFlag>([aDecoder decodeInt32ForKey:@"flag"]);
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeBool:self.destroyed forKey:@"destroyed"];
-	[aCoder encodeInteger:self.qty forKey:@"qty"];
+	[aCoder encodeInt32:self.qty forKey:@"qty"];
 	if (self.type)
-		[aCoder encodeInteger:self.type.typeID forKey:@"typeID"];
-	[aCoder encodeInteger:self.flag forKey:@"flag"];
+		[aCoder encodeInt32:self.type.typeID forKey:@"typeID"];
+	[aCoder encodeInt32:self.flag forKey:@"flag"];
 	
 }
 
@@ -117,7 +117,7 @@
 		self.cargo = [aDecoder decodeObjectForKey:@"cargo"];
 		self.attackers = [aDecoder decodeObjectForKey:@"attackers"];
 		self.victim = [aDecoder decodeObjectForKey:@"victim"];
-		self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:[aDecoder decodeIntegerForKey:@"solarSystemID"] error:nil];
+		self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:[aDecoder decodeInt32ForKey:@"solarSystemID"] error:nil];
 		self.killTime = [aDecoder decodeObjectForKey:@"killTime"];
 	}
 	return self;
@@ -143,7 +143,7 @@
 	if (self.victim)
 		[aCoder encodeObject:self.victim forKey:@"victim"];
 	if (self.solarSystem)
-		[aCoder encodeInteger:self.solarSystem.solarSystemID forKey:@"solarSystemID"];
+		[aCoder encodeInt32:self.solarSystem.solarSystemID forKey:@"solarSystemID"];
 	if (self.killTime)
 		[aCoder encodeObject:self.killTime forKey:@"killTime"];
 	

@@ -13,15 +13,15 @@
 - (eufe::Module::Slot) slot {
 	NSDictionary* effects = self.effectsDictionary;
 	
-	if (effects[@((NSInteger) eufe::LO_POWER_EFFECT_ID)])
+	if (effects[@(eufe::LO_POWER_EFFECT_ID)])
 		return eufe::Module::SLOT_LOW;
-	else if (effects[@((NSInteger) eufe::MED_POWER_EFFECT_ID)])
+	else if (effects[@(eufe::MED_POWER_EFFECT_ID)])
 		return eufe::Module::SLOT_MED;
-	else if (effects[@((NSInteger) eufe::HI_POWER_EFFECT_ID)])
+	else if (effects[@(eufe::HI_POWER_EFFECT_ID)])
 		return eufe::Module::SLOT_HI;
-	else if (effects[@((NSInteger) eufe::RIG_SLOT_EFFECT_ID)])
+	else if (effects[@(eufe::RIG_SLOT_EFFECT_ID)])
 		return eufe::Module::SLOT_RIG;
-	else if (effects[@((NSInteger) eufe::SUBSYSTEM_EFFECT_ID)])
+	else if (effects[@(eufe::SUBSYSTEM_EFFECT_ID)])
 		return eufe::Module::SLOT_SUBSYSTEM;
 	else
 		return eufe::Module::SLOT_NONE;

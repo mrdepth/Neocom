@@ -154,7 +154,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (self.trainingQueue.skills.count > 0)
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], self.trainingQueue.skills.count];
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], (int32_t)self.trainingQueue.skills.count];
 	else
 		return NSLocalizedString(@"Skill plan is empty", nil);
 }

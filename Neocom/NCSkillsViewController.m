@@ -296,7 +296,7 @@
 				}
 			}
 			
-			NSAttributedString* (^attributesString)(NSInteger, EVECharacterSheetAttributeEnhancer*, NSInteger) = ^(NSInteger attribute, EVECharacterSheetAttributeEnhancer* enhancer, NSInteger currentAttribute) {
+			NSAttributedString* (^attributesString)(int32_t, EVECharacterSheetAttributeEnhancer*, int32_t) = ^(int32_t attribute, EVECharacterSheetAttributeEnhancer* enhancer, int32_t currentAttribute) {
 				NSString* text;
 				if (enhancer)
 					text = [NSString stringWithFormat:@"%d (%d + %d)",
@@ -306,7 +306,7 @@
 				else
 					text = [NSString stringWithFormat:@"%d", attribute];
 				
-				NSInteger dif = attribute - currentAttribute;
+				int32_t dif = attribute - currentAttribute;
 				NSString* difString;
 				UIColor* color = nil;
 				if (dif > 0) {
@@ -402,10 +402,10 @@
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
 			if (section == 0)
-				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], self.skillQueueRows.count];
+				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], (int32_t) self.skillQueueRows.count];
 			else if (section == 1) {
 				if (self.skillPlan.trainingQueue.skills.count > 0)
-					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], self.skillPlan.trainingQueue.skills.count];
+					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], (int32_t) self.skillPlan.trainingQueue.skills.count];
 				else
 					return NSLocalizedString(@"Skill plan is empty", nil);
 			}

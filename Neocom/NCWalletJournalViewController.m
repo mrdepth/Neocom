@@ -161,7 +161,7 @@
 	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(amount + taxAmount)]];
 	
 	if (taxAmount > 0)
-		cell.taxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tax: -%@ ISK (%d%%)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(taxAmount)], (int)(taxAmount / (taxAmount + amount) * 100)];
+		cell.taxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tax: -%@ ISK (%d%%)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(taxAmount)], (int32_t)(taxAmount / (taxAmount + amount) * 100)];
 	else
 		cell.taxLabel.text = nil;
 	

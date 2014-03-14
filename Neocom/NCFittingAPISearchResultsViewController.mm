@@ -188,7 +188,7 @@
 	[self.criteria enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		[components addObject:[NSString stringWithFormat:@"%@.%@", key, obj]];
 	}];
-	return [NSString stringWithFormat:@"%@.%@.%d", NSStringFromClass(self.class), self.order, [[components componentsJoinedByString:@","] hash]];
+	return [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), self.order, (unsigned long)[[components componentsJoinedByString:@","] hash]];
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {

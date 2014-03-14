@@ -166,7 +166,7 @@
 		NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter"
 																					   inManagedObjectContext:storage.managedObjectContext]
 											insertIntoManagedObjectContext:storage.managedObjectContext];
-		character.name = [NSString stringWithFormat:@"Character %d", self.customCharacters.count];
+		character.name = [NSString stringWithFormat:@"Character %d", (int32_t) self.customCharacters.count];
 		[self.customCharacters addObject:character];
 		[tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 		[self performSegueWithIdentifier:@"NCFittingCharacterEditorViewController" sender:character];

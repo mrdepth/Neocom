@@ -96,7 +96,7 @@
 				
 				damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext]
 										 insertIntoManagedObjectContext:storage.managedObjectContext];
-				damagePattern.name = [NSString stringWithFormat:NSLocalizedString(@"Damage Pattern %d", nil), self.customDamagePatterns.count + 1];
+				damagePattern.name = [NSString stringWithFormat:NSLocalizedString(@"Damage Pattern %d", nil), (int32_t)(self.customDamagePatterns.count + 1)];
 				damagePattern.em = 0.25;
 				damagePattern.kinetic = 0.25;
 				damagePattern.thermal = 0.25;
@@ -326,7 +326,7 @@
 	float intervalMissile = 0;
 	
 	if (type.effectsDictionary[@(569)]) {
-		EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(NSInteger)[missileTypeIDAttribute value] error:nil];
+		EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value] error:nil];
 		if (missile) {
 			EVEDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
 			EVEDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];

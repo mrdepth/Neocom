@@ -109,7 +109,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, row.count];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
 	cell.imageView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
 	cell.detailTextLabel.text = nil;
 	cell.accessoryView = nil;

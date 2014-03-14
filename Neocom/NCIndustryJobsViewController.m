@@ -201,22 +201,13 @@
 	cell.characterLabel.text = row.installerName;
 	cell.locationLabel.text = row.installedItemLocation.name;
 	
-	float progress = 0;
 	NSString* status = [row localizedStateWithCurrentDate:self.currentDate];
 	UIColor* statusColor = nil;
 	if (!row.completed) {
-		NSTimeInterval remainsTime = [row.endProductionTime timeIntervalSinceDate:self.currentDate];
-		if (remainsTime < 0)
-			remainsTime = 0;
-		NSTimeInterval productionTime = [row.endProductionTime timeIntervalSinceDate:row.beginProductionTime];
-		NSTimeInterval progressTime = [self.currentDate timeIntervalSinceDate:row.beginProductionTime];
-		
-		progress = (progressTime / productionTime);
 		statusColor = [UIColor yellowColor];
 	}
 	else {
 		if (row.completedStatus == 1) {
-			progress = 1.0f;
 			statusColor = [UIColor greenColor];
 		}
 		else
@@ -224,8 +215,6 @@
 	}
 	cell.stateLabel.text = status;
 	cell.stateLabel.textColor = statusColor;
-//	cell.stateLabel.backgroundColor = statusColor;
-//	cell.stateLabel.progress = progress;
 	
 	return cell;
 }

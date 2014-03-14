@@ -18,7 +18,7 @@
 #import "NCStorage.h"
 
 @interface NCMigrationManager()
-+ (void) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr;
++ (BOOL) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr;
 + (void) transferShipLoadoutsFromStorage:(EUStorage*) storage;
 + (void) transferPOSLoadoutsFromStorage:(EUStorage*) storage;
 + (void) transferSkillPlansFromStorage:(EUStorage*) storage;
@@ -54,22 +54,26 @@
 
 #pragma mark - Private
 
-+ (void) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr {
++ (BOOL) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr {
 	NSFetchRequest *fetchRequest = [NSFetchRequest new];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:storage.managedObjectContext];
 	[fetchRequest setEntity:entity];
 	NSArray* apiKeys = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	NSMutableArray* invalidAPIKeys = [NSMutableArray new];
+	NSError* error = nil;
 	for (APIKey* apiKey in apiKeys) {
 		NSError* error = nil;
 		if (![[NCAccountsManager defaultManager] addAPIKeyWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error]) {
 			[invalidAPIKeys addObject:@(apiKey.keyID)];
 		}
-		if (errorPtr && invalidAPIKeys.count > 0)
-			*errorPtr = [NSError errorWithDomain:@"Neocom"
+		if (invalidAPIKeys.count > 0)
+			error = [NSError errorWithDomain:@"Neocom"
 											code:0
 										userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Can't transfer api keys %@", nil), [invalidAPIKeys componentsJoinedByString:@", "]]}];
 	}
+	if (errorPtr)
+		*errorPtr = error;
+	return error == nil;
 }
 
 + (void) transferShipLoadoutsFromStorage:(EUStorage*) storage {
@@ -108,11 +112,11 @@
 					NSInteger numberOfComponents = components.count;
 					
 					if (numberOfComponents >= 1) {
-						eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+						eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
 						if (typeID) {
-							NSInteger modulesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] integerValue] : 1;
+							int modulesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
 							eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] integerValue] : eufe::Module::STATE_ONLINE;
-							NSInteger chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] integerValue] : 0;
+							int32_t chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] intValue] : 0;
 							NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
 							module.typeID = typeID;
 							module.chargeID = chargeTypeID;
@@ -130,9 +134,9 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
-						NSInteger dronesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] integerValue] : 1;
+						int dronesCount = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
 						bool active = numberOfComponents >= 3 ? [[components objectAtIndex:2] boolValue] : true;
 						NCLoadoutDataShipDrone* drone = [NCLoadoutDataShipDrone new];
 						drone.typeID = typeID;
@@ -148,7 +152,7 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
 						NCLoadoutDataShipImplant* implant = [NCLoadoutDataShipImplant new];
 						implant.typeID = typeID;
@@ -162,7 +166,7 @@
 				NSInteger numberOfComponents = components.count;
 				
 				if (numberOfComponents >= 1) {
-					eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+					eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
 					if (typeID) {
 						NCLoadoutDataShipBooster* booster = [NCLoadoutDataShipBooster new];
 						booster.typeID = typeID;
@@ -208,11 +212,11 @@
 			NSInteger numberOfComponents = components.count;
 			
 			if (numberOfComponents >= 1) {
-				eufe::TypeID typeID = [[components objectAtIndex:0] integerValue];
+				eufe::TypeID typeID = [[components objectAtIndex:0] intValue];
 				if (typeID) {
-					NSInteger count = numberOfComponents >= 2 ? [[components objectAtIndex:1] integerValue] : 1;
-					eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] integerValue] : eufe::Module::STATE_ONLINE;
-					NSInteger chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] integerValue] : 0;
+					int32_t count = numberOfComponents >= 2 ? [[components objectAtIndex:1] intValue] : 1;
+					eufe::Module::State state = numberOfComponents >= 3 ? (eufe::Module::State) [[components objectAtIndex:2] intValue] : eufe::Module::STATE_ONLINE;
+					int32_t chargeTypeID = numberOfComponents >= 4 ? [[components objectAtIndex:3] intValue] : 0;
 					
 					for (NSInteger i = 0; i < count; i++) {
 						NCLoadoutDataPOSStructure* structure = [NCLoadoutDataPOSStructure new];
@@ -252,8 +256,8 @@
 				for (NSString* row in [skillPlan.skillPlanSkills componentsSeparatedByString:@";"]) {
 					NSArray* components = [row componentsSeparatedByString:@":"];
 					if (components.count == 2) {
-						NSInteger typeID = [[components objectAtIndex:0] integerValue];
-						NSInteger requiredLevel = [[components objectAtIndex:1] integerValue];
+						int32_t typeID = [[components objectAtIndex:0] intValue];
+						int32_t requiredLevel = [[components objectAtIndex:1] intValue];
 						EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 						if (type)
 							[trainingQueue addSkill:type withLevel:requiredLevel];

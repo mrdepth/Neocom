@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
 };
 
 @interface NCSkillHierarchySkill: NCSkillData
-@property (nonatomic, assign) NSInteger nestingLevel;
+@property (nonatomic, assign) int32_t nestingLevel;
 @property (nonatomic, assign) NCSkillHierarchyAvailability availability;
 @end
 
@@ -26,6 +26,6 @@ typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
 @interface NCSkillHierarchy : NSObject
 @property (nonatomic, strong, readonly) NSArray* skills;
 
-- (id) initWithSkill:(EVEDBInvType*) skill level:(NSInteger) level account:(NCAccount*) account;
+- (id) initWithSkill:(EVEDBInvType*) skill level:(int32_t) level account:(NCAccount*) account;
 
 @end

@@ -63,7 +63,7 @@
 				starbase.resourceConsumptionBonus = [details[@"resourceConsumptionBonus"] floatValue];
 				
 				starbase.type = [EVEDBInvType invTypeWithTypeID:starbase.typeID error:nil];
-				starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:(NSInteger) starbase.locationID error:nil];
+				starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID error:nil];
 				starbase.moon = [EVEDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID error:nil];
 				starbase.title = details[@"title"];
 			}
@@ -343,7 +343,7 @@
 																								   }];
 													 
 													 starbase.type = [EVEDBInvType invTypeWithTypeID:starbase.typeID error:nil];
-													 starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:(NSInteger) starbase.locationID error:nil];
+													 starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID error:nil];
 													 starbase.moon = [EVEDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID error:nil];
 
 													 if (account.corporationSheet.allianceID) {

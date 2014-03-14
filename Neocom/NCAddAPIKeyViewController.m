@@ -63,7 +63,7 @@
 }
 
 - (IBAction)onSave:(id)sender {
-	NSInteger keyID = [self.keyIDTextField.text integerValue];
+	int32_t keyID = [self.keyIDTextField.text intValue];
 	NSString* vCode = self.vCodeTextField.text;
 	
 	__block NSError* error = nil;
@@ -152,7 +152,7 @@
 													 errorDescription = @"Error: Enter <b>Verification Code</b>";
 												 
 												 if (!errorDescription) {
-													 NSInteger keyID = [arguments[@"keyID"] integerValue];
+													 int32_t keyID = [arguments[@"keyID"] intValue];
 													 NSString* vCode = arguments[@"vCode"];
 													 NSError* error = nil;
 													 if (![[NCAccountsManager defaultManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error])

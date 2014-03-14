@@ -171,19 +171,19 @@
 	
 	self.titleLabel.text = self.certificate.name;
 	NSNumber* masteryLevel = objc_getAssociatedObject(self.certificate, @"masteryLevel");
-	self.imageView.image = [UIImage imageNamed:masteryLevel ? [EVEDBCertCertificate iconImageNameWithMasteryLevel:[masteryLevel integerValue]] : @"Icons/icon79_01.png"];
+	self.imageView.image = [UIImage imageNamed:masteryLevel ? [EVEDBCertCertificate iconImageNameWithMasteryLevel:[masteryLevel intValue]] : @"Icons/icon79_01.png"];
 	self.descriptionLabel.text = description;
 	[self.view setNeedsLayout];
 
 	
-	__block NSInteger availableMasteryLevel = -1;
+	__block int32_t availableMasteryLevel = -1;
 	NCAccount* account = [NCAccount currentAccount];
 	NSMutableArray* masteriesSections = [NSMutableArray new];
 	__block NSArray* requiredForSections = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 NSInteger masteryLevel = 0;
+											 int32_t masteryLevel = 0;
 											 for (NSArray* skills in self.certificate.skills) {
 												 NSMutableArray* rows = [NSMutableArray new];
 												 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
@@ -227,11 +227,11 @@
 													 row.object = trainingQueue;
 													 [rows insertObject:row atIndex:0];
 
-													 title = [NSString stringWithFormat:NSLocalizedString(@"%Mastery %d (%@)", nil), masteryLevel + 1, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+													 title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d (%@)", nil), masteryLevel + 1, [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
 													 collapsed = NO;
 												 }
 												 else {
-													 title = [NSString stringWithFormat:NSLocalizedString(@"%Mastery %d", nil), masteryLevel + 1];
+													 title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), masteryLevel + 1];
 													 availableMasteryLevel++;
 													 collapsed = YES;
 												 }

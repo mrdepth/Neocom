@@ -175,7 +175,7 @@
 	[[self taskManager] addTaskWithIndentifier:nil
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 NSInteger keyID = [properties[@"keyid"] integerValue];
+											 int32_t keyID = [properties[@"keyid"] intValue];
 											 NSString* vCode = properties[@"vcode"];
 											 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 											 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];

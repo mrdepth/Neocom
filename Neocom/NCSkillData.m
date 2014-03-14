@@ -25,14 +25,14 @@
 	return [self skillPointsToFinish] / [attributes skillpointsPerSecondForSkill:self];
 }
 
-- (NSInteger) skillPointsToFinish {
+- (int32_t) skillPointsToFinish {
 	float sp = [self skillPointsAtLevel:self.currentLevel];
 	float targetSP = self.targetSkillPoints;
 	sp = MAX(sp, self.skillPoints);
 	return targetSP > sp ? (targetSP - sp) : 0;
 }
 
-- (NSInteger) skillPointsToLevelUp {
+- (int32_t) skillPointsToLevelUp {
 	float sp = [self skillPointsAtLevel:self.currentLevel];
 	float targetSP = [self skillPointsAtLevel:self.currentLevel + 1];
 	sp = MAX(sp, self.skillPoints);
@@ -41,7 +41,7 @@
 	return targetSP > sp ? (targetSP - sp) : 0;
 }
 
-- (void) setTargetLevel:(NSInteger)targetLevel {
+- (void) setTargetLevel:(int32_t)targetLevel {
 	_targetLevel = targetLevel;
 	_targetSkillPoints = [self skillPointsAtLevel:targetLevel];
 	_trainingTimeToLevelUp = -1.0;
@@ -49,19 +49,19 @@
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setCurrentLevel:(NSInteger)currentLevel {
+- (void) setCurrentLevel:(int32_t)currentLevel {
 	_currentLevel = currentLevel;
 	_trainingTimeToLevelUp = -1.0;
 	_trainingTimeToFinish = -1.0;
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setTrainedLevel:(NSInteger)trainedLevel {
+- (void) setTrainedLevel:(int32_t)trainedLevel {
 	_trainedLevel = trainedLevel;
 	objc_setAssociatedObject(self, @"hash", nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setSkillPoints:(NSInteger)skillPoints {
+- (void) setSkillPoints:(int32_t)skillPoints {
 	_skillPoints = skillPoints;
 	_trainingTimeToLevelUp = -1.0;
 	_trainingTimeToFinish = -1.0;
@@ -121,23 +121,23 @@
 #pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInteger:self.typeID forKey:@"typeID"];
-	[aCoder encodeInteger:self.skillPoints forKey:@"skillPoints"];
-	[aCoder encodeInteger:self.currentLevel forKey:@"currentLevel"];
-	[aCoder encodeInteger:self.targetLevel forKey:@"targetLevel"];
-	[aCoder encodeInteger:self.trainedLevel forKey:@"trainedLevel"];
+	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
+	[aCoder encodeInt32:self.skillPoints forKey:@"skillPoints"];
+	[aCoder encodeInt32:self.currentLevel forKey:@"currentLevel"];
+	[aCoder encodeInt32:self.targetLevel forKey:@"targetLevel"];
+	[aCoder encodeInt32:self.trainedLevel forKey:@"trainedLevel"];
 	[aCoder encodeBool:self.active forKey:@"active"];
 	if (self.characterAttributes)
 		[aCoder encodeObject:self.characterAttributes forKey:@"characterAttributes"];
 }
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
-	NSInteger typeID = [aDecoder decodeIntegerForKey:@"typeID"];
+	int32_t typeID = [aDecoder decodeInt32ForKey:@"typeID"];
 	if (self = [super initWithTypeID:typeID error:nil]) {
-		self.skillPoints = [aDecoder decodeIntegerForKey:@"skillPoints"];
-		self.currentLevel = [aDecoder decodeIntegerForKey:@"currentLevel"];
-		self.targetLevel = [aDecoder decodeIntegerForKey:@"targetLevel"];
-		self.trainedLevel = [aDecoder decodeIntegerForKey:@"trainedLevel"];
+		self.skillPoints = [aDecoder decodeInt32ForKey:@"skillPoints"];
+		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
+		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];
+		self.trainedLevel = [aDecoder decodeInt32ForKey:@"trainedLevel"];
 		self.active = [aDecoder decodeBoolForKey:@"active"];
 		self.characterAttributes = [aDecoder decodeObjectForKey:@"characterAttributes"];
 	}

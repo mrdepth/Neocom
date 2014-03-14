@@ -56,7 +56,7 @@
 											 }
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 												 NCSkillData* skillData = skills[typeID];
-												 skillData.currentLevel = [level integerValue];
+												 skillData.currentLevel = [level intValue];
 											 }];
 											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 
@@ -159,7 +159,7 @@
 					   otherButtonTitles:buttons
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 skill.currentLevel = selectedButtonIndex;
+								 skill.currentLevel = (int32_t) selectedButtonIndex;
 								 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 							 }
 						 }

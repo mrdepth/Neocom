@@ -105,7 +105,6 @@
 	if ((sec || text.length == 0) && componentsLimit) {
 		if (space)
 			[text appendString:@" "];
-		space = YES;
 		[text appendFormat:@"%ds", sec];
 	}
 	return text;

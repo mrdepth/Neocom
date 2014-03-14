@@ -64,7 +64,7 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-	int amount = indexPath.row + self.range.location;
+	int32_t amount = (int32_t) (indexPath.row + self.range.location);
 	cell.textLabel.text = [NSString stringWithFormat:@"%d", amount];
 	if (amount == self.amount)
 		cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];

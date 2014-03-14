@@ -87,8 +87,8 @@
 	[aCoder encodeInt32:self.state forKey:@"state"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID] && self.chargeID == [object chargeID] && self.state == [object state];
+- (BOOL) isEqual:(NCLoadoutDataShipModule*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID && self.chargeID == object.chargeID && self.state == object.state;
 }
 
 @end
@@ -110,8 +110,8 @@
 	[aCoder encodeBool:self.active forKey:@"active"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID] && self.count == [object count] && self.active == [object active];
+- (BOOL) isEqual:(NCLoadoutDataShipDrone*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID && self.count == object.count && self.active == object.active;
 }
 
 @end
@@ -129,8 +129,8 @@
 	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID];
+- (BOOL) isEqual:(NCLoadoutDataShipImplant*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID;
 }
 
 @end
@@ -148,8 +148,8 @@
 	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID];
+- (BOOL) isEqual:(NCLoadoutDataShipBooster*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID;
 }
 
 @end
@@ -169,8 +169,8 @@
 	[aCoder encodeInt32:self.count forKey:@"count"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID] && self.count == [object count];
+- (BOOL) isEqual:(NCLoadoutDataShipCargoItem*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID && self.count == object.count;
 }
 
 @end

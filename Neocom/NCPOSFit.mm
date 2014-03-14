@@ -60,8 +60,8 @@
 	[aCoder encodeInt32:self.count forKey:@"count"];
 }
 
-- (BOOL) isEqual:(id)object {
-	return [object isKindOfClass:[self class]] && self.typeID == [object typeID] && self.chargeID == [object chargeID] && self.state == [object state] && self.count == [object count];
+- (BOOL) isEqual:(NCLoadoutDataPOSStructure*)object {
+	return [object isKindOfClass:[self class]] && self.typeID == object.typeID && self.chargeID == object.chargeID && self.state == object.state && self.count == object.count;
 }
 
 @end

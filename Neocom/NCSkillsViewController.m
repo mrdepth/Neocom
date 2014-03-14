@@ -113,8 +113,9 @@
 								 return;
 							 UIButton* button = (UIButton*) self.navigationItem.titleView;
 							 
-							 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateNormal];
-							 [button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateHighlighted];
+							 [button setTitle:[[actionSheet buttonTitleAtIndex:selectedButtonIndex] stringByAppendingString:@"  \u25BE"]
+									 forState:UIControlStateNormal];
+							 //[button setTitle:[actionSheet buttonTitleAtIndex:selectedButtonIndex] forState:UIControlStateHighlighted];
 							 switch (selectedButtonIndex) {
 								 case 0:
 									 self.mode = NCSkillsViewControllerModeTrainingQueue;
@@ -295,12 +296,6 @@
 				}
 			}
 			
-			NSInteger intelligenceDiff = characterSheet.attributes.intelligence - self.optimalAttributes.intelligence;
-			NSInteger memoryDiff = characterSheet.attributes.memory - self.optimalAttributes.memory;
-			NSInteger perceptionDiff = characterSheet.attributes.perception - self.optimalAttributes.perception;
-			NSInteger willpowerDiff = characterSheet.attributes.willpower - self.optimalAttributes.willpower;
-			NSInteger charismaDiff = characterSheet.attributes.charisma - self.optimalAttributes.charisma;
-			
 			NSAttributedString* (^attributesString)(NSInteger, EVECharacterSheetAttributeEnhancer*, NSInteger) = ^(NSInteger attribute, EVECharacterSheetAttributeEnhancer* enhancer, NSInteger currentAttribute) {
 				NSString* text;
 				if (enhancer)
@@ -455,6 +450,13 @@
 	trainingQueue.skills = self.skillPlanSkills;
 	self.skillPlan.trainingQueue = trainingQueue;
 	[self.skillPlan save];
+}
+
+- (NSIndexPath*) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.section == 1)
+		return proposedDestinationIndexPath;
+	else
+		return sourceIndexPath;
 }
 
 #pragma mark - Table view delegate
@@ -626,7 +628,7 @@
 											 
 											 NSPredicate* predicate = nil;
 											 
-											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 5 AND trainedLevel >= 0"];
+											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 5"];
 											 for (NCSkillsViewControllerDataSection* section in allSkillsSections) {
 												 NSArray* canTrain = [section.rows filteredArrayUsingPredicate:predicate];
 												 if (canTrain.count > 0) {

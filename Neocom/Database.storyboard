@@ -1111,12 +1111,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qyD-gc-O13"/>
-        <segue reference="E04-iH-wb4"/>
+        <segue reference="raC-Em-4AD"/>
         <segue reference="edv-w8-2To"/>
         <segue reference="LHH-Wy-jrm"/>
-        <segue reference="7iv-ne-LEg"/>
         <segue reference="Vbq-vg-5yp"/>
         <segue reference="6M7-4Q-PK5"/>
+        <segue reference="7iv-ne-LEg"/>
+        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
 </document>

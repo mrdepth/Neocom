@@ -231,7 +231,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.segmentedControl.selectedSegmentIndex == 0 ? 44 : 107;
+	return self.segmentedControl.selectedSegmentIndex == 0 ? 44 : 109;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

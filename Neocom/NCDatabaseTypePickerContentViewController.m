@@ -228,7 +228,7 @@
 										 block:^(NCTask *task) {
 											 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
 											 if (!self.groups) {
-												 groups = groups = [(NCDatabaseTypePickerViewController*) self.navigationController groups];
+												 groups = [(NCDatabaseTypePickerViewController*) self.navigationController groups];
 												 self.typesRequest = nil;
 												 self.searchRequest = nil;
 											 }

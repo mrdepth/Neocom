@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="446"/>
         </scene>
-        <!--Database View Controller-->
+        <!--Database View Controller - Database-->
         <scene sceneID="VPG-1H-jaK">
             <objects>
                 <tableViewController id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
@@ -32,6 +32,7 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="ADb-Gm-4tZ">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="fQN-VN-Su3" id="Huw-H9-9ya"/>
@@ -86,23 +87,13 @@
                             <outlet property="delegate" destination="fQN-VN-Su3" id="13b-G4-Inr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Mqf-D6-byQ">
-                        <nil key="title"/>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xfF-l5-Z2N">
-                            <rect key="frame" x="85" y="6" width="150" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="All  ▾">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="highlighted">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
+                    <navigationItem key="navigationItem" title="Database" id="Mqf-D6-byQ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="fhQ-hK-Qkd"/>
+                        <barButtonItem key="rightBarButtonItem" title="All" id="4FX-2W-XKe">
                             <connections>
-                                <action selector="onFilter:" destination="fQN-VN-Su3" eventType="touchUpInside" id="sXj-Th-OzB"/>
+                                <action selector="onFilter:" destination="fQN-VN-Su3" id="Ztx-2g-bEn"/>
                             </connections>
-                        </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
@@ -149,6 +140,7 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="Dsz-vk-uDL">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="lEO-4A-qIj" id="hdv-H7-MPN"/>
@@ -203,7 +195,9 @@
                             <outlet property="delegate" destination="lEO-4A-qIj" id="V8v-6C-cIx"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Market" id="zxr-ed-nHP"/>
+                    <navigationItem key="navigationItem" title="Market" id="zxr-ed-nHP">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="3oy-hS-sC1"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="awT-Az-HAp" id="s8V-8z-tBv"/>
                     </connections>
@@ -285,7 +279,9 @@
                             <outlet property="delegate" destination="igD-MV-bsc" id="N6z-Dc-NY2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Certificates" id="ilS-ZM-eW2"/>
+                    <navigationItem key="navigationItem" title="Certificates" id="ilS-ZM-eW2">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="7Ir-6A-tCu"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te0-4J-OJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -501,6 +497,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Info" id="H94-e0-0QE">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="GeH-Tl-Wgn"/>
                         <barButtonItem key="rightBarButtonItem" title="Market" id="mh0-HP-T56">
                             <connections>
                                 <segue destination="4UZ-Rj-aNc" kind="push" identifier="NCDatabaseTypeMarketInfoViewController" id="LHH-Wy-jrm"/>
@@ -529,6 +526,7 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="LCA-F3-84x">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="4UZ-Rj-aNc" id="zOi-TA-qBM"/>
@@ -621,6 +619,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="dNV-kF-XpI">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="KR3-Bu-kXk"/>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rCc-31-HT7">
                             <rect key="frame" x="85" y="6" width="150" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -696,7 +695,9 @@
                             <outlet property="delegate" destination="h8M-vq-ZAF" id="UPn-PG-PlL"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Variations" id="1oU-gs-Yli"/>
+                    <navigationItem key="navigationItem" title="Variations" id="1oU-gs-Yli">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="lw7-0b-fOg"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X44-R4-PR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -771,7 +772,9 @@
                             <outlet property="delegate" destination="eTY-fq-Zqi" id="LxF-u1-egh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Mastery" id="wg6-9O-bru"/>
+                    <navigationItem key="navigationItem" title="Mastery" id="wg6-9O-bru">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Fro-xH-ANg"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8R-2l-rFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -890,6 +893,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="EbJ-lr-Gys">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="618-YC-ss9"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="QUc-Ur-jl3">
                             <rect key="frame" x="68" y="7" width="185" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -940,6 +944,7 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="RxM-EB-Sff">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="dG5-dx-SwW" id="yVR-2K-HDR"/>
@@ -990,7 +995,9 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="NPC" id="0Cx-9e-L36"/>
+                    <navigationItem key="navigationItem" title="NPC" id="0Cx-9e-L36">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="38J-Tq-rpg"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="jl9-gW-d3I" id="sUl-5C-dIv"/>
@@ -1020,6 +1027,7 @@
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="s52-vn-KKk">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
                             <connections>
                                 <outlet property="delegate" destination="zhh-zy-fcT" id="Llu-fB-2q9"/>
@@ -1070,7 +1078,9 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Categories" id="9Wu-uS-gXM"/>
+                    <navigationItem key="navigationItem" title="Categories" id="9Wu-uS-gXM">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="J2J-vz-rHR"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="EJa-ky-XRU" id="opS-5Q-Eok"/>
                     </connections>
@@ -1111,12 +1121,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="NZA-Xm-9UK"/>
         <segue reference="raC-Em-4AD"/>
-        <segue reference="edv-w8-2To"/>
         <segue reference="LHH-Wy-jrm"/>
+        <segue reference="qyD-gc-O13"/>
         <segue reference="Vbq-vg-5yp"/>
         <segue reference="6M7-4Q-PK5"/>
         <segue reference="7iv-ne-LEg"/>
-        <segue reference="qyD-gc-O13"/>
     </inferredMetricsTieBreakers>
 </document>

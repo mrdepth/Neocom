@@ -30,7 +30,7 @@
                                                 <constraint firstAttribute="height" constant="32" id="XFZ-JR-3eR"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="V1f-rY-ztq">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="V1f-rY-ztq">
                                             <rect key="frame" x="55" y="4" width="232" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -497,7 +497,9 @@
                             <outlet property="delegate" destination="qsR-P8-4N2" id="G1O-ro-YgX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="dee-SD-Q93"/>
+                    <navigationItem key="navigationItem" id="dee-SD-Q93">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="5fP-zA-Nuf"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5h9-YR-Ql0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -559,6 +561,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NEN-0f-2fn">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="3Ys-Io-HU5"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="PFF-tw-ZaU">
                             <connections>
                                 <action selector="onAction:" destination="Q05-ST-c2d" id="IpD-d7-UTP"/>
@@ -590,7 +593,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Jsk-PC-XN5"/>
+                    <navigationItem key="navigationItem" id="Jsk-PC-XN5">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Rt4-wh-uyR"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -612,7 +617,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Jmh-yr-G3N"/>
+                    <navigationItem key="navigationItem" id="Jmh-yr-G3N">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="QPn-zC-13c"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -634,7 +641,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="EUq-bs-tXS"/>
+                    <navigationItem key="navigationItem" id="EUq-bs-tXS">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Qz2-Wi-lHd"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
                     </userDefinedRuntimeAttributes>
@@ -656,7 +665,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="LcD-2w-GdN"/>
+                    <navigationItem key="navigationItem" id="LcD-2w-GdN">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="uBs-zC-iol"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
                     </userDefinedRuntimeAttributes>

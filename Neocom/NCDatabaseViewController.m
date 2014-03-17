@@ -30,17 +30,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	if (self.group)
+		self.title = self.group.groupName;
+	else if (self.category)
+		self.title = self.category.categoryName;
 	self.refreshControl = nil;
 	
 	if (!self.rows) {
 		[self reload];
 	}
 	if (self.filter == NCDatabaseFilterAll)
-		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"All", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"All", nil);
 	else if (self.filter == NCDatabaseFilterPublished)
-		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"Published", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
-	else if (self.filter == NCDatabaseFilterPublished)
-		[(UIButton*) self.navigationItem.titleView setTitle:[NSLocalizedString(@"Unpublished", nil) stringByAppendingString:@" \u25BE"] forState:UIControlStateNormal];
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Published", nil);
+	else if (self.filter == NCDatabaseFilterUnpublished)
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Unpublished", nil);
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -87,11 +91,11 @@
 									 self.filter = NCDatabaseFilterPublished;
 								 else if (selectedButtonIndex == 2)
 									 self.filter = NCDatabaseFilterUnpublished;
-								 [sender setTitle:[[actionSheet buttonTitleAtIndex:selectedButtonIndex] stringByAppendingString:@"  \u25BE"] forState:UIControlStateNormal];
+								 self.navigationItem.rightBarButtonItem.title = [actionSheet buttonTitleAtIndex:selectedButtonIndex];
 								 [self reload];
 							 }
 						 }
-							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];
+							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
 #pragma mark - Table view data source

@@ -41,7 +41,9 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="News" id="Lbe-06-bEN"/>
+                    <navigationItem key="navigationItem" title="News" id="Lbe-06-bEN">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Wsb-TL-vYX"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zvi-sR-hNz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -296,7 +298,9 @@ Jim Nastik</string>
                             <outlet property="delegate" destination="8Qf-NU-E9D" id="9lN-Fw-IoC"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="About" id="hzp-Qm-7oI"/>
+                    <navigationItem key="navigationItem" title="About" id="hzp-Qm-7oI">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="8ot-2t-L9j"/>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="600"/>
                     <connections>
@@ -425,7 +429,9 @@ Jim Nastik</string>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Donate" id="sCa-Xt-SLZ"/>
+                    <navigationItem key="navigationItem" title="Donate" id="sCa-Xt-SLZ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Kr0-Ro-ym6"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gwt-7a-Rmz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -512,7 +518,9 @@ Jim Nastik</string>
                             <outlet property="delegate" destination="okg-d3-PGe" id="4D4-eC-f7b"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="News" id="kfg-lP-5Ia"/>
+                    <navigationItem key="navigationItem" title="News" id="kfg-lP-5Ia">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="pRu-Hp-a0G"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lfh-Cu-WX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -564,7 +572,9 @@ Jim Nastik</string>
                             <constraint firstItem="o3o-It-Sbm" firstAttribute="leading" secondItem="5ds-MB-iBl" secondAttribute="leading" id="a86-xk-3kB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="News" id="ZKC-kk-9Pf"/>
+                    <navigationItem key="navigationItem" title="News" id="ZKC-kk-9Pf">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="0RL-3U-D0L"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="webView" destination="o3o-It-Sbm" id="uMq-7t-6xc"/>
                     </connections>

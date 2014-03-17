@@ -30,7 +30,7 @@
                                                 <constraint firstAttribute="height" constant="32" id="5DE-aZ-S1h"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6ti-bE-HvA">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="6ti-bE-HvA">
                                             <rect key="frame" x="55" y="4" width="208" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -125,7 +125,7 @@
                                                 <constraint firstAttribute="height" constant="32" id="pgG-ae-3ph"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ppr-xd-Dhi">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Type Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="ppr-xd-Dhi">
                                             <rect key="frame" x="55" y="4" width="208" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1393,7 +1393,9 @@
                             <outlet property="delegate" destination="AJi-xr-hae" id="Mpg-PI-J8t"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="0bC-hU-5mw"/>
+                    <navigationItem key="navigationItem" id="0bC-hU-5mw">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="UF6-kK-E14"/>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="650"/>
                 </tableViewController>
@@ -1459,6 +1461,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vJY-Dr-bpG">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="FSq-TL-dqq"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="bY0-vE-pSU">
                             <connections>
                                 <action selector="onAction:" destination="rXs-cs-oxV" id="gXX-R4-Imo"/>
@@ -1498,7 +1501,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Qx9-sF-5rd"/>
+                    <navigationItem key="navigationItem" id="Qx9-sF-5rd">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="dYR-ne-fsU"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -1543,7 +1548,9 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Select Target" id="ITd-Wk-bam"/>
+                    <navigationItem key="navigationItem" title="Select Target" id="ITd-Wk-bam">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="d7u-EM-wup"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdq-JE-D5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1582,7 +1589,9 @@
                             <outlet property="delegate" destination="xOJ-XJ-7d3" id="9cX-md-RNU"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Characters" id="xIC-bD-6hh"/>
+                    <navigationItem key="navigationItem" title="Characters" id="xIC-bD-6hh">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="ZqL-jn-ckz"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="k7C-Gm-A8O" kind="push" identifier="NCFittingCharacterEditorViewController" id="AkJ-Pr-96d"/>
                         <segue destination="3dn-pm-3Fj" kind="unwind" identifier="Unwind" unwindAction="unwindFromCharacterPicker:" id="ge1-Xe-e0J"/>
@@ -1650,6 +1659,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="h9c-j9-rgo">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="a9l-zs-uiw"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="edg-Rn-8H0">
                             <connections>
                                 <action selector="onAction:" destination="k7C-Gm-A8O" id="kTi-1q-epA"/>
@@ -1721,7 +1731,9 @@
                             <outlet property="delegate" destination="TEo-Cl-pbK" id="Rsw-i7-hDz"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Select Fit" id="AZk-sz-e8Z"/>
+                    <navigationItem key="navigationItem" title="Select Fit" id="AZk-sz-e8Z">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="TCh-Dq-eVW"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="4Qq-Pd-S8A" kind="unwind" identifier="Unwind" unwindAction="unwindFromFitPicker:" id="85x-Jt-Bbk"/>
                     </connections>
@@ -1768,7 +1780,9 @@
                             <outlet property="delegate" destination="GEQ-B3-aL5" id="hAU-Jv-DeD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Area Effects" id="meP-ZE-Tp7"/>
+                    <navigationItem key="navigationItem" title="Area Effects" id="meP-ZE-Tp7">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="hSV-92-i2J"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ahD-ey-zzT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Zc8-fp-yNI" userLabel="Exit" sceneMemberID="exit"/>
@@ -1812,7 +1826,9 @@
                             <outlet property="delegate" destination="gxe-oV-SlO" id="qhp-PG-dWG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Variations" id="XWS-Ce-7dO"/>
+                    <navigationItem key="navigationItem" title="Variations" id="XWS-Ce-7dO">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="2t1-Ic-eaW"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MTI-fv-dBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="bgc-cK-n5O" userLabel="Exit" sceneMemberID="exit"/>
@@ -1925,6 +1941,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="szz-UW-j4R">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="mqE-z6-qY0"/>
                         <barButtonItem key="rightBarButtonItem" title="Train" id="odW-hd-0AY">
                             <connections>
                                 <action selector="onTrain:" destination="GS3-JK-anj" id="SzU-xj-UfS"/>
@@ -2004,7 +2021,9 @@
                             <outlet property="delegate" destination="s1B-Zc-8t5" id="npx-5W-NkD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eqE-bI-rZn"/>
+                    <navigationItem key="navigationItem" id="eqE-bI-rZn">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="LZF-0J-6Oh"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8AC-jP-a9N" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="hFg-ap-KOK" userLabel="Exit" sceneMemberID="exit"/>
@@ -2066,7 +2085,9 @@
                             <outlet property="delegate" destination="GwB-XZ-nRV" id="cl9-Ic-uuw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Affecting Skills" id="mhu-07-cEa"/>
+                    <navigationItem key="navigationItem" title="Affecting Skills" id="mhu-07-cEa">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="fU7-fe-gHN"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tR2-Rh-Ekm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2085,7 +2106,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="S9q-of-Nps"/>
+                    <navigationItem key="navigationItem" id="S9q-of-Nps">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Bqk-6h-DfY"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -2107,7 +2130,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="LCq-1d-zTI"/>
+                    <navigationItem key="navigationItem" id="LCq-1d-zTI">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="RbF-Sm-DdG"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
                     </userDefinedRuntimeAttributes>
@@ -2129,7 +2154,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="FhC-E8-TkS"/>
+                    <navigationItem key="navigationItem" id="FhC-E8-TkS">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="3mO-g0-HkC"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
                     </userDefinedRuntimeAttributes>

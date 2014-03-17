@@ -46,6 +46,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (!self.tableView.backgroundView) {
+		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor clearColor];
+		self.tableView.backgroundView = view;
+	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
@@ -187,8 +192,8 @@
 }
 
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate {
+	self.data = data;
 	if (data) {
-		self.data = data;
 		NSString* recordID = self.recordID;
 		NCCache* cache = [NCCache sharedCache];
 		[cache.managedObjectContext performBlockAndWait:^{

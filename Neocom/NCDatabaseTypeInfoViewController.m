@@ -78,6 +78,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.title = self.type.typeName;
 	[self reload];
 	self.refreshControl = nil;
 	if (self.type.marketGroupID == 0)
@@ -338,7 +339,8 @@
 												   
 												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 												   row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), i + 1];
-												   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+												   if (trainingQueue.trainingTime > 0)
+													   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
 												   row.imageName = [EVEDBCertCertificate iconImageNameWithMasteryLevel:i];
 												   row.cellIdentifier = @"MasteryCell";
 												   row.object = @(i);

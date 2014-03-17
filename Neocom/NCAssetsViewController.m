@@ -218,15 +218,19 @@
 	cell.textLabel.text = asset.title;
 	cell.object = asset;
 	
-	if (asset.parent) {
-		if (asset.owner)
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
-		else
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
-	}
-	
-	else
+	if (self.accounts.count > 0)
 		cell.detailTextLabel.text = asset.owner;
+	else
+		cell.detailTextLabel.text = nil;
+	
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		if (asset.parent) {
+			if (asset.owner)
+				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
+			else
+				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
+		}
+	}
 	
 	return cell;
 }

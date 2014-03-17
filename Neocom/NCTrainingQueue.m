@@ -37,7 +37,7 @@
 			self.characterSkills = account.characterSheet.skillsMap;
 			self.characterAttributes = account.characterAttributes;
 		}
-		else
+		if (!self.characterAttributes)
 			self.characterAttributes = [NCCharacterAttributes defaultCharacterAttributes];
 		_skills = [NSMutableArray new];
 	}

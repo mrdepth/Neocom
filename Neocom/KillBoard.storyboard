@@ -94,6 +94,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="ngX-OJ-HIt">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="jyi-5N-Qsn"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="ra6-iZ-A5e">
                             <rect key="frame" x="96" y="7" width="128" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -402,6 +403,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="3cI-Pu-FJ9">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="f3L-nV-OR7"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="XgP-7p-zGB">
                             <rect key="frame" x="88" y="7" width="145" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -721,6 +723,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <sections/>
                     </tableView>
                     <navigationItem key="navigationItem" title="zKillBoard" id="KZg-BD-Ht6">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="onQ-k4-t2J"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="snd-N4-Zlk">
                             <connections>
                                 <segue destination="OB7-t2-Ozd" kind="push" identifier="NCZKillBoardSearchResultsViewController" id="ph1-fD-wBK"/>
@@ -818,7 +821,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="OB7-t2-Ozd" id="QAc-Lx-bZZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="zKillBoard" id="Piq-gE-b8A"/>
+                    <navigationItem key="navigationItem" title="zKillBoard" id="Piq-gE-b8A">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="P8j-QJ-DvU"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="G1y-th-n0s" kind="push" identifier="NCKillMailDetailsViewController" id="vTY-rV-oJg"/>
                     </connections>
@@ -909,7 +914,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="1eK-h6-8RJ" id="3Lr-F8-Sqr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Regions" id="Vf5-1B-qu1"/>
+                    <navigationItem key="navigationItem" title="Regions" id="Vf5-1B-qu1">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="nV2-Qu-acm"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="HOa-8M-4Qh" id="D6i-cp-5y0"/>
                     </connections>
@@ -973,7 +980,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="aRn-QO-0j4"/>
+                    <navigationItem key="navigationItem" id="aRn-QO-0j4">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="gtS-gO-bGc"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
                     </userDefinedRuntimeAttributes>
@@ -995,7 +1004,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Inf-r5-LvX"/>
+                    <navigationItem key="navigationItem" id="Inf-r5-LvX">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="7FA-qQ-In8"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -1041,7 +1052,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <outlet property="delegate" destination="Xra-zg-1OC" id="Sbg-GM-EQe"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Ship Classes" id="tjv-iD-6G7"/>
+                    <navigationItem key="navigationItem" title="Ship Classes" id="tjv-iD-6G7">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="uPJ-Tv-Yby"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gSm-I8-JIF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="UMY-Z5-296" userLabel="Exit" sceneMemberID="exit"/>

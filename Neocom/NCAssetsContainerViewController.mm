@@ -42,6 +42,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.asset.title)
+		self.title = self.asset.title;
 	self.refreshControl = nil;
 	NSMutableArray* sections = [NSMutableArray new];
 	
@@ -239,16 +241,6 @@
 	
 	cell.textLabel.text = asset.title;
 	cell.object = asset;
-	
-	if (asset.parent) {
-		if (asset.owner)
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
-		else
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
-	}
-	
-	else
-		cell.detailTextLabel.text = asset.owner;
 	
 	return cell;
 }

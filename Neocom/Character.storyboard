@@ -466,7 +466,9 @@
                             <outlet property="delegate" destination="N9k-WA-lg6" id="ZLE-WX-4RM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Character Sheet" id="bA5-N8-zYF"/>
+                    <navigationItem key="navigationItem" title="Character Sheet" id="bA5-N8-zYF">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Bb7-el-nl7"/>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="435" height="700"/>
                     <connections>
@@ -561,7 +563,9 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Calendar Events" id="DGH-dt-0zz"/>
+                    <navigationItem key="navigationItem" title="Calendar Events" id="DGH-dt-0zz">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="9S1-g8-Dx6"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HCr-Hi-k3K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -597,7 +601,9 @@
                             <constraint firstAttribute="trailing" secondItem="pxB-jy-AU4" secondAttribute="trailing" id="syS-UB-mdd"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Event" id="wOq-hR-LkX"/>
+                    <navigationItem key="navigationItem" title="Event" id="wOq-hR-LkX">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="HUU-5K-OwH"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="webView" destination="pxB-jy-AU4" id="TT4-Tv-gSm"/>
                     </connections>
@@ -671,6 +677,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="aKV-S7-QXz">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="hiT-BU-7I6"/>
                         <barButtonItem key="rightBarButtonItem" title="Mark as read" id="bIX-8E-qNc">
                             <connections>
                                 <action selector="markAsRead:" destination="EOg-63-G75" id="aor-1m-ZXL"/>
@@ -744,7 +751,9 @@
                             <constraint firstAttribute="trailing" secondItem="S9H-yS-IUW" secondAttribute="trailing" id="uA9-v3-c4G"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Message" id="3Jz-rg-jNZ"/>
+                    <navigationItem key="navigationItem" title="Message" id="3Jz-rg-jNZ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="weq-dY-P9w"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="webView" destination="S9H-yS-IUW" id="ZmY-9Q-8Ei"/>
                     </connections>
@@ -1079,6 +1088,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="sCx-Ia-NAY">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Bd0-rA-7JX"/>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="IXn-Vb-30e">
                             <rect key="frame" x="85" y="6" width="150" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1117,7 +1127,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="a2I-WA-ty9"/>
+                    <navigationItem key="navigationItem" id="a2I-WA-ty9">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="xsI-Q4-Jhz"/>
+                    </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
                     </userDefinedRuntimeAttributes>
@@ -1177,7 +1189,9 @@
                             <outlet property="delegate" destination="AGY-qS-Iku" id="Jt1-gd-fvp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Skill Plans" id="Wup-0d-1rk"/>
+                    <navigationItem key="navigationItem" title="Skill Plans" id="Wup-0d-1rk">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="cVh-lm-DLB"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XdB-gY-3ig" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1244,7 +1258,9 @@
                             <outlet property="delegate" destination="Tdv-xs-pKj" id="fGp-iG-4Lo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Import Skill Plan" id="RQi-S0-hwH"/>
+                    <navigationItem key="navigationItem" title="Import Skill Plan" id="RQi-S0-hwH">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="HnZ-PV-698"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gBs-90-dg8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1354,6 +1370,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Skill Plan" id="h9a-Lg-axx">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="7xc-Tf-rzj"/>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="sZ4-0t-3Uu">
                             <connections>
                                 <action selector="onAction:" destination="ZHq-2H-EVU" id="c6O-YZ-qbI"/>

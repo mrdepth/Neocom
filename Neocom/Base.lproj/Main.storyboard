@@ -102,6 +102,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ipP-zY-vww">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="t1I-MC-d2z"/>
                     </navigationItem>
                     <connections>
                         <segue destination="GWj-hT-r1l" kind="custom" identifier="NCMainMenuDropDownSegue" customClass="NCMainMenuDropDownSegue" id="2nb-jZ-Qb9"/>
@@ -459,7 +460,9 @@
                         </prototypes>
                         <sections/>
                     </tableView>
-                    <navigationItem key="navigationItem" id="AM0-oN-MZD"/>
+                    <navigationItem key="navigationItem" id="AM0-oN-MZD">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="2bd-lv-msh"/>
+                    </navigationItem>
                     <keyCommands/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
@@ -582,6 +585,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add API Key" id="9bq-HX-aW6">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="9Cz-Ku-t2f"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Save" id="Ovu-U3-Wn5">
                             <connections>
                                 <action selector="onSave:" destination="dbV-Pp-N4T" id="kh9-nt-Fct"/>
@@ -631,7 +635,9 @@
                             <outlet property="delegate" destination="DJl-gT-OBF" id="gm6-jU-Mfg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Access Mask" id="FnY-8Y-n82"/>
+                    <navigationItem key="navigationItem" title="Access Mask" id="FnY-8Y-n82">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="0Kx-nS-ywG"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sfg-oA-4Ho" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -773,6 +779,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="2HX-ae-aXJ">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="ZxO-GZ-9Ax"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>

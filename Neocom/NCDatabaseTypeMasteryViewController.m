@@ -43,6 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.title = self.type.typeName;
 	self.refreshControl = nil;
 	
 	NCAccount* account = [NCAccount currentAccount];

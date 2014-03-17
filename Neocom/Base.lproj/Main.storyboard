@@ -245,14 +245,14 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="KeyID 77777 Access Mask 25555555">
-                                                <color key="titleColor" red="0.98039215686274506" green="0.61960784313725492" blue="0.054901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <state key="highlighted">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCAPIKeyAccessMaskViewController" customClass="NCSideMenuViewControllerContentSegue" id="LOm-NI-BSn"/>
+                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCCharAccessMask" customClass="NCSideMenuViewControllerContentSegue" id="LOm-NI-BSn"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -317,7 +317,7 @@
                                     <outlet property="skillQueueLabel" destination="9o6-3z-Jhq" id="JRz-Dl-aqg"/>
                                     <outlet property="skillsLabel" destination="Fap-mC-RhC" id="BL9-Cl-06Q"/>
                                     <outlet property="subscriptionLabel" destination="XrT-ri-r8a" id="YP0-k9-k2s"/>
-                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectAccount" unwindAction="unwindToMainMenu:" id="OqI-jR-ZMU"/>
+                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectCharAccount" unwindAction="unwindToMainMenu:" id="OqI-jR-ZMU"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCAccountCorporationCell" rowHeight="134" id="DHv-RC-Dcu" customClass="NCAccountCorporationCell">
@@ -383,14 +383,14 @@
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <state key="normal" title="KeyID 77777 Access Mask 25555555">
-                                                <color key="titleColor" red="0.98039215690000003" green="0.61960784310000006" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <state key="highlighted">
                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCAPIKeyAccessMaskViewController" customClass="NCSideMenuViewControllerContentSegue" id="R6f-7n-gJ8"/>
+                                                <segue destination="NN8-Tb-Sof" kind="custom" identifier="NCCorpAccessMask" customClass="NCSideMenuViewControllerContentSegue" id="R6f-7n-gJ8"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -432,7 +432,7 @@
                                     <outlet property="corporationImageView" destination="cNC-pM-lU4" id="vB1-Wj-z81"/>
                                     <outlet property="corporationNameLabel" destination="8vt-Qc-iur" id="KdZ-04-8ve"/>
                                     <outlet property="membersLabel" destination="Am9-37-d4S" id="LUA-wy-LRT"/>
-                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectAccount" unwindAction="unwindToMainMenu:" id="E6b-Pg-knl"/>
+                                    <segue destination="6fx-83-xta" kind="unwind" identifier="NCSelectCorpAccount" unwindAction="unwindToMainMenu:" id="E6b-Pg-knl"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" editingAccessoryType="disclosureIndicator" textLabel="vwR-ul-49N" rowHeight="44" style="IBUITableViewCellStyleDefault" id="UfH-cU-vAa" customClass="NCTableViewCell">

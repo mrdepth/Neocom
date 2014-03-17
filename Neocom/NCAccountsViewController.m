@@ -122,7 +122,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"NCSelectAccount"]) {
+	if ([segue.identifier isEqualToString:@"NCSelectCharAccount"] || [segue.identifier isEqualToString:@"NCSelectCorpAccount"]) {
 		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
 		NCAccountsViewControllerData* data = self.data;
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
@@ -131,7 +131,7 @@
 	else if ([segue.identifier isEqualToString:@"Logout"]) {
 		[NCAccount setCurrentAccount:nil];
 	}
-	else if ([segue.identifier isEqualToString:@"NCAPIKeyAccessMaskViewController"]) {
+	else if ([segue.identifier isEqualToString:@"NCCharAccessMask"] || [segue.identifier isEqualToString:@"NCCorpAccessMask"]) {
 		NCAPIKeyAccessMaskViewController* controller = [segue.destinationViewController viewControllers][0];
 		id cell = [sender superview];
 		for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);

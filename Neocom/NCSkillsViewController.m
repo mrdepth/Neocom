@@ -111,6 +111,9 @@
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex == actionSheet.cancelButtonIndex)
 								 return;
+							 if (self.editing)
+								 [self setEditing:NO animated:YES];
+
 							 UIButton* button = (UIButton*) self.navigationItem.titleView;
 							 
 							 [button setTitle:[[actionSheet buttonTitleAtIndex:selectedButtonIndex] stringByAppendingString:@"  \u25BE"]
@@ -192,10 +195,12 @@
 	if ([keyPath isEqualToString:@"trainingQueue"]) {
 		if ([NSThread isMainThread]) {
 			NCTrainingQueue* new = change[NSKeyValueChangeNewKey];
-			self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
-			
-			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
+			if (![self.skillPlanSkills isEqualToArray:new.skills]) {
+				self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
+				
+				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
+					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+				}
 			}
 		}
 	}
@@ -203,14 +208,14 @@
 		if ([NSThread isMainThread]) {
 			self.skillPlan = self.account.activeSkillPlan;
 			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
+				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
 			}
 		}
 		else {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.skillPlan = self.account.activeSkillPlan;
 				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
+					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
 				}
 			});
 		}
@@ -245,11 +250,11 @@
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue: {
 			if (section == 0)
-				return self.skillQueueRows.count;
-			else if (section == 1)
-				return self.skillPlan.trainingQueue.skills.count;
-			else
 				return self.skillPlan.trainingQueue.skills.count > 0 ? 2 : 0;
+			else if (section == 1)
+				return self.skillQueueRows.count;
+			else if (section == 2)
+				return self.skillPlan.trainingQueue.skills.count;
 		}
 		case NCSkillsViewControllerModeKnownSkills:
 			return [[self.knownSkillsSections[section] rows] count];
@@ -265,7 +270,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2) {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NCCharacterAttributesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCCharacterAttributesCell"];
 			
@@ -345,7 +350,10 @@
 	NCSkillsViewControllerData* data = self.data;
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
-			row = indexPath.section == 0 ? self.skillQueueRows[indexPath.row] : self.skillPlan.trainingQueue.skills[indexPath.row];
+			if (indexPath.section == 1)
+				row = self.skillQueueRows[indexPath.row];
+			else if (indexPath.section == 2)
+				row = self.skillPlan.trainingQueue.skills[indexPath.row];
 			break;
 		case NCSkillsViewControllerModeKnownSkills:
 			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
@@ -402,15 +410,15 @@
 	switch (self.mode) {
 		case NCSkillsViewControllerModeTrainingQueue:
 			if (section == 0)
+				return NSLocalizedString(@"Optimal neural remap", nil);
+			else if (section == 1)
 				return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[data.skillQueue timeLeft]], (int32_t) self.skillQueueRows.count];
-			else if (section == 1) {
+			else if (section == 2) {
 				if (self.skillPlan.trainingQueue.skills.count > 0)
 					return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], (int32_t) self.skillPlan.trainingQueue.skills.count];
 				else
 					return NSLocalizedString(@"Skill plan is empty", nil);
 			}
-			else
-				return NSLocalizedString(@"Optimal neural remap", nil);
 		case NCSkillsViewControllerModeKnownSkills:
 			return [self.knownSkillsSections[section] title];
 		case NCSkillsViewControllerModeAllSkills:
@@ -425,11 +433,11 @@
 }
 
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 1;
+	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2;
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 1 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
+	return self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2 ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
 }
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -453,7 +461,7 @@
 }
 
 - (NSIndexPath*) tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-	if (proposedDestinationIndexPath.section == 1)
+	if (proposedDestinationIndexPath.section == 2)
 		return proposedDestinationIndexPath;
 	else
 		return sourceIndexPath;
@@ -462,7 +470,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 2) {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
 		if (indexPath.row == 0)
 			return 76;
 		else

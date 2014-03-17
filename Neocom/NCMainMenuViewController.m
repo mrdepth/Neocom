@@ -69,6 +69,13 @@
 	}
 	else
 		[self updateServerStatus];
+	if (self.skillQueue.cacheExpireDate) {
+		NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
+		if (delay > 0)
+			[self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
+		else
+			[self reload];
+	}
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -156,6 +163,7 @@
 #pragma mark - Private
 
 - (void) reload {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
 	NCAccount* account = [NCAccount currentAccount];
 	NSInteger apiKeyAccessMask = account.apiKey.apiKeyInfo.key.accessMask;
 	NSString* accessMaskKey = account.accountType == NCAccountTypeCorporate ? @"corpAccessMask" : @"charAccessMask" ;
@@ -187,6 +195,12 @@
 									 self.characterSheet = characterSheet;
 									 self.skillQueue = skillQueue;
 									 [self.tableView reloadData];
+									 
+									 if (self.skillQueue) {
+										 NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
+										 if (delay > 0)
+											 [self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
+									 }
 								 }
 							 }];
 }

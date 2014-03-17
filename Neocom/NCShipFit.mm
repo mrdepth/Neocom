@@ -612,6 +612,123 @@
 	return self;
 }
 
+- (id) initWithDNA:(NSString *)dna {
+	if (self = [super init]) {
+		NSMutableArray* records = [[dna componentsSeparatedByString:@":"] mutableCopy];
+		if (records.count == 0) {
+			return nil;
+		}
+		int32_t shipTypeID = [records[0] intValue];
+		if (!shipTypeID)
+			return nil;
+		self.type = [EVEDBInvType invTypeWithTypeID:shipTypeID error:nil];
+		if (!self.type)
+			return nil;
+			
+		self.loadoutName = self.type.typeName;
+		self.loadoutData = [NCLoadoutDataShip new];
+		
+		NSMutableArray* hiSlots = [NSMutableArray new];
+		NSMutableArray* medSlots = [NSMutableArray new];
+		NSMutableArray* lowSlots = [NSMutableArray new];
+		NSMutableArray* rigSlots = [NSMutableArray new];
+		NSMutableArray* subsystems = [NSMutableArray new];
+		NSArray* drones = nil;
+		NSArray* cargo = nil;
+		NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+		NSMutableDictionary* cargoDic = [NSMutableDictionary new];
+		
+		for (NSString* record in records) {
+			NSArray* components = [record componentsSeparatedByString:@";"];
+			int32_t typeID = 0;
+			int32_t amount = 1;
+			
+			if (components.count > 0)
+				typeID = [[components objectAtIndex:0] intValue];
+			if (components.count > 1)
+				amount = [[components objectAtIndex:1] intValue];
+			
+			if (amount > 0) {
+				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+				
+				
+				if (type) {
+					switch (type.category) {
+						case NCTypeCategoryModule: {
+							NSMutableArray* modules = nil;
+							switch (type.slot) {
+								case eufe::Module::SLOT_LOW:
+									modules = lowSlots;
+									break;
+								case eufe::Module::SLOT_MED:
+									modules = medSlots;
+									break;
+								case eufe::Module::SLOT_HI:
+									modules = hiSlots;
+									break;
+								case eufe::Module::SLOT_RIG:
+									modules = rigSlots;
+									break;
+								case eufe::Module::SLOT_SUBSYSTEM:
+									modules = subsystems;
+									break;
+								default:
+									break;
+							}
+							for (int i = 0; i < amount; i++) {
+								NCLoadoutDataShipModule* module = [NCLoadoutDataShipModule new];
+								module.typeID = typeID;
+								module.state = eufe::Module::STATE_ACTIVE;
+								[modules addObject:module];
+							}
+							break;
+						}
+						case NCTypeCategoryDrone: {
+							NCLoadoutDataShipDrone* drone = dronesDic[@(typeID)];
+							if (!drone) {
+								drone = [NCLoadoutDataShipDrone new];
+								drone.typeID = typeID;
+								drone.active = true;
+								dronesDic[@(typeID)] = drone;
+							}
+							drone.count += amount;
+							break;
+						}
+						case NCTypeCategoryCharge: {
+							NCLoadoutDataShipCargoItem* item = cargoDic[@(typeID)];
+							if (!item) {
+								item = [NCLoadoutDataShipCargoItem new];
+								item.typeID = typeID;
+								cargoDic[@(typeID)] = item;
+							}
+							item.count += amount;
+							break;
+						}
+						default:
+							break;
+					}
+				}
+				
+			}
+		}
+
+		drones = [dronesDic allValues];
+		cargo = [cargoDic allValues];
+		
+		self.loadoutData.hiSlots = hiSlots;
+		self.loadoutData.medSlots = medSlots;
+		self.loadoutData.lowSlots = lowSlots;
+		self.loadoutData.rigSlots = rigSlots;
+		self.loadoutData.subsystems = subsystems;
+		self.loadoutData.drones = drones;
+		self.loadoutData.cargo = cargo;
+		self.loadoutData.implants = @[];
+		self.loadoutData.boosters = @[];
+	}
+	return self;
+}
+
+
 - (void) flush {
 	if (!self.pilot)
 		return;

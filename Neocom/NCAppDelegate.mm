@@ -18,6 +18,9 @@
 #import "NCCache.h"
 #import "NCMigrationManager.h"
 #import "ASInAppPurchase.h"
+#import "NCShipFit.h"
+#import "NCFittingShipViewController.h"
+#import "NCSideMenuViewController.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -194,6 +197,19 @@
 }
 
 - (void) openFitWithURL:(NSURL*) url {
+	NSMutableString* dna = [NSMutableString stringWithString:[url absoluteString]];
+	[dna replaceOccurrencesOfString:@"fitting://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, dna.length)];
+	[dna replaceOccurrencesOfString:@"fitting:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, dna.length)];
+	NCShipFit* shipFit = [[NCShipFit alloc] initWithDNA:dna];
+	if (shipFit) {
+		NCFittingShipViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCFittingShipViewController"];
+		controller.fit = shipFit;
+		UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
+		if ([contentViewController isKindOfClass:[UINavigationController class]])
+			[contentViewController pushViewController:controller animated:YES];
+		else
+			[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+	}
 }
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction

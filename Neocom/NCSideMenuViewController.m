@@ -57,9 +57,25 @@
 	UIViewController* controller = self;
 	while (controller && ![controller isKindOfClass:[NCSideMenuViewController class]])
 		controller = controller.parentViewController;
+	if (!controller) {
+		__block __weak UIViewController* (^weakFind)(UIViewController*);
+		UIViewController* (^find)(UIViewController*) = ^(UIViewController* parentViewController) {
+			for (UIViewController* controller in parentViewController.childViewControllers) {
+				if ([controller isKindOfClass:[NCSideMenuViewController class]])
+					return controller;
+				else {
+					UIViewController* child = weakFind(controller);
+					if ([child isKindOfClass:[NCSideMenuViewController class]])
+						return child;
+				}
+			}
+			return (UIViewController*) nil;
+		};
+		
+		weakFind = find;
+		controller = find(self);
+	}
 	return (NCSideMenuViewController*) controller;
-//	NCSideMenuViewController* sideMenuViewController = objc_getAssociatedObject(self, @"sideMenuViewController");
-//	return sideMenuViewController ? sideMenuViewController : self.parentViewController.sideMenuViewController;
 }
 
 - (void) setSideMenuViewController:(NCSideMenuViewController *)sideMenuViewController {

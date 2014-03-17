@@ -1248,6 +1248,27 @@
             </objects>
             <point key="canvasLocation" x="2911" y="3872"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="las-gx-7KS">
+            <objects>
+                <viewController storyboardIdentifier="NCFittingShipViewController" id="y1Y-IP-ROM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LrX-Sb-Ta1"/>
+                        <viewControllerLayoutGuide type="bottom" id="iHk-SB-jZt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="V94-QO-ePe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShipFitting"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nxi-5V-Rr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-569" y="2604"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

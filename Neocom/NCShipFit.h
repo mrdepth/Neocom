@@ -71,6 +71,7 @@
 - (id) initWithAPILoadout:(NAPISearchItem*) apiLoadout;
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 - (id) initWithKillMail:(NCKillMail*) killMail;
+- (id) initWithDNA:(NSString*) dna;
 
 - (void) flush;
 - (void) save;

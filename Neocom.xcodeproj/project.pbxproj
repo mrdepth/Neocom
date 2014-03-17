@@ -29,7 +29,7 @@
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
 		1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1209685B1845F0CB00921A37 /* InfoPlist.strings */; };
 		1209685F1845F0CB00921A37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1209685E1845F0CB00921A37 /* main.m */; };
-		120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 120968621845F0CB00921A37 /* NCAppDelegate.m */; };
+		120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120968621845F0CB00921A37 /* NCAppDelegate.mm */; };
 		120968661845F0CB00921A37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120968641845F0CB00921A37 /* Main.storyboard */; };
 		1209686B1845F0CB00921A37 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209686A1845F0CB00921A37 /* Images.xcassets */; };
 		120968721845F0CB00921A37 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968711845F0CB00921A37 /* XCTest.framework */; };
@@ -628,7 +628,7 @@
 		1209685E1845F0CB00921A37 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		120968601845F0CB00921A37 /* Neocom-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Neocom-Prefix.pch"; sourceTree = "<group>"; };
 		120968611845F0CB00921A37 /* NCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCAppDelegate.h; sourceTree = "<group>"; };
-		120968621845F0CB00921A37 /* NCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NCAppDelegate.m; sourceTree = "<group>"; };
+		120968621845F0CB00921A37 /* NCAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAppDelegate.mm; sourceTree = "<group>"; };
 		120968651845F0CB00921A37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1209686A1845F0CB00921A37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		120968701845F0CB00921A37 /* NeocomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeocomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1680,7 +1680,7 @@
 				12640B0A18B75EBF005C311D /* KillBoard */,
 				123A97F918C71452001045F5 /* Help */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
-				120968621845F0CB00921A37 /* NCAppDelegate.m */,
+				120968621845F0CB00921A37 /* NCAppDelegate.mm */,
 				120968591845F0CB00921A37 /* Supporting Files */,
 			);
 			path = Neocom;
@@ -4726,7 +4726,7 @@
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
 				1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */,
-				120968631845F0CB00921A37 /* NCAppDelegate.m in Sources */,
+				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
 				126A0E0E185F3B9300A8E8A3 /* EVEDBDgmAttributeCategory.m in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				129FEE181860313D00F75FA6 /* NCStorage.m in Sources */,

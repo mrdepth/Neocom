@@ -24,6 +24,7 @@
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
 		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
+		12090EFE18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */; };
 		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
@@ -619,6 +620,8 @@
 		1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxViewController.m; sourceTree = "<group>"; };
 		1206C5F018929B960010BEE8 /* NCMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMessageCell.h; sourceTree = "<group>"; };
 		1206C5F118929B960010BEE8 /* NCMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMessageCell.m; sourceTree = "<group>"; };
+		12090EFC18D73FD9003D3DD9 /* NCTableViewLazyDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewLazyDataSource.h; sourceTree = "<group>"; };
+		12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewLazyDataSource.m; sourceTree = "<group>"; };
 		1209684F1845F0CB00921A37 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968521845F0CB00921A37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		120968541845F0CB00921A37 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1625,6 +1628,15 @@
 			name = NCMessageCell;
 			sourceTree = "<group>";
 		};
+		12090EFA18D73FB9003D3DD9 /* NCTableViewLazyDataSource */ = {
+			isa = PBXGroup;
+			children = (
+				12090EFC18D73FD9003D3DD9 /* NCTableViewLazyDataSource.h */,
+				12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */,
+			);
+			name = NCTableViewLazyDataSource;
+			sourceTree = "<group>";
+		};
 		120968461845F0CB00921A37 = {
 			isa = PBXGroup;
 			children = (
@@ -2166,6 +2178,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12090EFA18D73FB9003D3DD9 /* NCTableViewLazyDataSource */,
 				12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */,
 				12F955E318CDA281005CEAD6 /* NCMigrationManager */,
 				12FF586A189F8ECA00E2D70A /* NCStoryboardPopoverSegue */,
@@ -4483,6 +4496,7 @@
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
 				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
 				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
+				12090EFE18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,

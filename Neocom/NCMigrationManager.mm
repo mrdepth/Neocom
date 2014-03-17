@@ -41,13 +41,18 @@
 		[ncStorage.managedObjectContext performBlockAndWait:^{
 			[ncStorage saveContext];
 		}];
+		if ([storage.managedObjectContext hasChanges])
+			[storage.managedObjectContext save:nil];
 		storage = nil;
 	}
+	
 	if (errorPtr)
 		*errorPtr = error;
 	
-	for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
-		[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+	if (!error) {
+		for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+			[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+		}
 	}
 	return error == nil;
 }
@@ -62,15 +67,18 @@
 	NSMutableArray* invalidAPIKeys = [NSMutableArray new];
 	NSError* error = nil;
 	for (APIKey* apiKey in apiKeys) {
-		NSError* error = nil;
 		if (![[NCAccountsManager defaultManager] addAPIKeyWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error]) {
 			[invalidAPIKeys addObject:@(apiKey.keyID)];
 		}
-		if (invalidAPIKeys.count > 0)
-			error = [NSError errorWithDomain:@"Neocom"
-											code:0
-										userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Can't transfer api keys %@", nil), [invalidAPIKeys componentsJoinedByString:@", "]]}];
+		else {
+			[storage.managedObjectContext deleteObject:apiKey];
+		}
 	}
+	if (invalidAPIKeys.count > 0)
+		error = [NSError errorWithDomain:@"Neocom"
+									code:0
+								userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedString(@"Can't transfer api keys %@. Check your internet connection and try again.", nil), [invalidAPIKeys componentsJoinedByString:@", "]]}];
+	
 	if (errorPtr)
 		*errorPtr = error;
 	return error == nil;
@@ -194,6 +202,7 @@
 				loadout.name = shipFit.fitName;
 			}];
 		}
+		[storage.managedObjectContext deleteObject:shipFit];
 	}
 }
 
@@ -239,7 +248,7 @@
 			loadout.typeID = posFit.typeID;
 			loadout.name = posFit.fitName;
 		}];
-
+		[storage.managedObjectContext deleteObject:posFit];
 	}
 }
 
@@ -250,6 +259,7 @@
 	NSArray* skillPlans = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
 	for (SkillPlan* skillPlan in skillPlans) {
+		BOOL transfered = NO;
 		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
 			if (account.accountType == NCAccountTypeCharacter && account.characterID == skillPlan.characterID) {
 				NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
@@ -264,8 +274,11 @@
 					}
 				}
 				account.activeSkillPlan.trainingQueue = trainingQueue;
+				transfered = YES;
 			}
 		}
+		if (transfered)
+			[storage.managedObjectContext deleteObject:skillPlan];
 	}
 }
 

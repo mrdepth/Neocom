@@ -28,11 +28,17 @@
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
 
 - (void) setupAppearance;
+- (void) migrateWithCompletionHandler:(void(^)()) completionHandler;
 @end
 
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
+		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+		purchase.purchased = YES;
+	}
+
 	[self setupAppearance];
 	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDID])
@@ -43,44 +49,35 @@
 	[paymentQueue addTransactionObserver:self];
 
 	__block NSError* error = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 [NCMigrationManager migrateWithError:&error];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (error)
-									 [[UIAlertView alertViewWithError:error] show];
-								 
-								 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-								 NSError* error = nil;
-								 [accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-								 [accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-								 [accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
-								 
-								 NCAccount* account = nil;
-								 if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
-									 UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-									 NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-									 if (uuid)
-										 account = [NCAccount accountWithUUID:uuid];
-								 }
-								 
-								 if (!account) {
-									 NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
-									 if (uuid)
-										 account = [NCAccount accountWithUUID:uuid];
-								 }
-								 if (account)
-									 [NCAccount setCurrentAccount:account];
-								 
-								 if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
-									 [application setMinimumBackgroundFetchInterval:60 * 60 * 4];
-
-							 }];
+	[self migrateWithCompletionHandler:^{
+		NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
+		NSError* error = nil;
+		//[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
+		//[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
+		//[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
+		
+		NCAccount* account = nil;
+		if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+			UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+			NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+			if (uuid)
+				account = [NCAccount accountWithUUID:uuid];
+		}
+		
+		if (!account) {
+			NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
+			if (uuid)
+				account = [NCAccount accountWithUUID:uuid];
+		}
+		if (account)
+			[NCAccount setCurrentAccount:account];
+		
+		if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
+			[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
+	}];
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application {
 }
 
@@ -284,4 +281,39 @@
 
 	}
 }
+
+- (void) migrateWithCompletionHandler:(void(^)()) completionHandler {
+	__block NSError* error = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 [NCMigrationManager migrateWithError:&error];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (error) {
+									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
+															  message:[error localizedDescription]
+													cancelButtonTitle:NSLocalizedString(@"Discard", nil)
+													otherButtonTitles:@[NSLocalizedString(@"Retry", nil)]
+													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+														  if (selectedButtonIndex != alertView.cancelButtonIndex)
+															  [self migrateWithCompletionHandler:completionHandler];
+														  else {
+															  NSFileManager* fileManager = [NSFileManager defaultManager];
+															  NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+															  for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+																  [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
+															  }
+															  completionHandler();
+														  }
+													  } cancelBlock:^{
+														  
+													  }] show];
+								 }
+								 else {
+									 completionHandler();
+								 }
+							 }];
+}
+
 @end

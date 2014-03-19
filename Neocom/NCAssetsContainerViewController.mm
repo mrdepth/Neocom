@@ -237,15 +237,27 @@
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
-	cell.imageView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
 	
-	cell.textLabel.text = asset.title;
+	cell.titleLabel.text = asset.title;
 	cell.object = asset;
 	
 	return cell;
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];

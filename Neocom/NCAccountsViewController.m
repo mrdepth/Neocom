@@ -261,7 +261,7 @@
 			cell.subscriptionLabel.text = nil;
 		}
 		
-		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
+		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.account.apiKey.keyID];
 		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
 		return cell;
 	}
@@ -301,7 +301,7 @@
 		else
 			cell.balanceLabel.text = nil;
 		
-		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d with Access Mask %d", nil), account.account.apiKey.keyID, account.account.apiKey.apiKeyInfo.key.accessMask];
+		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.account.apiKey.keyID];
 		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
 		return cell;
 	}
@@ -398,7 +398,7 @@
 		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 	}
 	else
-		return 44;
+		return 41;
 }
 
 /*

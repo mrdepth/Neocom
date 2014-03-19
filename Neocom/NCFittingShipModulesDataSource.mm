@@ -75,36 +75,38 @@
 	__block float totalCalibration = 0;
 	__block float usedCalibration = 0;
 	
+	NSMutableArray* sections = [NSMutableArray new];
+	if (!self.controller.fit.pilot)
+		return;
+	
+	eufe::Ship* ship = self.controller.fit.pilot->getShip();
+	
+	eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+	int n = sizeof(slots) / sizeof(eufe::Module::Slot);
+	
+	for (int i = 0; i < n; i++) {
+		int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+		if (numberOfSlots > 0) {
+			eufe::ModulesList modules;
+			ship->getModules(slots[i], std::inserter(modules, modules.end()));
+			
+			NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
+			section.slot = slots[i];
+			section.numberOfSlots = numberOfSlots;
+			section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
+			[sections addObject:section];
+		}
+	}
+	self.sections = sections;
+
 	if (self.tableView.dataSource == self) {
 		[self.tableView reloadData];
 	}
 
-	NSMutableArray* sections = [NSMutableArray new];
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														@synchronized(self.controller) {
-															if (!self.controller.fit.pilot)
-																return;
-															
-															eufe::Ship* ship = self.controller.fit.pilot->getShip();
-															
-															eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
-															int n = sizeof(slots) / sizeof(eufe::Module::Slot);
-															
-															for (int i = 0; i < n; i++) {
-																int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-																if (numberOfSlots > 0) {
-																	eufe::ModulesList modules;
-																	ship->getModules(slots[i], std::inserter(modules, modules.end()));
-																	
-																	NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
-																	section.slot = slots[i];
-																	section.numberOfSlots = numberOfSlots;
-																	section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-																	[sections addObject:section];
-																}
-															}
 															
 															totalPG = ship->getTotalPowerGrid();
 															usedPG = ship->getPowerGridUsed();
@@ -123,7 +125,6 @@
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
-												self.sections = sections;
 												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
 												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
@@ -163,32 +164,32 @@
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size()) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.detailTextLabel.text = nil;
+		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
-				cell.imageView.image = [UIImage imageNamed:@"slotHigh.png"];
-				cell.textLabel.text = NSLocalizedString(@"High slot", nil);
+				cell.iconView.image = [UIImage imageNamed:@"slotHigh.png"];
+				cell.titleLabel.text = NSLocalizedString(@"High slot", nil);
 				break;
 			case eufe::Module::SLOT_MED:
-				cell.imageView.image = [UIImage imageNamed:@"slotMed.png"];
-				cell.textLabel.text = NSLocalizedString(@"Med slot", nil);
+				cell.iconView.image = [UIImage imageNamed:@"slotMed.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Med slot", nil);
 				break;
 			case eufe::Module::SLOT_LOW:
-				cell.imageView.image = [UIImage imageNamed:@"slotLow.png"];
-				cell.textLabel.text = NSLocalizedString(@"Low slot", nil);
+				cell.iconView.image = [UIImage imageNamed:@"slotLow.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Low slot", nil);
 				break;
 			case eufe::Module::SLOT_RIG:
-				cell.imageView.image = [UIImage imageNamed:@"slotRig.png"];
-				cell.textLabel.text = NSLocalizedString(@"Rig slot", nil);
+				cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Rig slot", nil);
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM:
-				cell.imageView.image = [UIImage imageNamed:@"slotSubsystem.png"];
-				cell.textLabel.text = NSLocalizedString(@"Subsystem slot", nil);
+				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Subsystem slot", nil);
 				break;
 			default:
-				cell.imageView.image = nil;
-				cell.textLabel.text = nil;
+				cell.iconView.image = nil;
+				cell.titleLabel.text = nil;
 		}
 		return cell;
 	}
@@ -294,21 +295,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
-	if (indexPath.row >= section.modules.size()) {
-		return 44;
-	}
-	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

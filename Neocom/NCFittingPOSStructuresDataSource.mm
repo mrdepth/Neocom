@@ -130,9 +130,9 @@
     
 	if (indexPath.row >= self.rows.count) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.imageView.image = [UIImage imageNamed:@"slotRig.png"];
-		cell.textLabel.text = NSLocalizedString(@"Add Structure", nil);
-		cell.detailTextLabel.text = nil;
+		cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Structure", nil);
+		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
 		
 		return cell;
@@ -196,20 +196,15 @@
 #pragma mark Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.rows.count) {
-		return 44;
-	}
-	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

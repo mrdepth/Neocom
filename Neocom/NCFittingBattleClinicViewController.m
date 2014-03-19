@@ -71,22 +71,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *cellIdentifier = @"Cell";
 	
-	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (indexPath.section == 0) {
 		cell.accessoryView = nil;
 		if (!self.type) {
-			cell.textLabel.text = NSLocalizedString(@"Select Ship", nil);
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 		}
 		else {
-			cell.textLabel.text = self.type.typeName;
-			cell.imageView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
+			cell.titleLabel.text = self.type.typeName;
+			cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
 		}
 	}
 	else {
 		NSArray* tags = self.data;
 		NSString *tag = [tags objectAtIndex:indexPath.row];
-		cell.textLabel.text = tag;
+		cell.titleLabel.text = tag;
 		cell.imageView.image = nil;
 		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	}
@@ -100,8 +100,24 @@
 		return nil;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
+	else {
+		return 41;
+	}
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

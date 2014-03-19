@@ -60,16 +60,16 @@
 	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
 	if (indexPath.row == self.targets.count) {
-		cell.textLabel.text = NSLocalizedString(@"Clear target", nil);
-		cell.detailTextLabel.text = nil;
-		cell.imageView.image = nil;
+		cell.titleLabel.text = NSLocalizedString(@"Clear target", nil);
+		cell.subtitleLabel.text = nil;
+		cell.iconView.image = nil;
 		cell.accessoryView = nil;
 	}
 	else {
 		NCShipFit* fit = self.targets[indexPath.row];
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ - %s", fit.type.typeName, fit.pilot->getCharacterName()];
-		cell.detailTextLabel.text = fit.loadoutName;
-		cell.imageView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s", fit.type.typeName, fit.pilot->getCharacterName()];
+		cell.subtitleLabel.text = fit.loadoutName;
+		cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
 		
 		if (fit == self.selectedTarget)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
@@ -81,6 +81,18 @@
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row == self.targets.count)

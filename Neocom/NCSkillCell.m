@@ -8,6 +8,38 @@
 
 #import "NCSkillCell.h"
 
+@interface NCImageView : UIImageView
+
+@end
+
+@implementation NCImageView
+
+- (CGSize) intrinsicContentSize {
+	if (!self.image)
+		return CGSizeZero;
+	else
+		return self.image.size;
+}
+
+@end
+
+@interface NCLabel : UILabel
+@end
+
+@implementation NCLabel
+
+- (void) layoutSubviews {
+	[super layoutSubviews];
+	if (self.preferredMaxLayoutWidth != self.frame.size.width) {
+		[self invalidateIntrinsicContentSize];
+		self.preferredMaxLayoutWidth = self.frame.size.width;
+		[self.superview setNeedsLayout];
+		[self.superview layoutIfNeeded];
+	}
+}
+
+@end
+
 @implementation NCSkillCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

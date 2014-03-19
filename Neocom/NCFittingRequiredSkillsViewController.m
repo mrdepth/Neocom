@@ -92,7 +92,7 @@
 	NCSkillData* row = self.trainingQueue.skills[indexPath.row];
 	
 	
-	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	cell.skillData = row;
 	
 	if (row.trainedLevel >= 0) {
@@ -130,6 +130,20 @@
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.trainingQueue.trainingTime], (int32_t) self.trainingQueue.skills.count];
 	else
 		return NSLocalizedString(@"Skill plan is empty", nil);
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 42;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

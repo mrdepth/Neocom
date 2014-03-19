@@ -61,9 +61,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-	cell.textLabel.text = self.titles[indexPath.row];
-	cell.imageView.image = [UIImage imageNamed:self.icons[indexPath.row]];
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	cell.titleLabel.text = self.titles[indexPath.row];
+	cell.iconView.image = [UIImage imageNamed:self.icons[indexPath.row]];
 
 	NSNumber* value = self.values[indexPath.row];
 	if (self.selectedValue && [self.selectedValue integerValue] == [value integerValue])

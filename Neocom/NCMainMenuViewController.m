@@ -12,6 +12,7 @@
 #import "NCSideMenuViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
+#import "NCTableViewCell.h"
 
 @interface NCMainMenuViewController ()
 @property (nonatomic, strong) NSMutableArray* allSections;
@@ -104,16 +105,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *CellIdentifier = @"Cell";
-	UITableViewCell *cell = (UITableViewCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
 	
-	cell.textLabel.text = row[@"title"];
-	cell.imageView.image = [UIImage imageNamed:row[@"image"]];
+	cell.titleLabel.text = row[@"title"];
+	cell.iconView.image = [UIImage imageNamed:row[@"image"]];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];
 	if (detailsKeyPath)
-		cell.detailTextLabel.text = [self valueForKey:detailsKeyPath];
+		cell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
 	else
-		cell.detailTextLabel.text = nil;
+		cell.subtitleLabel.text = nil;
 	return cell;
 }
 

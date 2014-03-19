@@ -144,10 +144,24 @@
 	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	
 	EVEDBInvType* row = self.sections[indexPath.section][indexPath.row];
-	cell.textLabel.text = row.typeName;
+	cell.titleLabel.text = row.typeName;
 	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	cell.object = row;
 	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

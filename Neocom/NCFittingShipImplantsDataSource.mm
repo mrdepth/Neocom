@@ -88,12 +88,12 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCTableViewCell *cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.detailTextLabel.text = nil;
+	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 	
 	if (indexPath.section == 0) {
-		cell.textLabel.text = NSLocalizedString(@"Import Implants", nil);
-		cell.imageView.image = [UIImage imageNamed:@"implant.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Import Implants", nil);
+		cell.iconView.image = [UIImage imageNamed:@"implant.png"];
 	}
 	else {
 		EVEDBInvType* type;
@@ -104,12 +104,12 @@
 		
 		
 		if (!type) {
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
-			cell.imageView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
+			cell.iconView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
 		}
 		else {
-			cell.textLabel.text = type.typeName;
-			cell.imageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+			cell.titleLabel.text = type.typeName;
+			cell.iconView.image = [UIImage imageNamed:[type typeSmallImageName]];
 		}
 	}
 	return cell;
@@ -141,11 +141,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

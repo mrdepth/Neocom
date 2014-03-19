@@ -172,8 +172,8 @@
 
 	if (indexPath.section == 0) {
 		NCContractsDetailsViewControllerDataRow* row = data.rows[indexPath.row];
-		cell.textLabel.text = row.title;
-		cell.detailTextLabel.text = row.description;
+		cell.titleLabel.text = row.title;
+		cell.subtitleLabel.text = row.description;
 	}
 	else if (indexPath.section == 1) {
 		EVEContractItemsItem* item = data.items.itemList[indexPath.row];
@@ -186,22 +186,36 @@
 		
 		cell.object = type;
 		if (type) {
-			cell.textLabel.text = type.typeName;
-			cell.imageView.image = [UIImage imageNamed:type.typeSmallImageName];
+			cell.titleLabel.text = type.typeName;
+			cell.iconView.image = [UIImage imageNamed:type.typeSmallImageName];
 		}
 		else {
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown Type %d", nil), item.typeID];
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown Type %d", nil), item.typeID];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
 		}
-		cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Quantity: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:item.quantity]];
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Quantity: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:item.quantity]];
 	}
 	else {
 		NCContractsDetailsViewControllerDataBid* bid = data.bids[indexPath.row];
-		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:bid.bid.amount]];
-		cell.detailTextLabel.text = bid.bidderName;
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:bid.bid.amount]];
+		cell.subtitleLabel.text = bid.bidderName;
 	}
 	
 	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

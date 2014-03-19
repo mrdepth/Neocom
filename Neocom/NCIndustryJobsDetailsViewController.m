@@ -176,20 +176,31 @@
 	}
 
 	cell.object = row.object;
-	cell.textLabel.text = row.title;
-	cell.detailTextLabel.text = row.description;
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.description;
 	if (row.imageName)
-		cell.imageView.image = [UIImage imageNamed:row.imageName];
+		cell.iconView.image = [UIImage imageNamed:row.imageName];
 	else
-		cell.imageView.image = nil;
+		cell.iconView.image = nil;
 	if (row.imageURL)
-		[cell.imageView setImageWithContentsOfURL:row.imageURL];
+		[cell.iconView setImageWithContentsOfURL:row.imageURL];
 	
 	return cell;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 
 #pragma mark - NCTableViewController

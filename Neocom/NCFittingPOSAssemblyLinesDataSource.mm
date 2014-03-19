@@ -109,9 +109,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
-	cell.imageView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
-	cell.detailTextLabel.text = nil;
+	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
+	cell.iconView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
+	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 	
 	return cell;
@@ -141,11 +141,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 @end

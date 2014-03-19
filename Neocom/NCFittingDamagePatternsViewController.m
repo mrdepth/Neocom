@@ -211,6 +211,13 @@
 #pragma mark -
 #pragma mark Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0 || (indexPath.section == 1 && indexPath.row == self.customDamagePatterns.count))
+		return 41;
+	else
+		return 44;
+}
+
 - (BOOL) tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
 	return indexPath.section == 1;
 }

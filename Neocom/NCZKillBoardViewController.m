@@ -14,6 +14,7 @@
 #import "NCCharacterID.h"
 #import "NCZKillBoardSearchResultsViewController.h"
 #import "EVEzKillBoardAPI.h"
+#import "NCTableViewCell.h"
 
 typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	NCZKillBoardViewControllerFilterAll,
@@ -129,9 +130,9 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 - (IBAction)onChangeDate:(UIDatePicker*)sender {
 	self.date = sender.date;
-	UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
+	NCTableViewCell* cell = (NCTableViewCell*) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
 	if (cell)
-		cell.textLabel.text = [NSString stringWithFormat:@"Since %@", [self.dateFormatter stringFromDate:self.date]];
+		cell.titleLabel.text = [NSString stringWithFormat:@"Since %@", [self.dateFormatter stringFromDate:self.date]];
 }
 
 - (IBAction)onChangeFilter:(UISegmentedControl*)sender {
@@ -160,7 +161,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString* cellIdentifier = self.cellIdentifiers[indexPath.row];
-	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	
 	static UIButton* (^newClearButton)() = nil;
 	if (!newClearButton)
@@ -177,58 +178,59 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	if ([cellIdentifier isEqualToString:@"ShipCell"]) {
 		if (self.type) {
 			cell.accessoryView = newClearButton();
-			cell.textLabel.text = self.type.typeName;
-			cell.imageView.image = [UIImage imageNamed:self.type.typeSmallImageName];
+			cell.titleLabel.text = self.type.typeName;
+			cell.iconView.image = [UIImage imageNamed:self.type.typeSmallImageName];
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"Any Ship", nil);
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+			cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 			cell.accessoryView = nil;
 		}
 	}
 	else if ([cellIdentifier isEqualToString:@"ShipClassCell"]) {
 		if (self.group) {
 			cell.accessoryView = newClearButton();
-			cell.textLabel.text = self.group.groupName;
+			cell.titleLabel.text = self.group.groupName;
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"Any Ship Class", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
 			cell.accessoryView = nil;
 		}
+		cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 	}
 	else if ([cellIdentifier isEqualToString:@"CharacterCell"]) {
 		if (self.characterID) {
-			cell.textLabel.text = self.characterID.name;
+			cell.titleLabel.text = self.characterID.name;
 			if (self.characterID.type == NCCharacterIDTypeCharacter)
-				cell.detailTextLabel.text = NSLocalizedString(@"Character", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Character", nil);
 			else if (self.characterID.type == NCCharacterIDTypeCorporation)
-				cell.detailTextLabel.text = NSLocalizedString(@"Corporation", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Corporation", nil);
 			else
-				cell.detailTextLabel.text = NSLocalizedString(@"Alliance", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Alliance", nil);
 			cell.accessoryView = newClearButton();
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"Any Character", nil);
-			cell.detailTextLabel.text = NSLocalizedString(@"Character, Corporation or Alliance", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Any Character", nil);
+			cell.subtitleLabel.text = NSLocalizedString(@"Character, Corporation or Alliance", nil);
 			cell.accessoryView = nil;
 
 		}
 	}
 	else if ([cellIdentifier isEqualToString:@"SolarSystemCell"]) {
 		if (self.solarSystem) {
-			cell.textLabel.text = self.solarSystem.solarSystemName;
+			cell.titleLabel.text = self.solarSystem.solarSystemName;
 			cell.accessoryView = newClearButton();
-			cell.detailTextLabel.text = NSLocalizedString(@"Solar System", nil);
+			cell.subtitleLabel.text = NSLocalizedString(@"Solar System", nil);
 		}
 		else if (self.region) {
-			cell.textLabel.text = self.region.regionName;
+			cell.titleLabel.text = self.region.regionName;
 			cell.accessoryView = newClearButton();
-			cell.detailTextLabel.text = NSLocalizedString(@"Region", nil);
+			cell.subtitleLabel.text = NSLocalizedString(@"Region", nil);
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"Any Solar System", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Any Solar System", nil);
 			cell.accessoryView = nil;
-			cell.detailTextLabel.text = NSLocalizedString(@"Solar System or Region", nil);
+			cell.subtitleLabel.text = NSLocalizedString(@"Solar System or Region", nil);
 		}
 	}
 	else if ([cellIdentifier isEqualToString:@"KillsCell"]) {
@@ -236,20 +238,22 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		control.selectedSegmentIndex = self.filter;
 	}
 	else if ([cellIdentifier isEqualToString:@"WHCell"]) {
+		cell.titleLabel.text = NSLocalizedString(@"Only WH Kills", nil);
 		UISwitch* switchView = (UISwitch*) cell.accessoryView;
 		switchView.on = self.whKills;
 	}
 	else if ([cellIdentifier isEqualToString:@"SoloKillsCell"]) {
+		cell.titleLabel.text = NSLocalizedString(@"Only Solo Kills", nil);
 		UISwitch* switchView = (UISwitch*) cell.accessoryView;
 		switchView.on = self.soloKills;
 	}
 	else if ([cellIdentifier isEqualToString:@"DateCell"]) {
 		if (self.date) {
-			cell.textLabel.text = [NSString stringWithFormat:@"Since %@", [self.dateFormatter stringFromDate:self.date]];
+			cell.titleLabel.text = [NSString stringWithFormat:@"Since %@", [self.dateFormatter stringFromDate:self.date]];
 			cell.accessoryView = newClearButton();
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"All Time", nil);
+			cell.titleLabel.text = NSLocalizedString(@"All Time", nil);
 			cell.accessoryView = nil;
 		}
 	}
@@ -263,9 +267,16 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 #pragma mark - Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString* cellIdentifier = self.cellIdentifiers[indexPath.row];
-	return [cellIdentifier isEqualToString:@"DatePickerCell"] ? 162 : 44;
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

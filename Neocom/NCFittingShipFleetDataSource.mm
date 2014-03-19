@@ -54,9 +54,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row >= self.controller.fits.count) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.imageView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
-		cell.textLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
-		cell.detailTextLabel.text = nil;
+		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
+		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
 		return cell;
 	}
@@ -81,9 +81,9 @@
 			booster = @"";
 
 		
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
-		cell.detailTextLabel.text = fit.loadoutName;
-		cell.imageView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
+		cell.subtitleLabel.text = fit.loadoutName;
+		cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
 		if (self.controller.fit == fit)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 		else
@@ -97,11 +97,15 @@
 #pragma mark Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

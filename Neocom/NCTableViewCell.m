@@ -8,6 +8,12 @@
 
 #import "NCTableViewCell.h"
 
+@interface NCTableViewCell()
+@property (nonatomic, strong) NSLayoutConstraint* imageViewWidthConstraint;
+@property (nonatomic, strong) NSLayoutConstraint* imageViewHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint* indentationConstraint;
+@end
+
 @implementation NCTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -26,7 +32,7 @@
     // Configure the view for the selected state
 }
 
-- (void) layoutSubviews {
+/*- (void) layoutSubviews {
 	CGFloat indentation = self.indentationLevel * self.indentationWidth;
 	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
 		if (self.imageView.image)
@@ -57,6 +63,130 @@
 			self.detailTextLabel.frame = frame;
 		}
 	}
+}
+
+*/
+
+- (void) layoutSubviews {
+	if (self.iconView.image) {
+		self.indentationConstraint.constant = 15 + self.indentationLevel * self.indentationWidth;
+	}
+	else {
+		self.indentationConstraint.constant = 15 - 8 + self.indentationLevel * self.indentationWidth;
+	}
+	self.imageViewWidthConstraint.constant = self.iconView.image ? 32.0 : 0;
+	//self.imageViewHeightConstraint.constant = self.iconView.image ? 32.0 : 0;
+	[super layoutSubviews];
+	//[self.contentView setNeedsLayout];
+	[self.contentView layoutIfNeeded];
+	self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.bounds.size.width;
+	self.subtitleLabel.preferredMaxLayoutWidth = self.titleLabel.bounds.size.width;
+	
+	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
+		self.separatorInset = UIEdgeInsetsMake(0, self.titleLabel.frame.origin.x, 0, 0);
+	}
+
+}
+
+- (void) awakeFromNib {
+	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	self.iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
+	
+	self.titleLabel.font = [UIFont systemFontOfSize:17];
+	self.titleLabel.textColor = [UIColor whiteColor];
+	self.subtitleLabel.font = [UIFont systemFontOfSize:12];
+	self.subtitleLabel.textColor = [UIColor lightTextColor];
+	
+	self.titleLabel.numberOfLines = 0;
+	self.subtitleLabel.numberOfLines = 0;
+	
+	[self.contentView addSubview:self.titleLabel];
+	[self.contentView addSubview:self.subtitleLabel];
+	[self.contentView addSubview:self.iconView];
+	
+	UIImageView* iconView = self.iconView;
+	UILabel* titleLabel = self.titleLabel;
+	UILabel* subtitleLabel = self.subtitleLabel;
+	iconView.translatesAutoresizingMaskIntoConstraints = NO;
+	titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+	subtitleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+	NSDictionary* bindings = NSDictionaryOfVariableBindings(iconView, titleLabel, subtitleLabel);
+	
+	self.imageViewWidthConstraint = [NSLayoutConstraint constraintWithItem:iconView
+																 attribute:NSLayoutAttributeWidth
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:nil
+																 attribute:0
+																multiplier:1
+																  constant:32];
+	self.imageViewHeightConstraint = [NSLayoutConstraint constraintWithItem:iconView
+																 attribute:NSLayoutAttributeHeight
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:nil
+																 attribute:0
+																multiplier:1
+																  constant:32];
+//	self.imageViewWidthConstraint.priority = UILayoutPriorityRequired;
+//	self.imageViewHeightConstraint.priority = UILayoutPriorityRequired;
+	
+	[iconView addConstraint:self.imageViewWidthConstraint];
+	[iconView addConstraint:self.imageViewHeightConstraint];
+	
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:iconView
+															   attribute:NSLayoutAttributeCenterY
+															   relatedBy:NSLayoutRelationEqual
+																  toItem:self.contentView
+															   attribute:NSLayoutAttributeCenterY
+															  multiplier:1
+																constant:0]];
+	
+	self.indentationConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"|-15-[iconView]"
+																		 options:0
+																		 metrics:nil
+																		   views:bindings][0];
+	[self.contentView addConstraint:self.indentationConstraint];
+	
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[iconView]-8-[titleLabel]-8-|"
+																options:0
+																metrics:nil
+																  views:bindings]];
+
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=4)-[iconView]-(>=4)-|"
+																			 options:0
+																			 metrics:nil
+																			   views:bindings]];
+
+	[titleLabel setContentHuggingPriority:249 forAxis:UILayoutConstraintAxisVertical];
+	
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-4-[titleLabel]-0-[subtitleLabel]-4-|"
+																			 options:0
+																			 metrics:nil
+																			   views:bindings]];
+	
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:subtitleLabel
+																 attribute:NSLayoutAttributeLeading
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:titleLabel
+																 attribute:NSLayoutAttributeLeading
+																multiplier:1
+																  constant:0]];
+	
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:subtitleLabel
+																 attribute:NSLayoutAttributeTrailing
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:titleLabel
+																 attribute:NSLayoutAttributeTrailing
+																multiplier:1
+																  constant:0]];
+	
+/*	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView
+																 attribute:NSLayoutAttributeHeight
+																 relatedBy:NSLayoutRelationGreaterThanOrEqual
+																	toItem:nil
+																 attribute:0
+																multiplier:1
+																  constant:40]];*/
 }
 
 @end

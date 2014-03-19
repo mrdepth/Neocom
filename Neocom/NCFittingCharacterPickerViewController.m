@@ -113,23 +113,23 @@
 	
 	if (indexPath.section == 0) {
 		NCAccount* account = self.accounts[indexPath.row];
-		cell.textLabel.text = account.characterSheet.name;
-		cell.imageView.image = [UIImage emptyImage];
-		[cell.imageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
+		cell.titleLabel.text = account.characterSheet.name;
+		cell.iconView.image = [UIImage emptyImage];
+		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
 	}
 	else if (indexPath.section == 1) {
 		if (indexPath.row == self.customCharacters.count) {
-			cell.textLabel.text = NSLocalizedString(@"Add Character", nil);
+			cell.titleLabel.text = NSLocalizedString(@"Add Character", nil);
 		}
 		else {
 			NCFitCharacter* character = self.customCharacters[indexPath.row];
-			cell.textLabel.text = character.name;
+			cell.titleLabel.text = character.name;
 		}
-		cell.imageView.image = nil;
+		cell.iconView.image = nil;
 	}
 	else {
-		cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), indexPath.row];
-		cell.imageView.image = nil;
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), indexPath.row];
+		cell.iconView.image = nil;
 	}
 	return cell;
 }

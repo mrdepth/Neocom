@@ -88,7 +88,7 @@
 #pragma mark - Table view data source
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return NSLocalizedString(@"Documents", nil);
+	return section == 1 ? NSLocalizedString(@"Documents", nil) : nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -112,9 +112,15 @@
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 		NSString* file = self.rows[indexPath.row];
 		cell.object = file;
-		cell.textLabel.text = file;
+		cell.titleLabel.text = file;
 		return cell;
 	}
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return section == 1 ? UITableViewAutomaticDimension : 0;
 }
 
 #pragma mark - NCTableViewController

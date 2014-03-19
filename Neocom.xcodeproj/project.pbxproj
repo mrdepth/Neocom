@@ -24,7 +24,6 @@
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
 		1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5F118929B960010BEE8 /* NCMessageCell.m */; };
-		12090EFE18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */; };
 		120968531845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
 		120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968541845F0CB00921A37 /* CoreGraphics.framework */; };
 		120968571845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
@@ -520,7 +519,6 @@
 		849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */; };
 		849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */; };
 		84A076F218A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */; };
-		84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AC540C18A94034000C308C /* ShipFitting.storyboard */; };
@@ -620,8 +618,6 @@
 		1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMailBoxViewController.m; sourceTree = "<group>"; };
 		1206C5F018929B960010BEE8 /* NCMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMessageCell.h; sourceTree = "<group>"; };
 		1206C5F118929B960010BEE8 /* NCMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMessageCell.m; sourceTree = "<group>"; };
-		12090EFC18D73FD9003D3DD9 /* NCTableViewLazyDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewLazyDataSource.h; sourceTree = "<group>"; };
-		12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewLazyDataSource.m; sourceTree = "<group>"; };
 		1209684F1845F0CB00921A37 /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968521845F0CB00921A37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		120968541845F0CB00921A37 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1476,8 +1472,6 @@
 		849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTypeVariationsViewController.m; sourceTree = "<group>"; };
 		84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantsImportViewController.h; sourceTree = "<group>"; };
 		84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingImplantsImportViewController.mm; sourceTree = "<group>"; };
-		84A076F418A6BAFC00FBCC33 /* NCFittingImplantsImportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantsImportCell.h; sourceTree = "<group>"; };
-		84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingImplantsImportCell.m; sourceTree = "<group>"; };
 		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
@@ -1626,15 +1620,6 @@
 				1206C5F118929B960010BEE8 /* NCMessageCell.m */,
 			);
 			name = NCMessageCell;
-			sourceTree = "<group>";
-		};
-		12090EFA18D73FB9003D3DD9 /* NCTableViewLazyDataSource */ = {
-			isa = PBXGroup;
-			children = (
-				12090EFC18D73FD9003D3DD9 /* NCTableViewLazyDataSource.h */,
-				12090EFD18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m */,
-			);
-			name = NCTableViewLazyDataSource;
 			sourceTree = "<group>";
 		};
 		120968461845F0CB00921A37 = {
@@ -2178,7 +2163,6 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				12090EFA18D73FB9003D3DD9 /* NCTableViewLazyDataSource */,
 				12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */,
 				12F955E318CDA281005CEAD6 /* NCMigrationManager */,
 				12FF586A189F8ECA00E2D70A /* NCStoryboardPopoverSegue */,
@@ -4010,20 +3994,10 @@
 		84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */ = {
 			isa = PBXGroup;
 			children = (
-				84A076F318A6BAE100FBCC33 /* NCFittingImplantsImportCell */,
 				84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */,
 				84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */,
 			);
 			name = NCFittingImplantsImportViewController;
-			sourceTree = "<group>";
-		};
-		84A076F318A6BAE100FBCC33 /* NCFittingImplantsImportCell */ = {
-			isa = PBXGroup;
-			children = (
-				84A076F418A6BAFC00FBCC33 /* NCFittingImplantsImportCell.h */,
-				84A076F518A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m */,
-			);
-			name = NCFittingImplantsImportCell;
 			sourceTree = "<group>";
 		};
 		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
@@ -4478,7 +4452,6 @@
 				126A0E08185F3B9300A8E8A3 /* EVEDBCrtCategory.m in Sources */,
 				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
-				84A076F618A6BAFC00FBCC33 /* NCFittingImplantsImportCell.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
 				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
@@ -4496,7 +4469,6 @@
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
 				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
 				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
-				12090EFE18D73FD9003D3DD9 /* NCTableViewLazyDataSource.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,
@@ -4927,6 +4899,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -4942,6 +4915,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
 				WRAPPER_EXTENSION = app;
@@ -4955,7 +4929,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -4971,6 +4946,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
 				WRAPPER_EXTENSION = app;

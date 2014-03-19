@@ -301,7 +301,7 @@
 															   }];
 		for (EVEMailingListsItem* mailingList in mailingLists.mailingLists) {
 			NCMailBoxContact* contact = mailingListIDs[@(mailingList.listID)];
-			contact.name = mailingList.displayName;
+			contact.name = mailingList.displayName ? mailingList.displayName : NSLocalizedString(@"Unknown Mailing List", nil);
 		}
 	}
 	

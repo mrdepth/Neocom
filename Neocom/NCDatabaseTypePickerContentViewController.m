@@ -115,8 +115,8 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.textLabel.text = [row typeName];
-		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		cell.object = row;
 		return cell;
 	}
@@ -127,15 +127,15 @@
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.textLabel.text = [row categoryName];
+			cell.titleLabel.text = [row categoryName];
 		else
-			cell.textLabel.text = [row marketGroupName];
+			cell.titleLabel.text = [row marketGroupName];
 		
 		NSString* iconImageName = [row icon].iconImageName;
 		if (iconImageName)
-			cell.imageView.image = [UIImage imageNamed:iconImageName];
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
 		else
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		cell.object = row;
 		return cell;
 	}
@@ -149,6 +149,18 @@
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	id row;

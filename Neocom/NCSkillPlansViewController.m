@@ -68,7 +68,7 @@
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 		NCSkillPlan* skillPlan = self.skillPlans[indexPath.row];
 		cell.object = skillPlan;
-		cell.textLabel.text = skillPlan.name.length > 0 ? skillPlan.name : NSLocalizedString(@"Unnamed", nil);
+		cell.titleLabel.text = skillPlan.name.length > 0 ? skillPlan.name : NSLocalizedString(@"Unnamed", nil);
 		if (skillPlan.active)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 		else

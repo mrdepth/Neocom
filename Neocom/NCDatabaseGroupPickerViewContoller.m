@@ -85,15 +85,29 @@
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
-	cell.textLabel.text = row.groupName;
+	cell.titleLabel.text = row.groupName;
 	
 	NSString* iconImageName = row.icon.iconImageName;
 	if (iconImageName)
-		cell.imageView.image = [UIImage imageNamed:iconImageName];
+		cell.iconView.image = [UIImage imageNamed:iconImageName];
 	else
-		cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 	cell.object = row;
 	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

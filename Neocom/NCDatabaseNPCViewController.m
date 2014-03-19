@@ -105,8 +105,8 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.textLabel.text = [row typeName];
-		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		cell.object = row;
 		return cell;
 	}
@@ -116,17 +116,31 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
-		cell.textLabel.text = [row npcGroupName];
+		cell.titleLabel.text = [row npcGroupName];
 		
 		NSString* iconImageName = [row iconName];
 		if (iconImageName)
-			cell.imageView.image = [UIImage imageNamed:iconImageName];
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
 		else
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		cell.object = row;
 		return cell;
 	}
 	return nil;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

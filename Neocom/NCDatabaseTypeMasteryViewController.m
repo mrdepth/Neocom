@@ -12,6 +12,7 @@
 #import "NSString+Neocom.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "UIAlertView+Block.h"
+#import "NCTableViewCell.h"
 
 @interface NCDatabaseTypeMasteryViewControllerRow : NSObject
 @property (nonatomic, copy) NSString* title;
@@ -157,21 +158,28 @@
 	if (!cellIdentifier)
 		cellIdentifier = @"Cell";
 	
-	UITableViewCell* cell = (UITableViewCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-	cell.textLabel.text = row.title;
-	cell.detailTextLabel.text = row.detail;
-	cell.imageView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.detail;
+	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
 	
 	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
-	//if (!cell.accessoryView)
-	//	cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] || [row.object isKindOfClass:[NSString class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
-	
-	//cell.indentationLevel = row.indentationLevel;
-	
 	return cell;
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeMasteryViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];

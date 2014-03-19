@@ -11,7 +11,7 @@
 #import "NCShipFit.h"
 #import "NCStorage.h"
 #import "NSArray+Neocom.h"
-#import "NCFittingImplantsImportCell.h"
+#import "NCTableViewCell.h"
 
 @interface NCFittingImplantsImportViewControllerRow : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
@@ -111,11 +111,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingImplantsImportCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	NCFittingImplantsImportViewControllerRow* row = self.sections[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row.loadout.type.typeName;
-	cell.implantsLabel.text = row.description;
-	cell.typeImageView.image = [UIImage imageNamed:row.loadout.type.typeSmallImageName];
+	cell.subtitleLabel.text = row.description;
+	cell.iconView.image = [UIImage imageNamed:row.loadout.type.typeSmallImageName];
 	cell.object = row;
 	cell.accessoryView = nil;
 	return cell;
@@ -129,7 +129,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

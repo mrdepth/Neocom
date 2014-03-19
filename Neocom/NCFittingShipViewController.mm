@@ -222,7 +222,12 @@
 	else if ([segue.identifier isEqualToString:@"NCFittingAmountViewController"]) {
 		NSArray* drones = sender;
 		eufe::Ship* ship = self.fit.pilot->getShip();
-		NCFittingAmountViewController* controller = [[segue destinationViewController] viewControllers][0];
+		NCFittingAmountViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([drones[0] pointerValue]);
 		float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
 		int droneBay = ship->getTotalDroneBay() / volume;

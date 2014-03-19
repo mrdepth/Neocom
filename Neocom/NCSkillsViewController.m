@@ -372,7 +372,7 @@
 	}
 	
 	
-	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell" forIndexPath:indexPath];
+	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
 	cell.skillData = row;
 	
 	if (row.trainedLevel >= 0) {
@@ -401,7 +401,6 @@
 		cell.dateLabel.text = nil;
 	}
 	cell.titleLabel.text = row.skillName;
-
 	return cell;
 }
 
@@ -469,15 +468,31 @@
 
 #pragma mark - Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
+		if (indexPath.row == 0)
+			return 76;
+		else
+			return 41;
+	}
+	else
+		return 42;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
 		if (indexPath.row == 0)
 			return 76;
 		else
-			return 44;
+			return 41;
 	}
-	else
-		return 42;
+	else {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell.contentView setNeedsLayout];
+		[cell.contentView layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
 }
 
 #pragma mark - NCTableViewController

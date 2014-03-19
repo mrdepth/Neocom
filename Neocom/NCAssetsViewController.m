@@ -213,22 +213,22 @@
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
-	cell.imageView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
 	
-	cell.textLabel.text = asset.title;
+	cell.titleLabel.text = asset.title;
 	cell.object = asset;
 	
 	if (self.accounts.count > 0)
-		cell.detailTextLabel.text = asset.owner;
+		cell.subtitleLabel.text = asset.owner;
 	else
-		cell.detailTextLabel.text = nil;
+		cell.subtitleLabel.text = nil;
 	
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		if (asset.parent) {
 			if (asset.owner)
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
 			else
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
 		}
 	}
 	
@@ -236,6 +236,18 @@
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];

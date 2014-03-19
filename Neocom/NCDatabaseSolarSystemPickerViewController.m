@@ -118,7 +118,7 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
 		cell.object = row;
-		cell.textLabel.text = [row regionName];
+		cell.titleLabel.text = [row regionName];
 		return cell;
 	}
 	else {
@@ -126,7 +126,7 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
 		cell.object = row;
-		cell.textLabel.text = [row solarSystemName];
+		cell.titleLabel.text = [row solarSystemName];
 		return cell;
 	}
 }
@@ -136,6 +136,20 @@
 		return nil;
 	else
 		return self.searchResults[section][@"title"];
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

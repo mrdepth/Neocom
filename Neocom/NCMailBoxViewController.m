@@ -130,7 +130,13 @@
 	cell.subjectLabel.font = isRead ? [UIFont systemFontOfSize:cell.subjectLabel.font.pointSize] : [UIFont boldSystemFontOfSize:cell.subjectLabel.font.pointSize];
 	cell.subjectLabel.textColor = isRead ? [UIColor lightTextColor] : [UIColor whiteColor];
 	cell.dateLabel.text = [row.header.sentDate messageTimeLocalizedString];
-	cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+
+	NSInteger myID = self.mailBox.account.characterID;
+
+	if (row.sender.contactID == myID)
+		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+	else
+		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
 	cell.message = row;
 	return cell;
 }
@@ -244,7 +250,10 @@
 												 for (NSDictionary* dic in values) {
 													 NSInteger n = numberOfUnreadMessages(dic[@"messages"]);
 													 NCMailBoxContact* contact = dic[@"contact"];
-													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", [dic[@"contact"] name], (int32_t)n] : contact.name;
+													 NSString* name = [dic[@"contact"] name];
+													 if (!name)
+														 name = NSLocalizedString(@"Unknown Contact", nil);
+													 NSString* title = n > 0 ? [NSString stringWithFormat:@"%@ (%d)", name, (int32_t)n] : name;
 													 [sections addObject:@{@"title": title, @"rows": dic[@"messages"], @"sectionID": @(contact.contactID)}];
 												 }
 											 }

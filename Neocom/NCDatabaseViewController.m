@@ -118,8 +118,8 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.textLabel.text = [row typeName];
-		cell.imageView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
 		cell.object = row;
 		return cell;
 	}
@@ -130,70 +130,33 @@
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.textLabel.text = [row categoryName];
+			cell.titleLabel.text = [row categoryName];
 		else
-			cell.textLabel.text = [row groupName];
+			cell.titleLabel.text = [row groupName];
 		
 		NSString* iconImageName = [row icon].iconImageName;
 		if (iconImageName)
-			cell.imageView.image = [UIImage imageNamed:iconImageName];
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
 		else
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		cell.object = row;
 		return cell;
 	}
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+#pragma mark - Table view delegate
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
 }
 
- */
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
 
 #pragma mark - NCTableViewController
 

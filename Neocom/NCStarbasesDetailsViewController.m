@@ -157,13 +157,27 @@
 	
 	NCTableViewCell* cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
-	cell.imageView.image = [UIImage imageNamed:row.resource.resourceType.typeSmallImageName];
-	cell.textLabel.text = row.resource.resourceType.typeName;
+	cell.iconView.image = [UIImage imageNamed:row.resource.resourceType.typeSmallImageName];
+	cell.titleLabel.text = row.resource.resourceType.typeName;
 	
-	cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];
+	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];
 	cell.detailTextLabel.textColor = row.color;
 	cell.object = row.resource.resourceType;
 	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

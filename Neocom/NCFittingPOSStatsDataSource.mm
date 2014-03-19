@@ -227,9 +227,9 @@
 		
 		if (indexPath.row == 0) {
 			if (self.priceStats) {
-				cell.imageView.image = [UIImage imageNamed:self.posFuelRequirements.resourceType.typeSmallImageName];
-				cell.textLabel.text = self.posFuelRequirements.resourceType.typeName;
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
+				cell.iconView.image = [UIImage imageNamed:self.posFuelRequirements.resourceType.typeSmallImageName];
+				cell.titleLabel.text = self.posFuelRequirements.resourceType.typeName;
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
 													self.priceStats.fuelConsumtion,
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.fuelDailyCost)]];
 			}
@@ -237,9 +237,9 @@
 		}
 		else if (indexPath.row == 1) {
 			if (self.priceStats) {
-				cell.imageView.image = [UIImage imageNamed:@"Icons/icon95_02.png"];
-				cell.textLabel.text = NSLocalizedString(@"Infrastructure Upgrades Cost", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
+				cell.iconView.image = [UIImage imageNamed:@"Icons/icon95_02.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Infrastructure Upgrades Cost", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.upgradesCost)],
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.upgradesDailyCost)]];
 			}
@@ -247,9 +247,9 @@
 		}
 		else if (indexPath.row == 2) {
 			if (self.priceStats) {
-				cell.imageView.image = [UIImage imageNamed:@"Icons/icon07_12.png"];
-				cell.textLabel.text = NSLocalizedString(@"POS Cost", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
+				cell.iconView.image = [UIImage imageNamed:@"Icons/icon07_12.png"];
+				cell.titleLabel.text = NSLocalizedString(@"POS Cost", nil);
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.posCost)]];
 			}
 		}
@@ -292,19 +292,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+	return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 3)
-		return 44;
-	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

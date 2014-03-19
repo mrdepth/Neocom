@@ -28,6 +28,7 @@
 
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 @property (nonatomic, strong) NAPILookup* lookup;
+@property (nonatomic, strong) NSError* error;
 @property (nonatomic, strong) UIActionSheet* actionSheet;
 
 
@@ -170,7 +171,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if (indexPath.row < 4) {
@@ -182,89 +183,89 @@
 			[clearButton addTarget:self action:@selector(onClear:) forControlEvents:UIControlEventTouchUpInside];
 			
 			if (indexPath.row == 0) {
-				cell.detailTextLabel.text = NSLocalizedString(@"Ship", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Ship", nil);
 				if (!self.type) {
-					cell.textLabel.text = NSLocalizedString(@"Any Ship", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
 					cell.accessoryView = nil;
 				}
 				else {
-					cell.textLabel.text = self.type.typeName;
-					cell.imageView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
+					cell.titleLabel.text = self.type.typeName;
+					cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
 					cell.accessoryView = clearButton;
 				}
 			}
 			else if (indexPath.row == 1) {
-				cell.imageView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
-				cell.detailTextLabel.text = NSLocalizedString(@"Ship Class", nil);
+				cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+				cell.subtitleLabel.text = NSLocalizedString(@"Ship Class", nil);
 				if (!self.group) {
-					cell.textLabel.text = NSLocalizedString(@"Any Ship Class", nil);
+					cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
 					cell.accessoryView = nil;
 				}
 				else {
-					cell.textLabel.text = self.group.groupName;
+					cell.titleLabel.text = self.group.groupName;
 					cell.accessoryView = clearButton;
 				}
 			}
 			else if (indexPath.row == 2) {
-				cell.detailTextLabel.text = NSLocalizedString(@"Weapon Type", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Weapon Type", nil);
 				if (self.flags & NeocomAPIFlagHybridTurrets) {
-					cell.textLabel.text = NSLocalizedString(@"Hybrid Weapon", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon13_06.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Hybrid Weapon", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_06.png"];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagLaserTurrets) {
-					cell.textLabel.text = NSLocalizedString(@"Energy Weapon", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon13_10.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Energy Weapon", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_10.png"];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagProjectileTurrets) {
-					cell.textLabel.text = NSLocalizedString(@"Projectile Weapon", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon12_14.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Projectile Weapon", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon12_14.png"];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagMissileLaunchers) {
-					cell.textLabel.text = NSLocalizedString(@"Missile Launcher", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Missile Launcher", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
 					cell.accessoryView = clearButton;
 				}
 				else {
-					cell.textLabel.text = NSLocalizedString(@"Any Weapon Type", nil);
-					cell.imageView.image = [UIImage imageNamed:@"Icons/icon13_03.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Any Weapon Type", nil);
+					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_03.png"];
 					cell.accessoryView = nil;
 				}
 			}
 			else if (indexPath.row == 3) {
-				cell.detailTextLabel.text = NSLocalizedString(@"Type of Tanking", nil);
+				cell.subtitleLabel.text = NSLocalizedString(@"Type of Tanking", nil);
 				if (self.flags & NeocomAPIFlagActiveTank) {
 					if (self.flags & NeocomAPIFlagArmorTank) {
-						cell.textLabel.text = NSLocalizedString(@"Active Armor", nil);
-						cell.imageView.image = [UIImage imageNamed:@"armorRepairer.png"];
+						cell.titleLabel.text = NSLocalizedString(@"Active Armor", nil);
+						cell.iconView.image = [UIImage imageNamed:@"armorRepairer.png"];
 						cell.accessoryView = clearButton;
 					}
 					else {
-						cell.textLabel.text = NSLocalizedString(@"Active Shield", nil);
-						cell.imageView.image = [UIImage imageNamed:@"shieldBooster.png"];
+						cell.titleLabel.text = NSLocalizedString(@"Active Shield", nil);
+						cell.iconView.image = [UIImage imageNamed:@"shieldBooster.png"];
 						cell.accessoryView = clearButton;
 					}
 				}
 				else if (self.flags & NeocomAPIFlagPassiveTank) {
-					cell.textLabel.text = NSLocalizedString(@"Passive", nil);
-					cell.imageView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Passive", nil);
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
 					cell.accessoryView = clearButton;
 				}
 				else {
-					cell.textLabel.text = NSLocalizedString(@"Any Type of Tanking", nil);
-					cell.imageView.image = [UIImage imageNamed:@"shieldRecharge.png"];
+					cell.titleLabel.text = NSLocalizedString(@"Any Type of Tanking", nil);
+					cell.iconView.image = [UIImage imageNamed:@"shieldRecharge.png"];
 					cell.accessoryView = nil;
 				}
 			}
 		}
 		else {
 			if (indexPath.row == 4) {
-				cell.textLabel.text = NSLocalizedString(@"Only Cap Stable Fits", nil);
-				cell.detailTextLabel.text = nil;
-				cell.imageView.image = [UIImage imageNamed:@"capacitor.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Only Cap Stable Fits", nil);
+				cell.subtitleLabel.text = nil;
+				cell.iconView.image = [UIImage imageNamed:@"capacitor.png"];
 				UISwitch* switchView = [[UISwitch alloc] init];
 				switchView.on = (self.flags & NeocomAPIFlagCapStable) == NeocomAPIFlagCapStable;
 				[switchView addTarget:self action:@selector(onSwitch:) forControlEvents:UIControlEventValueChanged];
@@ -274,10 +275,14 @@
 		return cell;
 	}
 	else {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsCell" forIndexPath:indexPath];
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsCell" forIndexPath:indexPath];
 		if (self.lookup.count > 0) {
 			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ loadouts", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.lookup.count]];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
+		else if (self.error) {
+			cell.textLabel.text = [self.error localizedDescription];
+			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 		else {
 			cell.textLabel.text = NSLocalizedString(@"No Results", nil);
@@ -288,6 +293,22 @@
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
+	else
+		return 41;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -385,16 +406,18 @@
 	
 	self.criteria = criteria;
 
+	__block NSError* error = nil;
 	__block NAPILookup* lookup = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 lookup = [NAPILookup lookupWithCriteria:criteria cachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:^(CGFloat progress, BOOL *stop) {
+											 lookup = [NAPILookup lookupWithCriteria:criteria cachePolicy:NSURLRequestUseProtocolCachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
 												 task.progress = progress;
 											 }];
 										 }
 							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled] && lookup) {
+								 if (![task isCancelled]) {
+									 self.error = error;
 									 self.lookup = lookup;
 									 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
 								 }

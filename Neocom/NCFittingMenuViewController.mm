@@ -79,17 +79,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		NSString *CellIdentifier = [NSString stringWithFormat:@"MenuItem%ldCell", (long)indexPath.row];
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		return cell;
 	}
 	else {
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		cell.textLabel.text = loadout.type.typeName;
-		cell.detailTextLabel.text = loadout.name;
-		cell.imageView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
+		cell.titleLabel.text = loadout.type.typeName;
+		cell.subtitleLabel.text = loadout.name;
+		cell.iconView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
 		return cell;
 	}
 }
@@ -131,6 +129,22 @@
 }
 
 #pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return 41;
+	else {
+		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	}
+}
 
 - (BOOL) tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
 	return indexPath.section != 0;

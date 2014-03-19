@@ -79,14 +79,14 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.textLabel.text = [row name];
+		cell.titleLabel.text = [row name];
 		int32_t level = [objc_getAssociatedObject(row, @"masteryLevel") intValue];
-		cell.imageView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
+		cell.iconView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
 		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
 		if (trainingTime > 0)
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
 		else
-			cell.detailTextLabel.text = nil;
+			cell.subtitleLabel.text = nil;
 		cell.object = row;
 		return cell;
 	}
@@ -96,17 +96,31 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
-		cell.textLabel.text = [row groupName];
+		cell.titleLabel.text = [row groupName];
 		
 		NSString* iconImageName = [row icon].iconImageName;
 		if (iconImageName)
-			cell.imageView.image = [UIImage imageNamed:iconImageName];
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
 		else
-			cell.imageView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
 		
 		cell.object = row;
 		return cell;
 	}
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 41;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

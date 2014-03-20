@@ -319,6 +319,12 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NCAccountsViewControllerData* data = self.data;
 		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+		
+		[tableView beginUpdates];
+		if ([NCAccount currentAccount] == account.account) {
+			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		
 		[[NCAccountsManager defaultManager] removeAccount:account.account];
 		[data.accounts removeObjectAtIndex:indexPath.row];
 		
@@ -328,6 +334,8 @@
 		[self didUpdateData:updatedData];
 		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		
+		[tableView endUpdates];
 	}
 }
 

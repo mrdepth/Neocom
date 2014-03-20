@@ -71,21 +71,25 @@
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 24 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 24];
 															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
+															 notification.soundName = UILocalNotificationDefaultSoundName;
 															 [notifications addObject:notification];
 														 }
+
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime12Hours) && dif > 3600 * 12) {
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 12 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 12];
-
 															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
+															 notification.soundName = UILocalNotificationDefaultSoundName;
 															 [notifications addObject:notification];
 														 }
+
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 4) {
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 4 hours training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 4];
 															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
+															 notification.soundName = UILocalNotificationDefaultSoundName;
 															 [notifications addObject:notification];
 														 }
 														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 1) {
@@ -93,8 +97,19 @@
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 1 hour training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 1];
 															 notification.userInfo = @{NCSettingsCurrentAccountKey: account.uuid};
+															 notification.soundName = UILocalNotificationDefaultSoundName;
 															 [notifications addObject:notification];
 														 }
+													 }
+												 }
+												 [notifications sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"fireDate" ascending:YES]]];
+												 NSInteger badge = 1;
+												 NSMutableSet* uuids = [NSMutableSet new];
+												 for (UILocalNotification* notification in notifications) {
+													 NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+													 if (![uuids containsObject:uuid]) {
+														 notification.applicationIconBadgeNumber = badge++;
+														 [uuids addObject:uuid];
 													 }
 												 }
 											 }
@@ -118,8 +133,27 @@
 									 self.notificationsUpdating = NO;
 								 }];
 	}
-	else if (completionHandler)
-		completionHandler(NO);
+	else {
+		UIApplication* application = [UIApplication sharedApplication];
+		NSMutableArray* notifications = [application.scheduledLocalNotifications mutableCopy];
+		[notifications sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"fireDate" ascending:YES]]];
+		NSInteger badge = 1;
+		NSMutableSet* uuids = [NSMutableSet new];
+		for (UILocalNotification* notification in notifications) {
+			[application cancelLocalNotification:notification];
+			
+			NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+			if (![uuids containsObject:uuid]) {
+				notification.applicationIconBadgeNumber = badge++;
+				[uuids addObject:uuid];
+			}
+			
+			[application scheduleLocalNotification:notification];
+		}
+		
+		if (completionHandler)
+			completionHandler(NO);
+	}
 }
 
 #pragma mark - Private

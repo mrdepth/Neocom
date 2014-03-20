@@ -255,9 +255,10 @@ static NCAccount* currentAccount = nil;
 
 - (EVECharacterSheet*) characterSheet {
 	@synchronized(self) {
-		if (!self.characterSheetCacheRecord.data.data)
+		if (!self.characterSheetCacheRecord.data.data || [self.characterSheetCacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-		
+		}
+
 		EVECharacterSheet* characterSheet = [self.characterSheetCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data.data;
 
 		if (!_characterAttributes && characterSheet)
@@ -279,7 +280,6 @@ static NCAccount* currentAccount = nil;
 			
 			[self.activeSkillPlan updateSkillPoints];
 		}
-		
 		return characterSheet;
 	}
 }
@@ -294,8 +294,9 @@ static NCAccount* currentAccount = nil;
 
 - (EVESkillQueue*) skillQueue {
 	@synchronized(self) {
-		if (!self.skillQueueCacheRecord.data.data)
+		if (!self.skillQueueCacheRecord.data.data || [self.skillQueueCacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
 			[self reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
+		}
 		return [self.skillQueueCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.skillQueueCacheRecord.data.data;
 	}
 }
@@ -314,7 +315,7 @@ static NCAccount* currentAccount = nil;
 		self.characterInfoCacheRecord.data.data = characterInfo;
 		if ([characterInfo isKindOfClass:[NSError class]]) {
 			self.characterInfoCacheRecord.date = [NSDate date];
-			self.characterInfoCacheRecord.expireDate = nil;
+			self.characterInfoCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
 		}
 		else {
 			self.characterInfoCacheRecord.date = characterInfo.cacheDate;
@@ -328,7 +329,7 @@ static NCAccount* currentAccount = nil;
 		self.characterSheetCacheRecord.data.data = characterSheet;
 		if ([characterSheet isKindOfClass:[NSError class]]) {
 			self.characterSheetCacheRecord.date = [NSDate date];
-			self.characterSheetCacheRecord.expireDate = nil;
+			self.characterSheetCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
 		}
 		else {
 			self.characterSheetCacheRecord.date = characterSheet.cacheDate;
@@ -342,7 +343,7 @@ static NCAccount* currentAccount = nil;
 		self.corporationSheetCacheRecord.data.data = corporationSheet;
 		if ([corporationSheet isKindOfClass:[NSError class]]) {
 			self.corporationSheetCacheRecord.date = [NSDate date];
-			self.corporationSheetCacheRecord.expireDate = nil;
+			self.corporationSheetCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
 		}
 		else {
 			self.corporationSheetCacheRecord.date = corporationSheet.cacheDate;
@@ -356,7 +357,7 @@ static NCAccount* currentAccount = nil;
 		self.skillQueueCacheRecord.data.data = skillQueue;
 		if ([skillQueue isKindOfClass:[NSError class]]) {
 			self.skillQueueCacheRecord.date = [NSDate date];
-			self.skillQueueCacheRecord.expireDate = nil;
+			self.skillQueueCacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:10];
 		}
 		else {
 			self.skillQueueCacheRecord.date = skillQueue.cacheDate;

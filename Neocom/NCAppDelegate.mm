@@ -102,7 +102,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	// Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+	application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -130,6 +130,16 @@
 	if (application.applicationState == UIApplicationStateActive) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Neocom" message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", nil) otherButtonTitles:nil];
 		[alert show];
+		application.applicationIconBadgeNumber = 0;
+	}
+	else if (application.applicationState == UIApplicationStateInactive) {
+		NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+		NCAccount* account = nil;
+		if (uuid)
+			account = [NCAccount accountWithUUID:uuid];
+		if (account)
+			[NCAccount setCurrentAccount:account];
+		
 	}
 }
 

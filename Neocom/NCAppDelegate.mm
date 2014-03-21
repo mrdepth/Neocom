@@ -40,6 +40,7 @@
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
 		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 		purchase.purchased = YES;
+		[[NSUserDefaults standardUserDefaults] setValue:nil forKeyPath:@"SettingsNoAds"];
 	}
 
 	[self setupAppearance];

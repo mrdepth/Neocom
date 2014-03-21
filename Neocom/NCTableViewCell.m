@@ -7,6 +7,7 @@
 //
 
 #import "NCTableViewCell.h"
+#import "NCLabel.h"
 
 @interface NCTableViewCell()
 @property (nonatomic, strong) NSLayoutConstraint* imageViewWidthConstraint;
@@ -67,7 +68,7 @@
 
 */
 
-- (void) layoutSubviews {
+- (void) updateConstraints {
 	if (self.iconView.image) {
 		self.indentationConstraint.constant = 15 + self.indentationLevel * self.indentationWidth;
 	}
@@ -75,12 +76,16 @@
 		self.indentationConstraint.constant = 15 - 8 + self.indentationLevel * self.indentationWidth;
 	}
 	self.imageViewWidthConstraint.constant = self.iconView.image ? 32.0 : 0;
+	[super updateConstraints];
+}
+
+- (void) layoutSubviews {
 	//self.imageViewHeightConstraint.constant = self.iconView.image ? 32.0 : 0;
 	[super layoutSubviews];
-	//[self.contentView setNeedsLayout];
+/*	//[self.contentView setNeedsLayout];
 	[self.contentView layoutIfNeeded];
 	self.titleLabel.preferredMaxLayoutWidth = self.titleLabel.bounds.size.width;
-	self.subtitleLabel.preferredMaxLayoutWidth = self.titleLabel.bounds.size.width;
+	self.subtitleLabel.preferredMaxLayoutWidth = self.titleLabel.bounds.size.width;*/
 	
 	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
 		self.separatorInset = UIEdgeInsetsMake(0, self.titleLabel.frame.origin.x, 0, 0);
@@ -89,8 +94,8 @@
 }
 
 - (void) awakeFromNib {
-	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	self.titleLabel = [[NCLabel alloc] initWithFrame:CGRectZero];
+	self.subtitleLabel = [[NCLabel alloc] initWithFrame:CGRectZero];
 	self.iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
 	
 	self.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -127,6 +132,7 @@
 																 attribute:0
 																multiplier:1
 																  constant:32];
+	self.imageViewHeightConstraint.priority = 999;
 //	self.imageViewWidthConstraint.priority = UILayoutPriorityRequired;
 //	self.imageViewHeightConstraint.priority = UILayoutPriorityRequired;
 	

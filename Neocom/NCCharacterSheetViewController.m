@@ -93,7 +93,8 @@
 
 	UIView* header = self.tableView.tableHeaderView;
 	CGRect frame = header.frame;
-	frame.size.height = CGRectGetMaxY(self.scrollView.frame);
+	//frame.size.height = CGRectGetMaxY(self.scrollView.frame);
+	frame.size.height = [self.tableView.tableFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 	if (!CGRectEqualToRect(header.frame, frame)) {
 		header.frame = frame;
 		self.tableView.tableHeaderView = header;

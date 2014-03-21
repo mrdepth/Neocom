@@ -455,63 +455,64 @@
 			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime - self.optimalTrainingTime]];
 		}
 	}
-	
-	NCSkillData* row;
-	
-	NCSkillsViewControllerData* data = self.data;
-	switch (self.mode) {
-		case NCSkillsViewControllerModeTrainingQueue:
-			if (indexPath.section == 1)
-				row = self.skillQueueRows[indexPath.row];
-			else if (indexPath.section == 2)
-				row = self.skillPlan.trainingQueue.skills[indexPath.row];
-			break;
-		case NCSkillsViewControllerModeKnownSkills:
-			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeAllSkills:
-			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeNotKnownSkills:
-			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeCanTrainSkills:
-			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		default:
-			break;
-	}
-	
-	
-	NCSkillCell* cell = (NCSkillCell*) tableViewCell;
-	cell.skillData = row;
-	
-	if (row.trainedLevel >= 0) {
-		float progress = 0;
+	else {
+		NCSkillData* row;
 		
-		if (row.targetLevel == row.trainedLevel + 1) {
-			float startSkillPoints = [row skillPointsAtLevel:row.trainedLevel];
-			float targetSkillPoints = [row skillPointsAtLevel:row.targetLevel];
-			
-			progress = (row.skillPoints - startSkillPoints) / (targetSkillPoints - startSkillPoints);
-			if (progress > 1.0)
-				progress = 1.0;
+		NCSkillsViewControllerData* data = self.data;
+		switch (self.mode) {
+			case NCSkillsViewControllerModeTrainingQueue:
+				if (indexPath.section == 1)
+					row = self.skillQueueRows[indexPath.row];
+				else if (indexPath.section == 2)
+					row = self.skillPlan.trainingQueue.skills[indexPath.row];
+				break;
+			case NCSkillsViewControllerModeKnownSkills:
+				row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
+				break;
+			case NCSkillsViewControllerModeAllSkills:
+				row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
+				break;
+			case NCSkillsViewControllerModeNotKnownSkills:
+				row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
+				break;
+			case NCSkillsViewControllerModeCanTrainSkills:
+				row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
+				break;
+			default:
+				break;
 		}
 		
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
-		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
-		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
-		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
+		
+		NCSkillCell* cell = (NCSkillCell*) tableViewCell;
+		cell.skillData = row;
+		
+		if (row.trainedLevel >= 0) {
+			float progress = 0;
+			
+			if (row.targetLevel == row.trainedLevel + 1) {
+				float startSkillPoints = [row skillPointsAtLevel:row.trainedLevel];
+				float targetSkillPoints = [row skillPointsAtLevel:row.targetLevel];
+				
+				progress = (row.skillPoints - startSkillPoints) / (targetSkillPoints - startSkillPoints);
+				if (progress > 1.0)
+					progress = 1.0;
+			}
+			
+			cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
+										  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
+										  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+			cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
+			[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
+			cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
+		}
+		else {
+			cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+			cell.levelLabel.text = nil;
+			cell.levelImageView.image = nil;
+			cell.dateLabel.text = nil;
+		}
+		cell.titleLabel.text = row.skillName;
 	}
-	else {
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
-		cell.levelLabel.text = nil;
-		cell.levelImageView.image = nil;
-		cell.dateLabel.text = nil;
-	}
-	cell.titleLabel.text = row.skillName;
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {

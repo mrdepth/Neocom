@@ -32,6 +32,24 @@
 - (void) perform {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UIViewController* sourceViewController = self.sourceViewController;
+		UIViewController* oldController = sourceViewController.splitViewController.viewControllers[1];
+		if ([oldController isKindOfClass:[UINavigationController class]]) {
+			UINavigationController* navigationController = (UINavigationController*) oldController;
+			if (navigationController.viewControllers.count > 0)
+				oldController = navigationController.viewControllers[0];
+			else
+				oldController = nil;
+		}
+		if (oldController) {
+			UIViewController* controller = nil;
+			if ([self.destinationViewController isKindOfClass:[UINavigationController class]]) {
+				controller = [self.destinationViewController viewControllers][0];
+			}
+			else
+				controller = self.destinationViewController;
+			controller.navigationItem.leftBarButtonItem = oldController.navigationItem.leftBarButtonItem;
+		}
+		
 		NSArray* viewControllers = @[sourceViewController.splitViewController.viewControllers[0], self.destinationViewController];
 		sourceViewController.splitViewController.viewControllers = viewControllers;
 	}

@@ -30,11 +30,18 @@
 @implementation NCSideMenuViewControllerContentSegue
 
 - (void) perform {
-	NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
-	UIViewController* destinationViewController = self.destinationViewController;
-	//sourceViewController.contentViewController = destinationViewController;
-	//[sourceViewController setContentViewController:destinationViewController animated:sourceViewController.contentViewController != nil];
-	[sourceViewController setContentViewController:destinationViewController animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UIViewController* sourceViewController = self.sourceViewController;
+		NSArray* viewControllers = @[sourceViewController.splitViewController.viewControllers[0], self.destinationViewController];
+		sourceViewController.splitViewController.viewControllers = viewControllers;
+	}
+	else {
+		NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
+		UIViewController* destinationViewController = self.destinationViewController;
+		//sourceViewController.contentViewController = destinationViewController;
+		//[sourceViewController setContentViewController:destinationViewController animated:sourceViewController.contentViewController != nil];
+		[sourceViewController setContentViewController:destinationViewController animated:YES];
+	}
 }
 
 @end

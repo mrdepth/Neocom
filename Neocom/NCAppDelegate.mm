@@ -304,7 +304,6 @@
 									   rightSegmentState:UIControlStateNormal
 											  barMetrics:UIBarMetricsDefault];
 		[[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar.png"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-
 	}
 }
 

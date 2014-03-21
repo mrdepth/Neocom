@@ -179,14 +179,6 @@
 																 attribute:NSLayoutAttributeTrailing
 																multiplier:1
 																  constant:0]];
-	
-/*	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView
-																 attribute:NSLayoutAttributeHeight
-																 relatedBy:NSLayoutRelationGreaterThanOrEqual
-																	toItem:nil
-																 attribute:0
-																multiplier:1
-																  constant:40]];*/
 }
 
 @end

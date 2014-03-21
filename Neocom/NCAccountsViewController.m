@@ -16,6 +16,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "EVEDBInvType.h"
 #import "NCAPIKeyAccessMaskViewController.h"
+#import "NCStoryboardPopoverSegue.h"
 
 @interface NCAccountsViewControllerDataAccount : NSObject<NSCoding>
 @property (nonatomic, strong) NCAccount* account;
@@ -122,6 +123,9 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]])
+		[(NCStoryboardPopoverSegue*) segue setAnchorView:sender];
+	
 	if ([segue.identifier isEqualToString:@"NCSelectCharAccount"] || [segue.identifier isEqualToString:@"NCSelectCorpAccount"]) {
 		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
 		NCAccountsViewControllerData* data = self.data;
@@ -513,6 +517,13 @@
 		}
 	}
 	return shouldReloadData;
+}
+
+#pragma mark - Unwind
+
+- (IBAction) unwindToAccounts:(UIStoryboardSegue*) segue {
+	if ([self shouldReloadData])
+		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 @end

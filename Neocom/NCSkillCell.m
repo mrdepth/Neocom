@@ -23,23 +23,6 @@
 
 @end
 
-@interface NCLabel : UILabel
-@end
-
-@implementation NCLabel
-
-- (void) layoutSubviews {
-	[super layoutSubviews];
-	if (self.preferredMaxLayoutWidth != self.frame.size.width) {
-		[self invalidateIntrinsicContentSize];
-		self.preferredMaxLayoutWidth = self.frame.size.width;
-		[self.superview setNeedsLayout];
-		[self.superview layoutIfNeeded];
-	}
-}
-
-@end
-
 @implementation NCSkillCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -56,6 +39,10 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void) layoutSubviews {
+	[super layoutSubviews];
 }
 
 @end

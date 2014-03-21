@@ -194,9 +194,9 @@
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if ([keyPath isEqualToString:@"trainingQueue"]) {
 		if ([NSThread isMainThread]) {
-			NCTrainingQueue* new = change[NSKeyValueChangeNewKey];
-			if (![self.skillPlanSkills isEqualToArray:new.skills]) {
-				self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:new.skills];
+			NCTrainingQueue* newQueue = change[NSKeyValueChangeNewKey];
+			if (![self.skillPlanSkills isEqualToArray:newQueue.skills]) {
+				self.skillPlanSkills = [[NSMutableArray alloc] initWithArray:newQueue.skills];
 				
 				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
 					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
@@ -273,134 +273,18 @@
 	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NCCharacterAttributesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCCharacterAttributesCell"];
-			
-			EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
-			
-			EVECharacterSheet* characterSheet = self.account.characterSheet;
-			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-				switch (enhancer.attribute) {
-					case EVECharacterAttributeCharisma:
-						charismaEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeIntelligence:
-						intelligenceEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeMemory:
-						memoryEnhancer = enhancer;
-						break;
-					case EVECharacterAttributePerception:
-						perceptionEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeWillpower:
-						willpowerEnhancer = enhancer;
-						break;
-				}
-			}
-			
-			NSAttributedString* (^attributesString)(int32_t, EVECharacterSheetAttributeEnhancer*, int32_t) = ^(int32_t attribute, EVECharacterSheetAttributeEnhancer* enhancer, int32_t currentAttribute) {
-				NSString* text;
-				if (enhancer)
-					text = [NSString stringWithFormat:@"%d (%d + %d)",
-							attribute + enhancer.augmentatorValue,
-							attribute,
-							enhancer.augmentatorValue];
-				else
-					text = [NSString stringWithFormat:@"%d", attribute];
-				
-				int32_t dif = attribute - currentAttribute;
-				NSString* difString;
-				UIColor* color = nil;
-				if (dif > 0) {
-					difString = [NSString stringWithFormat:@" +%d", dif];
-					color = [UIColor greenColor];
-				}
-				else if (dif < 0) {
-					difString = [NSString stringWithFormat:@" %d", dif];
-					color = [UIColor redColor];
-				}
-				else
-					difString = @"";
-				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[text stringByAppendingString:difString]];
-				if (color)
-					[s addAttributes:@{NSForegroundColorAttributeName: color} range:NSMakeRange(text.length, difString.length)];
-				return s;
-			};
-
-			cell.intelligenceLabel.attributedText = attributesString(self.optimalAttributes.intelligence, intelligenceEnhancer, characterSheet.attributes.intelligence);
-			cell.memoryLabel.attributedText = attributesString(self.optimalAttributes.memory, memoryEnhancer, characterSheet.attributes.memory);
-			cell.perceptionLabel.attributedText = attributesString(self.optimalAttributes.perception, perceptionEnhancer, characterSheet.attributes.perception);
-			cell.willpowerLabel.attributedText = attributesString(self.optimalAttributes.willpower, willpowerEnhancer, characterSheet.attributes.willpower);
-			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, charismaEnhancer, characterSheet.attributes.charisma);
+			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 			return cell;
 		}
 		else {
 			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime - self.optimalTrainingTime]];
+			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 			return cell;
 		}
 	}
 	
-	NCSkillData* row;
-	
-	NCSkillsViewControllerData* data = self.data;
-	switch (self.mode) {
-		case NCSkillsViewControllerModeTrainingQueue:
-			if (indexPath.section == 1)
-				row = self.skillQueueRows[indexPath.row];
-			else if (indexPath.section == 2)
-				row = self.skillPlan.trainingQueue.skills[indexPath.row];
-			break;
-		case NCSkillsViewControllerModeKnownSkills:
-			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeAllSkills:
-			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeNotKnownSkills:
-			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeCanTrainSkills:
-			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		default:
-			break;
-	}
-	
-	
 	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
-	cell.skillData = row;
-	
-	if (row.trainedLevel >= 0) {
-		float progress = 0;
-		
-		if (row.targetLevel == row.trainedLevel + 1) {
-			float startSkillPoints = [row skillPointsAtLevel:row.trainedLevel];
-			float targetSkillPoints = [row skillPointsAtLevel:row.targetLevel];
-			
-			progress = (row.skillPoints - startSkillPoints) / (targetSkillPoints - startSkillPoints);
-			if (progress > 1.0)
-				progress = 1.0;
-		}
-		
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
-		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
-		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
-		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
-	}
-	else {
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
-		cell.levelLabel.text = nil;
-		cell.levelImageView.image = nil;
-		cell.dateLabel.text = nil;
-	}
-	cell.titleLabel.text = row.skillName;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -487,15 +371,148 @@
 			return 41;
 	}
 	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCell"];
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell.contentView setNeedsLayout];
-		[cell.contentView layoutIfNeeded];
+		[cell setNeedsLayout];
+		[cell layoutIfNeeded];
 		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 	}
 }
 
 #pragma mark - NCTableViewController
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	if (self.mode == NCSkillsViewControllerModeTrainingQueue && indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			NCCharacterAttributesCell* cell = (NCCharacterAttributesCell*) tableViewCell;
+			
+			EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
+			EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
+			
+			EVECharacterSheet* characterSheet = self.account.characterSheet;
+			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
+				switch (enhancer.attribute) {
+					case EVECharacterAttributeCharisma:
+						charismaEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeIntelligence:
+						intelligenceEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeMemory:
+						memoryEnhancer = enhancer;
+						break;
+					case EVECharacterAttributePerception:
+						perceptionEnhancer = enhancer;
+						break;
+					case EVECharacterAttributeWillpower:
+						willpowerEnhancer = enhancer;
+						break;
+				}
+			}
+			
+			NSAttributedString* (^attributesString)(int32_t, EVECharacterSheetAttributeEnhancer*, int32_t) = ^(int32_t attribute, EVECharacterSheetAttributeEnhancer* enhancer, int32_t currentAttribute) {
+				NSString* text;
+				if (enhancer)
+					text = [NSString stringWithFormat:@"%d (%d + %d)",
+							attribute + enhancer.augmentatorValue,
+							attribute,
+							enhancer.augmentatorValue];
+				else
+					text = [NSString stringWithFormat:@"%d", attribute];
+				
+				int32_t dif = attribute - currentAttribute;
+				NSString* difString;
+				UIColor* color = nil;
+				if (dif > 0) {
+					difString = [NSString stringWithFormat:@" +%d", dif];
+					color = [UIColor greenColor];
+				}
+				else if (dif < 0) {
+					difString = [NSString stringWithFormat:@" %d", dif];
+					color = [UIColor redColor];
+				}
+				else
+					difString = @"";
+				NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:[text stringByAppendingString:difString]];
+				if (color)
+					[s addAttributes:@{NSForegroundColorAttributeName: color} range:NSMakeRange(text.length, difString.length)];
+				return s;
+			};
+			
+			cell.intelligenceLabel.attributedText = attributesString(self.optimalAttributes.intelligence, intelligenceEnhancer, characterSheet.attributes.intelligence);
+			cell.memoryLabel.attributedText = attributesString(self.optimalAttributes.memory, memoryEnhancer, characterSheet.attributes.memory);
+			cell.perceptionLabel.attributedText = attributesString(self.optimalAttributes.perception, perceptionEnhancer, characterSheet.attributes.perception);
+			cell.willpowerLabel.attributedText = attributesString(self.optimalAttributes.willpower, willpowerEnhancer, characterSheet.attributes.willpower);
+			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, charismaEnhancer, characterSheet.attributes.charisma);
+		}
+		else {
+			UITableViewCell* cell = tableViewCell;
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime - self.optimalTrainingTime]];
+		}
+	}
+	
+	NCSkillData* row;
+	
+	NCSkillsViewControllerData* data = self.data;
+	switch (self.mode) {
+		case NCSkillsViewControllerModeTrainingQueue:
+			if (indexPath.section == 1)
+				row = self.skillQueueRows[indexPath.row];
+			else if (indexPath.section == 2)
+				row = self.skillPlan.trainingQueue.skills[indexPath.row];
+			break;
+		case NCSkillsViewControllerModeKnownSkills:
+			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeAllSkills:
+			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeNotKnownSkills:
+			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeCanTrainSkills:
+			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		default:
+			break;
+	}
+	
+	
+	NCSkillCell* cell = (NCSkillCell*) tableViewCell;
+	cell.skillData = row;
+	
+	if (row.trainedLevel >= 0) {
+		float progress = 0;
+		
+		if (row.targetLevel == row.trainedLevel + 1) {
+			float startSkillPoints = [row skillPointsAtLevel:row.trainedLevel];
+			float targetSkillPoints = [row skillPointsAtLevel:row.targetLevel];
+			
+			progress = (row.skillPoints - startSkillPoints) / (targetSkillPoints - startSkillPoints);
+			if (progress > 1.0)
+				progress = 1.0;
+		}
+		
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
+									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
+									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
+		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
+		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
+	}
+	else {
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([data.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+		cell.levelLabel.text = nil;
+		cell.levelImageView.image = nil;
+		cell.dateLabel.text = nil;
+	}
+	cell.titleLabel.text = row.skillName;
+}
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
 	__block NSError* error = nil;

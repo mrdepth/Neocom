@@ -32,9 +32,6 @@
 		120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120968621845F0CB00921A37 /* NCAppDelegate.mm */; };
 		120968661845F0CB00921A37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 120968641845F0CB00921A37 /* Main.storyboard */; };
 		1209686B1845F0CB00921A37 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1209686A1845F0CB00921A37 /* Images.xcassets */; };
-		120968721845F0CB00921A37 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968711845F0CB00921A37 /* XCTest.framework */; };
-		120968731845F0CB00921A37 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968521845F0CB00921A37 /* Foundation.framework */; };
-		120968741845F0CB00921A37 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120968561845F0CB00921A37 /* UIKit.framework */; };
 		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
@@ -70,6 +67,7 @@
 		123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980B18C716B9001045F5 /* NCRSSFeedCell.m */; };
 		123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; };
 		123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A981318C721C7001045F5 /* RSSItem+Neocom.m */; };
+		123C628218DB1E6A00B03156 /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 123C628118DB1E6A00B03156 /* NCLabel.m */; };
 		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
 		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
@@ -367,6 +365,7 @@
 		12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA518A0AD2600566DFE /* NCFittingDamagePatternsViewController.m */; };
 		12ACDCAA18A0B12D00566DFE /* NCFittingDamagePatternCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */; };
 		12ACDCAC18A0B39F00566DFE /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */; };
+		12B3198818DAFA8C00025C53 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */; };
 		12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3A18CF08AE00D05D60 /* buttonBackNormal.png */; };
 		12B5AE4118CF08AF00D05D60 /* buttonBackNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3B18CF08AE00D05D60 /* buttonBackNormal@2x.png */; };
 		12B5AE4218CF08AF00D05D60 /* buttonBackSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE3C18CF08AF00D05D60 /* buttonBackSelected.png */; };
@@ -553,13 +552,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		120968751845F0CB00921A37 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 120968471845F0CB00921A37 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1209684E1845F0CB00921A37;
-			remoteInfo = Neocom;
-		};
 		1271239218978236005F46EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
@@ -630,7 +622,6 @@
 		120968621845F0CB00921A37 /* NCAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAppDelegate.mm; sourceTree = "<group>"; };
 		120968651845F0CB00921A37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1209686A1845F0CB00921A37 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		120968701845F0CB00921A37 /* NeocomTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeocomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		120968711845F0CB00921A37 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		120D5B4018B1FE5B007ED9B4 /* NCLocationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLocationsManager.h; sourceTree = "<group>"; };
 		120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLocationsManager.m; sourceTree = "<group>"; };
@@ -697,6 +688,8 @@
 		123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCRSSItemViewController.m; sourceTree = "<group>"; };
 		123A981218C721C7001045F5 /* RSSItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSSItem+Neocom.h"; sourceTree = "<group>"; };
 		123A981318C721C7001045F5 /* RSSItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RSSItem+Neocom.m"; sourceTree = "<group>"; };
+		123C628018DB1E6A00B03156 /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
+		123C628118DB1E6A00B03156 /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
 		123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlansViewController.h; sourceTree = "<group>"; };
 		123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlansViewController.m; sourceTree = "<group>"; };
 		123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Neocom.h"; sourceTree = "<group>"; };
@@ -1238,6 +1231,7 @@
 		12ACDCA818A0B12D00566DFE /* NCFittingDamagePatternCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternCell.h; sourceTree = "<group>"; };
 		12ACDCA918A0B12D00566DFE /* NCFittingDamagePatternCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternCell.m; sourceTree = "<group>"; };
 		12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
+		12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPad.storyboard; sourceTree = "<group>"; };
 		12B5AE3A18CF08AE00D05D60 /* buttonBackNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackNormal.png; sourceTree = "<group>"; };
 		12B5AE3B18CF08AE00D05D60 /* buttonBackNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackNormal@2x.png"; sourceTree = "<group>"; };
 		12B5AE3C18CF08AF00D05D60 /* buttonBackSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackSelected.png; sourceTree = "<group>"; };
@@ -1544,16 +1538,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1209686D1845F0CB00921A37 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				120968721845F0CB00921A37 /* XCTest.framework in Frameworks */,
-				120968741845F0CB00921A37 /* UIKit.framework in Frameworks */,
-				120968731845F0CB00921A37 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1635,7 +1619,6 @@
 			isa = PBXGroup;
 			children = (
 				1209684F1845F0CB00921A37 /* Neocom.app */,
-				120968701845F0CB00921A37 /* NeocomTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1692,6 +1675,7 @@
 				128217651887D94D002B674E /* skillRequirementsMap.plist */,
 				123A980318C71548001045F5 /* rssFeeds.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
+				12B3198718DAFA8C00025C53 /* Main_iPad.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
@@ -1918,6 +1902,15 @@
 				128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */,
 			);
 			name = NCFittingShipWorkspaceViewController;
+			sourceTree = "<group>";
+		};
+		123C627F18DB1E5800B03156 /* NCLabel */ = {
+			isa = PBXGroup;
+			children = (
+				123C628018DB1E6A00B03156 /* NCLabel.h */,
+				123C628118DB1E6A00B03156 /* NCLabel.m */,
+			);
+			name = NCLabel;
 			sourceTree = "<group>";
 		};
 		123F0AC718C598C400D53602 /* NCSkillPlansViewController */ = {
@@ -2163,6 +2156,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				123C627F18DB1E5800B03156 /* NCLabel */,
 				12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */,
 				12F955E318CDA281005CEAD6 /* NCMigrationManager */,
 				12FF586A189F8ECA00E2D70A /* NCStoryboardPopoverSegue */,
@@ -4153,24 +4147,6 @@
 			productReference = 1209684F1845F0CB00921A37 /* Neocom.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1209686F1845F0CB00921A37 /* NeocomTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 120968841845F0CB00921A37 /* Build configuration list for PBXNativeTarget "NeocomTests" */;
-			buildPhases = (
-				1209686C1845F0CB00921A37 /* Sources */,
-				1209686D1845F0CB00921A37 /* Frameworks */,
-				1209686E1845F0CB00921A37 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				120968761845F0CB00921A37 /* PBXTargetDependency */,
-			);
-			name = NeocomTests;
-			productName = NeocomTests;
-			productReference = 120968701845F0CB00921A37 /* NeocomTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -4183,9 +4159,6 @@
 				TargetAttributes = {
 					1209684E1845F0CB00921A37 = {
 						DevelopmentTeam = YB4RLQ4M9A;
-					};
-					1209686F1845F0CB00921A37 = {
-						TestTargetID = 1209684E1845F0CB00921A37;
 					};
 				};
 			};
@@ -4209,7 +4182,6 @@
 			projectRoot = "";
 			targets = (
 				1209684E1845F0CB00921A37 /* Neocom */,
-				1209686F1845F0CB00921A37 /* NeocomTests */,
 			);
 		};
 /* End PBXProject section */
@@ -4256,6 +4228,7 @@
 				12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */,
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				12C66E5218D034880037124A /* segmentedControlDivider.png in Resources */,
+				12B3198818DAFA8C00025C53 /* Main_iPad.storyboard in Resources */,
 				849B9FD01896D24A00D4DD2B /* shieldRecharge.png in Resources */,
 				125F6811188526B6005732FA /* level_350.gif in Resources */,
 				84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */,
@@ -4394,13 +4367,6 @@
 				125F6809188526B6005732FA /* level_231.gif in Resources */,
 				125F67FF188526B6005732FA /* level_120.gif in Resources */,
 				849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1209686E1845F0CB00921A37 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4686,6 +4652,7 @@
 				127123A318979F55005F46EE /* NCFittingSectionGenericHedaerView.m in Sources */,
 				8456E87818AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m in Sources */,
 				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
+				123C628218DB1E6A00B03156 /* NCLabel.m in Sources */,
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */,
@@ -4779,21 +4746,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1209686C1845F0CB00921A37 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		120968761845F0CB00921A37 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1209684E1845F0CB00921A37 /* Neocom */;
-			targetProxy = 120968751845F0CB00921A37 /* PBXContainerItemProxy */;
-		};
 		127123AC1897ABF8005F46EE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = eufe;
@@ -4953,46 +4908,6 @@
 			};
 			name = Release;
 		};
-		120968851845F0CB00921A37 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "NeocomTests/NeocomTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		120968861845F0CB00921A37 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
-				INFOPLIST_FILE = "NeocomTests/NeocomTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5010,15 +4925,6 @@
 			buildConfigurations = (
 				120968821845F0CB00921A37 /* Debug */,
 				120968831845F0CB00921A37 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		120968841845F0CB00921A37 /* Build configuration list for PBXNativeTarget "NeocomTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				120968851845F0CB00921A37 /* Debug */,
-				120968861845F0CB00921A37 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -98,7 +98,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? self.masteriesSections[section][@"title"] : self.requiredForSections[section][@"title"];
+	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? self.masteriesSections[section][@"title"] : [NSString stringWithFormat:@"%@ (%d)", self.requiredForSections[section][@"title"], [self.requiredForSections[section][@"rows"] count]];
 }
 
 // Customize the appearance of table view cells.
@@ -281,7 +281,6 @@
 																						row.accessoryImageName = @"Icons/icon38_193.png";
 																					[section[@"rows"] addObject:row];
 																				}];
-											 
 											 if ([task isCancelled])
 												 return;
 											 task.progress = 0.9;

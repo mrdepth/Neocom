@@ -118,9 +118,7 @@
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
-		cell.object = row;
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 	else {
@@ -129,17 +127,7 @@
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
-		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.titleLabel.text = [row categoryName];
-		else
-			cell.titleLabel.text = [row groupName];
-		
-		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		cell.object = row;
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 }
@@ -151,7 +139,16 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NSString *CellIdentifier;
+	if ([row isKindOfClass:[EVEDBInvType class]])
+		CellIdentifier = @"TypeCell";
+	else
+		CellIdentifier = @"CategoryGroupCell";
+	
+	UITableViewCell* cell = [self tableView:self.tableView offscreenCellWithIdentifier:CellIdentifier];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
@@ -206,6 +203,28 @@
 									 [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	if ([row isKindOfClass:[EVEDBInvType class]]) {
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.object = row;
+	}
+	else {
+		if ([row isKindOfClass:[EVEDBInvCategory class]])
+			cell.titleLabel.text = [row categoryName];
+		else
+			cell.titleLabel.text = [row groupName];
+		
+		NSString* iconImageName = [row icon].iconImageName;
+		if (iconImageName)
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
+		else
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.object = row;
+	}
 }
 
 #pragma mark - Private

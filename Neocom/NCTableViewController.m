@@ -22,6 +22,7 @@
 @property (nonatomic, strong, readwrite) id data;
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
+@property (nonatomic, strong) NSMutableDictionary* offscreenCells;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -46,11 +47,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.offscreenCells = [NSMutableDictionary new];
+	
 	if (!self.tableView.backgroundView) {
 		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor clearColor];
+		view.backgroundColor = [UIColor blackColor];
 		self.tableView.backgroundView = view;
 	}
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
@@ -267,6 +271,17 @@
 	return NO;
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+
+}
+
+- (id) tableView:(UITableView *)tableView offscreenCellWithIdentifier:(NSString*) identifier {
+	id cell = self.offscreenCells[identifier];
+	if (!cell)
+		self.offscreenCells[identifier] = cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	return cell;
+}
+
 #pragma mark - UISearchDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -308,6 +323,10 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return UITableViewAutomaticDimension;
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor blackColor];
 }
 
 #pragma mark - CollapsableTableViewDelegate

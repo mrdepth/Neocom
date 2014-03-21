@@ -41,6 +41,8 @@ UPDATE eveDB.dgmAttributeTypes SET iconID=1395 WHERE attributeID=975;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1393 WHERE attributeID=976;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1394 WHERE attributeID=977;
 
+UPDATE eveDB.dgmAttributeTypes SET published = 0 WHERE attributeName like "requiredSkill%Level";
+
 INSERT INTO eveDB.invMetaTypes VALUES (29984,NULL,14);
 INSERT INTO eveDB.invMetaTypes VALUES (29986,NULL,14);
 INSERT INTO eveDB.invMetaTypes VALUES (29988,NULL,14);

@@ -32,4 +32,8 @@
 - (NSDate*) cacheDate;
 - (id) identifierForSection:(NSInteger) section;
 - (BOOL) initiallySectionIsCollapsed:(NSInteger) section;
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
+- (id) tableView:(UITableView *)tableView offscreenCellWithIdentifier:(NSString*) identifier;
+
 @end

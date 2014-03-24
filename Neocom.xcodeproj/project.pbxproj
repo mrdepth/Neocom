@@ -433,6 +433,9 @@
 		12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; };
 		12F9562B18CDFC51005CEAD6 /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 12F9562A18CDFC51005CEAD6 /* Types */; };
+		12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA32D18E00710007B091D /* NCImplantSet.m */; };
+		12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33118E00FFA007B091D /* NCFittingImplantSetsViewController.m */; };
+		12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33418E03172007B091D /* NCFittingAmountCell.m */; };
 		12FF5866189F6D9100E2D70A /* NCFittingCharacterEditorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */; };
 		12FF586D189F8EF200E2D70A /* NCStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF586C189F8EF200E2D70A /* NCStoryboardPopoverSegue.m */; };
 		12FF5871189FC2D100E2D70A /* NCFittingFitPickerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12FF5870189FC2D100E2D70A /* NCFittingFitPickerViewController.mm */; };
@@ -445,7 +448,6 @@
 		8418BB2018919C0300B99A7E /* NCCalendarEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8418BB1F18919C0300B99A7E /* NCCalendarEventDetailsViewController.m */; };
 		84250639187DC566002E691E /* NCSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84250638187DC566002E691E /* NCSideMenuViewController.m */; };
 		8425AFAA1876D0BB0035A0BA /* UIApplication+NetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */; };
-		842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */; };
 		8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */; };
 		843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843C2F0118AD41CF00221721 /* NCAssetsViewController.m */; };
 		84442A5D189FFF230021CB24 /* NCFittingTargetsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84442A5C189FFF230021CB24 /* NCFittingTargetsViewController.mm */; };
@@ -517,7 +519,6 @@
 		849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */; };
 		849FEE3E18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */; };
 		849FEE4218A42C4300A4F85E /* NCFittingTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */; };
-		84A076F218A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */; };
 		84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */; };
 		84A6E52118A174F100231735 /* NCProgressTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6E52018A174F100231735 /* NCProgressTextField.m */; };
 		84AC540D18A94034000C308C /* ShipFitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AC540C18A94034000C308C /* ShipFitting.storyboard */; };
@@ -1351,6 +1352,12 @@
 		12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyAccessMaskViewController.h; sourceTree = "<group>"; };
 		12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyAccessMaskViewController.m; sourceTree = "<group>"; };
 		12F9562A18CDFC51005CEAD6 /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
+		12FDA32C18E00710007B091D /* NCImplantSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImplantSet.h; sourceTree = "<group>"; };
+		12FDA32D18E00710007B091D /* NCImplantSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImplantSet.m; sourceTree = "<group>"; };
+		12FDA33018E00FFA007B091D /* NCFittingImplantSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantSetsViewController.h; sourceTree = "<group>"; };
+		12FDA33118E00FFA007B091D /* NCFittingImplantSetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingImplantSetsViewController.m; sourceTree = "<group>"; };
+		12FDA33318E03172007B091D /* NCFittingAmountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAmountCell.h; sourceTree = "<group>"; };
+		12FDA33418E03172007B091D /* NCFittingAmountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAmountCell.m; sourceTree = "<group>"; };
 		12FF5864189F6D9100E2D70A /* NCFittingCharacterEditorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacterEditorCell.h; sourceTree = "<group>"; };
 		12FF5865189F6D9100E2D70A /* NCFittingCharacterEditorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingCharacterEditorCell.m; sourceTree = "<group>"; };
 		12FF586B189F8EF200E2D70A /* NCStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -1373,8 +1380,6 @@
 		84250638187DC566002E691E /* NCSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSideMenuViewController.m; sourceTree = "<group>"; };
 		8425AFA81876D0BB0035A0BA /* UIApplication+NetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NetworkActivity.h"; sourceTree = "<group>"; };
 		8425AFA91876D0BB0035A0BA /* UIApplication+NetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NetworkActivity.m"; sourceTree = "<group>"; };
-		842A803818A0313700F1F9F9 /* NCFittingAmountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAmountViewController.h; sourceTree = "<group>"; };
-		842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAmountViewController.m; sourceTree = "<group>"; };
 		8435C87518A690C000D11FC9 /* NCFittingRequiredSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRequiredSkillsViewController.h; sourceTree = "<group>"; };
 		8435C87618A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingRequiredSkillsViewController.m; sourceTree = "<group>"; };
 		843C2F0018AD41CF00221721 /* NCAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsViewController.h; sourceTree = "<group>"; };
@@ -1464,8 +1469,6 @@
 		849FEE3D18A421D400A4F85E /* NCFittingAreaEffectPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingAreaEffectPickerViewController.m; sourceTree = "<group>"; };
 		849FEE4018A42C4300A4F85E /* NCFittingTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingTypeVariationsViewController.h; sourceTree = "<group>"; };
 		849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingTypeVariationsViewController.m; sourceTree = "<group>"; };
-		84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantsImportViewController.h; sourceTree = "<group>"; };
-		84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingImplantsImportViewController.mm; sourceTree = "<group>"; };
 		84A6E51A18A1745F00231735 /* NCFittingDamagePatternEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDamagePatternEditorViewController.h; sourceTree = "<group>"; };
 		84A6E51B18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingDamagePatternEditorViewController.m; sourceTree = "<group>"; };
 		84A6E51F18A174F100231735 /* NCProgressTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCProgressTextField.h; sourceTree = "<group>"; };
@@ -2770,6 +2773,8 @@
 				8456E87418AAAEE2000DAE75 /* NCFittingPOSResourcesCell.m */,
 				8456E87618AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.h */,
 				8456E87718AAAFBD000DAE75 /* NCFittingPOSDefenseOffenseCell.m */,
+				12FDA33318E03172007B091D /* NCFittingAmountCell.h */,
+				12FDA33418E03172007B091D /* NCFittingAmountCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -3277,6 +3282,8 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				12FDA32C18E00710007B091D /* NCImplantSet.h */,
+				12FDA32D18E00710007B091D /* NCImplantSet.m */,
 				12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */,
 				12ACDCA018A0AC4A00566DFE /* NCDamagePattern.m */,
 				8452190F189AEEA800E7E3C1 /* NCLoadoutData.h */,
@@ -3676,6 +3683,15 @@
 			name = NCAPIKeyAccessMaskViewController;
 			sourceTree = "<group>";
 		};
+		12FDA32F18E00FDE007B091D /* NCFittingImplantSetsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12FDA33018E00FFA007B091D /* NCFittingImplantSetsViewController.h */,
+				12FDA33118E00FFA007B091D /* NCFittingImplantSetsViewController.m */,
+			);
+			name = NCFittingImplantSetsViewController;
+			sourceTree = "<group>";
+		};
 		12FF5862189F6D7900E2D70A /* NCFittingCharacterEditorCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3758,15 +3774,6 @@
 				84250638187DC566002E691E /* NCSideMenuViewController.m */,
 			);
 			name = NCSideMenuViewController;
-			sourceTree = "<group>";
-		};
-		842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */ = {
-			isa = PBXGroup;
-			children = (
-				842A803818A0313700F1F9F9 /* NCFittingAmountViewController.h */,
-				842A803918A0313700F1F9F9 /* NCFittingAmountViewController.m */,
-			);
-			name = NCFittingAmountViewController;
 			sourceTree = "<group>";
 		};
 		8435C87318A6909E00D11FC9 /* NCFittingRequiredSkillsViewController */ = {
@@ -3934,13 +3941,12 @@
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
-				842A803618A0310B00F1F9F9 /* NCFittingAmountViewController */,
 				12ACDCA318A0ACFA00566DFE /* NCFittingDamagePatternsViewController */,
 				849FEE3B18A421A700A4F85E /* NCFittingAreaEffectPickerViewController */,
 				849FEE3F18A42C2000A4F85E /* NCFittingTypeVariationsViewController */,
 				12D011B818A209ED00C0A228 /* NCFittingNPCPickerViewController */,
 				8435C87318A6909E00D11FC9 /* NCFittingRequiredSkillsViewController */,
-				84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */,
+				12FDA32F18E00FDE007B091D /* NCFittingImplantSetsViewController */,
 				1202FC7218A8AF440093D8F7 /* NCFittingShipAffectingSkillsViewController */,
 				12B97D3018AB759C00ECCFC3 /* NCFittingBattleClinic */,
 				84FFB56818ABD2ED00A30772 /* NCFittingAPI */,
@@ -3983,15 +3989,6 @@
 				849FEE4118A42C4300A4F85E /* NCFittingTypeVariationsViewController.m */,
 			);
 			name = NCFittingTypeVariationsViewController;
-			sourceTree = "<group>";
-		};
-		84A076EE18A6B53000FBCC33 /* NCFittingImplantsImportViewController */ = {
-			isa = PBXGroup;
-			children = (
-				84A076F018A6B55400FBCC33 /* NCFittingImplantsImportViewController.h */,
-				84A076F118A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm */,
-			);
-			name = NCFittingImplantsImportViewController;
 			sourceTree = "<group>";
 		};
 		84A6E51818A1742500231735 /* NCFittingDamagePatternEditorViewController */ = {
@@ -4399,6 +4396,7 @@
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
 				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,
+				12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */,
 				12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */,
 				8456E86F18AAA712000DAE75 /* NCFittingPOSAssemblyLinesDataSource.mm in Sources */,
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
@@ -4434,7 +4432,6 @@
 				126A0E62185F3B9300A8E8A3 /* EVEConquerableStationList.m in Sources */,
 				126A0E13185F3B9300A8E8A3 /* EVEDBEveIcon.m in Sources */,
 				12F955F718CDA3DD005CEAD6 /* POSFit.mm in Sources */,
-				842A803A18A0313700F1F9F9 /* NCFittingAmountViewController.m in Sources */,
 				1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */,
 				126A0E12185F3B9300A8E8A3 /* EVEDBDgmTypeEffect.m in Sources */,
 				123A980818C715EA001045F5 /* NCRSSFeedViewController.m in Sources */,
@@ -4546,6 +4543,7 @@
 				84C1182D1898443900A35516 /* NCDatabaseTypePickerContentViewController.m in Sources */,
 				126A0E37185F3B9300A8E8A3 /* EVECharMedals.m in Sources */,
 				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
+				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
@@ -4592,6 +4590,7 @@
 				126A0E1A185F3B9300A8E8A3 /* EVEDBInvMarketGroup.m in Sources */,
 				126A0E42185F3B9300A8E8A3 /* EVEMailingLists.m in Sources */,
 				129D2600187E923200E2062C /* ASCaptionTextField.m in Sources */,
+				12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */,
 				84521911189AEEA800E7E3C1 /* NCLoadoutData.m in Sources */,
 				12041566189A451E00B15BB5 /* NCFittingShipTankCell.m in Sources */,
 				126A0E71185F3B9300A8E8A3 /* NAPISearch.m in Sources */,
@@ -4625,7 +4624,6 @@
 				126A0E7D185F3B9300A8E8A3 /* RSS.m in Sources */,
 				129D2629187E923300E2062C /* UIImage+Retina4.m in Sources */,
 				129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */,
-				84A076F218A6B55400FBCC33 /* NCFittingImplantsImportViewController.mm in Sources */,
 				12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */,
 				122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */,
 				129D2616187E923300E2062C /* LUIButton.m in Sources */,

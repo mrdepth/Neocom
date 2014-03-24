@@ -20,14 +20,13 @@
 #import "NCFittingFitPickerViewController.h"
 #import "NCFittingTargetsViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "NCFittingAmountViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
 #import "NCFittingAreaEffectPickerViewController.h"
 #import "NCFittingTypeVariationsViewController.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
 #import "NCFittingRequiredSkillsViewController.h"
-#import "NCFittingImplantsImportViewController.h"
+#import "NCFittingImplantSetsViewController.h"
 #import "NCFittingShipAffectingSkillsViewController.h"
 
 #include <set>
@@ -219,24 +218,6 @@
 		}];
 		destinationViewController.type = type;
 	}
-	else if ([segue.identifier isEqualToString:@"NCFittingAmountViewController"]) {
-		NSArray* drones = sender;
-		eufe::Ship* ship = self.fit.pilot->getShip();
-		NCFittingAmountViewController* controller;
-		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
-			controller = [segue.destinationViewController viewControllers][0];
-		else
-			controller = segue.destinationViewController;
-
-		eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([drones[0] pointerValue]);
-		float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-		int droneBay = ship->getTotalDroneBay() / volume;
-		int maxActive = ship->getMaxActiveDrones();
-		
-		controller.range = NSMakeRange(1, std::min(std::max(droneBay, maxActive), 50));
-		controller.amount = drones.count;
-		controller.object = drones;
-	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -288,6 +269,24 @@
 		
 		controller.affectingSkillsTypeIDs = typeIDs;
 		controller.character = self.fit.character;
+	}
+	else if ([segue.identifier isEqualToString:@"NCFittingImplantSetsViewControllerSave"]) {
+		NCFittingImplantSetsViewController* destinationViewController = [segue destinationViewController];
+
+		NSMutableArray* implants = [NSMutableArray new];
+		for (auto implant: self.fit.pilot->getImplants())
+			[implants addObject:@(implant->getTypeID())];
+
+		NSMutableArray* boosters = [NSMutableArray new];
+		for (auto booster: self.fit.pilot->getBoosters())
+			[boosters addObject:@(booster->getTypeID())];
+
+		NCImplantSetData* data = [NCImplantSetData new];
+		data.implantIDs = implants;
+		data.boosterIDs = boosters;
+
+		destinationViewController.implantSetData = data;
+		destinationViewController.saveMode = YES;
 	}
 }
 
@@ -585,32 +584,6 @@
 	[self reload];
 }
 
-- (IBAction) unwindFromAmount:(UIStoryboardSegue*) segue {
-	NCFittingAmountViewController* sourceViewController = segue.sourceViewController;
-	NSArray* drones = sourceViewController.object;
-	eufe::Ship* ship = self.fit.pilot->getShip();
-	if (drones.count > sourceViewController.amount) {
-		NSInteger n = drones.count - sourceViewController.amount;
-		for (NSValue* value in drones) {
-			if (n <= 0)
-				break;
-			eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([value pointerValue]);
-			ship->removeDrone(drone);
-			n--;
-		}
-	}
-	else {
-		NSInteger n = sourceViewController.amount - drones.count;
-		eufe::Drone* drone = reinterpret_cast<eufe::Drone*>([drones[0] pointerValue]);
-		for (int i = 0; i < n; i++) {
-			eufe::Drone* newDrone = ship->addDrone(drone->getTypeID());
-			newDrone->setActive(drone->isActive());
-			newDrone->setTarget(drone->getTarget());
-		}
-	}
-	[self reload];
-}
-
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
 	NCFittingDamagePatternsViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedDamagePattern) {
@@ -651,21 +624,23 @@
 	}
 }
 
-- (IBAction) unwindFromImplantsImport:(UIStoryboardSegue*) segue {
-	NCFittingImplantsImportViewController* sourceViewController = segue.sourceViewController;
-	if (sourceViewController.selectedFit) {
+- (IBAction) unwindFromImplantSets:(UIStoryboardSegue*) segue {
+	NCFittingImplantSetsViewController* sourceViewController = segue.sourceViewController;
+	if (sourceViewController.selectedImplantSet) {
 		eufe::Character* character = self.fit.pilot;
 		eufe::ImplantsList implants = character->getImplants();
 		for (auto implant: implants)
 			character->removeImplant(implant);
-		for (NCLoadoutDataShipImplant* implant in [(NCLoadoutDataShip*) sourceViewController.selectedFit.loadout.data.data implants])
-			character->addImplant(implant.typeID);
+		for (NSNumber* typeID in [(NCImplantSetData*) sourceViewController.selectedImplantSet.data implantIDs]) {
+			character->addImplant([typeID intValue]);
+		}
 		
 		eufe::BoostersList boosters = character->getBoosters();
 		for (auto booster: boosters)
 			character->removeBooster(booster);
-		for (NCLoadoutDataShipBooster* booster in [(NCLoadoutDataShip*) sourceViewController.selectedFit.loadout.data.data boosters])
-			character->addBooster(booster.typeID);
+		for (NSNumber* typeID in [(NCImplantSetData*) sourceViewController.selectedImplantSet.data boosterIDs]) {
+			character->addBooster([typeID intValue]);
+		}
 
 		[self reload];
 	}

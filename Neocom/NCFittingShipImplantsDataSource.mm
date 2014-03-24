@@ -27,42 +27,30 @@
 @implementation NCFittingShipImplantsDataSource
 
 - (void) reload {
-	if (self.tableView.dataSource == self)
-		[self.tableView reloadData];
-
 	__block std::vector<eufe::Implant*> implants(10, nullptr);
 	__block std::vector<eufe::Booster*> boosters(4, nullptr);
 	
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-													title:NCTaskManagerDefaultTitle
-													block:^(NCTask *task) {
-														@synchronized(self.controller) {
-															eufe::Character* character = self.controller.fit.pilot;
-															if (!character)
-																return;
-															
-															for (auto implant: character->getImplants()) {
-																int slot = implant->getSlot() - 1;
-																if (slot >= 0 && slot < 10)
-																	implants[slot] = implant;
-															}
-															
-															for (auto booster: character->getBoosters()) {
-																int slot = booster->getSlot() - 1;
-																if (slot >= 0 && slot < 4)
-																	boosters[slot] = booster;
-															}
-														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
-												self.implants = implants;
-												self.boosters = boosters;
-												
-												if (self.tableView.dataSource == self)
-													[self.tableView reloadData];
-											}
-										}];
+	eufe::Character* character = self.controller.fit.pilot;
+	if (!character)
+		return;
+	
+	for (auto implant: character->getImplants()) {
+		int slot = implant->getSlot() - 1;
+		if (slot >= 0 && slot < 10)
+			implants[slot] = implant;
+	}
+	
+	for (auto booster: character->getBoosters()) {
+		int slot = booster->getSlot() - 1;
+		if (slot >= 0 && slot < 4)
+			boosters[slot] = booster;
+	}
+
+	self.implants = implants;
+	self.boosters = boosters;
+	
+	if (self.tableView.dataSource == self)
+		[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -77,7 +65,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	if (section == 0)
-		return 1;
+		return 2;
 	else if (section == 1)
 		return self.implants.size();
 	else
@@ -92,8 +80,14 @@
 	cell.accessoryView = nil;
 	
 	if (indexPath.section == 0) {
-		cell.titleLabel.text = NSLocalizedString(@"Import Implants", nil);
-		cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+		if (indexPath.row == 0) {
+			cell.titleLabel.text = NSLocalizedString(@"Import Implant Set", nil);
+			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+		}
+		else {
+			cell.titleLabel.text = NSLocalizedString(@"Save Implant Set", nil);
+			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+		}
 	}
 	else {
 		EVEDBInvType* type;
@@ -157,7 +151,10 @@
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	
 	if (indexPath.section == 0) {
-		[self.controller performSegueWithIdentifier:@"NCFittingImplantsImportViewController" sender:cell];
+		if (indexPath.row == 0)
+			[self.controller performSegueWithIdentifier:@"NCFittingImplantSetsViewControllerImport" sender:cell];
+		else
+			[self.controller performSegueWithIdentifier:@"NCFittingImplantSetsViewControllerSave" sender:cell];
 	}
 	else {
 		EVEDBInvType* type;

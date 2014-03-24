@@ -1092,47 +1092,6 @@
             </objects>
             <point key="canvasLocation" x="-2045" y="590"/>
         </scene>
-        <!--Fitting Amount View Controller - Amount-->
-        <scene sceneID="3B1-2r-ltW">
-            <objects>
-                <tableViewController storyboardIdentifier="NCFittingAmountViewController" id="THM-3G-fc1" customClass="NCFittingAmountViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="ZM9-NI-ANr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="eDx-fc-Ckm" style="IBUITableViewCellStyleDefault" id="n7e-QV-3B5">
-                                <rect key="frame" x="0.0" y="22" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n7e-QV-3B5" id="kIZ-fE-Tq5">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eDx-fc-Ckm">
-                                            <rect key="frame" x="15" y="0.0" width="290" height="40"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="91I-BM-IYe" kind="unwind" unwindAction="unwindFromAmount:" id="cGs-ej-n8q"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Amount" id="k88-fh-aBH">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="ddO-Pz-EpM"/>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WjZ-4N-YJp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="91I-BM-IYe" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="-2999" y="1287"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="cp5-RH-bve">
             <objects>

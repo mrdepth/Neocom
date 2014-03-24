@@ -15,6 +15,7 @@
 #import "UIActionSheet+Block.h"
 #import "NCFittingPOSStructuresTableHeaderView.h"
 #import "UIView+Nib.h"
+#import "NCFittingAmountCell.h"
 
 #define ActionButtonOffline NSLocalizedString(@"Put Offline", nil)
 #define ActionButtonOnline NSLocalizedString(@"Put Online", nil)
@@ -38,11 +39,22 @@
 @property (nonatomic, readonly) eufe::StructuresList& structures;
 @end
 
+@interface NCFittingPOSStructuresDataSourcePickerRow : NSObject
+@property (nonatomic, strong) NCFittingPOSStructuresDataSourceRow* associatedRow;
+@end
+
+
 @implementation NCFittingPOSStructuresDataSourceRow
 
 @end
 
-@interface NCFittingPOSStructuresDataSource()
+@implementation NCFittingPOSStructuresDataSourcePickerRow
+
+@end
+
+@interface NCFittingPOSStructuresDataSource()<UIPickerViewDataSource, UIPickerViewDelegate>
+@property (nonatomic, strong) EVEDBInvType* activeAmountType;
+@property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingPOSStructuresTableHeaderView* tableHeaderView;
 @end
@@ -59,7 +71,7 @@
 	__block float totalCPU;
 	__block float usedCPU;
 	
-	__block NSArray* rows = nil;
+	__block NSMutableArray* rows = nil;
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
@@ -85,7 +97,21 @@
 															totalCPU = controlTower->getTotalCpu();
 															usedCPU = controlTower->getCpuUsed();
 															
-															rows = [[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+															rows = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+															
+															if (self.activeAmountType) {
+																NSInteger i = 1;
+																for (NCFittingPOSStructuresDataSourceRow* row in rows) {
+																	if (row.type.typeID == self.activeAmountType.typeID) {
+																		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
+																		pickerRow.associatedRow = row;
+																		[rows insertObject:pickerRow atIndex:i];
+																		break;
+																	}
+																	i++;
+																}
+															}
+
 														}
 													}
 										completionHandler:^(NCTask *task) {
@@ -139,54 +165,66 @@
 	}
 	else {
 		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
-		eufe::Structure* structure = row.structures.front();
-		
-		int optimal = (int) structure->getMaxRange();
-		int falloff = (int) structure->getFalloff();
-		float trackingSpeed = structure->getTrackingSpeed();
-		
-		NCFittingPOSStructureCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
-		
-		cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-		
-		eufe::Charge* charge = structure->getCharge();
-		
-		if (charge) {
-			EVEDBInvType* type = [self.controller typeWithItem:charge];
-			cell.chargeLabel.text = type.typeName;
+		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+			NCFittingPOSStructuresDataSourcePickerRow* pickerRow = (NCFittingPOSStructuresDataSourcePickerRow*) row;
+			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
+			cell.pickerView.dataSource = self;
+			cell.pickerView.delegate = self;
+			[cell.pickerView reloadAllComponents];
+			[cell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];
+			return cell;
 		}
-		else
-			cell.chargeLabel.text = nil;
+		else {
 
-		
-		if (optimal > 0) {
-			NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-			if (falloff > 0)
-				s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-			if (trackingSpeed > 0)
-				s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-			cell.optimalLabel.text = s;
+			eufe::Structure* structure = row.structures.front();
+			
+			int optimal = (int) structure->getMaxRange();
+			int falloff = (int) structure->getFalloff();
+			float trackingSpeed = structure->getTrackingSpeed();
+			
+			NCFittingPOSStructureCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
+			
+			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
+			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+			
+			eufe::Charge* charge = structure->getCharge();
+			
+			if (charge) {
+				EVEDBInvType* type = [self.controller typeWithItem:charge];
+				cell.chargeLabel.text = type.typeName;
+			}
+			else
+				cell.chargeLabel.text = nil;
+			
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				cell.optimalLabel.text = s;
+			}
+			else
+				cell.optimalLabel.text = nil;
+			
+			switch (structure->getState()) {
+				case eufe::Module::STATE_ACTIVE:
+					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+					break;
+				case eufe::Module::STATE_ONLINE:
+					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+					break;
+				case eufe::Module::STATE_OVERLOADED:
+					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+					break;
+				default:
+					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+					break;
+			}
+			
+			return cell;
 		}
-		else
-			cell.optimalLabel.text = nil;
-		
-		switch (structure->getState()) {
-			case eufe::Module::STATE_ACTIVE:
-				cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-				break;
-			case eufe::Module::STATE_ONLINE:
-				cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-				break;
-			case eufe::Module::STATE_OVERLOADED:
-				cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-				break;
-			default:
-				cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-				break;
-		}
-		
-		return cell;
 	}
 }
 
@@ -208,6 +246,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSInteger i = 0;
+	for (NCFittingPOSStructuresDataSourcePickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+			self.activeAmountType = nil;
+			NSMutableArray* rows = [self.rows mutableCopy];
+			[rows removeObjectAtIndex:i];
+			self.rows = rows;
+			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			if (indexPath.row == i - 1) {
+				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+				return;
+			}
+			else if (indexPath.row > i)
+				indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+			break;
+		}
+		i++;
+	}
+	
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
@@ -239,6 +296,56 @@
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
+	}
+}
+
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+	return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+	return 50;
+}
+
+- (NSString*) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+	return [NSString stringWithFormat:@"%d", row + 1];
+}
+
+- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
+	int amount = rowIndex + 1;
+	NSInteger i = 0;
+	for (NCFittingPOSStructuresDataSourcePickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+			eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
+			eufe::TypeID typeID = row.associatedRow.structures.front()->getTypeID();
+			
+			if (row.associatedRow.structures.size() > amount) {
+				int n = row.associatedRow.structures.size() - amount;
+				for (auto structure: row.associatedRow.structures) {
+					if (n <= 0)
+						break;
+					controlTower->removeStructure(structure);
+					n--;
+				}
+			}
+			else {
+				int n = amount - row.associatedRow.structures.size();
+				eufe::Structure* structure = row.associatedRow.structures.front();
+				for (int i = 0; i < n; i++) {
+					eufe::Structure* newStructure = controlTower->addStructure(structure->getTypeID());
+					newStructure->setState(structure->getState());
+				}
+			}
+			row.associatedRow.structures.clear();
+			for (auto structure: controlTower->getStructures()) {
+				if (structure->getTypeID() == typeID)
+					row.associatedRow.structures.push_back(structure);
+			}
+			[self.controller reload];
+		}
+		i++;
 	}
 }
 
@@ -302,10 +409,14 @@
 	};
 
 	void (^setAmount)(eufe::StructuresList) = ^(eufe::StructuresList structures) {
-		NSMutableArray* array = [NSMutableArray new];
-		for (auto structure: structures)
-			[array addObject:[NSValue valueWithPointer:structure]];
-		[self.controller performSegueWithIdentifier:@"NCFittingAmountViewController" sender:array];
+		self.activeAmountType = row.type;
+		NSMutableArray* rows = [self.rows mutableCopy];
+		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
+		pickerRow.associatedRow = row;
+		
+		[rows insertObject:pickerRow atIndex:indexPath.row + 1];
+		self.rows = rows;
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 	};
 	
 	void (^setAmmo)(eufe::StructuresList) = ^(eufe::StructuresList structures){
@@ -429,6 +540,7 @@
 				  destructiveButtonTitle:ActionButtonDelete
 					   otherButtonTitles:buttons
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 								 void (^block)(eufe::StructuresList) = actions[selectedButtonIndex];
 								 block(row.structures);

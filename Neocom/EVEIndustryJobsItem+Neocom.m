@@ -70,8 +70,12 @@
 		NSTimeInterval progressTime = [date timeIntervalSinceDate:self.beginProductionTime];
 		
 		float progress = (progressTime / productionTime);
-		NSString* remains = [NSString stringWithFormat:@"%@ (%d%%)", [NSString stringWithTimeLeft:remainsTime], (int) (progress * 100)];
-		return [NSString stringWithFormat:NSLocalizedString(@"In Progress: %@", nil), remains];
+		if (progress >= 1.0)
+			return NSLocalizedString(@"Completion (100%)", nil);
+		else {
+			NSString* remains = [NSString stringWithFormat:@"%@ (%d%%)", [NSString stringWithTimeLeft:remainsTime], (int) (progress * 100)];
+			return [NSString stringWithFormat:NSLocalizedString(@"In Progress: %@", nil), remains];
+		}
 	}
 	else {
 		if (self.completedStatus == 0) {

@@ -51,7 +51,7 @@
 	
 	if (!self.tableView.backgroundView) {
 		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor blackColor];
+		view.backgroundColor = [UIColor clearColor];
 		self.tableView.backgroundView = view;
 	}
 	

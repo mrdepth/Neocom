@@ -15,6 +15,7 @@
 #import "NCFittingShipDronesTableHeaderView.h"
 #import "UIView+Nib.h"
 #import "NSString+Neocom.h"
+#import "NCFittingAmountCell.h"
 
 #define ActionButtonActivate NSLocalizedString(@"Activate", nil)
 #define ActionButtonDeactivate NSLocalizedString(@"Deactivate", nil)
@@ -33,11 +34,21 @@
 @property (nonatomic, readonly) eufe::DronesList& drones;
 @end
 
+@interface NCFittingShipDronesDataSourcePickerRow : NSObject
+@property (nonatomic, strong) NCFittingShipDronesDataSourceRow* associatedRow;
+@end
+
 @implementation NCFittingShipDronesDataSourceRow
 
 @end
 
-@interface NCFittingShipDronesDataSource()
+@implementation NCFittingShipDronesDataSourcePickerRow
+
+@end
+
+@interface NCFittingShipDronesDataSource()<UIPickerViewDataSource, UIPickerViewDelegate>
+@property (nonatomic, strong) EVEDBInvType* activeAmountType;
+@property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
 @end
@@ -57,7 +68,7 @@
 	__block int maxActiveDrones = 0;
 	__block int activeDrones = 0;
 	
-	__block NSArray* rows = nil;
+	__block NSMutableArray* rows = nil;
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
@@ -88,7 +99,19 @@
 															
 															maxActiveDrones = ship->getMaxActiveDrones();
 															activeDrones = ship->getActiveDrones();
-															rows = [[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+															rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+															if (self.activeAmountType) {
+																NSInteger i = 1;
+																for (NCFittingShipDronesDataSourceRow* row in rows) {
+																	if (row.type.typeID == self.activeAmountType.typeID) {
+																		NCFittingShipDronesDataSourcePickerRow* pickerRow = [NCFittingShipDronesDataSourcePickerRow new];
+																		pickerRow.associatedRow = row;
+																		[rows insertObject:pickerRow atIndex:i];
+																		break;
+																	}
+																	i++;
+																}
+															}
 														}
 													}
 										completionHandler:^(NCTask *task) {
@@ -148,38 +171,48 @@
 	}
 	else {
 		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
-		eufe::Drone* drone = row.drones.front();
-		
-		int optimal = (int) drone->getMaxRange();
-		int falloff = (int) drone->getFalloff();
-		float trackingSpeed = drone->getTrackingSpeed();
-		
-		NCFittingShipDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
-		
-		cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-		
-		if (optimal > 0) {
-			NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-			if (falloff > 0)
-				s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-			if (trackingSpeed > 0)
-				s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-			cell.optimalLabel.text = s;
+		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
+			NCFittingShipDronesDataSourcePickerRow* pickerRow = (NCFittingShipDronesDataSourcePickerRow*) row;
+			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
+			cell.pickerView.dataSource = self;
+			cell.pickerView.delegate = self;
+			[cell.pickerView reloadAllComponents];
+			[cell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
+			return cell;
 		}
-		else
-			cell.optimalLabel.text = nil;
-		
-		if (drone->isActive())
-			cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-		else
-			cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-		
-		cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
-		return cell;
+		else {
+			eufe::Drone* drone = row.drones.front();
+			
+			int optimal = (int) drone->getMaxRange();
+			int falloff = (int) drone->getFalloff();
+			float trackingSpeed = drone->getTrackingSpeed();
+			
+			NCFittingShipDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
+			
+			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
+			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				cell.optimalLabel.text = s;
+			}
+			else
+				cell.optimalLabel.text = nil;
+			
+			if (drone->isActive())
+				cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+			else
+				cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+			
+			cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+			return cell;
+		}
 	}
 }
-
 
 
 #pragma mark -
@@ -198,6 +231,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSInteger i = 0;
+	for (NCFittingShipDronesDataSourcePickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
+			self.activeAmountType = nil;
+			NSMutableArray* rows = [self.rows mutableCopy];
+			[rows removeObjectAtIndex:i];
+			self.rows = rows;
+			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+			if (indexPath.row == i - 1) {
+				[tableView deselectRowAtIndexPath:indexPath animated:YES];
+				return;
+			}
+			else if (indexPath.row > i)
+				indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+			break;
+		}
+		i++;
+	}
+	
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
@@ -236,6 +288,57 @@
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
+	}
+}
+
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+	return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+	return self.maximumAmount;
+}
+
+- (NSString*) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+	return [NSString stringWithFormat:@"%d", row + 1];
+}
+
+- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
+	int amount = rowIndex + 1;
+	NSInteger i = 0;
+	for (NCFittingShipDronesDataSourcePickerRow* row in self.rows) {
+		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
+			eufe::Ship* ship = self.controller.fit.pilot->getShip();
+			eufe::TypeID typeID = row.associatedRow.drones.front()->getTypeID();
+
+			if (row.associatedRow.drones.size() > amount) {
+				int n = row.associatedRow.drones.size() - amount;
+				for (auto drone: row.associatedRow.drones) {
+					if (n <= 0)
+						break;
+					ship->removeDrone(drone);
+					n--;
+				}
+			}
+			else {
+				int n = amount - row.associatedRow.drones.size();
+				eufe::Drone* drone = row.associatedRow.drones.front();
+				for (int i = 0; i < n; i++) {
+					eufe::Drone* newDrone = ship->addDrone(drone->getTypeID());
+					newDrone->setActive(drone->isActive());
+					newDrone->setTarget(drone->getTarget());
+				}
+			}
+			row.associatedRow.drones.clear();
+			for (auto drone: ship->getDrones()) {
+				if (drone->getTypeID() == typeID)
+					row.associatedRow.drones.push_back(drone);
+			}
+			[self.controller reload];
+		}
+		i++;
 	}
 }
 
@@ -283,10 +386,20 @@
 	};
 	
 	void (^setAmount)(eufe::DronesList) = ^(eufe::DronesList drones) {
-		NSMutableArray* array = [NSMutableArray new];
-		for (auto drone: drones)
-			[array addObject:[NSValue valueWithPointer:drone]];
-		[self.controller performSegueWithIdentifier:@"NCFittingAmountViewController" sender:array];
+		self.activeAmountType = row.type;
+		NSMutableArray* rows = [self.rows mutableCopy];
+		NCFittingShipDronesDataSourcePickerRow* pickerRow = [NCFittingShipDronesDataSourcePickerRow new];
+		pickerRow.associatedRow = row;
+		
+		float volume = drone->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+		int droneBay = ship->getTotalDroneBay() / volume;
+		int maxActive = ship->getMaxActiveDrones();
+		self.maximumAmount = std::min(std::max(droneBay, maxActive), 50);
+
+		
+		[rows insertObject:pickerRow atIndex:indexPath.row + 1];
+		self.rows = rows;
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 	};
 	
 	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
@@ -335,6 +448,7 @@
 				  destructiveButtonTitle:ActionButtonDelete
 					   otherButtonTitles:buttons
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
+							 [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
 								 void (^block)(eufe::DronesList) = actions[selectedButtonIndex];
 								 block(row.drones);

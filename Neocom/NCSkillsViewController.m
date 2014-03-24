@@ -200,6 +200,7 @@
 				
 				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
 					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+					//[self.tableView reloadData];
 				}
 			}
 		}
@@ -208,14 +209,16 @@
 		if ([NSThread isMainThread]) {
 			self.skillPlan = self.account.activeSkillPlan;
 			if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-				[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+				//[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+				[self.tableView reloadData];
 			}
 		}
 		else {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				self.skillPlan = self.account.activeSkillPlan;
 				if (self.mode == NCSkillsViewControllerModeTrainingQueue) {
-					[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+					//[self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
+					[self.tableView reloadData];
 				}
 			});
 		}

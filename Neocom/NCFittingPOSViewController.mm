@@ -14,7 +14,6 @@
 #import "NCFittingPOSStatsDataSource.h"
 #import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "NCFittingAmountViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
 
 #define ActionButtonShowControlTowerInfo NSLocalizedString(@"Control Tower Info", nil)
@@ -128,18 +127,6 @@
 			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
 		}];
 		destinationViewController.type = type;
-	}
-	else if ([segue.identifier isEqualToString:@"NCFittingAmountViewController"]) {
-		NSArray* structures = sender;
-		NCFittingAmountViewController* controller;
-		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
-			controller = [segue.destinationViewController viewControllers][0];
-		else
-			controller = segue.destinationViewController;
-		
-		controller.range = NSMakeRange(1, 50);
-		controller.amount = structures.count;
-		controller.object = structures;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
@@ -278,31 +265,6 @@
 
 #pragma mark - Private
 
-
-- (IBAction) unwindFromAmount:(UIStoryboardSegue*) segue {
-	NCFittingAmountViewController* sourceViewController = segue.sourceViewController;
-	NSArray* structures = sourceViewController.object;
-	eufe::ControlTower* controlTower = self.fit.engine->getControlTower();
-	if (structures.count > sourceViewController.amount) {
-		NSInteger n = structures.count - sourceViewController.amount;
-		for (NSValue* value in structures) {
-			if (n <= 0)
-				break;
-			eufe::Structure* structure = reinterpret_cast<eufe::Structure*>([value pointerValue]);
-			controlTower->removeStructure(structure);
-			n--;
-		}
-	}
-	else {
-		NSInteger n = sourceViewController.amount - structures.count;
-		eufe::Structure* structure = reinterpret_cast<eufe::Structure*>([structures[0] pointerValue]);
-		for (int i = 0; i < n; i++) {
-			eufe::Structure* newStructure = controlTower->addStructure(structure->getTypeID());
-			newStructure->setState(structure->getState());
-		}
-	}
-	[self reload];
-}
 
 - (IBAction) unwindFromDamagePatterns:(UIStoryboardSegue*) segue {
 	NCFittingDamagePatternsViewController* sourceViewController = segue.sourceViewController;

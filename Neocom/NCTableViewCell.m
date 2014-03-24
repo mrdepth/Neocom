@@ -164,7 +164,11 @@
 																			   views:bindings]];
 
 	[titleLabel setContentHuggingPriority:249 forAxis:UILayoutConstraintAxisVertical];
+
 	
+	[titleLabel setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];
+	[subtitleLabel setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];
+
 	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-4-[titleLabel]-0-[subtitleLabel]-4-|"
 																			 options:0
 																			 metrics:nil

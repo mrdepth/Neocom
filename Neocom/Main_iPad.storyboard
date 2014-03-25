@@ -707,7 +707,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="AAx-74-auI">
-                            <rect key="frame" x="0.0" y="44" width="320" height="32"/>
+                            <rect key="frame" x="0.0" y="44" width="320" height="52"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="42" placeholderIntrinsicHeight="21" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWu-lG-LAc">
@@ -724,30 +724,44 @@
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h3c-Y4-U5o" customClass="NCMarqueeLabel">
+                                    <rect key="frame" x="0.0" y="29" width="320" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="bo7-fd-lEP"/>
+                                        <constraint firstAttribute="height" constant="21" id="waM-SR-JtB"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="CQ5-ru-idQ" firstAttribute="leading" secondItem="TWu-lG-LAc" secondAttribute="trailing" constant="15" id="7v6-9w-dOu"/>
                                 <constraint firstItem="TWu-lG-LAc" firstAttribute="leading" secondItem="AAx-74-auI" secondAttribute="leading" constant="15" id="9Le-n3-KJM"/>
                                 <constraint firstItem="CQ5-ru-idQ" firstAttribute="top" secondItem="AAx-74-auI" secondAttribute="top" constant="4" id="OV2-CX-8vf"/>
+                                <constraint firstAttribute="trailing" secondItem="h3c-Y4-U5o" secondAttribute="trailing" id="W5T-du-hei"/>
+                                <constraint firstItem="h3c-Y4-U5o" firstAttribute="top" secondItem="CQ5-ru-idQ" secondAttribute="bottom" constant="4" id="ZEL-KE-hId"/>
+                                <constraint firstItem="h3c-Y4-U5o" firstAttribute="leading" secondItem="AAx-74-auI" secondAttribute="leading" id="dyR-am-kAa"/>
                                 <constraint firstItem="TWu-lG-LAc" firstAttribute="top" secondItem="AAx-74-auI" secondAttribute="top" constant="4" id="fJZ-lC-68R"/>
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="Rhx-VX-f1b">
-                            <rect key="frame" x="0.0" y="140" width="320" height="0.0"/>
+                            <rect key="frame" x="0.0" y="160" width="320" height="0.0"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="JjC-fv-PyM" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="98" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="118" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JjC-fv-PyM" id="WUu-hF-NuR">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="urB-fr-veq">
-                                            <rect key="frame" x="257" y="11" width="40" height="19"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="urB-fr-veq">
+                                            <rect key="frame" x="257" y="11" width="40" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -773,6 +787,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
+                        <outlet property="marqueeLabel" destination="h3c-Y4-U5o" id="ReV-ck-Dyu"/>
                         <outlet property="serverStatusLabel" destination="CQ5-ru-idQ" id="vs1-hx-xqw"/>
                         <outlet property="serverTimeLabel" destination="TWu-lG-LAc" id="RUy-Sx-7rH"/>
                         <segue destination="Jzg-cx-WZd" kind="custom" identifier="NCDatabaseViewController" customClass="NCSideMenuViewControllerContentSegue" id="SkX-1d-tJe"/>

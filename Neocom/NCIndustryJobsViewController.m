@@ -54,9 +54,6 @@
 						if (type) {
 							types[@(job.installedItemTypeID)] = type;
 						}
-						else {
-							NSLog(@"%d", job.installedItemTypeID);
-						}
 					}
 					job.installedItemType = type;
 				}

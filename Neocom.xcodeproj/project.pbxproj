@@ -433,6 +433,8 @@
 		12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; };
 		12F9562B18CDFC51005CEAD6 /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 12F9562A18CDFC51005CEAD6 /* Types */; };
+		12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */; };
+		12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */; };
 		12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA32D18E00710007B091D /* NCImplantSet.m */; };
 		12FDA33218E00FFA007B091D /* NCFittingImplantSetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33118E00FFA007B091D /* NCFittingImplantSetsViewController.m */; };
 		12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA33418E03172007B091D /* NCFittingAmountCell.m */; };
@@ -1352,6 +1354,10 @@
 		12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyAccessMaskViewController.h; sourceTree = "<group>"; };
 		12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyAccessMaskViewController.m; sourceTree = "<group>"; };
 		12F9562A18CDFC51005CEAD6 /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
+		12FA32AA18E157920053DDC5 /* NCMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarqueeLabel.h; sourceTree = "<group>"; };
+		12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarqueeLabel.m; sourceTree = "<group>"; };
+		12FA32AD18E1673D0053DDC5 /* UIView+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Neocom.h"; sourceTree = "<group>"; };
+		12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Neocom.m"; sourceTree = "<group>"; };
 		12FDA32C18E00710007B091D /* NCImplantSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCImplantSet.h; sourceTree = "<group>"; };
 		12FDA32D18E00710007B091D /* NCImplantSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCImplantSet.m; sourceTree = "<group>"; };
 		12FDA33018E00FFA007B091D /* NCFittingImplantSetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplantSetsViewController.h; sourceTree = "<group>"; };
@@ -2159,6 +2165,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12FA32A818E156BA0053DDC5 /* NCMarqueeLabel */,
 				123C627F18DB1E5800B03156 /* NCLabel */,
 				12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */,
 				12F955E318CDA281005CEAD6 /* NCMigrationManager */,
@@ -2952,6 +2959,8 @@
 				12C5075E189BCC110064AC32 /* UIImage+Neocom.m */,
 				123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */,
 				123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */,
+				12FA32AD18E1673D0053DDC5 /* UIView+Neocom.h */,
+				12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3683,6 +3692,15 @@
 			name = NCAPIKeyAccessMaskViewController;
 			sourceTree = "<group>";
 		};
+		12FA32A818E156BA0053DDC5 /* NCMarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				12FA32AA18E157920053DDC5 /* NCMarqueeLabel.h */,
+				12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */,
+			);
+			name = NCMarqueeLabel;
+			sourceTree = "<group>";
+		};
 		12FDA32F18E00FDE007B091D /* NCFittingImplantSetsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -4391,6 +4409,7 @@
 				8456E87218AAADE9000DAE75 /* NCFittingPOSStatsDataSource.mm in Sources */,
 				12640B1C18BB2947005C311D /* NCKillMailsCell.m in Sources */,
 				12640B0918B74CBF005C311D /* NCStarbasesDetailsViewController.m in Sources */,
+				12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
@@ -4402,6 +4421,7 @@
 				126A0E10185F3B9300A8E8A3 /* EVEDBDgmEffect.m in Sources */,
 				126A0E33185F3B9300A8E8A3 /* EVECalendarEventAttendees.m in Sources */,
 				843C2F0218AD41CF00221721 /* NCAssetsViewController.m in Sources */,
+				12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */,
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,

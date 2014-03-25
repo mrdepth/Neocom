@@ -86,10 +86,6 @@
 		self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-}
-
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	UIView* header = self.tableView.tableHeaderView;

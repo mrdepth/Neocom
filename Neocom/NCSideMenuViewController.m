@@ -56,8 +56,6 @@
 	else {
 		NCSideMenuViewController* sourceViewController = [self.sourceViewController sideMenuViewController];
 		UIViewController* destinationViewController = self.destinationViewController;
-		//sourceViewController.contentViewController = destinationViewController;
-		//[sourceViewController setContentViewController:destinationViewController animated:sourceViewController.contentViewController != nil];
 		[sourceViewController setContentViewController:destinationViewController animated:YES];
 	}
 }
@@ -122,7 +120,8 @@
 	UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
-	
+
+	_menuVisible = YES;
 	@try {
 		[self performSegueWithIdentifier:@"NCSideMenuViewControllerEmbedSegue" sender:nil];
 	}
@@ -150,21 +149,22 @@
 }
 
 - (void) setMenuViewController:(UIViewController *)menuViewController {
-	if (self.menuViewController) {
-		[self.menuViewController willMoveToParentViewController:nil];
-		[self.menuViewController.view removeFromSuperview];
-		[self.menuViewController removeFromParentViewController];
+	if (_menuViewController) {
+		[_menuViewController willMoveToParentViewController:nil];
+		[_menuViewController.view removeFromSuperview];
+		[_menuViewController removeFromParentViewController];
 	}
-	
 	_menuViewController = menuViewController;
 	[self addChildViewController:menuViewController];
-	[self.view addSubview:menuViewController.view];
+
+	if (self.menuVisible)
+		[self.view addSubview:menuViewController.view];
+	
 	CGRect frame = self.view.bounds;
 	if (self.contentViewController)
 		frame.size.width -= NCSideMenuViewControllermMenuEdgeInset;
 	menuViewController.view.frame = frame;
 	menuViewController.sideMenuViewController = self;
-	
 	[menuViewController didMoveToParentViewController:self];
 }
 
@@ -178,56 +178,7 @@
 		navigationController.topViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menuIcon.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:@selector(onMenu:)];
 	}
 
-	[self.menuViewController beginAppearanceTransition:NO animated:animated];
-	[contentViewController beginAppearanceTransition:YES animated:animated];
-
-	[self addChildViewController:contentViewController];
-	[self.view addSubview:contentViewController.view];
-	contentViewController.view.frame = self.view.bounds;
-	_menuVisible = NO;
-	
-	if (_contentViewController) {
-		[_contentViewController willMoveToParentViewController:nil];
-		contentViewController.view.transform = _contentViewController.view.transform;
-		UIViewController* toRemove = _contentViewController;
-
-		[self transitionFromViewController:_contentViewController
-						  toViewController:contentViewController
-								  duration:animated ? NCSideMenuViewControllerAnimationDuration : 0.0f
-								   options:UIViewAnimationOptionCurveEaseOut
-								animations:^{
-									_contentViewController = contentViewController;
-									contentViewController.view.transform = [self contentViewTransform];
-								}
-								completion:^(BOOL finished) {
-									[contentViewController didMoveToParentViewController:self];
-									[toRemove removeFromParentViewController];
-									[self.menuViewController endAppearanceTransition];
-								}];
-
-	}
-	else {
-		_contentViewController = contentViewController;
-
-		contentViewController.view.transform = CGAffineTransformMakeTranslation(self.view.frame.size.width, 0.0f);
-		[UIView animateWithDuration:animated ? NCSideMenuViewControllerAnimationDuration : 0.0f
-							  delay:0
-							options:UIViewAnimationOptionCurveEaseOut
-						 animations:^{
-							 contentViewController.view.transform = [self contentViewTransform];
-						 }
-						 completion:^(BOOL finished) {
-							 [contentViewController endAppearanceTransition];
-							 [contentViewController didMoveToParentViewController:self];
-							 [self.menuViewController endAppearanceTransition];
-						 }];
-	}
-	
-
-	
 	contentViewController.view.userInteractionEnabled = !self.menuVisible;
-	
-	
 	contentViewController.view.layer.zPosition = 1.0f;
 	contentViewController.view.layer.shadowOpacity = 0.5f;
 	contentViewController.view.layer.shadowColor = [[UIColor blackColor] CGColor];
@@ -236,9 +187,19 @@
 	contentViewController.view.clipsToBounds = NO;
 	contentViewController.view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:contentViewController.view.bounds] CGPath];
 	contentViewController.sideMenuViewController = self;
+	contentViewController.view.frame = self.view.bounds;
 	
-//	if (self.menuVisible)
-//		[self setMenuVisible:NO animated:animated];
+	if (_contentViewController) {
+		[_contentViewController willMoveToParentViewController:nil];
+		[_contentViewController.view removeFromSuperview];
+		[_contentViewController removeFromParentViewController];
+		contentViewController.view.transform = _contentViewController.view.transform;
+	}
+	else
+		contentViewController.view.transform = CGAffineTransformMakeTranslation(self.view.frame.size.width, 0.0f);
+	
+	_contentViewController = contentViewController;
+	[self setMenuVisible:NO animated:animated];
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible {
@@ -247,23 +208,29 @@
 }
 
 - (void) setMenuVisible:(BOOL)menuVisible animated:(BOOL)animated {
-    BOOL changed = menuVisible != _menuVisible;
-    
+	BOOL noParent = self.contentViewController.parentViewController == nil;
+	
     void (^willAppear)() = ^{
-        if (changed) {
-			[self.menuViewController beginAppearanceTransition:menuVisible animated:animated];
-			[self.contentViewController beginAppearanceTransition:!menuVisible animated:animated];
-        }
+		[self.menuViewController beginAppearanceTransition:menuVisible animated:animated];
+		[self.contentViewController beginAppearanceTransition:!menuVisible animated:animated];
+		if (menuVisible && !self.menuViewController.view.superview)
+			[self.view addSubview:self.menuViewController.view];
+		if (noParent) {
+			[self addChildViewController:self.contentViewController];
+			[self.view addSubview:self.contentViewController.view];
+		}
     };
 
     void (^didAppear)() = ^{
-        if (changed) {
-			[self.menuViewController endAppearanceTransition];
-			[self.contentViewController endAppearanceTransition];
-        }
+		[self.menuViewController endAppearanceTransition];
+		[self.contentViewController endAppearanceTransition];
+
+		if (!menuVisible)
+			[self.menuViewController.view removeFromSuperview];
+		if (noParent)
+			[self.contentViewController didMoveToParentViewController:self];
     };
 
-    
 	if (animated)
 		[UIView animateWithDuration:NCSideMenuViewControllerAnimationDuration
 							  delay:0
@@ -362,6 +329,22 @@
 
 - (void) onPan:(UIPanGestureRecognizer*) recognizer {
 	if (recognizer.state == UIGestureRecognizerStateBegan) {
+		self.contentViewController.view.userInteractionEnabled = NO;
+		self.menuViewController.view.userInteractionEnabled = NO;
+		
+		if (self.menuVisible) {
+//			[self.contentViewController beginAppearanceTransition:YES animated:NO];
+			[self.menuViewController beginAppearanceTransition:NO animated:NO];
+		}
+		else {
+			[self.contentViewController beginAppearanceTransition:NO animated:NO];
+//			[self.menuViewController beginAppearanceTransition:YES animated:NO];
+		}
+		
+		if (!self.menuViewController.view.superview) {
+			[self.view addSubview:self.menuViewController.view];
+		}
+		
 		self.startTransform = self.contentViewController.view.transform;
 	}
 	if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged) {
@@ -373,6 +356,9 @@
 
 	}
 	else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
+		self.contentViewController.view.userInteractionEnabled = YES;
+		self.menuViewController.view.userInteractionEnabled = YES;
+
 		if ([recognizer velocityInView:self.view].x > 0)
 			[self setMenuVisible:YES animated:YES];
 		else

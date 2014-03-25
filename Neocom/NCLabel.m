@@ -32,5 +32,4 @@
 	self.preferredMaxLayoutWidth = self.frame.size.width;
 }
 
-
 @end

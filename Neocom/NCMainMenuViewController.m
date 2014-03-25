@@ -12,7 +12,23 @@
 #import "NCSideMenuViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
+#import "NSString+Neocom.h"
 #import "NCTableViewCell.h"
+#import "EVECentralAPI.h"
+
+#define NCPlexTypeID 29668
+#define NCTritaniumTypeID 34
+#define NCPyeriteTypeID 35
+#define NCMexallonTypeID 36
+#define NCIsogenTypeID 37
+#define NCNocxiumTypeID 38
+#define NCZydrineTypeID 39
+#define NCMegacyteTypeID 40
+#define NCMorphiteTypeID 11399
+
+#define NCTheForgeRegionID 10000002
+
+#define NCPlexRate (209.94 / 12.0 * 1000000000.0)
 
 @interface NCMainMenuViewController ()<UISplitViewControllerDelegate>
 @property (nonatomic, strong) NSMutableArray* allSections;
@@ -20,6 +36,7 @@
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
 @property (nonatomic, strong) EVEServerStatus* serverStatus;
+@property (nonatomic, strong) EVECentralMarketStat* marketStat;
 @property (nonatomic, readonly) NSString* skillsDetails;
 @property (nonatomic, readonly) NSString* skillQueueDetails;
 @property (nonatomic, readonly) NSString* mailsDetails;
@@ -29,6 +46,7 @@
 - (void) reload;
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
+- (void) updatePrices;
 @end
 
 @implementation NCMainMenuViewController
@@ -72,13 +90,7 @@
 	}
 	else
 		[self updateServerStatus];
-	if (self.skillQueue.cacheExpireDate) {
-		NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-		if (delay > 0)
-			[self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
-		else
-			[self reload];
-	}
+	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -171,6 +183,18 @@
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
+	if (self.skillQueue.cacheExpireDate) {
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
+		NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
+		if (delay > 0)
+			[self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
+		else
+			[self reload];
+	}
+	if (self.marketStat.cacheExpireDate)
+		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
+	else
+		[self updatePrices];
 	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
 }
 
@@ -285,6 +309,11 @@
 	}
 }
 
+- (void) setTimer:(NSTimer *)timer {
+	[_timer invalidate];
+	_timer = timer;
+}
+
 - (void) updateServerStatus {
 	__block EVEServerStatus* serverStatus = nil;
 	__block NSError* error = nil;
@@ -309,6 +338,71 @@
 										 else
 											 self.serverStatusLabel.text = NSLocalizedString(@"Server offline", nil);
 										 [self performSelector:@selector(updateServerStatus) withObject:nil afterDelay:30.];
+									 }
+								 }
+							 }];
+}
+
+- (void) updatePrices {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePrices) object:nil];
+	__block EVECentralMarketStat* marketStat = nil;
+	__block NSError* error = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 marketStat = [EVECentralMarketStat marketStatWithTypeIDs:@[@(NCPlexTypeID), @(NCTritaniumTypeID), @(NCPyeriteTypeID), @(NCMexallonTypeID), @(NCIsogenTypeID), @(NCNocxiumTypeID), @(NCZydrineTypeID), @(NCMegacyteTypeID), @(NCMorphiteTypeID)]
+																							regionIDs:@[@(NCTheForgeRegionID)]
+																								hours:0
+																								 minQ:0
+																						  cachePolicy:NSURLRequestUseProtocolCachePolicy
+																								error:&error
+																					  progressHandler:nil];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 if (marketStat) {
+										 self.marketStat = marketStat;
+										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
+										 
+										 NSMutableDictionary* types = [NSMutableDictionary new];
+										 for (EVECentralMarketStatType* type in marketStat.types) {
+											 types[@(type.typeID)] = type;
+										 }
+										 NSMutableArray* components = [NSMutableArray new];
+										 EVECentralMarketStatType* plex = types[@(NCPlexTypeID)];
+										 EVECentralMarketStatType* trit = types[@(NCTritaniumTypeID)];
+										 EVECentralMarketStatType* pye = types[@(NCPyeriteTypeID)];
+										 EVECentralMarketStatType* mex = types[@(NCMexallonTypeID)];
+										 EVECentralMarketStatType* iso = types[@(NCIsogenTypeID)];
+										 EVECentralMarketStatType* nocx = types[@(NCNocxiumTypeID)];
+										 EVECentralMarketStatType* zyd = types[@(NCZydrineTypeID)];
+										 EVECentralMarketStatType* mega = types[@(NCMegacyteTypeID)];
+										 EVECentralMarketStatType* morph = types[@(NCMorphiteTypeID)];
+										 
+										 if (plex) {
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"ISK 1B: $%.2f", nil), (NCPlexRate / plex.sell.percentile)]];
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"PLEX: %@", nil), [NSString shortStringWithFloat:plex.sell.percentile unit:@"ISK"]]];
+										 }
+										 if (trit)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Trit: %@", nil), [NSString shortStringWithFloat:trit.sell.percentile unit:@"ISK"]]];
+										 if (pye)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Pye: %@", nil), [NSString shortStringWithFloat:pye.sell.percentile unit:@"ISK"]]];
+										 if (mex)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mex: %@", nil), [NSString shortStringWithFloat:mex.sell.percentile unit:@"ISK"]]];
+										 if (iso)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Iso: %@", nil), [NSString shortStringWithFloat:iso.sell.percentile unit:@"ISK"]]];
+										 if (nocx)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Nocx: %@", nil), [NSString shortStringWithFloat:nocx.sell.percentile unit:@"ISK"]]];
+										 if (zyd)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Zyd: %@", nil), [NSString shortStringWithFloat:zyd.sell.percentile unit:@"ISK"]]];
+										 if (mega)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mega: %@", nil), [NSString shortStringWithFloat:mega.sell.percentile unit:@"ISK"]]];
+										 if (morph)
+											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:morph.sell.percentile unit:@"ISK"]]];
+										 self.marqueeLabel.text = [components componentsJoinedByString:@"  "];
+									 }
+									 else {
+										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:30.];
 									 }
 								 }
 							 }];

@@ -11,5 +11,6 @@
 @interface NCMainMenuViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet UILabel *serverStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *serverTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *marqueeLabel;
 
 @end

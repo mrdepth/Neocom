@@ -29,7 +29,7 @@
 - (void) layoutSubviews {
 	[super layoutSubviews];
 	self.widthConstraint.constant = self.bounds.size.width;
-	self.preferredMaxLayoutWidth = self.frame.size.width;
+	self.preferredMaxLayoutWidth = self.bounds.size.width;
 }
 
 @end

@@ -381,7 +381,6 @@
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
 		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
 		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
-		12BA466618E1C996002CFAB0 /* Database_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12BA466518E1C996002CFAB0 /* Database_iPad.storyboard */; };
 		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
@@ -1255,7 +1254,6 @@
 		12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBattleClinicSearchResultsViewController.mm; sourceTree = "<group>"; };
 		12B97D3A18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsCell.h; sourceTree = "<group>"; };
 		12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingBattleClinicSearchResultsCell.m; sourceTree = "<group>"; };
-		12BA466518E1C996002CFAB0 /* Database_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database_iPad.storyboard; sourceTree = "<group>"; };
 		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
@@ -1691,7 +1689,6 @@
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
-				12BA466518E1C996002CFAB0 /* Database_iPad.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
@@ -4259,7 +4256,6 @@
 				849B9FBE1896D24A00D4DD2B /* explosion.png in Resources */,
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
 				849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */,
-				12BA466618E1C996002CFAB0 /* Database_iPad.storyboard in Resources */,
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				849B9FD11896D24A00D4DD2B /* signature.png in Resources */,

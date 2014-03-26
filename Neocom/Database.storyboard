@@ -288,6 +288,7 @@
                                 <constraint firstItem="EvT-51-Y7k" firstAttribute="leading" secondItem="s5t-gK-Wwc" secondAttribute="trailing" constant="8" id="Pda-dT-hw3"/>
                                 <constraint firstItem="sH6-hb-ETj" firstAttribute="trailing" secondItem="EvT-51-Y7k" secondAttribute="trailing" id="YpC-Qo-Etm"/>
                                 <constraint firstItem="EvT-51-Y7k" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Z7D-M6-dDM" secondAttribute="top" constant="4" id="cXU-nC-xHv"/>
+                                <constraint firstAttribute="bottom" secondItem="sH6-hb-ETj" secondAttribute="bottom" id="kuT-m1-GIc"/>
                                 <constraint firstItem="s5t-gK-Wwc" firstAttribute="top" secondItem="Z7D-M6-dDM" secondAttribute="top" constant="15" id="zK4-6c-M2X"/>
                             </constraints>
                         </view>
@@ -640,6 +641,7 @@
                                 <constraint firstItem="1nz-PG-LVe" firstAttribute="leading" secondItem="erT-9U-ZEO" secondAttribute="leading" constant="15" id="IFv-3G-zTv"/>
                                 <constraint firstItem="3lh-aX-v1P" firstAttribute="top" secondItem="6z7-Sz-5Cd" secondAttribute="bottom" id="Jl3-1R-3bM"/>
                                 <constraint firstItem="6z7-Sz-5Cd" firstAttribute="top" relation="greaterThanOrEqual" secondItem="erT-9U-ZEO" secondAttribute="top" constant="4" id="N2s-YR-BaE"/>
+                                <constraint firstAttribute="bottom" secondItem="3lh-aX-v1P" secondAttribute="bottom" id="Osc-iD-Dse"/>
                                 <constraint firstItem="1nz-PG-LVe" firstAttribute="top" secondItem="erT-9U-ZEO" secondAttribute="top" constant="15" id="UzE-EF-gVN"/>
                                 <constraint firstItem="1nz-PG-LVe" firstAttribute="bottom" secondItem="6z7-Sz-5Cd" secondAttribute="bottom" id="XOF-1g-JUA"/>
                                 <constraint firstItem="6z7-Sz-5Cd" firstAttribute="leading" secondItem="1nz-PG-LVe" secondAttribute="trailing" constant="8" id="gI8-K8-9Oj"/>
@@ -846,7 +848,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-921" y="-292"/>
+            <point key="canvasLocation" x="-855" y="-292"/>
         </scene>
         <!--Database Type Picker View Controller-->
         <scene sceneID="v9a-vM-rkF">
@@ -872,11 +874,11 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="7iv-ne-LEg"/>
-        <segue reference="LHH-Wy-jrm"/>
-        <segue reference="SQ9-TP-fSp"/>
-        <segue reference="Vbq-vg-5yp"/>
-        <segue reference="edv-w8-2To"/>
-        <segue reference="qyD-gc-O13"/>
         <segue reference="6M7-4Q-PK5"/>
+        <segue reference="E04-iH-wb4"/>
+        <segue reference="qyD-gc-O13"/>
+        <segue reference="LHH-Wy-jrm"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="Vbq-vg-5yp"/>
     </inferredMetricsTieBreakers>
 </document>

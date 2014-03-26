@@ -53,16 +53,20 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	if (self.needsLayout) {
-		UIView* header = self.tableView.tableHeaderView;
-		CGRect frame = header.frame;
-		frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-		if (!CGRectEqualToRect(header.frame, frame)) {
-			header.frame = frame;
-			self.tableView.tableHeaderView = header;
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		
+		if (self.needsLayout) {
+			UIView* header = self.tableView.tableHeaderView;
+			CGRect frame = header.frame;
+			frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+			if (!CGRectEqualToRect(header.frame, frame)) {
+				header.frame = frame;
+				self.tableView.tableHeaderView = header;
+			}
+			self.needsLayout = NO;
 		}
-		self.needsLayout = NO;
-	}
+	});
+
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

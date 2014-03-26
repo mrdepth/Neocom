@@ -30,7 +30,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="500" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="rvy-b5-oad">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="rvy-b5-oad">
                             <rect key="frame" x="0.0" y="64" width="500" height="622"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -489,6 +489,7 @@
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S5A-YA-WFi" secondAttribute="trailing" id="GrE-yS-F1j"/>
+                                <constraint firstAttribute="bottom" secondItem="S5A-YA-WFi" secondAttribute="bottom" id="XZT-3Y-vDA"/>
                                 <constraint firstItem="S5A-YA-WFi" firstAttribute="top" secondItem="rvy-b5-oad" secondAttribute="top" id="aeh-hT-mh5"/>
                                 <constraint firstAttribute="centerX" secondItem="S5A-YA-WFi" secondAttribute="centerX" id="lLg-Oe-VID"/>
                                 <constraint firstItem="S5A-YA-WFi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rvy-b5-oad" secondAttribute="leading" id="pZF-Q2-5iq"/>

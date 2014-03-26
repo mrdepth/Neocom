@@ -39,7 +39,10 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 
 @property (nonatomic, strong, readonly) NCCharacterAttributes* characterAttributes;
 
-@property (nonatomic, strong) NSError* error;
+@property (nonatomic, strong, readonly) NSError* characterInfoError;
+@property (nonatomic, strong, readonly) NSError* characterSheetError;
+@property (nonatomic, strong, readonly) NSError* corporationSheetError;
+@property (nonatomic, strong, readonly) NSError* skillQueueError;
 
 + (NSArray*) allAccounts;
 + (instancetype) currentAccount;

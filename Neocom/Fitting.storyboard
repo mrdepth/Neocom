@@ -71,7 +71,7 @@
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="32" id="7gs-qt-Juw"/>
+                                                <constraint firstAttribute="height" priority="900" constant="32" id="7gs-qt-Juw"/>
                                                 <constraint firstAttribute="width" constant="32" id="UWN-Gb-UoE"/>
                                             </constraints>
                                         </imageView>
@@ -110,7 +110,7 @@
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="32" id="13A-6R-KWp"/>
+                                                <constraint firstAttribute="height" priority="900" constant="32" id="13A-6R-KWp"/>
                                                 <constraint firstAttribute="width" constant="32" id="Stx-gZ-hUZ"/>
                                             </constraints>
                                         </imageView>
@@ -146,7 +146,7 @@
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="32" id="aaE-xX-Gfi"/>
+                                                <constraint firstAttribute="height" priority="900" constant="32" id="aaE-xX-Gfi"/>
                                                 <constraint firstAttribute="width" constant="32" id="fck-vt-Flf"/>
                                             </constraints>
                                         </imageView>
@@ -183,7 +183,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="JOe-3A-lyP"/>
-                                                <constraint firstAttribute="height" constant="32" id="uBr-Ey-eye"/>
+                                                <constraint firstAttribute="height" priority="900" constant="32" id="uBr-Ey-eye"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOe-IF-Sw5">

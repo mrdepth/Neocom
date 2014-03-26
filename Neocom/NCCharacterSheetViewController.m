@@ -61,6 +61,7 @@
 @end
 
 @interface NCCharacterSheetViewController ()
+@property (nonatomic, assign) BOOL needsLayout;
 
 @end
 
@@ -83,22 +84,21 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	
-/*	CGSize size = [self.tableView.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-	
-	if (fabs(size.height - self.tableView.tableHeaderView.frame.size.height) > FLT_EPSILON) {
-		self.tableView.tableHeaderView.frame = (CGRect){.origin = self.tableView.frame.origin, .size = size};
-		self.tableView.tableHeaderView = self.tableView.tableHeaderView;
-	}*/
-
-	UIView* header = self.tableView.tableHeaderView;
-	CGRect frame = header.frame;
-	//frame.size.height = CGRectGetMaxY(self.scrollView.frame);
-	frame.size.height = [self.tableView.tableFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-	if (!CGRectEqualToRect(header.frame, frame)) {
-		header.frame = frame;
-		self.tableView.tableHeaderView = header;
+	if (self.needsLayout) {
+		UIView* header = self.tableView.tableHeaderView;
+		CGRect frame = header.frame;
+		frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+		if (!CGRectEqualToRect(header.frame, frame)) {
+			header.frame = frame;
+			self.tableView.tableHeaderView = header;
+		}
+		self.needsLayout = NO;
 	}
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.needsLayout = YES;
+	[self.view setNeedsLayout];
 }
 
 - (void)didReceiveMemoryWarning
@@ -382,8 +382,8 @@
 	else
 		self.charismaLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.charisma];
 	
+	self.needsLayout = YES;
 	[self.view setNeedsLayout];
-	[self.view layoutIfNeeded];
 }
 
 - (void) didChangeAccount:(NCAccount *)account {

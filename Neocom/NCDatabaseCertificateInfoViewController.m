@@ -29,6 +29,7 @@
 @interface NCDatabaseCertificateInfoViewController ()
 @property (strong, nonatomic) NSArray* masteriesSections;
 @property (strong, nonatomic) NSArray* requiredForSections;
+@property (nonatomic, assign) BOOL needsLayout;
 
 @end
 
@@ -52,13 +53,21 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	UIView* header = self.tableView.tableHeaderView;
-	CGRect frame = header.frame;
-	frame.size.height = CGRectGetMaxY(self.descriptionLabel.frame);
-	if (!CGRectEqualToRect(header.frame, frame)) {
-		header.frame = frame;
-		self.tableView.tableHeaderView = header;
+	if (self.needsLayout) {
+		UIView* header = self.tableView.tableHeaderView;
+		CGRect frame = header.frame;
+		frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+		if (!CGRectEqualToRect(header.frame, frame)) {
+			header.frame = frame;
+			self.tableView.tableHeaderView = header;
+		}
+		self.needsLayout = NO;
 	}
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.needsLayout = YES;
+	[self.view setNeedsLayout];
 }
 
 - (void)didReceiveMemoryWarning
@@ -186,6 +195,8 @@
 	NSNumber* masteryLevel = objc_getAssociatedObject(self.certificate, @"masteryLevel");
 	self.imageView.image = [UIImage imageNamed:masteryLevel ? [EVEDBCertCertificate iconImageNameWithMasteryLevel:[masteryLevel intValue]] : @"Icons/icon79_01.png"];
 	self.descriptionLabel.text = description;
+
+	self.needsLayout = YES;
 	[self.view setNeedsLayout];
 
 	

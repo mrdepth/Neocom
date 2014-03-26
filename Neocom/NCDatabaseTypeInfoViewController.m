@@ -55,6 +55,7 @@
 
 @interface NCDatabaseTypeInfoViewController ()
 @property (nonatomic, strong) NSArray* sections;
+@property (nonatomic, assign) BOOL needsLayout;
 - (void) reload;
 - (void) loadItemAttributes;
 - (void) loadBlueprintAttributes;
@@ -88,13 +89,21 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	UIView* header = self.tableView.tableHeaderView;
-	CGRect frame = header.frame;
-	frame.size.height = CGRectGetMaxY(self.descriptionLabel.frame);
-	if (!CGRectEqualToRect(header.frame, frame)) {
-		header.frame = frame;
-		self.tableView.tableHeaderView = header;
+	if (self.needsLayout) {
+		UIView* header = self.tableView.tableHeaderView;
+		CGRect frame = header.frame;
+		frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+		if (!CGRectEqualToRect(header.frame, frame)) {
+			header.frame = frame;
+			self.tableView.tableHeaderView = header;
+		}
+		self.needsLayout = NO;
 	}
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	self.needsLayout = YES;
+	[self.view setNeedsLayout];
 }
 
 - (void)didReceiveMemoryWarning
@@ -238,6 +247,8 @@
 	self.titleLabel.attributedText = title;
 	self.imageView.image = [UIImage imageNamed:type.typeLargeImageName];
 	self.descriptionLabel.text = description;
+	
+	self.needsLayout = YES;
 	[self.view setNeedsLayout];
 	
 	if (type.group.categoryID == 9)

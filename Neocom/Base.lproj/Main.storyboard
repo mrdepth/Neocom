@@ -808,6 +808,7 @@
                         <segue destination="jA2-rb-Evy" kind="custom" identifier="NCRSSViewController" customClass="NCSideMenuViewControllerContentSegue" id="K19-At-eMK"/>
                         <segue destination="mic-we-dmt" kind="custom" identifier="NCAboutViewController" customClass="NCSideMenuViewControllerContentSegue" id="Feg-5E-rRs"/>
                         <segue destination="l7n-v9-sUl" kind="custom" identifier="NCDonationViewController" customClass="NCSideMenuViewControllerContentSegue" id="mma-Fx-TAR"/>
+                        <segue destination="FcJ-g8-V6g" kind="custom" identifier="NCSettingsViewController" customClass="NCSideMenuViewControllerContentSegue" id="IyI-4N-xRj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1270,6 +1271,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nxi-5V-Rr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-569" y="2604"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tl9-WE-3v0">
+            <objects>
+                <viewController storyboardIdentifier="NCSettingsViewController" id="FcJ-g8-V6g" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ySE-bH-vU5"/>
+                        <viewControllerLayoutGuide type="bottom" id="dyQ-4L-bhg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Nt-2y-gOm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5KE-5n-3Qx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3335" y="3872"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_OPTIONS(NSInteger, NCNotificationsManagerSkillQueueNotificationTime) {
+	NCNotificationsManagerSkillQueueNotificationTimeNone = 0,
 	NCNotificationsManagerSkillQueueNotificationTime1Day = 0x1 << 0,
 	NCNotificationsManagerSkillQueueNotificationTime12Hours = 0x1 << 1,
 	NCNotificationsManagerSkillQueueNotificationTime4Hours = 0x1 << 2,

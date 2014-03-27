@@ -78,7 +78,7 @@
 		[self.bannerView addSubview:self.gadBannerView];
 	}
 	[self.view setNeedsLayout];
-	[self.view layoutSubviews];
+	[self.view layoutIfNeeded];
 }
 
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {

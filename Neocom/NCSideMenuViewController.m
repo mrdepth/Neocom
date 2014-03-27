@@ -213,12 +213,18 @@
     void (^willAppear)() = ^{
 		[self.menuViewController beginAppearanceTransition:menuVisible animated:animated];
 		[self.contentViewController beginAppearanceTransition:!menuVisible animated:animated];
-		if (menuVisible && !self.menuViewController.view.superview)
+		[UIView setAnimationsEnabled:NO];
+		if (menuVisible && !self.menuViewController.view.superview) {
 			[self.view addSubview:self.menuViewController.view];
+			self.menuViewController.view.frame = self.view.bounds;
+		}
 		if (noParent) {
 			[self addChildViewController:self.contentViewController];
 			[self.view addSubview:self.contentViewController.view];
+			[self.view setNeedsLayout];
+			[self.view layoutIfNeeded];
 		}
+		[UIView setAnimationsEnabled:YES];
     };
 
     void (^didAppear)() = ^{
@@ -333,16 +339,15 @@
 		self.menuViewController.view.userInteractionEnabled = NO;
 		
 		if (self.menuVisible) {
-//			[self.contentViewController beginAppearanceTransition:YES animated:NO];
 			[self.menuViewController beginAppearanceTransition:NO animated:NO];
 		}
 		else {
 			[self.contentViewController beginAppearanceTransition:NO animated:NO];
-//			[self.menuViewController beginAppearanceTransition:YES animated:NO];
 		}
 		
 		if (!self.menuViewController.view.superview) {
 			[self.view addSubview:self.menuViewController.view];
+			self.menuViewController.view.frame = self.view.bounds;
 		}
 		
 		self.startTransform = self.contentViewController.view.transform;

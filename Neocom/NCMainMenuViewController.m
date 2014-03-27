@@ -47,6 +47,8 @@
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
 - (void) updatePrices;
+- (void) updateMarqueeLabel;
+- (void) marketPricesMonitorDidChange:(NSNotification*) notification;
 @end
 
 @implementation NCMainMenuViewController
@@ -73,7 +75,6 @@
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,6 +83,8 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
+	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 	if (self.serverStatus) {
@@ -91,12 +94,14 @@
 	else
 		[self updateServerStatus];
 	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
+	[self updateMarqueeLabel];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	self.timer = nil;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMarketPricesMonitorDidChangeNotification object:nil];
 }
 
 - (void) didMoveToParentViewController:(UIViewController *)parent {
@@ -363,49 +368,67 @@
 									 if (marketStat) {
 										 self.marketStat = marketStat;
 										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
-										 
-										 NSMutableDictionary* types = [NSMutableDictionary new];
-										 for (EVECentralMarketStatType* type in marketStat.types) {
-											 types[@(type.typeID)] = type;
-										 }
-										 NSMutableArray* components = [NSMutableArray new];
-										 EVECentralMarketStatType* plex = types[@(NCPlexTypeID)];
-										 EVECentralMarketStatType* trit = types[@(NCTritaniumTypeID)];
-										 EVECentralMarketStatType* pye = types[@(NCPyeriteTypeID)];
-										 EVECentralMarketStatType* mex = types[@(NCMexallonTypeID)];
-										 EVECentralMarketStatType* iso = types[@(NCIsogenTypeID)];
-										 EVECentralMarketStatType* nocx = types[@(NCNocxiumTypeID)];
-										 EVECentralMarketStatType* zyd = types[@(NCZydrineTypeID)];
-										 EVECentralMarketStatType* mega = types[@(NCMegacyteTypeID)];
-										 EVECentralMarketStatType* morph = types[@(NCMorphiteTypeID)];
-										 
-										 if (plex) {
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"ISK 1B: $%.2f", nil), (NCPlexRate / plex.sell.percentile)]];
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"PLEX: %@", nil), [NSString shortStringWithFloat:plex.sell.percentile unit:@"ISK"]]];
-										 }
-										 if (trit)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Trit: %@", nil), [NSString shortStringWithFloat:trit.sell.percentile unit:@"ISK"]]];
-										 if (pye)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Pye: %@", nil), [NSString shortStringWithFloat:pye.sell.percentile unit:@"ISK"]]];
-										 if (mex)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mex: %@", nil), [NSString shortStringWithFloat:mex.sell.percentile unit:@"ISK"]]];
-										 if (iso)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Iso: %@", nil), [NSString shortStringWithFloat:iso.sell.percentile unit:@"ISK"]]];
-										 if (nocx)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Nocx: %@", nil), [NSString shortStringWithFloat:nocx.sell.percentile unit:@"ISK"]]];
-										 if (zyd)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Zyd: %@", nil), [NSString shortStringWithFloat:zyd.sell.percentile unit:@"ISK"]]];
-										 if (mega)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mega: %@", nil), [NSString shortStringWithFloat:mega.sell.percentile unit:@"ISK"]]];
-										 if (morph)
-											 [components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:morph.sell.percentile unit:@"ISK"]]];
-										 self.marqueeLabel.text = [components componentsJoinedByString:@"  "];
+										 [self updateMarqueeLabel];
 									 }
 									 else {
 										 [self performSelector:@selector(updatePrices) withObject:nil afterDelay:30.];
 									 }
 								 }
 							 }];
+}
+
+- (void) updateMarqueeLabel {
+	if (!self.marketStat) {
+		self.marqueeLabel.text = nil;
+		return;
+	}
+	
+	NSMutableDictionary* types = [NSMutableDictionary new];
+	for (EVECentralMarketStatType* type in self.marketStat.types) {
+		types[@(type.typeID)] = type;
+	}
+	NSMutableArray* components = [NSMutableArray new];
+	EVECentralMarketStatType* plex = types[@(NCPlexTypeID)];
+	EVECentralMarketStatType* trit = types[@(NCTritaniumTypeID)];
+	EVECentralMarketStatType* pye = types[@(NCPyeriteTypeID)];
+	EVECentralMarketStatType* mex = types[@(NCMexallonTypeID)];
+	EVECentralMarketStatType* iso = types[@(NCIsogenTypeID)];
+	EVECentralMarketStatType* nocx = types[@(NCNocxiumTypeID)];
+	EVECentralMarketStatType* zyd = types[@(NCZydrineTypeID)];
+	EVECentralMarketStatType* mega = types[@(NCMegacyteTypeID)];
+	EVECentralMarketStatType* morph = types[@(NCMorphiteTypeID)];
+	
+	NCMarketPricesMonitor settings = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsMarketPricesMonitorKey];
+	
+	if (plex) {
+		if ((settings & NCMarketPricesMonitorExchangeRate) == NCMarketPricesMonitorExchangeRate)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"ISK 1B: $%.2f", nil), (NCPlexRate / plex.sell.percentile)]];
+		if ((settings & NCMarketPricesMonitorPlex) == NCMarketPricesMonitorPlex)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"PLEX: %@", nil), [NSString shortStringWithFloat:plex.sell.percentile unit:@"ISK"]]];
+	}
+	if ((settings & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals) {
+		if (trit)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Trit: %@", nil), [NSString shortStringWithFloat:trit.sell.percentile unit:@"ISK"]]];
+		if (pye)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Pye: %@", nil), [NSString shortStringWithFloat:pye.sell.percentile unit:@"ISK"]]];
+		if (mex)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mex: %@", nil), [NSString shortStringWithFloat:mex.sell.percentile unit:@"ISK"]]];
+		if (iso)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Iso: %@", nil), [NSString shortStringWithFloat:iso.sell.percentile unit:@"ISK"]]];
+		if (nocx)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Nocx: %@", nil), [NSString shortStringWithFloat:nocx.sell.percentile unit:@"ISK"]]];
+		if (zyd)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Zyd: %@", nil), [NSString shortStringWithFloat:zyd.sell.percentile unit:@"ISK"]]];
+		if (mega)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Mega: %@", nil), [NSString shortStringWithFloat:mega.sell.percentile unit:@"ISK"]]];
+		if (morph)
+			[components addObject:[NSString stringWithFormat:NSLocalizedString(@"Morph: %@", nil), [NSString shortStringWithFloat:morph.sell.percentile unit:@"ISK"]]];
+	}
+	self.marqueeLabel.text = [components componentsJoinedByString:@"  "];
+}
+
+- (void) marketPricesMonitorDidChange:(NSNotification*) notification {
+	[self updateMarqueeLabel];
 }
 
 @end

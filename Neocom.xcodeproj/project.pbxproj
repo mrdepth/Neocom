@@ -73,6 +73,7 @@
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
 		123F0AD818C5BCC700D53602 /* NCSkillPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */; };
 		123F0ADB18C5C8AC00D53602 /* evemon.html in Resources */ = {isa = PBXBuildFile; fileRef = 123F0ADA18C5C8AC00D53602 /* evemon.html */; };
+		12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12422FC018E409F70051FD24 /* NCSettingsViewController.m */; };
 		12430BAF18C852550025D971 /* NCAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BAE18C852550025D971 /* NCAboutViewController.m */; };
 		12430BB318C875910025D971 /* NCDonationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB218C875910025D971 /* NCDonationViewController.m */; };
 		12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12430BB618C87C1B0025D971 /* NCDonationCell.m */; };
@@ -701,6 +702,8 @@
 		123F0AD618C5BCC700D53602 /* NCSkillPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlanViewController.h; sourceTree = "<group>"; };
 		123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlanViewController.m; sourceTree = "<group>"; };
 		123F0ADA18C5C8AC00D53602 /* evemon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = evemon.html; sourceTree = "<group>"; };
+		12422FBF18E409F70051FD24 /* NCSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSettingsViewController.h; sourceTree = "<group>"; };
+		12422FC018E409F70051FD24 /* NCSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSettingsViewController.m; sourceTree = "<group>"; };
 		12430BAD18C852550025D971 /* NCAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAboutViewController.h; sourceTree = "<group>"; };
 		12430BAE18C852550025D971 /* NCAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAboutViewController.m; sourceTree = "<group>"; };
 		12430BB118C875910025D971 /* NCDonationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDonationViewController.h; sourceTree = "<group>"; };
@@ -1854,6 +1857,7 @@
 				123A980D18C71F11001045F5 /* NCRSSItemViewController */,
 				12430BAB18C8523F0025D971 /* NCAboutViewController */,
 				12430BB018C875710025D971 /* NCDonationViewController */,
+				12422FBD18E409DF0051FD24 /* NCSettingsViewController */,
 			);
 			name = Help;
 			sourceTree = "<group>";
@@ -1938,6 +1942,15 @@
 				123F0AD718C5BCC700D53602 /* NCSkillPlanViewController.m */,
 			);
 			name = NCSkillPlanViewController;
+			sourceTree = "<group>";
+		};
+		12422FBD18E409DF0051FD24 /* NCSettingsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12422FBF18E409F70051FD24 /* NCSettingsViewController.h */,
+				12422FC018E409F70051FD24 /* NCSettingsViewController.m */,
+			);
+			name = NCSettingsViewController;
 			sourceTree = "<group>";
 		};
 		12430BAB18C8523F0025D971 /* NCAboutViewController */ = {
@@ -4602,6 +4615,7 @@
 				1209685F1845F0CB00921A37 /* main.m in Sources */,
 				126A0E30185F3B9300A8E8A3 /* EVECalllist.m in Sources */,
 				129D262F187E923300E2062C /* UIColor+NSNumber.m in Sources */,
+				12422FC118E409F70051FD24 /* NCSettingsViewController.m in Sources */,
 				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
 				849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */,
 				12640B1218B77B87005C311D /* NCKillMail.mm in Sources */,

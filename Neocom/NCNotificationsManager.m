@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSDate* lastUpdate;
 @property (nonatomic, strong) NCTaskManager* taskManager;
 @property (nonatomic, assign, getter = isNotificationsUpdating) BOOL notificationsUpdating;
-
+- (void) skillQueueNotificationTimeDidChange:(NSNotification*) notification;
 @end
 
 @implementation NCNotificationsManager
@@ -36,9 +36,14 @@
 		self.lastUpdate = [defaults valueForKey:NCSettingsNotificationsLastUpdateTimeKey];
 		self.lastUpdate = nil;
 		self.taskManager = [NCTaskManager new];
-		self.skillQueueNotificationTime = NCNotificationsManagerSkillQueueNotificationTimeAll;
+		self.skillQueueNotificationTime = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsSkillQueueNotificationTimeKey];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(skillQueueNotificationTimeDidChange:) name:NCSkillQueueNotificationTimeDidChangeNotification object:nil];
 	}
 	return self;
+}
+
+- (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCSkillQueueNotificationTimeDidChangeNotification object:nil];
 }
 
 - (void) setNeedsUpdateNotifications {
@@ -51,6 +56,7 @@
 		self.notificationsUpdating = YES;
 		NSMutableArray* notifications = [NSMutableArray new];
 		NSMutableSet* accounts = [NSMutableSet new];
+
 		[[self taskManager] addTaskWithIndentifier:nil
 											 title:nil
 											 block:^(NCTask *task) {
@@ -92,7 +98,7 @@
 															 notification.soundName = UILocalNotificationDefaultSoundName;
 															 [notifications addObject:notification];
 														 }
-														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime4Hours) && dif > 3600 * 1) {
+														 if ((self.skillQueueNotificationTime & NCNotificationsManagerSkillQueueNotificationTime1Hour) && dif > 3600 * 1) {
 															 UILocalNotification *notification = [[UILocalNotification alloc] init];
 															 notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ has less than 1 hour training left.", nil), account.characterInfo.characterName];
 															 notification.fireDate = [endTime dateByAddingTimeInterval:- 3600 * 1];
@@ -157,5 +163,10 @@
 }
 
 #pragma mark - Private
+
+- (void) skillQueueNotificationTimeDidChange:(NSNotification*) notification {
+	[self setNeedsUpdateNotifications];
+	self.skillQueueNotificationTime = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsSkillQueueNotificationTimeKey];
+}
 
 @end

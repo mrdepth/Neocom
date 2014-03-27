@@ -71,8 +71,8 @@
 	[layer removeAllAnimations];
 	self.animation = nil;
 	layer.frame = self.bounds;
-
-	for (CALayer* subLayer in layer.sublayers)
+	
+	for (CALayer* subLayer in [layer.sublayers copy])
 		[subLayer removeFromSuperlayer];
 	
 	if (self.text.length == 0)
@@ -85,7 +85,7 @@
 	textLayer.font = self.font;
 	textLayer.frame = bounds;
 	[layer addSublayer:textLayer];
-
+	
 	if (bounds.size.width + 30 > self.bounds.size.width) {
 		bounds.origin.x += bounds.size.width + 10;
 		textLayer.contentsScale = self.contentScaleFactor;

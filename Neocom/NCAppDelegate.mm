@@ -21,6 +21,7 @@
 #import "NCShipFit.h"
 #import "NCFittingShipViewController.h"
 #import "NCSideMenuViewController.h"
+#import "NCMainMenuViewController.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -32,6 +33,7 @@
 
 - (void) setupAppearance;
 - (void) migrateWithCompletionHandler:(void(^)()) completionHandler;
+- (void) setupDefaultSettings;
 @end
 
 @implementation NCAppDelegate
@@ -44,9 +46,10 @@
 	}
 
 	[self setupAppearance];
+	[self setupDefaultSettings];
 	
-	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDID])
-		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDID];
+	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDIDKey])
+		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDIDKey];
 
 	self.taskManager = [NCTaskManager new];
 	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];
@@ -340,6 +343,14 @@
 									 completionHandler();
 								 }
 							 }];
+}
+
+- (void) setupDefaultSettings {
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	if (![defaults valueForKeyPath:NCSettingsSkillQueueNotificationTimeKey])
+		[defaults setInteger:NCNotificationsManagerSkillQueueNotificationTimeAll forKey:NCSettingsSkillQueueNotificationTimeKey];
+	if (![defaults valueForKeyPath:NCSettingsMarketPricesMonitorKey])
+		[defaults setInteger:NCMarketPricesMonitorNone forKey:NCSettingsMarketPricesMonitorKey];
 }
 
 @end

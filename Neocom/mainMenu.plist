@@ -258,8 +258,6 @@
 			<integer>0</integer>
 			<key>corpAccessMask</key>
 			<integer>0</integer>
-			<key>modal</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>segueIdentifier</key>
@@ -272,8 +270,18 @@
 			<integer>0</integer>
 			<key>corpAccessMask</key>
 			<integer>0</integer>
-			<key>modal</key>
-			<true/>
+		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCSettingsViewController</string>
+			<key>title</key>
+			<string>Settings</string>
+			<key>image</key>
+			<string>Icons/icon79_10.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
 		</dict>
 	</array>
 </array>

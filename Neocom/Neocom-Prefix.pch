@@ -21,9 +21,11 @@
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
-#define NCSettingsAPINextSyncDate @"NCSettingsAPINextSyncDate"
-#define NCSettingsAPIAlwaysUploadFits @"NCSettingsAPIAlwaysUploadFits"
-#define NCSettingsUDID @"NCSettingsUDID"
+#define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"
+#define NCSettingsAPIAlwaysUploadFitsKey @"NCSettingsAPIAlwaysUploadFitsKey"
+#define NCSettingsUDIDKey @"NCSettingsUDIDKey"
+#define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
+#define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 
 #define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
 
@@ -48,3 +50,6 @@
 
 #define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
 #define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"
+
+#define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
+#define NCSkillQueueNotificationTimeDidChangeNotification @"NCSkillQueueNotificationTimeDidChangeNotification"

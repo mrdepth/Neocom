@@ -56,9 +56,9 @@
 	self.refreshControl = nil;
 	[self update];
 	
-	NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDate];
+	NSDate* date = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDateKey];
 	if (!date || [date earlierDate:[NSDate date]] == date) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFits])
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFitsKey])
 			[self uploadFits];
 		else {
 			[[UIAlertView alertViewWithTitle:nil
@@ -67,11 +67,11 @@
 						   otherButtonTitles:@[NSLocalizedString(@"Share this time", nil), NSLocalizedString(@"Always share", nil)]
 							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
 								 if (selectedButtonIndex == 2)
-									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFits];
+									 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsAPIAlwaysUploadFitsKey];
 								 if (selectedButtonIndex != alertView.cancelButtonIndex)
 									 [self uploadFits];
 								 else {
-									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFits];
+									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPIAlwaysUploadFitsKey];
 								 }
 							 } cancelBlock:^{
 							 }] show];
@@ -133,8 +133,8 @@
 
 
 - (IBAction)onAction:(id)sender {
-	NSDate* nextSyncDate = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDate];
-	BOOL alwaysUpload =[[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFits];
+	NSDate* nextSyncDate = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsAPINextSyncDateKey];
+	BOOL alwaysUpload =[[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsAPIAlwaysUploadFitsKey];
 	NSString* title = nil;
 	if (nextSyncDate) {
 		NSInteger timeInterval = [nextSyncDate timeIntervalSinceNow];
@@ -151,7 +151,7 @@
 											   if (selectedButtonIndex == 0)
 												   [self uploadFits];
 											   else if (selectedButtonIndex == 1) {
-												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFits];
+												   [[NSUserDefaults standardUserDefaults] setBool:!alwaysUpload forKey:NCSettingsAPIAlwaysUploadFitsKey];
 											   }
 										   } cancelBlock:nil];
 	[self.actionSheet showFromBarButtonItem:sender animated:YES];
@@ -444,14 +444,14 @@
 											 }
 											 if (canonicalNames.count > 0)
 												 [NAPIUpload uploadFitsWithCannonicalNames:canonicalNames
-																					userID:NCSettingsUDID
+																					userID:NCSettingsUDIDKey
 																			   cachePolicy:NSURLRequestUseProtocolCachePolicy
 																					 error:&error
 																		   progressHandler:nil];
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled] && !error)
-									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDate];
+									 [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24] forKey:NCSettingsAPINextSyncDateKey];
 							 }];
 }
 

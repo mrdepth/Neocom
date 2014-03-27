@@ -43,20 +43,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	if (indexPath.section == 0) {
-		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Clear Cache", nil)
-								 message:nil
-					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-					   otherButtonTitles:@[NSLocalizedString(@"Clear", nil)]
-						 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-							 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-								 [[NSURLCache sharedURLCache] removeAllCachedResponses];
-								 [[NCCache sharedCache] clear];
-							 }
-						 }
-							 cancelBlock:nil] show];
-	}
-	else if (indexPath.section == 4) {
+	if (indexPath.section == 2) {
 		if (indexPath.row == 1)
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.eveuniverseiphone.com"]];
 		else if (indexPath.row == 2)

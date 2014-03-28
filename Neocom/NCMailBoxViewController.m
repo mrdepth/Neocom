@@ -90,8 +90,13 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCMailBoxMessageViewController"]) {
-		NCMailBoxMessageViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.message = [(NCMessageCell*) sender message];
+		NCMailBoxMessageViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.message = [(NCMessageCell*) sender message];
 	}
 }
 

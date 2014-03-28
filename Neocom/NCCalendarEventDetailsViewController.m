@@ -31,12 +31,12 @@
 																	 encoding:NSUTF8StringEncoding
 																		error:nil];
 	[text replaceOccurrencesOfString:@"{subject}"
-						  withString:self.event.eventTitle
+						  withString:self.event.eventTitle ? self.event.eventTitle : @""
 							 options:0
 							   range:NSMakeRange(0, text.length)];
 	
 	[text replaceOccurrencesOfString:@"{from}"
-						  withString:self.event.ownerID == 1 ? @"CCP" : self.event.ownerName
+						  withString:self.event.ownerID == 1 ? @"CCP" : (self.event.ownerName ? self.event.ownerName : @"")
 							 options:0
 							   range:NSMakeRange(0, text.length)];
 	
@@ -52,18 +52,18 @@
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	
 	[text replaceOccurrencesOfString:@"{date}"
-						  withString:[dateFormatter stringFromDate:self.event.eventDate]
+						  withString:self.event.eventDate ? [dateFormatter stringFromDate:self.event.eventDate] : @""
 							 options:0
 							   range:NSMakeRange(0, text.length)];
 	
 
 	[text replaceOccurrencesOfString:@"{response}"
-						  withString:self.event.response
+						  withString:self.event.response ? self.event.response : @""
 							 options:0
 							   range:NSMakeRange(0, text.length)];
 
 	[text replaceOccurrencesOfString:@"{text}"
-						  withString:self.event.eventText
+						  withString:self.event.eventText ? self.event.eventText : @""
 							 options:0
 							   range:NSMakeRange(0, text.length)];
 

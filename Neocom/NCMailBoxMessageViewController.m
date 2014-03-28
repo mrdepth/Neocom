@@ -54,7 +54,7 @@
 																range:NSMakeRange(0, template.length)];
 								 
 								 [template replaceOccurrencesOfString:@"{to}"
-														   withString:[to componentsJoinedByString:@","]
+														   withString:to ? [to componentsJoinedByString:@", "] : @""
 															  options:0
 																range:NSMakeRange(0, template.length)];
 								 

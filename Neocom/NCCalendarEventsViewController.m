@@ -65,8 +65,13 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCCalendarEventDetailsViewController"]) {
-		NCCalendarEventDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.event = [sender event];
+		NCCalendarEventDetailsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.event = [sender event];
 	}
 }
 

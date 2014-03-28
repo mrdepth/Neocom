@@ -890,7 +890,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sg-tP-ela" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -911,7 +911,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pa6-25-RyS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -932,7 +932,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l9o-YG-FpG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -953,7 +953,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rpv-SG-Oyc" userLabel="First Responder" sceneMemberID="firstResponder"/>

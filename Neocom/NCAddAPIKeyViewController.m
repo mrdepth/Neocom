@@ -161,8 +161,8 @@
 												 
 												 if (errorDescription) {
 													 [page replaceOccurrencesOfString:@"{error}" withString:errorDescription options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{keyID}" withString:arguments[@"keyID"] options:0 range:NSMakeRange(0, page.length)];
-													 [page replaceOccurrencesOfString:@"{vCode}" withString:arguments[@"vCode"] options:0 range:NSMakeRange(0, page.length)];
+													 [page replaceOccurrencesOfString:@"{keyID}" withString:arguments[@"keyID"] ? arguments[@"keyID"] : @"" options:0 range:NSMakeRange(0, page.length)];
+													 [page replaceOccurrencesOfString:@"{vCode}" withString:arguments[@"vCode"] ? arguments[@"vCode"] : @"" options:0 range:NSMakeRange(0, page.length)];
 												 }
 												 else {
 													 [page replaceOccurrencesOfString:@"{error}" withString:NSLocalizedString(@"Key added", nil) options:0 range:NSMakeRange(0, page.length)];

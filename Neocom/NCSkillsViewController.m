@@ -191,7 +191,6 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		
 		controller.type = [sender skillData];
 	}
 }

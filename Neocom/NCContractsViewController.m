@@ -131,9 +131,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCContractsDetailsViewController"]) {
-		NCContractsDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.contract = [sender object];
-		destinationViewController.currentDate = self.currentDate;
+		NCContractsDetailsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.contract = [sender object];
+		controller.currentDate = self.currentDate;
 	}
 }
 

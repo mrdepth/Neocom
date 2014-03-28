@@ -781,7 +781,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" misplaced="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F81-bu-UnL">
+                            <webView opaque="NO" contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F81-bu-UnL">
                                 <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -927,7 +927,7 @@
                                     <outlet property="levelLabel" destination="dAX-pH-bFu" id="k3G-iM-sCx"/>
                                     <outlet property="skillPointsLabel" destination="Vir-BA-YzE" id="1UK-Oe-Bbu"/>
                                     <outlet property="titleLabel" destination="d2P-Dw-Z2j" id="LTl-PY-ER1"/>
-                                    <segue destination="b8t-AA-wLu" kind="modal" identifier="NCDatabaseTypeInfoViewController" modalPresentationStyle="formSheet" id="Uhi-Dx-hWZ"/>
+                                    <segue destination="UAW-SR-u34" kind="modal" identifier="NCDatabaseTypeInfoViewController" modalPresentationStyle="formSheet" id="xRj-sR-dF3"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCCharacterAttributesCell" rowHeight="76" id="Bnn-ij-R53" customClass="NCCharacterAttributesCell">
@@ -1187,11 +1187,12 @@
                     </navigationItem>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database_iPad"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardIdentifier" value="NCDatabaseTypeInfoViewController"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="is8-In-H9u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="992" y="2597"/>
+            <point key="canvasLocation" x="1716" y="2523"/>
         </scene>
         <!--Skill Plans View Controller - Skill Plans-->
         <scene sceneID="ZlQ-6G-c4D">
@@ -1498,6 +1499,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sob-E5-x7n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="824" y="627"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="nce-2T-pW1">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="UAW-SR-u34" customClass="NCNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ta8-Gf-eWS">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="b8t-AA-wLu" kind="relationship" relationship="rootViewController" id="aSk-yb-dub"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mUd-I4-JBf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="952" y="2523"/>
         </scene>
     </scenes>
     <resources>

@@ -23,17 +23,11 @@
 	NCCache* cache = [NCCache sharedCache];
 	__block NCCacheRecord* cacheRecord = nil;
 	__block NSMutableDictionary* nameToCharacterID = nil;
-	__block NCCacheRecord* alliancesCacheRecord = nil;
-	__block NSMutableDictionary* alliances = nil;
 	
 	[cache.managedObjectContext performBlockAndWait:^{
 		cacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCCharacterID"];
-		alliancesCacheRecord = [NCCacheRecord cacheRecordWithRecordID:@"NCCharacterID.alliances"];
 		if ([cacheRecord.expireDate compare:[NSDate date]] == NSOrderedDescending)
 			nameToCharacterID = [cacheRecord.data.data mutableCopy];
-
-		if ([alliancesCacheRecord.expireDate compare:[NSDate date]] == NSOrderedDescending)
-			alliances = [alliancesCacheRecord.data.data mutableCopy];
 	}];
 	
 	if (!nameToCharacterID) {
@@ -44,67 +38,24 @@
 		
 	NCCharacterID* characterID = nameToCharacterID[name];
 	
-	if (!characterID && alliances)
-		characterID = alliances[name];
-	
 	if (!characterID && ![NSThread isMainThread]) {
-		EVECharacterID* charID = [EVECharacterID characterIDWithNames:@[name] cachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
-		if (!charID || charID.characters.count == 0)
-			return nil;
-		int32_t identifier = [charID.characters[0] characterID];
-		if (identifier == 0)
-			return nil;
-		
-		EVECharacterInfo* characterInfo = [EVECharacterInfo characterInfoWithKeyID:0
-																			 vCode:nil
-																	   cachePolicy:NSURLRequestUseProtocolCachePolicy
-																	   characterID:identifier
-																			 error:nil
-																   progressHandler:nil];
-		if (characterInfo) {
+		EVEOwnerID* ownerID = [EVEOwnerID ownerIDWithNames:@[name] cachePolicy:NSURLRequestUseProtocolCachePolicy error:nil progressHandler:nil];
+		if (ownerID.owners.count > 0) {
+			EVEOwnerIDItem* ownerIDItem = ownerID.owners[0];
 			characterID = [NCCharacterID new];
-			characterID.characterID = characterInfo.characterID;
-			characterID.type = NCCharacterIDTypeCharacter;
-			characterID.name = characterInfo.characterName;
-			nameToCharacterID[name] = characterID;
-		}
-		else {
-			if (!alliances) {
-				alliances = [NSMutableDictionary new];
-				EVEAllianceList *allianceList = [EVEAllianceList allianceListWithCachePolicy:NSURLRequestUseProtocolCachePolicy
-																					   error:nil
-																			 progressHandler:nil];
-				if (allianceList) {
-					for (EVEAllianceListItem* alliance in allianceList.alliances) {
-						NCCharacterID* record = [NCCharacterID new];
-						record.characterID = alliance.allianceID;
-						record.type = NCCharacterIDTypeAlliance;
-						record.name = alliance.name;
-						alliances[[alliance.name lowercaseString]] = record;
-						if (alliance.allianceID == identifier)
-							characterID = record;
-					}
-					alliancesCacheRecord.date = allianceList.currentServerTime;
-					alliancesCacheRecord.expireDate = [[NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 2] laterDate:allianceList.cacheExpireDate];
-				}
-			}
-			if (!characterID) {
-				EVECharacterName* charName = [EVECharacterName characterNameWithIDs:@[@(identifier)]
-																	cachePolicy:NSURLRequestUseProtocolCachePolicy
-																		  error:nil
-																progressHandler:nil];
-				characterID = [NCCharacterID new];
-				characterID.characterID = identifier;
+			characterID.characterID = ownerIDItem.ownerID;
+			if (ownerIDItem.ownerGroupID == EVEOwnerGroupCharacter)
+				characterID.type = NCCharacterIDTypeCharacter;
+			else if (ownerIDItem.ownerGroupID == EVEOwnerGroupCorporation)
 				characterID.type = NCCharacterIDTypeCorporation;
-				characterID.name = charName.characters[@(identifier)];
-				nameToCharacterID[name] = characterID;
-			}
+			else
+				characterID.type = NCCharacterIDTypeAlliance;
+			characterID.name = ownerIDItem.ownerName;
+			nameToCharacterID[name] = characterID;
 		}
 	}
 	
 	[cache.managedObjectContext performBlockAndWait:^{
-		if (![alliances isEqualToDictionary:alliancesCacheRecord.data.data])
-			alliancesCacheRecord.data.data = alliances;
 		if (![nameToCharacterID isEqualToDictionary:cacheRecord.data.data])
 			cacheRecord.data.data = nameToCharacterID;
 		[cache saveContext];

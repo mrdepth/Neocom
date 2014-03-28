@@ -253,7 +253,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5K6-Db-VtE">
             <objects>
-                <navigationController storyboardIdentifier="NCDatabaseTypeInfoViewController" definesPresentationContext="YES" id="t4Y-WE-N5o" customClass="NCNavigationController" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="t4Y-WE-N5o" customClass="NCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="QR9-TK-aaf">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -269,7 +269,7 @@
         <!--Database Type Info View Controller - Info-->
         <scene sceneID="6XL-XT-kh4">
             <objects>
-                <tableViewController id="zSF-Eq-Szl" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="zSF-Eq-Szl" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dHG-eX-klh" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1036,13 +1036,13 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="D4Y-OJ-c0f"/>
-        <segue reference="9zE-3c-7d8"/>
         <segue reference="bTb-0b-9f9"/>
-        <segue reference="01H-Qm-y5M"/>
-        <segue reference="bSQ-JI-nGb"/>
-        <segue reference="qsv-5o-k5F"/>
-        <segue reference="gnL-q9-9tL"/>
         <segue reference="ojV-wi-W6u"/>
         <segue reference="u6h-Fe-EVA"/>
+        <segue reference="D3T-w6-dI7"/>
+        <segue reference="01H-Qm-y5M"/>
+        <segue reference="20I-Ju-Smn"/>
+        <segue reference="qsv-5o-k5F"/>
+        <segue reference="bSQ-JI-nGb"/>
     </inferredMetricsTieBreakers>
 </document>

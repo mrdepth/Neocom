@@ -155,9 +155,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCIndustryJobsDetailsViewController"]) {
-		NCIndustryJobsDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.job = [sender object];
-		destinationViewController.currentDate = self.currentDate;
+		NCIndustryJobsDetailsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.job = [sender object];
+		controller.currentDate = self.currentDate;
 	}
 }
 
@@ -220,7 +225,10 @@
 #pragma mark Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 102;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return 72;
+	else
+		return 102;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -228,7 +236,7 @@
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 

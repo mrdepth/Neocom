@@ -132,9 +132,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCStarbasesDetailsViewController"]) {
-		NCStarbasesDetailsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.starbase = [sender object];
-		destinationViewController.currentDate = self.currentDate;
+		NCStarbasesDetailsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.starbase = [sender object];
+		controller.currentDate = self.currentDate;
 	}
 }
 

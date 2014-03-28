@@ -192,9 +192,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		EVEAssetListItem* asset = [sender object];
-		destinationViewController.type = asset.type;
+		controller.type = asset.type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCAssetsContainerViewController"]) {
 		NCAssetsContainerViewController* destinationViewController = segue.destinationViewController;

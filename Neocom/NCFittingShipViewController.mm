@@ -209,14 +209,19 @@
 		controller.targets = targets;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = [segue destinationViewController];
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
 		EVEDBInvType* type = [self typeWithItem:item];
 		
 		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
 			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
 		}];
-		destinationViewController.type = type;
+		controller.type = type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;

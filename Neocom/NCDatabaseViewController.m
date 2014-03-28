@@ -45,6 +45,7 @@
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Published", nil);
 	else if (self.filter == NCDatabaseFilterUnpublished)
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Unpublished", nil);
+	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,9 +64,14 @@
 		destinationViewController.filter = self.filter;
 	}
 	else {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
 		id row = [sender object];
-		destinationViewController.type = row;
+		controller.type = row;
 	}
 }
 

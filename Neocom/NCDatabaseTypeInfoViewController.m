@@ -80,6 +80,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.navigationController.viewControllers[0] != self)
+		self.navigationItem.leftBarButtonItem = nil;
 	self.title = self.type.typeName;
 	[self reload];
 	self.refreshControl = nil;
@@ -117,8 +119,13 @@
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = row.object;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.type = row.object;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
 		NCDatabaseViewController* destinationViewController = segue.destinationViewController;

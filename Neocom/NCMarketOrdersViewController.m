@@ -129,9 +129,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
 		NCMarketOrdersViewControllerDataRow* row = [sender object];
-		destinationViewController.type = row.type;
+		controller.type = row.type;
 	}
 }
 

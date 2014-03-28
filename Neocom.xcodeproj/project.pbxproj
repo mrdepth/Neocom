@@ -57,6 +57,8 @@
 		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
 		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
 		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
+		1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */; };
+		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 123A97F218C7017E001045F5 /* MessageUI.framework */; };
 		123A97F718C708FE001045F5 /* NSString+Temp.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A97F618C708FE001045F5 /* NSString+Temp.m */; };
 		123A97FC18C714B7001045F5 /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = 123A97FA18C714B7001045F5 /* rss.png */; };
@@ -676,6 +678,9 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
+		1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database_iPad.storyboard; sourceTree = "<group>"; };
+		1235E3F218E562E300BC2607 /* NCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationController.h; sourceTree = "<group>"; };
+		1235E3F318E562E300BC2607 /* NCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationController.m; sourceTree = "<group>"; };
 		123A97F218C7017E001045F5 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		123A97F518C708FE001045F5 /* NSString+Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Temp.h"; sourceTree = "<group>"; };
 		123A97F618C708FE001045F5 /* NSString+Temp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Temp.m"; sourceTree = "<group>"; };
@@ -1692,6 +1697,7 @@
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
 				841534EF188A9A7500B42433 /* Database.storyboard */,
+				1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */,
 				1243761B189653980078F526 /* Character.storyboard */,
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
@@ -1846,6 +1852,15 @@
 				122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */,
 			);
 			name = NCIndustryJobsDetailsViewController;
+			sourceTree = "<group>";
+		};
+		1235E3F118E562C700BC2607 /* NCNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				1235E3F218E562E300BC2607 /* NCNavigationController.h */,
+				1235E3F318E562E300BC2607 /* NCNavigationController.m */,
+			);
+			name = NCNavigationController;
 			sourceTree = "<group>";
 		};
 		123A97F918C71452001045F5 /* Help */ = {
@@ -2178,6 +2193,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				1235E3F118E562C700BC2607 /* NCNavigationController */,
 				12FA32A818E156BA0053DDC5 /* NCMarqueeLabel */,
 				123C627F18DB1E5800B03156 /* NCLabel */,
 				12F955FF18CDB5BA005CEAD6 /* NCBannerViewController */,
@@ -4269,6 +4285,7 @@
 				849B9FBE1896D24A00D4DD2B /* explosion.png in Resources */,
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
 				849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */,
+				1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */,
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
 				125F680C188526B6005732FA /* level_250.gif in Resources */,
 				849B9FD11896D24A00D4DD2B /* signature.png in Resources */,
@@ -4709,6 +4726,7 @@
 				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
+				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
 				1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,

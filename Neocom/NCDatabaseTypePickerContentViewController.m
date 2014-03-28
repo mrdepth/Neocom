@@ -80,8 +80,13 @@
 		destinationViewController.title = marketGroup.marketGroupName;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = [sender object];
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.type = [sender object];
 	}
 }
 

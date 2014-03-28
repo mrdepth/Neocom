@@ -53,9 +53,14 @@
 		destinationViewController.group = row;
 	}
 	else {
-		NCDatabaseCertificateInfoViewController* destinationViewController = segue.destinationViewController;
+		NCDatabaseCertificateInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
 		id row = [sender object];
-		destinationViewController.certificate = row;
+		controller.certificate = row;
 	}
 }
 

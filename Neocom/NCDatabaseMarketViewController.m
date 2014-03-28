@@ -7,7 +7,7 @@
 //
 
 #import "NCDatabaseMarketViewController.h"
-#import "NCDatabaseTypeInfoViewController.h"
+#import "NCDatabaseTypeMarketInfoViewController.h"
 #import "NCTableViewCell.h"
 
 @interface NCDatabaseMarketViewController ()
@@ -100,8 +100,13 @@
 		destinationViewController.marketGroup = row;
 	}
 	else {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = row;
+		NCDatabaseTypeMarketInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.type = row;
 	}
 }
 

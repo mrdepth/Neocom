@@ -47,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.navigationController.viewControllers[0] != self)
+		self.navigationItem.leftBarButtonItem = nil;
 	self.refreshControl = nil;
 	[self reload];
 }
@@ -87,8 +89,13 @@
 		self.requiredForSections[indexPath.section][@"rows"][indexPath.row];
 	
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = row.object;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.type = row.object;
 	}
 }
 
@@ -288,6 +295,7 @@
 																					row.title = type.typeName;
 																					row.cellIdentifier = @"TypeCell";
 																					row.object = type;
+																					row.imageName = type.typeSmallImageName;
 																					if (trainingQueue.trainingTime > 0) {
 																						row.detail = [NSString stringWithTimeLeft:trainingQueue.trainingTime];
 																						row.accessoryImageName = @"Icons/icon38_195.png";

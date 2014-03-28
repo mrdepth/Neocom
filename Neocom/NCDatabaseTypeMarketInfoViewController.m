@@ -117,6 +117,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	if (self.navigationController.viewControllers[0] != self)
+		self.navigationItem.leftBarButtonItem = nil;
 	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
 
 	// Do any additional setup after loading the view.
@@ -161,9 +163,14 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
-		NCDatabaseTypeInfoViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = self.type;
-		destinationViewController.navigationItem.rightBarButtonItem = nil;
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.type = self.type;
+		controller.navigationItem.rightBarButtonItem = nil;
 	}
 }
 

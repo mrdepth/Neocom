@@ -873,12 +873,12 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="7iv-ne-LEg"/>
-        <segue reference="6M7-4Q-PK5"/>
-        <segue reference="E04-iH-wb4"/>
         <segue reference="qyD-gc-O13"/>
-        <segue reference="LHH-Wy-jrm"/>
-        <segue reference="edv-w8-2To"/>
+        <segue reference="7iv-ne-LEg"/>
         <segue reference="Vbq-vg-5yp"/>
+        <segue reference="raC-Em-4AD"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="dFJ-0K-RGe"/>
+        <segue reference="6M7-4Q-PK5"/>
     </inferredMetricsTieBreakers>
 </document>

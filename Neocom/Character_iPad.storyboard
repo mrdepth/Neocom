@@ -531,6 +531,7 @@
                         <outlet property="skillQueueLabel" destination="Sa3-ZT-iPA" id="O7o-cP-DDK"/>
                         <outlet property="skillsLabel" destination="8C7-L0-1i6" id="SeJ-7Z-AcE"/>
                         <outlet property="subscriptionLabel" destination="9uY-GU-fA7" id="Tad-Pw-eeg"/>
+                        <outlet property="tableHeaderView" destination="hAQ-D7-9ZV" id="L0d-1T-kw6"/>
                         <outlet property="willpowerLabel" destination="WU1-aL-7hz" id="gZz-Aq-SVS"/>
                     </connections>
                 </tableViewController>

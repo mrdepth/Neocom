@@ -22,11 +22,14 @@
 #import "NCFittingShipViewController.h"
 #import "NCSideMenuViewController.h"
 #import "NCMainMenuViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
 - (void) addAPIKeyWithURL:(NSURL*) url;
 - (void) openFitWithURL:(NSURL*) url;
+- (void) openSkillPlanWithURL:(NSURL*) url;
+- (void) showTypeInfoWithURL:(NSURL*) url;
 - (void) completeTransaction: (SKPaymentTransaction *)transaction;
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction;
 - (void) failedTransaction: (SKPaymentTransaction *)transaction;
@@ -59,9 +62,9 @@
 	[self migrateWithCompletionHandler:^{
 		NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
 		NSError* error = nil;
-		//[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-		//[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-		//[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
+		[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
+		[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
+		[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
 		
 		NCAccount* account = nil;
 		if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
@@ -115,12 +118,21 @@
 }
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	NSString* scheme = [url scheme];
-	if ([scheme isEqualToString:@"eve"]) {
-		[self addAPIKeyWithURL:url];
-	}
-	else if ([scheme isEqualToString:@"fitting"])
-		[self openFitWithURL:url];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		NSString* scheme = [url scheme];
+		if ([scheme isEqualToString:@"eve"]) {
+			[self addAPIKeyWithURL:url];
+		}
+		else if ([scheme isEqualToString:@"fitting"])
+			[self openFitWithURL:url];
+		else if ([scheme isEqualToString:@"file"]) {
+			if ([[url pathExtension] compare:@"emp" options:NSCaseInsensitiveSearch] == NSOrderedSame)
+				[self openSkillPlanWithURL:url];
+		}
+		else if ([scheme isEqualToString:@"showinfo"]) {
+			[self showTypeInfoWithURL:url];
+		}
+	});
 	return YES;
 }
 
@@ -225,6 +237,59 @@
 			[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
 	}
 }
+
+- (void) openSkillPlanWithURL:(NSURL*) url {
+
+	NCAccount* currentAccount = [NCAccount currentAccount];
+	if (!currentAccount || currentAccount.accountType != NCAccountTypeCharacter) {
+		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Skill Plan Import", nil)
+								 message:NSLocalizedString(@"You should select the Character first to import Skill Plan", nil)
+					   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+					   otherButtonTitles:nil
+						 completionBlock:nil
+							 cancelBlock:nil] show];
+	}
+	else {
+		NSData* data = [[NSData dataWithContentsOfURL:url] uncompressedData];
+		NSString* name = [[url lastPathComponent] stringByDeletingPathExtension];
+		if (data) {
+			if (!name)
+				name = NSLocalizedString(@"Skill Plan", nil);
+			[self.window.rootViewController performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
+
+		}
+	}
+	[[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+}
+
+- (void) showTypeInfoWithURL:(NSURL*) url {
+	NSArray* components = [[url resourceSpecifier] pathComponents];
+	if (components.count > 0) {
+		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[components[0] intValue] error:nil];
+		if (type) {
+			NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
+			if ([controller isKindOfClass:[UINavigationController class]]) {
+				UINavigationController* navigationController = (UINavigationController*) controller;
+				NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
+				controller.type = type;
+			}
+			else
+				controller.type = type;
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+				[self.window.rootViewController presentViewController:controller animated:YES completion:nil];
+			}
+			else {
+				UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
+				if ([contentViewController isKindOfClass:[UINavigationController class]])
+					[contentViewController pushViewController:controller animated:YES];
+				else
+					[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+			}
+		}
+	}
+}
+
 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {
@@ -331,6 +396,8 @@
 															  NSFileManager* fileManager = [NSFileManager defaultManager];
 															  NSString* documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 															  for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+																  if ([fileName isEqualToString:@"Inbox"])
+																	  continue;
 																  [fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
 															  }
 															  completionHandler();

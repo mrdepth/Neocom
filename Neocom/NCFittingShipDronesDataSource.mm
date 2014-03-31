@@ -302,11 +302,11 @@
 }
 
 - (NSString*) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [NSString stringWithFormat:@"%d", row + 1];
+	return [NSString stringWithFormat:@"%ld", (long)(row + 1)];
 }
 
 - (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
-	int amount = rowIndex + 1;
+	int amount = (int) (rowIndex + 1);
 	NSInteger i = 0;
 	for (NCFittingShipDronesDataSourcePickerRow* row in self.rows) {
 		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
@@ -314,7 +314,7 @@
 			eufe::TypeID typeID = row.associatedRow.drones.front()->getTypeID();
 
 			if (row.associatedRow.drones.size() > amount) {
-				int n = row.associatedRow.drones.size() - amount;
+				int n = (int) row.associatedRow.drones.size() - amount;
 				for (auto drone: row.associatedRow.drones) {
 					if (n <= 0)
 						break;
@@ -323,7 +323,7 @@
 				}
 			}
 			else {
-				int n = amount - row.associatedRow.drones.size();
+				int n = amount - (int) row.associatedRow.drones.size();
 				eufe::Drone* drone = row.associatedRow.drones.front();
 				for (int i = 0; i < n; i++) {
 					eufe::Drone* newDrone = ship->addDrone(drone->getTypeID());

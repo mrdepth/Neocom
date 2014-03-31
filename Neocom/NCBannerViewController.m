@@ -9,6 +9,7 @@
 #import "NCBannerViewController.h"
 #import "ASInAppPurchase.h"
 #import "GADBannerView.h"
+#import "NCSkillPlanViewController.h"
 
 @interface NCBannerView()
 @property (nonatomic, assign) CGSize intrinsicContentSize;
@@ -69,6 +70,19 @@
 	return UIStatusBarStyleLightContent;
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCSkillPlanViewController"]) {
+		NCSkillPlanViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.xmlData = sender[@"data"];
+		controller.skillPlanName = sender[@"name"];
+	}
+}
+
 #pragma mark - GADBannerViewDelegate
 
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
@@ -102,6 +116,12 @@
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
+	
+}
+
+#pragma mark - Unwind
+
+- (IBAction) unwindFromSkillPlanImport:(UIStoryboardSegue*) segue {
 	
 }
 

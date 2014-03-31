@@ -56,6 +56,8 @@
 					if (intelligence + memory + perception + willpower > totalMaxPoints - basePoints)
 						break;
 					int charisma = totalMaxPoints - (intelligence + memory + perception + willpower);
+					if (charisma > maxPoints)
+						continue;
 					
 					float trainingTime = 0;
 					for (auto i: skillPoints) {

@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *willpowerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *charismaLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView* scrollView;
+@property (strong, nonatomic) IBOutlet UIView* tableHeaderView;
 
 
 @end

@@ -162,21 +162,13 @@
 							 }
 							 else if (selectedButtonIndex == 1) {
 								 [self performSegueWithIdentifier:@"NCSkillPlanImportViewController" sender:nil];
-/*								 SkillPlannerImportViewController* controller = [[SkillPlannerImportViewController alloc] initWithNibName:@"SkillPlannerImportViewController" bundle:nil];
-								 controller.delegate = self;
-								 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-								 navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-								 
-								 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-									 navController.modalPresentationStyle = UIModalPresentationFormSheet;
-								 [self presentViewController:navController animated:YES completion:nil];*/
 							 }
 							 else if (selectedButtonIndex == 2) {
 								 [self performSegueWithIdentifier:@"NCSkillPlansViewController" sender:nil];
 							 }
 							 else if (selectedButtonIndex == 3) {
 								 NSData* data = [[self.skillPlan.trainingQueue xmlRepresentationWithSkillPlanName:self.skillPlan.name] dataUsingEncoding:NSUTF8StringEncoding];
-								 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.emp", self.skillPlan.name]];
+								 NSString* path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ - %@.emp", self.account.characterInfo.characterName, self.skillPlan.name]];
 								 [data writeCompressedToFile:path];
 								 self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:path]];
 								 [self.documentInteractionController presentOpenInMenuFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];

@@ -51,6 +51,8 @@
 	
 	if (!error) {
 		for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:documents error:nil]) {
+			if ([fileName isEqualToString:@"Inbox"])
+				continue;
 			[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
 		}
 	}

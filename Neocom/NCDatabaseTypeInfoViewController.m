@@ -282,7 +282,6 @@
 									   block:^(NCTask *task) {
 										   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 										   [trainingQueue addRequiredSkillsForType:type];
-										   //self.trainingTime = [[TrainingQueue trainingQueueWithType:type] trainingTime];
 										   
 										   NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
 										   

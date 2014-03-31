@@ -310,11 +310,11 @@
 }
 
 - (NSString*) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [NSString stringWithFormat:@"%d", row + 1];
+	return [NSString stringWithFormat:@"%ld", (long) row + 1];
 }
 
 - (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)rowIndex inComponent:(NSInteger)component {
-	int amount = rowIndex + 1;
+	int amount = (int) rowIndex + 1;
 	NSInteger i = 0;
 	for (NCFittingPOSStructuresDataSourcePickerRow* row in self.rows) {
 		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
@@ -322,7 +322,7 @@
 			eufe::TypeID typeID = row.associatedRow.structures.front()->getTypeID();
 			
 			if (row.associatedRow.structures.size() > amount) {
-				int n = row.associatedRow.structures.size() - amount;
+				int n = (int) row.associatedRow.structures.size() - amount;
 				for (auto structure: row.associatedRow.structures) {
 					if (n <= 0)
 						break;
@@ -331,7 +331,7 @@
 				}
 			}
 			else {
-				int n = amount - row.associatedRow.structures.size();
+				int n = amount - (int) row.associatedRow.structures.size();
 				eufe::Structure* structure = row.associatedRow.structures.front();
 				for (int i = 0; i < n; i++) {
 					eufe::Structure* newStructure = controlTower->addStructure(structure->getTypeID());

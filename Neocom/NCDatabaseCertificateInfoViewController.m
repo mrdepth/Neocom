@@ -118,7 +118,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? self.masteriesSections[section][@"title"] : [NSString stringWithFormat:@"%@ (%d)", self.requiredForSections[section][@"title"], [self.requiredForSections[section][@"rows"] count]];
+	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? self.masteriesSections[section][@"title"] : [NSString stringWithFormat:@"%@ (%ld)", self.requiredForSections[section][@"title"], (long) [self.requiredForSections[section][@"rows"] count]];
 }
 
 // Customize the appearance of table view cells.

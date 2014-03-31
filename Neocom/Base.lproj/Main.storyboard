@@ -65,6 +65,7 @@
                     </view>
                     <connections>
                         <outlet property="bannerView" destination="R7D-ly-PfX" id="DXE-eQ-EgD"/>
+                        <segue destination="cs3-Cj-XDu" kind="modal" identifier="NCSkillPlanViewController" id="hnM-8p-5WA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Ax-XS-uZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1270,7 +1271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nxi-5V-Rr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-569" y="2604"/>
+            <point key="canvasLocation" x="-815" y="2640"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tl9-WE-3v0">
@@ -1292,6 +1293,69 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5KE-5n-3Qx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3335" y="3872"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="bTk-co-hho">
+            <objects>
+                <viewController id="gCN-Fg-rdw" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AqM-A1-Fg7"/>
+                        <viewControllerLayoutGuide type="bottom" id="6ea-Mb-m8b"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kWQ-FT-TRL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JXE-AI-S8X"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardIdentifier" value="NCSkillPlanViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rOo-ow-qdO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="218" y="2648"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="FKw-7Z-waP">
+            <objects>
+                <navigationController storyboardIdentifier="NCSkillPlanViewController" definesPresentationContext="YES" id="cs3-Cj-XDu" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ahk-Lm-VnN">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="gCN-Fg-rdw" kind="relationship" relationship="rootViewController" id="n4w-vn-SLn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o04-FB-dte" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-286" y="2648"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tfF-44-3dI">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="vCk-uH-USp" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6ME-BH-TT1"/>
+                        <viewControllerLayoutGuide type="bottom" id="znb-LU-MIT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TI0-8w-lZi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="aPo-Av-UIH">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="iY5-k6-n4z"/>
+                    </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GTT-8K-eoy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="676" y="2648"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

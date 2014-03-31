@@ -530,6 +530,7 @@
                         <outlet property="skillQueueLabel" destination="Dnh-To-DoH" id="lha-o5-wHW"/>
                         <outlet property="skillsLabel" destination="ZCZ-BV-cWf" id="IAn-GP-zCl"/>
                         <outlet property="subscriptionLabel" destination="EWI-lP-GSr" id="a4m-pi-cma"/>
+                        <outlet property="tableHeaderView" destination="rvy-b5-oad" id="gOg-Kd-wRO"/>
                         <outlet property="willpowerLabel" destination="osC-MP-NI9" id="etB-Re-iFM"/>
                     </connections>
                 </tableViewController>
@@ -1282,7 +1283,7 @@
         <!--Skill Plan View Controller - Skill Plan-->
         <scene sceneID="tmM-if-AkK">
             <objects>
-                <tableViewController id="ZHq-2H-EVU" customClass="NCSkillPlanViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCSkillPlanViewController" id="ZHq-2H-EVU" customClass="NCSkillPlanViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="42" sectionHeaderHeight="22" sectionFooterHeight="22" id="oY8-eq-xF4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1383,15 +1384,17 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Skill Plan" id="h9a-Lg-axx">
                         <barButtonItem key="backBarButtonItem" title="Back" id="7xc-Tf-rzj"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="hhJ-fg-bh7">
+                            <connections>
+                                <segue destination="G7C-DZ-Vii" kind="unwind" identifier="Unwind" unwindAction="unwindFromSkillPlanImport:" id="vN9-t9-kJN"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="sZ4-0t-3Uu">
                             <connections>
                                 <action selector="onAction:" destination="ZHq-2H-EVU" id="c6O-YZ-qbI"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <segue destination="G7C-DZ-Vii" kind="unwind" identifier="Unwind" unwindAction="unwindFromSkillPlanImport:" id="GMY-C8-QX1"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i3o-gx-vgw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="G7C-DZ-Vii" userLabel="Exit" sceneMemberID="exit"/>

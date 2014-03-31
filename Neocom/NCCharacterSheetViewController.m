@@ -84,15 +84,16 @@
 
 - (void) viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		
 		if (self.needsLayout) {
-			UIView* header = self.tableView.tableHeaderView;
-			CGRect frame = header.frame;
-			frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-			if (!CGRectEqualToRect(header.frame, frame)) {
-				header.frame = frame;
-				self.tableView.tableHeaderView = header;
+			if (self.tableView.tableHeaderView) {
+				CGRect frame = self.tableHeaderView.frame;
+				frame.size.height = [self.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+				if (!CGRectEqualToRect(self.tableHeaderView.frame, frame)) {
+					self.tableHeaderView.frame = frame;
+					self.tableView.tableHeaderView = self.tableHeaderView;
+				}
 			}
 			self.needsLayout = NO;
 		}
@@ -176,18 +177,10 @@
 	EVEAccountStatus* accountStatus = data.accountStatus;
 	EVESkillQueue* skillQueue = data.skillQueue;
 	
-	if (!characterInfo) {
-		UIView* header = self.tableView.tableHeaderView;
-		CGRect frame = header.frame;
-		frame.size.height = 0;
-		header.frame = frame;
-		self.tableView.tableHeaderView = header;
-		self.tableView.tableHeaderView.hidden = YES;
-		return;
-	}
+	if (!characterInfo)
+		self.tableView.tableHeaderView = nil;
 	else
-		self.tableView.tableHeaderView.hidden = NO;
-
+		self.tableView.tableHeaderView = self.tableHeaderView;
 	
 	[self.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:characterSheet.characterID size:EVEImageSizeRetina256 error:nil]];
 	

@@ -75,6 +75,7 @@
 								 NCStorage* storage = [NCStorage sharedStorage];
 								 [storage.managedObjectContext performBlockAndWait:^{
 									 account.activeSkillPlan.trainingQueue = self.trainingQueue;
+									 [account.activeSkillPlan save];
 									 [storage saveContext];
 								 }];
 
@@ -95,7 +96,7 @@
 									 skillPlan.name = self.skillPlanName;
 									 skillPlan.account = account;
 									 account.activeSkillPlan = skillPlan;
-									 [storage saveContext];
+									 [skillPlan save];
 								 }];
 								 [self performSegueWithIdentifier:@"Unwind" sender:nil];
 							 }
@@ -119,7 +120,7 @@
 	NCSkillData* row = self.trainingQueue.skills[indexPath.row];
 	
 	
-	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	cell.skillData = row;
 	
 	if (row.trainedLevel >= 0) {

@@ -51,6 +51,7 @@
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artem Valiant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="R6a-pL-vCx">
                                             <rect key="frame" x="15" y="264" width="414" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -496,6 +497,11 @@
                                 <constraint firstAttribute="bottom" secondItem="b7b-B0-gai" secondAttribute="bottom" id="p8E-df-NaF"/>
                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="b7b-B0-gai" secondAttribute="trailing" id="pvD-VE-qcS"/>
                             </constraints>
+                        </view>
+                        <view key="tableFooterView" opaque="NO" contentMode="scaleToFill" id="E0w-mB-BHP">
+                            <rect key="frame" x="0.0" y="686" width="703" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <sections/>
                         <connections>
@@ -1193,7 +1199,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="is8-In-H9u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1716" y="2523"/>
+            <point key="canvasLocation" x="1864" y="2597"/>
         </scene>
         <!--Skill Plans View Controller - Skill Plans-->
         <scene sceneID="ZlQ-6G-c4D">
@@ -1515,7 +1521,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mUd-I4-JBf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="952" y="2523"/>
+            <point key="canvasLocation" x="1100" y="2597"/>
         </scene>
     </scenes>
     <resources>

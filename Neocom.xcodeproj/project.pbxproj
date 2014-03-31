@@ -420,6 +420,8 @@
 		12F82A5D18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5C18ACB8D900A967B5 /* NCFittingAPISearchResultsViewController.mm */; };
 		12F82A6718ADFAB500A967B5 /* NCAssetsContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */; };
 		12F86DD318E59C8800AFDA97 /* EVEOwnerID.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F86DD218E59C8800AFDA97 /* EVEOwnerID.m */; };
+		12F8E1F418E9A47400CEA658 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F8E1F318E9A47300CEA658 /* logo.png */; };
+		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E718CDA2A0005CEAD6 /* EUStorage.m */; };
 		12F955EB18CDA37C005CEAD6 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */; };
 		12F955EE18CDA3A8005CEAD6 /* APIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955ED18CDA3A8005CEAD6 /* APIKey.m */; };
@@ -1326,6 +1328,9 @@
 		12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCAssetsContainerViewController.mm; sourceTree = "<group>"; };
 		12F86DD118E59C8800AFDA97 /* EVEOwnerID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEOwnerID.h; sourceTree = "<group>"; };
 		12F86DD218E59C8800AFDA97 /* EVEOwnerID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEOwnerID.m; sourceTree = "<group>"; };
+		12F8E1F318E9A47300CEA658 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		12F8E1F618E9A53700CEA658 /* NCSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSplitViewController.h; sourceTree = "<group>"; };
+		12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
 		12F955E618CDA2A0005CEAD6 /* EUStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUStorage.h; sourceTree = "<group>"; };
 		12F955E718CDA2A0005CEAD6 /* EUStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUStorage.m; sourceTree = "<group>"; };
 		12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
@@ -2202,6 +2207,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12F8E1F518E9A52200CEA658 /* NCSplitViewController */,
 				1235E3F118E562C700BC2607 /* NCNavigationController */,
 				12FA32A818E156BA0053DDC5 /* NCMarqueeLabel */,
 				123C627F18DB1E5800B03156 /* NCLabel */,
@@ -3067,6 +3073,7 @@
 				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
+				12F8E1F318E9A47300CEA658 /* logo.png */,
 				12C66E5418D0377C0037124A /* toolbar.png */,
 				12C66E5518D0377C0037124A /* toolbar@2x.png */,
 				12C66E4D18D026690037124A /* arrowDown@2x.png */,
@@ -3642,6 +3649,15 @@
 				12F82A6618ADFAB500A967B5 /* NCAssetsContainerViewController.mm */,
 			);
 			name = NCAssetsContainerViewController;
+			sourceTree = "<group>";
+		};
+		12F8E1F518E9A52200CEA658 /* NCSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12F8E1F618E9A53700CEA658 /* NCSplitViewController.h */,
+				12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */,
+			);
+			name = NCSplitViewController;
 			sourceTree = "<group>";
 		};
 		12F955E318CDA281005CEAD6 /* NCMigrationManager */ = {
@@ -4415,6 +4431,7 @@
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
 				849B9FC71896D24A00D4DD2B /* Multispectral.png in Resources */,
+				12F8E1F418E9A47400CEA658 /* logo.png in Resources */,
 				125F67F7188526B6005732FA /* level_021.gif in Resources */,
 				84E4331D18951B2400DF2061 /* mailMessageTemplate.html in Resources */,
 				125F67FD188526B6005732FA /* level_051.gif in Resources */,
@@ -4739,6 +4756,7 @@
 				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,
 				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
+				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,

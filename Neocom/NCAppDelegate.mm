@@ -255,7 +255,12 @@
 		if (data) {
 			if (!name)
 				name = NSLocalizedString(@"Skill Plan", nil);
-			[self.window.rootViewController performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+				UISplitViewController* splitViewController = (UISplitViewController*) self.window.rootViewController;
+				[splitViewController.viewControllers[0] performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
+			}
+			else
+				[self.window.rootViewController performSegueWithIdentifier:@"NCSkillPlanViewController" sender:@{@"name": name, @"data": data}];
 
 		}
 	}
@@ -263,23 +268,34 @@
 }
 
 - (void) showTypeInfoWithURL:(NSURL*) url {
-	NSArray* components = [[url resourceSpecifier] pathComponents];
+	NSMutableString* resourceSpecifier = [[url resourceSpecifier] mutableCopy];
+	if ([resourceSpecifier hasPrefix:@"//"])
+		[resourceSpecifier replaceCharactersInRange:NSMakeRange(0, 2) withString:@""];
+	
+	NSArray* components = [resourceSpecifier pathComponents];
 	if (components.count > 0) {
 		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[components[0] intValue] error:nil];
 		if (type) {
-			NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-			if ([controller isKindOfClass:[UINavigationController class]]) {
-				UINavigationController* navigationController = (UINavigationController*) controller;
-				NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
-				controller.type = type;
-			}
-			else
-				controller.type = type;
-			
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-				[self.window.rootViewController presentViewController:controller animated:YES completion:nil];
+				UIViewController* presentedViewController = nil;
+				for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
+				if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
+					NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
+					controller.type = type;
+					[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
+				}
+				else {
+					UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewNavigationController"];
+					navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+					NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
+					controller.type = type;
+					[presentedViewController presentViewController:navigationController animated:YES completion:nil];
+				}
 			}
 			else {
+				NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
+				controller.type = type;
+
 				UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
 				if ([contentViewController isKindOfClass:[UINavigationController class]])
 					[contentViewController pushViewController:controller animated:YES];

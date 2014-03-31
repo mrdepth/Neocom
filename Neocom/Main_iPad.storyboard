@@ -44,6 +44,7 @@
                     </view>
                     <connections>
                         <outlet property="bannerView" destination="5uh-fM-fab" id="jvn-Yx-0Zs"/>
+                        <segue destination="eal-T4-6cP" kind="modal" identifier="NCSkillPlanViewController" modalPresentationStyle="formSheet" id="buB-Nv-UYA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjG-fH-ARe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -91,14 +92,30 @@
             </objects>
             <point key="canvasLocation" x="515" y="1499"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="awn-G5-84t">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="gIa-0L-i7Y" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="iki-OI-ctj">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Qrr-ZC-sLs" kind="relationship" relationship="rootViewController" id="Z6T-dJ-4TQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WeX-hj-das" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1245" y="2608"/>
+        </scene>
         <!--Split View Controller-->
         <scene sceneID="nIk-LN-P1g">
             <objects>
-                <splitViewController id="cos-tx-HAD" sceneMemberID="viewController">
+                <splitViewController id="cos-tx-HAD" customClass="NCSplitViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <connections>
                         <segue destination="meN-8T-N1s" kind="relationship" relationship="masterViewController" id="Kor-4D-3Yc"/>
-                        <segue destination="Qrr-ZC-sLs" kind="relationship" relationship="detailViewController" id="8UR-XV-XoT"/>
+                        <segue destination="gIa-0L-i7Y" kind="relationship" relationship="detailViewController" id="KGK-FF-TbC"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iBY-xS-usB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1286,12 +1303,23 @@
                     <view key="view" contentMode="scaleToFill" id="lao-7K-C1q">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="9zH-Ai-dol">
+                                <rect key="frame" x="164" y="455" width="440" height="115"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="9zH-Ai-dol" secondAttribute="centerX" id="OGv-0o-lSI"/>
+                            <constraint firstAttribute="centerY" secondItem="9zH-Ai-dol" secondAttribute="centerY" id="wfU-a3-Il3"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="o0q-kj-m02"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7MA-oN-sme" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-788" y="2808"/>
+            <point key="canvasLocation" x="-316" y="2608"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="zvf-pN-FQb">
@@ -1314,7 +1342,91 @@
             </objects>
             <point key="canvasLocation" x="6215" y="4992"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="2aR-ij-1sk">
+            <objects>
+                <viewController id="ib8-KL-fgl" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="A2H-uO-uyF"/>
+                        <viewControllerLayoutGuide type="bottom" id="oR8-ZB-zSE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oLg-cs-Kmp">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="snE-oj-kgd"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Character"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardIdentifier" value="NCSkillPlanViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x0S-bP-Z4m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="4112"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ejv-mG-VWA">
+            <objects>
+                <navigationController storyboardIdentifier="NCSkillPlanViewController" definesPresentationContext="YES" id="eal-T4-6cP" customClass="NCNavigationController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="RXA-Qw-AP7">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ib8-KL-fgl" kind="relationship" relationship="rootViewController" id="D9G-bP-p9I"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KBq-wG-QNn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-638" y="4112"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="swT-Eq-eFN">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="0lV-wX-3xE" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ZSy-IP-sY0"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZBF-dO-GEm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AZO-lF-IjU">
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JcF-03-5lF">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="QQ4-zD-f1h"/>
+                    </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardIdentifier" value="NCDatabaseTypeInfoViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vUZ-Ja-P12" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="4920"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="oDn-Za-zND">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseTypeInfoViewNavigationController" definesPresentationContext="YES" id="Zuf-Fh-QM3" customClass="NCNavigationController" sceneMemberID="viewController">
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="EIn-Iz-55h">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="0lV-wX-3xE" kind="relationship" relationship="rootViewController" id="Pzr-nt-zgj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xzF-rL-5dl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-638" y="4920"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="logo.png" width="440" height="115"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -79,6 +79,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.tableHeaderView = nil;
 	// Do any additional setup after loading the view.
 }
 
@@ -88,6 +89,8 @@
 		
 		if (self.needsLayout) {
 			if (self.tableView.tableHeaderView) {
+				[self.tableHeaderView setNeedsLayout];
+				[self.tableHeaderView layoutIfNeeded];
 				CGRect frame = self.tableHeaderView.frame;
 				frame.size.height = [self.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 				if (!CGRectEqualToRect(self.tableHeaderView.frame, frame)) {

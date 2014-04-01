@@ -49,6 +49,8 @@
 		1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E173188F9572003C1361 /* EVEDBCertCertificate.m */; };
 		1222E179188F9572003C1361 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E175188F9572003C1361 /* EVEDBCertMastery.m */; };
 		1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E177188F9572003C1361 /* EVEDBCertSkill.m */; };
+		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
+		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
 		122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
@@ -666,6 +668,10 @@
 		1222E175188F9572003C1361 /* EVEDBCertMastery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertMastery.m; sourceTree = "<group>"; };
 		1222E176188F9572003C1361 /* EVEDBCertSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertSkill.h; sourceTree = "<group>"; };
 		1222E177188F9572003C1361 /* EVEDBCertSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBCertSkill.m; sourceTree = "<group>"; };
+		1229475B18EA8B2E0093FAB8 /* NCSkillQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillQueueViewController.h; sourceTree = "<group>"; };
+		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
+		122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsContainerViewController.h; sourceTree = "<group>"; };
+		122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsContainerViewController.m; sourceTree = "<group>"; };
 		122AC51218BCD84C005F0F46 /* EVEzKillBoardAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardAPI.h; sourceTree = "<group>"; };
 		122AC51318BCD84C005F0F46 /* EVEzKillBoardSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardSearch.h; sourceTree = "<group>"; };
 		122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEzKillBoardSearch.m; sourceTree = "<group>"; };
@@ -1809,6 +1815,24 @@
 			name = NCAccountCharacterCell;
 			sourceTree = "<group>";
 		};
+		1229475918EA8B130093FAB8 /* NCSkillQueueViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1229475B18EA8B2E0093FAB8 /* NCSkillQueueViewController.h */,
+				1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */,
+			);
+			name = NCSkillQueueViewController;
+			sourceTree = "<group>";
+		};
+		122947E818EAA4FB0093FAB8 /* NCSkillsContainerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */,
+				122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */,
+			);
+			name = NCSkillsContainerViewController;
+			sourceTree = "<group>";
+		};
 		122AC51118BCD84C005F0F46 /* EVEzKillBoardAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2772,6 +2796,8 @@
 			isa = PBXGroup;
 			children = (
 				126ED31B188128EF0009FA39 /* NCCharacterSheetViewController */,
+				122947E818EAA4FB0093FAB8 /* NCSkillsContainerViewController */,
+				1229475918EA8B130093FAB8 /* NCSkillQueueViewController */,
 				125F681718852D8A005732FA /* NCSkillsViewController */,
 				1206C5EC18927DAA0010BEE8 /* NCMailBoxViewController */,
 				84E4331818951A8C00DF2061 /* NCMailBoxMessageViewController */,
@@ -4757,6 +4783,7 @@
 				126A0E29185F3B9300A8E8A3 /* EVEDBStaStation.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
+				122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */,
 				126A0E19185F3B9300A8E8A3 /* EVEDBInvGroup.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
@@ -4773,6 +4800,7 @@
 				12041557189A449E00B15BB5 /* NCFittingShipWeaponsCell.m in Sources */,
 				126A0E2D185F3B9300A8E8A3 /* EVEAccountStatus.m in Sources */,
 				12ACDCA118A0AC4A00566DFE /* NCDamagePattern.m in Sources */,
+				1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */,
 				12C50757189BAAD30064AC32 /* NCFittingCharacterPickerViewController.m in Sources */,
 				129D2615187E923300E2062C /* LUIBarButtonItem.m in Sources */,
 				12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */,

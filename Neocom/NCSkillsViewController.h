@@ -9,7 +9,6 @@
 #import "NCTableViewController.h"
 
 typedef NS_ENUM(NSInteger, NCSkillsViewControllerMode) {
-	NCSkillsViewControllerModeTrainingQueue,
 	NCSkillsViewControllerModeKnownSkills,
 	NCSkillsViewControllerModeAllSkills,
 	NCSkillsViewControllerModeNotKnownSkills,
@@ -18,8 +17,8 @@ typedef NS_ENUM(NSInteger, NCSkillsViewControllerMode) {
 
 @interface NCSkillsViewController : NCTableViewController
 @property (nonatomic, assign) NCSkillsViewControllerMode mode;
+@property (nonatomic, weak) IBOutlet UISegmentedControl* modeSegmentedControl;
 
 - (IBAction)onChangeMode:(id)sender;
-- (IBAction)onAction:(id)sender;
 
 @end

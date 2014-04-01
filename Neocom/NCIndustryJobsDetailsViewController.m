@@ -158,6 +158,13 @@
 	}
 }
 
+- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+	if ([identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		return [sender object] != nil;
+	}
+	return YES;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

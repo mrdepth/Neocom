@@ -194,7 +194,7 @@
 	}
 	else {
 		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
-		cell.titleLabel.text = NSLocalizedString(@"Unknown type", nil);
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.installedItemTypeID];
 	}
 	
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endProductionTime];

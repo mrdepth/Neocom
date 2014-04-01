@@ -15,8 +15,6 @@
 
 @interface NCMailBoxViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* messages;
-
-//- (void) loadDataInTask:(NCTask*) task;
 @end
 
 @implementation NCMailBoxViewControllerData
@@ -72,18 +70,6 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if ([NSThread isMainThread]) {
-/*		NCMailBoxViewControllerData* data = [NCMailBoxViewControllerData new];
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 data.mailBox = self.mailBox;
-												 //[data loadDataInTask:task];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 if (!task.isCancelled) {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:[NSDate dateWithTimeIntervalSinceNow:[self defaultCacheExpireTime]]];
-									 }
-								 }];*/
 		[self update];
 	}
 }

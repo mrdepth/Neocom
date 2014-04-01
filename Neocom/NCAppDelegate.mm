@@ -275,7 +275,7 @@
 	NSArray* components = [resourceSpecifier pathComponents];
 	if (components.count > 0) {
 		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[components[0] intValue] error:nil];
-		if (type) {
+		if (type && type.attributesDictionary.count > 0) {
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 				UIViewController* presentedViewController = nil;
 				for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);

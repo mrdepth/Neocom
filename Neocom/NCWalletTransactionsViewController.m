@@ -145,6 +145,14 @@
 	}
 }
 
+- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+	if ([identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCWalletTransactionsViewControllerDataRow* row = [sender object];
+		return row.type != nil;
+	}
+	return YES;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -179,8 +187,15 @@
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	cell.object = row;
 	
-	cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-	cell.titleLabel.text = row.type.typeName;
+	if (row.type) {
+		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		cell.titleLabel.text = row.type.typeName;
+	}
+	else {
+		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), [row.transaction typeID]];
+	}
+
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.transaction transactionDateTime]];
 		
 	if (row.location.name)

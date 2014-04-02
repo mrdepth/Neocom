@@ -133,7 +133,10 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 110 : 150;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 91 : 111;
+	else
+		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 110 : 150;
 }
 
 #pragma mark SKPaymentTransactionObserver

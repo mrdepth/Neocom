@@ -386,6 +386,10 @@
 		12B5AE4D18CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */; };
 		12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */; };
 		12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */; };
+		12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */; };
+		12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.m */; };
+		12B971A918EC3D08008F8740 /* KillBoard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */; };
+		12B971AB18EC4A39008F8740 /* Help_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */; };
 		12B97D2A18AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */; };
 		12B97D2C18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */; };
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
@@ -1273,6 +1277,11 @@
 		12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundNormal@2x.png"; sourceTree = "<group>"; };
 		12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundSelected.png; sourceTree = "<group>"; };
 		12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundSelected@2x.png"; sourceTree = "<group>"; };
+		12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = POSFitting_iPad.storyboard; sourceTree = "<group>"; };
+		12B971A518EC2A11008F8740 /* NCFittingPOSStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStatsViewController.h; sourceTree = "<group>"; };
+		12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStatsViewController.m; sourceTree = "<group>"; };
+		12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard_iPad.storyboard; sourceTree = "<group>"; };
+		12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help_iPad.storyboard; sourceTree = "<group>"; };
 		12B97D2818AB465800ECCFC3 /* NCFittingPOSStructuresTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStructuresTableHeaderView.h; sourceTree = "<group>"; };
 		12B97D2918AB465900ECCFC3 /* NCFittingPOSStructuresTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStructuresTableHeaderView.m; sourceTree = "<group>"; };
 		12B97D2B18AB466300ECCFC3 /* NCFittingPOSStructuresTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingPOSStructuresTableHeaderView.xib; sourceTree = "<group>"; };
@@ -1729,8 +1738,11 @@
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
 				122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
+				12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
+				12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */,
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
+				12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				129421B31880265000977CB8 /* evedb.sqlite */,
 				849B9FE31896D44700D4DD2B /* eufe.sqlite */,
@@ -3465,6 +3477,15 @@
 			name = NCFittingDamagePatternCell;
 			sourceTree = "<group>";
 		};
+		12B971A418EC29FC008F8740 /* NCFittingPOSStatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12B971A518EC2A11008F8740 /* NCFittingPOSStatsViewController.h */,
+				12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.m */,
+			);
+			name = NCFittingPOSStatsViewController;
+			sourceTree = "<group>";
+		};
 		12B97D2718AB463900ECCFC3 /* NCFittingPOSStructuresTableHeaderView */ = {
 			isa = PBXGroup;
 			children = (
@@ -4057,6 +4078,7 @@
 				122947F018EACA920093FAB8 /* NCFittingShipStatsViewController */,
 				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
 				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
+				12B971A418EC29FC008F8740 /* NCFittingPOSStatsViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
 				12FF586E189FC23600E2D70A /* NCFittingFitPickerViewController */,
 				84442A59189FFF040021CB24 /* NCFittingTargetsViewController */,
@@ -4373,6 +4395,7 @@
 				12C66E5318D034880037124A /* segmentedControlDivider@2x.png in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
+				12B971AB18EC4A39008F8740 /* Help_iPad.storyboard in Resources */,
 				12C66E5718D0377C0037124A /* toolbar@2x.png in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
 				127C50C118CF550C0074877C /* buttonBackgroundDone.png in Resources */,
@@ -4405,6 +4428,7 @@
 				125F67FE188526B6005732FA /* level_100.gif in Resources */,
 				849B9FB11896D24A00D4DD2B /* armorRepairer.png in Resources */,
 				849B9FCB1896D24A00D4DD2B /* powerGrid.png in Resources */,
+				12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */,
 				849B9FCD1896D24A00D4DD2B /* scanResolution.png in Resources */,
 				12F9561818CDB739005CEAD6 /* README.txt in Resources */,
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
@@ -4445,6 +4469,7 @@
 				125F67F5188526B6005732FA /* level_011.gif in Resources */,
 				125F6803188526B6005732FA /* level_140.gif in Resources */,
 				849B9FBB1896D24A00D4DD2B /* droneBandwidth.png in Resources */,
+				12B971A918EC3D08008F8740 /* KillBoard_iPad.storyboard in Resources */,
 				125F6800188526B6005732FA /* level_121.gif in Resources */,
 				125F680F188526B6005732FA /* level_340.gif in Resources */,
 				125F680B188526B6005732FA /* level_241.gif in Resources */,
@@ -4519,6 +4544,7 @@
 				12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */,
 				126A0E48185F3B9300A8E8A3 /* EVESkillInTraining.m in Sources */,
 				12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */,
+				12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.m in Sources */,
 				1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */,
 				128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */,
 				12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */,

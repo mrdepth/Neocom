@@ -82,8 +82,13 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseGroupPickerViewContoller"]) {
-		NCDatabaseGroupPickerViewContoller* destinationViewController = segue.destinationViewController;
-		destinationViewController.categoryID = NCShipCategoryID;
+		NCDatabaseGroupPickerViewContoller* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.categoryID = NCShipCategoryID;
 	}
 	else if ([segue.identifier isEqualToString:@"NCZKillBoardSearchResultsViewController"]) {
 		NCZKillBoardSearchResultsViewController* destinationViewController = segue.destinationViewController;

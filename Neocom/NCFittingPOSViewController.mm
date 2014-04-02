@@ -15,6 +15,7 @@
 #import "NCStorage.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCFittingDamagePatternsViewController.h"
+#import "NCStoryboardPopoverSegue.h"
 
 #define ActionButtonShowControlTowerInfo NSLocalizedString(@"Control Tower Info", nil)
 #define ActionButtonSetName NSLocalizedString(@"Set Fit Name", nil)
@@ -50,7 +51,12 @@
     [super viewDidLoad];
 	self.title = self.fit.loadoutName;
 
-	self.workspaceViewController = self.childViewControllers[0];
+	for (id controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingPOSWorkspaceViewController class]])
+			self.workspaceViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingPOSStatsViewController class]])
+			self.statsViewController = controller;
+	}
 	
 	if (!self.engine)
 		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
@@ -78,8 +84,14 @@
 								 
 								 self.statsDataSource = [NCFittingPOSStatsDataSource new];
 								 self.statsDataSource.controller = self;
-								 self.statsDataSource.tableView = self.workspaceViewController.tableView;
-								 
+								 if (self.statsViewController) {
+									 self.statsDataSource.tableView = self.statsViewController.tableView;
+									 self.statsViewController.tableView.dataSource = self.statsDataSource;
+									 self.statsViewController.tableView.delegate = self.statsDataSource;
+								 }
+								 else {
+									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+								 }
 								 
 								 NCFittingPOSDataSource* dataSources[] = {self.structuresDataSource, self.assemblyLinesDataSource, self.statsDataSource};
 								 NCFittingPOSDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
@@ -87,7 +99,7 @@
 								 self.workspaceViewController.tableView.dataSource = dataSource;
 								 self.workspaceViewController.tableView.delegate = dataSource;
 								 self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-								 [dataSource reload];
+								 [self reload];
 
 							 }];
 }
@@ -118,6 +130,16 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
+		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			popoverSegue.anchorBarButtonItem = sender;
+		else if ([sender isKindOfClass:[UIView class]])
+			popoverSegue.anchorView = sender;
+		else
+			popoverSegue.anchorBarButtonItem = self.navigationItem.rightBarButtonItem;
+	}
+
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -164,6 +186,7 @@
 
 - (void) reload {
 	[(id) self.workspaceViewController.tableView.dataSource reload];
+	[(id) self.statsViewController.tableView.dataSource reload];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {

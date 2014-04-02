@@ -1,18 +1,18 @@
 //
-//  NCFittingShipStatsViewController.m
+//  NCFittingPOSStatsViewController.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 01.04.14.
+//  Created by Артем Шиманский on 02.04.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingShipStatsViewController.h"
+#import "NCFittingPOSStatsViewController.h"
 
-@interface NCFittingShipStatsViewController ()
+@interface NCFittingPOSStatsViewController ()
 
 @end
 
-@implementation NCFittingShipStatsViewController
+@implementation NCFittingPOSStatsViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     

@@ -130,17 +130,14 @@
 								 self.fleetDataSource.controller = self;
 								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
 								 
+								 self.statsDataSource = [NCFittingShipStatsDataSource new];
+								 self.statsDataSource.controller = self;
 								 if (self.statsViewController) {
-									 self.statsDataSource = [NCFittingShipStatsDataSource new];
-									 self.statsDataSource.controller = self;
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
-									 
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
 								 }
 								 else {
-									 self.statsDataSource = [NCFittingShipStatsDataSource new];
-									 self.statsDataSource.controller = self;
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
 								 }
 								 

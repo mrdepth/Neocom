@@ -86,8 +86,13 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCRSSItemViewController"]) {
-		NCRSSItemViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.rss = [sender object];
+		NCRSSItemViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.rss = [sender object];
 	}
 }
 

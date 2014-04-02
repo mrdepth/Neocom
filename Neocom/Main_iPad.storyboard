@@ -826,9 +826,9 @@
                         <segue destination="qRv-fm-fT1" kind="custom" identifier="NCKillMailsViewController" customClass="NCSideMenuViewControllerContentSegue" id="ksu-rP-aGo"/>
                         <segue destination="M7b-fo-9GL" kind="custom" identifier="NCZKillBoardViewController" customClass="NCSideMenuViewControllerContentSegue" id="o8c-CA-yka"/>
                         <segue destination="Kay-Zs-54D" kind="custom" identifier="NCRSSViewController" customClass="NCSideMenuViewControllerContentSegue" id="0Jy-Lb-W5M"/>
-                        <segue destination="BLT-Xw-QHo" kind="custom" identifier="NCAboutViewController" customClass="NCSideMenuViewControllerContentSegue" id="XGC-GP-Uxr"/>
-                        <segue destination="MOu-I0-jD7" kind="custom" identifier="NCDonationViewController" customClass="NCSideMenuViewControllerContentSegue" id="Dru-7J-x3f"/>
-                        <segue destination="rU9-0k-N0H" kind="custom" identifier="NCSettingsViewController" customClass="NCSideMenuViewControllerContentSegue" id="2xo-g0-C0f"/>
+                        <segue destination="BLT-Xw-QHo" kind="modal" identifier="NCAboutViewController" customClass="NCSideMenuViewControllerContentSegue" modalPresentationStyle="formSheet" id="XGC-GP-Uxr"/>
+                        <segue destination="MOu-I0-jD7" kind="modal" identifier="NCDonationViewController" customClass="NCSideMenuViewControllerContentSegue" modalPresentationStyle="formSheet" id="Dru-7J-x3f"/>
+                        <segue destination="rU9-0k-N0H" kind="modal" identifier="NCSettingsViewController" customClass="NCSideMenuViewControllerContentSegue" modalPresentationStyle="formSheet" id="2xo-g0-C0f"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUM-a3-TWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1180,7 +1180,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rmD-Gd-fTW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1201,7 +1201,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="KillBoard_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t5b-ey-Md5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1222,7 +1222,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bU7-9g-FIK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1238,12 +1238,12 @@
                         <viewControllerLayoutGuide type="bottom" id="SuP-fc-O4w"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PMU-8W-Dot">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NPg-23-rnC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1259,17 +1259,17 @@
                         <viewControllerLayoutGuide type="bottom" id="hYh-DF-4C9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TlQ-9S-s5q">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jRa-ps-HjJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5263" y="4984"/>
+            <point key="canvasLocation" x="5319" y="4984"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0pr-HN-99t">
@@ -1330,12 +1330,12 @@
                         <viewControllerLayoutGuide type="bottom" id="SW2-M2-hgf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FMS-1q-Wmt">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Help_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zah-NY-N5e" userLabel="First Responder" sceneMemberID="firstResponder"/>

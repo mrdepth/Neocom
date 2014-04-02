@@ -8,6 +8,7 @@
 
 #import "NCViewController.h"
 #import "NCFittingPOSWorkspaceViewController.h"
+#import "NCFittingPOSStatsViewController.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "eufe.h"
 #import "NCPOSFit.h"
@@ -16,6 +17,7 @@
 @interface NCFittingPOSViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
 @property (nonatomic, weak) NCFittingPOSWorkspaceViewController* workspaceViewController;
+@property (nonatomic, weak) NCFittingPOSStatsViewController* statsViewController;
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, assign, readonly) std::shared_ptr<eufe::Engine> engine;

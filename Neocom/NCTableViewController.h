@@ -10,8 +10,9 @@
 #import "NCCache.h"
 #import "NCAccount.h"
 #import "NCTaskManager.h"
+#import "CollapsableTableView.h"
 
-@interface NCTableViewController : UITableViewController<UISearchDisplayDelegate>
+@interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;
 @property (nonatomic, strong, readonly) NCCacheRecord* cacheRecord;
 @property (nonatomic, strong, readonly) id data;

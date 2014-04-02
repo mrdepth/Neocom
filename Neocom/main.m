@@ -14,6 +14,8 @@
 int main(int argc, char * argv[])
 {
 	@autoreleasepool {
+//		NSLog(@"%@", [UIStoryboardPopoverSegue allMethods]);
+//		NSLog(@"%@", [UIStoryboardPopoverSegue allProperties]);
 	    return UIApplicationMain(argc, argv, nil, NSStringFromClass([NCAppDelegate class]));
 	}
 }

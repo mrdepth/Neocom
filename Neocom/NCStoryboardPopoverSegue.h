@@ -10,5 +10,6 @@
 
 @interface NCStoryboardPopoverSegue : UIStoryboardPopoverSegue
 @property (nonatomic, strong) UIView* anchorView;
+@property (nonatomic, strong) UIBarButtonItem* anchorBarButtonItem;
 
 @end

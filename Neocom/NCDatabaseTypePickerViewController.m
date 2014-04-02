@@ -78,15 +78,16 @@
 		[self.viewControllers[0] setGroups:nil];
 		[self.viewControllers[0] setGroupID:0];
 	}
-	[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 	[self.viewControllers[0] setTitle:self.title];
 	
 	self.completionHandler = completion;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[controller presentViewControllerInPopover:self fromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
-	else
+	else {
+		[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
 		[controller presentViewController:self animated:animated completion:nil];
+	}
 }
 
 - (void) setTitle:(NSString *)title {

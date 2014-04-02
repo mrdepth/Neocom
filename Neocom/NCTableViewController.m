@@ -12,7 +12,6 @@
 #import "NSString+Neocom.h"
 #import "NCTableViewHeaderView.h"
 #import "NCTableViewCollapsedHeaderView.h"
-#import "CollapsableTableView.h"
 #import "NCSetting.h"
 #import "NCStorage.h"
 
@@ -30,6 +29,9 @@
 - (void) updateCacheTime;
 - (void) didChangeAccountNotification:(NSNotification*) notification;
 - (void) didBecomeActive:(NSNotification*) notification;
+- (void) onLongPress:(UILongPressGestureRecognizer*) recognizer;
+- (void) collapsAll:(UIMenuController*) controller;
+- (void) expandAll:(UIMenuController*) controller;
 
 @end
 
@@ -141,6 +143,14 @@
 	if (!parent) {
 		[self.taskManager cancelAllOperations];
 	}
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+	return action == @selector(collapsAll:) || action == @selector(expandAll:);
 }
 
 - (NCTaskManager*) taskManager {
@@ -312,6 +322,9 @@
 		NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 		if (title) {
 			NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+			if ([view isKindOfClass:[NCTableViewCollapsedHeaderView class]]) {
+				[view addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)]];
+			}
 			return view;
 		}
 		else
@@ -397,6 +410,25 @@
 		[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 	else
 		[self update];
+}
+
+- (void) onLongPress:(UILongPressGestureRecognizer*) recognizer {
+	if (recognizer.state == UIGestureRecognizerStateBegan) {
+		[self becomeFirstResponder];
+		UIMenuController* controller = [UIMenuController sharedMenuController];
+		controller.menuItems = @[[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Collaps All", nil) action:@selector(collapsAll:)],
+								 [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Expand All", nil) action:@selector(expandAll:)]];
+		[controller setTargetRect:recognizer.view.bounds inView:recognizer.view];
+		[controller setMenuVisible:YES animated:YES];
+	}
+}
+
+- (void) collapsAll:(UIMenuController*) controller {
+	[(CollapsableTableView*) self.tableView collapsAll];
+}
+
+- (void) expandAll:(UIMenuController*) controller {
+	[(CollapsableTableView*) self.tableView expandAll];
 }
 
 @end

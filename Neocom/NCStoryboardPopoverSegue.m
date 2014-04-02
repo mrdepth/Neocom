@@ -23,6 +23,10 @@
 	return self.anchorView;
 }
 
+- (UIBarButtonItem*) _anchorBarButtonItem {
+	return self.anchorBarButtonItem;
+}
+
 - (CGRect) _anchorRect {
 	return self.anchorView.bounds;
 }

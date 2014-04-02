@@ -13,6 +13,7 @@
 #import "NCTableViewCell.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
+#import "NSString+Neocom.h"
 
 @interface NCSkillPlansViewController ()
 @property (nonatomic, strong) NSArray* skillPlans;
@@ -69,6 +70,8 @@
 		NCSkillPlan* skillPlan = self.skillPlans[indexPath.row];
 		cell.object = skillPlan;
 		cell.titleLabel.text = skillPlan.name.length > 0 ? skillPlan.name : NSLocalizedString(@"Unnamed", nil);
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:skillPlan.trainingQueue.trainingTime], (int32_t) skillPlan.trainingQueue.skills.count];
+
 		if (skillPlan.active)
 			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 		else
@@ -175,8 +178,24 @@
 }
 
 - (void) update {
-	self.skillPlans = [[[NCAccount currentAccount] skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+	//self.skillPlans = [[[NCAccount currentAccount] skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+	NCAccount* account = [NCAccount currentAccount];
 	[super update];
+	__block NSArray* skillPlans = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 [account.managedObjectContext performBlockAndWait:^{
+												skillPlans = [[account skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+											 }];
+											 for (NCSkillPlan* skillPlan in skillPlans)
+												 [skillPlan.trainingQueue trainingTime];
+											 
+										 }
+							 completionHandler:^(NCTask *task) {
+								 self.skillPlans = skillPlans;
+								 [self.tableView reloadData];
+							 }];
 }
 
 - (void) didChangeAccount:(NCAccount *)account {

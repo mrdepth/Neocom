@@ -141,6 +141,12 @@
 	}
 }
 
+#pragma mark - CollapsableTableViewDelegate
+
+- (BOOL) tableView:(UITableView *)tableView canCollapsSection:(NSInteger) section {
+	return section == 0 ? NO : [super tableView:tableView canCollapsSection:section];
+}
+
 #pragma mark - NCTableViewController
 
 - (NSString*) recordID {

@@ -1012,7 +1012,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Fitting_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g6d-t3-bRD" userLabel="First Responder" sceneMemberID="firstResponder"/>

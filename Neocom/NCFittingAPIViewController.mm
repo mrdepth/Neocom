@@ -95,34 +95,43 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCFittingAPIFlagsViewController"]) {
 		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-		NCFittingAPIFlagsViewController* destinationViewController = segue.destinationViewController;
+		NCFittingAPIFlagsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 		
 		if (indexPath.row == 2) {
-			destinationViewController.title = NSLocalizedString(@"Weapon Type", nil);
-			destinationViewController.titles = @[NSLocalizedString(@"Hybrid Weapon", nil),
+			controller.title = NSLocalizedString(@"Weapon Type", nil);
+			controller.titles = @[NSLocalizedString(@"Hybrid Weapon", nil),
 												 NSLocalizedString(@"Energy Weapon", nil),
 												 NSLocalizedString(@"Projectile Weapon", nil),
 												 NSLocalizedString(@"Missile Launcher", nil)];
 			
-			destinationViewController.values = @[@(NeocomAPIFlagHybridTurrets), @(NeocomAPIFlagLaserTurrets), @(NeocomAPIFlagProjectileTurrets), @(NeocomAPIFlagMissileLaunchers)];
-			destinationViewController.icons = @[@"Icons/icon13_06.png", @"Icons/icon13_10.png", @"Icons/icon12_14.png", @"Icons/icon12_12.png"];
-			destinationViewController.selectedValue = @(self.flags & (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
+			controller.values = @[@(NeocomAPIFlagHybridTurrets), @(NeocomAPIFlagLaserTurrets), @(NeocomAPIFlagProjectileTurrets), @(NeocomAPIFlagMissileLaunchers)];
+			controller.icons = @[@"Icons/icon13_06.png", @"Icons/icon13_10.png", @"Icons/icon12_14.png", @"Icons/icon12_12.png"];
+			controller.selectedValue = @(self.flags & (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
 		}
 		else {
-			destinationViewController.title = NSLocalizedString(@"Type of Tanking", nil);
-			destinationViewController.titles = @[NSLocalizedString(@"Active Armor", nil), NSLocalizedString(@"Active Shield", nil), NSLocalizedString(@"Passive", nil)];
+			controller.title = NSLocalizedString(@"Type of Tanking", nil);
+			controller.titles = @[NSLocalizedString(@"Active Armor", nil), NSLocalizedString(@"Active Shield", nil), NSLocalizedString(@"Passive", nil)];
 			
-			destinationViewController.values = @[@(NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank),
+			controller.values = @[@(NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank),
 												 @(NeocomAPIFlagActiveTank | NeocomAPIFlagShieldTank),
 												 @(NeocomAPIFlagPassiveTank)];
 			
-			destinationViewController.icons = @[@"armorRepairer.png", @"shieldBooster.png", @"shieldRecharge.png"];
-			destinationViewController.selectedValue = @(self.flags & (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
+			controller.icons = @[@"armorRepairer.png", @"shieldBooster.png", @"shieldRecharge.png"];
+			controller.selectedValue = @(self.flags & (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
 		}
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseGroupPickerViewContoller"]) {
-		NCDatabaseGroupPickerViewContoller* destinationViewController = segue.destinationViewController;
-		destinationViewController.categoryID = NCShipCategoryID;
+		NCDatabaseGroupPickerViewContoller* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.categoryID = NCShipCategoryID;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingAPISearchResultsViewController"]) {
 		NCFittingAPISearchResultsViewController* destinationViewController = segue.destinationViewController;

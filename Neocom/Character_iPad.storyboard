@@ -827,7 +827,6 @@
         <!--Navigation Controller-->
         <scene sceneID="HnW-lj-vkk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nzc-LJ-LbV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="NCSkillsViewController" definesPresentationContext="YES" id="ffK-wW-9Yr" sceneMemberID="viewController">
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -839,6 +838,7 @@
                         <segue destination="uPn-EA-lxY" kind="relationship" relationship="rootViewController" id="m1N-c2-Nxv"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nzc-LJ-LbV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2812" y="2531"/>
         </scene>
@@ -1564,23 +1564,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <segmentedControl key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="4nR-y1-76a">
-                            <rect key="frame" x="0.0" y="0.0" width="351" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="My Skills"/>
-                                <segment title="All Skills"/>
-                                <segment title="Not Known"/>
-                                <segment title="Can Train"/>
-                            </segments>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="onChangeMode:" destination="vnT-sO-19L" eventType="valueChanged" id="MEt-R0-doo"/>
-                            </connections>
-                        </segmentedControl>
+                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="DBL-Z5-u2g">
+                            <rect key="frame" x="0.0" y="0.0" width="351" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="fxX-8F-3ZY"/>
+                                <barButtonItem width="320" style="plain" id="OKF-6B-IYo">
+                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="4nR-y1-76a">
+                                        <rect key="frame" x="16" y="7" width="320" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="My Skills"/>
+                                            <segment title="All Skills"/>
+                                            <segment title="Not Known"/>
+                                            <segment title="Can Train"/>
+                                        </segments>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="onChangeMode:" destination="vnT-sO-19L" eventType="valueChanged" id="MEt-R0-doo"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="R8g-hS-FRh"/>
+                            </items>
+                        </toolbar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCSkillCell" id="zvc-uS-wI3" customClass="NCSkillCell">
-                                <rect key="frame" x="0.0" y="52" width="351" height="42"/>
+                                <rect key="frame" x="0.0" y="66" width="351" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zvc-uS-wI3" id="0Xo-II-geN">
                                     <rect key="frame" x="0.0" y="0.0" width="351" height="41"/>
@@ -1695,6 +1705,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="oMD-Qd-m4c"/>
+        <segue reference="j8G-NR-Io8"/>
     </inferredMetricsTieBreakers>
 </document>

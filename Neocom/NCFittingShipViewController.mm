@@ -28,6 +28,7 @@
 #import "NCFittingRequiredSkillsViewController.h"
 #import "NCFittingImplantSetsViewController.h"
 #import "NCFittingShipAffectingSkillsViewController.h"
+#import "NCStoryboardPopoverSegue.h"
 
 #include <set>
 
@@ -79,7 +80,12 @@
 {
     [super viewDidLoad];
 	
-	self.workspaceViewController = self.childViewControllers[0];
+	for (id controller in self.childViewControllers) {
+		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])
+			self.workspaceViewController = controller;
+		else if ([controller isKindOfClass:[NCFittingShipStatsViewController class]])
+			self.statsViewController = controller;
+	}
 	
 	if (!self.engine)
 		self.engine = std::shared_ptr<eufe::Engine>(new eufe::Engine(new eufe::SqliteConnector([[[NSBundle mainBundle] pathForResource:@"eufe" ofType:@"sqlite"] cStringUsingEncoding:NSUTF8StringEncoding])));
@@ -124,9 +130,19 @@
 								 self.fleetDataSource.controller = self;
 								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
 								 
-								 self.statsDataSource = [NCFittingShipStatsDataSource new];
-								 self.statsDataSource.controller = self;
-								 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+								 if (self.statsViewController) {
+									 self.statsDataSource = [NCFittingShipStatsDataSource new];
+									 self.statsDataSource.controller = self;
+									 self.statsDataSource.tableView = self.statsViewController.tableView;
+									 
+									 self.statsViewController.tableView.dataSource = self.statsDataSource;
+									 self.statsViewController.tableView.delegate = self.statsDataSource;
+								 }
+								 else {
+									 self.statsDataSource = [NCFittingShipStatsDataSource new];
+									 self.statsDataSource.controller = self;
+									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+								 }
 								 
 								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};
 								 NCFittingShipDataSource* dataSource = dataSources[self.sectionSegmentedControl.selectedSegmentIndex];
@@ -134,7 +150,7 @@
 								 self.workspaceViewController.tableView.dataSource = dataSource;
 								 self.workspaceViewController.tableView.delegate = dataSource;
 								 self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
-								 [dataSource reload];
+								 [self reload];
 							 }];
 }
 
@@ -167,6 +183,16 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
+		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			popoverSegue.anchorBarButtonItem = sender;
+		else if ([sender isKindOfClass:[UIView class]])
+			popoverSegue.anchorView = sender;
+		else
+			popoverSegue.anchorBarButtonItem = self.navigationItem.rightBarButtonItem;
+	}
+	
 	if ([segue.identifier isEqualToString:@"NCFittingCharacterPickerViewController"]) {
 		NCFittingCharacterPickerViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -253,8 +279,13 @@
 		controller.type = [self typeWithItem:item];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
-		NCFittingRequiredSkillsViewController* destinationViewController = [segue destinationViewController];
-		destinationViewController.trainingQueue = sender;
+		NCFittingRequiredSkillsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+
+		controller.trainingQueue = sender;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingShipAffectingSkillsViewController"]) {
 		NCFittingShipAffectingSkillsViewController* controller;
@@ -276,7 +307,11 @@
 		controller.character = self.fit.character;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingImplantSetsViewControllerSave"]) {
-		NCFittingImplantSetsViewController* destinationViewController = [segue destinationViewController];
+		NCFittingImplantSetsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
 
 		NSMutableArray* implants = [NSMutableArray new];
 		for (auto implant: self.fit.pilot->getImplants())
@@ -290,8 +325,8 @@
 		data.implantIDs = implants;
 		data.boosterIDs = boosters;
 
-		destinationViewController.implantSetData = data;
-		destinationViewController.saveMode = YES;
+		controller.implantSetData = data;
+		controller.saveMode = YES;
 	}
 }
 
@@ -315,6 +350,7 @@
 
 - (void) reload {
 	[(id) self.workspaceViewController.tableView.dataSource reload];
+	[(id) self.statsViewController.tableView.dataSource reload];
 }
 
 - (NCDatabaseTypePickerViewController*) typePickerViewController {

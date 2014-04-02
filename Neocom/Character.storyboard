@@ -1394,23 +1394,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <segmentedControl key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="LC8-S3-JO8">
-                            <rect key="frame" x="0.0" y="64" width="320" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="My Skills"/>
-                                <segment title="All Skills"/>
-                                <segment title="Not Known"/>
-                                <segment title="Can Train"/>
-                            </segments>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="onChangeMode:" destination="fZI-Jm-FTL" eventType="valueChanged" id="AgG-qN-Ouk"/>
-                            </connections>
-                        </segmentedControl>
+                        <toolbar key="tableHeaderView" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="TAd-sm-9n9">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <items>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="V3P-r7-UXB"/>
+                                <barButtonItem width="290" style="plain" id="bgz-vf-FHh">
+                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="LC8-S3-JO8">
+                                        <rect key="frame" x="15" y="7" width="290" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="My Skills"/>
+                                            <segment title="All Skills"/>
+                                            <segment title="Not Known"/>
+                                            <segment title="Can Train"/>
+                                        </segments>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="onChangeMode:" destination="fZI-Jm-FTL" eventType="valueChanged" id="AgG-qN-Ouk"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="f9h-t2-Tqu"/>
+                            </items>
+                        </toolbar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCSkillCell" id="Vhy-D4-hWD" customClass="NCSkillCell">
-                                <rect key="frame" x="0.0" y="116" width="320" height="42"/>
+                                <rect key="frame" x="0.0" y="130" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vhy-D4-hWD" id="GMr-IM-uXo">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>

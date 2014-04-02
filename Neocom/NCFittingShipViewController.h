@@ -11,11 +11,13 @@
 #import "NCShipFit.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingShipWorkspaceViewController.h"
+#import "NCFittingShipStatsViewController.h"
 #import "NCDamagePattern.h"
 
 @interface NCFittingShipViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
 @property (nonatomic, weak) NCFittingShipWorkspaceViewController* workspaceViewController;
+@property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray* fits;

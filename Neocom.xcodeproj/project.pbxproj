@@ -51,6 +51,9 @@
 		1222E17A188F9572003C1361 /* EVEDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E177188F9572003C1361 /* EVEDBCertSkill.m */; };
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
+		122947ED18EAB3950093FAB8 /* Fitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */; };
+		122947EF18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */; };
+		122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.m */; };
 		122AC51518BCD84C005F0F46 /* EVEzKillBoardSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */; };
 		122C51F1188FA746000AEC2C /* NCCacheRecordData.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F0188FA746000AEC2C /* NCCacheRecordData.m */; };
 		122C51F5188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C51F4188FB81C000AEC2C /* NCDatabaseTypeMasteryViewController.m */; };
@@ -672,6 +675,10 @@
 		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
 		122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsContainerViewController.h; sourceTree = "<group>"; };
 		122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsContainerViewController.m; sourceTree = "<group>"; };
+		122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting_iPad.storyboard; sourceTree = "<group>"; };
+		122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShipFitting_iPad.storyboard; sourceTree = "<group>"; };
+		122947F118EACAAF0093FAB8 /* NCFittingShipStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipStatsViewController.h; sourceTree = "<group>"; };
+		122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipStatsViewController.m; sourceTree = "<group>"; };
 		122AC51218BCD84C005F0F46 /* EVEzKillBoardAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardAPI.h; sourceTree = "<group>"; };
 		122AC51318BCD84C005F0F46 /* EVEzKillBoardSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEzKillBoardSearch.h; sourceTree = "<group>"; };
 		122AC51418BCD84C005F0F46 /* EVEzKillBoardSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEzKillBoardSearch.m; sourceTree = "<group>"; };
@@ -1718,7 +1725,9 @@
 				12A7DBA718B36B2F00343D25 /* Market.storyboard */,
 				1235E3F718E5825800BC2607 /* Market_iPad.storyboard */,
 				849FEE3118A419A200A4F85E /* Fitting.storyboard */,
+				122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */,
 				84AC540C18A94034000C308C /* ShipFitting.storyboard */,
+				122947EE18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard */,
 				129C585618AA02B200CA8787 /* POSFitting.storyboard */,
 				12EC0AC018C0B18D0010169C /* KillBoard.storyboard */,
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
@@ -1831,6 +1840,15 @@
 				122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */,
 			);
 			name = NCSkillsContainerViewController;
+			sourceTree = "<group>";
+		};
+		122947F018EACA920093FAB8 /* NCFittingShipStatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				122947F118EACAAF0093FAB8 /* NCFittingShipStatsViewController.h */,
+				122947F218EACAAF0093FAB8 /* NCFittingShipStatsViewController.m */,
+			);
+			name = NCFittingShipStatsViewController;
 			sourceTree = "<group>";
 		};
 		122AC51118BCD84C005F0F46 /* EVEzKillBoardAPI */ = {
@@ -4036,6 +4054,7 @@
 				849B9FE21896D32200D4DD2B /* NCFittingMenuViewController */,
 				127123821897811F005F46EE /* NCFittingShipViewController */,
 				123BDDC81898F25800D6DD74 /* NCFittingShipWorkspaceViewController */,
+				122947F018EACA920093FAB8 /* NCFittingShipStatsViewController */,
 				129C585E18AA2CD400CA8787 /* NCFittingPOSViewController */,
 				129C585F18AA2CDF00CA8787 /* NCFittingPOSWorkspaceViewController */,
 				12C50754189BAAB30064AC32 /* NCFittingCharacterPickerViewController */,
@@ -4337,6 +4356,7 @@
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
 				849B9FBE1896D24A00D4DD2B /* explosion.png in Resources */,
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
+				122947ED18EAB3950093FAB8 /* Fitting_iPad.storyboard in Resources */,
 				849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */,
 				1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */,
 				84EEFCEB1896C69C007962A0 /* mordusLegion@2x.png in Resources */,
@@ -4453,6 +4473,7 @@
 				12C66E4E18D026690037124A /* arrowDown@2x.png in Resources */,
 				1235E3F618E56F0B00BC2607 /* Character_iPad.storyboard in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
+				122947EF18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard in Resources */,
 				12F9562B18CDFC51005CEAD6 /* Types in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
@@ -4719,6 +4740,7 @@
 				126A0E38185F3B9300A8E8A3 /* EVECharWalletJournal.m in Sources */,
 				84C1182818983B2D00A35516 /* NCDatabaseTypePickerViewController.m in Sources */,
 				126A0E31185F3B9300A8E8A3 /* EVEAccountBalance.m in Sources */,
+				122947F318EACAAF0093FAB8 /* NCFittingShipStatsViewController.m in Sources */,
 				126A0E50185F3B9300A8E8A3 /* EVECorporationSheet.m in Sources */,
 				127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */,
 				12430BB718C87C1B0025D971 /* NCDonationCell.m in Sources */,

@@ -297,6 +297,8 @@
 		127C50C418CF550C0074877C /* buttonBackgroundDoneSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50BE18CF550B0074877C /* buttonBackgroundDoneSelected@2x.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 128217651887D94D002B674E /* skillRequirementsMap.plist */; };
+		128969E618ED25FC00EE09FE /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 128969E418ED25FC00EE09FE /* facebook.png */; };
+		128969E718ED25FC00EE09FE /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 128969E518ED25FC00EE09FE /* facebook@2x.png */; };
 		128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */; };
 		128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHedaerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F3518990D9600005C4F /* NCFittingSectionHiSlotHedaerView.m */; };
 		128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHedaerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128A1F3718990DA200005C4F /* NCFittingSectionHiSlotHedaerView.xib */; };
@@ -1121,6 +1123,8 @@
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
 		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
 		128217651887D94D002B674E /* skillRequirementsMap.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skillRequirementsMap.plist; sourceTree = SOURCE_ROOT; };
+		128969E418ED25FC00EE09FE /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
+		128969E518ED25FC00EE09FE /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook@2x.png"; sourceTree = "<group>"; };
 		128A1F30189906A400005C4F /* NCFittingShipWorkspaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipWorkspaceViewController.h; sourceTree = "<group>"; };
 		128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipWorkspaceViewController.m; sourceTree = "<group>"; };
 		128A1F3418990D9600005C4F /* NCFittingSectionHiSlotHedaerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSectionHiSlotHedaerView.h; sourceTree = "<group>"; };
@@ -3129,6 +3133,8 @@
 				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
+				128969E418ED25FC00EE09FE /* facebook.png */,
+				128969E518ED25FC00EE09FE /* facebook@2x.png */,
 				12F8E1F318E9A47300CEA658 /* logo.png */,
 				12C66E5418D0377C0037124A /* toolbar.png */,
 				12C66E5518D0377C0037124A /* toolbar@2x.png */,
@@ -4356,6 +4362,7 @@
 				12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */,
 				849B9FD51896D24A00D4DD2B /* slotRig.png in Resources */,
 				127C50B718CF52DA0074877C /* clear.png in Resources */,
+				128969E618ED25FC00EE09FE /* facebook.png in Resources */,
 				12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */,
 				849B9FB41896D24A00D4DD2B /* calibration.png in Resources */,
 				12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */,
@@ -4485,6 +4492,7 @@
 				849B9FCF1896D24A00D4DD2B /* shieldBooster.png in Resources */,
 				84EEFCE31896C69C007962A0 /* amarrEmpire@2x.png in Resources */,
 				849B9FC91896D24A00D4DD2B /* online.png in Resources */,
+				128969E718ED25FC00EE09FE /* facebook@2x.png in Resources */,
 				125F680E188526B6005732FA /* level_300.gif in Resources */,
 				123A980418C71548001045F5 /* rssFeeds.plist in Resources */,
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,

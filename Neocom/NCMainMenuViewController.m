@@ -15,6 +15,7 @@
 #import "NSString+Neocom.h"
 #import "NCTableViewCell.h"
 #import "EVECentralAPI.h"
+#import "NCSplitViewController.h"
 
 #define NCPlexTypeID 29668
 #define NCTritaniumTypeID 34
@@ -30,7 +31,7 @@
 
 #define NCPlexRate (209.94 / 12.0 * 1000000000.0)
 
-@interface NCMainMenuViewController ()<UISplitViewControllerDelegate>
+@interface NCMainMenuViewController ()
 @property (nonatomic, strong) NSMutableArray* allSections;
 @property (nonatomic, strong) NSMutableArray* sections;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
@@ -42,7 +43,6 @@
 @property (nonatomic, readonly) NSString* mailsDetails;
 @property (nonatomic, strong) NSTimer* timer;
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
-@property (nonatomic, strong) UIPopoverController* masterPopover;
 - (void) reload;
 - (void) onTimer:(NSTimer*) timer;
 - (void) updateServerStatus;
@@ -104,19 +104,17 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCMarketPricesMonitorDidChangeNotification object:nil];
 }
 
-- (void) didMoveToParentViewController:(UIViewController *)parent {
-	[super didMoveToParentViewController:parent];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.splitViewController.delegate = self;
-	}
-}
-
 - (void) dealloc {
 	self.timer = nil;
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	[self.masterPopover dismissPopoverAnimated:YES];
+	NCSplitViewController* splitViewController = (NCSplitViewController*) self.splitViewController;
+	[splitViewController.masterPopover dismissPopoverAnimated:YES];
+}
+
+- (IBAction)onFacebook:(id)sender {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.facebook.com/groups/Neocom/"]];
 }
 
 
@@ -201,25 +199,6 @@
 	else
 		[self updatePrices];
 	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
-}
-
-#pragma mark - UISplitViewControllerDelegate
-
-- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
-	barButtonItem.image = [UIImage imageNamed:@"menuIcon.png"];
-	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
-	if ([navigationController isKindOfClass:[UINavigationController class]]) {
-		[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:barButtonItem animated:YES];
-	}
-	self.masterPopover = pc;
-}
-
-- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	UINavigationController* navigationController = [[self.splitViewController viewControllers] objectAtIndex:1];
-	if ([navigationController isKindOfClass:[UINavigationController class]]) {
-		[[[[navigationController viewControllers] objectAtIndex:0] navigationItem] setLeftBarButtonItem:nil animated:YES];
-	}
-	self.masterPopover = nil;
 }
 
 #pragma mark - Private

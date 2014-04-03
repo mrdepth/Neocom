@@ -92,6 +92,11 @@
 							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];
 }
 
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor blackColor];
+}
 
 #pragma mark UITextFieldDelegate
 

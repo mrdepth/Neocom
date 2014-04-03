@@ -330,7 +330,7 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="seg-im-LpX"/>
                     </navigationItem>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShipFitting"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShipFitting_iPad"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mEU-n0-rwy" userLabel="First Responder" sceneMemberID="firstResponder"/>

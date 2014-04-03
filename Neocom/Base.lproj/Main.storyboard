@@ -745,10 +745,26 @@
                                 <constraint firstItem="5ea-hp-tyZ" firstAttribute="leading" secondItem="S2q-hj-9gK" secondAttribute="trailing" constant="15" id="kCQ-kZ-ljG"/>
                             </constraints>
                         </view>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="Ml6-o1-YBM">
-                            <rect key="frame" x="0.0" y="159" width="320" height="0.0"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="ToO-Q8-hqQ">
+                            <rect key="frame" x="0.0" y="159" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hoh-Md-3Q8">
+                                    <rect key="frame" x="268" y="6" width="32" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" image="facebook.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onFacebook:" destination="PgR-W2-PV6" eventType="touchUpInside" id="trL-pC-KNR"/>
+                                    </connections>
+                                </button>
+                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="centerY" secondItem="hoh-Md-3Q8" secondAttribute="centerY" id="d6w-ls-ZRc"/>
+                                <constraint firstAttribute="trailing" secondItem="hoh-Md-3Q8" secondAttribute="trailing" constant="20" id="rLj-Fq-doT"/>
+                            </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="nDx-5u-AmT" customClass="NCTableViewCell">
@@ -1358,6 +1374,9 @@
             <point key="canvasLocation" x="676" y="2648"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="facebook.png" width="32" height="32"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

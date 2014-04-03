@@ -323,7 +323,15 @@
 		if (title) {
 			NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
 			if ([view isKindOfClass:[NCTableViewCollapsedHeaderView class]]) {
-				[view addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)]];
+				BOOL recognizerExists = NO;
+				for (UIGestureRecognizer* recognizer in view.gestureRecognizers) {
+					if ([recognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+						recognizerExists = YES;
+						break;
+					}
+				}
+				if (!recognizerExists)
+					[view addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)]];
 			}
 			return view;
 		}

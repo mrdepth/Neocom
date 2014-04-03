@@ -1695,7 +1695,7 @@
     <resources>
         <image name="Icons/icon22_01.png" width="32" height="32"/>
         <image name="Icons/icon22_02.png" width="32" height="32"/>
-        <image name="Icons/icon22_03.png" width="32" height="32"/>
+        <image name="Icons/icon22_03.png" width="440" height="115"/>
         <image name="Icons/icon22_04.png" width="32" height="32"/>
         <image name="Icons/icon22_05.png" width="32" height="32"/>
     </resources>

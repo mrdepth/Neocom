@@ -17,6 +17,7 @@
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
 @property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) id identifier;
 @end
 
 
@@ -30,6 +31,7 @@
 	if (self = [super init]) {
 		self.assets = [aDecoder decodeObjectForKey:@"assets"];
 		self.title = [aDecoder decodeObjectForKey:@"title"];
+		self.identifier = [aDecoder decodeObjectForKey:@"identifier"];
 	}
 	return self;
 }
@@ -39,6 +41,8 @@
 		[aCoder encodeObject:self.assets forKey:@"assets"];
 	if (self.title)
 		[aCoder encodeObject:self.title forKey:@"title"];
+	if (self.identifier)
+		[aCoder encodeObject:self.identifier forKey:@"identifier"];
 }
 
 @end
@@ -452,6 +456,7 @@
 														 section.title = item.solarSystem.solarSystemName;
 													 else
 														 section.title = NSLocalizedString(@"Unknown location", nil);
+													 section.identifier = key;
 													 [sections addObject:section];
 												 }];
 											 }
@@ -460,6 +465,7 @@
 												 NCAssetsViewControllerDataSection* section = [NCAssetsViewControllerDataSection new];
 												 section.assets = topLevelAssets;
 												 section.title = NSLocalizedString(@"Unknown location", nil);
+												 section.identifier = @(0);
 												 [sections addObject:section];
 											 }
 
@@ -546,6 +552,12 @@
 									 [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
+}
+
+- (id) identifierForSection:(NSInteger)sectionIndex {
+	NCAssetsViewControllerData* data = self.data;
+	NCAssetsViewControllerDataSection* section = data.sections[sectionIndex];
+	return section.identifier;
 }
 
 @end

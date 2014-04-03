@@ -22,4 +22,5 @@ typedef NS_OPTIONS(NSInteger, NCMarketPricesMonitor) {
 @property (weak, nonatomic) IBOutlet UILabel *serverTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *marqueeLabel;
 
+- (IBAction)onFacebook:(id)sender;
 @end

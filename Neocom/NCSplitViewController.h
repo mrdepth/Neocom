@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NCSplitViewController : UISplitViewController
+@property (nonatomic, strong) UIPopoverController* masterPopover;
 
 @end

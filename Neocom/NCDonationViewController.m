@@ -132,6 +132,10 @@
 
 #pragma mark - Table view delegate
 
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor blackColor];
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 91 : 111;

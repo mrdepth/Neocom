@@ -243,11 +243,11 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="TXc-z5-DML" detailTextLabel="rlz-N6-2di" style="IBUITableViewCellStyleSubtitle" id="029-ff-KGX" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="TXc-z5-DML" detailTextLabel="rlz-N6-2di" style="IBUITableViewCellStyleSubtitle" id="029-ff-KGX" customClass="NCTableViewCell">
                                 <rect key="frame" x="0.0" y="234" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="029-ff-KGX" id="u2k-gd-DhK">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="TXc-z5-DML">
@@ -267,6 +267,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="Fvg-OJ-rZS" kind="push" identifier="NCDatabaseTypeInfoViewController" id="W7V-Fr-4NT"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCKillMailDetailsAttackerCell" rowHeight="109" id="bFI-6f-RY8" customClass="NCKillMailDetailsAttackerCell">
                                 <rect key="frame" x="0.0" y="278" width="320" height="109"/>
@@ -886,7 +889,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h3C-XN-ag7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-361" y="488"/>
+            <point key="canvasLocation" x="-227" y="28"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="xvb-Mk-flV">
@@ -948,6 +951,30 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <exit id="UMY-Z5-296" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1235" y="1920"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="eo5-ii-UNs">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="Fvg-OJ-rZS" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7Gg-uJ-nvc"/>
+                        <viewControllerLayoutGuide type="bottom" id="jzA-rh-Sb7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hM5-HV-gvE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="kwf-Ph-pUK">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="fNk-9i-388"/>
+                    </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B17-xO-K9D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-227" y="723"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

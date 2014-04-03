@@ -458,4 +458,14 @@
 							 }];
 }
 
+- (id) identifierForSection:(NSInteger)section {
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary)
+		return @(section);
+	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
+		return [data.sellOrdersSections[section] title];
+	else
+		return [data.buyOrdersSections[section] title];
+}
+
 @end

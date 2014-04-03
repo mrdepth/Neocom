@@ -208,8 +208,11 @@
 	}
 }
 
-#pragma mark -
-#pragma mark Table view delegate
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor blackColor];
+}
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0 || (indexPath.section == 1 && indexPath.row == self.customDamagePatterns.count))

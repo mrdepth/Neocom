@@ -131,6 +131,12 @@
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
+		1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593B18EE7BFD0049B9CE /* eufe.sqlite */; };
+		1261593E18EE7BFD0049B9CE /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593C18EE7BFD0049B9CE /* evedb.sqlite */; };
+		1261594218EE7C080049B9CE /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 1261594018EE7C080049B9CE /* Icons */; };
+		1261594318EE7C080049B9CE /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 1261594118EE7C080049B9CE /* Types */; };
+		1261594918EE7F9C0049B9CE /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */; };
+		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
 		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
 		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
 		12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0318B74048005C311D /* NCStarbasesCell.m */; };
@@ -316,7 +322,6 @@
 		128D29BA18BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 128D29B918BDC794003B8E03 /* NCTableViewCollapsedHeaderView.m */; };
 		129421A9187FDF7200977CB8 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		129421AC187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */; };
-		129421B41880265000977CB8 /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 129421B31880265000977CB8 /* evedb.sqlite */; };
 		129421B81880321900977CB8 /* NCAccountCorporationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421B71880321900977CB8 /* NCAccountCorporationCell.m */; };
 		1296C6C21890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1296C6C11890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.m */; };
 		1298CA1818C4B1B700F3F550 /* NCSkillPlanImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1298CA1718C4B1B700F3F550 /* NCSkillPlanImportViewController.m */; };
@@ -397,7 +402,6 @@
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
 		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
 		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
-		12BF345C18814B9D00368CD4 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 12BF345B18814B9D00368CD4 /* Icons */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
 		12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */; };
@@ -451,7 +455,6 @@
 		12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562118CDB835005CEAD6 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */; };
-		12F9562B18CDFC51005CEAD6 /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 12F9562A18CDFC51005CEAD6 /* Types */; };
 		12FA32AC18E157920053DDC5 /* NCMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */; };
 		12FA32AF18E1673D0053DDC5 /* UIView+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */; };
 		12FDA32E18E00710007B091D /* NCImplantSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FDA32D18E00710007B091D /* NCImplantSet.m */; };
@@ -534,7 +537,6 @@
 		849B9FDC1896D24A00D4DD2B /* turrets.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAB1896D24A00D4DD2B /* turrets.png */; };
 		849B9FDD1896D24A00D4DD2B /* velocity.png in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FAC1896D24A00D4DD2B /* velocity.png */; };
 		849B9FE11896D31B00D4DD2B /* NCFittingMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */; };
-		849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 849B9FE31896D44700D4DD2B /* eufe.sqlite */; };
 		849FEE3218A419A200A4F85E /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3118A419A200A4F85E /* Fitting.storyboard */; };
 		849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */; };
 		849FEE3A18A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 849FEE3918A41B9200A4F85E /* NCFittingShipDronesTableHeaderView.xib */; };
@@ -792,6 +794,13 @@
 		125F682118853230005732FA /* NCSkillData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillData.m; sourceTree = "<group>"; };
 		125F6823188537FF005732FA /* NCCharacterAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributes.h; sourceTree = "<group>"; };
 		125F6824188537FF005732FA /* NCCharacterAttributes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCCharacterAttributes.mm; sourceTree = "<group>"; };
+		1261593B18EE7BFD0049B9CE /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = "<group>"; };
+		1261593C18EE7BFD0049B9CE /* evedb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = evedb.sqlite; sourceTree = "<group>"; };
+		1261594018EE7C080049B9CE /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
+		1261594118EE7C080049B9CE /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
+		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
+		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		12640AF818B72E43005C311D /* NCStarbasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesViewController.h; sourceTree = "<group>"; };
 		12640AF918B72E43005C311D /* NCStarbasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesViewController.m; sourceTree = "<group>"; };
 		12640AFF18B7306C005C311D /* EVEStarbaseListItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEStarbaseListItem+Neocom.h"; sourceTree = "<group>"; };
@@ -1156,7 +1165,6 @@
 		129421A8187FDF7200977CB8 /* NSString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Neocom.m"; sourceTree = "<group>"; };
 		129421AA187FDFAE00977CB8 /* NSNumberFormatter+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+Neocom.h"; sourceTree = "<group>"; };
 		129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+Neocom.m"; sourceTree = "<group>"; };
-		129421B31880265000977CB8 /* evedb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = evedb.sqlite; sourceTree = SOURCE_ROOT; };
 		129421B61880321900977CB8 /* NCAccountCorporationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCorporationCell.h; sourceTree = "<group>"; };
 		129421B71880321900977CB8 /* NCAccountCorporationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCorporationCell.m; sourceTree = "<group>"; };
 		1296C6C01890ED6A00ADF2E7 /* NCDatabaseCertificateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificateInfoViewController.h; sourceTree = "<group>"; };
@@ -1295,7 +1303,6 @@
 		12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBattleClinicSearchResultsViewController.mm; sourceTree = "<group>"; };
 		12B97D3A18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsCell.h; sourceTree = "<group>"; };
 		12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingBattleClinicSearchResultsCell.m; sourceTree = "<group>"; };
-		12BF345B18814B9D00368CD4 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Icons; path = Graphics/Icons; sourceTree = SOURCE_ROOT; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
 		12C5074D189B6F170064AC32 /* NCShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipFit.h; sourceTree = "<group>"; };
@@ -1399,7 +1406,6 @@
 		12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		12F9562718CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAPIKeyAccessMaskViewController.h; sourceTree = "<group>"; };
 		12F9562818CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAPIKeyAccessMaskViewController.m; sourceTree = "<group>"; };
-		12F9562A18CDFC51005CEAD6 /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
 		12FA32AA18E157920053DDC5 /* NCMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarqueeLabel.h; sourceTree = "<group>"; };
 		12FA32AB18E157920053DDC5 /* NCMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarqueeLabel.m; sourceTree = "<group>"; };
 		12FA32AD18E1673D0053DDC5 /* UIView+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Neocom.h"; sourceTree = "<group>"; };
@@ -1512,7 +1518,6 @@
 		849B9FAC1896D24A00D4DD2B /* velocity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = velocity.png; sourceTree = "<group>"; };
 		849B9FDF1896D31B00D4DD2B /* NCFittingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingMenuViewController.h; sourceTree = "<group>"; };
 		849B9FE01896D31B00D4DD2B /* NCFittingMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingMenuViewController.mm; sourceTree = "<group>"; };
-		849B9FE31896D44700D4DD2B /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = SOURCE_ROOT; };
 		849FEE3118A419A200A4F85E /* Fitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting.storyboard; sourceTree = "<group>"; };
 		849FEE3618A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipDronesTableHeaderView.h; sourceTree = "<group>"; };
 		849FEE3718A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipDronesTableHeaderView.m; sourceTree = "<group>"; };
@@ -1573,6 +1578,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
@@ -1581,6 +1587,7 @@
 				12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */,
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
+				1261594918EE7F9C0049B9CE /* libFlurry_4.4.0.a in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
 				12F9561718CDB739005CEAD6 /* libGoogleAdMobAds.a in Frameworks */,
@@ -1681,6 +1688,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1261594A18EE7FCB0049B9CE /* Security.framework */,
 				12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */,
 				12F9562118CDB835005CEAD6 /* AdSupport.framework */,
 				12F9561F18CDB822005CEAD6 /* AVFoundation.framework */,
@@ -1724,6 +1732,7 @@
 		120968591845F0CB00921A37 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1261593A18EE7BFD0049B9CE /* db */,
 				8418BB1A1891970500B99A7E /* Resources */,
 				129D2578187E835800E2062C /* Graphics */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
@@ -1748,8 +1757,6 @@
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
 				12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
-				129421B31880265000977CB8 /* evedb.sqlite */,
-				849B9FE31896D44700D4DD2B /* eufe.sqlite */,
 				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
 				1209685B1845F0CB00921A37 /* InfoPlist.strings */,
 				1209685E1845F0CB00921A37 /* main.m */,
@@ -2169,6 +2176,26 @@
 			name = NCCharacterAttributes;
 			sourceTree = "<group>";
 		};
+		1261593A18EE7BFD0049B9CE /* db */ = {
+			isa = PBXGroup;
+			children = (
+				1261594018EE7C080049B9CE /* Icons */,
+				1261594118EE7C080049B9CE /* Types */,
+				1261593B18EE7BFD0049B9CE /* eufe.sqlite */,
+				1261593C18EE7BFD0049B9CE /* evedb.sqlite */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
+		1261594618EE7F9C0049B9CE /* flurry */ = {
+			isa = PBXGroup;
+			children = (
+				1261594718EE7F9C0049B9CE /* Flurry.h */,
+				1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */,
+			);
+			path = flurry;
+			sourceTree = "<group>";
+		};
 		12640AF618B72E01005C311D /* NCStarbasesViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2308,6 +2335,7 @@
 				129D257F187E923200E2062C /* tools */,
 				126A0CC5185F3B9100A8E8A3 /* EVEOnlineAPI */,
 				12F9560318CDB739005CEAD6 /* admob */,
+				1261594618EE7F9C0049B9CE /* flurry */,
 			);
 			path = ThirdParty;
 			sourceTree = SOURCE_ROOT;
@@ -3129,8 +3157,6 @@
 			isa = PBXGroup;
 			children = (
 				125F67CE188526B5005732FA /* Levels */,
-				12BF345B18814B9D00368CD4 /* Icons */,
-				12F9562A18CDFC51005CEAD6 /* Types */,
 				84EEFCD41896C69C007962A0 /* Factions */,
 				849B9F7B1896D24900D4DD2B /* FittingIcons */,
 				128969E418ED25FC00EE09FE /* facebook.png */,
@@ -4370,6 +4396,7 @@
 				849B9FD41896D24A00D4DD2B /* slotMed.png in Resources */,
 				12A7DB9918B3497B00343D25 /* index.html in Resources */,
 				849B9FC61896D24A00D4DD2B /* Magnetometric.png in Resources */,
+				1261593E18EE7BFD0049B9CE /* evedb.sqlite in Resources */,
 				12B5AE4018CF08AF00D05D60 /* buttonBackNormal.png in Resources */,
 				849B9FC51896D24A00D4DD2B /* launchers.png in Resources */,
 				12C66E5218D034880037124A /* segmentedControlDivider.png in Resources */,
@@ -4402,6 +4429,7 @@
 				12C66E5318D034880037124A /* segmentedControlDivider@2x.png in Resources */,
 				125F67F8188526B6005732FA /* level_030.gif in Resources */,
 				128217661887D94D002B674E /* skillRequirementsMap.plist in Resources */,
+				1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */,
 				12B971AB18EC4A39008F8740 /* Help_iPad.storyboard in Resources */,
 				12C66E5718D0377C0037124A /* toolbar@2x.png in Resources */,
 				125F6806188526B6005732FA /* level_151.gif in Resources */,
@@ -4411,7 +4439,6 @@
 				128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHedaerView.xib in Resources */,
 				127C50C418CF550C0074877C /* buttonBackgroundDoneSelected@2x.png in Resources */,
 				125F67F3188526B6005732FA /* level_000.gif in Resources */,
-				12BF345C18814B9D00368CD4 /* Icons in Resources */,
 				849B9FAD1896D24A00D4DD2B /* active.png in Resources */,
 				849B9FAF1896D24A00D4DD2B /* align.png in Resources */,
 				849B9FD71896D24A00D4DD2B /* targetingRange.png in Resources */,
@@ -4419,6 +4446,7 @@
 				125F6804188526B6005732FA /* level_141.gif in Resources */,
 				849B9FDC1896D24A00D4DD2B /* turrets.png in Resources */,
 				12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */,
+				1261594218EE7C080049B9CE /* Icons in Resources */,
 				12D011BF18A2101400C0A228 /* checkmark.png in Resources */,
 				125F67FB188526B6005732FA /* level_041.gif in Resources */,
 				84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */,
@@ -4440,7 +4468,6 @@
 				12F9561818CDB739005CEAD6 /* README.txt in Resources */,
 				125F6810188526B6005732FA /* level_341.gif in Resources */,
 				125F6815188526B6005732FA /* level_451.gif in Resources */,
-				849B9FE41896D44700D4DD2B /* eufe.sqlite in Resources */,
 				127C50C218CF550C0074877C /* buttonBackgroundDone@2x.png in Resources */,
 				129C585718AA02B200CA8787 /* POSFitting.storyboard in Resources */,
 				849B9FBF1896D24A00D4DD2B /* Gravimetric.png in Resources */,
@@ -4498,7 +4525,6 @@
 				1209685D1845F0CB00921A37 /* InfoPlist.strings in Resources */,
 				1235E3F818E5825800BC2607 /* Market_iPad.storyboard in Resources */,
 				84EEFCED1896C69C007962A0 /* serpentis@2x.png in Resources */,
-				129421B41880265000977CB8 /* evedb.sqlite in Resources */,
 				125F67F9188526B6005732FA /* level_031.gif in Resources */,
 				128D29B418BDBD35003B8E03 /* NCTableViewCollapsedHeaderView.xib in Resources */,
 				125F6808188526B6005732FA /* level_230.gif in Resources */,
@@ -4507,8 +4533,8 @@
 				1235E3F618E56F0B00BC2607 /* Character_iPad.storyboard in Resources */,
 				849B9FCE1896D24A00D4DD2B /* shield.png in Resources */,
 				122947EF18EAC8EF0093FAB8 /* ShipFitting_iPad.storyboard in Resources */,
-				12F9562B18CDFC51005CEAD6 /* Types in Resources */,
 				123A97FD18C714B7001045F5 /* rss@2x.png in Resources */,
+				1261594318EE7C080049B9CE /* Types in Resources */,
 				849B9FB81896D24A00D4DD2B /* damagePattern.png in Resources */,
 				849B9FC71896D24A00D4DD2B /* Multispectral.png in Resources */,
 				12F8E1F418E9A47400CEA658 /* logo.png in Resources */,
@@ -5033,12 +5059,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
+					"$(PROJECT_DIR)/ThirdParty/flurry",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe $(SRCROOT)/ThirdParty/flurry";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5064,12 +5091,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/shimanski/Documents/git/EVEUniverse/ThirdParty/admob,
+					"$(PROJECT_DIR)/ThirdParty/flurry",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/ThirdParty/eufe/eufe $(SRCROOT)/ThirdParty/flurry";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

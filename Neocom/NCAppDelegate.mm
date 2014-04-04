@@ -23,6 +23,7 @@
 #import "NCSideMenuViewController.h"
 #import "NCMainMenuViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "Flurry.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -42,6 +43,9 @@
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[Flurry setCrashReportingEnabled:YES];
+    [Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
 		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 		purchase.purchased = YES;

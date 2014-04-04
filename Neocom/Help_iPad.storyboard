@@ -240,7 +240,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="510" height="173"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <string key="text">Peter Vlaar aka Tess La'Coil
-Dick Starmans
+Dick Starmans aka Enrique d'Ancourt
 Marcel Ju
 Adrien Vincent Angelo Ilardo
 Jason Barnes
@@ -275,6 +275,7 @@ Anton Vorobyov aka Kadesh Priestess
                     </navigationItem>
                     <size key="freeformSize" width="320" height="600"/>
                     <connections>
+                        <outlet property="sdeVersionLabel" destination="3v9-9o-V8v" id="F9U-m9-g4D"/>
                         <outlet property="versionLabel" destination="xFT-TF-AxX" id="MiJ-Kf-d1x"/>
                     </connections>
                 </tableViewController>

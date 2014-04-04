@@ -215,6 +215,7 @@
 	NCAccount* account = [NCAccount currentAccount];
 	NSMutableArray* masteriesSections = [NSMutableArray new];
 	__block NSArray* requiredForSections = nil;
+	BOOL canTrain = account && account.accountType == NCAccountTypeCharacter && account.activeSkillPlan;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
@@ -254,7 +255,7 @@
 												 }
 												 NSString* title;
 												 BOOL collapsed;
-												 if (trainingQueue.trainingTime > 0.0) {
+												 if (canTrain && trainingQueue.trainingTime > 0.0) {
 													 NCDatabaseCertificateInfoViewControllerRow* row = [NCDatabaseCertificateInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Add required skills to training plan", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
@@ -267,8 +268,12 @@
 												 }
 												 else {
 													 title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), masteryLevel + 1];
-													 availableMasteryLevel++;
-													 collapsed = YES;
+													 if (canTrain) {
+														 availableMasteryLevel++;
+														 collapsed = YES;
+													 }
+													 else
+														 collapsed = NO;
 												 }
 												 [masteriesSections addObject:@{@"title": title, @"rows": rows, @"collapsed": @(collapsed)}];
 												 masteryLevel++;

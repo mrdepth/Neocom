@@ -777,7 +777,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ql-ON-106">
-                                    <rect key="frame" x="268" y="6" width="32" height="32"/>
+                                    <rect key="frame" x="20" y="6" width="32" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="facebook.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -789,7 +789,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="9Ql-ON-106" secondAttribute="trailing" constant="20" id="PtS-cv-zu8"/>
+                                <constraint firstItem="9Ql-ON-106" firstAttribute="leading" secondItem="NE9-C3-Xoy" secondAttribute="leading" constant="20" id="1LC-em-RAV"/>
                                 <constraint firstAttribute="centerY" secondItem="9Ql-ON-106" secondAttribute="centerY" id="v3H-Li-x18"/>
                             </constraints>
                         </view>

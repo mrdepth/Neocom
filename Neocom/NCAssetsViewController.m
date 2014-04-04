@@ -396,7 +396,8 @@
 														 NSArray* subArray = [allIDs subarrayWithRange:NSMakeRange(first, length)];
 														 first += length;
 														 left -= length;
-														 eveLocations = [EVELocations locationsWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID ids:subArray corporate:corporate error:nil progressHandler:nil];
+														 NSError* error = nil;
+														 eveLocations = [EVELocations locationsWithKeyID:account.apiKey.keyID vCode:account.apiKey.vCode cachePolicy:cachePolicy characterID:account.characterID ids:subArray corporate:corporate error:&error progressHandler:nil];
 														 for (EVELocationsItem* location in eveLocations.locations)
 															 locations[@(location.itemID)] = location;
 													 }

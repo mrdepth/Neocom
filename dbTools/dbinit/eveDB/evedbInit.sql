@@ -23,11 +23,9 @@ INSERT INTO eveDB.invControlTowerResourcePurposes SELECT * FROM invControlTowerR
 INSERT INTO eveDB.invControlTowerResources SELECT * FROM invControlTowerResources;
 INSERT INTO eveDB.invMetaGroups SELECT * FROM invMetaGroups;
 INSERT INTO eveDB.invMetaTypes SELECT * FROM invMetaTypes;
-INSERT INTO eveDB.crtCategories SELECT * FROM crtCategories;
-INSERT INTO eveDB.crtCertificates SELECT * FROM crtCertificates;
-INSERT INTO eveDB.crtClasses SELECT * FROM crtClasses;
-INSERT INTO eveDB.crtRecommendations SELECT * FROM crtRecommendations;
-INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
+INSERT INTO eveDB.certCerts SELECT * FROM certCerts;
+INSERT INTO eveDB.certMasteries SELECT * FROM certMasteries;
+INSERT INTO eveDB.certSkills SELECT * FROM certSkills;
 INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
 INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
 INSERT INTO eveDB.ramTypeRequirements SELECT * FROM ramTypeRequirements;
@@ -69,5 +67,6 @@ INSERT INTO eveDB.invMetaTypes
 		FROM dgmTypeAttributes AS a, invTypes AS b
 		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
+CREATE INDEX "invTypes_marketGroupID" ON "eveDB.invTypes" ("marketGroupID" ASC)
 
 --COMMIT TRANSACTION;

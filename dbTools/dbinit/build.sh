@@ -19,7 +19,9 @@ sqlite3 ./eveDB/eve.sqlite ".read init.sql"
 #sqlite3 ./eveDB/eve.sqlite ".read invMarketGroupsFix.sql"
 
 echo ".read eveDB/evedbTablesExtract.sql"
-sqlite3 ./eveDB/eve.sqlite ".read eveDB/evedbTablesExtract.sql" > tablesInit.sql
+sqlite3 ./eveDB/eve.sqlite ".read eveDB/evedbTablesExtract.sql" > tmp.sql
+sed 's/integer/int/g' tmp.sql > tablesInit.sql
+rm tmp.sql
 
 echo ".read tablesInit.sql"
 sqlite3 evedb.sqlite ".read tablesInit.sql"

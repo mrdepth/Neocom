@@ -122,7 +122,8 @@
 - (NSArray*) groups {
 	if (!_groups) {
 		NSMutableSet* allTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
-		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invMarketGroups.marketGroupID=invTypes.marketGroupID", @"invTypes.published=1", nil];
+		//NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invMarketGroups.marketGroupID=invTypes.marketGroupID", @"invTypes.published=1", nil];
+		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invTypes.published=1", nil];
 		
 		[allTables unionSet:self.conditionsTables];
 		[allConditions addObjectsFromArray:self.conditions];

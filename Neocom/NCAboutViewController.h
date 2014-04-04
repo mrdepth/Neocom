@@ -10,5 +10,6 @@
 
 @interface NCAboutViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sdeVersionLabel;
 
 @end

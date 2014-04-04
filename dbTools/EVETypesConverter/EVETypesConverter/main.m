@@ -69,6 +69,9 @@ int main (int argc, const char * argv[])
 				[image setSize:NSMakeSize(64, 64)];
 				NSArray* representations = [image representations];
 				representations = representations;
+				NSBitmapImageRep* rep = representations[0];
+				data = [rep representationUsingType:NSPNGFileType properties:nil];
+				
 			}
 			else
 				data = [[NSData alloc] initWithContentsOfFile:inputPath];

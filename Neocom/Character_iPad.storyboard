@@ -1570,7 +1570,7 @@
                             <items>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="fxX-8F-3ZY"/>
                                 <barButtonItem width="320" style="plain" id="OKF-6B-IYo">
-                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="4nR-y1-76a">
+                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="4nR-y1-76a">
                                         <rect key="frame" x="16" y="7" width="320" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
@@ -1705,6 +1705,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="j8G-NR-Io8"/>
+        <segue reference="oMD-Qd-m4c"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -445,214 +445,6 @@
             </objects>
             <point key="canvasLocation" x="611" y="-264"/>
         </scene>
-        <!--Kill Board View Controller - zKillBoard-->
-        <scene sceneID="mEQ-9Q-e7x">
-            <objects>
-                <tableViewController id="Lv0-18-0Ql" customClass="NCZKillBoardViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="EJ0-Da-RPY">
-                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShipCell" id="hpg-KQ-g8q" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="86" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hpg-KQ-g8q" id="jlt-cM-Q1z">
-                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShipClassCell" id="fUK-T3-eGI" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="127" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fUK-T3-eGI" id="cdM-R7-fu7">
-                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="JAj-W7-bCd" kind="custom" identifier="NCDatabaseGroupPickerViewContoller" customClass="NCStoryboardPopoverSegue" id="Klg-9G-OQJ"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacterCell" id="X6n-ZW-SbV" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="168" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X6n-ZW-SbV" id="fR7-IK-X6w">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SolarSystemCell" id="0rh-QU-4fo" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="209" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0rh-QU-4fo" id="Qwa-hM-KES">
-                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="ftP-4g-Lm8" kind="custom" identifier="NCDatabaseSolarSystemPickerViewController" customClass="NCStoryboardPopoverSegue" id="UBq-pq-cgi"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KillsCell" rowHeight="41" id="wqb-Sw-9MP">
-                                <rect key="frame" x="0.0" y="250" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wqb-Sw-9MP" id="51q-WY-iKS">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8zz-Xw-oNf">
-                                            <rect key="frame" x="15" y="4" width="673" height="33"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <segments>
-                                                <segment title="All"/>
-                                                <segment title="Kills"/>
-                                                <segment title="Losses"/>
-                                            </segments>
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="onChangeFilter:" destination="Lv0-18-0Ql" eventType="valueChanged" id="Uqy-2n-iaU"/>
-                                            </connections>
-                                        </segmentedControl>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="8zz-Xw-oNf" firstAttribute="top" secondItem="51q-WY-iKS" secondAttribute="top" constant="4" id="68e-hs-neC"/>
-                                        <constraint firstItem="8zz-Xw-oNf" firstAttribute="leading" secondItem="51q-WY-iKS" secondAttribute="leading" constant="15" id="95y-tf-5wm"/>
-                                        <constraint firstAttribute="trailing" secondItem="8zz-Xw-oNf" secondAttribute="trailing" constant="15" id="TQr-8R-l7o"/>
-                                        <constraint firstAttribute="centerY" secondItem="8zz-Xw-oNf" secondAttribute="centerY" id="U6u-TE-do0"/>
-                                        <constraint firstAttribute="bottom" secondItem="8zz-Xw-oNf" secondAttribute="bottom" constant="4" id="l6q-G8-BSZ"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WHCell" id="mb0-6E-xhO" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="291" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mb0-6E-xhO" id="KUr-ei-80s">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-WV-JXg">
-                                            <rect key="frame" x="134" y="6" width="51" height="31"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <connections>
-                                                <action selector="onChangeWHKills:" destination="Lv0-18-0Ql" eventType="valueChanged" id="Xlv-cl-i9e"/>
-                                            </connections>
-                                        </switch>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="hDs-WV-JXg" firstAttribute="leading" secondItem="KUr-ei-80s" secondAttribute="leading" constant="134" placeholder="YES" id="4n8-vk-nTw"/>
-                                        <constraint firstItem="hDs-WV-JXg" firstAttribute="top" secondItem="KUr-ei-80s" secondAttribute="top" constant="6" placeholder="YES" id="hsj-hH-k1F"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="accessoryView" destination="hDs-WV-JXg" id="Mh6-1G-kWf"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SoloKillsCell" id="4A4-PU-LPy" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="332" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4A4-PU-LPy" id="Z5L-Zk-fOu">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fMc-0J-fLv">
-                                            <rect key="frame" x="134" y="6" width="51" height="31"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <connections>
-                                                <action selector="onChangeSoloKills:" destination="Lv0-18-0Ql" eventType="valueChanged" id="bSe-24-Asd"/>
-                                            </connections>
-                                        </switch>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="fMc-0J-fLv" firstAttribute="leading" secondItem="Z5L-Zk-fOu" secondAttribute="leading" constant="134" placeholder="YES" id="QMe-QJ-bH6"/>
-                                        <constraint firstItem="fMc-0J-fLv" firstAttribute="top" secondItem="Z5L-Zk-fOu" secondAttribute="top" constant="6" placeholder="YES" id="wiT-yZ-6KY"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="accessoryView" destination="fMc-0J-fLv" id="79t-Fq-1f3"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DateCell" id="bdt-Ja-ipA" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="373" width="703" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bdt-Ja-ipA" id="CqO-Sq-D5P">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DatePickerCell" rowHeight="163" id="jWZ-TU-yf0">
-                                <rect key="frame" x="0.0" y="414" width="703" height="163"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jWZ-TU-yf0" id="pAP-oO-YBk">
-                                    <rect key="frame" x="0.0" y="0.0" width="703" height="162"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <datePicker tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="95m-H5-5kE">
-                                            <rect key="frame" x="0.0" y="0.0" width="703" height="162"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            <date key="date" timeIntervalSinceReferenceDate="415197047.16870803">
-                                                <!--2014-02-27 12:30:47 +0000-->
-                                            </date>
-                                            <date key="minimumDate" timeIntervalSinceReferenceDate="73911600">
-                                                <!--2003-05-06 11:00:00 +0000-->
-                                            </date>
-                                            <timeZone key="timeZone" name="America/Los_Angeles">
-                                                <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                            </timeZone>
-                                            <connections>
-                                                <action selector="onChangeDate:" destination="Lv0-18-0Ql" eventType="valueChanged" id="U4V-d5-Bu7"/>
-                                            </connections>
-                                        </datePicker>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="95m-H5-5kE" firstAttribute="top" secondItem="pAP-oO-YBk" secondAttribute="top" id="2xx-e9-rCn"/>
-                                        <constraint firstAttribute="trailing" secondItem="95m-H5-5kE" secondAttribute="trailing" id="Cts-LV-547"/>
-                                        <constraint firstItem="95m-H5-5kE" firstAttribute="leading" secondItem="pAP-oO-YBk" secondAttribute="leading" id="JxB-n8-oRD"/>
-                                        <constraint firstAttribute="bottom" secondItem="95m-H5-5kE" secondAttribute="bottom" id="oyK-1s-5JV"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="zKillBoard" id="3Ns-3u-x3u">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="oPF-ak-zpR"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="chj-9p-NmE">
-                            <connections>
-                                <segue destination="VcW-Im-cQN" kind="push" identifier="NCZKillBoardSearchResultsViewController" id="MSB-VM-x5a"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ju6-vk-ZKC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1475" y="819"/>
-        </scene>
         <!--Kill Board Search Results View Controller - zKillBoard-->
         <scene sceneID="sz1-qZ-iCN">
             <objects>
@@ -751,94 +543,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-381" y="835"/>
         </scene>
-        <!--Database Solar System Picker View Controller - Regions-->
-        <scene sceneID="owe-hH-dHr">
-            <objects>
-                <tableViewController id="dUy-pu-j9Q" customClass="NCDatabaseSolarSystemPickerViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="NDp-23-TMi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="Tje-mA-8xm">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="dUy-pu-j9Q" id="1yN-s9-LzP"/>
-                            </connections>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" id="HSq-pd-Afj" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="130" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HSq-pd-Afj" id="Jjf-AU-EIr">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntx-Lc-aPL">
-                                            <rect key="frame" x="120" y="7" width="48" height="33"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <state key="normal" title="Select">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <segue destination="jwG-Gh-sc8" kind="unwind" identifier="RegionUnwind" unwindAction="unwindFromSolarSystemPicker:" id="wJ5-zF-vqG"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="ntx-Lc-aPL" firstAttribute="centerX" secondItem="Jjf-AU-EIr" secondAttribute="centerX" placeholder="YES" id="RU2-JV-kmg"/>
-                                        <constraint firstItem="ntx-Lc-aPL" firstAttribute="top" secondItem="Jjf-AU-EIr" secondAttribute="top" constant="7" placeholder="YES" id="gaG-yf-okU"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="accessoryView" destination="ntx-Lc-aPL" id="Mom-jx-6l3"/>
-                                    <segue destination="dUy-pu-j9Q" kind="push" identifier="NCDatabaseSolarSystemPickerViewController" id="efa-RL-GHD"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SolarSystemCell" id="2tE-6m-LO0" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="171" width="320" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2tE-6m-LO0" id="6qM-nj-Wp6">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="jwG-Gh-sc8" kind="unwind" identifier="SolarSystemUnwind" unwindAction="unwindFromSolarSystemPicker:" id="uVv-uC-fnG"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="dUy-pu-j9Q" id="lKe-IS-CeT"/>
-                            <outlet property="delegate" destination="dUy-pu-j9Q" id="eYk-iC-39W"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Regions" id="IV0-fg-Ewo">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="MQa-DN-I23"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="NkE-V0-cxG" id="UcQ-GV-EoO"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="muJ-ej-BwZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="jwG-Gh-sc8" userLabel="Exit" sceneMemberID="exit"/>
-                <searchDisplayController id="NkE-V0-cxG">
-                    <connections>
-                        <outlet property="delegate" destination="dUy-pu-j9Q" id="I32-2j-8tg"/>
-                        <outlet property="searchBar" destination="Tje-mA-8xm" id="5P3-zh-shQ"/>
-                        <outlet property="searchContentsController" destination="dUy-pu-j9Q" id="S3Z-yh-sA8"/>
-                        <outlet property="searchResultsDataSource" destination="dUy-pu-j9Q" id="vr0-9c-Xso"/>
-                        <outlet property="searchResultsDelegate" destination="dUy-pu-j9Q" id="dVe-IR-V4i"/>
-                    </connections>
-                </searchDisplayController>
-            </objects>
-            <point key="canvasLocation" x="319" y="2512"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="C8N-Ed-QKD">
             <objects>
@@ -850,7 +554,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Lv0-18-0Ql" kind="relationship" relationship="rootViewController" id="Zm8-Bz-b34"/>
+                        <segue destination="jE7-Eq-MMW" kind="relationship" relationship="rootViewController" id="Roi-H7-CFy"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttn-vb-fhV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -993,7 +697,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="dUy-pu-j9Q" kind="relationship" relationship="rootViewController" id="8cN-Nt-Uaf"/>
+                        <segue destination="oDk-iD-iYc" kind="relationship" relationship="rootViewController" id="LYh-v2-THn"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6vC-2V-OdT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1042,6 +746,346 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1732" y="-859"/>
         </scene>
+        <!--Kill Board View Controller - zKillBoard-->
+        <scene sceneID="5TY-Mq-l3a">
+            <objects>
+                <tableViewController id="jE7-Eq-MMW" customClass="NCZKillBoardViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="7Cl-uv-lOc">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShipCell" id="w9t-VX-Ej5" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w9t-VX-Ej5" id="NH6-jS-evQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShipClassCell" id="3Dy-V6-gXu" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="127" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Dy-V6-gXu" id="nOa-By-WJ1">
+                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="JAj-W7-bCd" kind="custom" identifier="NCDatabaseGroupPickerViewContoller" customClass="NCStoryboardPopoverSegue" id="84b-6p-5a3"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacterCell" id="Eb5-Tu-rlg" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="168" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eb5-Tu-rlg" id="LrS-pe-V73">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SolarSystemCell" id="QQT-xa-FZM" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="209" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QQT-xa-FZM" id="fat-ei-Gtr">
+                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="ftP-4g-Lm8" kind="custom" identifier="NCDatabaseSolarSystemPickerViewController" customClass="NCStoryboardPopoverSegue" id="b7t-gX-7De"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KillsCell" rowHeight="38" id="ePV-EE-8UV">
+                                <rect key="frame" x="0.0" y="250" width="703" height="38"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ePV-EE-8UV" id="Tm8-ma-nAo">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="37"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KAd-Hx-H6L">
+                                            <rect key="frame" x="15" y="4" width="673" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="29" id="3je-nm-44i"/>
+                                            </constraints>
+                                            <segments>
+                                                <segment title="All"/>
+                                                <segment title="Kills"/>
+                                                <segment title="Losses"/>
+                                            </segments>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="onChangeFilter:" destination="jE7-Eq-MMW" eventType="valueChanged" id="6KN-Xx-p9d"/>
+                                            </connections>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="KAd-Hx-H6L" firstAttribute="top" secondItem="Tm8-ma-nAo" secondAttribute="top" constant="4" id="X2e-dO-yZ8"/>
+                                        <constraint firstAttribute="bottom" secondItem="KAd-Hx-H6L" secondAttribute="bottom" constant="4" id="dZZ-oz-WXd"/>
+                                        <constraint firstAttribute="trailing" secondItem="KAd-Hx-H6L" secondAttribute="trailing" constant="15" id="oms-Hb-U2T"/>
+                                        <constraint firstItem="KAd-Hx-H6L" firstAttribute="leading" secondItem="Tm8-ma-nAo" secondAttribute="leading" constant="15" id="pti-Tj-HVR"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WHCell" rowHeight="41" id="RST-l0-S00" customClass="NCZKillBoardSwitchCell">
+                                <rect key="frame" x="0.0" y="288" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RST-l0-S00" id="x4M-Wa-W40">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="GTU-ad-KrK">
+                                            <rect key="frame" x="639" y="4" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="onChangeWHKills:" destination="jE7-Eq-MMW" eventType="valueChanged" id="v5G-E1-unh"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only WH Kills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ina-s7-QAv">
+                                            <rect key="frame" x="15" y="0.0" width="609" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="40" id="ozs-Bd-aM0"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="GTU-ad-KrK" secondAttribute="centerY" id="5aY-xF-tz1"/>
+                                        <constraint firstItem="GTU-ad-KrK" firstAttribute="leading" secondItem="ina-s7-QAv" secondAttribute="trailing" constant="15" id="7ug-Pq-4gZ"/>
+                                        <constraint firstItem="ina-s7-QAv" firstAttribute="leading" secondItem="x4M-Wa-W40" secondAttribute="leading" constant="15" id="WAp-cD-O0O"/>
+                                        <constraint firstAttribute="bottom" secondItem="ina-s7-QAv" secondAttribute="bottom" id="epx-pr-Gti"/>
+                                        <constraint firstAttribute="trailing" secondItem="GTU-ad-KrK" secondAttribute="trailing" constant="15" id="rtO-Lw-gjW"/>
+                                        <constraint firstItem="ina-s7-QAv" firstAttribute="top" secondItem="x4M-Wa-W40" secondAttribute="top" id="yRS-YN-2z7"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="switchView" destination="GTU-ad-KrK" id="R4u-qD-XG9"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SoloKillsCell" rowHeight="41" id="bgI-iM-oLz" customClass="NCZKillBoardSwitchCell">
+                                <rect key="frame" x="0.0" y="329" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bgI-iM-oLz" id="tZN-US-y7t">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="GRc-Fu-0mY">
+                                            <rect key="frame" x="639" y="4" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="onChangeSoloKills:" destination="jE7-Eq-MMW" eventType="valueChanged" id="a7H-BJ-uJT"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only Solo Kills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzJ-Fm-dnc">
+                                            <rect key="frame" x="15" y="0.0" width="609" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="40" id="Agm-28-alX"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="tzJ-Fm-dnc" secondAttribute="bottom" id="Gg6-Ub-ouo"/>
+                                        <constraint firstAttribute="trailing" secondItem="GRc-Fu-0mY" secondAttribute="trailing" constant="15" id="IUt-GT-aKK"/>
+                                        <constraint firstItem="tzJ-Fm-dnc" firstAttribute="leading" secondItem="tZN-US-y7t" secondAttribute="leading" constant="15" id="NyP-uo-0dF"/>
+                                        <constraint firstItem="GRc-Fu-0mY" firstAttribute="leading" secondItem="tzJ-Fm-dnc" secondAttribute="trailing" constant="15" id="ey9-tB-ojs"/>
+                                        <constraint firstAttribute="centerY" secondItem="GRc-Fu-0mY" secondAttribute="centerY" id="hJ6-wq-Z3M"/>
+                                        <constraint firstItem="tzJ-Fm-dnc" firstAttribute="top" secondItem="tZN-US-y7t" secondAttribute="top" id="j6H-97-13d"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="switchView" destination="GRc-Fu-0mY" id="ccA-jV-AWt"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DateCell" id="RHG-pC-bsl" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="370" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RHG-pC-bsl" id="ExD-lD-lWk">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DatePickerCell" rowHeight="163" id="7XH-MV-jwf">
+                                <rect key="frame" x="0.0" y="411" width="703" height="163"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7XH-MV-jwf" id="Sgt-ad-AcW">
+                                    <rect key="frame" x="0.0" y="0.0" width="703" height="162"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <datePicker tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Lbw-ex-LYR">
+                                            <rect key="frame" x="0.0" y="0.0" width="703" height="162"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <date key="date" timeIntervalSinceReferenceDate="415197047.16870803">
+                                                <!--2014-02-27 12:30:47 +0000-->
+                                            </date>
+                                            <date key="minimumDate" timeIntervalSinceReferenceDate="73911600">
+                                                <!--2003-05-06 11:00:00 +0000-->
+                                            </date>
+                                            <timeZone key="timeZone" name="America/Los_Angeles">
+                                                <mutableData key="data">
+VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
+y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
+5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
+8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
+AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
+DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
+HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
+KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
+OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
+Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
+VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
+Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
+cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
+f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
+AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
+</mutableData>
+                                            </timeZone>
+                                            <connections>
+                                                <action selector="onChangeDate:" destination="jE7-Eq-MMW" eventType="valueChanged" id="jep-1Y-pEU"/>
+                                            </connections>
+                                        </datePicker>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Lbw-ex-LYR" firstAttribute="top" secondItem="Sgt-ad-AcW" secondAttribute="top" id="KLd-NW-hRO"/>
+                                        <constraint firstItem="Lbw-ex-LYR" firstAttribute="leading" secondItem="Sgt-ad-AcW" secondAttribute="leading" id="YnX-Kx-CmC"/>
+                                        <constraint firstAttribute="trailing" secondItem="Lbw-ex-LYR" secondAttribute="trailing" id="cMH-H7-Toc"/>
+                                        <constraint firstAttribute="bottom" secondItem="Lbw-ex-LYR" secondAttribute="bottom" id="gos-pc-9ds"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="zKillBoard" id="qC7-qo-o4r">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="8ZU-A9-ZbB"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="YZi-ih-58L">
+                            <connections>
+                                <segue destination="VcW-Im-cQN" kind="push" identifier="NCZKillBoardSearchResultsViewController" id="wkx-tH-dXf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4jD-TO-f4a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1616" y="811"/>
+        </scene>
+        <!--Database Solar System Picker View Controller - Regions-->
+        <scene sceneID="Eoe-VP-5dh">
+            <objects>
+                <tableViewController id="oDk-iD-iYc" customClass="NCDatabaseSolarSystemPickerViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="JOX-iq-Z1z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="G8a-LL-Wj4">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="oDk-iD-iYc" id="PIM-Tb-23N"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" rowHeight="41" id="et3-bt-vGz" customClass="NCDatabaseSolarSystemPickerRegionCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="et3-bt-vGz" id="i0H-nH-hDS">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5av-gg-zPU">
+                                            <rect key="frame" x="257" y="3" width="48" height="33"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <state key="normal" title="Select">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <segue destination="bOd-ek-DSp" kind="unwind" identifier="RegionUnwind" unwindAction="unwindFromSolarSystemPicker:" id="V4w-S4-ldW"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="227" translatesAutoresizingMaskIntoConstraints="NO" id="lKb-Vc-vsW">
+                                            <rect key="frame" x="15" y="0.0" width="227" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Vvb-f0-RAO"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="lKb-Vc-vsW" secondAttribute="bottom" id="BLn-U9-L8x"/>
+                                        <constraint firstItem="5av-gg-zPU" firstAttribute="leading" secondItem="lKb-Vc-vsW" secondAttribute="trailing" constant="15" id="IH0-op-K1X"/>
+                                        <constraint firstItem="lKb-Vc-vsW" firstAttribute="top" secondItem="i0H-nH-hDS" secondAttribute="top" id="Ndc-Oq-Iff"/>
+                                        <constraint firstAttribute="trailing" secondItem="5av-gg-zPU" secondAttribute="trailing" constant="15" id="QyH-m8-XIU"/>
+                                        <constraint firstItem="lKb-Vc-vsW" firstAttribute="leading" secondItem="i0H-nH-hDS" secondAttribute="leading" constant="15" id="bW0-xc-cCd"/>
+                                        <constraint firstAttribute="centerY" secondItem="5av-gg-zPU" secondAttribute="centerY" id="sYp-Mw-FRn"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="titleLabel" destination="lKb-Vc-vsW" id="Sq6-ll-Ie3"/>
+                                    <segue destination="oDk-iD-iYc" kind="push" identifier="NCDatabaseSolarSystemPickerViewController" id="cKF-Cg-ufk"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SolarSystemCell" id="OHk-V4-29O" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="171" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OHk-V4-29O" id="muQ-sR-Ulm">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="bOd-ek-DSp" kind="unwind" identifier="SolarSystemUnwind" unwindAction="unwindFromSolarSystemPicker:" id="dX0-IF-2dN"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="oDk-iD-iYc" id="jyV-vV-L9d"/>
+                            <outlet property="delegate" destination="oDk-iD-iYc" id="hnE-Na-8LL"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Regions" id="NBJ-ww-eaR">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="BKj-Yu-qh3"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="zqU-mH-dPP" id="3dk-CL-8xa"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NjO-H1-I7w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="bOd-ek-DSp" userLabel="Exit" sceneMemberID="exit"/>
+                <searchDisplayController id="zqU-mH-dPP">
+                    <connections>
+                        <outlet property="delegate" destination="oDk-iD-iYc" id="nt3-Sw-5Zn"/>
+                        <outlet property="searchBar" destination="G8a-LL-Wj4" id="bMe-fK-3Ck"/>
+                        <outlet property="searchContentsController" destination="oDk-iD-iYc" id="lFA-r3-Y5W"/>
+                        <outlet property="searchResultsDataSource" destination="oDk-iD-iYc" id="0Gt-dP-oxn"/>
+                        <outlet property="searchResultsDelegate" destination="oDk-iD-iYc" id="7la-x2-kJr"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="195" y="2512"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1049,7 +1093,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="8cN-Nt-Uaf"/>
         <segue reference="QlX-HM-cze"/>
+        <segue reference="LYh-v2-THn"/>
     </inferredMetricsTieBreakers>
 </document>

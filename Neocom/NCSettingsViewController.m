@@ -30,6 +30,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	self.refreshControl = nil;
 	NCNotificationsManagerSkillQueueNotificationTime notificationTime = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsSkillQueueNotificationTimeKey];
 	self.notification24HoursSwitch.on = (notificationTime & NCNotificationsManagerSkillQueueNotificationTime1Day) == NCNotificationsManagerSkillQueueNotificationTime1Day;
 	self.notification12HoursSwitch.on = (notificationTime & NCNotificationsManagerSkillQueueNotificationTime12Hours) == NCNotificationsManagerSkillQueueNotificationTime12Hours;
@@ -94,6 +96,12 @@
 						 }
 							 cancelBlock:nil] show];
 	}
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
 }
 
 @end

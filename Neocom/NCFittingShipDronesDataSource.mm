@@ -174,10 +174,10 @@
 		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
 			NCFittingShipDronesDataSourcePickerRow* pickerRow = (NCFittingShipDronesDataSourcePickerRow*) row;
 			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-			cell.pickerView.dataSource = self;
-			cell.pickerView.delegate = self;
-			[cell.pickerView reloadAllComponents];
-			[cell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
+//			cell.pickerView.dataSource = self;
+//			cell.pickerView.delegate = self;
+//			[cell.pickerView reloadAllComponents];
+			//[cell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
 			return cell;
 		}
 		else {
@@ -217,6 +217,17 @@
 
 #pragma mark -
 #pragma mark Table view delegate
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([cell isKindOfClass:[NCFittingAmountCell class]]) {
+		NCFittingShipDronesDataSourcePickerRow* pickerRow = self.rows[indexPath.row];
+		NCFittingAmountCell* amountCell = (NCFittingAmountCell*) cell;
+		amountCell.pickerView.dataSource = self;
+		amountCell.pickerView.delegate = self;
+		[amountCell.pickerView reloadAllComponents];
+		[amountCell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
+	}
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 41;
@@ -336,7 +347,8 @@
 				if (drone->getTypeID() == typeID)
 					row.associatedRow.drones.push_back(drone);
 			}
-			[self.controller reload];
+			[NSObject cancelPreviousPerformRequestsWithTarget:self.controller selector:@selector(reload) object:nil];
+			[self.controller performSelector:@selector(reload) withObject:nil afterDelay:0.25];
 		}
 		i++;
 	}

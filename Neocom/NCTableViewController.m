@@ -49,6 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.contentSizeForViewInPopover = CGSizeMake(320, 768);
 	self.offscreenCells = [NSMutableDictionary new];
 	
 	if (!self.tableView.backgroundView) {

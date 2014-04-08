@@ -143,6 +143,11 @@
 		cell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
 	else
 		cell.subtitleLabel.text = nil;
+	
+	if (!cell.accessoryView) {
+		cell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 44)];
+		cell.accessoryView.hidden = NO;
+	}
 	return cell;
 }
 

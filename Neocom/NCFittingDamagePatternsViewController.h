@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 #import "NCDamagePattern.h"
 
-@interface NCFittingDamagePatternsViewController : UITableViewController
+@interface NCFittingDamagePatternsViewController : NCTableViewController
 @property (nonatomic, strong) NCDamagePattern* selectedDamagePattern;
 @end

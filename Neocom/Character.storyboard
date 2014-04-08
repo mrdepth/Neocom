@@ -1400,7 +1400,7 @@
                             <items>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="V3P-r7-UXB"/>
                                 <barButtonItem width="290" style="plain" id="bgz-vf-FHh">
-                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="LC8-S3-JO8">
+                                    <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="LC8-S3-JO8">
                                         <rect key="frame" x="15" y="7" width="290" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>

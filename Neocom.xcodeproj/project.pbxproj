@@ -62,6 +62,7 @@
 		122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AA18B5EAF900386EDE /* NCIndustryJobsCell.m */; };
 		122C98AE18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */; };
 		122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */; };
+		12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */; };
 		1235E3EF18E552C100BC2607 /* Database_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */; };
 		1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1235E3F318E562E300BC2607 /* NCNavigationController.m */; };
 		1235E3F618E56F0B00BC2607 /* Character_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1235E3F518E56F0B00BC2607 /* Character_iPad.storyboard */; };
@@ -77,6 +78,7 @@
 		123A981018C71F2E001045F5 /* NCRSSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A980F18C71F2D001045F5 /* NCRSSItemViewController.m */; };
 		123A981418C721C7001045F5 /* RSSItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123A981318C721C7001045F5 /* RSSItem+Neocom.m */; };
 		123C628218DB1E6A00B03156 /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 123C628118DB1E6A00B03156 /* NCLabel.m */; };
+		123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 123EE6F718F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m */; };
 		123F0ACE18C5990100D53602 /* NCSkillPlansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */; };
 		123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 123F0AD018C5B5FF00D53602 /* NSData+Neocom.m */; };
 		123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F0AD218C5B78500D53602 /* libz.dylib */; };
@@ -704,6 +706,8 @@
 		122C98AD18B5ECB400386EDE /* EVEIndustryJobsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEIndustryJobsItem+Neocom.m"; sourceTree = "<group>"; };
 		122C98B118B6026100386EDE /* NCIndustryJobsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCIndustryJobsDetailsViewController.h; sourceTree = "<group>"; };
 		122C98B218B6026100386EDE /* NCIndustryJobsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCIndustryJobsDetailsViewController.m; sourceTree = "<group>"; };
+		12331DBF18F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardSwitchCell.h; sourceTree = "<group>"; };
+		12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardSwitchCell.m; sourceTree = "<group>"; };
 		1235E3EE18E552C100BC2607 /* Database_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Database_iPad.storyboard; sourceTree = "<group>"; };
 		1235E3F218E562E300BC2607 /* NCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationController.h; sourceTree = "<group>"; };
 		1235E3F318E562E300BC2607 /* NCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationController.m; sourceTree = "<group>"; };
@@ -727,6 +731,8 @@
 		123A981318C721C7001045F5 /* RSSItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RSSItem+Neocom.m"; sourceTree = "<group>"; };
 		123C628018DB1E6A00B03156 /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
 		123C628118DB1E6A00B03156 /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
+		123EE6F618F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseSolarSystemPickerRegionCell.h; sourceTree = "<group>"; };
+		123EE6F718F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseSolarSystemPickerRegionCell.m; sourceTree = "<group>"; };
 		123F0ACC18C5990100D53602 /* NCSkillPlansViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillPlansViewController.h; sourceTree = "<group>"; };
 		123F0ACD18C5990100D53602 /* NCSkillPlansViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillPlansViewController.m; sourceTree = "<group>"; };
 		123F0ACF18C5B5FF00D53602 /* NSData+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Neocom.h"; sourceTree = "<group>"; };
@@ -1933,6 +1939,15 @@
 			name = NCIndustryJobsDetailsViewController;
 			sourceTree = "<group>";
 		};
+		12331DBD18F3D3D600EB9ACB /* NCZKillBoardSwitchCell */ = {
+			isa = PBXGroup;
+			children = (
+				12331DBF18F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.h */,
+				12331DC018F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m */,
+			);
+			name = NCZKillBoardSwitchCell;
+			sourceTree = "<group>";
+		};
 		1235E3F118E562C700BC2607 /* NCNavigationController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2018,6 +2033,15 @@
 				123C628118DB1E6A00B03156 /* NCLabel.m */,
 			);
 			name = NCLabel;
+			sourceTree = "<group>";
+		};
+		123EE6F418F3D96400641B03 /* NCDatabaseSolarSystemPickerRegionCell */ = {
+			isa = PBXGroup;
+			children = (
+				123EE6F618F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.h */,
+				123EE6F718F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m */,
+			);
+			name = NCDatabaseSolarSystemPickerRegionCell;
 			sourceTree = "<group>";
 		};
 		123F0AC718C598C400D53602 /* NCSkillPlansViewController */ = {
@@ -3040,6 +3064,7 @@
 		128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */ = {
 			isa = PBXGroup;
 			children = (
+				123EE6F418F3D96400641B03 /* NCDatabaseSolarSystemPickerRegionCell */,
 				128C9B0718BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.h */,
 				128C9B0818BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m */,
 			);
@@ -3049,6 +3074,7 @@
 		128D29A718BDAE2F003B8E03 /* NCZKillBoardViewController */ = {
 			isa = PBXGroup;
 			children = (
+				12331DBD18F3D3D600EB9ACB /* NCZKillBoardSwitchCell */,
 				128D29A918BDAE6D003B8E03 /* NCZKillBoardViewController.h */,
 				128D29AA18BDAE6D003B8E03 /* NCZKillBoardViewController.m */,
 			);
@@ -4609,6 +4635,7 @@
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
+				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
 				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,
 				129D261E187E923300E2062C /* NSString+MD5.m in Sources */,
@@ -4820,6 +4847,7 @@
 				126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */,
 				128D29AB18BDAE6D003B8E03 /* NCZKillBoardViewController.m in Sources */,
 				12ACDCA618A0AD2600566DFE /* NCFittingDamagePatternsViewController.m in Sources */,
+				12331DC118F3D3EE00EB9ACB /* NCZKillBoardSwitchCell.m in Sources */,
 				129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */,
 				126A0E5D185F3B9300A8E8A3 /* EVEAllianceList.m in Sources */,
 				12C7EE6B1886741900F90763 /* NCDatabaseTypeInfoViewController.m in Sources */,

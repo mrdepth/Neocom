@@ -166,12 +166,12 @@
 	else {
 		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
 		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-			NCFittingPOSStructuresDataSourcePickerRow* pickerRow = (NCFittingPOSStructuresDataSourcePickerRow*) row;
+//			NCFittingPOSStructuresDataSourcePickerRow* pickerRow = (NCFittingPOSStructuresDataSourcePickerRow*) row;
 			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-			cell.pickerView.dataSource = self;
+/*			cell.pickerView.dataSource = self;
 			cell.pickerView.delegate = self;
 			[cell.pickerView reloadAllComponents];
-			[cell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];
+			[cell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];*/
 			return cell;
 		}
 		else {
@@ -232,6 +232,17 @@
 
 #pragma mark -
 #pragma mark Table view delegate
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([cell isKindOfClass:[NCFittingAmountCell class]]) {
+		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = self.rows[indexPath.row];
+		NCFittingAmountCell* amountCell = (NCFittingAmountCell*) cell;
+		amountCell.pickerView.dataSource = self;
+		amountCell.pickerView.delegate = self;
+		[amountCell.pickerView reloadAllComponents];
+		[amountCell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];
+	}
+}
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 41;

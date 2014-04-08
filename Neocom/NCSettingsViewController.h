@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 
-@interface NCSettingsViewController : UITableViewController
+@interface NCSettingsViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet UISwitch *notification24HoursSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *notification12HoursSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *notification4HoursSwitch;

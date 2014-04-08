@@ -114,7 +114,7 @@
 	if (indexPath.section == 0) {
 		NCAccount* account = self.accounts[indexPath.row];
 		cell.titleLabel.text = account.characterSheet.name;
-		cell.iconView.image = [UIImage emptyImage];
+		cell.iconView.image = [UIImage emptyImageWithSize:CGSizeMake(32, 32)];
 		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
 	}
 	else if (indexPath.section == 1) {

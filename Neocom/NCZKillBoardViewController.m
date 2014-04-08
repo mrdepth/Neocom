@@ -15,6 +15,7 @@
 #import "NCZKillBoardSearchResultsViewController.h"
 #import "EVEzKillBoardAPI.h"
 #import "NCTableViewCell.h"
+#import "NCZKillBoardSwitchCell.h"
 
 typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	NCZKillBoardViewControllerFilterAll,
@@ -57,6 +58,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.refreshControl = nil;
 	self.dateFormatter = [NSDateFormatter new];
 	[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
@@ -243,13 +245,13 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		control.selectedSegmentIndex = self.filter;
 	}
 	else if ([cellIdentifier isEqualToString:@"WHCell"]) {
-		cell.titleLabel.text = NSLocalizedString(@"Only WH Kills", nil);
-		UISwitch* switchView = (UISwitch*) cell.accessoryView;
+//		cell.titleLabel.text = NSLocalizedString(@"Only WH Kills", nil);
+		UISwitch* switchView = [(NCZKillBoardSwitchCell*) cell switchView];
 		switchView.on = self.whKills;
 	}
 	else if ([cellIdentifier isEqualToString:@"SoloKillsCell"]) {
-		cell.titleLabel.text = NSLocalizedString(@"Only Solo Kills", nil);
-		UISwitch* switchView = (UISwitch*) cell.accessoryView;
+//		cell.titleLabel.text = NSLocalizedString(@"Only Solo Kills", nil);
+		UISwitch* switchView = [(NCZKillBoardSwitchCell*) cell switchView];
 		switchView.on = self.soloKills;
 	}
 	else if ([cellIdentifier isEqualToString:@"DateCell"]) {
@@ -277,11 +279,12 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	//return 41;
 	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -326,6 +329,13 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 			[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:8 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		}
 	}
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+	NSString* cellIdentifier = self.cellIdentifiers[indexPath.row];
+	if ([cellIdentifier isEqualToString:@"DatePickerCell"])
+		cell.backgroundColor = [UIColor whiteColor];
 }
 
 #pragma mark - NCTableViewController

@@ -495,16 +495,19 @@
                                     <segue destination="1eK-h6-8RJ" kind="push" identifier="NCDatabaseSolarSystemPickerViewController" id="hHl-yL-ErL"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KillsCell" rowHeight="41" id="wl5-Ku-qf8">
-                                <rect key="frame" x="0.0" y="250" width="320" height="41"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KillsCell" rowHeight="38" id="wl5-Ku-qf8">
+                                <rect key="frame" x="0.0" y="250" width="320" height="38"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wl5-Ku-qf8" id="MFe-jj-vu5">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yfC-cu-l51">
-                                            <rect key="frame" x="15" y="4" width="290" height="33"/>
+                                        <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yfC-cu-l51">
+                                            <rect key="frame" x="15" y="4" width="290" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="29" id="Wc8-WL-qbk"/>
+                                            </constraints>
                                             <segments>
                                                 <segment title="All"/>
                                                 <segment title="Kills"/>
@@ -519,65 +522,92 @@
                                     <constraints>
                                         <constraint firstItem="yfC-cu-l51" firstAttribute="top" secondItem="MFe-jj-vu5" secondAttribute="top" constant="4" id="9Lz-82-rlb"/>
                                         <constraint firstAttribute="trailing" secondItem="yfC-cu-l51" secondAttribute="trailing" constant="15" id="LLa-Yd-5Iv"/>
-                                        <constraint firstAttribute="centerY" secondItem="yfC-cu-l51" secondAttribute="centerY" id="Q4J-R6-ku8"/>
-                                        <constraint firstAttribute="bottom" secondItem="yfC-cu-l51" secondAttribute="bottom" constant="4" id="eDR-qN-ASY"/>
+                                        <constraint firstAttribute="bottom" secondItem="yfC-cu-l51" secondAttribute="bottom" constant="4" id="wiI-Ti-tmq"/>
                                         <constraint firstItem="yfC-cu-l51" firstAttribute="leading" secondItem="MFe-jj-vu5" secondAttribute="leading" constant="15" id="zH8-NQ-KgS"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WHCell" id="6gh-EC-gh6" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="291" width="320" height="41"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WHCell" rowHeight="41" id="6gh-EC-gh6" customClass="NCZKillBoardSwitchCell">
+                                <rect key="frame" x="0.0" y="288" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6gh-EC-gh6" id="L3w-cb-upH">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SL6-d0-Cix">
-                                            <rect key="frame" x="134" y="6" width="51" height="31"/>
+                                            <rect key="frame" x="256" y="4" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="onChangeWHKills:" destination="qpW-9Q-ZZw" eventType="valueChanged" id="ecK-rB-7Wk"/>
                                             </connections>
                                         </switch>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only WH Kills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hk4-cU-EwC">
+                                            <rect key="frame" x="15" y="0.0" width="226" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="40" id="Xjs-68-Pc4"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="SL6-d0-Cix" firstAttribute="leading" secondItem="L3w-cb-upH" secondAttribute="leading" constant="134" placeholder="YES" id="M0D-aP-vQu"/>
-                                        <constraint firstItem="SL6-d0-Cix" firstAttribute="top" secondItem="L3w-cb-upH" secondAttribute="top" constant="6" placeholder="YES" id="wPK-2h-ROv"/>
+                                        <constraint firstItem="hk4-cU-EwC" firstAttribute="leading" secondItem="L3w-cb-upH" secondAttribute="leading" constant="15" id="6ma-YA-lIO"/>
+                                        <constraint firstAttribute="bottom" secondItem="hk4-cU-EwC" secondAttribute="bottom" id="doA-yP-whN"/>
+                                        <constraint firstItem="SL6-d0-Cix" firstAttribute="leading" secondItem="hk4-cU-EwC" secondAttribute="trailing" constant="15" id="kUe-Tp-yGk"/>
+                                        <constraint firstItem="hk4-cU-EwC" firstAttribute="top" secondItem="L3w-cb-upH" secondAttribute="top" id="lQ6-aP-UyX"/>
+                                        <constraint firstAttribute="centerY" secondItem="SL6-d0-Cix" secondAttribute="centerY" id="nl6-9g-D7d"/>
+                                        <constraint firstAttribute="trailing" secondItem="SL6-d0-Cix" secondAttribute="trailing" constant="15" id="xda-1d-CLE"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="accessoryView" destination="SL6-d0-Cix" id="hE4-AC-KTh"/>
+                                    <outlet property="switchView" destination="SL6-d0-Cix" id="fDk-3r-hnO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SoloKillsCell" id="93b-aD-UhS" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="332" width="320" height="41"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SoloKillsCell" rowHeight="41" id="93b-aD-UhS" customClass="NCZKillBoardSwitchCell">
+                                <rect key="frame" x="0.0" y="329" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="93b-aD-UhS" id="cld-6K-woH">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="U3j-wE-ncD">
-                                            <rect key="frame" x="134" y="6" width="51" height="31"/>
+                                            <rect key="frame" x="256" y="4" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="onChangeSoloKills:" destination="qpW-9Q-ZZw" eventType="valueChanged" id="AJs-ye-W8S"/>
                                             </connections>
                                         </switch>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Only Solo Kills" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6OT-65-9G8">
+                                            <rect key="frame" x="15" y="0.0" width="226" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="999" constant="40" id="5oG-Pj-TFW"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="U3j-wE-ncD" firstAttribute="leading" secondItem="cld-6K-woH" secondAttribute="leading" constant="134" placeholder="YES" id="HRD-4h-zbt"/>
-                                        <constraint firstItem="U3j-wE-ncD" firstAttribute="top" secondItem="cld-6K-woH" secondAttribute="top" constant="6" placeholder="YES" id="YNk-Tf-kvh"/>
+                                        <constraint firstItem="6OT-65-9G8" firstAttribute="top" secondItem="cld-6K-woH" secondAttribute="top" id="99g-ff-3iX"/>
+                                        <constraint firstAttribute="trailing" secondItem="U3j-wE-ncD" secondAttribute="trailing" constant="15" id="CGl-j7-s4A"/>
+                                        <constraint firstAttribute="centerY" secondItem="U3j-wE-ncD" secondAttribute="centerY" id="IeE-pR-COZ"/>
+                                        <constraint firstItem="U3j-wE-ncD" firstAttribute="leading" secondItem="6OT-65-9G8" secondAttribute="trailing" constant="15" id="JgJ-eG-UqB"/>
+                                        <constraint firstAttribute="bottom" secondItem="6OT-65-9G8" secondAttribute="bottom" id="p2a-wU-8bf"/>
+                                        <constraint firstItem="6OT-65-9G8" firstAttribute="leading" secondItem="cld-6K-woH" secondAttribute="leading" constant="15" id="uwo-WL-iYI"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="accessoryView" destination="U3j-wE-ncD" id="BFD-X5-IYd"/>
+                                    <outlet property="switchView" destination="U3j-wE-ncD" id="Y5u-0B-DeD"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DateCell" id="mcw-Ku-dgJ" customClass="NCTableViewCell">
-                                <rect key="frame" x="0.0" y="373" width="320" height="41"/>
+                                <rect key="frame" x="0.0" y="370" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mcw-Ku-dgJ" id="goH-7j-Hwg">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -586,7 +616,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DatePickerCell" rowHeight="163" id="fNj-yf-hoe">
-                                <rect key="frame" x="0.0" y="414" width="320" height="163"/>
+                                <rect key="frame" x="0.0" y="411" width="320" height="163"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fNj-yf-hoe" id="Bk2-ec-hqA">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
@@ -765,7 +795,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" id="xhZ-FN-mxy" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RegionCell" rowHeight="41" id="xhZ-FN-mxy" customClass="NCDatabaseSolarSystemPickerRegionCell">
                                 <rect key="frame" x="0.0" y="130" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhZ-FN-mxy" id="Qi4-wM-Pay">
@@ -773,7 +803,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEg-3y-pzN">
-                                            <rect key="frame" x="136" y="7" width="48" height="33"/>
+                                            <rect key="frame" x="257" y="3" width="48" height="33"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <state key="normal" title="Select">
@@ -784,15 +814,29 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <segue destination="7XM-HQ-f7b" kind="unwind" identifier="RegionUnwind" unwindAction="unwindFromSolarSystemPicker:" id="FMF-3k-2vg"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="227" translatesAutoresizingMaskIntoConstraints="NO" id="O0H-YY-GDw">
+                                            <rect key="frame" x="15" y="0.0" width="227" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Y99-23-zua"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="aEg-3y-pzN" firstAttribute="top" secondItem="Qi4-wM-Pay" secondAttribute="top" constant="7" placeholder="YES" id="JUo-9D-zNR"/>
-                                        <constraint firstItem="aEg-3y-pzN" firstAttribute="centerX" secondItem="Qi4-wM-Pay" secondAttribute="centerX" placeholder="YES" id="RSq-cV-HAN"/>
+                                        <constraint firstAttribute="centerY" secondItem="aEg-3y-pzN" secondAttribute="centerY" id="GSR-xL-YZk"/>
+                                        <constraint firstItem="O0H-YY-GDw" firstAttribute="top" secondItem="Qi4-wM-Pay" secondAttribute="top" id="cw6-OZ-Pr9"/>
+                                        <constraint firstAttribute="bottom" secondItem="O0H-YY-GDw" secondAttribute="bottom" id="g86-vt-NXq"/>
+                                        <constraint firstItem="aEg-3y-pzN" firstAttribute="leading" secondItem="O0H-YY-GDw" secondAttribute="trailing" constant="15" id="jKR-6s-MsJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="aEg-3y-pzN" secondAttribute="trailing" constant="15" id="mpK-Ln-Bwx"/>
+                                        <constraint firstItem="O0H-YY-GDw" firstAttribute="leading" secondItem="Qi4-wM-Pay" secondAttribute="leading" constant="15" id="sTh-KW-BmS"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="accessoryView" destination="aEg-3y-pzN" id="cNF-Kt-mYC"/>
+                                    <outlet property="titleLabel" destination="O0H-YY-GDw" id="sIP-NN-dHk"/>
                                     <segue destination="1eK-h6-8RJ" kind="push" identifier="NCDatabaseSolarSystemPickerViewController" id="uGC-zj-9DV"/>
                                 </connections>
                             </tableViewCell>

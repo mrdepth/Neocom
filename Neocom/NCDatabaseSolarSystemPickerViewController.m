@@ -8,6 +8,7 @@
 
 #import "NCDatabaseSolarSystemPickerViewController.h"
 #import "NCTableViewCell.h"
+#import "NCDatabaseSolarSystemPickerRegionCell.h"
 
 @interface NCDatabaseSolarSystemPickerViewController ()
 @property (nonatomic, strong) NSArray* rows;
@@ -114,7 +115,7 @@
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
 	
 	if ([row isKindOfClass:[EVEDBMapRegion class]]) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
+		NCDatabaseSolarSystemPickerRegionCell* cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
 		cell.object = row;

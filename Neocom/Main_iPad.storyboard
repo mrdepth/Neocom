@@ -800,24 +800,8 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JjC-fv-PyM" id="WUu-hF-NuR">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="urB-fr-veq">
-                                            <rect key="frame" x="257" y="11" width="40" height="20"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="urB-fr-veq" firstAttribute="leading" secondItem="WUu-hF-NuR" secondAttribute="leading" constant="257" placeholder="YES" id="1K1-nX-pSs"/>
-                                        <constraint firstItem="urB-fr-veq" firstAttribute="top" secondItem="WUu-hF-NuR" secondAttribute="top" constant="11" placeholder="YES" id="5hq-4V-36o"/>
-                                        <constraint firstAttribute="bottom" secondItem="urB-fr-veq" secondAttribute="bottom" constant="10" placeholder="YES" id="feQ-r3-RHc"/>
-                                        <constraint firstAttribute="trailing" secondItem="urB-fr-veq" secondAttribute="trailing" constant="23" placeholder="YES" id="gwr-Al-Ffa"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="accessoryView" destination="urB-fr-veq" id="Mh8-fq-YRS"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>

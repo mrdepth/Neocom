@@ -68,6 +68,11 @@
 
 */
 
+- (void) prepareForReuse {
+	[super prepareForReuse];
+	[self setNeedsUpdateConstraints];
+}
+
 - (void) updateConstraints {
 	if (self.iconView.image) {
 		self.indentationConstraint.constant = 15 + self.indentationLevel * self.indentationWidth;
@@ -97,6 +102,8 @@
 	self.titleLabel = [[NCLabel alloc] initWithFrame:CGRectZero];
 	self.subtitleLabel = [[NCLabel alloc] initWithFrame:CGRectZero];
 	self.iconView = [[UIImageView alloc] initWithFrame:CGRectZero];
+	self.titleLabel.backgroundColor = [UIColor clearColor];
+	self.subtitleLabel.backgroundColor = [UIColor clearColor];
 	
 	self.titleLabel.font = [UIFont systemFontOfSize:17];
 	self.titleLabel.textColor = [UIColor whiteColor];

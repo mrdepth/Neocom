@@ -31,6 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSMutableArray* builtInDamagePatterns = [NSMutableArray new];
@@ -46,11 +47,6 @@
 	}
 	self.builtInDamagePatterns = builtInDamagePatterns;
 	self.customDamagePatterns = [[NCDamagePattern damagePatterns] mutableCopy];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[self.tableView reloadData];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -240,49 +236,15 @@
 	}
 }
 
-/*- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
- NSString* title = [self tableView:tableView titleForHeaderInSection:section];
- if (title) {
- CollapsableTableHeaderView* view = [CollapsableTableHeaderView viewWithNibName:@"CollapsableTableHeaderView" bundle:nil];
- view.titleLabel.text = title;
- view.collapsImageView.hidden = YES;
- return view;
- }
- else
- return nil;
- }
- 
- - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
- return [self tableView:tableView titleForHeaderInSection:section] ? 22 : 0;
- }*/
+#pragma mark - NCTableViewController
 
-/*- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 44;
+- (NSString*) recordID {
+	return nil;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 44;
-	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
-}*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (id) identifierForSection:(NSInteger)section {
+	return @(section);
 }
-
- */
 
 #pragma mark - Private
 

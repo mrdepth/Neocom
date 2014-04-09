@@ -135,7 +135,7 @@
 		NSMutableDictionary* marketGroupsMap = [NSMutableDictionary new];
 		NSMutableArray* parentGroupIDs = [NSMutableArray new];
 		NSMutableArray* lastGroups = [NSMutableArray new];
-		
+
 		EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 		[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 			EVEDBInvMarketGroup* marketGroup = [[EVEDBInvMarketGroup alloc] initWithStatement:stmt];

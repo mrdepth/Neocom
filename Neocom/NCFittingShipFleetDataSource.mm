@@ -25,7 +25,10 @@
 #define ActionButtonRemoveBooster NSLocalizedString(@"Remove Booster", nil)
 
 @interface NCFittingShipFleetDataSource()
+@property (nonatomic, strong) NCTableViewCell* offscreenCell;
+
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 @end
 
 @implementation NCFittingShipFleetDataSource
@@ -52,44 +55,9 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.controller.fits.count) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
-		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
-		cell.subtitleLabel.text = nil;
-		cell.accessoryView = nil;
-		return cell;
-	}
-	else {
-		NCShipFit* fit = self.controller.fits[indexPath.row];
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		eufe::Gang* gang = self.controller.engine->getGang();
-		
-		eufe::Character* fleetBooster = gang->getFleetBooster();
-		eufe::Character* wingBooster = gang->getWingBooster();
-		eufe::Character* squadBooster = gang->getSquadBooster();
-
-		NSString *booster = nil;
-		
-		if (fit.pilot == fleetBooster)
-			booster = NSLocalizedString(@" (Fleet Booster)", nil);
-		else if (fit.pilot == wingBooster)
-			booster = NSLocalizedString(@" (Wing Booster)", nil);
-		else if (fit.pilot == squadBooster)
-			booster = NSLocalizedString(@" (Squad Booster)", nil);
-		else
-			booster = @"";
-
-		
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
-		cell.subtitleLabel.text = fit.loadoutName;
-		cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
-		if (self.controller.fit == fit)
-			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
-		else
-			cell.accessoryView = nil;
-		return cell;
-	}
+	NCTableViewCell *cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 
@@ -101,11 +69,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	if (!self.offscreenCell)
+		self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+	self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+	[self.offscreenCell setNeedsLayout];
+	[self.offscreenCell layoutIfNeeded];
+	return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -289,6 +261,43 @@
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	if (indexPath.row >= self.controller.fits.count) {
+		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
+		cell.subtitleLabel.text = nil;
+		cell.accessoryView = nil;
+	}
+	else {
+		NCShipFit* fit = self.controller.fits[indexPath.row];
+		eufe::Gang* gang = self.controller.engine->getGang();
+		
+		eufe::Character* fleetBooster = gang->getFleetBooster();
+		eufe::Character* wingBooster = gang->getWingBooster();
+		eufe::Character* squadBooster = gang->getSquadBooster();
+		
+		NSString *booster = nil;
+		
+		if (fit.pilot == fleetBooster)
+			booster = NSLocalizedString(@" (Fleet Booster)", nil);
+		else if (fit.pilot == wingBooster)
+			booster = NSLocalizedString(@" (Wing Booster)", nil);
+		else if (fit.pilot == squadBooster)
+			booster = NSLocalizedString(@" (Squad Booster)", nil);
+		else
+			booster = @"";
+		
+		
+		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
+		cell.subtitleLabel.text = fit.loadoutName;
+		cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
+		if (self.controller.fit == fit)
+			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+		else
+			cell.accessoryView = nil;
+	}
 }
 
 @end

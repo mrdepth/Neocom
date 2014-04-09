@@ -242,7 +242,6 @@
 }
 
 - (void) update {
-
 	[self.tableView reloadData];
 	[self.refreshControl endRefreshing];
 	[self updateCacheTime];

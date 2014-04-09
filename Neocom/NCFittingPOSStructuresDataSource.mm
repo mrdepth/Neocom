@@ -57,6 +57,11 @@
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingPOSStructuresTableHeaderView* tableHeaderView;
+@property (nonatomic, strong) NCFittingPOSStructureCell* offscreenCell;
+
+- (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
+
 @end
 
 @implementation NCFittingPOSStructuresDataSource
@@ -156,73 +161,18 @@
     
 	if (indexPath.row >= self.rows.count) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
-		cell.titleLabel.text = NSLocalizedString(@"Add Structure", nil);
-		cell.subtitleLabel.text = nil;
-		cell.accessoryView = nil;
-		
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 	else {
 		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
 		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-//			NCFittingPOSStructuresDataSourcePickerRow* pickerRow = (NCFittingPOSStructuresDataSourcePickerRow*) row;
 			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-/*			cell.pickerView.dataSource = self;
-			cell.pickerView.delegate = self;
-			[cell.pickerView reloadAllComponents];
-			[cell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];*/
 			return cell;
 		}
 		else {
-
-			eufe::Structure* structure = row.structures.front();
-			
-			int optimal = (int) structure->getMaxRange();
-			int falloff = (int) structure->getFalloff();
-			float trackingSpeed = structure->getTrackingSpeed();
-			
 			NCFittingPOSStructureCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
-			
-			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
-			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-			
-			eufe::Charge* charge = structure->getCharge();
-			
-			if (charge) {
-				EVEDBInvType* type = [self.controller typeWithItem:charge];
-				cell.chargeLabel.text = type.typeName;
-			}
-			else
-				cell.chargeLabel.text = nil;
-			
-			
-			if (optimal > 0) {
-				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				cell.optimalLabel.text = s;
-			}
-			else
-				cell.optimalLabel.text = nil;
-			
-			switch (structure->getState()) {
-				case eufe::Module::STATE_ACTIVE:
-					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-					break;
-				case eufe::Module::STATE_ONLINE:
-					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-					break;
-				case eufe::Module::STATE_OVERLOADED:
-					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-					break;
-				default:
-					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-					break;
-			}
-			
+			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 			return cell;
 		}
 	}
@@ -249,11 +199,24 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (indexPath.row >= self.rows.count) {
+		return 41;
+	}
+	else {
+		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
+		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+			return 162;
+		}
+		else {
+			if (!self.offscreenCell)
+				self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
+			[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+			self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+			[self.offscreenCell setNeedsLayout];
+			[self.offscreenCell layoutIfNeeded];
+			return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+		}
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -557,6 +520,67 @@
 								 block(row.structures);
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	if (indexPath.row >= self.rows.count) {
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Structure", nil);
+		cell.subtitleLabel.text = nil;
+		cell.accessoryView = nil;
+	}
+	else {
+		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
+		if (![row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
+			eufe::Structure* structure = row.structures.front();
+			
+			int optimal = (int) structure->getMaxRange();
+			int falloff = (int) structure->getFalloff();
+			float trackingSpeed = structure->getTrackingSpeed();
+			
+			NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
+			
+			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
+			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+			
+			eufe::Charge* charge = structure->getCharge();
+			
+			if (charge) {
+				EVEDBInvType* type = [self.controller typeWithItem:charge];
+				cell.chargeLabel.text = type.typeName;
+			}
+			else
+				cell.chargeLabel.text = nil;
+			
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				cell.optimalLabel.text = s;
+			}
+			else
+				cell.optimalLabel.text = nil;
+			
+			switch (structure->getState()) {
+				case eufe::Module::STATE_ACTIVE:
+					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+					break;
+				case eufe::Module::STATE_ONLINE:
+					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+					break;
+				case eufe::Module::STATE_OVERLOADED:
+					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+					break;
+				default:
+					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+					break;
+			}
+		}
+	}
 }
 
 @end

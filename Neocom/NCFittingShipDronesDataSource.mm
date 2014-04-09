@@ -51,6 +51,11 @@
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
+@property (nonatomic, strong) NCFittingShipDroneCell* offscreenCell;
+
+- (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath;
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
+
 @end
 
 @implementation NCFittingShipDronesDataSource
@@ -159,56 +164,20 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
 	if (indexPath.row >= self.rows.count) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
-		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
-		cell.subtitleLabel.text = nil;
-		cell.accessoryView = nil;
-
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 	else {
 		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
 		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
-			NCFittingShipDronesDataSourcePickerRow* pickerRow = (NCFittingShipDronesDataSourcePickerRow*) row;
 			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-//			cell.pickerView.dataSource = self;
-//			cell.pickerView.delegate = self;
-//			[cell.pickerView reloadAllComponents];
-			//[cell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
 			return cell;
 		}
 		else {
-			eufe::Drone* drone = row.drones.front();
-			
-			int optimal = (int) drone->getMaxRange();
-			int falloff = (int) drone->getFalloff();
-			float trackingSpeed = drone->getTrackingSpeed();
-			
 			NCFittingShipDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
-			
-			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
-			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-			
-			if (optimal > 0) {
-				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				cell.optimalLabel.text = s;
-			}
-			else
-				cell.optimalLabel.text = nil;
-			
-			if (drone->isActive())
-				cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-			else
-				cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-			
-			cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 			return cell;
 		}
 	}
@@ -234,11 +203,24 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	if (indexPath.row >= self.rows.count) {
+		return 41;
+	}
+	else {
+		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
+		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
+			return 162;
+		}
+		else {
+			if (!self.offscreenCell)
+				self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
+			[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+			self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+			[self.offscreenCell setNeedsLayout];
+			[self.offscreenCell layoutIfNeeded];
+			return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+		}
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -467,6 +449,49 @@
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	if (indexPath.row >= self.rows.count) {
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		cell.iconView.image = [UIImage imageNamed:@"drone.png"];
+		cell.titleLabel.text = NSLocalizedString(@"Add Drone", nil);
+		cell.subtitleLabel.text = nil;
+		cell.accessoryView = nil;
+	}
+	else {
+		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
+		if (![row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
+			eufe::Drone* drone = row.drones.front();
+			
+			int optimal = (int) drone->getMaxRange();
+			int falloff = (int) drone->getFalloff();
+			float trackingSpeed = drone->getTrackingSpeed();
+			
+			NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
+			
+			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
+			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+			
+			if (optimal > 0) {
+				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+				if (falloff > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+				if (trackingSpeed > 0)
+					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+				cell.optimalLabel.text = s;
+			}
+			else
+				cell.optimalLabel.text = nil;
+			
+			if (drone->isActive())
+				cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+			else
+				cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+			
+			cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+		}
+	}
 }
 
 @end

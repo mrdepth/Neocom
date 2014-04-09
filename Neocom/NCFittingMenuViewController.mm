@@ -135,6 +135,9 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	
 	if (indexPath.section == 0)
 		return 41;
 	else {

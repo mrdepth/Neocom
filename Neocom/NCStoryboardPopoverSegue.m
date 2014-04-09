@@ -35,4 +35,10 @@
 	return UIPopoverArrowDirectionAny;
 }
 
+- (void) perform {
+	[super perform];
+	if ([self.popoverController respondsToSelector:@selector(setBackgroundColor:)])
+		self.popoverController.backgroundColor = [UIColor blackColor];
+}
+
 @end

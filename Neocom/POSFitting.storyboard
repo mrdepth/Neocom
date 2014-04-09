@@ -537,7 +537,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
                                                 <segment title="Structures"/>
-                                                <segment title="Assembly Lines"/>
+                                                <segment title="Assembly"/>
                                                 <segment title="Stats"/>
                                             </segments>
                                             <connections>

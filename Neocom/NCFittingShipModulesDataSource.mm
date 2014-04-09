@@ -60,7 +60,9 @@
 @property (nonatomic, strong) NSArray* sections;
 
 @property (nonatomic, strong, readwrite) NCFittingShipModulesTableHeaderView* tableHeaderView;
+@property (nonatomic, strong) NCFittingShipModuleCell* offscreenCell;
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end
 
@@ -164,94 +166,12 @@
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size()) {
 		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		cell.subtitleLabel.text = nil;
-		cell.accessoryView = nil;
-		switch (section.slot) {
-			case eufe::Module::SLOT_HI:
-				cell.iconView.image = [UIImage imageNamed:@"slotHigh.png"];
-				cell.titleLabel.text = NSLocalizedString(@"High slot", nil);
-				break;
-			case eufe::Module::SLOT_MED:
-				cell.iconView.image = [UIImage imageNamed:@"slotMed.png"];
-				cell.titleLabel.text = NSLocalizedString(@"Med slot", nil);
-				break;
-			case eufe::Module::SLOT_LOW:
-				cell.iconView.image = [UIImage imageNamed:@"slotLow.png"];
-				cell.titleLabel.text = NSLocalizedString(@"Low slot", nil);
-				break;
-			case eufe::Module::SLOT_RIG:
-				cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
-				cell.titleLabel.text = NSLocalizedString(@"Rig slot", nil);
-				break;
-			case eufe::Module::SLOT_SUBSYSTEM:
-				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem.png"];
-				cell.titleLabel.text = NSLocalizedString(@"Subsystem slot", nil);
-				break;
-			default:
-				cell.iconView.image = nil;
-				cell.titleLabel.text = nil;
-		}
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 	else {
 		NCFittingShipModuleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipModuleCell"];
-		eufe::Module* module = section.modules[indexPath.row];
-		EVEDBInvType* type = [self.controller typeWithItem:module];
-		cell.typeNameLabel.text = type.typeName;
-		cell.typeImageView.image = [UIImage imageNamed:[type typeSmallImageName]];
-		
-		eufe::Charge* charge = module->getCharge();
-		
-		if (charge) {
-			type = [self.controller typeWithItem:charge];
-			cell.chargeLabel.text = type.typeName;
-		}
-		else
-			cell.chargeLabel.text = nil;
-		
-		int optimal = (int) module->getMaxRange();
-		int falloff = (int) module->getFalloff();
-		float trackingSpeed = module->getTrackingSpeed();
-		float lifeTime = module->getLifeTime();
-
-		if (optimal > 0) {
-			NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-			if (falloff > 0)
-				[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-			if (trackingSpeed > 0)
-				[s appendFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-			cell.optimalLabel.text = s;
-		}
-		else
-			cell.optimalLabel.text = nil;
-
-		if (lifeTime > 0)
-			cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
-		else
-			cell.lifetimeLabel.text = nil;
-
-		eufe::Module::Slot slot = module->getSlot();
-		if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
-			switch (module->getState()) {
-				case eufe::Module::STATE_ACTIVE:
-					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-					break;
-				case eufe::Module::STATE_ONLINE:
-					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-					break;
-				case eufe::Module::STATE_OVERLOADED:
-					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-					break;
-				default:
-					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-					break;
-			}
-		}
-		else
-			cell.stateImageView.image = nil;
-
-		cell.targetImageView.image = module->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
-
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 }
@@ -299,11 +219,19 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	if (indexPath.row >= section.modules.size()) {
+		return 41;
+	}
+	else {
+		if (!self.offscreenCell)
+			self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipModuleCell"];
+		[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+		self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+		[self.offscreenCell setNeedsLayout];
+		[self.offscreenCell layoutIfNeeded];
+		return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	}
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -376,6 +304,99 @@
 }
 
 #pragma mark - Private
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	if (indexPath.row >= section.modules.size()) {
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		cell.subtitleLabel.text = nil;
+		cell.accessoryView = nil;
+		switch (section.slot) {
+			case eufe::Module::SLOT_HI:
+				cell.iconView.image = [UIImage imageNamed:@"slotHigh.png"];
+				cell.titleLabel.text = NSLocalizedString(@"High slot", nil);
+				break;
+			case eufe::Module::SLOT_MED:
+				cell.iconView.image = [UIImage imageNamed:@"slotMed.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Med slot", nil);
+				break;
+			case eufe::Module::SLOT_LOW:
+				cell.iconView.image = [UIImage imageNamed:@"slotLow.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Low slot", nil);
+				break;
+			case eufe::Module::SLOT_RIG:
+				cell.iconView.image = [UIImage imageNamed:@"slotRig.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Rig slot", nil);
+				break;
+			case eufe::Module::SLOT_SUBSYSTEM:
+				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Subsystem slot", nil);
+				break;
+			default:
+				cell.iconView.image = nil;
+				cell.titleLabel.text = nil;
+		}
+	}
+	else {
+		NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
+		eufe::Module* module = section.modules[indexPath.row];
+		EVEDBInvType* type = [self.controller typeWithItem:module];
+		cell.typeNameLabel.text = type.typeName;
+		cell.typeImageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+		
+		eufe::Charge* charge = module->getCharge();
+		
+		if (charge) {
+			type = [self.controller typeWithItem:charge];
+			cell.chargeLabel.text = type.typeName;
+		}
+		else
+			cell.chargeLabel.text = nil;
+		
+		int optimal = (int) module->getMaxRange();
+		int falloff = (int) module->getFalloff();
+		float trackingSpeed = module->getTrackingSpeed();
+		float lifeTime = module->getLifeTime();
+		
+		if (optimal > 0) {
+			NSMutableString* s = [NSMutableString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+			if (falloff > 0)
+				[s appendFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+			if (trackingSpeed > 0)
+				[s appendFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+			cell.optimalLabel.text = s;
+		}
+		else
+			cell.optimalLabel.text = nil;
+		
+		if (lifeTime > 0)
+			cell.lifetimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lifetime: %@", nil), [NSString stringWithTimeLeft:lifeTime]];
+		else
+			cell.lifetimeLabel.text = nil;
+		
+		eufe::Module::Slot slot = module->getSlot();
+		if (slot == eufe::Module::SLOT_HI || slot == eufe::Module::SLOT_MED || slot == eufe::Module::SLOT_LOW) {
+			switch (module->getState()) {
+				case eufe::Module::STATE_ACTIVE:
+					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+					break;
+				case eufe::Module::STATE_ONLINE:
+					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+					break;
+				case eufe::Module::STATE_OVERLOADED:
+					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+					break;
+				default:
+					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+					break;
+			}
+		}
+		else
+			cell.stateImageView.image = nil;
+		
+		cell.targetImageView.image = module->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+	}
+}
 
 - (void) performActionForRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];

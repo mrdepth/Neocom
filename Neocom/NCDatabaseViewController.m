@@ -137,6 +137,9 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	
 	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
 	NSString *CellIdentifier;
 	if ([row isKindOfClass:[EVEDBInvType class]])

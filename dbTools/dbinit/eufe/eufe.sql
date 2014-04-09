@@ -46,10 +46,10 @@ CREATE TABLE eufe.dgmTypeEffects (
 );
 DROP TABLE IF EXISTS eufe.invCategories;
 CREATE TABLE eufe.invCategories (
-"categoryID"  INTEGER NOT NULL,
+"categoryID"  tinyint(3) NOT NULL,
 "categoryName"  TEXT(100),
 "description"  TEXT(3000),
-"published"  INTEGER,
+"published"  tinyint(1),
 "iconID" smallint(6) default NULL,
 "categoryNameID" smallint(6) default NULL,
 "dataID" smallint(6) default NULL,
@@ -63,3 +63,7 @@ INSERT INTO eufe.dgmAttributeTypes SELECT attributeID, attributeName, maxAttribu
 INSERT INTO eufe.dgmTypeAttributes SELECT * FROM dgmTypeAttributes;
 INSERT INTO eufe.dgmTypeEffects SELECT * FROM dgmTypeEffects;
 INSERT INTO eufe.invCategories SELECT * FROM invCategories;
+
+CREATE INDEX eufe.invGroups_categoryID ON "invGroups" ("categoryID" ASC);
+CREATE INDEX eufe.invTypes_groupID_published ON "invTypes" ("groupID" ASC, "published" ASC);
+CREATE INDEX eufe.invTypes_typeName ON "invTypes" ("typeName" ASC);

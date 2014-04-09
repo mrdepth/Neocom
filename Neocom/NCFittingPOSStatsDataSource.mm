@@ -296,11 +296,21 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSMutableDictionary* heights = nil;
+	if (!heights)
+		heights = [NSMutableDictionary new];
+	NSNumber* height = heights[indexPath];
+	if (height)
+		return [height floatValue];
+	
 	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	
+	height = @([cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5);
+	heights[indexPath] = height;
+	return [height floatValue];
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

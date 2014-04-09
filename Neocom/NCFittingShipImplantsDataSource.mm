@@ -21,6 +21,9 @@
 @interface NCFittingShipImplantsDataSource()
 @property (nonatomic, assign) std::vector<eufe::Implant*> implants;
 @property (nonatomic, assign) std::vector<eufe::Booster*> boosters;
+@property (nonatomic, strong) NCTableViewCell* offscreenCell;
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end
 
@@ -76,36 +79,7 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCTableViewCell *cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.subtitleLabel.text = nil;
-	cell.accessoryView = nil;
-	
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			cell.titleLabel.text = NSLocalizedString(@"Import Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
-		}
-		else {
-			cell.titleLabel.text = NSLocalizedString(@"Save Implant Set", nil);
-			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
-		}
-	}
-	else {
-		EVEDBInvType* type;
-		if (indexPath.section == 1)
-			type = [self.controller typeWithItem:self.implants[indexPath.row]];
-		else
-			type = [self.controller typeWithItem:self.boosters[indexPath.row]];
-		
-		
-		if (!type) {
-			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
-			cell.iconView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
-		}
-		else {
-			cell.titleLabel.text = type.typeName;
-			cell.iconView.image = [UIImage imageNamed:[type typeSmallImageName]];
-		}
-	}
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -139,11 +113,15 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	if (!self.offscreenCell)
+		self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+	self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+	[self.offscreenCell setNeedsLayout];
+	[self.offscreenCell layoutIfNeeded];
+	return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -233,5 +211,37 @@
 	}
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	cell.subtitleLabel.text = nil;
+	cell.accessoryView = nil;
+	
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			cell.titleLabel.text = NSLocalizedString(@"Import Implant Set", nil);
+			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+		}
+		else {
+			cell.titleLabel.text = NSLocalizedString(@"Save Implant Set", nil);
+			cell.iconView.image = [UIImage imageNamed:@"implant.png"];
+		}
+	}
+	else {
+		EVEDBInvType* type;
+		if (indexPath.section == 1)
+			type = [self.controller typeWithItem:self.implants[indexPath.row]];
+		else
+			type = [self.controller typeWithItem:self.boosters[indexPath.row]];
+		
+		
+		if (!type) {
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Slot %d", nil), (int32_t)(indexPath.row + 1)];
+			cell.iconView.image = [UIImage imageNamed:indexPath.section == 1 ? @"implant.png" : @"booster.png"];
+		}
+		else {
+			cell.titleLabel.text = type.typeName;
+			cell.iconView.image = [UIImage imageNamed:[type typeSmallImageName]];
+		}
+	}
+}
 
 @end

@@ -2316,6 +2316,7 @@
 		126A0CC2185F398C00A8E8A3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				129421A6187FDF5D00977CB8 /* Categories */,
 				12F8E1F518E9A52200CEA658 /* NCSplitViewController */,
 				1235E3F118E562C700BC2607 /* NCNavigationController */,
 				12FA32A818E156BA0053DDC5 /* NCMarqueeLabel */,
@@ -2325,7 +2326,6 @@
 				12FF586A189F8ECA00E2D70A /* NCStoryboardPopoverSegue */,
 				12CC8D69188178290058C5DF /* NCTableViewEmptyHedaerView */,
 				12BF345E18814CB400368CD4 /* NCTableViewCell */,
-				129421A6187FDF5D00977CB8 /* Categories */,
 				84250636187DC548002E691E /* NCSideMenuViewController */,
 				129FEE12186030E000F75FA6 /* NCStorage */,
 				12111235185992DD009E5106 /* NCCache */,

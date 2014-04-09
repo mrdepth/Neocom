@@ -48,6 +48,8 @@
 	self.popover = [[NCPopoverController alloc] initWithContentViewController:viewControllerToPresent];
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
+		self.popover.backgroundColor = [UIColor blackColor];
 }
 
 - (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
@@ -57,6 +59,8 @@
 	self.popover = [[NCPopoverController alloc] initWithContentViewController:viewControllerToPresent];
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
+	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
+		self.popover.backgroundColor = [UIColor blackColor];
 }
 
 - (IBAction)dismissAnimated {

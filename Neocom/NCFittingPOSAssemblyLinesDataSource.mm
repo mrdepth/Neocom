@@ -23,7 +23,9 @@
 
 @interface NCFittingPOSAssemblyLinesDataSource()
 @property (nonatomic, strong) NSArray* sections;
-//@property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
+@property (nonatomic, strong) NCTableViewCell* offscreenCell;
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 @end
 
 @implementation NCFittingPOSAssemblyLinesDataSource
@@ -107,13 +109,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
-	cell.iconView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
-	cell.subtitleLabel.text = nil;
-	cell.accessoryView = nil;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -145,11 +142,25 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	if (!self.offscreenCell)
+		self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
+	self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
+	[self.offscreenCell setNeedsLayout];
+	[self.offscreenCell layoutIfNeeded];
+	return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+}
+
+#pragma mark - Private
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
+	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
+	cell.iconView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
+	cell.subtitleLabel.text = nil;
+	cell.accessoryView = nil;
 }
 
 @end

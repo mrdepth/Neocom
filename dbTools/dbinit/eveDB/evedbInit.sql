@@ -67,6 +67,19 @@ INSERT INTO eveDB.invMetaTypes
 		FROM dgmTypeAttributes AS a, invTypes AS b
 		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
-CREATE INDEX "invTypes_marketGroupID" ON "eveDB.invTypes" ("marketGroupID" ASC)
+CREATE INDEX eveDB.certCerts_groupID ON "certCerts" ("groupid" ASC);
+CREATE INDEX eveDB.certMasteries_certID_typeID ON "certMasteries" ("certID" ASC, "typeID" ASC);
+CREATE INDEX eveDB.certMasteries_typeID ON "certMasteries" ("typeID" ASC);
+CREATE INDEX eveDB.certSkills_certID ON "certSkills" ("certID" ASC);
+CREATE INDEX eveDB.invGroups_categoryID_published_groupName ON "invGroups" ("categoryID" ASC, "published" ASC, "groupName" ASC);
+CREATE INDEX eveDB.invMarketGroups_parentGroupID_marketGroupName ON "invMarketGroups" ("parentGroupID" ASC, "marketGroupName" ASC);
+CREATE INDEX eveDB.invMetaTypes_parentTypeID ON "invMetaTypes" ("parentTypeID" ASC);
+CREATE INDEX eveDB.invTypes_groupID ON "invTypes" ("groupID" ASC);
+CREATE INDEX eveDB.invTypes_marketGroupID ON "invTypes" ("marketGroupID" ASC);
+CREATE INDEX eveDB.invTypes_typeName ON "invTypes" ("typeName" ASC);
+CREATE INDEX eveDB.mapRegions_regionName ON "mapRegions" ("regionName" ASC);
+CREATE INDEX eveDB.mapSolarSystems_regionID_solarSystemName ON "mapSolarSystems" ("regionID" ASC, "solarSystemName" ASC);
+CREATE INDEX eveDB.mapSolarSystems_solarSystemName ON "mapSolarSystems" ("solarSystemName" ASC);
+
 
 --COMMIT TRANSACTION;

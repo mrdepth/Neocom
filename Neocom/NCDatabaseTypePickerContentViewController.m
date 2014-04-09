@@ -160,6 +160,9 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	
 	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
@@ -296,7 +299,6 @@
 						 WHERE invTypes.typeID IN \
 						 (SELECT invTypes.typeID FROM %@ WHERE %@) GROUP BY invTypes.typeID ORDER BY dgmTypeAttributes.value, typeName;",
 						 [[fromTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
-		
 	}
 	return _typesRequest;
 }
@@ -318,7 +320,6 @@
 						  WHERE invTypes.typeID IN \
 						  (SELECT invTypes.typeID FROM %@ WHERE %@) GROUP BY invTypes.typeID ORDER BY dgmTypeAttributes.value, typeName;",
 						  [[fromTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
-		
 	}
 	return _searchRequest;
 }

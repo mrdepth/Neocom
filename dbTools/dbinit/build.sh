@@ -31,3 +31,7 @@ sqlite3 ./eveDB/eve.sqlite ".read eveDbInit.sql"
 
 echo ".read eveDB/eveIcons.sql"
 sqlite3 ./evedb.sqlite ".read eveDB/eveIcons.sql"
+
+echo ".read eveDB/npc.sql"
+sqlite3 evedb.sqlite ".read eveDB/npc.sql"
+sqlite3 evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"

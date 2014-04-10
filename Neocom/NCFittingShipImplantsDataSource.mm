@@ -201,10 +201,12 @@
 										 [self.controller reload];
 									 }
 									 else if (selectedButtonIndex == 1) {
-										 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:item]];
+										 [self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+																			  sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:item]}];
 									 }
 									 else if (selectedButtonIndex == 2) {
-										 [self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:item]];
+										 [self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+																			  sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:item]}];
 									 }
 								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 		}

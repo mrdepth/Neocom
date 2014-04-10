@@ -182,10 +182,14 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
 		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
-		if ([sender isKindOfClass:[UIBarButtonItem class]])
-			popoverSegue.anchorBarButtonItem = sender;
-		else if ([sender isKindOfClass:[UIView class]])
-			popoverSegue.anchorView = sender;
+		id anchor = sender;
+		if ([sender isKindOfClass:[NSDictionary class]])
+			anchor = sender[@"sender"];
+		
+		if ([anchor isKindOfClass:[UIBarButtonItem class]])
+			popoverSegue.anchorBarButtonItem = anchor;
+		else if ([anchor isKindOfClass:[UIView class]])
+			popoverSegue.anchorView = anchor;
 		else
 			popoverSegue.anchorBarButtonItem = self.navigationItem.rightBarButtonItem;
 	}
@@ -197,7 +201,7 @@
 		else
 			controller = segue.destinationViewController;
 		
-		controller.fit = sender;
+		controller.fit = sender[@"object"];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTargetsViewController"]) {
 		NCFittingTargetsViewController* controller;
@@ -206,7 +210,7 @@
 		else
 			controller = segue.destinationViewController;
 
-		NSArray* items = sender;
+		NSArray* items = sender[@"object"];
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([items[0] pointerValue]);
 		controller.items = items;
 		
@@ -238,7 +242,7 @@
 		else
 			controller = segue.destinationViewController;
 
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
 		EVEDBInvType* type = [self typeWithItem:item];
 		
 		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
@@ -270,7 +274,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NSArray* modules = sender;
+		NSArray* modules = sender[@"object"];
 		controller.object = modules;
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
 		controller.type = [self typeWithItem:item];
@@ -282,7 +286,7 @@
 		else
 			controller = segue.destinationViewController;
 
-		controller.trainingQueue = sender;
+		controller.trainingQueue = sender[@"object"];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingShipAffectingSkillsViewController"]) {
 		NCFittingShipAffectingSkillsViewController* controller;
@@ -292,7 +296,7 @@
 			controller = segue.destinationViewController;
 		
 		NSMutableArray* typeIDs = [NSMutableArray new];
-		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
+		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
 		for (auto item: item->getAffectors()) {
 			eufe::Skill* skill = dynamic_cast<eufe::Skill*>(item);
 			if (skill) {
@@ -380,7 +384,8 @@
 	};
 	
 	void (^shipInfo)() = ^() {
-		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:self.fit.pilot->getShip()]];
+		[self performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
 	};
 	
 	void (^rename)() = ^() {
@@ -418,7 +423,8 @@
 	};
 	
 	void (^setCharacter)() = ^() {
-		[self performSegueWithIdentifier:@"NCFittingCharacterPickerViewController" sender:self.fit];
+		[self performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
+								  sender:@{@"sender": sender, @"object": self.fit}];
 	};
 	
 	void (^viewInBrowser)() = ^() {
@@ -466,7 +472,8 @@
 											 }
 								 completionHandler:^(NCTask *task) {
 									 if (![task isCancelled]) {
-										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController" sender:trainingQueue];
+										 [self performSegueWithIdentifier:@"NCFittingRequiredSkillsViewController"
+																   sender:@{@"sender": sender, @"object": trainingQueue}];
 									 }
 								 }];
 	};
@@ -476,7 +483,8 @@
 	};
 	
 	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:self.fit.pilot->getShip()]];
+		[self performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+								  sender:@{@"sender": sender, @"object": [NSValue valueWithPointer:self.fit.pilot->getShip()]}];
 	};
 
 	

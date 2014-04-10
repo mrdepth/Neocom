@@ -295,7 +295,8 @@
 													  completionHandler:^(EVEDBInvType *type) {
 														  ship->addModule(type.typeID);
 														  [self.controller reload];
-														  [self.controller dismissAnimated];
+														  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+															  [self.controller dismissAnimated];
 													  }];
 	}
 	else {
@@ -550,17 +551,20 @@
 	};
 	
 	void (^moduleInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module]];
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:module]}];
 	};
 	void (^ammoInfo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:module->getCharge()]];
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:module->getCharge()]}];
 	};
 	
 	void (^setTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		NSMutableArray* array = [NSMutableArray new];
 		for (auto module: modules)
 			[array addObject:[NSValue valueWithPointer:module]];
-		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
+		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
+											 sender:@{@"sender": cell, @"object": array}];
 	};
 	void (^clearTarget)(eufe::ModulesList) = ^(eufe::ModulesList modules){
 		for (auto module: modules)
@@ -573,7 +577,8 @@
 		for (auto module: modules)
 			[array addObject:[NSValue valueWithPointer:module]];
 		
-		[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController" sender:array];
+		[self.controller performSegueWithIdentifier:@"NCFittingTypeVariationsViewController"
+											 sender:@{@"sender": cell, @"object": array}];
 	};
 	
 	void (^similarModules)(eufe::ModulesList) = ^(eufe::ModulesList modules){
@@ -619,7 +624,8 @@
 	};
 	
 	void (^affectingSkills)(eufe::ModulesList) = ^(eufe::ModulesList modules){
-		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:module]];
+		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:module]}];
 	};
 	
 	NSMutableArray* buttons = [NSMutableArray new];

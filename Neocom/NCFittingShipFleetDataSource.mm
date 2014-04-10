@@ -184,7 +184,8 @@
 	};
 	
 	void (^setCharacter)() = ^(){
-		[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController" sender:fit];
+		[self.controller performSegueWithIdentifier:@"NCFittingCharacterPickerViewController"
+											 sender:@{@"sender": cell, @"object": fit}];
 	};
 	
 	

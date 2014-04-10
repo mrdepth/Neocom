@@ -370,7 +370,8 @@
 		NSMutableArray* array = [NSMutableArray new];
 		for (auto drone: drones)
 			[array addObject:[NSValue valueWithPointer:drone]];
-		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController" sender:array];
+		[self.controller performSegueWithIdentifier:@"NCFittingTargetsViewController"
+											 sender:@{@"sender": cell, @"object": array}];
 	};
 	
 	void (^clearTarget)(eufe::DronesList) = ^(eufe::DronesList drones){
@@ -397,11 +398,13 @@
 	};
 	
 	void (^showInfo)(eufe::DronesList) = ^(eufe::DronesList drones) {
-		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController" sender:[NSValue valueWithPointer:drone]];
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:drone]}];
 	};
 	
 	void (^affectingSkills)(eufe::DronesList) = ^(eufe::DronesList drones){
-		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController" sender:[NSValue valueWithPointer:drone]];
+		[self.controller performSegueWithIdentifier:@"NCFittingShipAffectingSkillsViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:drone]}];
 	};
 	
 	

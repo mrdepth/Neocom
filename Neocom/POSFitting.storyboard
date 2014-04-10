@@ -250,6 +250,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingResistancesCell" rowHeight="29" id="vjI-1K-Fmy" customClass="NCFittingResistancesCell">
                                 <rect key="frame" x="0.0" y="351" width="320" height="29"/>
@@ -338,6 +339,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="categoryImageView" destination="1sO-N1-HX7" id="eso-ey-54y"/>
                                     <outlet property="emLabel" destination="aTc-lx-L2C" id="Gqg-Bg-s0q"/>
@@ -432,7 +434,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="EHP/s" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HZl-7c-mSV" customClass="LUILabel">
-                                            <rect key="frame" x="54" y="41" width="106" height="15"/>
+                                            <rect key="frame" x="54" y="41" width="107" height="15"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -458,11 +460,11 @@
                                         <constraint firstItem="GfG-PC-nBW" firstAttribute="bottom" secondItem="gUA-q3-a4x" secondAttribute="bottom" id="7Mu-OI-aQF"/>
                                         <constraint firstItem="0In-LB-Xld" firstAttribute="width" secondItem="L2O-Cm-8bP" secondAttribute="width" id="8SL-S9-PH3"/>
                                         <constraint firstItem="0In-LB-Xld" firstAttribute="width" secondItem="GfG-PC-nBW" secondAttribute="width" id="8Ug-1y-bpn"/>
-                                        <constraint firstItem="0In-LB-Xld" firstAttribute="width" secondItem="HZl-7c-mSV" secondAttribute="width" id="8kH-rg-BU7"/>
+                                        <constraint firstItem="HZl-7c-mSV" firstAttribute="width" secondItem="GfG-PC-nBW" secondAttribute="width" id="8ak-WQ-NFu"/>
                                         <constraint firstItem="0In-LB-Xld" firstAttribute="leading" secondItem="L2O-Cm-8bP" secondAttribute="leading" id="9Ij-BT-S84"/>
                                         <constraint firstItem="HZl-7c-mSV" firstAttribute="top" secondItem="L2O-Cm-8bP" secondAttribute="top" id="ABD-Ta-pXH"/>
                                         <constraint firstItem="bbR-dL-bJF" firstAttribute="bottom" secondItem="xH5-aO-kx6" secondAttribute="bottom" id="MEw-TZ-DSG"/>
-                                        <constraint firstAttribute="trailing" secondItem="0In-LB-Xld" secondAttribute="trailing" constant="15" id="O1B-V3-niP"/>
+                                        <constraint firstAttribute="trailing" secondItem="0In-LB-Xld" secondAttribute="trailing" priority="999" constant="15" id="O1B-V3-niP"/>
                                         <constraint firstItem="HZl-7c-mSV" firstAttribute="bottom" secondItem="L2O-Cm-8bP" secondAttribute="bottom" id="Rnf-nd-9UH"/>
                                         <constraint firstItem="GfG-PC-nBW" firstAttribute="bottom" secondItem="0In-LB-Xld" secondAttribute="bottom" id="RtO-cE-qcw"/>
                                         <constraint firstItem="GfG-PC-nBW" firstAttribute="top" secondItem="gUA-q3-a4x" secondAttribute="top" id="Tc8-ff-f2M"/>

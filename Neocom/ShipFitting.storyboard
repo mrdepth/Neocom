@@ -387,6 +387,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingResistancesCell" rowHeight="29" id="g2p-o8-WuE" customClass="NCFittingResistancesCell">
                                 <rect key="frame" x="0.0" y="440" width="320" height="29"/>
@@ -475,6 +476,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="categoryImageView" destination="LDw-L0-O4Z" id="B6q-Ze-mZY"/>
                                     <outlet property="emLabel" destination="H3d-1n-vJ6" id="74X-iR-92p"/>
@@ -601,11 +603,12 @@
                                         <constraint firstItem="Ix1-5e-JiU" firstAttribute="bottom" secondItem="bel-Co-WOn" secondAttribute="bottom" id="rHM-i6-yxH"/>
                                         <constraint firstItem="WKm-FY-5MH" firstAttribute="top" secondItem="Ehn-6U-VnV" secondAttribute="top" id="rbX-w2-nb0"/>
                                         <constraint firstAttribute="bottom" secondItem="bel-Co-WOn" secondAttribute="bottom" priority="999" constant="2" id="vLu-wB-iuI"/>
-                                        <constraint firstAttribute="trailing" secondItem="WKm-FY-5MH" secondAttribute="trailing" constant="15" id="x2Y-SF-OQs"/>
+                                        <constraint firstAttribute="trailing" secondItem="WKm-FY-5MH" secondAttribute="trailing" priority="999" constant="15" id="x2Y-SF-OQs"/>
                                         <constraint firstItem="mV5-Kj-xZr" firstAttribute="top" secondItem="bel-Co-WOn" secondAttribute="top" id="zTs-iY-7LN"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="calibrationLabel" destination="Ehn-6U-VnV" id="LVd-Ws-UsC"/>
                                     <outlet property="dronesLabel" destination="WKm-FY-5MH" id="hgE-j7-LHg"/>
@@ -1073,6 +1076,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipTankCell" rowHeight="29" id="4w6-h5-M5a" customClass="NCFittingShipTankCell">
                                 <rect key="frame" x="0.0" y="716" width="320" height="29"/>
@@ -1144,6 +1148,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="armorRepair" destination="KvJ-jl-Wzk" id="hWJ-9U-yq3"/>
                                     <outlet property="categoryLabel" destination="05d-59-CJz" id="gfi-1a-I2z"/>
@@ -1390,6 +1395,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="fittingsPriceLabel" destination="xMY-6Y-eFl" id="OTG-Dc-w0K"/>
                                     <outlet property="shipPriceLabel" destination="2SY-Mx-E0H" id="uTq-xD-CQC"/>
@@ -1544,8 +1550,12 @@
                     <navigationItem key="navigationItem" title="Select Target" id="ITd-Wk-bam">
                         <barButtonItem key="backBarButtonItem" title="Back" id="d7u-EM-wup"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="tLL-bk-hhN" kind="unwind" identifier="Unwind" unwindAction="unwindFromTargets:" id="gAc-hK-yTS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdq-JE-D5e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="tLL-bk-hhN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1018" y="-1585"/>
         </scene>
@@ -2114,6 +2124,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="wmr-bV-V4i"/>
-        <segue reference="kvp-Ic-TVn"/>
+        <segue reference="hKI-l5-8JK"/>
     </inferredMetricsTieBreakers>
 </document>

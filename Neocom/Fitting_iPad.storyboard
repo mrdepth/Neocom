@@ -57,6 +57,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <segue destination="dzV-Bq-aZh" kind="push" id="PXa-qn-oGb"/>
                                 </connections>
@@ -96,6 +97,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <segue destination="qXQ-Tk-5RM" kind="push" identifier="NCFittingAPIViewController" id="gMx-PR-5id"/>
                                 </connections>
@@ -135,6 +137,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem3Cell" id="Y5f-gL-DPQ">
                                 <rect key="frame" x="0.0" y="250" width="703" height="41"/>
@@ -171,6 +174,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem4Cell" id="sdq-6o-gbB">
                                 <rect key="frame" x="0.0" y="291" width="703" height="41"/>
@@ -207,6 +211,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -808,14 +813,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Damage Pattern name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="eZe-lP-SjR">
-                                            <rect key="frame" x="15" y="2" width="290" height="19"/>
+                                            <rect key="frame" x="15" y="2" width="290" height="22"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="nUN-bo-di6" customClass="NCProgressLabel">
-                                            <rect key="frame" x="235" y="23" width="70" height="18"/>
+                                            <rect key="frame" x="235" y="26" width="70" height="15"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.60000002379999995" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -823,7 +828,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="3gZ-LU-JWH" customClass="NCProgressLabel">
-                                            <rect key="frame" x="162" y="23" width="69" height="18"/>
+                                            <rect key="frame" x="162" y="26" width="69" height="15"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -831,7 +836,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="V3l-8l-MqX" customClass="NCProgressLabel">
-                                            <rect key="frame" x="89" y="23" width="69" height="18"/>
+                                            <rect key="frame" x="89" y="26" width="69" height="15"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.231372565" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -839,7 +844,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2Uy-dJ-dru" customClass="NCProgressLabel">
-                                            <rect key="frame" x="15" y="23" width="70" height="18"/>
+                                            <rect key="frame" x="15" y="26" width="70" height="15"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.25098040700000002" green="0.58823531870000001" blue="0.81568634510000004" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -850,9 +855,8 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="eZe-lP-SjR" secondAttribute="trailing" priority="999" constant="15" id="2mg-6h-ZN0"/>
                                         <constraint firstItem="V3l-8l-MqX" firstAttribute="top" secondItem="nUN-bo-di6" secondAttribute="top" id="5ou-MY-4X2"/>
-                                        <constraint firstItem="eZe-lP-SjR" firstAttribute="top" secondItem="9dq-OI-ODU" secondAttribute="top" constant="2" id="88u-hA-QFm"/>
+                                        <constraint firstItem="eZe-lP-SjR" firstAttribute="top" secondItem="9dq-OI-ODU" secondAttribute="top" priority="999" constant="2" id="88u-hA-QFm"/>
                                         <constraint firstItem="V3l-8l-MqX" firstAttribute="width" secondItem="2Uy-dJ-dru" secondAttribute="width" id="E92-CD-bRl"/>
-                                        <constraint firstItem="eZe-lP-SjR" firstAttribute="height" secondItem="2Uy-dJ-dru" secondAttribute="height" id="ENW-E0-hI0"/>
                                         <constraint firstItem="2Uy-dJ-dru" firstAttribute="top" secondItem="eZe-lP-SjR" secondAttribute="bottom" constant="2" id="GAg-WS-0mz"/>
                                         <constraint firstItem="V3l-8l-MqX" firstAttribute="bottom" secondItem="2Uy-dJ-dru" secondAttribute="bottom" id="Ojm-y1-AxA"/>
                                         <constraint firstItem="nUN-bo-di6" firstAttribute="leading" secondItem="3gZ-LU-JWH" secondAttribute="trailing" constant="4" id="TY2-v9-fQw"/>

@@ -358,8 +358,12 @@
                     <navigationItem key="navigationItem" title="Select Target" id="jgI-d3-lw5">
                         <barButtonItem key="backBarButtonItem" title="Back" id="kCg-zd-bpn"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="ehb-9J-FkD" kind="unwind" identifier="Unwind" unwindAction="unwindFromTargets:" id="fPE-ex-HCq"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mxs-dh-YoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ehb-9J-FkD" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1434" y="-1353"/>
         </scene>
@@ -1098,6 +1102,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingResistancesCell" rowHeight="29" id="NLc-F8-CM9" customClass="NCFittingResistancesCell">
                                 <rect key="frame" x="0.0" y="106" width="320" height="29"/>
@@ -1186,6 +1191,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="43" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="categoryImageView" destination="l62-yc-FtI" id="MSt-GM-4gb"/>
                                     <outlet property="emLabel" destination="fEU-QA-3oP" id="nwb-Qc-m5y"/>
@@ -1317,6 +1323,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="calibrationLabel" destination="cbM-Y3-EOn" id="blK-sf-f1Y"/>
                                     <outlet property="dronesLabel" destination="5d9-ue-ATa" id="CsA-t9-Nsr"/>
@@ -1784,6 +1791,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="NCFittingShipTankCell" rowHeight="29" id="AAf-ib-d3h" customClass="NCFittingShipTankCell">
                                 <rect key="frame" x="0.0" y="382" width="320" height="29"/>
@@ -1855,6 +1863,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="85" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="armorRepair" destination="M39-Zf-f3W" id="cX9-vf-SRq"/>
                                     <outlet property="categoryLabel" destination="y2V-UP-GiJ" id="K3b-4g-suf"/>
@@ -2101,6 +2110,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="fittingsPriceLabel" destination="e6l-hr-5qF" id="vej-iP-PdZ"/>
                                     <outlet property="shipPriceLabel" destination="Aqi-Za-ysS" id="xoQ-dq-ov0"/>

@@ -258,7 +258,43 @@
 	
 	self.titleLabel.attributedText = title;
 	self.imageView.image = [UIImage imageNamed:type.typeLargeImageName];
-	self.descriptionLabel.text = description;
+	
+	if (type.traitsString.length > 0) {
+		NSMutableAttributedString* traitsAttributedString = [[NSMutableAttributedString alloc] initWithString:type.traitsString
+																								   attributes:@{NSFontAttributeName: self.descriptionLabel.font,
+																												NSForegroundColorAttributeName: self.descriptionLabel.textColor}];
+		
+		
+		
+		NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"(<b>)([^<]*)(</b>)"
+																					options:NSRegularExpressionCaseInsensitive
+																					  error:nil];
+		
+		NSDictionary* boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:self.descriptionLabel.font.pointSize], NSForegroundColorAttributeName: [UIColor whiteColor]};
+		[expression enumerateMatchesInString:type.traitsString
+									 options:0
+									   range:NSMakeRange(0, type.traitsString.length)
+								  usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+									  if (result.numberOfRanges == 4) {
+										  NSRange r = [result rangeAtIndex:2];
+										  [traitsAttributedString addAttributes:boldAttributes
+																		  range:r];
+									  }
+								  }];
+		
+		expression = [NSRegularExpression regularExpressionWithPattern:@"(</?b>)"
+															   options:NSRegularExpressionCaseInsensitive
+																 error:nil];
+		[expression replaceMatchesInString:traitsAttributedString.mutableString options:0 range:NSMakeRange(0, traitsAttributedString.length) withTemplate:@""];
+		
+		NSMutableAttributedString* descriptionAttributesString = [[NSMutableAttributedString alloc] initWithString:[description stringByAppendingString:@"\n"] attributes:nil];
+		[descriptionAttributesString appendAttributedString:traitsAttributedString];
+		self.descriptionLabel.attributedText = descriptionAttributesString;
+	}
+	else
+		self.descriptionLabel.text = description;
+
+	
 	
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];

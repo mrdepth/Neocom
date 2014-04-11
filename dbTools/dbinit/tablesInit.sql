@@ -73,6 +73,13 @@ CREATE TABLE "invMetaTypes" (
   "metaGroupID" int DEFAULT NULL,
   PRIMARY KEY ("typeID")
 );
+CREATE TABLE "invTraits" (
+  "typeID" int DEFAULT NULL,
+  "skillID" int DEFAULT NULL,
+  "bonus" int DEFAULT NULL,
+  "bonusText" text,
+  "unitID" int DEFAULT NULL
+);
 CREATE TABLE "invTypeMaterials" (
   "typeID" int NOT NULL,
   "materialTypeID" int NOT NULL,

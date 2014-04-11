@@ -19,6 +19,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "invMetaTypes",
 "invTypes",
 "invTypeMaterials",
+"invTraits",
 "mapConstellations",
 "mapDenormalize",
 "mapRegions",

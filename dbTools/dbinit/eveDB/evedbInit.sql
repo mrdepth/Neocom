@@ -23,6 +23,7 @@ INSERT INTO eveDB.invControlTowerResourcePurposes SELECT * FROM invControlTowerR
 INSERT INTO eveDB.invControlTowerResources SELECT * FROM invControlTowerResources;
 INSERT INTO eveDB.invMetaGroups SELECT * FROM invMetaGroups;
 INSERT INTO eveDB.invMetaTypes SELECT * FROM invMetaTypes;
+INSERT INTO eveDB.invTraits SELECT * FROM invTraits;
 INSERT INTO eveDB.certCerts SELECT * FROM certCerts;
 INSERT INTO eveDB.certMasteries SELECT * FROM certMasteries;
 INSERT INTO eveDB.certSkills SELECT * FROM certSkills;
@@ -80,6 +81,6 @@ CREATE INDEX eveDB.invTypes_typeName ON "invTypes" ("typeName" ASC);
 CREATE INDEX eveDB.mapRegions_regionName ON "mapRegions" ("regionName" ASC);
 CREATE INDEX eveDB.mapSolarSystems_regionID_solarSystemName ON "mapSolarSystems" ("regionID" ASC, "solarSystemName" ASC);
 CREATE INDEX eveDB.mapSolarSystems_solarSystemName ON "mapSolarSystems" ("solarSystemName" ASC);
-
+CREATE INDEX eveDB.invTraits_typeID ON "invTraits" ("typeID" ASC);
 
 --COMMIT TRANSACTION;

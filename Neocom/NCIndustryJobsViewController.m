@@ -169,7 +169,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+    return data.activeJobs.count + data.finishedJobs.count > 0 ? 2 : 0;
 }
 
 

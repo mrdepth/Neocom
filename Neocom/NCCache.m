@@ -68,16 +68,29 @@ static NCCache* sharedCache;
 
 - (void) clearInvalidData {
 	[self.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@ and data.data != nil", [NSDate dateWithTimeIntervalSinceNow:-3600 * 24 * 7]];
-		
-		NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-		for (NCCacheRecord* record in fetchedObjects) {
-			record.data.data = nil;
+		@try {
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
+			[fetchRequest setEntity:entity];
+			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@ and data.data != nil", [NSDate dateWithTimeIntervalSinceNow:-3600 * 24 * 7]];
+			
+			NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+			for (NCCacheRecord* record in fetchedObjects) {
+				record.data.data = nil;
+			}
+			[self saveContext];
 		}
-		[self saveContext];
+		@catch (NSException *exception) {
+			NSString* cacheDirectory = [NCCache cacheDirectory];
+			NSFileManager* fileManager = [NSFileManager defaultManager];
+
+			for (NSString* fileName in [fileManager contentsOfDirectoryAtPath:cacheDirectory error:nil]) {
+				[fileManager removeItemAtPath:[cacheDirectory stringByAppendingPathComponent:fileName] error:nil];
+			}
+			@throw;
+		}
+		@finally {
+		}
 	}];
 }
 

@@ -90,8 +90,35 @@
 	_account = account;
 	self.logoImageView.image = nil;
 	if (account) {
-		__block EVECorporationSheet* corporationSheet = nil;
-		__block EVECharacterInfo* characterInfo = nil;
+		__block EVECorporationSheet* corporationSheet = account.corporationSheet;
+		__block EVECharacterInfo* characterInfo = account.characterInfo;
+		
+		void (^update)() = ^ {
+			if (account.accountType == NCAccountTypeCorporate) {
+				if (account.corporationSheetError) {
+					self.nameLabel.text = [account.corporationSheetError localizedDescription];
+					self.subtitleLabel.text = nil;
+				}
+				else {
+					[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
+					self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
+					self.subtitleLabel.text = account.corporationSheet.allianceName;
+				}
+			}
+			else {
+				if (account.characterInfoError) {
+					self.nameLabel.text = [account.characterInfoError localizedDescription];
+					self.subtitleLabel.text = nil;
+				}
+				else {
+					[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
+					self.nameLabel.text = account.characterInfo.characterName;
+					self.subtitleLabel.text = account.characterInfo.corporation;
+				}
+			}
+		};
+		
+		update();
 		
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle
@@ -102,28 +129,7 @@
 													 characterInfo = account.characterInfo;
 											 }
 								 completionHandler:^(NCTask *task) {
-									 if (account.accountType == NCAccountTypeCorporate) {
-										 if (account.corporationSheetError) {
-											 self.nameLabel.text = [account.corporationSheetError localizedDescription];
-											 self.subtitleLabel.text = nil;
-										 }
-										 else {
-											 [self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
-											 self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
-											 self.subtitleLabel.text = account.corporationSheet.allianceName;
-										 }
-									 }
-									 else {
-										 if (account.characterInfoError) {
-											 self.nameLabel.text = [account.characterInfoError localizedDescription];
-											 self.subtitleLabel.text = nil;
-										 }
-										 else {
-											 [self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
-											 self.nameLabel.text = account.characterInfo.characterName;
-											 self.subtitleLabel.text = account.characterInfo.corporation;
-										 }
-									 }
+									 update();
 								 }];
 	}
 	else {

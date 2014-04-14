@@ -145,7 +145,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	NCContractsViewControllerData* data = self.data;
+	return data.activeContracts.count + data.finishedContracts.count > 0 ? 2 : 0;
 }
 
 

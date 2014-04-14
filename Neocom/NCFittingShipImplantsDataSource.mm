@@ -211,6 +211,7 @@
 								 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 		}
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {

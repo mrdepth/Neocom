@@ -151,7 +151,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+	NCMarketOrdersViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	return data.openOrders.count + data.closedOrders.count > 0 ? 2 : 0;
 }
 
 

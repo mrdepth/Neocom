@@ -302,6 +302,7 @@
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Private

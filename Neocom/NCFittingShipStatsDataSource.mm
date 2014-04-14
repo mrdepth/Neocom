@@ -488,6 +488,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 1 && indexPath.row == 4)
 		[self.controller performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

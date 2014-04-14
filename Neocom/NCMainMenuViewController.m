@@ -160,6 +160,22 @@
 
 #pragma mark - Table view delegate
 
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
+	NSString* detailsKeyPath = row[@"detailsKeyPath"];
+	NSString* details = nil;
+	if (detailsKeyPath)
+		details = [self valueForKey:detailsKeyPath];
+	if (details) {
+		if (details && [details rangeOfString:@"\n"].location != NSNotFound)
+			return 59;
+		else
+			return 45;
+	}
+	else
+		return 41;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return 0;
@@ -170,8 +186,6 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
 	[self performSegueWithIdentifier:row[@"segueIdentifier"] sender:[tableView cellForRowAtIndexPath:indexPath]];
-	
-//	[self.sideMenuViewController setContentViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"NCCharacterSheetViewController"] animated:YES];
 }
 
 #pragma mark - NCTableViewController
@@ -256,7 +270,12 @@
 		NSInteger skillPoints = 0;
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
 			skillPoints += skill.skillpoints;
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count];
+
+		//return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count];
+		
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@ ISK", nil),
+				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
+				[NSNumberFormatter neocomLocalizedStringFromInteger:self.characterSheet.balance]];
 	}
 	else
 		return nil;

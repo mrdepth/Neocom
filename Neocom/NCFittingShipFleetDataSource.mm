@@ -81,20 +81,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
 	if (indexPath.row == self.controller.fits.count) {
 		[self.controller performSegueWithIdentifier:@"NCFittingFitPickerViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-/*		FitsViewController* controller = [[FitsViewController alloc] initWithNibName:@"FitsViewController" bundle:nil];
-		controller.engine = self.fittingViewController.fittingEngine;
-		controller.delegate = self;
-		UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self.fittingViewController presentViewController:navigationController animated:YES completion:nil];*/
 	}
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark FitsViewControllerDelegate

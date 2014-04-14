@@ -188,6 +188,7 @@
 #pragma mark Table view delegate
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
 	if ([cell isKindOfClass:[NCFittingAmountCell class]]) {
 		NCFittingShipDronesDataSourcePickerRow* pickerRow = self.rows[indexPath.row];
 		NCFittingAmountCell* amountCell = (NCFittingAmountCell*) cell;
@@ -282,6 +283,7 @@
 	else {
 		[self performActionForRowAtIndexPath:indexPath];
 	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - UIPickerViewDataSource

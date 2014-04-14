@@ -320,12 +320,7 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
-									 }
+									 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
 								 }
 							 }];
 }
@@ -336,7 +331,7 @@
 	@synchronized(self) {
 		if (!_contractBidsCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
-				_contractBidsCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), self.account.uuid]];
+				_contractBidsCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.%@.EVEContractBids", NSStringFromClass(self.class), self.account.uuid]];
 			}];
 		}
 		return _contractBidsCacheRecord;

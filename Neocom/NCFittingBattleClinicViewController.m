@@ -11,6 +11,7 @@
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypePickerViewController.h"
 #import "NCFittingBattleClinicSearchResultsViewController.h"
+#import "UIAlertView+Error.h"
 
 @interface NCFittingBattleClinicViewController ()
 @property (nonatomic, strong) EVEDBInvType* type;
@@ -168,6 +169,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {
 									 if (error) {
+										 [[UIAlertView alertViewWithError:error] show];
 										 [self didFailLoadDataWithError:error];
 									 }
 									 else {

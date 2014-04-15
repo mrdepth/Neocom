@@ -185,18 +185,7 @@
 		cellIdentifier = @"Cell";
 	
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.titleLabel.text = row.title;
-	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
-	cell.indentationLevel = row.indentationLevel;
-	cell.indentationWidth = 16;
-	
-	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
-	//if (!cell.accessoryView)
-	//	cell.accessoryType = [row.object isKindOfClass:[EVEDBObject class]] || [row.object isKindOfClass:[NSString class]] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
-	
-	//cell.indentationLevel = row.indentationLevel;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -210,7 +199,13 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NSString *cellIdentifier = row.cellIdentifier;
+	if (!cellIdentifier)
+		cellIdentifier = @"Cell";
+
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:cellIdentifier];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
@@ -235,6 +230,18 @@
 	}
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.detail;
+	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
+	cell.indentationLevel = row.indentationLevel;
+	cell.indentationWidth = 16;
+	
+	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
+}
 
 #pragma mark - Private
 
@@ -322,7 +329,10 @@
 										   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 										   [trainingQueue addRequiredSkillsForType:type];
 										   
-										   NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
+										   //NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
+										   //static NSArray* skillRequirementsMap = nil;
+										   static int32_t requirementID[] = {182, 183, 184, 1285, 1289, 1290};
+										   static int32_t skillLevelID[] = {277, 278, 279, 1286, 1287, 1288};
 										   
 										   {
 											   EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
@@ -453,9 +463,9 @@
 													   int32_t typeID = attribute.value;
 													   EVEDBInvType *skill = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
 													   if (skill) {
-														   for (NSDictionary *requirementMap in skillRequirementsMap) {
-															   if ([requirementMap[SkillTreeRequirementIDKey] integerValue] == attribute.attributeID) {
-																   EVEDBDgmTypeAttribute* level = type.attributesDictionary[@([requirementMap[SkillTreeSkillLevelIDKey] integerValue])];
+														   for (int i = 0; i < 6; i++) {
+															   if (requirementID[i] == attribute.attributeID) {
+																   EVEDBDgmTypeAttribute* level = type.attributesDictionary[@(skillLevelID[i])];
 																   NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkill:skill level:level.value account:account];
 																   
 																   for (NCSkillHierarchySkill* skill in hierarchy.skills) {

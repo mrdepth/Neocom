@@ -169,7 +169,10 @@
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:[self.account.skillQueue timeLeft]], (int32_t) self.skillQueueRows.count];
 	else if (section == 2) {
 		if (self.skillPlan.trainingQueue.skills.count > 0)
-			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills)", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime], (int32_t) self.skillPlan.trainingQueue.skills.count];
+			return [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills) in %@", nil),
+					[NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime],
+					(int32_t) self.skillPlan.trainingQueue.skills.count,
+					self.skillPlan.name.length > 0 ? self.skillPlan.name : NSLocalizedString(@"<noname>", nil)];
 		else
 			return NSLocalizedString(@"Skill plan is empty", nil);
 	}

@@ -63,6 +63,13 @@
 												 for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
 													 if (account.accountType != NCAccountTypeCharacter || !account.skillQueue)
 														 continue;
+													 
+													 if  ([account.skillQueue.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending) {
+														 [account reloadWithCachePolicy:NSURLRequestUseProtocolCachePolicy
+																				  error:nil
+																		progressHandler:nil];
+													 }
+													 
 													 [accounts addObject:account.uuid];
 													 if (account.skillQueue.skillQueue.count == 0)
 														 continue;

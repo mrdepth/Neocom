@@ -11,3 +11,4 @@
 @interface NCFittingBattleClinicViewController : NCTableViewController
 
 @end
+

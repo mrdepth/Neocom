@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "VERSIONNUM=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleShortVersionString&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;)&#10;NEWSUBVERSION=`echo $VERSIONNUM | awk -F &quot;.&quot; &apos;{print $4}&apos;`&#10;NEWSUBVERSION=$(($NEWSUBVERSION + 1))&#10;NEWVERSIONSTRING=`echo $VERSIONNUM | awk -F &quot;.&quot; &apos;{print $1 &quot;.&quot; $2 &quot;.&quot; $3 &quot;.&apos;$NEWSUBVERSION&apos;&quot; }&apos;`&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleShortVersionString $NEWVERSIONSTRING&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $NEWVERSIONSTRING&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;">
+               scriptText = "VERSIONNUM=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleShortVersionString&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;)&#10;NEWSUBVERSION=`echo $VERSIONNUM | awk -F &quot;.&quot; &apos;{print $3}&apos;`&#10;NEWSUBVERSION=$(($NEWSUBVERSION + 1))&#10;NEWVERSIONSTRING=`echo $VERSIONNUM | awk -F &quot;.&quot; &apos;{print $1 &quot;.&quot; $2 &quot;.&apos;$NEWSUBVERSION&apos;&quot; }&apos;`&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleShortVersionString $NEWVERSIONSTRING&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $NEWVERSIONSTRING&quot; &quot;${PROJECT_DIR}/${INFOPLIST_FILE}&quot;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

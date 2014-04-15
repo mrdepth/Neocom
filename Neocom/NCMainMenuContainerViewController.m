@@ -10,7 +10,6 @@
 #import "UIView+Nib.h"
 #import "NCNavigationCharacterButton.h"
 #import "NCSideMenuViewController.h"
-#import "UINavigationController+Neocom.h"
 
 @interface NCMainMenuDropDownSegue: UIStoryboardSegue
 
@@ -104,7 +103,11 @@
 								   options:UIViewAnimationOptionAllowAnimatedContent
 								animations:^{
 									dropDownViewController.view.transform = CGAffineTransformIdentity;
-									[self.navigationController updateScrollViewFromViewController:self toViewController:self.dropDownViewController];
+									if ([dropDownViewController.view isKindOfClass:[UIScrollView class]]) {
+										UIScrollView* scrollView = (UIScrollView*) dropDownViewController.view;
+										UITableViewController* menuViewController = (UITableViewController*) self.menuViewController;
+										scrollView.contentInset = menuViewController.tableView.contentInset;
+									}
 								}
 								completion:^(BOOL finished) {
 									[dropDownViewController didMoveToParentViewController:self];

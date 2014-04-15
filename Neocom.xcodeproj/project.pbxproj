@@ -80,7 +80,6 @@
 		1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211124C1859E1AF009E5106 /* NCCacheRecord.m */; };
 		12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
 		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
-		12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
 		1222E178188F9572003C1361 /* EVEDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E173188F9572003C1361 /* EVEDBCertCertificate.m */; };
 		1222E179188F9572003C1361 /* EVEDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 1222E175188F9572003C1361 /* EVEDBCertMastery.m */; };
@@ -707,8 +706,6 @@
 		12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoViewController.m; sourceTree = "<group>"; };
 		12124AAD1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeMarketInfoCell.h; sourceTree = "<group>"; };
 		12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoCell.m; sourceTree = "<group>"; };
-		12124AB318893E0100F01C59 /* UINavigationController+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Neocom.h"; sourceTree = "<group>"; };
-		12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Neocom.m"; sourceTree = "<group>"; };
 		12160493187EE2AA00BD1DCF /* NCAccountCharacterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCharacterCell.h; sourceTree = "<group>"; };
 		12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCharacterCell.m; sourceTree = "<group>"; };
 		1222E172188F9572003C1361 /* EVEDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBCertCertificate.h; sourceTree = "<group>"; };
@@ -3106,8 +3103,6 @@
 				127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */,
 				128BCE64188567E6000E1922 /* EVEDBInvType+Neocom.h */,
 				128BCE65188567E6000E1922 /* EVEDBInvType+Neocom.mm */,
-				12124AB318893E0100F01C59 /* UINavigationController+Neocom.h */,
-				12124AB418893E0100F01C59 /* UINavigationController+Neocom.m */,
 				84EC7940188BD4B20001BCE3 /* NSArray+Neocom.h */,
 				84EC7941188BD4B20001BCE3 /* NSArray+Neocom.m */,
 				84FA63DF188C50A2008FD761 /* UIImageView+Neocom.h */,
@@ -4670,7 +4665,6 @@
 				1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */,
 				12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */,
 				126A0E77185F3B9300A8E8A3 /* RSSParserAtom.m in Sources */,
-				12124AB518893E0100F01C59 /* UINavigationController+Neocom.m in Sources */,
 				12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */,
 				128A1F3E18992E4700005C4F /* NCFittingShipDronesDataSource.mm in Sources */,
 				126A0E60185F3B9300A8E8A3 /* EVECharacterInfo.m in Sources */,

@@ -69,6 +69,8 @@
 																				  error:nil
 																		progressHandler:nil];
 													 }
+													 if (!account.uuid)
+														 continue;
 													 
 													 [accounts addObject:account.uuid];
 													 if (account.skillQueue.skillQueue.count == 0)
@@ -156,7 +158,7 @@
 			[application cancelLocalNotification:notification];
 			
 			NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-			if (![uuids containsObject:uuid]) {
+			if (uuid && ![uuids containsObject:uuid]) {
 				notification.applicationIconBadgeNumber = badge++;
 				[uuids addObject:uuid];
 			}

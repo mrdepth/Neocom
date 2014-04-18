@@ -33,17 +33,22 @@
 	NSError* error = nil;
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
 		EUStorage* storage = [EUStorage new];
-		[self transferAPIKeysFromStorage: storage withError:&error];
-		[self transferShipLoadoutsFromStorage:storage];
-		[self transferPOSLoadoutsFromStorage:storage];
-		[self transferSkillPlansFromStorage:storage];
-		NCStorage* ncStorage = [NCStorage sharedStorage];
-		[ncStorage.managedObjectContext performBlockAndWait:^{
-			[ncStorage saveContext];
-		}];
-		if ([storage.managedObjectContext hasChanges])
-			[storage.managedObjectContext save:nil];
-		storage = nil;
+		@try {
+			[self transferAPIKeysFromStorage: storage withError:&error];
+			[self transferShipLoadoutsFromStorage:storage];
+			[self transferPOSLoadoutsFromStorage:storage];
+			[self transferSkillPlansFromStorage:storage];
+			NCStorage* ncStorage = [NCStorage sharedStorage];
+			[ncStorage.managedObjectContext performBlockAndWait:^{
+				[ncStorage saveContext];
+			}];
+			if ([storage.managedObjectContext hasChanges])
+				[storage.managedObjectContext save:nil];
+			storage = nil;
+		}
+		@catch(NSException* exc) {
+			
+		}
 	}
 	
 	if (errorPtr)

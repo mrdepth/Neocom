@@ -284,6 +284,7 @@
 		126DC6A218D1ABD3009EEA86 /* NCCharacterAttributesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 126DC6A118D1ABD3009EEA86 /* NCCharacterAttributesCell.m */; };
 		126ED31E188129080009FA39 /* NCCharacterSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */; };
 		126ED32D188144370009FA39 /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 126ED32C188144370009FA39 /* mainMenu.plist */; };
+		127082A7190109E900822F00 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 127082A5190109E900822F00 /* EUStorage.xcdatamodeld */; };
 		1271238118977E8C005F46EE /* NCFittingShipModuleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1271238018977E8C005F46EE /* NCFittingShipModuleCell.m */; };
 		1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1271238418978148005F46EE /* NCFittingShipViewController.mm */; };
 		127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127123881897818D005F46EE /* NCFittingShipModulesDataSource.mm */; };
@@ -439,7 +440,6 @@
 		12F8E1F418E9A47400CEA658 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 12F8E1F318E9A47300CEA658 /* logo.png */; };
 		12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */; };
 		12F955E818CDA2A0005CEAD6 /* EUStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E718CDA2A0005CEAD6 /* EUStorage.m */; };
-		12F955EB18CDA37C005CEAD6 /* EUStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */; };
 		12F955EE18CDA3A8005CEAD6 /* APIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F955ED18CDA3A8005CEAD6 /* APIKey.m */; };
 		12F955F118CDA3BE005CEAD6 /* Fit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F018CDA3BE005CEAD6 /* Fit.mm */; };
 		12F955F418CDA3CD005CEAD6 /* ShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12F955F318CDA3CD005CEAD6 /* ShipFit.mm */; };
@@ -1106,6 +1106,7 @@
 		126ED31C188129080009FA39 /* NCCharacterSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterSheetViewController.h; sourceTree = "<group>"; };
 		126ED31D188129080009FA39 /* NCCharacterSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCCharacterSheetViewController.m; sourceTree = "<group>"; };
 		126ED32C188144370009FA39 /* mainMenu.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mainMenu.plist; sourceTree = "<group>"; };
+		127082A6190109E900822F00 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
 		1271237F18977E8C005F46EE /* NCFittingShipModuleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipModuleCell.h; sourceTree = "<group>"; };
 		1271238018977E8C005F46EE /* NCFittingShipModuleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingShipModuleCell.m; sourceTree = "<group>"; };
 		1271238318978148005F46EE /* NCFittingShipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipViewController.h; sourceTree = "<group>"; };
@@ -1370,7 +1371,6 @@
 		12F8E1F718E9A53700CEA658 /* NCSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSplitViewController.m; sourceTree = "<group>"; };
 		12F955E618CDA2A0005CEAD6 /* EUStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUStorage.h; sourceTree = "<group>"; };
 		12F955E718CDA2A0005CEAD6 /* EUStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUStorage.m; sourceTree = "<group>"; };
-		12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EUStorage.xcdatamodel; sourceTree = "<group>"; };
 		12F955EC18CDA3A8005CEAD6 /* APIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIKey.h; sourceTree = "<group>"; };
 		12F955ED18CDA3A8005CEAD6 /* APIKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIKey.m; sourceTree = "<group>"; };
 		12F955EF18CDA3BE005CEAD6 /* Fit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fit.h; sourceTree = "<group>"; };
@@ -3792,7 +3792,7 @@
 		12F955E518CDA28E005CEAD6 /* EUStorage */ = {
 			isa = PBXGroup;
 			children = (
-				12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */,
+				127082A5190109E900822F00 /* EUStorage.xcdatamodeld */,
 				12F955E618CDA2A0005CEAD6 /* EUStorage.h */,
 				12F955E718CDA2A0005CEAD6 /* EUStorage.m */,
 				12F955EC18CDA3A8005CEAD6 /* APIKey.h */,
@@ -4613,7 +4613,6 @@
 				128C9B0918BF429F0086F7B3 /* NCDatabaseSolarSystemPickerViewController.m in Sources */,
 				126A0E6C185F3B9300A8E8A3 /* EVEImage.m in Sources */,
 				126A0E23185F3B9300A8E8A3 /* EVEDBMapRegion.m in Sources */,
-				12F955EB18CDA37C005CEAD6 /* EUStorage.xcdatamodeld in Sources */,
 				8435C87718A690C000D11FC9 /* NCFittingRequiredSkillsViewController.m in Sources */,
 				126A0E64185F3B9300A8E8A3 /* EVEFacWarStats.m in Sources */,
 				126A0E11185F3B9300A8E8A3 /* EVEDBDgmTypeAttribute.m in Sources */,
@@ -4815,6 +4814,7 @@
 				845B7C6F18B53F64006DA157 /* NCContractsViewController.m in Sources */,
 				126A0E0C185F3B9300A8E8A3 /* EVEDBCrtRelationship.m in Sources */,
 				1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */,
+				127082A7190109E900822F00 /* EUStorage.xcdatamodeld in Sources */,
 				1292319B18F7D10000CE7A41 /* EVEDBInvTrait.m in Sources */,
 				129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */,
 				126A0E66185F3B9300A8E8A3 /* EVERefTypes.m in Sources */,
@@ -5159,6 +5159,16 @@
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
+		127082A5190109E900822F00 /* EUStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				127082A6190109E900822F00 /* EUStorage.xcdatamodel */,
+			);
+			currentVersion = 127082A6190109E900822F00 /* EUStorage.xcdatamodel */;
+			path = EUStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
@@ -5166,17 +5176,6 @@
 			);
 			currentVersion = 129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */;
 			path = NCStorage.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		12F955E918CDA37C005CEAD6 /* EUStorage.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */,
-			);
-			currentVersion = 12F955EA18CDA37C005CEAD6 /* EUStorage.xcdatamodel */;
-			name = EUStorage.xcdatamodeld;
-			path = ../EUStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

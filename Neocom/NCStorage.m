@@ -14,6 +14,51 @@
 #import "NCDamagePattern.h"
 #import "NCImplantSet.h"
 #import "NCFitCharacter.h"
+#import <objc/runtime.h>
+
+@interface NCValueTransformer : NSValueTransformer
+
+@end
+
+@implementation NCValueTransformer
+
++ (void) load {
+	[NSValueTransformer setValueTransformer:[self new] forName:@"NCValueTransformer"];
+}
+
++ (BOOL)allowsReverseTransformation {
+    return YES;
+}
+
+
++ (Class)transformedValueClass {
+    return [NSData class];
+}
+
+
+- (id)transformedValue:(id)value {
+	@try {
+		if (![value respondsToSelector:@selector(encodeWithCoder:)])
+			return nil;
+		else
+			return [NSKeyedArchiver archivedDataWithRootObject:value];
+	}
+	@catch (NSException *exception) {
+		return nil;
+	}
+}
+
+
+- (id)reverseTransformedValue:(id)value {
+	@try {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:value];
+	}
+	@catch (NSException *exception) {
+		return nil;
+	}
+}
+
+@end
 
 static NCStorage* sharedStorage;
 
@@ -33,9 +78,6 @@ static NCStorage* sharedStorage;
 
 + (id) sharedStorage {
 	@synchronized(self) {
-//		if (!sharedStorage) {
-//			sharedStorage = [[NCStorage alloc] init];
-//		}
 		return sharedStorage;
 	}
 }
@@ -336,96 +378,6 @@ static NCStorage* sharedStorage;
 		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage" withExtension:@"momd"];
 		_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 		return _managedObjectModel;
-	}
-}
-
-// Returns the persistent store coordinator for the application.
-// If the coordinator doesn't already exist, it is created and the application's store added to it.
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-	@synchronized(self) {
-		if (_persistentStoreCoordinator != nil)
-			return _persistentStoreCoordinator;
-		
-		NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
-		[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
-		NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
-
-		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
-		NSDictionary* options = nil;
-		if (useCloud) {
-			id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-			if (!currentCloudToken)
-				useCloud = NO;
-			if (useCloud) {
-				NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-				if (!url)
-					useCloud = NO;
-				if (useCloud) {
-					id lastCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
-					NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCloudTokenKey];
-					if (tokenData)
-						lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
-					
-					if (lastCloudToken && ![lastCloudToken isEqual:currentCloudToken]) {
-						[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-					}
-					
-					tokenData = [NSKeyedArchiver archivedDataWithRootObject: currentCloudToken];
-					[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:NCSettingsCloudTokenKey];
-					[[NSUserDefaults standardUserDefaults] synchronize];
-					options = @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
-								NSPersistentStoreUbiquitousContentURLKey : url,
-								NSInferMappingModelAutomaticallyOption : @(YES),
-								NSMigratePersistentStoresAutomaticallyOption : @(YES)};
-				}
-			}
-		}
-		
-		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-		
-		NSError *error = nil;
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													  configuration:@"Cloud"
-																URL:storeURL
-															options:options
-															   error:&error]) {
-			[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-			if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													  configuration:@"Cloud"
-																URL:storeURL
-															options:options
-																   error:&error]) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[[UIAlertView alertViewWithError:error] show];
-				});
-				_persistentStoreCoordinator = nil;
-				return _persistentStoreCoordinator;
-			}
-		}
-
-		storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"localStore.sqlite"]];
-		error = nil;
-		
-		if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-													   configuration:@"Local"
-																 URL:storeURL
-															 options:nil
-															   error:&error]) {
-			[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
-			if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-														   configuration:@"Local"
-																	 URL:storeURL
-																 options:nil
-																   error:&error]) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[[UIAlertView alertViewWithError:error] show];
-				});
-				_persistentStoreCoordinator = nil;
-				return _persistentStoreCoordinator;
-			}
-		}
-		return _persistentStoreCoordinator;
 	}
 }
 

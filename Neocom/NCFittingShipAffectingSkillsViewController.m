@@ -70,7 +70,7 @@
 							 completionHandler:^(NCTask *task) {
 								 self.skills = skills;
 								 self.sections = sections;
-								 [self.tableView reloadData];
+								 [self update];
 							 }];
 }
 

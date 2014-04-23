@@ -48,7 +48,7 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.accounts = accounts;
-								 [self.tableView reloadData];
+								 [self update];
 							 }];
 	
 	self.customCharacters = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] characters]];
@@ -56,7 +56,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self.tableView reloadData];
+	[self update];
 }
 
 - (void) dealloc {

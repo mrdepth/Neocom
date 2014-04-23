@@ -53,7 +53,7 @@
 								 if (skillPlanName)
 									 self.title = self.skillPlanName = skillPlanName;
 								 self.trainingQueue = trainingQueue;
-								 [self.tableView reloadData];
+								 [self update];
 							 }];
 }
 

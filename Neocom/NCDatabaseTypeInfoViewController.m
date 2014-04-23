@@ -630,7 +630,7 @@
 						   completionHandler:^(NCTask *task) {
 							   if (![task isCancelled]) {
 								   self.sections = sections;
-								   [self.tableView reloadData];
+								   [self update];
 							   }
 						   }];
 }
@@ -836,7 +836,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.sections = sections;
-									 [self.tableView reloadData];
+									 [self update];
 								 }
 							 }];
 }
@@ -1748,7 +1748,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.sections = sections;
-									 [self.tableView reloadData];
+									 [self update];
 								 }
 							 }];
 }

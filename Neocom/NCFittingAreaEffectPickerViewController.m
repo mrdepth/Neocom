@@ -82,7 +82,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.sections = sections;
-									 [self.tableView reloadData];
+									 [self update];
 								 }
 							 }];
 	// Do any additional setup after loading the view.

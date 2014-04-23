@@ -79,7 +79,7 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.rows = rows;
-								 [self.tableView reloadData];
+								 [self update];
 								 if (self.rows.count == 0 && self.saveMode)
 									 [self saveNew];
 							 }];

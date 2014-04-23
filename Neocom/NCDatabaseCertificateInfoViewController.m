@@ -101,7 +101,7 @@
 
 - (IBAction)onChangeMode:(id)sender {
 	self.mode = [sender selectedSegmentIndex] == 0 ? NCDatabaseCertificateInfoViewControllerModeMasteries : NCDatabaseCertificateInfoViewControllerModeRequiredFor;
-	[self.tableView reloadData];
+	[self update];
 	[self.tableView scrollsToTop];
 }
 
@@ -324,7 +324,7 @@
 								 if (![task isCancelled]) {
 									 self.masteriesSections = masteriesSections;
 									 self.requiredForSections = requiredForSections;
-									 [self.tableView reloadData];
+									 [self update];
 									 self.imageView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:availableMasteryLevel]];
 
 								 }

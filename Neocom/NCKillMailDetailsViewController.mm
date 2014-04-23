@@ -138,7 +138,7 @@
 }
 
 - (IBAction)onChangeMode:(id)sender {
-	[self.tableView reloadData];
+	[self update];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

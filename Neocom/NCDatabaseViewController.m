@@ -269,7 +269,7 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.rows = rows;
-								 [self.tableView reloadData];
+								 [self update];
 							 }];
 }
 @end

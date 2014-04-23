@@ -143,7 +143,7 @@
 									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeSellOrders;
 								 else
 									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
-								 [self.tableView reloadData];
+								 [self update];
 								 [self.searchDisplayController.searchResultsTableView reloadData];
 							 }
 						 }

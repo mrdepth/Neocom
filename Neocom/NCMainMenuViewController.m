@@ -86,7 +86,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(marketPricesMonitorDidChange:) name:NCMarketPricesMonitorDidChangeNotification object:nil];
 	
 	[super viewWillAppear:animated];
-	[self.tableView reloadData];
+	[self update];
 	if (self.serverStatus) {
 		self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onTimer:) userInfo:nil repeats:YES];
 		[self onTimer:self.timer];
@@ -258,7 +258,7 @@
 								 if (![task isCancelled]) {
 									 self.characterSheet = characterSheet;
 									 self.skillQueue = skillQueue;
-									 [self.tableView reloadData];
+									 [self update];
 									 
 									 if (self.skillQueue) {
 										 NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];

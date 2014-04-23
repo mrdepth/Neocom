@@ -193,7 +193,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.rows = rows;
-									 [self.tableView reloadData];
+									 [self update];
 								 }
 							 }];
 }

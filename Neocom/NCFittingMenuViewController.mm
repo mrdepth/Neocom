@@ -259,7 +259,7 @@
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.sections = sections;
-								 [self.tableView reloadData];
+								 [self update];
 								 
 							 }];
 }

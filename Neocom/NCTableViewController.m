@@ -60,6 +60,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage) name:NCStorageDidChangeNotification object:nil];
 
 	UIRefreshControl* refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(onRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -82,7 +83,7 @@
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
 		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-			NCSetting* setting = [NCSetting settingWithKey:key];
+			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
 			self.previousCollapsState = setting.value;
 		}];
 	}
@@ -94,6 +95,7 @@
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 	[self.taskManager cancelAllOperations];
 //	self.searchDisplayController.searchResultsDataSource = nil;
 //	self.searchDisplayController.searchResultsDelegate = nil;
@@ -127,7 +129,7 @@
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
 		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-			NCSetting* setting = [NCSetting settingWithKey:key];
+			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
 			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
 				if (![setting.value isEqualToDictionary:self.sectionsCollapsState]) {
 					setting.value = self.sectionsCollapsState;
@@ -235,6 +237,10 @@
 		}];
 
 	}
+}
+
+- (void) didChangeStorage {
+	[self reloadDataWithCachePolicy:NSURLRequestUseProtocolCachePolicy];
 }
 
 - (void) didFailLoadDataWithError:(NSError*) error {

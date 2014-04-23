@@ -13,7 +13,29 @@
 
 #define NCCategoryIDShip 6
 
-@interface NCLoadout()
+@implementation NCStorage(NCLoadout)
+
+- (NSArray*) loadouts {
+	__block NSArray *fetchedObjects = nil;
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		
+		NSError *error = nil;
+		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	}];
+	return fetchedObjects;
+}
+
+- (NSArray*) shipLoadouts {
+	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryShip]];
+}
+
+- (NSArray*) posLoadouts {
+	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryPOS]];
+}
+
 
 @end
 
@@ -24,28 +46,6 @@
 @dynamic typeID;
 @dynamic url;
 @dynamic data;
-
-+ (NSArray*) loadouts {
-	NCStorage* storage = [NCStorage sharedStorage];
-	__block NSArray *fetchedObjects = nil;
-	[storage.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		
-		NSError *error = nil;
-		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	}];
-	return fetchedObjects;
-}
-
-+ (NSArray*) shipLoadouts {
-	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryShip]];
-}
-
-+ (NSArray*) posLoadouts {
-	return [[self loadouts] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category == %d", NCLoadoutCategoryPOS]];
-}
 
 - (EVEDBInvType*) type {
 	if (!_type) {

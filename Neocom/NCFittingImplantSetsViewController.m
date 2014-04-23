@@ -50,7 +50,7 @@
 											 NCStorage* storage = [NCStorage sharedStorage];
 											 NSMutableDictionary* types = [NSMutableDictionary new];
 											 [storage.managedObjectContext performBlockAndWait:^{
-												 NSArray* sets = [NCImplantSet implantSets];
+												 NSArray* sets = [storage implantSets];
 												 for (NCImplantSet* set in sets) {
 													 NSMutableArray* components = [NSMutableArray new];
 													 NCImplantSetData* data = set.data;

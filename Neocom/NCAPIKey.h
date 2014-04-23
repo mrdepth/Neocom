@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCStorage.h"
 
+@class NCAPIKey;
+@interface NCStorage(NCAPIKey)
+- (NCAPIKey*) apiKeyWithKeyID:(int32_t) keyID;
+- (NSArray*) allAPIKeys;
+@end
 
 @class EVEAPIKeyInfo;
 @class EVEAccountStatus;
@@ -22,8 +28,6 @@
 
 @property (nonatomic, strong) NSError* error;
 
-+ (instancetype) apiKeyWithKeyID:(int32_t) keyID;
-+ (NSArray*) allAPIKeys;
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr;
 
 @end

@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCStorage.h"
 
+@class NCSetting;
+@interface NCStorage(NCSetting)
+- (NCSetting*) settingWithKey:(NSString*) key;
+@end
 
 @interface NCSetting : NSManagedObject
 
 @property (nonatomic, retain) NSString * key;
 @property (nonatomic, retain) id value;
-
-+ (instancetype) settingWithKey:(NSString*) key;
 
 @end

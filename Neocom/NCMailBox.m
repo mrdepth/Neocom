@@ -327,10 +327,10 @@
 		for (NCMailBoxMessage* message in messages)
 			[set addObject:@(message.header.messageID)];
 		
-		NCStorage* storage = [NCStorage sharedStorage];
-		[storage.managedObjectContext performBlockAndWait:^{
+		[self.managedObjectContext performBlockAndWait:^{
 			self.readedMessagesIDs = set;
-			[storage saveContext];
+			if ([self.managedObjectContext hasChanges])
+				[self.managedObjectContext save:nil];
 		}];
 		[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 	}

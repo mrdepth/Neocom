@@ -9,24 +9,12 @@
 #import "NCAPIKey.h"
 #import "EVEOnlineAPI.h"
 #import "NCCache.h"
-#import "NCStorage.h"
 
-@interface NCAPIKey()
-@end
+@implementation NCStorage(NCSetting)
 
-@implementation NCAPIKey
-
-@dynamic keyID;
-@dynamic vCode;
-@dynamic accounts;
-@dynamic apiKeyInfo;
-
-@synthesize error = _error;
-
-+ (instancetype) apiKeyWithKeyID:(int32_t) keyID {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = storage.managedObjectContext;
-
+- (NCAPIKey*) apiKeyWithKeyID:(int32_t) keyID {
+	NSManagedObjectContext* context = self.managedObjectContext;
+	
 	__block NSArray *result = nil;
 	[context performBlockAndWait:^{
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -38,9 +26,8 @@
 	return result.count > 0 ? result[0] : nil;
 }
 
-+ (NSArray*) allAPIKeys {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = storage.managedObjectContext;
+- (NSArray*) allAPIKeys {
+	NSManagedObjectContext* context = self.managedObjectContext;
 	
 	__block NSArray* apiKeys = nil;
 	[context performBlockAndWait:^{
@@ -51,6 +38,19 @@
 	}];
 	return apiKeys;
 }
+
+@end
+
+@implementation NCAPIKey
+
+@dynamic keyID;
+@dynamic vCode;
+@dynamic accounts;
+@dynamic apiKeyInfo;
+
+@synthesize error = _error;
+
+
 
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr {
 	NSError* error = nil;

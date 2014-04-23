@@ -18,10 +18,14 @@
 #import "NCStorage.h"
 
 @interface NCMigrationManager()
-+ (BOOL) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr;
-+ (void) transferShipLoadoutsFromStorage:(EUStorage*) storage;
-+ (void) transferPOSLoadoutsFromStorage:(EUStorage*) storage;
-+ (void) transferSkillPlansFromStorage:(EUStorage*) storage;
+@property (nonatomic, strong) NCStorage* storage;
+@property (nonatomic, strong) NCAccountsManager* accountsManager;
+@property (nonatomic, strong) EUStorage* oldStorage;
+
+- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr;
+- (void) transferShipLoadouts;
+- (void) transferPOSLoadouts;
+- (void) transferSkillPlans;
 @end
 
 @implementation NCMigrationManager
@@ -32,19 +36,20 @@
 	NSString* path = [documents stringByAppendingPathComponent:@"fallbackStore.sqlite"];
 	NSError* error = nil;
 	if ([fileManager fileExistsAtPath:path isDirectory:NULL]) {
-		EUStorage* storage = [EUStorage new];
+		NCMigrationManager* migrationManager = [NCMigrationManager new];
+		migrationManager.storage = [NCStorage fallbackStorage];
+		migrationManager.accountsManager = [[NCAccountsManager alloc] initWithStorage:migrationManager.storage];
+		migrationManager.oldStorage = [EUStorage new];
 		@try {
-			[self transferAPIKeysFromStorage: storage withError:&error];
-			[self transferShipLoadoutsFromStorage:storage];
-			[self transferPOSLoadoutsFromStorage:storage];
-			[self transferSkillPlansFromStorage:storage];
-			NCStorage* ncStorage = [NCStorage sharedStorage];
-			[ncStorage.managedObjectContext performBlockAndWait:^{
-				[ncStorage saveContext];
+			[migrationManager transferAPIKeysWithError:&error];
+			[migrationManager transferShipLoadouts];
+			[migrationManager transferPOSLoadouts];
+			[migrationManager transferSkillPlans];
+			[migrationManager.storage.managedObjectContext performBlockAndWait:^{
+				[migrationManager.storage saveContext];
 			}];
-			if ([storage.managedObjectContext hasChanges])
-				[storage.managedObjectContext save:nil];
-			storage = nil;
+			if ([migrationManager.oldStorage.managedObjectContext hasChanges])
+				[migrationManager.oldStorage.managedObjectContext save:nil];
 		}
 		@catch(NSException* exc) {
 			
@@ -66,19 +71,19 @@
 
 #pragma mark - Private
 
-+ (BOOL) transferAPIKeysFromStorage:(EUStorage*) storage withError:(NSError**) errorPtr {
+- (BOOL) transferAPIKeysWithError:(NSError**) errorPtr {
 	NSFetchRequest *fetchRequest = [NSFetchRequest new];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:storage.managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APIKey" inManagedObjectContext:self.oldStorage.managedObjectContext];
 	[fetchRequest setEntity:entity];
-	NSArray* apiKeys = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	NSArray* apiKeys = [self.oldStorage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	NSMutableArray* invalidAPIKeys = [NSMutableArray new];
 	NSError* error = nil;
 	for (APIKey* apiKey in apiKeys) {
-		if (![[NCAccountsManager defaultManager] addAPIKeyWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error]) {
+		if (![self.accountsManager addAPIKeyWithKeyID:apiKey.keyID vCode:apiKey.vCode error:&error]) {
 			[invalidAPIKeys addObject:@(apiKey.keyID)];
 		}
 		else {
-			[storage.managedObjectContext deleteObject:apiKey];
+			[self.oldStorage.managedObjectContext deleteObject:apiKey];
 		}
 	}
 	if (invalidAPIKeys.count > 0)
@@ -91,13 +96,11 @@
 	return error == nil;
 }
 
-+ (void) transferShipLoadoutsFromStorage:(EUStorage*) storage {
+- (void) transferShipLoadouts {
 	NSFetchRequest* fetchRequest = [NSFetchRequest new];
-	NSEntityDescription* entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:storage.managedObjectContext];
+	NSEntityDescription* entity = [NSEntityDescription entityForName:@"ShipFit" inManagedObjectContext:self.oldStorage.managedObjectContext];
 	[fetchRequest setEntity:entity];
-	NSArray* shipFits = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-	
-	NCStorage* ncStorage = [NCStorage sharedStorage];
+	NSArray* shipFits = [self.oldStorage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
 	for (ShipFit* shipFit in shipFits) {
 		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:shipFit.typeID error:nil];
@@ -201,25 +204,23 @@
 			loadoutData.boosters = boosters;
 			
 			
-			[ncStorage.managedObjectContext performBlockAndWait:^{
-				NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:ncStorage.managedObjectContext] insertIntoManagedObjectContext:ncStorage.managedObjectContext];
-				loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:ncStorage.managedObjectContext] insertIntoManagedObjectContext:ncStorage.managedObjectContext];
+			[self.storage.managedObjectContext performBlockAndWait:^{
+				NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storage.managedObjectContext] insertIntoManagedObjectContext:self.storage.managedObjectContext];
+				loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storage.managedObjectContext] insertIntoManagedObjectContext:self.storage.managedObjectContext];
 				loadout.data.data = loadoutData;
 				loadout.typeID = type.typeID;
 				loadout.name = shipFit.fitName;
 			}];
 		}
-		[storage.managedObjectContext deleteObject:shipFit];
+		[self.oldStorage.managedObjectContext deleteObject:shipFit];
 	}
 }
 
-+ (void) transferPOSLoadoutsFromStorage:(EUStorage*) storage {
+- (void) transferPOSLoadouts {
 	NSFetchRequest* fetchRequest = [NSFetchRequest new];
-	NSEntityDescription* entity = [NSEntityDescription entityForName:@"POSFit" inManagedObjectContext:storage.managedObjectContext];
+	NSEntityDescription* entity = [NSEntityDescription entityForName:@"POSFit" inManagedObjectContext:self.oldStorage.managedObjectContext];
 	[fetchRequest setEntity:entity];
-	NSArray* posFits = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-	
-	NCStorage* ncStorage = [NCStorage sharedStorage];
+	NSArray* posFits = [self.oldStorage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
 	for (POSFit* posFit in posFits) {
 		NSMutableArray* structures = [NSMutableArray new];
@@ -246,28 +247,28 @@
 			}
 		}
 		
-		[ncStorage.managedObjectContext performBlockAndWait:^{
+		[self.storage.managedObjectContext performBlockAndWait:^{
 			NCLoadoutDataPOS* loadoutData = [NCLoadoutDataPOS new];
 			loadoutData.structures = structures;
-			NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:ncStorage.managedObjectContext] insertIntoManagedObjectContext:ncStorage.managedObjectContext];
-			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:ncStorage.managedObjectContext] insertIntoManagedObjectContext:ncStorage.managedObjectContext];
+			NCLoadout* loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.storage.managedObjectContext] insertIntoManagedObjectContext:self.storage.managedObjectContext];
+			loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:self.storage.managedObjectContext] insertIntoManagedObjectContext:self.storage.managedObjectContext];
 			loadout.data.data = loadoutData;
 			loadout.typeID = posFit.typeID;
 			loadout.name = posFit.fitName;
 		}];
-		[storage.managedObjectContext deleteObject:posFit];
+		[self.storage.managedObjectContext deleteObject:posFit];
 	}
 }
 
-+ (void) transferSkillPlansFromStorage:(EUStorage*) storage {
+- (void) transferSkillPlans {
 	NSFetchRequest* fetchRequest = [NSFetchRequest new];
-	NSEntityDescription* entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext];
+	NSEntityDescription* entity = [NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.oldStorage.managedObjectContext];
 	[fetchRequest setEntity:entity];
-	NSArray* skillPlans = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	NSArray* skillPlans = [self.oldStorage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
 	for (SkillPlan* skillPlan in skillPlans) {
 		BOOL transfered = NO;
-		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+		for (NCAccount* account in [self.accountsManager accounts]) {
 			if (account.accountType == NCAccountTypeCharacter && account.characterID == skillPlan.characterID) {
 				NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 				for (NSString* row in [skillPlan.skillPlanSkills componentsSeparatedByString:@";"]) {
@@ -285,7 +286,7 @@
 			}
 		}
 		if (transfered)
-			[storage.managedObjectContext deleteObject:skillPlan];
+			[self.oldStorage.managedObjectContext deleteObject:skillPlan];
 	}
 }
 

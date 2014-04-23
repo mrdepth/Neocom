@@ -7,16 +7,12 @@
 //
 
 #import "NCSetting.h"
-#import "NCStorage.h"
 
-@implementation NCSetting
+@implementation NCStorage(NCSetting)
 
-@dynamic key;
-@dynamic value;
-
-+ (instancetype) settingWithKey:(NSString*) key {
+- (NCSetting*) settingWithKey:(NSString*) key {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSManagedObjectContext* context = [[NCStorage sharedStorage] managedObjectContext];
+	NSManagedObjectContext* context = self.managedObjectContext;
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Setting" inManagedObjectContext:context];
 	[fetchRequest setEntity:entity];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"key == %@", key]];
@@ -31,5 +27,14 @@
 	}
 	return setting;
 }
+
+@end
+
+@implementation NCSetting
+
+@dynamic key;
+@dynamic value;
+
+
 
 @end

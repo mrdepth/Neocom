@@ -38,13 +38,20 @@
 - (void) setupAppearance;
 - (void) migrateWithCompletionHandler:(void(^)()) completionHandler;
 - (void) setupDefaultSettings;
+
+- (void) askToUseCloudWithCompletionHandler:(void(^)(BOOL useCloud)) completionHandler;
+- (void) askToTransferDataWithCompletionHandler:(void(^)(BOOL transfer)) completionHandler;
+- (void) ubiquityIdentityDidChange:(NSNotification*) notification;
 @end
 
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[Flurry setCrashReportingEnabled:YES];
-    [Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+#warning Enable Flurry
+#if !TARGET_IPHONE_SIMULATOR
+//	[Flurry setCrashReportingEnabled:YES];
+  //  [Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+#endif
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
 		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
@@ -70,25 +77,76 @@
 //		[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
 //		[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
 		
-		NCAccount* account = nil;
-		if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
-			UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
-			NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
-			if (uuid)
-				account = [NCAccount accountWithUUID:uuid];
-		}
+		id cloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+
+
+		void (^loadAccount)() = ^() {
+			NCStorage* storage = [NCStorage sharedStorage];
+			NCAccount* account = nil;
+			if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+				UILocalNotification* notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+				NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
+				if (uuid)
+					account = [storage accountWithUUID:uuid];
+			}
+			
+			if (!account) {
+				NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
+				if (uuid)
+					account = [storage accountWithUUID:uuid];
+			}
+			if (account)
+				[NCAccount setCurrentAccount:account];
+			
+			if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
+				[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
+		};
+
+		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
+			if (!useCloud) {
+				NCStorage* storage = [NCStorage fallbackStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				loadAccount();
+			}
+			else {
+				[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+													 title:NCTaskManagerDefaultTitle
+													 block:^(NCTask *task) {
+														 NCStorage* storage = [NCStorage cloudStorage];
+														 [NCStorage setSharedStorage:storage];
+														 NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+														 [NCAccountsManager setSharedManager:accountsManager];
+													 }
+										 completionHandler:^(NCTask *task) {
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 if (storage.storageType == NCStorageTypeCloud && ![[NSUserDefaults standardUserDefaults] valueForKey:@"NCSettingsMigratedToCloudKey"]) {
+												 [self askToTransferDataWithCompletionHandler:^(BOOL transfer) {
+													 if (transfer)
+														 [[NCStorage sharedStorage] transferDataFromFallbackToCloud];
+													 loadAccount();
+												 }];
+											 }
+											 else
+												 loadAccount();
+										 }];
+			}
+		};
 		
-		if (!account) {
-			NSString* uuid = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentAccountKey];
-			if (uuid)
-				account = [NCAccount accountWithUUID:uuid];
+		if (cloudToken) {
+			if (![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey]) {
+				[self askToUseCloudWithCompletionHandler:initStorage];
+			}
+			else
+				initStorage([[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey]);
 		}
-		if (account)
-			[NCAccount setCurrentAccount:account];
-		
-		if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
-			[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
+		else
+			initStorage(NO);
 	}];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ubiquityIdentityDidChange:) name:NSUbiquityIdentityDidChangeNotification object:nil];
+
     return YES;
 }
 
@@ -114,6 +172,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
 	application.applicationIconBadgeNumber = 0;
+	[self reconnectStoreIfNeeded];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -156,10 +215,75 @@
 		NSString* uuid = notification.userInfo[NCSettingsCurrentAccountKey];
 		NCAccount* account = nil;
 		if (uuid)
-			account = [NCAccount accountWithUUID:uuid];
+			account = [[NCStorage sharedStorage] accountWithUUID:uuid];
 		if (account)
 			[NCAccount setCurrentAccount:account];
 		
+	}
+}
+
+- (void) reconnectStoreIfNeeded {
+	NCStorage* storage = [NCStorage sharedStorage];
+	if (storage) {
+		id currentCloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		
+		id lastCloudToken = nil;
+		NSData *tokenData = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCloudTokenKey];
+		if (tokenData)
+			lastCloudToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
+		
+		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
+		
+		BOOL needsAsk = ![[NSUserDefaults standardUserDefaults] valueForKeyPath:NCSettingsUseCloudKey];
+		BOOL tokenChanged = currentCloudToken != lastCloudToken && ![currentCloudToken isEqual:lastCloudToken];
+		BOOL settingsChanged = (storage.storageType == NCStorageTypeCloud && !useCloud)  || (storage.storageType == NCStorageTypeFallback && useCloud);
+		
+		void (^initStorage)(BOOL) = ^(BOOL useCloud) {
+			
+			if (!useCloud || !currentCloudToken) {
+				[NCAccount setCurrentAccount:nil];
+				
+				NCStorage* storage = [NCStorage fallbackStorage];
+				[NCStorage setSharedStorage:storage];
+				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+				[NCAccountsManager setSharedManager:accountsManager];
+				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+			}
+			else {
+				__block NCStorage* storage = nil;
+				__block NCAccountsManager* accountsManager = nil;
+				[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+													 title:NCTaskManagerDefaultTitle
+													 block:^(NCTask *task) {
+														 storage = [NCStorage cloudStorage];
+														 accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
+													 }
+										 completionHandler:^(NCTask *task) {
+											 [NCAccount setCurrentAccount:nil];
+											 
+											 [NCStorage setSharedStorage:storage];
+											 [NCAccountsManager setSharedManager:accountsManager];
+											 
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 if (storage.storageType == NCStorageTypeCloud && ![[NSUserDefaults standardUserDefaults] valueForKey:@"NCSettingsMigratedToCloudKey"]) {
+												 [self askToTransferDataWithCompletionHandler:^(BOOL transfer) {
+													 if (transfer)
+														 [[NCStorage sharedStorage] transferDataFromFallbackToCloud];
+												 }];
+											 }
+											 [[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+										 }];
+			}
+		};
+		
+		if (needsAsk) {
+			[self askToUseCloudWithCompletionHandler:^(BOOL useCloud) {
+				initStorage(useCloud);
+			}];
+		}
+		else if ((useCloud && tokenChanged) || settingsChanged) {
+			initStorage(useCloud);
+		}
 	}
 }
 
@@ -207,8 +331,9 @@
 										 block:^(NCTask *task) {
 											 int32_t keyID = [properties[@"keyid"] intValue];
 											 NSString* vCode = properties[@"vcode"];
-											 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-											 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+											 if (accountsManager)
+												 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -438,6 +563,41 @@
 		[defaults setInteger:NCNotificationsManagerSkillQueueNotificationTimeAll forKey:NCSettingsSkillQueueNotificationTimeKey];
 	if (![defaults valueForKeyPath:NCSettingsMarketPricesMonitorKey])
 		[defaults setInteger:NCMarketPricesMonitorNone forKey:NCSettingsMarketPricesMonitorKey];
+}
+
+- (void) askToUseCloudWithCompletionHandler:(void(^)(BOOL useCloud)) completionHandler {
+	[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Choose Storage Option", nil)
+							 message:NSLocalizedString(@"Should documents be stored in iCloud and available on all your devices?", nil)
+				   cancelButtonTitle:NSLocalizedString(@"Local Only", nil)
+				   otherButtonTitles:@[NSLocalizedString(@"iCloud", nil)]
+					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+						 BOOL useCloud = selectedButtonIndex != alertView.cancelButtonIndex;
+						 [[NSUserDefaults standardUserDefaults] setBool:useCloud
+																 forKey:NCSettingsUseCloudKey];
+						 completionHandler(useCloud);
+					 }
+						 cancelBlock:^{
+							 completionHandler(NO);
+						 }] show];
+}
+
+- (void) askToTransferDataWithCompletionHandler:(void(^)(BOOL transfer)) completionHandler {
+	[[UIAlertView alertViewWithTitle:nil
+							 message:NSLocalizedString(@"Do you want to copy Local Data to iCloud?", nil)
+				   cancelButtonTitle:NSLocalizedString(@"No", nil)
+				   otherButtonTitles:@[NSLocalizedString(@"Copy", nil)]
+					 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+						 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCSettingsMigratedToCloudKey"];
+						 completionHandler(selectedButtonIndex != alertView.cancelButtonIndex);
+					 }
+						 cancelBlock:^{
+							 completionHandler(NO);
+						 }] show];
+}
+
+- (void) ubiquityIdentityDidChange:(NSNotification*) notification {
+	if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+		[self reconnectStoreIfNeeded];
 }
 
 @end

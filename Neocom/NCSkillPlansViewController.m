@@ -200,7 +200,13 @@
 
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
-	[self update];
+	if ([self isViewLoaded])
+		[self update];
+}
+
+- (void) didChangeStorage {
+	if ([self isViewLoaded])
+		[self update];
 }
 
 #pragma mark - Private

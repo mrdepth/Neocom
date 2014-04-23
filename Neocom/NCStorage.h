@@ -8,13 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, NCStorageType) {
+	NCStorageTypeFallback,
+	NCStorageTypeCloud
+};
+
+
 @interface NCStorage : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, assign, readonly) NCStorageType storageType;
 
 + (id) sharedStorage;
-+ (void) cleanup;
++ (id) fallbackStorage;
++ (id) cloudStorage;
+
++ (void) setSharedStorage:(NCStorage*) storage;
 - (void) saveContext;
 
+- (id) initFallbackStorage;
+- (id) initCloudStorage;
+- (BOOL) transferDataFromFallbackToCloud;
 @end

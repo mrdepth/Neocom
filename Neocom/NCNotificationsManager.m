@@ -52,15 +52,20 @@
 }
 
 - (void) updateNotificationsIfNeededWithCompletionHandler:(void(^)(BOOL completed)) completionHandler {
+	NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+	if (!accountsManager)
+		return;
+	
 	if (!self.notificationsUpdating && (!self.lastUpdate || [self.lastUpdate timeIntervalSinceNow] < -NCNotificationsManagerUpdateTime)) {
 		self.notificationsUpdating = YES;
 		NSMutableArray* notifications = [NSMutableArray new];
 		NSMutableSet* accounts = [NSMutableSet new];
+		
 
 		[[self taskManager] addTaskWithIndentifier:nil
 											 title:nil
 											 block:^(NCTask *task) {
-												 for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+												 for (NCAccount* account in accountsManager.accounts) {
 													 if (account.accountType != NCAccountTypeCharacter || !account.skillQueue)
 														 continue;
 													 

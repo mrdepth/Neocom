@@ -46,7 +46,7 @@
 		[builtInDamagePatterns addObject:damagePattern];
 	}
 	self.builtInDamagePatterns = builtInDamagePatterns;
-	self.customDamagePatterns = [[NCDamagePattern damagePatterns] mutableCopy];
+	self.customDamagePatterns = [[storage damagePatterns] mutableCopy];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

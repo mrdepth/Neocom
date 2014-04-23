@@ -449,11 +449,14 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NSMutableArray* canonicalNames = [NSMutableArray new];
-											 for (NCLoadout* loadout in [NCLoadout shipLoadouts]) {
-												 NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
-												 NSString* canonicalName = shipFit.canonicalName;
-												 [canonicalNames addObject:canonicalName];
-											 }
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 [storage.managedObjectContext performBlockAndWait:^{
+												 for (NCLoadout* loadout in [storage shipLoadouts]) {
+													 NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
+													 NSString* canonicalName = shipFit.canonicalName;
+													 [canonicalNames addObject:canonicalName];
+												 }
+											 }];
 											 if (canonicalNames.count > 0)
 												 [NAPIUpload uploadFitsWithCannonicalNames:canonicalNames
 																					userID:NCSettingsUDIDKey

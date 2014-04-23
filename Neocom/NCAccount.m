@@ -13,6 +13,7 @@
 
 #define NCAccountSkillPointsUpdateInterval (60.0 * 10.0)
 
+
 static NCAccount* currentAccount = nil;
 
 @interface NCAccount()
@@ -39,6 +40,39 @@ static NCAccount* currentAccount = nil;
 - (void) reloadSkillQueueWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
 @end
 
+@implementation NCStorage(NCAccount)
+
+- (NSArray*) allAccounts {
+	NSManagedObjectContext* context = self.managedObjectContext;
+	
+	__block NSArray* accounts = nil;
+	[context performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"characterID" ascending:YES]]];
+		
+		accounts = [context executeFetchRequest:fetchRequest error:nil];
+	}];
+	return accounts;
+}
+
+- (NCAccount*) accountWithUUID:(NSString*) uuid {
+	NSManagedObjectContext* context = self.managedObjectContext;
+	
+	__block NSArray* accounts = nil;
+	[context performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
+		accounts = [context executeFetchRequest:fetchRequest error:nil];
+	}];
+	return accounts.count > 0 ? accounts[0] : nil;
+}
+
+@end
+
 @implementation NCAccount
 
 @dynamic characterID;
@@ -60,21 +94,6 @@ static NCAccount* currentAccount = nil;
 @synthesize corporationSheetError = _corporationSheetError;
 @synthesize skillQueueError = _skillQueueError;
 
-+ (NSArray*) allAccounts {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = storage.managedObjectContext;
-	
-	__block NSArray* accounts = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		[fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"characterID" ascending:YES]]];
-		
-		accounts = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return accounts;
-}
 
 + (instancetype) currentAccount {
 	@synchronized(self) {
@@ -82,32 +101,23 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
-+ (instancetype) accountWithUUID:(NSString*) uuid {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = storage.managedObjectContext;
-	
-	__block NSArray* accounts = nil;
-	[context performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account" inManagedObjectContext:context];
-		[fetchRequest setEntity:entity];
-		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
-		accounts = [context executeFetchRequest:fetchRequest error:nil];
-	}];
-	return accounts.count > 0 ? accounts[0] : nil;
-}
 
 + (void) setCurrentAccount:(NCAccount*) account {
+	BOOL changed = NO;
 	@synchronized(self) {
-		currentAccount = account;
-		if (account) {
-			[[NSUserDefaults standardUserDefaults] setValue:account.uuid forKey:NCSettingsCurrentAccountKey];
+		changed = currentAccount != account;
+		if (changed) {
+			currentAccount = account;
+			if (account) {
+				[[NSUserDefaults standardUserDefaults] setValue:account.uuid forKey:NCSettingsCurrentAccountKey];
+			}
+			else
+				[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
+			[[NSUserDefaults standardUserDefaults] synchronize];
 		}
-		else
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:NCSettingsCurrentAccountKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
-	[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:account];
+	if (changed)
+		[[NSNotificationCenter defaultCenter] postNotificationName:NCAccountDidChangeNotification object:account];
 }
 
 - (void) awakeFromInsert {
@@ -356,8 +366,7 @@ static NCAccount* currentAccount = nil;
 		if (!_activeSkillPlan || [_activeSkillPlan isDeleted]) {
 			__block NCSkillPlan* skillPlan = nil;
 
-			NCStorage* storage = [NCStorage sharedStorage];
-			[storage.managedObjectContext performBlockAndWait:^{
+			[self.managedObjectContext performBlockAndWait:^{
 				if (self.skillPlans.count == 0) {
 					skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext]
 									 insertIntoManagedObjectContext:self.managedObjectContext];
@@ -381,7 +390,8 @@ static NCAccount* currentAccount = nil;
 					else
 						skillPlan = [skillPlans anyObject];
 				}
-				[storage saveContext];
+				if ([self.managedObjectContext hasChanges])
+					[self.managedObjectContext save:nil];
 			}];
 			_activeSkillPlan = skillPlan;
 		}

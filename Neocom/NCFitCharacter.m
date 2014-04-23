@@ -7,12 +7,46 @@
 //
 
 #import "NCFitCharacter.h"
-#import "NCStorage.h"
 #import "NCAccount.h"
 
 @interface NCFitCharacter()
 @property (nonatomic, strong) NCAccount* account;
 @property (nonatomic, assign) NSInteger skillsLevel;
+
+@end
+
+@implementation NCStorage(NCFitCharacter)
+
+- (NSArray*) characters {
+	__block NSArray *fetchedObjects = nil;
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+		
+		NSError *error = nil;
+		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	}];
+	return fetchedObjects;
+}
+
+- (NCFitCharacter*) characterWithAccount:(NCAccount*) account {
+	if (account.accountType == NCAccountTypeCorporate)
+		return nil;
+	
+	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:nil];
+	character.account = account;
+	character.name = account.characterSheet.name;
+	return character;
+}
+
+- (NCFitCharacter*) characterWithSkillsLevel:(NSInteger) skillsLevel {
+	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:nil];
+	character.skillsLevel = skillsLevel;
+	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
+	return character;
+}
 
 @end
 
@@ -24,39 +58,6 @@
 @synthesize account = _account;
 @synthesize skillsLevel = _skillsLevel;
 
-+ (NSArray*) characters {
-	NCStorage* storage = [NCStorage sharedStorage];
-	__block NSArray *fetchedObjects = nil;
-	[storage.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:storage.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-		
-		NSError *error = nil;
-		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	}];
-	return fetchedObjects;
-}
-
-+ (instancetype) characterWithAccount:(NCAccount*) account {
-	if (account.accountType == NCAccountTypeCorporate)
-		return nil;
-	
-	NCStorage* storage = [NCStorage sharedStorage];
-	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil];
-	character.account = account;
-	character.name = account.characterSheet.name;
-	return character;
-}
-
-+ (instancetype) characterWithSkillsLevel:(NSInteger) skillsLevel {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:nil];
-	character.skillsLevel = skillsLevel;
-	character.name = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), (int32_t) skillsLevel];
-	return character;
-}
 
 - (NSDictionary*) skills {
 	@synchronized(self) {

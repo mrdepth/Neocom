@@ -64,6 +64,10 @@
 	}
 }
 
+- (void) didChangeStorage {
+	[self reload];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -154,6 +158,11 @@
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (![NCStorage sharedStorage]) {
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		return;
+	}
+	
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
 		if (indexPath.row == 2) {
@@ -226,7 +235,7 @@
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
 											 [storage.managedObjectContext performBlockAndWait:^{
-												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
 												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.groupID"])
@@ -241,7 +250,7 @@
 												 
 												 task.progress = 0.75;
 												 
-												 NSArray* posLoadouts = [[NCLoadout posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+												 NSArray* posLoadouts = [[storage posLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 if (posLoadouts.count > 0)
 													 [sections addObject:[posLoadouts mutableCopy]];
 												 

@@ -104,9 +104,9 @@
 													 NCFitCharacter* character;
 													 
 													 if (account.characterSheet)
-														 character = [NCFitCharacter characterWithAccount:account];
+														 character = [[NCStorage sharedStorage] characterWithAccount:account];
 													 else
-														 character = [NCFitCharacter characterWithSkillsLevel:5];
+														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
 													 
 													 fit.character = character;
 													 [fit load];
@@ -572,7 +572,7 @@
 												 if (sourceViewController.selectedCharacter)
 													 sourceViewController.fit.character = sourceViewController.selectedCharacter;
 												 else if ([sourceViewController.fit.character isDeleted]) {
-													 sourceViewController.fit.character = [NCFitCharacter characterWithSkillsLevel:5];
+													 sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
 												 }
 											 }
 										 }
@@ -596,9 +596,9 @@
 													 NCFitCharacter* character;
 													 
 													 if (account.characterSheet)
-														 character = [NCFitCharacter characterWithAccount:account];
+														 character = [[NCStorage sharedStorage] characterWithAccount:account];
 													 else
-														 character = [NCFitCharacter characterWithSkillsLevel:5];
+														 character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
 													 
 													 fit.character = character;
 													 [fit load];

@@ -9,11 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "NCLoadoutData.h"
+#import "NCStorage.h"
 
 typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 	NCLoadoutCategoryShip,
 	NCLoadoutCategoryPOS
 };
+
+@interface NCStorage(NCLoadout)
+- (NSArray*) loadouts;
+- (NSArray*) shipLoadouts;
+- (NSArray*) posLoadouts;
+@end
 
 @class EVEDBInvType;
 
@@ -27,8 +34,5 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 @property (nonatomic, readonly, strong) EVEDBInvType* type;
 @property (nonatomic, readonly) NCLoadoutCategory category;
 
-+ (NSArray*) loadouts;
-+ (NSArray*) shipLoadouts;
-+ (NSArray*) posLoadouts;
 
 @end

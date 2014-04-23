@@ -804,6 +804,7 @@
 		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1263AAE219055A9000AF522A /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
 		12640AF818B72E43005C311D /* NCStarbasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesViewController.h; sourceTree = "<group>"; };
 		12640AF918B72E43005C311D /* NCStarbasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesViewController.m; sourceTree = "<group>"; };
 		12640AFF18B7306C005C311D /* EVEStarbaseListItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEStarbaseListItem+Neocom.h"; sourceTree = "<group>"; };
@@ -1739,6 +1740,7 @@
 				1261593A18EE7BFD0049B9CE /* db */,
 				8418BB1A1891970500B99A7E /* Resources */,
 				129D2578187E835800E2062C /* Graphics */,
+				1263AAE219055A9000AF522A /* Neocom.entitlements */,
 				126ED32C188144370009FA39 /* mainMenu.plist */,
 				123A980318C71548001045F5 /* rssFeeds.plist */,
 				120968641845F0CB00921A37 /* Main.storyboard */,
@@ -3448,6 +3450,8 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				129FEE161860313D00F75FA6 /* NCStorage.h */,
+				129FEE171860313D00F75FA6 /* NCStorage.m */,
 				12FDA32C18E00710007B091D /* NCImplantSet.h */,
 				12FDA32D18E00710007B091D /* NCImplantSet.m */,
 				12ACDC9F18A0AC4A00566DFE /* NCDamagePattern.h */,
@@ -3458,8 +3462,6 @@
 				8452190D189AEEA700E7E3C1 /* NCLoadout.m */,
 				84FC4F5E18785CCC0004073C /* NCAccount.h */,
 				84FC4F5F18785CCC0004073C /* NCAccount.m */,
-				129FEE161860313D00F75FA6 /* NCStorage.h */,
-				129FEE171860313D00F75FA6 /* NCStorage.m */,
 				129FEE461860326E00F75FA6 /* NCFitCharacter.h */,
 				129FEE471860326E00F75FA6 /* NCFitCharacter.m */,
 				129FEE3D1860326E00F75FA6 /* NCSkillPlan.h */,
@@ -4351,6 +4353,11 @@
 				TargetAttributes = {
 					1209684E1845F0CB00921A37 = {
 						DevelopmentTeam = YB4RLQ4M9A;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -5068,6 +5075,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5100,6 +5108,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

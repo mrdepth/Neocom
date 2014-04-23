@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
 
-@interface NCMigrationManager : NSManagedObject
+@interface NCMigrationManager : NSObject
 
 + (BOOL) migrateWithError:(NSError**) errorPtr;
 

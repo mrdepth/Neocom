@@ -457,6 +457,11 @@
 		[self update];
 }
 
+- (void) didChangeStorage {
+	if ([self isViewLoaded])
+		[self update];
+}
+
 - (id) identifierForSection:(NSInteger)section {
 	return @(section);
 }

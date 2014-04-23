@@ -140,7 +140,7 @@
 
 				[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 					cacheRecord.data.data = locationsNames;
-					if ([cacheRecord.expireDate isEqualToDate:[NSDate distantFuture]]) {
+					if ([cacheRecord.expireDate isEqualToDate:[NSDate distantPast]]) {
 						cacheRecord.date = [NSDate date];
 						cacheRecord.expireDate = [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 7];
 					}
@@ -191,7 +191,7 @@
 				_cacheRecord = [NCCacheRecord cacheRecordWithRecordID:NSStringFromClass(self.class)];
 				if ([_cacheRecord.expireDate compare:[NSDate date]] == NSOrderedAscending) {
 					_cacheRecord.data.data = nil;
-					_cacheRecord.expireDate = [NSDate distantFuture];
+					_cacheRecord.expireDate = [NSDate distantPast];
 				}
 			}];
 		}

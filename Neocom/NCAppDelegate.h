@@ -11,5 +11,6 @@
 @interface NCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+- (void) reconnectStoreIfNeeded;
 
 @end

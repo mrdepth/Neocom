@@ -16,7 +16,9 @@
 @property (weak, nonatomic) IBOutlet UISwitch *exchangeRateSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *plexSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *mineralsSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *iCloudSwitch;
 
 - (IBAction)onChangeNotification:(id)sender;
 - (IBAction)onChangeMarketPricesMonitor:(id)sender;
+- (IBAction)onChangeCloud:(id)sender;
 @end

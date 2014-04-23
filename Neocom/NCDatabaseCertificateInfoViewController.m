@@ -105,7 +105,6 @@
 	[self.tableView scrollsToTop];
 }
 
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -189,6 +188,10 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reload];
+}
+
+- (void) didChangeStorage {
+	[self reload];
 }
 
 - (BOOL) initiallySectionIsCollapsed:(NSInteger)section {

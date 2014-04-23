@@ -11,32 +11,45 @@
 #import "NCCache.h"
 #import "NCNotificationsManager.h"
 
-static NCAccountsManager* defaultManager = nil;
+static NCAccountsManager* sharedManager = nil;
 
 @interface NCAccountsManager()
 @property (nonatomic, strong, readwrite) NSArray* accounts;
 @property (nonatomic, strong, readwrite) NSArray* apiKeys;
+@property (nonatomic, strong, readwrite) NCStorage* storage;
+- (void) didChangeStorage:(NSNotification*) notification;
+
 @end
 
 @implementation NCAccountsManager
 
-+ (instancetype) defaultManager {
++ (instancetype) sharedManager {
 	@synchronized(self) {
-		if (!defaultManager)
-			defaultManager = [NCAccountsManager new];
-		return defaultManager;
+		return sharedManager;
 	}
 }
 
-+ (void) cleanup {
++ (void) setSharedManager:(NCAccountsManager*) manager {
 	@synchronized(self) {
-		defaultManager = nil;
+		sharedManager = manager;
 	}
+}
+
+- (id) initWithStorage:(NCStorage*) storage {
+	assert(storage);
+	if (self = [super init]) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStorage:) name:NCStorageDidChangeNotification object:nil];
+		self.storage = storage;
+	}
+	return self;
+}
+
+- (void) dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
 }
 
 - (BOOL) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
-	NCStorage* storage = [NCStorage sharedStorage];
-	NSManagedObjectContext* context = storage.managedObjectContext;
+	NSManagedObjectContext* context = self.storage.managedObjectContext;
 	
 	EVEAPIKeyInfo* apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:keyID vCode:vCode cachePolicy:NSURLRequestReloadIgnoringLocalCacheData error:errorPtr progressHandler:nil];
 	
@@ -44,7 +57,7 @@ static NCAccountsManager* defaultManager = nil;
 		__block NCAPIKey* apiKey = nil;
 		
 		[context performBlockAndWait:^{
-			apiKey = [NCAPIKey apiKeyWithKeyID:keyID];
+			apiKey = [self.storage apiKeyWithKeyID:keyID];
 			if (apiKey && ![apiKey.vCode isEqualToString:vCode]) {
 				[context deleteObject:apiKey];
 				apiKey = nil;
@@ -71,13 +84,13 @@ static NCAccountsManager* defaultManager = nil;
 				}
 			}
 			
-			self.accounts = [NCAccount allAccounts];
-			self.apiKeys = [NCAPIKey allAPIKeys];
+			self.accounts = [self.storage allAccounts];
+			self.apiKeys = [self.storage allAPIKeys];
 			int32_t order = 0;
 			for (NCAccount* account in self.accounts)
 				account.order = order++;
 			
-			[storage saveContext];
+			[self.storage saveContext];
 		}];
 		[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
 		return YES;
@@ -88,39 +101,38 @@ static NCAccountsManager* defaultManager = nil;
 
 
 - (void) removeAccount:(NCAccount*) account {
-	NCStorage* storage = [NCStorage sharedStorage];
-	[storage.managedObjectContext performBlockAndWait:^{
+	[self.storage.managedObjectContext performBlockAndWait:^{
 		if ([NCAccount currentAccount] == account)
 			[NCAccount setCurrentAccount:nil];
 
 		NCAPIKey* apiKey = account.apiKey;
-		[storage.managedObjectContext deleteObject:account];
+		[self.storage.managedObjectContext deleteObject:account];
 		
 		if (apiKey.accounts.count == 0)
-			[storage.managedObjectContext deleteObject:apiKey];
+			[self.storage.managedObjectContext deleteObject:apiKey];
 		
-		self.accounts = [NCAccount allAccounts];
-		self.apiKeys = [NCAPIKey allAPIKeys];
+		self.accounts = [self.storage allAccounts];
+		self.apiKeys = [self.storage allAPIKeys];
 		int32_t order = 0;
 		for (NCAccount* account in self.accounts)
 			account.order = order++;
 		
-		[storage saveContext];
+		[self.storage saveContext];
 	}];
 	[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
 }
 
 - (void) reload {
 	@synchronized(self) {
-		_accounts = [NCAccount allAccounts];
-		_apiKeys = [NCAPIKey allAPIKeys];
+		_accounts = [self.storage allAccounts];
+		_apiKeys = [self.storage allAPIKeys];
 	}
 }
 
 - (NSArray*) accounts {
 	@synchronized(self) {
 		if (!_accounts) {
-			_accounts = [NCAccount allAccounts];
+			_accounts = [self.storage allAccounts];
 		}
 		return _accounts;
 	}
@@ -129,10 +141,16 @@ static NCAccountsManager* defaultManager = nil;
 - (NSArray*) apiKeys {
 	@synchronized(self) {
 		if (!_apiKeys) {
-			_apiKeys = [NCAPIKey allAPIKeys];
+			_apiKeys = [self.storage allAPIKeys];
 		}
 		return _apiKeys;
 	}
+}
+
+#pragma mark - Private
+
+- (void) didChangeStorage:(NSNotification*) notification {
+	[self reload];
 }
 
 @end

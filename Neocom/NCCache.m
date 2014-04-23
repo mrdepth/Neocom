@@ -72,11 +72,14 @@ static NCCache* sharedCache;
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 			NSEntityDescription *entity = [NSEntityDescription entityForName:@"Record" inManagedObjectContext:self.managedObjectContext];
 			[fetchRequest setEntity:entity];
-			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@ and data.data != nil", [NSDate dateWithTimeIntervalSinceNow:-3600 * 24 * 7]];
+			fetchRequest.predicate = [NSPredicate predicateWithFormat:@"expireDate <= %@", [NSDate dateWithTimeIntervalSinceNow:-3600 * 24 * 7]];
 			
 			NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 			for (NCCacheRecord* record in fetchedObjects) {
-				record.data.data = nil;
+				if ([record isFault])
+					[self.managedObjectContext deleteObject:record];
+				else
+					record.data.data = nil;
 			}
 			[self saveContext];
 		}

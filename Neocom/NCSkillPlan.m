@@ -29,6 +29,12 @@
 
 @synthesize trainingQueue = _trainingQueue;
 
+- (void) awakeFromFetch {
+	if (_trainingQueue)
+		[self reload];
+	//self.trainingQueue = nil;
+}
+
 - (NCTrainingQueue*) trainingQueue {
 	if (!_trainingQueue) {
 		if (!self.account)
@@ -52,9 +58,10 @@
 		[skills addObject:item];
 	}
 	
-	[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+	[self.managedObjectContext performBlockAndWait:^{
 		self.skills = skills;
-		[[NCStorage sharedStorage] saveContext];
+		if ([self.managedObjectContext hasChanges])
+			[self.managedObjectContext save:nil];
 	}];
 }
 

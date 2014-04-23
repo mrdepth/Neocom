@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCStorage.h"
+
+@interface NCStorage(NCImplantSet)
+- (NSArray*) implantSets;
+@end
 
 @interface NCImplantSetData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* implantIDs;
@@ -19,6 +24,5 @@
 @property (nonatomic, retain) id data;
 @property (nonatomic, retain) NSString * name;
 
-+ (NSArray*) implantSets;
 
 @end

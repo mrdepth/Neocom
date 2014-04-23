@@ -7,7 +7,23 @@
 //
 
 #import "NCDamagePattern.h"
-#import "NCStorage.h"
+
+@implementation NCStorage(NCDamagePattern)
+
+- (NSArray*) damagePatterns {
+	__block NSArray *fetchedObjects = nil;
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+		
+		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	}];
+	return fetchedObjects;
+}
+
+@end
 
 @implementation NCDamagePattern
 
@@ -16,19 +32,5 @@
 @dynamic kinetic;
 @dynamic explosive;
 @dynamic name;
-
-+ (NSArray*) damagePatterns {
-	NCStorage* storage = [NCStorage sharedStorage];
-	__block NSArray *fetchedObjects = nil;
-	[storage.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-		
-		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-	}];
-	return fetchedObjects;
-}
 
 @end

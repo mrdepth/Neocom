@@ -41,7 +41,7 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+											 for (NCAccount* account in [[NCAccountsManager sharedManager] accounts]) {
 												 if (account.characterSheet)
 													 [accounts addObject:account];
 											 }
@@ -51,7 +51,7 @@
 								 [self.tableView reloadData];
 							 }];
 	
-	self.customCharacters = [NSMutableArray arrayWithArray:[NCFitCharacter characters]];
+	self.customCharacters = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] characters]];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -183,7 +183,7 @@
 	if (self.editing) {
 		NCFitCharacter* character;
 		if (indexPath.section == 0)
-			character = [NCFitCharacter characterWithAccount:self.accounts[indexPath.row]];
+			character = [[NCStorage sharedStorage] characterWithAccount:self.accounts[indexPath.row]];
 		else if (indexPath.section == 1) {
 			if (indexPath.row == self.customCharacters.count) {
 				[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
@@ -193,7 +193,7 @@
 				character = self.customCharacters[indexPath.row];
 		}
 		else
-			character = [NCFitCharacter characterWithSkillsLevel:indexPath.row];
+			character = [[NCStorage sharedStorage] characterWithSkillsLevel:indexPath.row];
 		
 		if (!character.managedObjectContext) {
 			[[[NCStorage sharedStorage] managedObjectContext] insertObject:character];
@@ -207,11 +207,11 @@
 	else {
 		NCFitCharacter* character;
 		if (indexPath.section == 0)
-			character = [NCFitCharacter characterWithAccount:self.accounts[indexPath.row]];
+			character = [[NCStorage sharedStorage] characterWithAccount:self.accounts[indexPath.row]];
 		else if (indexPath.section == 1)
 			character = self.customCharacters[indexPath.row];
 		else
-			character = [NCFitCharacter characterWithSkillsLevel:indexPath.row];
+			character = [[NCStorage sharedStorage] characterWithSkillsLevel:indexPath.row];
 		self.selectedCharacter = character;
 		[self performSegueWithIdentifier:@"Unwind" sender:character];
 	}

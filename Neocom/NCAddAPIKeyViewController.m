@@ -71,8 +71,9 @@
 	[[self taskManager] addTaskWithIndentifier:nil
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-											 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
+											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+											 if (accountsManager)
+												 success = [accountsManager addAPIKeyWithKeyID:keyID vCode:vCode error:&error];
 											 
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -155,7 +156,7 @@
 													 int32_t keyID = [arguments[@"keyID"] intValue];
 													 NSString* vCode = arguments[@"vCode"];
 													 NSError* error = nil;
-													 if (![[NCAccountsManager defaultManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error])
+													 if (![[NCAccountsManager sharedManager] addAPIKeyWithKeyID:keyID vCode:vCode error:&error])
 														 errorDescription = [error localizedDescription];
 												 }
 												 

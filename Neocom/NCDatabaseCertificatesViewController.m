@@ -143,6 +143,10 @@
 		[self reload];
 }
 
+- (void) didChangeStorage {
+	[self reload];
+}
+
 #pragma mark - Private
 
 - (void) reload {

@@ -31,7 +31,7 @@
 	if (self = [super init]) {
 		NSString* udid = [aDecoder decodeObjectForKey:@"account"];
 		if (udid) {
-			self.account = [NCAccount accountWithUUID:udid];
+			self.account = [[NCStorage sharedStorage] accountWithUUID:udid];
 			if (!self.account)
 				return nil;
 			
@@ -81,7 +81,7 @@
         
         self.accounts = [[aDecoder decodeObjectForKey:@"accounts"] mutableCopy];
         [storage.managedObjectContext performBlockAndWait:^{
-            self.apiKeys = [NSMutableArray arrayWithArray:[NCAPIKey allAPIKeys]];
+            self.apiKeys = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] allAPIKeys]];
         }];
 	}
 	return self;
@@ -329,7 +329,7 @@
 			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		
-		[[NCAccountsManager defaultManager] removeAccount:account.account];
+		[[NCAccountsManager sharedManager] removeAccount:account.account];
 		[data.accounts removeObjectAtIndex:indexPath.row];
 		
 		NCAccountsViewControllerData* updatedData = [NCAccountsViewControllerData new];
@@ -368,7 +368,7 @@
 	updatedData.apiKeys = data.apiKeys;
 	[self didUpdateData:updatedData];
 	
-	[[NCAccountsManager defaultManager] reload];
+	[[NCAccountsManager sharedManager] reload];
 }
 
 /*
@@ -438,7 +438,9 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
+											 NCAccountsManager* accountsManager = [NCAccountsManager sharedManager];
+											 if (!accountsManager)
+												 return;
 											 
 											 float p = 0;
 											 float dp = 1.0 / (accountsManager.accounts.count + accountsManager.apiKeys.count);
@@ -482,9 +484,8 @@
 													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 												 }
 											 }
-                                             NCStorage* storage = [NCStorage sharedStorage];
-                                             [storage.managedObjectContext performBlockAndWait:^{
-                                                 data.apiKeys = [[NSMutableArray alloc] initWithArray:[NCAPIKey allAPIKeys]];
+                                             [accountsManager.storage.managedObjectContext performBlockAndWait:^{
+                                                 data.apiKeys = [[NSMutableArray alloc] initWithArray:[accountsManager.storage allAPIKeys]];
                                              }];
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -502,7 +503,7 @@
 - (BOOL) shouldReloadData {
 	BOOL shouldReloadData = [super shouldReloadData];
 	if (!shouldReloadData) {
-		for (NCAccount* account in [[NCAccountsManager defaultManager] accounts]) {
+		for (NCAccount* account in [[NCAccountsManager sharedManager] accounts]) {
 			BOOL exist = NO;
 			for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data.data accounts]) {
 				if ([accountData.account isEqual:account]) {
@@ -514,6 +515,12 @@
 				shouldReloadData = YES;
 				break;
 			}
+		}
+	}
+	for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data.data accounts]) {
+		if (accountData.account.managedObjectContext == nil) {
+			shouldReloadData = YES;
+			break;
 		}
 	}
 	return shouldReloadData;

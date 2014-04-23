@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCStorage.h"
 
+@interface NCStorage(NCDamagePattern)
+- (NSArray*) damagePatterns;
+@end
 
 @interface NCDamagePattern : NSManagedObject
 
@@ -18,5 +22,4 @@
 @property (nonatomic) float explosive;
 @property (nonatomic, retain) NSString * name;
 
-+ (NSArray*) damagePatterns;
 @end

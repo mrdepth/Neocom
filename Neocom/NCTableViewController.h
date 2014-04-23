@@ -20,6 +20,7 @@
 - (NCCacheRecord*) didFinishLoadData:(id) data withCacheDate:(NSDate*) cacheDate expireDate:(NSDate*) expireDate;
 - (void) didUpdateData:(id) data;
 - (void) didFailLoadDataWithError:(NSError*) error;
+- (void) didChangeStorage;
 
 #pragma mark - Override
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy;

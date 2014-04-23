@@ -41,7 +41,7 @@
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
 											 [storage.managedObjectContext performBlockAndWait:^{
-												 NSArray* shipLoadouts = [[NCLoadout shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
 												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];

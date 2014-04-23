@@ -13,11 +13,17 @@
 #import "NCAPIKey.h"
 #import "NCMailBox.h"
 #import "NCSkillPlan.h"
+#import "NCStorage.h"
 
 typedef NS_ENUM(NSInteger, NCAccountType) {
 	NCAccountTypeCharacter,
 	NCAccountTypeCorporate
 };
+
+@interface NCStorage(NCAccount)
+- (NSArray*) allAccounts;
+- (NCAccount*) accountWithUUID:(NSString*) uuid;
+@end
 
 @interface NCAccount : NSManagedObject
 
@@ -44,9 +50,7 @@ typedef NS_ENUM(NSInteger, NCAccountType) {
 @property (nonatomic, strong, readonly) NSError* corporationSheetError;
 @property (nonatomic, strong, readonly) NSError* skillQueueError;
 
-+ (NSArray*) allAccounts;
 + (instancetype) currentAccount;
-+ (instancetype) accountWithUUID:(NSString*) uuid;
 + (void) setCurrentAccount:(NCAccount*) account;
 
 - (BOOL) reloadWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;

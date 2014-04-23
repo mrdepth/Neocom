@@ -278,7 +278,7 @@
 							 completionHandler:^(NCTask *task) {
 								 self.sections = sections;
 								 self.groups = groups;
-								 [self.tableView reloadData];
+								 [self update];
 							 }];
 }
 

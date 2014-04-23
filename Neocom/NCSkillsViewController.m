@@ -354,6 +354,11 @@
 		[self update];
 }
 
+- (void) didChangeStorage {
+	if ([self isViewLoaded])
+		[self update];
+}
+
 - (id) identifierForSection:(NSInteger)section {
 	switch (self.mode) {
 		case NCSkillsViewControllerModeKnownSkills:

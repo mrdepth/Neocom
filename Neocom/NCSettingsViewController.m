@@ -11,6 +11,7 @@
 #import "NCMainMenuViewController.h"
 #import "UIAlertView+Block.h"
 #import "NCCache.h"
+#import "NCAppDelegate.h"
 
 @interface NCSettingsViewController ()
 
@@ -42,6 +43,7 @@
 	self.exchangeRateSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorExchangeRate) == NCMarketPricesMonitorExchangeRate;
 	self.plexSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorPlex) == NCMarketPricesMonitorPlex;
 	self.mineralsSwitch.on = (marketPricesMonitor & NCMarketPricesMonitorMinerals) == NCMarketPricesMonitorMinerals;
+	self.iCloudSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -75,6 +77,12 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:NCMarketPricesMonitorDidChangeNotification object:nil userInfo:nil];
 }
 
+- (IBAction)onChangeCloud:(id)sender {
+	[[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:NCSettingsUseCloudKey];
+	NCAppDelegate* delegate = (NCAppDelegate*)[[UIApplication sharedApplication] delegate];
+	[delegate reconnectStoreIfNeeded];
+}
+
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,7 +91,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	if (indexPath.section == 0) {
+	if (indexPath.section == 1) {
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Clear Cache?", nil)
 								 message:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)

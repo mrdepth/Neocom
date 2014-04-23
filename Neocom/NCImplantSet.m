@@ -7,7 +7,24 @@
 //
 
 #import "NCImplantSet.h"
-#import "NCStorage.h"
+
+@implementation NCStorage(NCImplantSet)
+
+- (NSArray*) implantSets {
+	__block NSArray *fetchedObjects = nil;
+	[self.managedObjectContext performBlockAndWait:^{
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:self.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+		
+		NSError *error = nil;
+		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	}];
+	return fetchedObjects;
+}
+
+@end
 
 @implementation NCImplantSetData
 
@@ -33,19 +50,5 @@
 @dynamic data;
 @dynamic name;
 
-+ (NSArray*) implantSets {
-	NCStorage* storage = [NCStorage sharedStorage];
-	__block NSArray *fetchedObjects = nil;
-	[storage.managedObjectContext performBlockAndWait:^{
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:storage.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-		
-		NSError *error = nil;
-		fetchedObjects = [storage.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	}];
-	return fetchedObjects;
-}
 
 @end

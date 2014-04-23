@@ -200,6 +200,10 @@
 		[self reload];
 }
 
+- (void) didChangeStorage {
+	[self reload];
+}
+
 - (BOOL) shouldReloadData {
 	return YES;
 }

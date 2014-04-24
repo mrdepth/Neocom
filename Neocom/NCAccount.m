@@ -473,8 +473,11 @@ static NCAccount* currentAccount = nil;
 																													progressHandler(progress / 4.0f, stop);
 																												}
 																											}] : nil;
-	if (characterInfo)
+	if (characterInfo) {
+		if ([characterInfo.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending)
+			characterInfo.cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:600];
 		self.characterInfo = characterInfo;
+	}
 	else if (!self.characterInfoCacheRecord.data)
 		self.characterInfo = (id) error;
 	if (errorPtr)
@@ -499,16 +502,19 @@ static NCAccount* currentAccount = nil;
 																														progressHandler((1.0 + progress) / 4.0f, stop);
 																													}
 																												}] : nil;
-	if (characterSheet)
+	if (characterSheet) {
+		if ([characterSheet.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending)
+			characterSheet.cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:600];
 		self.characterSheet = characterSheet;
+		_characterAttributes = nil;
+		self.lastSkillPointsUpdate = nil;
+	}
 	else if (!self.characterSheetCacheRecord.data)
 		self.characterSheet = (id) error;
 	if (errorPtr)
 		*errorPtr = error;
 	self.characterSheetError = error;
 
-	_characterAttributes = nil;
-	self.lastSkillPointsUpdate = nil;
 	
 	NCCache* cache = [NCCache sharedCache];
 	[cache.managedObjectContext performBlockAndWait:^{
@@ -529,8 +535,11 @@ static NCAccount* currentAccount = nil;
 																				   progressHandler((1.0 + progress) / 4.0f, stop);
 																			   }
 																		   }];
-	if (corporationSheet)
+	if (corporationSheet) {
+		if ([corporationSheet.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending)
+			corporationSheet.cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:600];
 		self.corporationSheet = corporationSheet;
+	}
 	else if (!self.corporationSheetCacheRecord.data)
 		self.corporationSheet = (id) error;
 	if (errorPtr)
@@ -555,14 +564,17 @@ static NCAccount* currentAccount = nil;
 																										progressHandler((1.0 + progress) / 4.0f, stop);
 																									}
 																								}] : nil;
-	if (skillQueue)
+	if (skillQueue) {
+		if ([skillQueue.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending)
+			skillQueue.cacheExpireDate = [NSDate dateWithTimeIntervalSinceNow:600];
 		self.skillQueue = skillQueue;
+		self.lastSkillPointsUpdate = nil;
+	}
 	else if (!self.skillQueueCacheRecord.data)
 		self.skillQueue = (id) error;
 	if (errorPtr)
 		*errorPtr = error;
 	self.skillQueueError = error;
-	self.lastSkillPointsUpdate = nil;
 	
 	NCCache* cache = [NCCache sharedCache];
 	[cache.managedObjectContext performBlockAndWait:^{

@@ -95,25 +95,33 @@
 		
 		void (^update)() = ^ {
 			if (account.accountType == NCAccountTypeCorporate) {
-				if (account.corporationSheetError) {
+				if (corporationSheet) {
+					[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
+					self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
+					self.subtitleLabel.text = corporationSheet.allianceName;
+				}
+				else if (account.corporationSheetError) {
 					self.nameLabel.text = [account.corporationSheetError localizedDescription];
 					self.subtitleLabel.text = nil;
 				}
 				else {
-					[self.logoImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:account.corporationSheet.corporationID size:EVEImageSizeRetina32 error:nil]];
-					self.nameLabel.text = [NSString stringWithFormat:@"%@ [%@]", account.corporationSheet.corporationName, account.corporationSheet.ticker];
-					self.subtitleLabel.text = account.corporationSheet.allianceName;
+					self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+					self.subtitleLabel.text = nil;
 				}
 			}
 			else {
-				if (account.characterInfoError) {
+				if (characterInfo) {
+					[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
+					self.nameLabel.text = characterInfo.characterName;
+					self.subtitleLabel.text = characterInfo.corporation;
+				}
+				else if (account.characterInfoError) {
 					self.nameLabel.text = [account.characterInfoError localizedDescription];
 					self.subtitleLabel.text = nil;
 				}
 				else {
-					[self.logoImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSize64 error:nil]];
-					self.nameLabel.text = account.characterInfo.characterName;
-					self.subtitleLabel.text = account.characterInfo.corporation;
+					self.nameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+					self.subtitleLabel.text = nil;
 				}
 			}
 		};

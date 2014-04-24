@@ -275,7 +275,11 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	NSString* cellIdentifier = self.cellIdentifiers[indexPath.row];
+	if ([cellIdentifier isEqualToString:@"DatePickerCell"])
+		return 162;
+	else
+		return 41;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -125,35 +125,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	id row = tableView == self.tableView ? self.sections[indexPath.section][@"rows"][indexPath.row] : self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	NCTableViewCell *cell;
 	if ([row isKindOfClass:[EVEDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
-		cell.object = row;
-		return cell;
 	}
 	else {
 		static NSString *CellIdentifier = @"MarketGroupCell";
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		
-		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.titleLabel.text = [row categoryName];
-		else
-			cell.titleLabel.text = [row marketGroupName];
-		
-		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		cell.object = row;
-		return cell;
 	}
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -163,16 +149,24 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	id row = tableView == self.tableView ? self.sections[indexPath.section][@"rows"][indexPath.row] : self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	
+	NCTableViewCell *cell = nil;
+	if ([row isKindOfClass:[EVEDBInvType class]])
+		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"TypeCell"];
+	else
+		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"MarketGroupCell"];
+	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -225,5 +219,27 @@
 							 }];
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	id row = tableView == self.tableView ? self.sections[indexPath.section][@"rows"][indexPath.row] : self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	if ([row isKindOfClass:[EVEDBInvType class]]) {
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.object = row;
+	}
+	else {
+		if ([row isKindOfClass:[EVEDBInvCategory class]])
+			cell.titleLabel.text = [row categoryName];
+		else
+			cell.titleLabel.text = [row marketGroupName];
+		
+		NSString* iconImageName = [row icon].iconImageName;
+		if (iconImageName)
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
+		else
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.object = row;
+	}
+}
 
 @end

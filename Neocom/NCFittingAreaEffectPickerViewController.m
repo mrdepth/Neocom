@@ -145,27 +145,23 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *cellIdentifier = @"Cell";
-	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	
-	EVEDBInvType* row = self.sections[indexPath.section][indexPath.row];
-	cell.titleLabel.text = row.typeName;
-	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
-	cell.object = row;
+	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
@@ -180,6 +176,15 @@
 
 - (id) identifierForSection:(NSInteger)section {
 	return @(section);
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	
+	EVEDBInvType* row = self.sections[indexPath.section][indexPath.row];
+	cell.titleLabel.text = row.typeName;
+	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	cell.object = row;
 }
 
 @end

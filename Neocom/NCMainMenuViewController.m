@@ -168,12 +168,12 @@
 		details = [self valueForKey:detailsKeyPath];
 	if (details) {
 		if (details && [details rangeOfString:@"\n"].location != NSNotFound)
-			return 59;
+			return 56;
 		else
-			return 45;
+			return 42;
 	}
 	else
-		return 41;
+		return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -245,6 +245,8 @@
 			[self.sections addObject:section];
 	}
 	
+	[self update];
+
 	__block EVECharacterSheet* characterSheet;
 	__block EVESkillQueue* skillQueue;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto

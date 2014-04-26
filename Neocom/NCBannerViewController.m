@@ -45,19 +45,22 @@
     [super viewDidLoad];
 	self.bannerView.intrinsicContentSize = CGSizeZero;
 	
-	if (![ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
-		self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 0)];
-		self.gadBannerView.adSize = kGADAdSizeBanner;
-		self.gadBannerView.rootViewController = self;
-		self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
-		self.gadBannerView.delegate = self;
-		
-		GADRequest *request = [GADRequest request];
-		request.testDevices = @[GAD_SIMULATOR_ID];
-		[self.gadBannerView loadRequest:request];
-	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		if (![ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
+			self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 0)];
+			self.gadBannerView.adSize = kGADAdSizeBanner;
+			self.gadBannerView.rootViewController = self;
+			self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
+			self.gadBannerView.delegate = self;
+			
+			GADRequest *request = [GADRequest request];
+			request.testDevices = @[GAD_SIMULATOR_ID];
+			[self.gadBannerView loadRequest:request];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+		}
+	});
 }
 
 - (void)didReceiveMemoryWarning
@@ -134,6 +137,17 @@
 		[self.bannerView invalidateIntrinsicContentSize];
 	}
 	self.gadBannerView = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) applicationDidBecomeActive:(NSNotification*) notification {
+	if (self.gadBannerView.superview && [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
+		[self.gadBannerView removeFromSuperview];
+		self.bannerView.intrinsicContentSize = CGSizeZero;
+		[self.bannerView invalidateIntrinsicContentSize];
+		self.gadBannerView = nil;
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+	}
 }
 
 @end

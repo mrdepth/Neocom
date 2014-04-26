@@ -14,6 +14,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "UIColor+Neocom.h"
 #import "UIActionSheet+Block.h"
+#import "NCSetting.h"
 
 @interface NCDatabaseTypeMarketInfoViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray *sellOrdersSections;
@@ -40,6 +41,7 @@
 @property (nonatomic, strong) NSArray *filteredSellSummary;
 @property (nonatomic, strong) NSArray *filteredBuySummary;
 
+@property (nonatomic, strong) NCSetting* modeSetting;
 @end
 
 @implementation NCDatabaseTypeMarketInfoViewControllerData
@@ -116,12 +118,14 @@
 
 - (void)viewDidLoad
 {
+	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCDatabaseTypeMarketInfoViewController.mode"];
+	if (self.modeSetting.value)
+		self.mode = [self.modeSetting.value integerValue];
+
     [super viewDidLoad];
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
 	self.searchDisplayController.searchResultsTableView.rowHeight = self.tableView.rowHeight;
-
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,6 +149,7 @@
 									 self.mode = NCDatabaseTypeMarketInfoViewControllerModeBuyOrders;
 								 [self update];
 								 [self.searchDisplayController.searchResultsTableView reloadData];
+								 self.modeSetting.value = @(self.mode);
 							 }
 						 }
 							 cancelBlock:nil] showFromRect:[sender bounds] inView:sender animated:YES];

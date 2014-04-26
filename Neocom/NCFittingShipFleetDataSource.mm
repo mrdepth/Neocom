@@ -75,7 +75,6 @@
 		self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
 	self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
-	[self.offscreenCell setNeedsLayout];
 	[self.offscreenCell layoutIfNeeded];
 	return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }

@@ -172,56 +172,28 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"TypeCell"];
 	else
 		cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-
-	NCContractsDetailsViewControllerData* data = self.data;
-
-	if (indexPath.section == 0) {
-		NCContractsDetailsViewControllerDataRow* row = data.rows[indexPath.row];
-		cell.titleLabel.text = row.title;
-		cell.subtitleLabel.text = row.description;
-	}
-	else if (indexPath.section == 1) {
-		EVEContractItemsItem* item = data.items.itemList[indexPath.row];
-		EVEDBInvType* type = self.typesDic[@(item.typeID)];
-		if (!type) {
-			type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-			if (type)
-				self.typesDic[@(item.typeID)] = type;
-		}
-		
-		cell.object = type;
-		if (type) {
-			cell.titleLabel.text = type.typeName;
-			cell.iconView.image = [UIImage imageNamed:type.typeSmallImageName];
-		}
-		else {
-			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown Type %d", nil), item.typeID];
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
-		}
-		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Quantity: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:item.quantity]];
-	}
-	else {
-		NCContractsDetailsViewControllerDataBid* bid = data.bids[indexPath.row];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:bid.bid.amount]];
-		cell.subtitleLabel.text = bid.bidderName;
-	}
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 42;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	NCTableViewCell* cell = nil;
+	if (indexPath.section == 1)
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
+	else
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -323,6 +295,43 @@
 									 [self didFinishLoadData:data withCacheDate:[NSDate date] expireDate:cacheExpireDate];
 								 }
 							 }];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+
+	NCContractsDetailsViewControllerData* data = self.data;
+	
+	if (indexPath.section == 0) {
+		NCContractsDetailsViewControllerDataRow* row = data.rows[indexPath.row];
+		cell.titleLabel.text = row.title;
+		cell.subtitleLabel.text = row.description;
+	}
+	else if (indexPath.section == 1) {
+		EVEContractItemsItem* item = data.items.itemList[indexPath.row];
+		EVEDBInvType* type = self.typesDic[@(item.typeID)];
+		if (!type) {
+			type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			if (type)
+				self.typesDic[@(item.typeID)] = type;
+		}
+		
+		cell.object = type;
+		if (type) {
+			cell.titleLabel.text = type.typeName;
+			cell.iconView.image = [UIImage imageNamed:type.typeSmallImageName];
+		}
+		else {
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown Type %d", nil), item.typeID];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		}
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Quantity: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:item.quantity]];
+	}
+	else {
+		NCContractsDetailsViewControllerDataBid* bid = data.bids[indexPath.row];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:bid.bid.amount]];
+		cell.subtitleLabel.text = bid.bidderName;
+	}
 }
 
 #pragma mark - Private

@@ -214,49 +214,41 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
-	EVEAssetListItem* asset = section.assets[indexPath.row];
-	
 	NCTableViewCell* cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	
-	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
-	
-	cell.titleLabel.text = asset.title;
-	cell.object = asset;
-	
-	if (self.accounts.count > 0)
-		cell.subtitleLabel.text = asset.owner;
-	else
-		cell.subtitleLabel.text = nil;
-	
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		if (asset.parent) {
-			if (asset.owner)
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
-			else
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
-		}
-	}
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
+	EVEAssetListItem* asset = section.assets[indexPath.row];
+	if (self.accounts.count > 1)
+		return 42;
+	else
+		return 37;
+	
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		if (asset.parent) {
+			return 42;
+		}
+	}
+
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -562,6 +554,32 @@
 	NCAssetsViewControllerData* data = self.data;
 	NCAssetsViewControllerDataSection* section = data.sections[sectionIndex];
 	return section.identifier;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
+	EVEAssetListItem* asset = section.assets[indexPath.row];
+	
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	
+	cell.titleLabel.text = asset.title;
+	cell.object = asset;
+	
+	if (self.accounts.count > 1)
+		cell.subtitleLabel.text = asset.owner;
+	else
+		cell.subtitleLabel.text = nil;
+	
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		if (asset.parent) {
+			if (asset.owner)
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
+			else
+				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
+		}
+	}
 }
 
 @end

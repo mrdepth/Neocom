@@ -181,44 +181,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	EVEIndustryJobsItem* row = indexPath.section == 0 ? data.activeJobs[indexPath.row] : data.finishedJobs[indexPath.row];
-	
 	NCIndustryJobsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	
-	if (row.installedItemType) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.installedItemType typeSmallImageName]];
-		cell.titleLabel.text = row.installedItemType.typeName;
-	}
-	else {
-		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.installedItemTypeID];
-	}
-	
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endProductionTime];
-	cell.activityLabel.text = row.activity.activityName;
-	cell.activityImageView.image = row.activity.iconImageName ? [UIImage imageNamed:row.activity.iconImageName] : nil;
-	cell.characterLabel.text = row.installerName;
-	cell.locationLabel.text = row.installedItemLocation.name;
-	
-	NSString* status = [row localizedStateWithCurrentDate:self.currentDate];
-	UIColor* statusColor = nil;
-	if (!row.completed) {
-		statusColor = [UIColor yellowColor];
-	}
-	else {
-		if (row.completedStatus == 1) {
-			statusColor = [UIColor greenColor];
-		}
-		else
-			statusColor = [UIColor redColor];
-	}
-	cell.stateLabel.text = status;
-	cell.stateLabel.textColor = statusColor;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -236,11 +202,12 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 
@@ -379,6 +346,44 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCIndustryJobsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	EVEIndustryJobsItem* row = indexPath.section == 0 ? data.activeJobs[indexPath.row] : data.finishedJobs[indexPath.row];
+	
+	NCIndustryJobsCell* cell = (NCIndustryJobsCell*) tableViewCell;
+	cell.object = row;
+	
+	if (row.installedItemType) {
+		cell.typeImageView.image = [UIImage imageNamed:[row.installedItemType typeSmallImageName]];
+		cell.titleLabel.text = row.installedItemType.typeName;
+	}
+	else {
+		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.installedItemTypeID];
+	}
+	
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endProductionTime];
+	cell.activityLabel.text = row.activity.activityName;
+	cell.activityImageView.image = row.activity.iconImageName ? [UIImage imageNamed:row.activity.iconImageName] : nil;
+	cell.characterLabel.text = row.installerName;
+	cell.locationLabel.text = row.installedItemLocation.name;
+	
+	NSString* status = [row localizedStateWithCurrentDate:self.currentDate];
+	UIColor* statusColor = nil;
+	if (!row.completed) {
+		statusColor = [UIColor yellowColor];
+	}
+	else {
+		if (row.completedStatus == 1) {
+			statusColor = [UIColor greenColor];
+		}
+		else
+			statusColor = [UIColor redColor];
+	}
+	cell.stateLabel.text = status;
+	cell.stateLabel.textColor = statusColor;
 }
 
 @end

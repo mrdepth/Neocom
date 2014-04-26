@@ -114,22 +114,19 @@
 	else
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
 	
+	UITableViewCell* cell = nil;
 	if ([row isKindOfClass:[EVEDBMapRegion class]]) {
-		NCDatabaseSolarSystemPickerRegionCell* cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
+		cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
-		cell.object = row;
-		cell.titleLabel.text = [row regionName];
-		return cell;
 	}
 	else {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
+		cell = [tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
-		cell.object = row;
-		cell.titleLabel.text = [row solarSystemName];
-		return cell;
 	}
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -142,16 +139,28 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	
+	id row;
+	if (tableView == self.tableView)
+		row = self.rows[indexPath.row];
+	else
+		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	
+	UITableViewCell* cell = nil;
+	if ([row isKindOfClass:[EVEDBMapRegion class]])
+		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"RegionCell"];
+	else
+		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"SolarSystemCell"];
+	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -209,6 +218,25 @@
 									 [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	id row;
+	if (tableView == self.tableView)
+		row = self.rows[indexPath.row];
+	else
+		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	
+	if ([row isKindOfClass:[EVEDBMapRegion class]]) {
+		NCDatabaseSolarSystemPickerRegionCell* cell = (NCDatabaseSolarSystemPickerRegionCell*) tableViewCell;
+		cell.object = row;
+		cell.titleLabel.text = [row regionName];
+	}
+	else {
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		cell.object = row;
+		cell.titleLabel.text = [row solarSystemName];
+	}
 }
 
 @end

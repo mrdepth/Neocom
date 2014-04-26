@@ -136,41 +136,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCWalletJournalViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	NCWalletJournalViewControllerDataAccount* account = data.accounts[indexPath.section];
-	NCWalletJournalViewControllerDataRow* row = account.items[indexPath.row];
-	
 	NCWalletJournalCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	
-	cell.titleLabel.text = row.refType ? row.refType.refTypeName : [NSString stringWithFormat:NSLocalizedString(@"Unknown refTypeID %d", nil), [row.item refTypeID]];
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.item date]];
-
-	
-	cell.balanceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Balance: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([row.item balance])]];
-	
-	float amount = [row.item amount];
-	float taxAmount = 0;
-	if ([row.item isKindOfClass:[EVECharWalletTransactionsItem class]])
-		taxAmount = [row.item taxAmount];
-	
-	//cell.amountLabel.text = [NSString shortStringWithFloat:amount + taxAmount unit:@"ISK"];
-	cell.amountLabel.textColor = amount > 0 ? [UIColor greenColor] : [UIColor redColor];
-	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(amount + taxAmount)]];
-	
-	if (taxAmount > 0)
-		cell.taxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tax: -%@ ISK (%d%%)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(taxAmount)], (int32_t)(taxAmount / (taxAmount + amount) * 100)];
-	else
-		cell.taxLabel.text = nil;
-	
-	NSString* ownerName1 = [row.item ownerName1];
-	NSString* ownerName2 = [row.item ownerName2];
-	if (ownerName1.length > 0 && ownerName2.length > 0)
-		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", ownerName1, ownerName2];
-	else
-		cell.characterNameLabel.text = ownerName1;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -185,9 +154,10 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -321,6 +291,42 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCWalletJournalViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCWalletJournalViewControllerDataAccount* account = data.accounts[indexPath.section];
+	NCWalletJournalViewControllerDataRow* row = account.items[indexPath.row];
+	
+	NCWalletJournalCell* cell = (NCWalletJournalCell*) tableViewCell;
+	cell.object = row;
+	
+	cell.titleLabel.text = row.refType ? row.refType.refTypeName : [NSString stringWithFormat:NSLocalizedString(@"Unknown refTypeID %d", nil), [row.item refTypeID]];
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.item date]];
+	
+	
+	cell.balanceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Balance: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([row.item balance])]];
+	
+	float amount = [row.item amount];
+	float taxAmount = 0;
+	if ([row.item isKindOfClass:[EVECharWalletTransactionsItem class]])
+		taxAmount = [row.item taxAmount];
+	
+	//cell.amountLabel.text = [NSString shortStringWithFloat:amount + taxAmount unit:@"ISK"];
+	cell.amountLabel.textColor = amount > 0 ? [UIColor greenColor] : [UIColor redColor];
+	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(amount + taxAmount)]];
+	
+	if (taxAmount > 0)
+		cell.taxLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Tax: -%@ ISK (%d%%)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(taxAmount)], (int32_t)(taxAmount / (taxAmount + amount) * 100)];
+	else
+		cell.taxLabel.text = nil;
+	
+	NSString* ownerName1 = [row.item ownerName1];
+	NSString* ownerName2 = [row.item ownerName2];
+	if (ownerName1.length > 0 && ownerName2.length > 0)
+		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", ownerName1, ownerName2];
+	else
+		cell.characterNameLabel.text = ownerName1;
 }
 
 @end

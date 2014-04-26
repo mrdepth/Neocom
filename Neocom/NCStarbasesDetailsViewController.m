@@ -157,17 +157,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCStarbasesDetailsViewControllerDataSection* section = self.sections[indexPath.section];
-	NCStarbasesDetailsViewControllerDataRow* row = section.rows[indexPath.row];
-	
 	NCTableViewCell* cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	
-	cell.iconView.image = [UIImage imageNamed:row.resource.resourceType.typeSmallImageName];
-	cell.titleLabel.text = row.resource.resourceType.typeName;
-	
-	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];
-	cell.detailTextLabel.textColor = row.color;
-	cell.object = row.resource.resourceType;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -181,9 +172,10 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -192,6 +184,20 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCStarbasesDetailsViewControllerDataSection* section = self.sections[indexPath.section];
+	NCStarbasesDetailsViewControllerDataRow* row = section.rows[indexPath.row];
+	
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	
+	cell.iconView.image = [UIImage imageNamed:row.resource.resourceType.typeSmallImageName];
+	cell.titleLabel.text = row.resource.resourceType.typeName;
+	
+	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];
+	cell.detailTextLabel.textColor = row.color;
+	cell.object = row.resource.resourceType;
 }
 
 @end

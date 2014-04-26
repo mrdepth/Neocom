@@ -70,27 +70,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *cellIdentifier = @"Cell";
-	
-	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (indexPath.section == 0) {
-		cell.accessoryView = nil;
-		if (!self.type) {
-			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
-		}
-		else {
-			cell.titleLabel.text = self.type.typeName;
-			cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
-		}
-	}
-	else {
-		NSArray* tags = self.data;
-		NSString *tag = [tags objectAtIndex:indexPath.row];
-		cell.titleLabel.text = tag;
-		cell.imageView.image = nil;
-		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
-	}
+	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -104,7 +85,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,14 +93,15 @@
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
 	if (indexPath.section == 0) {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+		
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
 		[cell layoutIfNeeded];
 		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 	}
 	else {
-		return 41;
+		return 37;
 	}
 }
 
@@ -181,6 +163,28 @@
 
 - (NSString*) recordID {
 	return NSStringFromClass(self.class);
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+    if (indexPath.section == 0) {
+		cell.accessoryView = nil;
+		if (!self.type) {
+			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+		}
+		else {
+			cell.titleLabel.text = self.type.typeName;
+			cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
+		}
+	}
+	else {
+		NSArray* tags = self.data;
+		NSString *tag = [tags objectAtIndex:indexPath.row];
+		cell.titleLabel.text = tag;
+		cell.imageView.image = nil;
+		cell.accessoryView = [self.selectedTags containsObject:tag] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	}
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {

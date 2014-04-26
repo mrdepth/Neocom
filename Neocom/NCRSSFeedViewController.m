@@ -110,26 +110,21 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCRSSFeedViewControllerData* data = self.data;
-	RSSItem* item = data.feed.items[indexPath.row];
 	NCRSSFeedCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = item;
-	cell.titleLabel.text = item.plainTitle;
-	cell.dateLabel.text = item.updatedDateString;
-	cell.rssItemText.text = item.shortDescription;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 62;
+	return 57;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -176,6 +171,16 @@
 									 }
 								 }
 							 }];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCRSSFeedViewControllerData* data = self.data;
+	RSSItem* item = data.feed.items[indexPath.row];
+	NCRSSFeedCell* cell = (NCRSSFeedCell*) tableViewCell;
+	cell.object = item;
+	cell.titleLabel.text = item.plainTitle;
+	cell.dateLabel.text = item.updatedDateString;
+	cell.rssItemText.text = item.shortDescription;
 }
 
 @end

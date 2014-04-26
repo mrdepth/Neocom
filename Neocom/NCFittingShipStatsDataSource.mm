@@ -476,7 +476,6 @@
 	
 	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	
 	height = @([cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5);

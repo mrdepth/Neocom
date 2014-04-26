@@ -10,6 +10,7 @@
 #import "UIViewController+Neocom.h"
 #import "EVEDBAPI.h"
 #import <objc/runtime.h>
+#import "NSString+MD5.h"
 
 @interface EVEDBInvMarketGroup (NCDatabaseTypePickerViewController)
 @property (nonatomic, strong, readonly) NSMutableArray* subgroups;
@@ -33,6 +34,7 @@
 @property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
 @property (nonatomic, strong) NSArray* groups;
 @property (nonatomic, strong) NSSet* conditionsTables;
+@property (nonatomic, strong) NSMutableDictionary* cache;
 
 @end
 
@@ -49,10 +51,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.cache = [NSMutableDictionary new];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+	@synchronized(self) {
+		[self.cache removeAllObjects];
+	}
     // Dispose of any resources that can be recreated.
 }
 
@@ -132,54 +138,63 @@
 							 (SELECT invTypes.marketGroupID FROM %@ WHERE %@ GROUP BY invTypes.marketGroupID)",
 							 [[allTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
 		
-		NSMutableDictionary* marketGroupsMap = [NSMutableDictionary new];
-		NSMutableArray* parentGroupIDs = [NSMutableArray new];
-		NSMutableArray* lastGroups = [NSMutableArray new];
+		id key = [request md5];
+		@synchronized(self) {
+			_groups = self.cache[key];
+		}
 
-		EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-		[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-			EVEDBInvMarketGroup* marketGroup = [[EVEDBInvMarketGroup alloc] initWithStatement:stmt];
-			marketGroupsMap[@(marketGroup.marketGroupID)] = marketGroup;
-			if (marketGroup.parentGroupID)
-				[parentGroupIDs addObject:[NSString stringWithFormat:@"%d", marketGroup.parentGroupID]];
-		}];
-		
-		while (parentGroupIDs.count > 0) {
-			request = [NSString stringWithFormat:@"SELECT * FROM invMarketGroups WHERE marketGroupID IN (%@) GROUP BY marketGroupID", [parentGroupIDs componentsJoinedByString:@","]];
-			[parentGroupIDs removeAllObjects];
+		if (!_groups) {
+			NSMutableDictionary* marketGroupsMap = [NSMutableDictionary new];
+			NSMutableArray* parentGroupIDs = [NSMutableArray new];
+			NSMutableArray* lastGroups = [NSMutableArray new];
 			
+			EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
 			[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 				EVEDBInvMarketGroup* marketGroup = [[EVEDBInvMarketGroup alloc] initWithStatement:stmt];
 				marketGroupsMap[@(marketGroup.marketGroupID)] = marketGroup;
-				
-				if (marketGroup.parentGroupID && !marketGroupsMap[@(marketGroup.parentGroupID)])
+				if (marketGroup.parentGroupID)
 					[parentGroupIDs addObject:[NSString stringWithFormat:@"%d", marketGroup.parentGroupID]];
 			}];
-		}
-		
-		[marketGroupsMap enumerateKeysAndObjectsUsingBlock:^(id key, EVEDBInvMarketGroup* marketGroup, BOOL *stop) {
-			if (marketGroup.parentGroupID) {
-				EVEDBInvMarketGroup* parentGroup = marketGroupsMap[@(marketGroup.parentGroupID)];
-				[parentGroup.subgroups addObject:marketGroup];
+			
+			while (parentGroupIDs.count > 0) {
+				request = [NSString stringWithFormat:@"SELECT * FROM invMarketGroups WHERE marketGroupID IN (%@) GROUP BY marketGroupID", [parentGroupIDs componentsJoinedByString:@","]];
+				[parentGroupIDs removeAllObjects];
+				
+				[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+					EVEDBInvMarketGroup* marketGroup = [[EVEDBInvMarketGroup alloc] initWithStatement:stmt];
+					marketGroupsMap[@(marketGroup.marketGroupID)] = marketGroup;
+					
+					if (marketGroup.parentGroupID && !marketGroupsMap[@(marketGroup.parentGroupID)])
+						[parentGroupIDs addObject:[NSString stringWithFormat:@"%d", marketGroup.parentGroupID]];
+				}];
 			}
-			else
-				[lastGroups addObject:marketGroup];
-		}];
-		
-		while(lastGroups.count == 1) {
-			EVEDBInvMarketGroup* parentGroup = lastGroups[0];
-			if (parentGroup.subgroups.count == 0)
-				break;
-			lastGroups = parentGroup.subgroups;
+			
+			[marketGroupsMap enumerateKeysAndObjectsUsingBlock:^(id key, EVEDBInvMarketGroup* marketGroup, BOOL *stop) {
+				if (marketGroup.parentGroupID) {
+					EVEDBInvMarketGroup* parentGroup = marketGroupsMap[@(marketGroup.parentGroupID)];
+					[parentGroup.subgroups addObject:marketGroup];
+				}
+				else
+					[lastGroups addObject:marketGroup];
+			}];
+			
+			while(lastGroups.count == 1) {
+				EVEDBInvMarketGroup* parentGroup = lastGroups[0];
+				if (parentGroup.subgroups.count == 0)
+					break;
+				lastGroups = parentGroup.subgroups;
+			}
+			_groups = lastGroups;
+			
+			[marketGroupsMap enumerateKeysAndObjectsUsingBlock:^(id key, EVEDBInvMarketGroup* marketGroup, BOOL *stop) {
+				[marketGroup.subgroups sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]]];
+			}];
+			[lastGroups sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]]];
+			
+			@synchronized(self) {
+				_cache[key] = _groups;
+			}
 		}
-		_groups = lastGroups;
-		
-		[marketGroupsMap enumerateKeysAndObjectsUsingBlock:^(id key, EVEDBInvMarketGroup* marketGroup, BOOL *stop) {
-			[marketGroup.subgroups sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]]];
-		}];
-		[lastGroups sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"marketGroupName" ascending:YES]]];
-		
-		
 	}
 	return _groups;
 }

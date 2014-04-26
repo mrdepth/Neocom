@@ -329,8 +329,8 @@
 		
 		[self.managedObjectContext performBlockAndWait:^{
 			self.readedMessagesIDs = set;
-			if ([self.managedObjectContext hasChanges])
-				[self.managedObjectContext save:nil];
+//			if ([self.managedObjectContext hasChanges])
+//				[self.managedObjectContext save:nil];
 		}];
 		[self performSelectorOnMainThread:@selector(updateNumberOfUnreadMessages) withObject:nil waitUntilDone:NO];
 	}

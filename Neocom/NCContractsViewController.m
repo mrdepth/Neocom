@@ -157,43 +157,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCContractsViewControllerData* data = self.data;
-	EVEContractsItem* row = indexPath.section == 0 ? data.activeContracts[indexPath.row] : data.finishedContracts[indexPath.row];
 	NCContractsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-
-	cell.object = row;
-	cell.titleLabel.text = row.title;
-	cell.typeLabel.text = [row localizedTypeString];
-	cell.locationLabel.text = row.startStation.name;
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.price)]];
-	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.buyout)]];
-	cell.issuerLabel.text = row.issuerName;
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.dateIssued];
-	
-	UIColor* color = nil;
-	NSString* status = nil;
-	if (row.status <= EVEContractStatusCompletedByContractor) {
-		status = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), [row localizedStatusString], [self.dateFormatter stringFromDate:row.dateCompleted]];
-		color = [UIColor greenColor];
-	}
-	else if (row.status >= EVEContractStatusCancelled) {
-		status = [row localizedStatusString];
-		color = [UIColor redColor];
-	}
-	else {
-		NSTimeInterval remainsTime = [row.dateExpired timeIntervalSinceDate:self.currentDate];
-		if (remainsTime > 0) {
-			status = [NSString stringWithFormat:@"%@: %@", [row localizedStatusString], [NSString stringWithTimeLeft:remainsTime]];
-			color = [UIColor yellowColor];
-		}
-		else {
-			status = [row localizedStatusString];
-			color = [UIColor greenColor];
-		}
-	}
-	cell.statusLabel.text = status;
-	cell.statusLabel.textColor = color;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -205,12 +170,14 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
+
 
 
 #pragma mark - NCTableViewController
@@ -328,6 +295,45 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCContractsViewControllerData* data = self.data;
+	EVEContractsItem* row = indexPath.section == 0 ? data.activeContracts[indexPath.row] : data.finishedContracts[indexPath.row];
+	NCContractsCell* cell = (NCContractsCell*) tableViewCell;
+	
+	cell.object = row;
+	cell.titleLabel.text = row.title;
+	cell.typeLabel.text = [row localizedTypeString];
+	cell.locationLabel.text = row.startStation.name;
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.price)]];
+	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.buyout)]];
+	cell.issuerLabel.text = row.issuerName;
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.dateIssued];
+	
+	UIColor* color = nil;
+	NSString* status = nil;
+	if (row.status <= EVEContractStatusCompletedByContractor) {
+		status = [NSString stringWithFormat:NSLocalizedString(@"%@: %@", nil), [row localizedStatusString], [self.dateFormatter stringFromDate:row.dateCompleted]];
+		color = [UIColor greenColor];
+	}
+	else if (row.status >= EVEContractStatusCancelled) {
+		status = [row localizedStatusString];
+		color = [UIColor redColor];
+	}
+	else {
+		NSTimeInterval remainsTime = [row.dateExpired timeIntervalSinceDate:self.currentDate];
+		if (remainsTime > 0) {
+			status = [NSString stringWithFormat:@"%@: %@", [row localizedStatusString], [NSString stringWithTimeLeft:remainsTime]];
+			color = [UIColor yellowColor];
+		}
+		else {
+			status = [row localizedStatusString];
+			color = [UIColor greenColor];
+		}
+	}
+	cell.statusLabel.text = status;
+	cell.statusLabel.textColor = color;
 }
 
 @end

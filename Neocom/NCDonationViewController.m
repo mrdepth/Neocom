@@ -138,9 +138,9 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 91 : 111;
+		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 86 : 104;
 	else
-		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 110 : 150;
+		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 104 : 140;
 }
 
 #pragma mark SKPaymentTransactionObserver

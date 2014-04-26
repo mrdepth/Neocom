@@ -79,52 +79,43 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NCTableViewCell *cell;
 	if ([row isKindOfClass:[EVEDBCertCertificate class]]) {
 		static NSString *CellIdentifier = @"CertificateCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.titleLabel.text = [row name];
-		int32_t level = [objc_getAssociatedObject(row, @"masteryLevel") intValue];
-		cell.iconView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
-		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
-		if (trainingTime > 0)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
-		else
-			cell.subtitleLabel.text = nil;
-		cell.object = row;
-		return cell;
 	}
 	else {
 		static NSString *CellIdentifier = @"GroupCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		
 		cell.titleLabel.text = [row groupName];
-		
-		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		
-		cell.object = row;
-		return cell;
 	}
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	UITableViewCell *cell;
+	if ([row isKindOfClass:[EVEDBCertCertificate class]])
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"CertificateCell"];
+	else
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"GroupCell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
@@ -145,6 +136,33 @@
 
 - (void) didChangeStorage {
 	[self reload];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	if ([row isKindOfClass:[EVEDBCertCertificate class]]) {
+		cell.titleLabel.text = [row name];
+		int32_t level = [objc_getAssociatedObject(row, @"masteryLevel") intValue];
+		cell.iconView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
+		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
+		if (trainingTime > 0)
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
+		else
+			cell.subtitleLabel.text = nil;
+		cell.object = row;
+	}
+	else {
+		cell.titleLabel.text = [row groupName];
+		
+		NSString* iconImageName = [row icon].iconImageName;
+		if (iconImageName)
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
+		else
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		
+		cell.object = row;
+	}
 }
 
 #pragma mark - Private

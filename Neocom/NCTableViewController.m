@@ -313,7 +313,7 @@
 - (id) tableView:(UITableView *)tableView offscreenCellWithIdentifier:(NSString*) identifier {
 	id cell = self.offscreenCells[identifier];
 	if (!cell)
-		self.offscreenCells[identifier] = cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+		self.offscreenCells[identifier] = cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
 	return cell;
 }
 

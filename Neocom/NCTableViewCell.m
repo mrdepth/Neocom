@@ -105,7 +105,7 @@
 	self.titleLabel.backgroundColor = [UIColor clearColor];
 	self.subtitleLabel.backgroundColor = [UIColor clearColor];
 	
-	self.titleLabel.font = [UIFont systemFontOfSize:17];
+	self.titleLabel.font = [UIFont systemFontOfSize:15];
 	self.titleLabel.textColor = [UIColor whiteColor];
 	self.subtitleLabel.font = [UIFont systemFontOfSize:12];
 	self.subtitleLabel.textColor = [UIColor lightTextColor];
@@ -165,7 +165,7 @@
 																metrics:nil
 																  views:bindings]];
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=4)-[iconView]-(>=4)-|"
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=2)-[iconView]-(>=2)-|"
 																			 options:0
 																			 metrics:nil
 																			   views:bindings]];
@@ -176,7 +176,7 @@
 	[titleLabel setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];
 	[subtitleLabel setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-4-[titleLabel]-0-[subtitleLabel]-4-|"
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-2-[titleLabel]-0-[subtitleLabel]-2-|"
 																			 options:0
 																			 metrics:nil
 																			   views:bindings]];

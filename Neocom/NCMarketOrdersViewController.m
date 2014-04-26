@@ -167,88 +167,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCMarketOrdersViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	NCMarketOrdersViewControllerDataRow* row = indexPath.section == 0 ? data.openOrders[indexPath.row] : data.closedOrders[indexPath.row];
-	
 	NCMarketOrdersCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	
-	if (row.type) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-		cell.titleLabel.text = row.type.typeName;
-	}
-	else {
-		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.marketOrder.typeID];
-	}
-	
-	NSString* state = nil;
-	UIColor* stateColor;
-	switch (row.marketOrder.orderState) {
-		case EVEOrderStateOpen:
-			state = NSLocalizedString(@"Open", nil);
-			stateColor = [UIColor greenColor];
-			break;
-		case EVEOrderStateCancelled:
-			state = NSLocalizedString(@"Cancelled", nil);
-			stateColor = [UIColor redColor];
-			break;
-		case EVEOrderStateCharacterDeleted:
-			state = NSLocalizedString(@"Deleted", nil);
-			stateColor = [UIColor redColor];
-			break;
-		case EVEOrderStateClosed:
-			state = NSLocalizedString(@"Closed", nil);
-			stateColor = [UIColor redColor];
-			break;
-		case EVEOrderStateExpired:
-			if (row.marketOrder.duration > 1) {
-				state = NSLocalizedString(@"Expired", nil);
-				stateColor = [UIColor redColor];
-			}
-			else {
-				state = NSLocalizedString(@"Fulfilled", nil);
-				stateColor = [UIColor greenColor];
-			}
-			break;
-		case EVEOrderStatePending:
-			state = NSLocalizedString(@"Pending", nil);
-			stateColor = [UIColor yellowColor];
-			break;
-		default:
-			break;
-	}
-	
-	cell.stateLabel.text = state;
-	cell.stateLabel.textColor = stateColor;
-	
-	NSTimeInterval expireInTime = [row.expireDate timeIntervalSinceDate:self.currentDate];
-	
-	if (expireInTime > 0)
-		cell.expireLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Expired in %@", nil), [NSString stringWithTimeLeft:expireInTime componentsLimit:2]];
-	else
-		cell.expireLabel.text = NSLocalizedString(@"Expired", nil);
-
-	if (row.location.name)
-		cell.locationLabel.text = row.location.name;
-	else if (row.location.solarSystem)
-		cell.locationLabel.text = row.location.solarSystem.solarSystemName;
-	else
-		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
-	
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.marketOrder.price)]];
-	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@ / %@", nil),
-							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volEntered],
-							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volRemaining]];
-	
-	if (row.characterName)
-		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];
-	else
-		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued]];
-
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -263,9 +185,10 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -382,6 +305,87 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCMarketOrdersViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCMarketOrdersViewControllerDataRow* row = indexPath.section == 0 ? data.openOrders[indexPath.row] : data.closedOrders[indexPath.row];
+	
+	NCMarketOrdersCell* cell = (NCMarketOrdersCell*) tableViewCell;
+	cell.object = row;
+	
+	if (row.type) {
+		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		cell.titleLabel.text = row.type.typeName;
+	}
+	else {
+		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.marketOrder.typeID];
+	}
+	
+	NSString* state = nil;
+	UIColor* stateColor;
+	switch (row.marketOrder.orderState) {
+		case EVEOrderStateOpen:
+			state = NSLocalizedString(@"Open", nil);
+			stateColor = [UIColor greenColor];
+			break;
+		case EVEOrderStateCancelled:
+			state = NSLocalizedString(@"Cancelled", nil);
+			stateColor = [UIColor redColor];
+			break;
+		case EVEOrderStateCharacterDeleted:
+			state = NSLocalizedString(@"Deleted", nil);
+			stateColor = [UIColor redColor];
+			break;
+		case EVEOrderStateClosed:
+			state = NSLocalizedString(@"Closed", nil);
+			stateColor = [UIColor redColor];
+			break;
+		case EVEOrderStateExpired:
+			if (row.marketOrder.duration > 1) {
+				state = NSLocalizedString(@"Expired", nil);
+				stateColor = [UIColor redColor];
+			}
+			else {
+				state = NSLocalizedString(@"Fulfilled", nil);
+				stateColor = [UIColor greenColor];
+			}
+			break;
+		case EVEOrderStatePending:
+			state = NSLocalizedString(@"Pending", nil);
+			stateColor = [UIColor yellowColor];
+			break;
+		default:
+			break;
+	}
+	
+	cell.stateLabel.text = state;
+	cell.stateLabel.textColor = stateColor;
+	
+	NSTimeInterval expireInTime = [row.expireDate timeIntervalSinceDate:self.currentDate];
+	
+	if (expireInTime > 0)
+		cell.expireLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Expired in %@", nil), [NSString stringWithTimeLeft:expireInTime componentsLimit:2]];
+	else
+		cell.expireLabel.text = NSLocalizedString(@"Expired", nil);
+	
+	if (row.location.name)
+		cell.locationLabel.text = row.location.name;
+	else if (row.location.solarSystem)
+		cell.locationLabel.text = row.location.solarSystem.solarSystemName;
+	else
+		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
+	
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.marketOrder.price)]];
+	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@ / %@", nil),
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volEntered],
+							   [NSNumberFormatter neocomLocalizedStringFromInteger:row.marketOrder.volRemaining]];
+	
+	if (row.characterName)
+		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@ by %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued], row.characterName];
+	else
+		cell.issuedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Issued %@", nil), [self.dateFormatter stringFromDate:row.marketOrder.issued]];
 }
 
 @end

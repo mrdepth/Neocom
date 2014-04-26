@@ -177,26 +177,67 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.segmentedControl.selectedSegmentIndex == 0) {
+		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+		return cell;
+	}
+	else {
+		NCKillMailDetailsAttackerCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCKillMailDetailsAttackerCell"];
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+		return cell;
+	}
+}
+
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return self.segmentedControl.selectedSegmentIndex == 0 ? 42 : 105;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+	
+	UITableViewCell* cell;
+	
+	if (self.segmentedControl.selectedSegmentIndex == 0)
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	else
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCKillMailDetailsAttackerCell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
+	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+	[cell layoutIfNeeded];
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	if (self.segmentedControl.selectedSegmentIndex == 0) {
 		NCKillMailDetailsViewControllerSection* section = self.items[indexPath.section];
 		NCKillMailItem* row = section.rows[indexPath.row];
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 		cell.object = row.type;
-		cell.imageView.image = [UIImage imageNamed:row.type.typeSmallImageName];
-		cell.textLabel.text = row.type.typeName;
+		cell.iconView.image = [UIImage imageNamed:row.type.typeSmallImageName];
+		cell.titleLabel.text = row.type.typeName;
 		if (row.destroyed) {
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
-			cell.textLabel.textColor = [UIColor redColor];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
+			cell.titleLabel.textColor = [UIColor redColor];
 		}
 		else {
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ dropped", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
-			cell.textLabel.textColor = [UIColor greenColor];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ dropped", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
+			cell.titleLabel.textColor = [UIColor greenColor];
 		}
-		return cell;
 	}
 	else {
 		NCKillMailDetailsViewControllerSection* section = self.attackers[indexPath.section];
 		NCKillMailAttacker* row = section.rows[indexPath.row];
-		NCKillMailDetailsAttackerCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCKillMailDetailsAttackerCell"];
+		NCKillMailDetailsAttackerCell* cell = (NCKillMailDetailsAttackerCell*) tableViewCell;
 		cell.object = row;
 		
 		cell.characterNameLabel.text = row.characterName;
@@ -227,33 +268,7 @@
 			cell.weaponTypeImageView.image = nil;
 			cell.damageDoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ damage done", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.damageDone]];
 		}
-		
-		
-		return cell;
 	}
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.segmentedControl.selectedSegmentIndex == 0 ? 44 : 109;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.segmentedControl.selectedSegmentIndex == 0)
-		return 44;
-	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
 }
 
 @end

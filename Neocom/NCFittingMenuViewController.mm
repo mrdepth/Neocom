@@ -88,10 +88,7 @@
 	}
 	else {
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		cell.titleLabel.text = loadout.type.typeName;
-		cell.subtitleLabel.text = loadout.name;
-		cell.iconView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
 }
@@ -135,7 +132,10 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	if (indexPath.section == 0)
+		return 37;
+	else
+		return 42;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -143,11 +143,10 @@
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
 	if (indexPath.section == 0)
-		return 41;
+		return 37;
 	else {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+		UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
 		[cell layoutIfNeeded];
 		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 	}
@@ -225,6 +224,15 @@
 - (NSString*) recordID {
 	return nil;
 }
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
+	cell.titleLabel.text = loadout.type.typeName;
+	cell.subtitleLabel.text = loadout.name;
+	cell.iconView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
+}
+
 
 #pragma mark - Private
 

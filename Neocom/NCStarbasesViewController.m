@@ -164,127 +164,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCStarbasesViewControllerData* data = self.data;
-	NCStarbasesViewControllerDataSection* section = data.sections[indexPath.section];
-	EVEStarbaseListItem* row = section.starbases[indexPath.row];
-	
 	NCStarbasesCell* cell = (NCStarbasesCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	cell.typeImageView.image = [UIImage imageNamed:row.type.typeSmallImageName];
-	cell.titleLabel.text = row.title;
-	
-
-	NSString* location = nil;
-	if (row.moon && row.solarSystem)
-		location = [NSString stringWithFormat:@"%@ / %@", row.solarSystem.solarSystemName, row.moon.itemName];
-	else if (row.moon)
-		location = [NSString stringWithFormat:@"%@ / %@", row.moon.solarSystem.solarSystemName, row.moon.itemName];
-	else if (row.solarSystem)
-		location = row.solarSystem.solarSystemName;
-	
-	float security = 1.0;
-	if (location) {
-		if (row.solarSystem)
-			security = row.solarSystem.security;
-		else if (row.moon)
-			security = row.moon.security;
-
-		NSString* ss = [NSString stringWithFormat:@"%.1f", security];
-		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, location];
-		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
-		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:security] range:NSMakeRange(0, ss.length)];
-		cell.locationLabel.attributedText = title;
-	}
-	else {
-		cell.locationLabel.attributedText = nil;
-		cell.locationLabel.text = NSLocalizedString(@"Unknown Location", nil);
-	}
-	
-	
-	NSString* state = nil;
-	UIColor* color = nil;
-	switch (row.state) {
-		case EVEPOSStateUnanchored:
-			state = NSLocalizedString(@"Unanchored", nil);
-			color = [UIColor yellowColor];
-			break;
-		case EVEPOSStateAnchoredOffline:
-			state = NSLocalizedString(@"Anchored / Offline", nil);
-			color = [UIColor redColor];
-			break;
-		case EVEPOSStateOnlining: {
-			NSTimeInterval remains = [row.onlineTimestamp timeIntervalSinceDate:self.currentDate];
-			state = [NSString stringWithFormat:NSLocalizedString(@"Onlining: %@ remains", nil), [NSString stringWithTimeLeft:remains]];
-			color = [UIColor yellowColor];
-			break;
-		}
-		case EVEPOSStateReinforced: {
-			NSTimeInterval remains = [row.stateTimestamp timeIntervalSinceDate:self.currentDate];
-			state = [NSString stringWithFormat:NSLocalizedString(@"Reinforced: %@ remains", nil), [NSString stringWithTimeLeft:remains]];
-			color = [UIColor redColor];
-			break;
-		}
-		case EVEPOSStateOnline:
-			state = [NSString stringWithFormat:NSLocalizedString(@"Online since %@", nil), [self.dateFormatter stringFromDate:row.onlineTimestamp]];
-			color = [UIColor greenColor];
-			break;
-		default:
-			break;
-	}
-	cell.stateLabel.text = state;
-	cell.stateLabel.textColor = color;
-	
-	float hours = [[row.details serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:row.details.currentTime] / 3600.0;
-	if (hours < 0)
-		hours = 0;
-	float bonus = row.resourceConsumptionBonus;
-
-	int minRemains = INT_MAX;
-	int minQuantity = 0;
-	EVEDBInvControlTowerResource *minResource = nil;
-
-	for (EVEDBInvControlTowerResource *resource in [row.type resources]) {
-		if (resource.purposeID != 1 ||
-			(resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
-			(resource.factionID > 0 && row.solarSystem.region.factionID != resource.factionID))
-			continue;
-		
-		int quantity = 0;
-		for (EVEStarbaseDetailFuelItem *item in row.details.fuel) {
-			if (item.typeID == resource.resourceTypeID) {
-				quantity = item.quantity - hours * round(resource.quantity * bonus);
-				break;
-			}
-		}
-		int remains = quantity / round(resource.quantity * bonus) * 3600;
-		if (remains < minRemains) {
-			minResource = resource;
-			minRemains = remains;
-			minQuantity = quantity;
-		}
-	}
-
-	if (minQuantity > 0) {
-		if (minRemains > 3600 * 24)
-			color = [UIColor greenColor];
-		else if (minRemains > 3600)
-			color = [UIColor yellowColor];
-		else
-			color = [UIColor redColor];
-		state = [NSString stringWithTimeLeft:minRemains];
-	}
-	else {
-		color = [UIColor redColor];
-		state = @"0s";
-	}
-	
-	if (minResource)
-		cell.resourceTypeImageView.image = [UIImage imageNamed:minResource.resourceType.typeSmallImageName];
-	else
-		cell.resourceTypeImageView.image = nil;
-	cell.fuelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Fuel: %@", nil), state];
-	cell.fuelLabel.textColor = color;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -298,9 +179,10 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -420,6 +302,128 @@
 		[self reloadFromCache];
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCStarbasesViewControllerData* data = self.data;
+	NCStarbasesViewControllerDataSection* section = data.sections[indexPath.section];
+	EVEStarbaseListItem* row = section.starbases[indexPath.row];
+	
+	NCStarbasesCell* cell = (NCStarbasesCell*) tableViewCell;
+	cell.object = row;
+	cell.typeImageView.image = [UIImage imageNamed:row.type.typeSmallImageName];
+	cell.titleLabel.text = row.title;
+	
+	
+	NSString* location = nil;
+	if (row.moon && row.solarSystem)
+		location = [NSString stringWithFormat:@"%@ / %@", row.solarSystem.solarSystemName, row.moon.itemName];
+	else if (row.moon)
+		location = [NSString stringWithFormat:@"%@ / %@", row.moon.solarSystem.solarSystemName, row.moon.itemName];
+	else if (row.solarSystem)
+		location = row.solarSystem.solarSystemName;
+	
+	float security = 1.0;
+	if (location) {
+		if (row.solarSystem)
+			security = row.solarSystem.security;
+		else if (row.moon)
+			security = row.moon.security;
+		
+		NSString* ss = [NSString stringWithFormat:@"%.1f", security];
+		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, location];
+		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
+		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:security] range:NSMakeRange(0, ss.length)];
+		cell.locationLabel.attributedText = title;
+	}
+	else {
+		cell.locationLabel.attributedText = nil;
+		cell.locationLabel.text = NSLocalizedString(@"Unknown Location", nil);
+	}
+	
+	
+	NSString* state = nil;
+	UIColor* color = nil;
+	switch (row.state) {
+		case EVEPOSStateUnanchored:
+			state = NSLocalizedString(@"Unanchored", nil);
+			color = [UIColor yellowColor];
+			break;
+		case EVEPOSStateAnchoredOffline:
+			state = NSLocalizedString(@"Anchored / Offline", nil);
+			color = [UIColor redColor];
+			break;
+		case EVEPOSStateOnlining: {
+			NSTimeInterval remains = [row.onlineTimestamp timeIntervalSinceDate:self.currentDate];
+			state = [NSString stringWithFormat:NSLocalizedString(@"Onlining: %@ remains", nil), [NSString stringWithTimeLeft:remains]];
+			color = [UIColor yellowColor];
+			break;
+		}
+		case EVEPOSStateReinforced: {
+			NSTimeInterval remains = [row.stateTimestamp timeIntervalSinceDate:self.currentDate];
+			state = [NSString stringWithFormat:NSLocalizedString(@"Reinforced: %@ remains", nil), [NSString stringWithTimeLeft:remains]];
+			color = [UIColor redColor];
+			break;
+		}
+		case EVEPOSStateOnline:
+			state = [NSString stringWithFormat:NSLocalizedString(@"Online since %@", nil), [self.dateFormatter stringFromDate:row.onlineTimestamp]];
+			color = [UIColor greenColor];
+			break;
+		default:
+			break;
+	}
+	cell.stateLabel.text = state;
+	cell.stateLabel.textColor = color;
+	
+	float hours = [[row.details serverTimeWithLocalTime:[NSDate date]] timeIntervalSinceDate:row.details.currentTime] / 3600.0;
+	if (hours < 0)
+		hours = 0;
+	float bonus = row.resourceConsumptionBonus;
+	
+	int minRemains = INT_MAX;
+	int minQuantity = 0;
+	EVEDBInvControlTowerResource *minResource = nil;
+	
+	for (EVEDBInvControlTowerResource *resource in [row.type resources]) {
+		if (resource.purposeID != 1 ||
+			(resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
+			(resource.factionID > 0 && row.solarSystem.region.factionID != resource.factionID))
+			continue;
+		
+		int quantity = 0;
+		for (EVEStarbaseDetailFuelItem *item in row.details.fuel) {
+			if (item.typeID == resource.resourceTypeID) {
+				quantity = item.quantity - hours * round(resource.quantity * bonus);
+				break;
+			}
+		}
+		int remains = quantity / round(resource.quantity * bonus) * 3600;
+		if (remains < minRemains) {
+			minResource = resource;
+			minRemains = remains;
+			minQuantity = quantity;
+		}
+	}
+	
+	if (minQuantity > 0) {
+		if (minRemains > 3600 * 24)
+			color = [UIColor greenColor];
+		else if (minRemains > 3600)
+			color = [UIColor yellowColor];
+		else
+			color = [UIColor redColor];
+		state = [NSString stringWithTimeLeft:minRemains];
+	}
+	else {
+		color = [UIColor redColor];
+		state = @"0s";
+	}
+	
+	if (minResource)
+		cell.resourceTypeImageView.image = [UIImage imageNamed:minResource.resourceType.typeSmallImageName];
+	else
+		cell.resourceTypeImageView.image = nil;
+	cell.fuelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Fuel: %@", nil), state];
+	cell.fuelLabel.textColor = color;
+}
 
 #pragma mark - Private
 

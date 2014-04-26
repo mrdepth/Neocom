@@ -146,22 +146,11 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		return 99;
 	else
 		return 121;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
-		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 

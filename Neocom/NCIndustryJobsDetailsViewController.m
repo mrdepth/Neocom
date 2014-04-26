@@ -180,22 +180,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCIndustryJobsDetailsViewControllerRow* row = self.rows[indexPath.row];
 	NCTableViewCell* cell;
-	if (row.object) {
+	if (row.object)
 		cell = [tableView dequeueReusableCellWithIdentifier:@"TypeCell"];
-	}
-	else {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	}
-
-	cell.object = row.object;
-	cell.titleLabel.text = row.title;
-	cell.subtitleLabel.text = row.description;
-	if (row.imageName)
-		cell.iconView.image = [UIImage imageNamed:row.imageName];
 	else
-		cell.iconView.image = nil;
-	if (row.imageURL)
-		[cell.iconView setImageWithContentsOfURL:row.imageURL];
+		cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	
 	return cell;
 }
@@ -203,16 +192,23 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 42;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	NCIndustryJobsDetailsViewControllerRow* row = self.rows[indexPath.row];
+	NCTableViewCell* cell;
+	if (row.object)
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
+	else
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -222,6 +218,21 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCIndustryJobsDetailsViewControllerRow* row = self.rows[indexPath.row];
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	
+	cell.object = row.object;
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.description;
+	if (row.imageName)
+		cell.iconView.image = [UIImage imageNamed:row.imageName];
+	else
+		cell.iconView.image = nil;
+	if (row.imageURL)
+		[cell.iconView setImageWithContentsOfURL:row.imageURL];
 }
 
 @end

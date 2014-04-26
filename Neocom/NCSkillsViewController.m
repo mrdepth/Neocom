@@ -69,7 +69,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+	if ([segue.identifier rangeOfString:@"NCDatabaseTypeInfoViewController"].location != NSNotFound) {
 		NCDatabaseTypeInfoViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
 			controller = [segue.destinationViewController viewControllers][0];
@@ -112,7 +112,31 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCSkillCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
+	NCSkillData* row;
+	
+	switch (self.mode) {
+		case NCSkillsViewControllerModeKnownSkills:
+			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeAllSkills:
+			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeNotKnownSkills:
+			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeCanTrainSkills:
+			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		default:
+			break;
+	}
+
+	NCSkillCell* cell = nil;
+	if (row.trainedLevel >= 0)
+		cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
+	else
+		cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCompactCell"];
+
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
@@ -142,10 +166,33 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCell"];
+	NCSkillData* row;
+	
+	switch (self.mode) {
+		case NCSkillsViewControllerModeKnownSkills:
+			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeAllSkills:
+			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeNotKnownSkills:
+			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		case NCSkillsViewControllerModeCanTrainSkills:
+			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
+			break;
+		default:
+			break;
+	}
+	
+	UITableViewCell* cell = nil;
+	if (row.trainedLevel >= 0)
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCell"];
+	else
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCompactCell"];
+	
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }

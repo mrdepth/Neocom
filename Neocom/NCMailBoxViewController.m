@@ -111,37 +111,22 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	//NCMailBoxViewControllerData* data = self.data;
-	NCMailBoxMessage* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	
-	static NSString *cellIdentifier = @"Cell";
-	NCMessageCell* cell = (NCMessageCell*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.subjectLabel.text = row.header.title;
-	BOOL isRead = [row isRead];
-	cell.subjectLabel.font = isRead ? [UIFont systemFontOfSize:cell.subjectLabel.font.pointSize] : [UIFont boldSystemFontOfSize:cell.subjectLabel.font.pointSize];
-	cell.subjectLabel.textColor = isRead ? [UIColor lightTextColor] : [UIColor whiteColor];
-	cell.dateLabel.text = [row.header.sentDate messageTimeLocalizedString];
-
-	NSInteger myID = self.mailBox.account.characterID;
-
-	if (row.sender.contactID == myID)
-		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
-	else
-		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
-	cell.message = row;
+	NCMessageCell* cell = (NCMessageCell*) [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 46;
+	return 42;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -269,6 +254,24 @@
 
 - (id) identifierForSection:(NSInteger)section {
 	return self.sections[section][@"sectionID"];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCMailBoxMessage* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NCMessageCell* cell = (NCMessageCell*) tableViewCell;
+	cell.subjectLabel.text = row.header.title;
+	BOOL isRead = [row isRead];
+	cell.subjectLabel.font = isRead ? [UIFont systemFontOfSize:cell.subjectLabel.font.pointSize] : [UIFont boldSystemFontOfSize:cell.subjectLabel.font.pointSize];
+	cell.subjectLabel.textColor = isRead ? [UIColor lightTextColor] : [UIColor whiteColor];
+	cell.dateLabel.text = [row.header.sentDate messageTimeLocalizedString];
+	
+	NSInteger myID = self.mailBox.account.characterID;
+	
+	if (row.sender.contactID == myID)
+		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+	else
+		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+	cell.message = row;
 }
 
 #pragma mark - Private

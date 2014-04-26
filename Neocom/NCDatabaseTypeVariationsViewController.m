@@ -110,14 +110,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	static NSString *CellIdentifier = @"Cell";
 	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
-	cell.object = row;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -128,18 +125,33 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	cell.titleLabel.text = [row typeName];
+	cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	cell.object = row;
 }
 
 @end

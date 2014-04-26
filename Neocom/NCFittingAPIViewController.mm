@@ -303,23 +303,11 @@
 
 #pragma mark - Table view delegate
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
-		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-	
-	if (indexPath.section == 0) {
-		UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell setNeedsLayout];
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
+	if (indexPath.section == 0)
+		return 42;
 	else
-		return 41;
+		return 37;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

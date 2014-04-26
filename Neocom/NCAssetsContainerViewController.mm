@@ -234,18 +234,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
-	NCAssetsContainerViewControllerSection* section = sections[indexPath.section];
-	EVEAssetListItem* asset = section.assets[indexPath.row];
-	
 	NCTableViewCell* cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	
-	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
-	
-	cell.titleLabel.text = asset.title;
-	cell.object = asset;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	
 	return cell;
 }
@@ -253,16 +245,17 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -336,6 +329,18 @@
 									 [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
 							 }];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NSArray* sections = tableView == self.tableView ? self.sections : self.searchResults;
+	NCAssetsContainerViewControllerSection* section = sections[indexPath.section];
+	EVEAssetListItem* asset = section.assets[indexPath.row];
+	
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	
+	cell.titleLabel.text = asset.title;
+	cell.object = asset;
 }
 
 @end

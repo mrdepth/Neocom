@@ -131,28 +131,32 @@
 		cellIdentifier = @"Cell";
 	
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.titleLabel.text = row.title;
-	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
-	
-	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 42;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	NCDatabaseCertificateInfoViewControllerRow* row = self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ?
+	self.masteriesSections[indexPath.section][@"rows"][indexPath.row] :
+	self.requiredForSections[indexPath.section][@"rows"][indexPath.row];
+	
+	NSString *cellIdentifier = row.cellIdentifier;
+	if (!cellIdentifier)
+		cellIdentifier = @"Cell";
+	
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:cellIdentifier];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -196,6 +200,19 @@
 
 - (BOOL) initiallySectionIsCollapsed:(NSInteger)section {
 	return self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ? [self.masteriesSections[section][@"collapsed"] boolValue]: YES;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCDatabaseCertificateInfoViewControllerRow* row = self.mode == NCDatabaseCertificateInfoViewControllerModeMasteries ?
+	self.masteriesSections[indexPath.section][@"rows"][indexPath.row] :
+	self.requiredForSections[indexPath.section][@"rows"][indexPath.row];
+	
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	cell.titleLabel.text = row.title;
+	cell.subtitleLabel.text = row.detail;
+	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
+	
+	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
 }
 
 #pragma mark - Private

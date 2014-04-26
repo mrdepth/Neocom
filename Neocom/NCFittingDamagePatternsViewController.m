@@ -212,7 +212,7 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0 || (indexPath.section == 1 && indexPath.row == self.customDamagePatterns.count))
-		return 41;
+		return 37;
 	else
 		return 44;
 }

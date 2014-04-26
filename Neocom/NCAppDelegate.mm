@@ -157,6 +157,7 @@
 	UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
 		
 	}];
+	[[NCStorage sharedStorage] saveContext];
 	
 	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
 		[[NCCache sharedCache] clearInvalidData];
@@ -177,6 +178,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+	[[NCStorage sharedStorage] saveContext];
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

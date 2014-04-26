@@ -94,43 +94,22 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSArray* rows = self.data;
-	NCCalendarEventsViewControllerRow* row = rows[indexPath.row];
-	
-	
-	static NSString *cellIdentifier = @"Cell";
-	NCCalendarEventCell* cell = (NCCalendarEventCell*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (row.event.importance > 0)
-		cell.titleLabel.text = [NSString stringWithFormat:@"\u2757%@", row.event.eventTitle];
-	else
-		cell.titleLabel.text = row.event.eventTitle;
-	cell.event = row.event;
-	
-	static NSDateFormatter* dateFormatter = nil;
-	if (!dateFormatter) {
-		dateFormatter = [NSDateFormatter new];
-		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
-		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-	}
-	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ from %@", nil),
-						   [dateFormatter stringFromDate:row.event.eventDate],
-						   row.event.ownerID == 1 ? @"CCP" : row.event.ownerName];
-	cell.eventTextLabel.text = row.shortDescription;
-	
+	NCCalendarEventCell* cell = (NCCalendarEventCell*) [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 62;
+	return 57;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -183,5 +162,28 @@
 		[self reloadFromCache];
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NSArray* rows = self.data;
+	NCCalendarEventsViewControllerRow* row = rows[indexPath.row];
+	
+	NCCalendarEventCell* cell = (NCCalendarEventCell*) tableViewCell;
+	if (row.event.importance > 0)
+		cell.titleLabel.text = [NSString stringWithFormat:@"\u2757%@", row.event.eventTitle];
+	else
+		cell.titleLabel.text = row.event.eventTitle;
+	cell.event = row.event;
+	
+	static NSDateFormatter* dateFormatter = nil;
+	if (!dateFormatter) {
+		dateFormatter = [NSDateFormatter new];
+		[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
+		[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
+		[dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+	}
+	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ from %@", nil),
+						   [dateFormatter stringFromDate:row.event.eventDate],
+						   row.event.ownerID == 1 ? @"CCP" : row.event.ownerName];
+	cell.eventTextLabel.text = row.shortDescription;
+}
 
 @end

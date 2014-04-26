@@ -135,13 +135,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"Cell";
-	NCFittingCharacterEditorCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
-	
-	cell.skillNameLabel.text = skill.typeName;
-	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
-	cell.skillData = skill;
+	NCFittingCharacterEditorCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -152,16 +147,16 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -197,6 +192,15 @@
 
 - (id) identifierForSection:(NSInteger)section {
 	return self.sections[section][@"sectionID"];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCFittingCharacterEditorCell* cell = (NCFittingCharacterEditorCell*) tableViewCell;
+	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
+	
+	cell.skillNameLabel.text = skill.typeName;
+	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
+	cell.skillData = skill;
 }
 
 @end

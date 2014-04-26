@@ -137,6 +137,15 @@
 
 #pragma mark - Table view delegate
 
+#pragma mark - Table view delegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == self.skillPlans.count)
+		return 37;
+	else
+		return 42;
+}
+
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return indexPath.row < self.skillPlans.count ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleInsert;
 }

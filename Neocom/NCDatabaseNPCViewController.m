@@ -105,48 +105,42 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NCTableViewCell *cell;
 	if ([row isKindOfClass:[EVEDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
-		cell.object = row;
-		return cell;
 	}
 	else {
 		static NSString *CellIdentifier = @"NpcGroupCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		
-		cell.titleLabel.text = [row npcGroupName];
-		
-		NSString* iconImageName = [row iconName];
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		cell.object = row;
-		return cell;
 	}
-	return nil;
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NCTableViewCell *cell;
+	if ([row isKindOfClass:[EVEDBInvType class]])
+		[self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
+	else
+		[self tableView:tableView offscreenCellWithIdentifier:@"NpcGroupCell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
@@ -183,5 +177,24 @@
 							 }];
 }
 
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	if ([row isKindOfClass:[EVEDBInvType class]]) {
+		cell.titleLabel.text = [row typeName];
+		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+		cell.object = row;
+	}
+	else {
+		cell.titleLabel.text = [row npcGroupName];
+		
+		NSString* iconImageName = [row iconName];
+		if (iconImageName)
+			cell.iconView.image = [UIImage imageNamed:iconImageName];
+		else
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.object = row;
+	}
+}
 
 @end

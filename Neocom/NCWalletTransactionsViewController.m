@@ -178,51 +178,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCWalletTransactionsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	NCWalletTransactionsViewControllerDataAccount* account = data.accounts[indexPath.section];
-	NCWalletTransactionsViewControllerDataRow* row = account.transactions[indexPath.row];
-	
 	NCWalletTransactionsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	
-	if (row.type) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-		cell.titleLabel.text = row.type.typeName;
-	}
-	else {
-		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), [row.transaction typeID]];
-	}
-
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.transaction transactionDateTime]];
-		
-	if (row.location.name)
-		cell.locationLabel.text = row.location.name;
-	else if (row.location.solarSystem)
-		cell.locationLabel.text = row.location.solarSystem.solarSystemName;
-	else
-		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
-	
-	float price = [[row.transaction valueForKey:@"price"] floatValue];
-	int32_t quantity = [[row.transaction valueForKey:@"quantity"] intValue];
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
-	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]];
-	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(price * quantity)]];
-
-	if ([[row.transaction transactionType] isEqualToString:@"sell"])
-		cell.amountLabel.textColor = [UIColor greenColor];
-	else
-		cell.amountLabel.textColor = [UIColor redColor];
-	
-	if ([row.transaction isKindOfClass:[EVECharWalletTransactionsItem class]]) {
-		NCAccount* account = [NCAccount currentAccount];
-		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", account.characterInfo.characterName, [row.transaction clientName]];
-	}
-	else
-		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", [row.transaction characterName], [row.transaction clientName]];
-	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
 
@@ -240,12 +199,14 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
+
 
 #pragma mark - NCTableViewController
 
@@ -397,6 +358,51 @@
 	[super didChangeAccount:account];
 	if ([self isViewLoaded])
 		[self reloadFromCache];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCWalletTransactionsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
+	NCWalletTransactionsViewControllerDataAccount* account = data.accounts[indexPath.section];
+	NCWalletTransactionsViewControllerDataRow* row = account.transactions[indexPath.row];
+	
+	NCWalletTransactionsCell* cell = (NCWalletTransactionsCell*) tableViewCell;
+	cell.object = row;
+	
+	if (row.type) {
+		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		cell.titleLabel.text = row.type.typeName;
+	}
+	else {
+		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), [row.transaction typeID]];
+	}
+	
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:[row.transaction transactionDateTime]];
+	
+	if (row.location.name)
+		cell.locationLabel.text = row.location.name;
+	else if (row.location.solarSystem)
+		cell.locationLabel.text = row.location.solarSystem.solarSystemName;
+	else
+		cell.locationLabel.text = NSLocalizedString(@"Unknown location", nil);
+	
+	float price = [[row.transaction valueForKey:@"price"] floatValue];
+	int32_t quantity = [[row.transaction valueForKey:@"quantity"] intValue];
+	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Price: %@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(price)]];
+	cell.quantityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:quantity]];
+	cell.amountLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(price * quantity)]];
+	
+	if ([[row.transaction transactionType] isEqualToString:@"sell"])
+		cell.amountLabel.textColor = [UIColor greenColor];
+	else
+		cell.amountLabel.textColor = [UIColor redColor];
+	
+	if ([row.transaction isKindOfClass:[EVECharWalletTransactionsItem class]]) {
+		NCAccount* account = [NCAccount currentAccount];
+		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", account.characterInfo.characterName, [row.transaction clientName]];
+	}
+	else
+		cell.characterNameLabel.text = [NSString stringWithFormat:@"%@ -> %@", [row.transaction characterName], [row.transaction clientName]];
 }
 
 @end

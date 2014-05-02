@@ -7,6 +7,7 @@
 //
 
 #import "NCStoryboardPopoverSegue.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCStoryboardPopoverSegue
 
@@ -38,7 +39,8 @@
 - (void) perform {
 	[super perform];
 	if ([self.popoverController respondsToSelector:@selector(setBackgroundColor:)])
-		self.popoverController.backgroundColor = [UIColor blackColor];
+		//self.popoverController.backgroundColor = [UIColor blackColor];
+		self.popoverController.backgroundColor = [UIColor appearancePopoberBackgroundColor];
 }
 
 @end

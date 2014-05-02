@@ -29,6 +29,7 @@
 #import "NCFittingImplantSetsViewController.h"
 #import "NCFittingShipAffectingSkillsViewController.h"
 #import "NCStoryboardPopoverSegue.h"
+#import "UIColor+Neocom.h"
 
 #include <set>
 
@@ -79,6 +80,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	
 	for (id controller in self.childViewControllers) {
 		if ([controller isKindOfClass:[NCFittingShipWorkspaceViewController class]])

@@ -8,6 +8,7 @@
 
 #import "NCFittingShipStatsViewController.h"
 #import "NCTableViewHeaderView.h"
+#import "UIColor+Neocom.h"
 
 @interface NCFittingShipStatsViewController ()
 
@@ -27,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 }
 

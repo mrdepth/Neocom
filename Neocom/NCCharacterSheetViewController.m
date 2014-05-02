@@ -79,6 +79,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	self.tableView.tableHeaderView = nil;
 	// Do any additional setup after loading the view.
 }

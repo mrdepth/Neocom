@@ -11,6 +11,7 @@
 #import "NCFittingDamagePatternEditorViewController.h"
 #import "NCStorage.h"
 #import "NCFittingNPCPickerViewController.h"
+#import "UIColor+Neocom.h"
 
 @interface NCFittingDamagePatternsViewController ()
 @property (nonatomic, strong) NSMutableArray* customDamagePatterns;
@@ -207,7 +208,7 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor blackColor];
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

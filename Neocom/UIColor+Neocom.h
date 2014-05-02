@@ -13,4 +13,8 @@
 + (instancetype) colorWithSecurity:(float) security;
 + (instancetype) colorWithPlayerSecurityStatus:(float) securityStatus;
 
++ (instancetype) appearanceTableViewBackgroundColor;
++ (instancetype) appearanceTableViewCellBackgroundColor;
++ (instancetype) appearancePopoberBackgroundColor;
+
 @end

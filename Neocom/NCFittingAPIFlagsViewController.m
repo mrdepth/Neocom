@@ -8,6 +8,7 @@
 
 #import "NCFittingAPIFlagsViewController.h"
 #import "NCTableViewCell.h"
+#import "UIColor+Neocom.h"
 
 @interface NCFittingAPIFlagsViewController ()
 
@@ -27,6 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -72,6 +74,10 @@
 		cell.accessoryView = nil;
 	cell.object = value;
 	return cell;
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 @end

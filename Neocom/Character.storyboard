@@ -34,7 +34,7 @@
                             <rect key="frame" x="0.0" y="64" width="500" height="610"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S5A-YA-WFi">
+                                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S5A-YA-WFi">
                                     <rect key="frame" x="38" y="0.0" width="424" height="610"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -398,7 +398,7 @@
                                             </constraints>
                                         </scrollView>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="fWs-HF-ssN" firstAttribute="leading" secondItem="WHi-ns-GB4" secondAttribute="leading" id="06l-Gx-3nb"/>
                                         <constraint firstItem="iAU-Q5-hfg" firstAttribute="trailing" secondItem="EWI-lP-GSr" secondAttribute="trailing" id="1XM-SW-lwE"/>
@@ -1705,6 +1705,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="oPw-cV-eoU"/>
+        <segue reference="sVf-vh-kIQ"/>
     </inferredMetricsTieBreakers>
 </document>

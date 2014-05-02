@@ -36,7 +36,7 @@
                             <rect key="frame" x="0.0" y="64" width="703" height="610"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b7b-B0-gai">
+                                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b7b-B0-gai">
                                     <rect key="frame" x="140" y="0.0" width="424" height="610"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -401,7 +401,7 @@
                                             </constraints>
                                         </scrollView>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="V2p-kg-GSh" firstAttribute="leading" secondItem="k40-OQ-Orm" secondAttribute="trailing" constant="8" id="2jn-sk-9Xg"/>
                                         <constraint firstItem="OaY-9z-u0H" firstAttribute="leading" secondItem="qqn-yG-cOp" secondAttribute="leading" id="3ri-mZ-ehd"/>
@@ -1841,7 +1841,7 @@
                                 <connections>
                                     <outlet property="skillPointsLabel" destination="Ysd-yH-zgu" id="t9H-Fo-2Tb"/>
                                     <outlet property="titleLabel" destination="iqH-22-Y7n" id="nq6-fU-4tL"/>
-                                    <segue destination="UAW-SR-u34" kind="modal" identifier="NCDatabaseTypeInfoViewControlle2" modalPresentationStyle="formSheet" id="7dC-pl-AMm"/>
+                                    <segue destination="UAW-SR-u34" kind="modal" identifier="NCDatabaseTypeInfoViewController2" modalPresentationStyle="formSheet" id="7dC-pl-AMm"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

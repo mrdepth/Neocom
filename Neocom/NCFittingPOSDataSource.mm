@@ -7,6 +7,7 @@
 //
 
 #import "NCFittingPOSDataSource.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCFittingPOSDataSource
 
@@ -23,7 +24,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor blackColor];
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 @end

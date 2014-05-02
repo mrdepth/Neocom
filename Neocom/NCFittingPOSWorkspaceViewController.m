@@ -8,6 +8,7 @@
 
 #import "NCFittingPOSWorkspaceViewController.h"
 #import "NCTableViewHeaderView.h"
+#import "UIColor+Neocom.h"
 @interface NCFittingPOSWorkspaceViewController ()
 
 @end
@@ -26,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 
     // Uncomment the following line to preserve selection between presentations.

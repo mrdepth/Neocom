@@ -11,6 +11,7 @@
 #import "NCStorage.h"
 #import "UIActionSheet+Block.h"
 #import "UIAlertView+Block.h"
+#import "UIColor+Neocom.h"
 
 @interface NCFittingDamagePatternEditorViewController ()
 
@@ -30,6 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	self.title = self.damagePattern.name;
 
 	self.emTextField.progress = self.damagePattern.em;
@@ -95,7 +97,7 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor blackColor];
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 #pragma mark UITextFieldDelegate

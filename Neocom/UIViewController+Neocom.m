@@ -8,6 +8,7 @@
 
 #import "UIViewController+Neocom.h"
 #import <objc/runtime.h>
+#import "UIColor+Neocom.h"
 
 @interface NCPopoverController : UIPopoverController
 
@@ -49,7 +50,8 @@
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
 	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
-		self.popover.backgroundColor = [UIColor blackColor];
+		//self.popover.backgroundColor = [UIColor blackColor];
+		self.popover.backgroundColor = [UIColor appearancePopoberBackgroundColor];
 }
 
 - (void)presentViewControllerInPopover:(UIViewController *)viewControllerToPresent fromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
@@ -60,7 +62,8 @@
 	self.popover.delegate = self;
 	[self.popover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
 	if ([self.popover respondsToSelector:@selector(setBackgroundColor:)])
-		self.popover.backgroundColor = [UIColor blackColor];
+		//self.popover.backgroundColor = [UIColor blackColor];
+		self.popover.backgroundColor = [UIColor appearancePopoberBackgroundColor];
 }
 
 - (IBAction)dismissAnimated {

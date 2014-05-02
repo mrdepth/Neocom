@@ -20,6 +20,7 @@
 #import "UIAlertView+Block.h"
 #import "NCDatabaseTypeMasteryViewController.h"
 #import "NCTableViewCell.h"
+#import "UIColor+Neocom.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -80,6 +81,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
 	self.title = self.type.typeName;
@@ -116,8 +118,13 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NSIndexPath* indexPath;
+	NCDatabaseTypeInfoViewControllerRow* row;
+	if ([sender isKindOfClass:[UITableViewCell class]]) {
+		indexPath = [self.tableView indexPathForCell:sender];
+		row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	}
+	
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])

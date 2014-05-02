@@ -10,6 +10,7 @@
 #import "ASInAppPurchase.h"
 #import "UIActionSheet+Block.h"
 #import "NCDonationCell.h"
+#import "UIColor+Neocom.h"
 
 @interface NCDonationViewController ()<SKPaymentTransactionObserver>
 @property (nonatomic, assign, getter = isAnAppActive) BOOL inAppActive;
@@ -29,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -133,7 +135,7 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor blackColor];
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

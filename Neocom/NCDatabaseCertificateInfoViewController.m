@@ -13,6 +13,7 @@
 #import <objc/runtime.h>
 #import "UIAlertView+Block.h"
 #import "NCTableViewCell.h"
+#import "UIColor+Neocom.h"
 
 @interface NCDatabaseCertificateInfoViewControllerRow : NSObject
 @property (nonatomic, copy) NSString* title;
@@ -47,6 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	if (self.navigationController.viewControllers[0] != self)
 		self.navigationItem.leftBarButtonItem = nil;
 	self.refreshControl = nil;

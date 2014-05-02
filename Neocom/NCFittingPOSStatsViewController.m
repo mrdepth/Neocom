@@ -8,7 +8,7 @@
 
 #import "NCFittingPOSStatsViewController.h"
 #import "NCTableViewHeaderView.h"
-
+#import "UIColor+Neocom.h"
 @interface NCFittingPOSStatsViewController ()
 
 @end
@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
 }
 

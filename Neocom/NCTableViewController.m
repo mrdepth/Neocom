@@ -14,6 +14,7 @@
 #import "NCTableViewCollapsedHeaderView.h"
 #import "NCSetting.h"
 #import "NCStorage.h"
+#import "UIColor+Neocom.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -57,6 +58,7 @@
 		view.backgroundColor = [UIColor clearColor];
 		self.tableView.backgroundView = view;
 	}
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -372,7 +374,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor blackColor];
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 #pragma mark - CollapsableTableViewDelegate

@@ -43,4 +43,16 @@
 		return [self colorWithSecurity:(securityStatus + 5.0f - FLT_EPSILON) / 6.0f];
 }
 
++ (instancetype) appearanceTableViewBackgroundColor {
+	return [UIColor colorWithUInteger:0x1f1e23ff];
+}
+
++ (instancetype) appearanceTableViewCellBackgroundColor {
+	return [self appearanceTableViewBackgroundColor];
+}
+
++ (instancetype) appearancePopoberBackgroundColor {
+	return [self appearanceTableViewBackgroundColor];
+}
+
 @end

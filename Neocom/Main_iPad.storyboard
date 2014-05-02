@@ -62,11 +62,11 @@
                         <viewControllerLayoutGuide type="bottom" id="has-on-o8U"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ei4-OQ-kdI">
-                        <rect key="frame" x="0.0" y="44" width="320" height="674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="718"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wi4-ly-4ka">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="674"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="718"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
@@ -434,7 +434,7 @@
                                     <outlet property="corporationImageView" destination="fVP-Ou-GDS" id="oo7-f5-dSn"/>
                                     <outlet property="corporationNameLabel" destination="m5c-Vm-jfc" id="dL0-bE-YbR"/>
                                     <outlet property="skillQueueLabel" destination="yOx-T0-ZX1" id="fdx-1a-G9O"/>
-                                    <segue destination="AHz-qp-W7n" kind="unwind" identifier="NCSelectCharAccount2" trigger="accessoryAction" unwindAction="unwindToMainMenu:" id="mCO-AA-m42"/>
+                                    <segue destination="AHz-qp-W7n" kind="unwind" identifier="NCSelectCharAccount2" unwindAction="unwindToMainMenu:" id="uho-4R-ou9"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCAccountCorporationCell" rowHeight="131" id="I99-QO-NBI" customClass="NCAccountCorporationCell">
@@ -608,7 +608,7 @@
                                     <outlet property="allianceNameLabel" destination="Yps-yH-VfD" id="flC-Za-nYU"/>
                                     <outlet property="corporationImageView" destination="zhP-ap-xNT" id="NZJ-xM-dSr"/>
                                     <outlet property="corporationNameLabel" destination="ChA-uU-WzT" id="52W-ov-gdY"/>
-                                    <segue destination="AHz-qp-W7n" kind="unwind" identifier="NCSelectCorpAccount2" trigger="accessoryAction" unwindAction="unwindToMainMenu:" id="Fcd-Bf-oCm"/>
+                                    <segue destination="AHz-qp-W7n" kind="unwind" identifier="NCSelectCorpAccount2" unwindAction="unwindToMainMenu:" id="XGd-Ot-tBL"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -872,7 +872,7 @@
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="E9l-Wr-FQS" customClass="NCMainMenuViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="42" sectionHeaderHeight="22" sectionFooterHeight="22" id="CpV-zy-AFR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="718"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -991,7 +991,7 @@
         <scene sceneID="GHK-8B-bTW">
             <objects>
                 <navigationController definesPresentationContext="YES" id="6Gx-oH-tSA" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="jcj-P5-yTY">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="jcj-P5-yTY">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
@@ -1502,7 +1502,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.1215686275" green="0.1176470588" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="9zH-Ai-dol" secondAttribute="centerX" id="OGv-0o-lSI"/>
                             <constraint firstAttribute="centerY" secondItem="9zH-Ai-dol" secondAttribute="centerY" id="wfU-a3-Il3"/>

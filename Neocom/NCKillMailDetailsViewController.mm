@@ -45,7 +45,8 @@
 {
     [super viewDidLoad];
 	self.refreshControl = nil;
-	
+	self.tableView.tableHeaderView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+
 	self.characterNameLabel.text = self.killMail.victim.characterName;
 	self.corporationNameLabel.text = self.killMail.victim.corporationName;
 	self.allianceNameLabel.text = self.killMail.victim.allianceName;

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="AUZ-xn-UJw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="AUZ-xn-UJw">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Assets View Controller - Assets-->
@@ -43,6 +44,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Assets" id="UUR-sH-yqz">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Bvt-xu-w6d"/>
+                        <barButtonItem key="rightBarButtonItem" title="Accounts" id="MKk-oc-HuG">
+                            <connections>
+                                <segue destination="lgw-5c-yeL" kind="custom" identifier="NCAssetsAccountsViewController" customClass="NCStoryboardPopoverSegue" id="GJ9-hV-IqO"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="Kuj-RO-Raj" id="qkF-BO-MyL"/>
@@ -310,7 +316,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-508" y="1714"/>
+            <point key="canvasLocation" x="148" y="1714"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="O0M-Wd-PhU">
@@ -1254,6 +1260,25 @@
             <point key="canvasLocation" x="-723" y="3574"/>
         </scene>
         <!--Navigation Controller-->
+        <scene sceneID="GHo-34-SE8">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="lgw-5c-yeL" sceneMemberID="viewController">
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="768"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="768"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="fwb-MC-IF9">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="OOs-eY-XC9" kind="relationship" relationship="rootViewController" id="bhj-Yr-4vb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pod-Ni-Xsn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-641" y="1106"/>
+        </scene>
+        <!--Navigation Controller-->
         <scene sceneID="zxd-gZ-T3m">
             <objects>
                 <navigationController definesPresentationContext="YES" id="j2q-NH-pVJ" customClass="NCNavigationController" sceneMemberID="viewController">
@@ -1286,6 +1311,169 @@
             </objects>
             <point key="canvasLocation" x="608" y="675"/>
         </scene>
+        <!--Assets Accounts View Controller - Accounts-->
+        <scene sceneID="ffY-V8-U3r">
+            <objects>
+                <tableViewController id="OOs-eY-XC9" customClass="NCAssetsAccountsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" id="wsZ-lW-0rE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                        <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCAccountCharacterCell" id="OP6-3v-NmJ" customClass="NCAccountCharacterCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="73"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OP6-3v-NmJ" id="Lt6-dW-Gnf">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Htq-60-F8j">
+                                            <rect key="frame" x="20" y="4" width="64" height="64"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="64" id="Jjv-EM-1m6"/>
+                                                <constraint firstAttribute="height" constant="64" id="gQZ-r7-6h1"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Artem Valiant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xTM-mM-OAW">
+                                            <rect key="frame" x="92" y="4" width="208" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Necrorise Squadron" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EIL-0v-2QQ">
+                                            <rect key="frame" x="121" y="26" width="179" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Red Alliance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ko1-DA-Flv">
+                                            <rect key="frame" x="121" y="47" width="179" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="21" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="FGk-Lr-6bz">
+                                            <rect key="frame" x="92" y="26" width="21" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="Fxm-ks-IgJ"/>
+                                                <constraint firstAttribute="width" secondItem="FGk-Lr-6bz" secondAttribute="height" multiplier="1:1" id="a4g-n8-ukF"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="21" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="fG3-Ek-BHt">
+                                            <rect key="frame" x="92" y="47" width="21" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="Kbv-KU-sOG"/>
+                                                <constraint firstAttribute="width" secondItem="fG3-Ek-BHt" secondAttribute="height" multiplier="1:1" id="jZM-X0-8gZ"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ko1-DA-Flv" firstAttribute="leading" secondItem="EIL-0v-2QQ" secondAttribute="leading" id="3SZ-PC-qtW"/>
+                                        <constraint firstItem="ko1-DA-Flv" firstAttribute="top" secondItem="fG3-Ek-BHt" secondAttribute="top" id="4eP-Wb-w51"/>
+                                        <constraint firstItem="FGk-Lr-6bz" firstAttribute="top" secondItem="EIL-0v-2QQ" secondAttribute="top" id="6KW-SI-e1c"/>
+                                        <constraint firstItem="Htq-60-F8j" firstAttribute="top" secondItem="Lt6-dW-Gnf" secondAttribute="top" constant="4" id="6q4-oj-8VE"/>
+                                        <constraint firstItem="Htq-60-F8j" firstAttribute="leading" secondItem="Lt6-dW-Gnf" secondAttribute="leading" constant="20" symbolic="YES" id="Ad7-Xj-U07"/>
+                                        <constraint firstItem="xTM-mM-OAW" firstAttribute="leading" secondItem="fG3-Ek-BHt" secondAttribute="leading" id="EeR-RJ-BPk"/>
+                                        <constraint firstAttribute="trailing" secondItem="xTM-mM-OAW" secondAttribute="trailing" constant="20" symbolic="YES" id="Mxl-AW-RtZ"/>
+                                        <constraint firstItem="Htq-60-F8j" firstAttribute="bottom" secondItem="ko1-DA-Flv" secondAttribute="bottom" id="N29-q9-pH1"/>
+                                        <constraint firstItem="Htq-60-F8j" firstAttribute="bottom" secondItem="fG3-Ek-BHt" secondAttribute="bottom" id="T0a-Lf-RZQ"/>
+                                        <constraint firstItem="FGk-Lr-6bz" firstAttribute="top" secondItem="xTM-mM-OAW" secondAttribute="bottom" constant="1" id="VmI-cn-uGy"/>
+                                        <constraint firstItem="xTM-mM-OAW" firstAttribute="trailing" secondItem="ko1-DA-Flv" secondAttribute="trailing" id="YuE-1w-5bd"/>
+                                        <constraint firstItem="EIL-0v-2QQ" firstAttribute="leading" secondItem="FGk-Lr-6bz" secondAttribute="trailing" constant="8" symbolic="YES" id="au9-S7-fwQ"/>
+                                        <constraint firstItem="ko1-DA-Flv" firstAttribute="top" secondItem="EIL-0v-2QQ" secondAttribute="bottom" id="ffO-HO-1Mv"/>
+                                        <constraint firstItem="fG3-Ek-BHt" firstAttribute="top" secondItem="FGk-Lr-6bz" secondAttribute="bottom" id="ijX-2c-HqF"/>
+                                        <constraint firstItem="xTM-mM-OAW" firstAttribute="trailing" secondItem="EIL-0v-2QQ" secondAttribute="trailing" id="jur-Dp-4aU"/>
+                                        <constraint firstItem="xTM-mM-OAW" firstAttribute="leading" secondItem="Htq-60-F8j" secondAttribute="trailing" constant="8" symbolic="YES" id="nDy-A4-bud"/>
+                                        <constraint firstItem="xTM-mM-OAW" firstAttribute="leading" secondItem="FGk-Lr-6bz" secondAttribute="leading" id="yR7-sf-XV3"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="allianceImageView" destination="fG3-Ek-BHt" id="ziX-fx-J1J"/>
+                                    <outlet property="allianceNameLabel" destination="ko1-DA-Flv" id="tvi-SN-C4x"/>
+                                    <outlet property="characterImageView" destination="Htq-60-F8j" id="bxo-gN-tBw"/>
+                                    <outlet property="characterNameLabel" destination="xTM-mM-OAW" id="RnN-RA-DHD"/>
+                                    <outlet property="corporationImageView" destination="FGk-Lr-6bz" id="bhJ-KT-zYj"/>
+                                    <outlet property="corporationNameLabel" destination="EIL-0v-2QQ" id="wSN-z9-hLY"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="NCAccountCorporationCell" id="YPx-Bc-0N6" customClass="NCAccountCorporationCell">
+                                <rect key="frame" x="0.0" y="159" width="320" height="73"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YPx-Bc-0N6" id="GkF-uO-eVe">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="k31-zM-In8">
+                                            <rect key="frame" x="20" y="4" width="64" height="64"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="64" id="Yex-Nj-X67"/>
+                                                <constraint firstAttribute="width" constant="64" id="g79-3f-RV7"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Necrorise Squadron" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lsG-YO-PjJ">
+                                            <rect key="frame" x="92" y="25" width="208" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Read Alliance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Eg9-0E-f6m">
+                                            <rect key="frame" x="121" y="47" width="179" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" placeholderIntrinsicWidth="21" placeholderIntrinsicHeight="21" translatesAutoresizingMaskIntoConstraints="NO" id="nKb-Ia-rzk">
+                                            <rect key="frame" x="92" y="47" width="21" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="VPW-dx-eE6"/>
+                                                <constraint firstAttribute="width" secondItem="nKb-Ia-rzk" secondAttribute="height" multiplier="1:1" id="gPQ-f0-zkW"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Eg9-0E-f6m" firstAttribute="bottom" secondItem="k31-zM-In8" secondAttribute="bottom" id="KSz-Ql-QV9"/>
+                                        <constraint firstItem="nKb-Ia-rzk" firstAttribute="leading" secondItem="lsG-YO-PjJ" secondAttribute="leading" id="Kjk-9Y-X2V"/>
+                                        <constraint firstAttribute="trailing" secondItem="lsG-YO-PjJ" secondAttribute="trailing" constant="20" symbolic="YES" id="SfV-vw-I3o"/>
+                                        <constraint firstItem="Eg9-0E-f6m" firstAttribute="bottom" secondItem="nKb-Ia-rzk" secondAttribute="bottom" id="b4V-NB-gM6"/>
+                                        <constraint firstItem="nKb-Ia-rzk" firstAttribute="top" secondItem="Eg9-0E-f6m" secondAttribute="top" id="gt5-cq-aVb"/>
+                                        <constraint firstItem="Eg9-0E-f6m" firstAttribute="leading" secondItem="nKb-Ia-rzk" secondAttribute="trailing" constant="8" symbolic="YES" id="icI-ei-Kft"/>
+                                        <constraint firstItem="Eg9-0E-f6m" firstAttribute="trailing" secondItem="lsG-YO-PjJ" secondAttribute="trailing" id="j4i-Re-hsZ"/>
+                                        <constraint firstItem="lsG-YO-PjJ" firstAttribute="leading" secondItem="k31-zM-In8" secondAttribute="trailing" constant="8" symbolic="YES" id="lme-6K-riZ"/>
+                                        <constraint firstItem="nKb-Ia-rzk" firstAttribute="bottom" secondItem="Eg9-0E-f6m" secondAttribute="bottom" id="o7E-8n-Mf3"/>
+                                        <constraint firstItem="k31-zM-In8" firstAttribute="leading" secondItem="GkF-uO-eVe" secondAttribute="leading" constant="20" symbolic="YES" id="pjp-CW-31v"/>
+                                        <constraint firstItem="k31-zM-In8" firstAttribute="top" secondItem="GkF-uO-eVe" secondAttribute="top" constant="4" id="w4l-ti-qth"/>
+                                        <constraint firstItem="nKb-Ia-rzk" firstAttribute="top" secondItem="lsG-YO-PjJ" secondAttribute="bottom" constant="1" id="xKg-wI-ATs"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="allianceImageView" destination="nKb-Ia-rzk" id="XB5-Wc-dG9"/>
+                                    <outlet property="allianceNameLabel" destination="Eg9-0E-f6m" id="D7g-cF-C5e"/>
+                                    <outlet property="corporationImageView" destination="k31-zM-In8" id="cJx-pX-q0g"/>
+                                    <outlet property="corporationNameLabel" destination="lsG-YO-PjJ" id="g3j-OC-csU"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="OOs-eY-XC9" id="opn-zi-ewV"/>
+                            <outlet property="delegate" destination="OOs-eY-XC9" id="e0i-vV-hoU"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Accounts" id="ceL-rs-EaP"/>
+                    <size key="freeformSize" width="320" height="768"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kQJ-Rp-bCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-233" y="1111"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1294,7 +1482,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="vFE-Vf-ziK"/>
-        <segue reference="NxT-iT-Fem"/>
+        <segue reference="Nrw-15-INN"/>
         <segue reference="bYh-DR-rl6"/>
     </inferredMetricsTieBreakers>
 </document>

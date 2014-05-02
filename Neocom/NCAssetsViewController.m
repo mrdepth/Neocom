@@ -13,6 +13,8 @@
 #import "NCAssetsContainerViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "NCLocationsManager.h"
+#import "NCAssetsAccountsViewController.h"
+#import "NCStoryboardPopoverSegue.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -47,7 +49,7 @@
 
 @end
 
-@interface NCAssetsViewController()
+@interface NCAssetsViewController()<NCAssetsAccountsViewControllerDelegate>
 @property (nonatomic, strong) NCAssetsViewControllerData* searchResults;
 @end
 
@@ -176,6 +178,16 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {
+		NCStoryboardPopoverSegue* popoverSegue = (NCStoryboardPopoverSegue*) segue;
+		if ([sender isKindOfClass:[UIBarButtonItem class]])
+			popoverSegue.anchorBarButtonItem = sender;
+		else if ([sender isKindOfClass:[UIView class]])
+			popoverSegue.anchorView = sender;
+		else
+			popoverSegue.anchorBarButtonItem = self.navigationItem.rightBarButtonItem;
+	}
+	
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
@@ -190,6 +202,15 @@
 		NCAssetsContainerViewController* destinationViewController = segue.destinationViewController;
 		EVEAssetListItem* asset = [sender object];
 		destinationViewController.asset = asset;
+	}
+	else if ([segue.identifier isEqualToString:@"NCAssetsAccountsViewController"]) {
+		NCAssetsAccountsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.selectedAccounts = self.accounts;
+		controller.delegate = self;
 	}
 }
 
@@ -224,21 +245,10 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
-	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
-	EVEAssetListItem* asset = section.assets[indexPath.row];
 	if (self.accounts.count > 1)
 		return 42;
 	else
 		return 37;
-	
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		if (asset.parent) {
-			return 42;
-		}
-	}
-
-	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -270,7 +280,7 @@
 	NSMutableArray* ids = [NSMutableArray new];
 	for (NCAccount* account in self.accounts)
 		[ids addObject:account.uuid];
-	[ids sortedArrayUsingSelector:@selector(compare:)];
+	[ids sortUsingSelector:@selector(compare:)];
 	
 	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];
 }
@@ -483,9 +493,10 @@
 - (void) didChangeAccount:(NCAccount *)account {
 	[super didChangeAccount:account];
 	
-	if (account) {
+	if (account)
 		self.accounts = @[account];
-	}
+	else
+		self.accounts = nil;
 
 	
 	if ([self isViewLoaded])
@@ -580,6 +591,34 @@
 				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
 		}
 	}
+}
+
+#pragma mark - NCAssetsAccountsViewControllerDelegate
+
+- (void) assetsAccountsViewController:(NCAssetsAccountsViewController *)controller didSelectAccounts:(NSArray *)accounts {
+	self.accounts = accounts;
+	[self reloadFromCache];
+}
+
+#pragma mark - Private
+
+- (void) setAccounts:(NSArray *)accounts {
+	_accounts = accounts;
+	if (accounts.count == 1) {
+		NCAccount* account = self.accounts[0];
+		NSString* title = nil;
+		if (account.accountType == NCAccountTypeCharacter)
+			title = account.characterInfo.characterName;
+		else
+			title = account.corporationSheet.corporationName;
+		if (!title)
+			title = NSLocalizedString(@"Unknown account", nil);
+		self.navigationItem.rightBarButtonItem.title = title;
+	}
+	else if (accounts.count > 1)
+		self.navigationItem.rightBarButtonItem.title = [NSString stringWithFormat:NSLocalizedString(@"%ld Accounts", nil), (long) accounts.count];
+	else
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Accounts", nil);
 }
 
 @end

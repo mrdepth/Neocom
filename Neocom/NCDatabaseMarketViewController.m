@@ -134,7 +134,7 @@
 	}
 	else {
 		static NSString *CellIdentifier = @"MarketGroupCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	}

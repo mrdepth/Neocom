@@ -135,9 +135,9 @@
 	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
 	NCTableViewCell *cell;
 	if ([row isKindOfClass:[EVEDBInvType class]])
-		[self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
 	else
-		[self tableView:tableView offscreenCellWithIdentifier:@"NpcGroupCell"];
+		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NpcGroupCell"];
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));

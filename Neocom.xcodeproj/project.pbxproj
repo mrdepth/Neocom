@@ -372,6 +372,7 @@
 		129FEE3F1860326E00F75FA6 /* NCSkillPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE3E1860326E00F75FA6 /* NCSkillPlan.m */; };
 		129FEE481860326E00F75FA6 /* NCFitCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE471860326E00F75FA6 /* NCFitCharacter.m */; };
 		129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FEE49186032B100F75FA6 /* libsqlite3.dylib */; };
+		12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A38E5A190BED24000102D4 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12A7DB9618B33AC500343D25 /* NCAddAPIKeyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9518B33AC500343D25 /* NCAddAPIKeyViewController.m */; };
 		12A7DB9918B3497B00343D25 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 12A7DB9818B3497B00343D25 /* index.html */; };
 		12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12A7DB9B18B34B0900343D25 /* NSString+ASHTTPServer.m */; };
@@ -404,6 +405,7 @@
 		12B97D3318AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3218AB75F900ECCFC3 /* NCFittingBattleClinicViewController.m */; };
 		12B97D3818AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */; };
 		12B97D3C18AB804400ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */; };
+		12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B992341913718900448D01 /* NCAssetsAccountsViewController.m */; };
 		12BF346118814CC700368CD4 /* NCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12BF346018814CC700368CD4 /* NCTableViewCell.m */; };
 		12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C5074E189B6F170064AC32 /* NCShipFit.mm */; };
 		12C50752189B94830064AC32 /* NCFittingShipFleetDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C50751189B94830064AC32 /* NCFittingShipFleetDataSource.mm */; };
@@ -1263,6 +1265,7 @@
 		129FEE461860326E00F75FA6 /* NCFitCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFitCharacter.h; sourceTree = "<group>"; };
 		129FEE471860326E00F75FA6 /* NCFitCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFitCharacter.m; sourceTree = "<group>"; };
 		129FEE49186032B100F75FA6 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		12A38E5A190BED24000102D4 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		12A7DB9418B33AC500343D25 /* NCAddAPIKeyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAddAPIKeyViewController.h; sourceTree = "<group>"; };
 		12A7DB9518B33AC500343D25 /* NCAddAPIKeyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAddAPIKeyViewController.m; sourceTree = "<group>"; };
 		12A7DB9818B3497B00343D25 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -1309,6 +1312,8 @@
 		12B97D3718AB7A1A00ECCFC3 /* NCFittingBattleClinicSearchResultsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBattleClinicSearchResultsViewController.mm; sourceTree = "<group>"; };
 		12B97D3A18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBattleClinicSearchResultsCell.h; sourceTree = "<group>"; };
 		12B97D3B18AB804300ECCFC3 /* NCFittingBattleClinicSearchResultsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingBattleClinicSearchResultsCell.m; sourceTree = "<group>"; };
+		12B992331913718900448D01 /* NCAssetsAccountsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAssetsAccountsViewController.h; sourceTree = "<group>"; };
+		12B992341913718900448D01 /* NCAssetsAccountsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAssetsAccountsViewController.m; sourceTree = "<group>"; };
 		12BF345F18814CC700368CD4 /* NCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTableViewCell.h; sourceTree = "<group>"; };
 		12BF346018814CC700368CD4 /* NCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTableViewCell.m; sourceTree = "<group>"; };
 		12C5074D189B6F170064AC32 /* NCShipFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShipFit.h; sourceTree = "<group>"; };
@@ -1583,6 +1588,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
@@ -1693,6 +1699,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12A38E5A190BED24000102D4 /* iAd.framework */,
 				1261594A18EE7FCB0049B9CE /* Security.framework */,
 				12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */,
 				12F9562118CDB835005CEAD6 /* AdSupport.framework */,
@@ -3589,6 +3596,15 @@
 			name = NCFittingBattleClinicSearchResultsCell;
 			sourceTree = "<group>";
 		};
+		12B992311913698800448D01 /* NCAssetsAccountsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12B992331913718900448D01 /* NCAssetsAccountsViewController.h */,
+				12B992341913718900448D01 /* NCAssetsAccountsViewController.m */,
+			);
+			name = NCAssetsAccountsViewController;
+			sourceTree = "<group>";
+		};
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3986,6 +4002,7 @@
 				120D5B3E18B1FE40007ED9B4 /* NCLocationsManager */,
 				843C2EFF18AD41B300221721 /* NCAssetsViewController */,
 				12F82A6318ADFA8D00A967B5 /* NCAssetsContainerViewController */,
+				12B992311913698800448D01 /* NCAssetsAccountsViewController */,
 				120D5B4418B203A4007ED9B4 /* NCMarketOrdersViewController */,
 				12A7DBA218B36B0600343D25 /* NCWalletTransactionsViewController */,
 				1203B69318B4A4DA003A0D72 /* NCWalletJournalViewController */,
@@ -4950,6 +4967,7 @@
 				126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
 				126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */,
+				12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHedaerView.m in Sources */,
 				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,

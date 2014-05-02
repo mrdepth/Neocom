@@ -133,7 +133,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Detailed"/>
-                                            <segment title="Compact"/>
+                                            <segment title="Short"/>
                                         </segments>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
@@ -1513,6 +1513,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LOm-NI-BSn"/>
+        <segue reference="R6f-7n-gJ8"/>
     </inferredMetricsTieBreakers>
 </document>

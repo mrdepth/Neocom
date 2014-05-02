@@ -34,10 +34,10 @@ static NCAccount* currentAccount = nil;
 
 @property (nonatomic, strong) NSDate* lastSkillPointsUpdate;
 
-- (void) reloadCharacterInfoWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
-- (void) reloadCharacterSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
-- (void) reloadCorporationSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
-- (void) reloadSkillQueueWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
+- (BOOL) reloadCharacterInfoWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
+- (BOOL) reloadCharacterSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
+- (BOOL) reloadCorporationSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
+- (BOOL) reloadSkillQueueWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler;
 @end
 
 @implementation NCStorage(NCAccount)
@@ -461,7 +461,7 @@ static NCAccount* currentAccount = nil;
 	}
 }
 
-- (void) reloadCharacterInfoWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
+- (BOOL) reloadCharacterInfoWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	NSError* error = nil;
 	EVECharacterInfo* characterInfo = self.accountType == NCAccountTypeCharacter ? [EVECharacterInfo characterInfoWithKeyID:self.apiKey.keyID
 																													  vCode:self.apiKey.vCode
@@ -488,9 +488,10 @@ static NCAccount* currentAccount = nil;
 	[cache.managedObjectContext performBlockAndWait:^{
 		[cache saveContext];
 	}];
+	return error == nil;
 }
 
-- (void) reloadCharacterSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
+- (BOOL) reloadCharacterSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	NSError* error = nil;
 	EVECharacterSheet* characterSheet = self.accountType == NCAccountTypeCharacter ? [EVECharacterSheet characterSheetWithKeyID:self.apiKey.keyID
 																														  vCode:self.apiKey.vCode
@@ -520,9 +521,10 @@ static NCAccount* currentAccount = nil;
 	[cache.managedObjectContext performBlockAndWait:^{
 		[cache saveContext];
 	}];
+	return error == nil;
 }
 
-- (void) reloadCorporationSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
+- (BOOL) reloadCorporationSheetWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	NSError* error = nil;
 	EVECorporationSheet* corporationSheet = [EVECorporationSheet corporationSheetWithKeyID:self.apiKey.keyID
 																					 vCode:self.apiKey.vCode
@@ -550,9 +552,10 @@ static NCAccount* currentAccount = nil;
 	[cache.managedObjectContext performBlockAndWait:^{
 		[cache saveContext];
 	}];
+	return error == nil;
 }
 
-- (void) reloadSkillQueueWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
+- (BOOL) reloadSkillQueueWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy error:(NSError**) errorPtr progressHandler:(void(^)(CGFloat progress, BOOL* stop)) progressHandler {
 	NSError* error = nil;
 	EVESkillQueue* skillQueue = self.accountType == NCAccountTypeCharacter ? [EVESkillQueue skillQueueWithKeyID:self.apiKey.keyID
 																										  vCode:self.apiKey.vCode
@@ -580,6 +583,7 @@ static NCAccount* currentAccount = nil;
 	[cache.managedObjectContext performBlockAndWait:^{
 		[cache saveContext];
 	}];
+	return error == nil;
 }
 
 @end

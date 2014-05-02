@@ -252,15 +252,15 @@
 	[self.refreshControl endRefreshing];
 	[self updateCacheTime];
 
-	NSInteger sections = [self.tableView numberOfSections];
-	BOOL empty = sections == 0;
+	//NSInteger sections = [self.tableView numberOfSections];
+	//BOOL empty = sections == 0;
 /*	for (NSInteger i = 0; i < sections; i++) {
 		if ([self.tableView numberOfRowsInSection:i] > 0) {
 			empty = NO;
 			break;
 		}
 	}*/
-	if (empty) {
+/*	if (empty) {
 		UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
 		label.backgroundColor = [UIColor clearColor];
 		label.textColor = [UIColor lightTextColor];
@@ -270,7 +270,7 @@
 		self.tableView.backgroundView = label;
 	}
 	else
-		self.tableView.backgroundView = nil;
+		self.tableView.backgroundView = nil;*/
 }
 
 - (NSTimeInterval) defaultCacheExpireTime {

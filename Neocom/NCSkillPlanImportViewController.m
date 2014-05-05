@@ -120,7 +120,7 @@
 #pragma mark - Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return section == 1 ? UITableViewAutomaticDimension : 0;
+	return section == 1 ? 28 : 0;
 }
 
 #pragma mark - NCTableViewController

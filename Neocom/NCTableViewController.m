@@ -370,7 +370,9 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return UITableViewAutomaticDimension;
+	UIView* view = [self tableView:tableView viewForHeaderInSection:section];
+	return view ? 26 : 0;
+//	return UITableViewAutomaticDimension;
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -31,7 +31,6 @@
 		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0@760-[view]-0@760-|" options:0 metrics:nil views:bindings];
 		[self addConstraints:constraints];
 		self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-
 	}
 	return self;
 }

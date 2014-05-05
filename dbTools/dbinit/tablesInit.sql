@@ -261,16 +261,18 @@ CREATE TABLE dgmAttributeTypes (
   "categoryID" tinyint(3) default NULL,
   "iconID" smallint(6) default NULL,
   displayNameID smallint(6) default NULL,
+  tooltipTitleID smallint(6) default NULL,
+  tooltipDescriptionID smallint(6) default NULL,
   dataID smallint(6) default NULL,
   PRIMARY KEY  ("attributeID")
 );
 
 CREATE TABLE dgmEffects (
-"effectID"  smallint(6) NOT NULL,
+"effectID"  INTEGER NOT NULL,
 "effectName"  TEXT(400),
-"effectCategory"  smallint(6),
-"preExpression"  smallint(6),
-"postExpression"  smallint(6),
+"effectCategory"  INTEGER,
+"preExpression"  INTEGER,
+"postExpression"  INTEGER,
 "description"  TEXT(1000),
 "guid"  TEXT(60),
 "isOffensive"  INTEGER,
@@ -299,23 +301,22 @@ CREATE TABLE dgmEffects (
 "dataID" smallint(6) default NULL,
 PRIMARY KEY ("effectID")
 );
-
 CREATE TABLE "dgmTypeAttributes" (
- "typeID"  SMALLINT(6) NOT NULL,
- "attributeID"  SMALLINT(6) NOT NULL,
+ "typeID"  INTEGER NOT NULL,
+ "attributeID"  INTEGER NOT NULL,
  "value"  double default NULL,
  PRIMARY KEY ("typeID", "attributeID")
 );
 
 CREATE TABLE "dgmTypeEffects" (
-"typeID"  SMALLINT(6) NOT NULL,
-"effectID"  SMALLINT(6) NOT NULL,
+"typeID"  INTEGER NOT NULL,
+"effectID"  INTEGER NOT NULL,
 "isDefault"  INTEGER,
 PRIMARY KEY ("typeID", "effectID")
 );
 
 CREATE TABLE "invCategories" (
-"categoryID"  SMALLINT(3) NOT NULL,
+"categoryID"  INTEGER NOT NULL,
 "categoryName"  TEXT(100),
 "description"  TEXT(3000),
 "published"  INTEGER,
@@ -324,10 +325,9 @@ CREATE TABLE "invCategories" (
 "dataID" smallint(6) default NULL,
 PRIMARY KEY ("categoryID")
 );
-
 CREATE TABLE "invGroups" (
-"groupID" SMALLINT(6) NOT NULL,
-"categoryID"  SMALLINT(3),
+"groupID" INTEGER NOT NULL,
+"categoryID"  INTEGER,
 "groupName"  TEXT(100),
 "description"  TEXT(3000),
 "useBasePrice"  INTEGER,
@@ -342,10 +342,9 @@ CREATE TABLE "invGroups" (
 "dataID"   smallint(6) default NULL,
 PRIMARY KEY ("groupID")
 );
-
 CREATE TABLE invTypes (
-  "typeID"  SMALLINT(6) NOT NULL,
-  "groupID"  SMALLINT(6),
+  "typeID"  INTEGER NOT NULL,
+  "groupID"  INTEGER,
   "typeName" varchar(100) default NULL,
   "description" varchar(3000) default NULL,
   "graphicID" smallint(6) default NULL,
@@ -367,10 +366,9 @@ CREATE TABLE invTypes (
   copyTypeID smallint(6) default NULL,
   PRIMARY KEY  ("typeID")
 );
-
 CREATE TABLE invControlTowerResources (
-  "controlTowerTypeID" SMALLINT(6) NOT NULL,
-  "resourceTypeID" SMALLINT(6) NOT NULL,
+  "controlTowerTypeID" int(11) NOT NULL,
+  "resourceTypeID" int(11) NOT NULL,
   "purpose" tinyint(4) default NULL,
   "quantity" int(11) default NULL,
   "minSecurityLevel" double default NULL,

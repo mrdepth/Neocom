@@ -188,7 +188,7 @@
 													 [sent addObject:message];
 												 else {
 													 for (NCMailBoxContact* contact in message.recipients) {
-														 if (contact.type == NCMailBoxContactTypeCharacter)
+														 if (contact.type == NCMailBoxContactTypeCharacter && contact.contactID == account.characterID)
 															 inInbox = YES;
 														 else if (contact.type == NCMailBoxContactTypeCorporation) {
 															 NSDictionary* corp = corps[@(contact.contactID)];

@@ -136,7 +136,6 @@
 		1261593E18EE7BFD0049B9CE /* evedb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593C18EE7BFD0049B9CE /* evedb.sqlite */; };
 		1261594218EE7C080049B9CE /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 1261594018EE7C080049B9CE /* Icons */; };
 		1261594318EE7C080049B9CE /* Types in Resources */ = {isa = PBXBuildFile; fileRef = 1261594118EE7C080049B9CE /* Types */; };
-		1261594918EE7F9C0049B9CE /* libFlurry_4.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
 		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
 		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
@@ -429,6 +428,7 @@
 		12D011BC18A20BE600C0A228 /* NCFittingNPCPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */; };
 		12D011BF18A2101400C0A228 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BD18A2101400C0A228 /* checkmark.png */; };
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
+		12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
@@ -804,7 +804,6 @@
 		1261594018EE7C080049B9CE /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		1261594118EE7C080049B9CE /* Types */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Types; sourceTree = "<group>"; };
 		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.4.0.a; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1263AAE219055A9000AF522A /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
 		12640AF818B72E43005C311D /* NCStarbasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesViewController.h; sourceTree = "<group>"; };
@@ -1353,6 +1352,7 @@
 		12D011BB18A20BE600C0A228 /* NCFittingNPCPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingNPCPickerViewController.m; sourceTree = "<group>"; };
 		12D011BD18A2101400C0A228 /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
 		12D011BE18A2101400C0A228 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
+		12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
@@ -1591,6 +1591,7 @@
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
+				12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
 				12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */,
@@ -1598,7 +1599,6 @@
 				12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */,
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
-				1261594918EE7F9C0049B9CE /* libFlurry_4.4.0.a in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
 				127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */,
 				12F9561718CDB739005CEAD6 /* libGoogleAdMobAds.a in Frameworks */,
@@ -2220,7 +2220,7 @@
 			isa = PBXGroup;
 			children = (
 				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				1261594818EE7F9C0049B9CE /* libFlurry_4.4.0.a */,
+				12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";

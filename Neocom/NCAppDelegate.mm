@@ -47,10 +47,10 @@
 @implementation NCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#warning Enable Flurry
+//#warning Enable Flurry
 #if !TARGET_IPHONE_SIMULATOR
-//	[Flurry setCrashReportingEnabled:YES];
-  //  [Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
+	[Flurry setCrashReportingEnabled:YES];
+	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {

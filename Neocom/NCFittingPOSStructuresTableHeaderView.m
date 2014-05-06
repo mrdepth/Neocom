@@ -7,8 +7,13 @@
 //
 
 #import "NCFittingPOSStructuresTableHeaderView.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCFittingPOSStructuresTableHeaderView
+
+- (void) awakeFromNib {
+	self.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 #import "NCProgressTextField.h"
 #import "NCProgressLabel.h"
 
 @class NCDamagePattern;
-@interface NCFittingDamagePatternEditorViewController : UITableViewController
+@interface NCFittingDamagePatternEditorViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet NCProgressTextField *emTextField;
 @property (weak, nonatomic) IBOutlet NCProgressTextField *thermalTextField;
 @property (weak, nonatomic) IBOutlet NCProgressTextField *kineticTextField;

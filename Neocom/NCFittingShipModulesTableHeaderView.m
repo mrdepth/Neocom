@@ -7,8 +7,13 @@
 //
 
 #import "NCFittingShipModulesTableHeaderView.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCFittingShipModulesTableHeaderView
+
+- (void) awakeFromNib {
+	self.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {

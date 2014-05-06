@@ -1,14 +1,21 @@
 //
-//  NCFittingSectionGenericHedaerView.m
+//  NCFittingSectionGenericHeaderView.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 28.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCFittingSectionGenericHedaerView.h"
+#import "NCFittingSectionGenericHeaderView.h"
+#import "UIColor+Neocom.h"
 
-@implementation NCFittingSectionGenericHedaerView
+@implementation NCFittingSectionGenericHeaderView
+
+- (void) awakeFromNib {
+	self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+	self.backgroundView.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
+	self.backgroundView.opaque = NO;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {

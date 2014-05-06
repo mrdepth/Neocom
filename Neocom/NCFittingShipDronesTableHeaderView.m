@@ -7,8 +7,13 @@
 //
 
 #import "NCFittingShipDronesTableHeaderView.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCFittingShipDronesTableHeaderView
+
+- (void) awakeFromNib {
+	self.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {

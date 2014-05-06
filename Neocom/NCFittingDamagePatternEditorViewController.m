@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	self.refreshControl = nil;
 	self.title = self.damagePattern.name;
 
 	self.emTextField.progress = self.damagePattern.em;
@@ -129,6 +129,12 @@
 
 	
 	return NO;
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
 }
 
 @end

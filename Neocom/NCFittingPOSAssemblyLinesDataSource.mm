@@ -134,7 +134,8 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return UITableViewAutomaticDimension;
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	return title ? 44 : 0;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {

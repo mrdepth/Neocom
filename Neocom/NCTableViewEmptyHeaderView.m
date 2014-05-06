@@ -1,14 +1,14 @@
 //
-//  NCTableViewEmptyHedaerView.m
+//  NCTableViewEmptyHeaderView.m
 //  Neocom
 //
 //  Created by Артем Шиманский on 11.01.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCTableViewEmptyHedaerView.h"
+#import "NCTableViewEmptyHeaderView.h"
 
-@implementation NCTableViewEmptyHedaerView
+@implementation NCTableViewEmptyHeaderView
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
 	if (self = [super initWithReuseIdentifier:reuseIdentifier]) {

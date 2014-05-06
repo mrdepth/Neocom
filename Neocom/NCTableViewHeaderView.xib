@@ -23,7 +23,7 @@
                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="0.20000000000000001" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="nGY-Ar-mXF" secondAttribute="trailing" constant="15" id="4J1-qH-la2"/>
                 <constraint firstItem="nGY-Ar-mXF" firstAttribute="leading" secondItem="KJf-M8-KgV" secondAttribute="leading" constant="15" id="OM9-jC-9AB"/>

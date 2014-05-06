@@ -1,5 +1,5 @@
 //
-//  NCFittingSectionGenericHedaerView.h
+//  NCFittingSectionGenericHeaderView.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 28.01.14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCFittingSectionGenericHedaerView : UITableViewHeaderFooterView
+@interface NCFittingSectionGenericHeaderView : UITableViewHeaderFooterView
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 

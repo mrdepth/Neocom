@@ -534,51 +534,53 @@
 	else {
 		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
 		if (![row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-			eufe::Structure* structure = row.structures.front();
-			
-			int optimal = (int) structure->getMaxRange();
-			int falloff = (int) structure->getFalloff();
-			float trackingSpeed = structure->getTrackingSpeed();
-			
-			NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
-			
-			cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
-			cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
-			
-			eufe::Charge* charge = structure->getCharge();
-			
-			if (charge) {
-				EVEDBInvType* type = [self.controller typeWithItem:charge];
-				cell.chargeLabel.text = type.typeName;
-			}
-			else
-				cell.chargeLabel.text = nil;
-			
-			
-			if (optimal > 0) {
-				NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
-				if (falloff > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
-				if (trackingSpeed > 0)
-					s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
-				cell.optimalLabel.text = s;
-			}
-			else
-				cell.optimalLabel.text = nil;
-			
-			switch (structure->getState()) {
-				case eufe::Module::STATE_ACTIVE:
-					cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
-					break;
-				case eufe::Module::STATE_ONLINE:
-					cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
-					break;
-				case eufe::Module::STATE_OVERLOADED:
-					cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
-					break;
-				default:
-					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
-					break;
+			@synchronized(self.controller) {
+				eufe::Structure* structure = row.structures.front();
+				
+				int optimal = (int) structure->getMaxRange();
+				int falloff = (int) structure->getFalloff();
+				float trackingSpeed = structure->getTrackingSpeed();
+				
+				NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
+				
+				cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
+				cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+				
+				eufe::Charge* charge = structure->getCharge();
+				
+				if (charge) {
+					EVEDBInvType* type = [self.controller typeWithItem:charge];
+					cell.chargeLabel.text = type.typeName;
+				}
+				else
+					cell.chargeLabel.text = nil;
+				
+				
+				if (optimal > 0) {
+					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];
+					if (falloff > 0)
+						s = [s stringByAppendingFormat:NSLocalizedString(@" + %@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(falloff)]];
+					if (trackingSpeed > 0)
+						s = [s stringByAppendingFormat:NSLocalizedString(@" (%@ rad/sec)", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(trackingSpeed)]];
+					cell.optimalLabel.text = s;
+				}
+				else
+					cell.optimalLabel.text = nil;
+				
+				switch (structure->getState()) {
+					case eufe::Module::STATE_ACTIVE:
+						cell.stateImageView.image = [UIImage imageNamed:@"active.png"];
+						break;
+					case eufe::Module::STATE_ONLINE:
+						cell.stateImageView.image = [UIImage imageNamed:@"online.png"];
+						break;
+					case eufe::Module::STATE_OVERLOADED:
+						cell.stateImageView.image = [UIImage imageNamed:@"overheated.png"];
+						break;
+					default:
+						cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
+						break;
+				}
 			}
 		}
 	}

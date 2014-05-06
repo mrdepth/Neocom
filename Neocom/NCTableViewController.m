@@ -58,7 +58,9 @@
 		view.backgroundColor = [UIColor clearColor];
 		self.tableView.backgroundView = view;
 	}
+	
 	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	self.tableView.separatorColor = [UIColor appearanceTableViewSeparatorColor];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccountNotification:) name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -334,6 +336,7 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.backgroundView = nil;
 	tableView.backgroundColor = self.tableView.backgroundColor;
+	tableView.separatorColor = self.tableView.separatorColor;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -371,7 +374,7 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	UIView* view = [self tableView:tableView viewForHeaderInSection:section];
-	return view ? 26 : 0;
+	return view ? 44 : 0;
 //	return UITableViewAutomaticDimension;
 }
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 
-@interface NCFittingShipWorkspaceViewController : UITableViewController
+@interface NCFittingShipWorkspaceViewController : NCTableViewController
 
 @end

@@ -1,5 +1,5 @@
 //
-//  NCFittingSectionHiSlotHedaerView.h
+//  NCFittingSectionHiSlotHeaderView.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 29.01.14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCFittingSectionHiSlotHedaerView : UITableViewHeaderFooterView
+@interface NCFittingSectionHiSlotHeaderView : UITableViewHeaderFooterView
 @property (nonatomic, weak) IBOutlet UILabel *turretsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *launchersLabel;
 

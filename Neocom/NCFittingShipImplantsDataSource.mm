@@ -10,7 +10,7 @@
 #import "NCFittingShipViewController.h"
 #import "NCTableViewCell.h"
 #import "UIActionSheet+Block.h"
-#import "NCFittingSectionGenericHedaerView.h"
+#import "NCFittingSectionGenericHeaderView.h"
 
 #define ActionButtonCancel NSLocalizedString(@"Cancel", nil)
 #define ActionButtonDelete NSLocalizedString(@"Delete", nil)
@@ -91,7 +91,7 @@
 	if (sectionIndex == 0)
 		return nil;
 	else {
-		NCFittingSectionGenericHedaerView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHedaerView"];
+		NCFittingSectionGenericHeaderView* header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCFittingSectionGenericHeaderView"];
 		if (sectionIndex == 1) {
 			header.imageView.image = [UIImage imageNamed:@"implant.png"];
 			header.titleLabel.text = NSLocalizedString(@"Implants", nil);
@@ -105,7 +105,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return section == 0 ? 0 : 24;
+	return section == 0 ? 0 : 44;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {

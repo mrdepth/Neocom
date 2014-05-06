@@ -7,6 +7,7 @@
 //
 
 #import "NCTableViewHeaderView.h"
+#import "UIColor+Neocom.h"
 
 @implementation NCTableViewHeaderView
 @synthesize textLabel = _textLabel;
@@ -31,6 +32,10 @@
 		constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0@760-[view]-0@760-|" options:0 metrics:nil views:bindings];
 		[self addConstraints:constraints];
 		self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+
+		self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+		self.backgroundView.backgroundColor = [UIColor appearanceTableViewHeaderViewBackgroundColor];
+		self.backgroundView.opaque = NO;
 	}
 	return self;
 }

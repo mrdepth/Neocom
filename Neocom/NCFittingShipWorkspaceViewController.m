@@ -28,11 +28,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	self.refreshControl = nil;
 	
-	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHedaerView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHedaerView"];
-	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHedaerView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHedaerView"];
-	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionGenericHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionGenericHeaderView"];
+	[self.tableView registerNib:[UINib nibWithNibName:@"NCFittingSectionHiSlotHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"NCFittingSectionHiSlotHeaderView"];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -45,6 +44,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
 }
 
 @end

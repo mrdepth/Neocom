@@ -98,7 +98,7 @@
 		CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform"];
 		animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
 		animation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeTranslation(-bounds.size.width - 10, 0, 0)];
-		animation.duration = 15.0;
+		animation.duration = 25.0;
 		animation.repeatCount = HUGE_VALF;
 		[layer addAnimation:animation forKey:@"transform"];
 		self.animation = animation;

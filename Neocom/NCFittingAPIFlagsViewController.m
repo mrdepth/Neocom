@@ -28,13 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.refreshControl = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,6 +72,12 @@
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
 }
 
 @end

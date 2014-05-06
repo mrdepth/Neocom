@@ -28,8 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
-	[self.tableView registerClass:[NCTableViewHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewHeaderView"];
+	self.refreshControl = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,5 +37,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
 
 @end

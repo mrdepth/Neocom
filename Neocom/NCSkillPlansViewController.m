@@ -161,7 +161,7 @@
 									   title:nil
 						   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 					  destructiveButtonTitle:NSLocalizedString(@"Delete", nil)
-						   otherButtonTitles:@[NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Select", nil)]
+						   otherButtonTitles:@[NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Switch", nil)]
 							 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 								 [tableView deselectRowAtIndexPath:indexPath animated:YES];
 								 if (selectedButtonIndex == 0)

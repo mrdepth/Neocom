@@ -264,32 +264,34 @@
 		cell.accessoryView = nil;
 	}
 	else {
-		NCShipFit* fit = self.controller.fits[indexPath.row];
-		eufe::Gang* gang = self.controller.engine->getGang();
-		
-		eufe::Character* fleetBooster = gang->getFleetBooster();
-		eufe::Character* wingBooster = gang->getWingBooster();
-		eufe::Character* squadBooster = gang->getSquadBooster();
-		
-		NSString *booster = nil;
-		
-		if (fit.pilot == fleetBooster)
-			booster = NSLocalizedString(@" (Fleet Booster)", nil);
-		else if (fit.pilot == wingBooster)
-			booster = NSLocalizedString(@" (Wing Booster)", nil);
-		else if (fit.pilot == squadBooster)
-			booster = NSLocalizedString(@" (Squad Booster)", nil);
-		else
-			booster = @"";
-		
-		
-		cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
-		cell.subtitleLabel.text = fit.loadoutName;
-		cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
-		if (self.controller.fit == fit)
-			cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
-		else
-			cell.accessoryView = nil;
+		@synchronized(self.controller) {
+			NCShipFit* fit = self.controller.fits[indexPath.row];
+			eufe::Gang* gang = self.controller.engine->getGang();
+			
+			eufe::Character* fleetBooster = gang->getFleetBooster();
+			eufe::Character* wingBooster = gang->getWingBooster();
+			eufe::Character* squadBooster = gang->getSquadBooster();
+			
+			NSString *booster = nil;
+			
+			if (fit.pilot == fleetBooster)
+				booster = NSLocalizedString(@" (Fleet Booster)", nil);
+			else if (fit.pilot == wingBooster)
+				booster = NSLocalizedString(@" (Wing Booster)", nil);
+			else if (fit.pilot == squadBooster)
+				booster = NSLocalizedString(@" (Squad Booster)", nil);
+			else
+				booster = @"";
+			
+			
+			cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
+			cell.subtitleLabel.text = fit.loadoutName;
+			cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
+			if (self.controller.fit == fit)
+				cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
+			else
+				cell.accessoryView = nil;
+		}
 	}
 }
 

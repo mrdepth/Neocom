@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 
-@interface NCDonationViewController : UITableViewController
+@interface NCDonationViewController : NCTableViewController
 - (IBAction)onUpgrade:(id)sender;
 - (IBAction)onDonate:(id)sender;
 - (IBAction)onRestore:(id)sender;

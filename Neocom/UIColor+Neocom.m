@@ -47,9 +47,19 @@
 	return [UIColor colorWithUInteger:0x1f1e23ff];
 }
 
++ (instancetype) appearanceTableViewHeaderViewBackgroundColor {
+	//return [self appearanceTableViewBackgroundColor];
+	return [UIColor colorWithUInteger:0x1f1e23F0];
+}
+
 + (instancetype) appearanceTableViewCellBackgroundColor {
 	return [self appearanceTableViewBackgroundColor];
 }
+
++ (instancetype) appearanceTableViewSeparatorColor {
+	return [UIColor colorWithUInteger:0x5b5866ff];
+}
+
 
 + (instancetype) appearancePopoberBackgroundColor {
 	return [self appearanceTableViewBackgroundColor];

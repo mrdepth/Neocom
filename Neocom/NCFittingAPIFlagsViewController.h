@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewController.h"
 
-@interface NCFittingAPIFlagsViewController : UITableViewController
+@interface NCFittingAPIFlagsViewController : NCTableViewController
 @property (nonatomic, strong) NSArray* values;
 @property (nonatomic, strong) NSArray* titles;
 @property (nonatomic, strong) NSArray* icons;

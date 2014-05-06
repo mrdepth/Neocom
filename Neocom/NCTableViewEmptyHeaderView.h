@@ -1,5 +1,5 @@
 //
-//  NCTableViewEmptyHedaerView.h
+//  NCTableViewEmptyHeaderView.h
 //  Neocom
 //
 //  Created by Артем Шиманский on 11.01.14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NCTableViewEmptyHedaerView : UITableViewHeaderFooterView
+@interface NCTableViewEmptyHeaderView : UITableViewHeaderFooterView
 
 @end

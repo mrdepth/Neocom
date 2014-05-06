@@ -8,7 +8,7 @@
 
 #import "NCMainMenuViewController.h"
 #import "NCStorage.h"
-#import "NCTableViewEmptyHedaerView.h"
+#import "NCTableViewEmptyHeaderView.h"
 #import "NCSideMenuViewController.h"
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
@@ -67,7 +67,7 @@
     [super viewDidLoad];
 	
 	self.refreshControl = nil;
-	[self.tableView registerClass:[NCTableViewEmptyHedaerView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewEmptyHedaerView"];
+	[self.tableView registerClass:[NCTableViewEmptyHeaderView class] forHeaderFooterViewReuseIdentifier:@"NCTableViewEmptyHeaderView"];
 	self.allSections = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mainMenu" ofType:@"plist"]];
 	[self reload];
 	
@@ -155,7 +155,7 @@
 	if (section == 0)
 		return nil;
 	else
-		return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewEmptyHedaerView"];
+		return [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewEmptyHeaderView"];
 }
 
 #pragma mark - Table view delegate

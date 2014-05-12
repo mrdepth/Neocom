@@ -13,38 +13,35 @@
 
 @interface GADCustomEventRequest : NSObject
 
-// The end user's gender set in GADRequest. If none specified,
-// returns kGADGenderUnknown.
-@property(nonatomic, readonly) GADGender userGender;
+/// The end user's gender set in GADRequest. If not specified, returns kGADGenderUnknown.
+@property(nonatomic, readonly, assign) GADGender userGender;
 
-// The end user's birthday set in GADRequest. If none specified, returns nil.
-@property(nonatomic, readonly) NSDate *userBirthday;
+/// The end user's birthday set in GADRequest. If not specified, returns nil.
+@property(nonatomic, readonly, copy) NSDate *userBirthday;
 
-// The end user's latitude, longitude and accuracy, set in GADRequest. If
-// none specified, hasLocation retuns NO, and userLatitude, userLongitude
-// and userLocationAccuracyInMeters will all return 0.
-@property(nonatomic, readonly) BOOL userHasLocation;
-@property(nonatomic, readonly) CGFloat userLatitude;
-@property(nonatomic, readonly) CGFloat userLongitude;
-@property(nonatomic, readonly) CGFloat userLocationAccuracyInMeters;
+/// The end user's latitude, longitude, and accuracy, set in GADRequest. If not specified,
+/// userHasLocation returns NO, and userLatitude, userLongitude and userLocationAccuracyInMeters
+/// will all return 0.
+@property(nonatomic, readonly, assign) BOOL userHasLocation;
+@property(nonatomic, readonly, assign) CGFloat userLatitude;
+@property(nonatomic, readonly, assign) CGFloat userLongitude;
+@property(nonatomic, readonly, assign) CGFloat userLocationAccuracyInMeters;
 
-// Description of the user's location, in free form text, set in GADRequest.
-// If not available, returns nil. This may be set even if userHasLocation
-// is NO.
-@property(nonatomic, readonly) NSString *userLocationDescription;
+/// Description of the user's location, in free form text, set in GADRequest. If not available,
+/// returns nil. This may be set even if userHasLocation is NO.
+@property(nonatomic, readonly, copy) NSString *userLocationDescription;
 
-// Keywords set in GADRequest. If none, returns nil.
-@property(nonatomic, readonly) NSArray *userKeywords;
+/// Keywords set in GADRequest. Returns nil if no keywords are set.
+@property(nonatomic, readonly, copy) NSArray *userKeywords;
 
-// The additional parameters set by the app in GADRequest.h. This allows you
-// to pass additional information from your app to your Custom Event object. To
-// do so, create an instance of GADCustomEventExtras to pass to GADRequest
-// -registerAdNetworkExtras:. The instance should have an NSDictionary set for a
-// particular custom event label. That NSDictionary becomes the
-// additionalParameters here.
-@property(nonatomic, readonly) NSDictionary *additionalParameters;
+/// The additional parameters set by the application. This property allows you to pass additional
+/// information from your application to your Custom Event object. To do so, create an instance of
+/// GADCustomEventExtras to pass to GADRequest -registerAdNetworkExtras:. The instance should have
+/// an NSDictionary set for a particular custom event label. That NSDictionary becomes the
+/// additionalParameters here.
+@property(nonatomic, readonly, copy) NSDictionary *additionalParameters;
 
-// Whether you have set the testing property in GADRequest.
-@property(nonatomic, readonly) BOOL isTesting;
+/// Indicates if the testing property has been set in GADRequest.
+@property(nonatomic, readonly, assign) BOOL isTesting;
 
 @end

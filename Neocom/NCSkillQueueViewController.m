@@ -86,7 +86,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier rangeOfString:@"NCDatabaseTypeInfoViewController"].location != NSNotFound) {
+	if (segue.identifier && [segue.identifier rangeOfString:@"NCDatabaseTypeInfoViewController"].location != NSNotFound) {
 		NCDatabaseTypeInfoViewController* controller;
 		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
 			controller = [segue.destinationViewController viewControllers][0];

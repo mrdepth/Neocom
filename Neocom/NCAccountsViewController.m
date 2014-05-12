@@ -130,23 +130,25 @@
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]])
 		[(NCStoryboardPopoverSegue*) segue setAnchorView:sender];
 	
-	if ([segue.identifier rangeOfString:@"NCSelectCharAccount"].location != NSNotFound || [segue.identifier rangeOfString:@"NCSelectCorpAccount"].location != NSNotFound) {
-		NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
-		NCAccountsViewControllerData* data = self.data;
-		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-		[NCAccount setCurrentAccount:account.account];
-	}
-	else if ([segue.identifier isEqualToString:@"Logout"]) {
-		[NCAccount setCurrentAccount:nil];
-	}
-	else if ([segue.identifier isEqualToString:@"NCCharAccessMask"] || [segue.identifier isEqualToString:@"NCCorpAccessMask"]) {
-		NCAPIKeyAccessMaskViewController* controller = [segue.destinationViewController viewControllers][0];
-		id cell = [sender superview];
-		for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);
-		NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-		NCAccountsViewControllerData* data = self.data;
-		NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-		controller.account = account.account;
+	if (segue.identifier) {
+		if ([segue.identifier rangeOfString:@"NCSelectCharAccount"].location != NSNotFound || [segue.identifier rangeOfString:@"NCSelectCorpAccount"].location != NSNotFound) {
+			NSIndexPath* indexPath = [self.tableView indexPathForCell:sender];
+			NCAccountsViewControllerData* data = self.data;
+			NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+			[NCAccount setCurrentAccount:account.account];
+		}
+		else if ([segue.identifier isEqualToString:@"Logout"]) {
+			[NCAccount setCurrentAccount:nil];
+		}
+		else if ([segue.identifier isEqualToString:@"NCCharAccessMask"] || [segue.identifier isEqualToString:@"NCCorpAccessMask"]) {
+			NCAPIKeyAccessMaskViewController* controller = [segue.destinationViewController viewControllers][0];
+			id cell = [sender superview];
+			for (;![cell isKindOfClass:[UITableViewCell class]]; cell = [cell superview]);
+			NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+			NCAccountsViewControllerData* data = self.data;
+			NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+			controller.account = account.account;
+		}
 	}
 }
 

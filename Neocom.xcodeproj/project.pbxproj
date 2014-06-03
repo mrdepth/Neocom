@@ -430,6 +430,7 @@
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */; };
 		12D6DC0D1920A296003FC5ED /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12D6DC0B1920A296003FC5ED /* README.txt */; };
+		12D6DCF91921FBE5003FC5ED /* EVEDBInvMetaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D6DCF81921FBE5003FC5ED /* EVEDBInvMetaType.m */; };
 		12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
@@ -1372,6 +1373,8 @@
 		12D6DC091920A296003FC5ED /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		12D6DC0B1920A296003FC5ED /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		12D6DCF71921FBE5003FC5ED /* EVEDBInvMetaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEDBInvMetaType.h; sourceTree = "<group>"; };
+		12D6DCF81921FBE5003FC5ED /* EVEDBInvMetaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEDBInvMetaType.m; sourceTree = "<group>"; };
 		12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
@@ -2500,6 +2503,8 @@
 				126A0D09185F3B9200A8E8A3 /* EVEDBInvMarketGroup.m */,
 				126A0D0A185F3B9200A8E8A3 /* EVEDBInvMetaGroup.h */,
 				126A0D0B185F3B9200A8E8A3 /* EVEDBInvMetaGroup.m */,
+				12D6DCF71921FBE5003FC5ED /* EVEDBInvMetaType.h */,
+				12D6DCF81921FBE5003FC5ED /* EVEDBInvMetaType.m */,
 				126A0D0C185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.h */,
 				126A0D0D185F3B9200A8E8A3 /* EVEDBInvType+ControlTower.m */,
 				126A0D0E185F3B9200A8E8A3 /* EVEDBInvType+Installation.h */,
@@ -4659,6 +4664,7 @@
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
+				12D6DCF91921FBE5003FC5ED /* EVEDBInvMetaType.m in Sources */,
 				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
 				84A6E51C18A1745F00231735 /* NCFittingDamagePatternEditorViewController.m in Sources */,

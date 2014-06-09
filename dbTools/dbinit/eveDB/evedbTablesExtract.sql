@@ -2,6 +2,7 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "certCerts",
 "certMasteries",
 "certSkills",
+"chrRaces",
 "dgmAttributeCategories",
 "dgmAttributeTypes",
 "dgmEffects",

@@ -17,10 +17,18 @@ CREATE TABLE "certSkills" (
   "skillLevel" int DEFAULT NULL,
   "certLevelText" varchar(8) DEFAULT NULL
 );
+CREATE TABLE "chrRaces" (
+  "raceID" int  NOT NULL,
+  "raceName" varchar(100) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "iconID" int DEFAULT NULL,
+  "shortDescription" varchar(500) DEFAULT NULL,
+  PRIMARY KEY ("raceID")
+);
 CREATE TABLE "dgmAttributeCategories" (
   "categoryID" int  NOT NULL,
-  "categoryName" varchar(100) DEFAULT NULL,
-  "categoryDescription" varchar(400) DEFAULT NULL,
+  "categoryName" varchar(50) DEFAULT NULL,
+  "categoryDescription" varchar(200) DEFAULT NULL,
   PRIMARY KEY ("categoryID")
 );
 CREATE TABLE "eveUnits" (
@@ -54,16 +62,16 @@ CREATE TABLE "invControlTowerResourcePurposes" (
 CREATE TABLE "invMarketGroups" (
   "marketGroupID" int NOT NULL,
   "parentGroupID" int DEFAULT NULL,
-  "marketGroupName" varchar(200) DEFAULT NULL,
-  "description" varchar(6000) DEFAULT NULL,
+  "marketGroupName" varchar(100) DEFAULT NULL,
+  "description" varchar(3000) DEFAULT NULL,
   "iconID" int DEFAULT NULL,
   "hasTypes" int DEFAULT NULL,
   PRIMARY KEY ("marketGroupID")
 );
 CREATE TABLE "invMetaGroups" (
   "metaGroupID" int NOT NULL,
-  "metaGroupName" varchar(200) DEFAULT NULL,
-  "description" varchar(2000) DEFAULT NULL,
+  "metaGroupName" varchar(100) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
   "iconID" int DEFAULT NULL,
   PRIMARY KEY ("metaGroupID")
 );
@@ -76,7 +84,7 @@ CREATE TABLE "invMetaTypes" (
 CREATE TABLE "invTraits" (
   "typeID" int DEFAULT NULL,
   "skillID" int DEFAULT NULL,
-  "bonus" int DEFAULT NULL,
+  "bonus" double DEFAULT NULL,
   "bonusText" text,
   "unitID" int DEFAULT NULL
 );
@@ -169,16 +177,16 @@ CREATE TABLE "mapSolarSystems" (
 );
 CREATE TABLE "ramActivities" (
   "activityID" int  NOT NULL,
-  "activityName" varchar(200) DEFAULT NULL,
+  "activityName" varchar(100) DEFAULT NULL,
   "iconNo" varchar(5) DEFAULT NULL,
-  "description" varchar(2000) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
   "published" int DEFAULT NULL,
   PRIMARY KEY ("activityID")
 );
 CREATE TABLE "ramAssemblyLineTypes" (
   "assemblyLineTypeID" int  NOT NULL,
-  "assemblyLineTypeName" varchar(200) DEFAULT NULL,
-  "description" varchar(2000) DEFAULT NULL,
+  "assemblyLineTypeName" varchar(100) DEFAULT NULL,
+  "description" varchar(1000) DEFAULT NULL,
   "baseTimeMultiplier" double DEFAULT NULL,
   "baseMaterialMultiplier" double DEFAULT NULL,
   "volume" double DEFAULT NULL,
@@ -215,7 +223,7 @@ CREATE TABLE "staStations" (
   "solarSystemID" int DEFAULT NULL,
   "constellationID" int DEFAULT NULL,
   "regionID" int DEFAULT NULL,
-  "stationName" varchar(200) DEFAULT NULL,
+  "stationName" varchar(100) DEFAULT NULL,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
   "z" double DEFAULT NULL,
@@ -239,8 +247,6 @@ CREATE INDEX "mapDenormalize_mapDenormalize_IX_constellation" ON "mapDenormalize
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
 CREATE INDEX "mapConstellations_mapConstellations_IX_region" ON "mapConstellations" ("regionID");
-CREATE INDEX "invBlueprintTypes_blueprinttypes" ON "invBlueprintTypes" ("productTypeID","blueprintTypeID");
-CREATE INDEX "invBlueprintTypes_ibt_pti" ON "invBlueprintTypes" ("productTypeID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");

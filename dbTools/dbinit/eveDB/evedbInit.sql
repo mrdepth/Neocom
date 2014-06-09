@@ -31,6 +31,8 @@ INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
 INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
 INSERT INTO eveDB.ramTypeRequirements SELECT * FROM ramTypeRequirements;
 
+INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
+
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=4 WHERE attributeID IN (109,110,111,113);

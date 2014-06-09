@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
+        <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="certificate" inverseEntity="CertMastery" syncable="YES"/>
+        <fetchedProperty name="localizedDescription" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="TrnTranslation"/>
+        </fetchedProperty>
+        <fetchedProperty name="localizedDisplayName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="TrnTranslation"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="CertMastery" representedClassName="NCDBCertMastery" syncable="YES">
+        <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="masteries" inverseEntity="CertCertificate" syncable="YES"/>
+        <relationship name="level" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="masteries" inverseEntity="CertMasteryLevel" syncable="YES"/>
+        <relationship name="skills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="mastery" inverseEntity="CertSkill" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="masteries" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="CertMasteryLevel" representedClassName="NCDBCertMasteryLevel" syncable="YES">
+        <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="claimedIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevelClaimedIcons" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="level" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="unclaimedIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevelUnclaimedIcons" inverseEntity="EveIcon" syncable="YES"/>
+        <fetchedProperty name="localizedDisplayName" optional="YES" transient="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="TrnTranslation"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="CertSkill" representedClassName="NCDBCertSkill" syncable="YES">
+        <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="mastery" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="skills" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="masterySkills" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="ChrRace" representedClassName="NCDBChrRace" syncable="YES">
+        <attribute name="raceID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
+        <fetchedProperty name="localizedRaceName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="ChrRace"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="DgmAttributeCategory" representedClassName="NCDBDgmAttributeCategory" syncable="YES">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="attributeCategory" inverseEntity="DgmAttributeType" syncable="YES"/>
+    </entity>
+    <entity name="DgmAttributeType" representedClassName="NCDBDgmAttributeType" syncable="YES">
+        <attribute name="attributeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="attributeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="attributeCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeCategory" inverseName="attributeTypes" inverseEntity="DgmAttributeCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="attributeTypes" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="typeAttributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="attributeType" inverseEntity="DgmTypeAttribute" syncable="YES"/>
+        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveUnit" inverseName="attributeTypes" inverseEntity="EveUnit" syncable="YES"/>
+        <fetchedProperty name="localizedDisplayName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="DgmAttributeType"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="DgmEffect" representedClassName="NCDBDgmEffect" syncable="YES">
+        <attribute name="effectID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="effects" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES">
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES">
+        <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="NCDBImageValueTransformer" syncable="YES"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="icon" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="icon" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="icon" inverseEntity="InvCategory" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="marketGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="icon" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="masteryLevelClaimedIcons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="claimedIcon" inverseEntity="CertMasteryLevel" syncable="YES"/>
+        <relationship name="masteryLevelUnclaimedIcons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="unclaimedIcon" inverseEntity="CertMasteryLevel" syncable="YES"/>
+        <relationship name="metaGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="icon" inverseEntity="InvMetaGroup" syncable="YES"/>
+        <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="icon" inverseEntity="NpcGroup" syncable="YES"/>
+        <relationship name="races" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="icon" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="icon" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="EveUnit" representedClassName="NCDBEveUnit" syncable="YES">
+        <attribute name="unitID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="unit" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <fetchedProperty name="localizedDisplayName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="EveUnit"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvBlueprintType" representedClassName="NCDBInvBlueprintType" syncable="YES">
+        <attribute name="materialModifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="maxProductionLimit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="productionTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="productivityModifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="researchCopyTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="researchMaterialTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="researchProductivityTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="researchTechTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="techLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="wasteFactor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprintType" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="meterials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeMaterial" inverseName="blueprintType" inverseEntity="InvTypeMaterial" syncable="YES"/>
+        <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprint" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="InvCategory" representedClassName="NCDBInvCategory" syncable="YES">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="category" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="categories" inverseEntity="EveIcon" syncable="YES"/>
+        <fetchedProperty name="localizedCategoryName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvCategory"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvControlTower" representedClassName="NCDBInvControlTower" syncable="YES">
+        <relationship name="resources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="controlTower" inverseEntity="InvControlTowerResource" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="controlTower" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="InvControlTowerResource" representedClassName="NCDBInvControlTowerResource" syncable="YES">
+        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="minSecurityLevel" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="wormholeClassID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="resources" inverseEntity="InvControlTower" syncable="YES"/>
+        <relationship name="purpose" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTowerResourcePurpose" inverseName="controlTowerResources" inverseEntity="InvControlTowerResourcePurpose" syncable="YES"/>
+        <relationship name="resourceType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="controlTowerResources" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="InvControlTowerResourcePurpose" representedClassName="NCDBInvControlTowerResourcePurpose" syncable="YES">
+        <attribute name="purposeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="purpose" inverseEntity="InvControlTowerResource" syncable="YES"/>
+        <fetchedProperty name="localizedPurposeText" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvControlTowerResourcePurpose"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvGroup" representedClassName="NCDBInvGroup" syncable="YES">
+        <attribute name="groupID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="groups" inverseEntity="InvCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="groups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="group" inverseEntity="NpcGroup" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="group" inverseEntity="InvType" syncable="YES"/>
+        <fetchedProperty name="localizedGroupName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvGroup"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvMarketGroup" representedClassName="NCDBInvMarketGroup" syncable="YES">
+        <attribute name="marketGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="marketGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="subGroups" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="parentGroup" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="marketGroup" inverseEntity="InvType" syncable="YES"/>
+        <fetchedProperty name="localizedMarketGroupName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvMarketGroup"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvMetaGroup" representedClassName="NCDBInvMetaGroup" syncable="YES">
+        <attribute name="metaGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="metaGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="metaTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaType" inverseName="metaGroup" inverseEntity="InvMetaType" syncable="YES"/>
+        <fetchedProperty name="localizedMetaGroupName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvMetaGroup"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvMetaType" representedClassName="NCDBInvMetaType" syncable="YES">
+        <relationship name="metaGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="metaTypes" inverseEntity="InvMetaGroup" syncable="YES"/>
+        <relationship name="parentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="variations" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="metaType" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="InvType" representedClassName="NCDBInvType" syncable="YES">
+        <attribute name="basePrice" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="capacity" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="mass" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="portionSize" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="radius" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="typeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="type" inverseEntity="DgmTypeAttribute" syncable="YES"/>
+        <relationship name="blueprint" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="productType" inverseEntity="InvBlueprintType" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="blueprintType" inverseEntity="InvBlueprintType" syncable="YES"/>
+        <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="type" inverseEntity="InvControlTower" syncable="YES"/>
+        <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
+        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="type" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
+        <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="types" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="masterySkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="type" inverseEntity="CertSkill" syncable="YES"/>
+        <relationship name="metaType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMetaType" inverseName="type" inverseEntity="InvMetaType" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="types" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="requiredFor" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="requiredType" inverseEntity="RamTypeRequirement" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="stationType" inverseEntity="StaStation" syncable="YES"/>
+        <relationship name="typeMaterials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeMaterial" inverseName="materialType" inverseEntity="InvTypeMaterial" syncable="YES"/>
+        <relationship name="typeRequirements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="type" inverseEntity="RamTypeRequirement" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaType" inverseName="parentType" inverseEntity="InvMetaType" syncable="YES"/>
+        <fetchedProperty name="localizedDescription" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="TrnTranslation" predicateString="$FETCH_SOURCE.typeID == typeID"/>
+        </fetchedProperty>
+        <fetchedProperty name="localizedTypeName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvType"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="InvTypeMaterial" representedClassName="NCDBInvTypeMaterial" syncable="YES">
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="meterials" inverseEntity="InvBlueprintType" syncable="YES"/>
+        <relationship name="materialType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeMaterials" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="MapConstellation" representedClassName="NCDBMapConstellation" syncable="YES">
+        <attribute name="constellationID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="constellationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="constellation" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="constellations" inverseEntity="MapRegion" syncable="YES"/>
+        <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="constellation" inverseEntity="MapSolarSystem" syncable="YES"/>
+    </entity>
+    <entity name="MapDenormalize" representedClassName="NCDBMapDenormalize" syncable="YES">
+        <attribute name="itemID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="denormalize" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="denormalize" inverseEntity="MapRegion" syncable="YES"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="denormalize" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="denormalize" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="MapRegion" representedClassName="NCDBMapRegion" syncable="YES">
+        <attribute name="regionID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="regionName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="region" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="region" inverseEntity="MapDenormalize" syncable="YES"/>
+    </entity>
+    <entity name="MapSolarSystem" representedClassName="NCDBMapSolarSystem" syncable="YES">
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="solarSystemID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="solarSystemName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="solarSystems" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="solarSystem" inverseEntity="MapDenormalize" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="solarSystem" inverseEntity="StaStation" syncable="YES"/>
+    </entity>
+    <entity name="NpcGroup" representedClassName="NCDBNpcGroup" syncable="YES">
+        <attribute name="npcGroupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="npcGroups" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="npcGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="parentNpcGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="supNpcGroups" inverseEntity="NpcGroup" syncable="YES"/>
+        <relationship name="supNpcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="parentNpcGroup" inverseEntity="NpcGroup" syncable="YES"/>
+    </entity>
+    <entity name="RamActivity" representedClassName="NCDBRamActivity" syncable="YES">
+        <attribute name="activityID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="assemblyLineTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="activity" inverseEntity="RamAssemblyLineType" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="activities" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="typeRequirements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="activity" inverseEntity="RamTypeRequirement" syncable="YES"/>
+        <fetchedProperty name="localizedDisplayName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="RamActivity"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="RamAssemblyLineType" representedClassName="NCDBRamAssemblyLineType" syncable="YES">
+        <attribute name="assemblyLineTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="baseMaterialMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="baseTimeMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="minCostPerHour" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="assemblyLineTypes" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="assemblyLineType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
+        <fetchedProperty name="localizedDisplayName" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="RamAssemblyLineType"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="RamInstallationTypeContent" representedClassName="NCDBRamInstallationTypeContent" syncable="YES">
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="assemblyLineType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="installationTypeContents" inverseEntity="RamAssemblyLineType" syncable="YES"/>
+        <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="installationTypeContents" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="RamTypeRequirement" representedClassName="NCDBRamTypeRequirement" syncable="YES">
+        <attribute name="damagePerJob" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="recycle" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="typeRequirements" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="requiredType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="requiredFor" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeRequirements" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="StaStation" representedClassName="NCDBStaStation" syncable="YES">
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="stationID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="stationName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="stations" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="stations" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="TrnTranslation" representedClassName="NCDBTrnTranslation" syncable="YES">
+        <attribute name="columnID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="keyID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <configuration name="Localizable"/>
+    <elements>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="116"/>
+        <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
+        <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="176"/>
+        <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
+        <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
+        <element name="EveUnit" positionX="0" positionY="153" width="128" height="101"/>
+        <element name="InvBlueprintType" positionX="117" positionY="261" width="128" height="238"/>
+        <element name="InvCategory" positionX="9" positionY="54" width="128" height="116"/>
+        <element name="InvControlTower" positionX="-135" positionY="234" width="128" height="73"/>
+        <element name="InvControlTowerResource" positionX="72" positionY="216" width="128" height="148"/>
+        <element name="InvControlTowerResourcePurpose" positionX="63" positionY="207" width="128" height="101"/>
+        <element name="InvGroup" positionX="0" positionY="45" width="128" height="146"/>
+        <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="146"/>
+        <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="116"/>
+        <element name="InvMetaType" positionX="-9" positionY="135" width="128" height="88"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="521"/>
+        <element name="InvTypeMaterial" positionX="0" positionY="45" width="128" height="88"/>
+        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="133"/>
+        <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="148"/>
+        <element name="MapRegion" positionX="99" positionY="243" width="128" height="103"/>
+        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="133"/>
+        <element name="NpcGroup" positionX="117" positionY="261" width="128" height="118"/>
+        <element name="RamActivity" positionX="63" positionY="207" width="128" height="146"/>
+        <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="176"/>
+        <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="88"/>
+        <element name="RamTypeRequirement" positionX="90" positionY="234" width="128" height="133"/>
+        <element name="StaStation" positionX="99" positionY="243" width="128" height="118"/>
+        <element name="TrnTranslation" positionX="27" positionY="81" width="128" height="88"/>
+        <element name="CertMastery" positionX="-189" positionY="180" width="128" height="103"/>
+        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="116"/>
+        <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
+        <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="131"/>
+    </elements>
+</model>

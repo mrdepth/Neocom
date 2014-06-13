@@ -7,7 +7,7 @@
 //
 
 #import "NCCharacterAttributes.h"
-#import "EVEDBAPI.h"
+//#import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "NCTrainingQueue.h"
 #include <map>
@@ -32,8 +32,8 @@
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue {
 	std::map<int, NSInteger> skillPoints;
 	for (NCSkillData* skill in trainingQueue.skills) {
-		EVEDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
-		EVEDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
+		NCDBDgmTypeAttribute *primaryAttribute = skill.type.attributesDictionary[@(180)];
+		NCDBDgmTypeAttribute *secondaryAttribute = skill.type.attributesDictionary[@(181)];
 		int primaryAttributeID = 1 << ((int) primaryAttribute.value - 164);
 		int secondaryAttributeID = 1 << ((int) secondaryAttribute.value - 164);
 		skillPoints[primaryAttributeID | (secondaryAttributeID << 16)] += skill.skillPointsToLevelUp;
@@ -121,7 +121,6 @@
 		}
 	}
 	
-	
 	return characterAttributes;
 }
 
@@ -165,9 +164,9 @@
 	return self;
 }
 
-- (float) skillpointsPerSecondForSkill:(EVEDBInvType*) skill {
-	EVEDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
-	EVEDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
+- (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill {
+	NCDBDgmTypeAttribute *primaryAttribute = skill.attributesDictionary[@(180)];
+	NCDBDgmTypeAttribute *secondaryAttribute = skill.attributesDictionary[@(181)];
 	NSInteger effectivePrimaryAttribute = [self effectiveAttributeValueWithAttributeID:primaryAttribute.value];
 	NSInteger effectiveSecondaryAttribute = [self effectiveAttributeValueWithAttributeID:secondaryAttribute.value];
 	return (effectivePrimaryAttribute + effectiveSecondaryAttribute / 2.0) / 60.0;

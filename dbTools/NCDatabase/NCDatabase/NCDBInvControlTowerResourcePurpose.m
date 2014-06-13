@@ -2,7 +2,7 @@
 //  NCDBInvControlTowerResourcePurpose.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,6 +13,7 @@
 @implementation NCDBInvControlTowerResourcePurpose
 
 @dynamic purposeID;
+@dynamic purposeText;
 @dynamic controlTowerResources;
 
 @end

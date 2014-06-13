@@ -280,9 +280,9 @@
 																				resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 																					if ([task isCancelled])
 																						*needsMore = NO;
-																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
-																					skillData.trainedLevel = -1;
-																					allSkills[@(skillData.typeID)] = skillData;
+//																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
+//																					skillData.trainedLevel = -1;
+//																					allSkills[@(skillData.typeID)] = skillData;
 																				}];
 											 
 											 

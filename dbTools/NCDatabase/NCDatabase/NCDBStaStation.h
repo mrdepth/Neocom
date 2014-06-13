@@ -2,7 +2,7 @@
 //  NCDBStaStation.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,10 +13,10 @@
 
 @interface NCDBStaStation : NSManagedObject
 
-@property (nonatomic) int32_t stationID;
 @property (nonatomic) float security;
+@property (nonatomic) int32_t stationID;
 @property (nonatomic, retain) NSString * stationName;
-@property (nonatomic, retain) NCDBInvType *stationType;
 @property (nonatomic, retain) NCDBMapSolarSystem *solarSystem;
+@property (nonatomic, retain) NCDBInvType *stationType;
 
 @end

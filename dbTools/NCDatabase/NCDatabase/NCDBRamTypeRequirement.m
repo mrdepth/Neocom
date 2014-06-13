@@ -2,7 +2,7 @@
 //  NCDBRamTypeRequirement.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,11 +13,11 @@
 
 @implementation NCDBRamTypeRequirement
 
-@dynamic quantity;
 @dynamic damagePerJob;
+@dynamic quantity;
 @dynamic recycle;
-@dynamic type;
 @dynamic activity;
 @dynamic requiredType;
+@dynamic type;
 
 @end

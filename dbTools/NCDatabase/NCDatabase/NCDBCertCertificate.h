@@ -2,18 +2,20 @@
 //  NCDBCertCertificate.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMastery;
+@class NCDBCertMastery, NCDBTxtDescription;
 
 @interface NCDBCertCertificate : NSManagedObject
 
 @property (nonatomic) int32_t certificateID;
+@property (nonatomic, retain) NSString * certificateName;
+@property (nonatomic, retain) NCDBTxtDescription *certificateDescription;
 @property (nonatomic, retain) NSSet *masteries;
 @end
 

@@ -2,7 +2,7 @@
 //  NCDBRamAssemblyLineType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -14,10 +14,11 @@
 @implementation NCDBRamAssemblyLineType
 
 @dynamic assemblyLineTypeID;
-@dynamic baseTimeMultiplier;
+@dynamic assemblyLineTypeName;
 @dynamic baseMaterialMultiplier;
-@dynamic volume;
+@dynamic baseTimeMultiplier;
 @dynamic minCostPerHour;
+@dynamic volume;
 @dynamic activity;
 @dynamic installationTypeContents;
 

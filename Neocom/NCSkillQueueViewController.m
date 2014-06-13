@@ -447,7 +447,7 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 for (EVESkillQueueItem *item in skillQueue.skillQueue) {
-												 NCSkillData* skillData = [[NCSkillData alloc] initWithTypeID:item.typeID error:nil];
+												 NCSkillData* skillData = [[NCSkillData alloc] initWithTypeID:item.typeID];
 												 if (!skillData)
 													 continue;
 												 EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(item.typeID)];

@@ -18,11 +18,38 @@
 @implementation NCSkillData
 
 - (NSTimeInterval) trainingTimeToLevelUpWithCharacterAttributes:(NCCharacterAttributes*) attributes {
-	return [self skillPointsToLevelUp] / [attributes skillpointsPerSecondForSkill:self];
+	return [self skillPointsToLevelUp] / [attributes skillpointsPerSecondForSkill:self.type];
 }
 
 - (NSTimeInterval) trainingTimeToFinishWithCharacterAttributes:(NCCharacterAttributes*) attributes {
-	return [self skillPointsToFinish] / [attributes skillpointsPerSecondForSkill:self];
+	return [self skillPointsToFinish] / [attributes skillpointsPerSecondForSkill:self.type];
+}
+
+- (id) initWithInvType:(NCDBInvType*) type {
+	if (self = [super init]) {
+		assert(type);
+		self.type = type;
+	}
+	return self;
+}
+
+- (id) initWithTypeID:(int32_t) typeID {
+	if (self = [self initWithInvType:[NCDBInvType invTypeWithTypeID:typeID]]) {
+		
+	}
+	return self;
+}
+
+
+- (float) skillPointsAtLevel:(int32_t) level {
+	if (level == 0)
+		return 0;
+	NCDBDgmTypeAttribute* rank = self.type.attributesDictionary[@(275)];
+	if (rank) {
+		float sp = pow(2, 2.5 * level - 2.5) * 250 * rank.value;
+		return sp;
+	}
+	return 0;
 }
 
 - (int32_t) skillPointsToFinish {
@@ -69,8 +96,8 @@
 
 - (NSString*) skillName {
 	if (!_skillName) {
-		EVEDBDgmTypeAttribute *attribute = self.attributesDictionary[@(275)];
-		_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.typeName, (int) attribute.value];
+		NCDBDgmTypeAttribute *attribute = self.type.attributesDictionary[@(275)];
+		_skillName = [NSString stringWithFormat:@"%@ (x%d)", self.type.typeName, (int) attribute.value];
 	}
 	return _skillName;
 }
@@ -109,7 +136,7 @@
 - (NSUInteger) hash {
 	NSNumber* hash = objc_getAssociatedObject(self, @"hash");
 	if (!hash) {
-		NSInteger data[] = {self.typeID, self.targetLevel, self.currentLevel, self.trainedLevel, self.skillPoints};
+		NSInteger data[] = {self.type.typeID, self.targetLevel, self.currentLevel, self.trainedLevel, self.skillPoints};
 		NSUInteger hash = [[NSData dataWithBytes:data length:sizeof(data)] hash];
 		objc_setAssociatedObject(self, @"hash", @(hash), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		return hash;
@@ -121,7 +148,7 @@
 #pragma mark - NSCoding
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
-	[aCoder encodeInt32:self.typeID forKey:@"typeID"];
+	[aCoder encodeInt32:self.type.typeID forKey:@"typeID"];
 	[aCoder encodeInt32:self.skillPoints forKey:@"skillPoints"];
 	[aCoder encodeInt32:self.currentLevel forKey:@"currentLevel"];
 	[aCoder encodeInt32:self.targetLevel forKey:@"targetLevel"];
@@ -133,7 +160,8 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	int32_t typeID = [aDecoder decodeInt32ForKey:@"typeID"];
-	if (self = [super initWithTypeID:typeID error:nil]) {
+	if (self = [super init]) {
+		self.type = [NCDBInvType invTypeWithTypeID:typeID];
 		self.skillPoints = [aDecoder decodeInt32ForKey:@"skillPoints"];
 		self.currentLevel = [aDecoder decodeInt32ForKey:@"currentLevel"];
 		self.targetLevel = [aDecoder decodeInt32ForKey:@"targetLevel"];

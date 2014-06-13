@@ -2,19 +2,20 @@
 //  NCDBInvMetaGroup.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
 #import "NCDBInvMetaGroup.h"
 #import "NCDBEveIcon.h"
-#import "NCDBInvMetaType.h"
+#import "NCDBInvType.h"
 
 
 @implementation NCDBInvMetaGroup
 
 @dynamic metaGroupID;
+@dynamic metaGroupName;
 @dynamic icon;
-@dynamic metaTypes;
+@dynamic types;
 
 @end

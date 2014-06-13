@@ -18,26 +18,33 @@
 @interface NCSkillHierarchy()
 @property (nonatomic, strong, readwrite) NSMutableArray* skills;
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(int32_t) nestingLevel account:(NCAccount*) account;
+- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel account:(NCAccount*) account;
 @end
 
 @implementation NCSkillHierarchy
 
-- (id) initWithSkill:(EVEDBInvType*) skill level:(int32_t) level account:(NCAccount*) account {
+- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill account:(NCAccount*) account {
 	if (self = [super init]) {
-		EVEDBInvTypeRequiredSkill* requiredSkill = [EVEDBInvTypeRequiredSkill invTypeWithInvType:skill];
-		requiredSkill.requiredLevel = level;
 		self.skills = [NSMutableArray new];
-		[self addRequiredSkill:requiredSkill withNestingLevel:0 account:account];
+		[self addRequiredSkill:skill.skillType withLevel:skill.skillLevel nestingLevel:0 account:account];
 	}
 	return self;
 }
 
+- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level account:(NCAccount*) account {
+	if (self = [super init]) {
+		self.skills = [NSMutableArray new];
+		[self addRequiredSkill:skill withLevel:level nestingLevel:0 account:account];
+	}
+	return self;
+}
+
+
 #pragma mark - Private
 
-- (void) addRequiredSkill:(EVEDBInvTypeRequiredSkill*) skill withNestingLevel:(int32_t) nestingLevel account:(NCAccount*) account {
+- (void) addRequiredSkill:(NCDBInvType*) skill withLevel:(int32_t) level nestingLevel:(int32_t) nestingLevel account:(NCAccount*) account {
 	NCSkillHierarchySkill* skillData = [[NCSkillHierarchySkill alloc] initWithInvType:skill];
-	skillData.targetLevel = skill.requiredLevel;
+	skillData.targetLevel = level;
 
 	if (account.characterSheet) {
 		EVECharacterSheetSkill* characterSkill = account.characterSheet.skillsMap[@(skill.typeID)];
@@ -55,8 +62,8 @@
 
 	skillData.nestingLevel = nestingLevel;
 	[(NSMutableArray*) self.skills addObject:skillData];
-	for (EVEDBInvTypeRequiredSkill* subSkill in skill.requiredSkills)
-		[self addRequiredSkill:subSkill withNestingLevel:nestingLevel + 1 account:account];
+	for (NCDBInvTypeRequiredSkill* subSkill in skill.requiredSkills)
+		[self addRequiredSkill:subSkill.skillType withLevel:subSkill.skillLevel nestingLevel:nestingLevel + 1 account:account];
 }
 
 @end

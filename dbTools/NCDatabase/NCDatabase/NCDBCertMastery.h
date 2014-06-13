@@ -2,7 +2,7 @@
 //  NCDBCertMastery.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,22 +13,22 @@
 
 @interface NCDBCertMastery : NSManagedObject
 
-@property (nonatomic, retain) NSSet *types;
-@property (nonatomic, retain) NSSet *skills;
-@property (nonatomic, retain) NCDBCertMasteryLevel *level;
 @property (nonatomic, retain) NCDBCertCertificate *certificate;
+@property (nonatomic, retain) NCDBCertMasteryLevel *level;
+@property (nonatomic, retain) NSSet *skills;
+@property (nonatomic, retain) NSSet *types;
 @end
 
 @interface NCDBCertMastery (CoreDataGeneratedAccessors)
-
-- (void)addTypesObject:(NCDBInvType *)value;
-- (void)removeTypesObject:(NCDBInvType *)value;
-- (void)addTypes:(NSSet *)values;
-- (void)removeTypes:(NSSet *)values;
 
 - (void)addSkillsObject:(NCDBCertSkill *)value;
 - (void)removeSkillsObject:(NCDBCertSkill *)value;
 - (void)addSkills:(NSSet *)values;
 - (void)removeSkills:(NSSet *)values;
+
+- (void)addTypesObject:(NCDBInvType *)value;
+- (void)removeTypesObject:(NCDBInvType *)value;
+- (void)addTypes:(NSSet *)values;
+- (void)removeTypes:(NSSet *)values;
 
 @end

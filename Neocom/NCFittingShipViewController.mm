@@ -250,7 +250,7 @@
 		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
 			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
 		}];
-		controller.type = type;
+		controller.type = (id) type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;

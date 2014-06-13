@@ -7,7 +7,7 @@
 //
 
 #import "NCTableViewController.h"
-#import "EVEDBAPI.h"
+#import "NCDatabase.h"
 
 typedef NS_ENUM(NSInteger, NCDatabaseFilter) {
 	NCDatabaseFilterAll,
@@ -17,8 +17,8 @@ typedef NS_ENUM(NSInteger, NCDatabaseFilter) {
 
 @interface NCDatabaseViewController : NCTableViewController
 @property (nonatomic, assign) NCDatabaseFilter filter;
-@property (nonatomic, strong) EVEDBInvCategory* category;
-@property (nonatomic, strong) EVEDBInvGroup* group;
+@property (nonatomic, strong) NCDBInvCategory* category;
+@property (nonatomic, strong) NCDBInvGroup* group;
 - (IBAction)onFilter:(id)sender;
 
 @end

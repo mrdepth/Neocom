@@ -2,7 +2,7 @@
 //  NCDBCertMastery.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -15,9 +15,9 @@
 
 @implementation NCDBCertMastery
 
-@dynamic types;
-@dynamic skills;
-@dynamic level;
 @dynamic certificate;
+@dynamic level;
+@dynamic skills;
+@dynamic types;
 
 @end

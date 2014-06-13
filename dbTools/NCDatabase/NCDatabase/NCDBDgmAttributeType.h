@@ -2,7 +2,7 @@
 //  NCDBDgmAttributeType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -15,6 +15,7 @@
 
 @property (nonatomic) int32_t attributeID;
 @property (nonatomic, retain) NSString * attributeName;
+@property (nonatomic, retain) NSString * displayName;
 @property (nonatomic) BOOL published;
 @property (nonatomic, retain) NCDBDgmAttributeCategory *attributeCategory;
 @property (nonatomic, retain) NCDBEveIcon *icon;

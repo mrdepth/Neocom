@@ -17,6 +17,9 @@
 #define NCDBInvControlTowerResourcePurposeDisplayNameTranslationColumnID 1003
 #define NCDBRamAssemblyLineTypeDisplayNameTranslationColumnID 1004
 
+#define NCDBMetaGroupAttributeID 1692
+#define NCDBMetaLevelAttributeID 633
+
 
 int32_t lastUserDefinedIconID = 2000000;
 
@@ -26,7 +29,6 @@ NSDictionary* invTypes;
 NSDictionary* invGroups;
 NSDictionary* invCategories;
 NSDictionary* invMetaGroups;
-NSDictionary* invMetaTypes;
 NSDictionary* invMarketGroups;
 NSDictionary* dgmAttributeCategories;
 NSDictionary* dgmAttributeTypes;
@@ -43,8 +45,6 @@ NSDictionary* ramActivities;
 NSDictionary* ramAssemblyLineTypes;
 NSDictionary* staStations;
 NSDictionary* chrRaces;
-
-NSMutableDictionary* baseTranslations;
 
 static NSManagedObjectModel *managedObjectModel()
 {
@@ -110,19 +110,21 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 			NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
 			icon.iconFile = eveIcon.iconFile;
-			icon.image = imageRep;
+			icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+			icon.image.image = imageRep;
 			dictionary[@(eveIcon.iconID)] = icon;
 		}
 	}];
 	
 	for (int i = 0; i <= 5; i++) {
-		NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon79_0%d", i + 1];
+		NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon79_0%d.png", i + 1];
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
 		if (data) {
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 			NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
 			icon.iconFile = [iconImageName lastPathComponent];
-			icon.image = imageRep;
+			icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+			icon.image.image = imageRep;
 			dictionary[@(NCDBCertMasteryLevelIconsStartID + i)] = icon;
 		}
 	}
@@ -146,7 +148,8 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 						NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 						NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
 						icon.iconFile = eveActivity.iconNo;
-						icon.image = imageRep;
+						icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+						icon.image.image = imageRep;
 						dictionary[eveActivity.iconNo] = icon;
 					}
 				}
@@ -163,7 +166,8 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 			NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
 			icon.iconFile = eveNpcGroup.iconName;
-			icon.image = imageRep;
+			icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+			icon.image.image = imageRep;
 			dictionary[eveNpcGroup.iconName] = icon;
 		}
 	}];
@@ -176,11 +180,36 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 			NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
 			icon.iconFile = [NSString stringWithFormat:@"%@.png", eveType.imageName];
-			icon.image = imageRep;
+			icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+			icon.image.image = imageRep;
 			dictionary[eveType.imageName] = icon;
 		}
 	}];
 	
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195"]) {
+		__block EVEDBEveIcon* eveIcon = nil;
+		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
+					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+						 *needsMore = NO;
+						 eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
+					 }];
+		if (!eveIcon) {
+			NCDBEveIcon* icon = dictionary[iconNo];
+			if (!icon) {
+				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
+				
+				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
+				if (data) {
+					NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
+					NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
+					icon.iconFile = iconNo;
+					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+					icon.image.image = imageRep;
+					dictionary[iconNo] = icon;
+				}
+			}
+		}
+	}
 	return dictionary;
 }
 
@@ -191,12 +220,8 @@ NSDictionary* convertEveUnits(NSManagedObjectContext* context, EVEDBDatabase* da
 		EVEDBEveUnit* eveUnit = [[EVEDBEveUnit alloc] initWithStatement:stmt];
 		NCDBEveUnit* unit = [NSEntityDescription insertNewObjectForEntityForName:@"EveUnit" inManagedObjectContext:context];
 		unit.unitID = eveUnit.unitID;
+		unit.displayName = eveUnit.displayName;
 		dictionary[@(unit.unitID)] = unit;
-		
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveUnit.unitID;
-		displayNameTranslation.columnID = 58;
-		displayNameTranslation.text = eveUnit.displayName;
 	}];
 	
 	return dictionary;
@@ -207,7 +232,7 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 	
 	[database execSQLRequest:@"select * from invTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* eveType = [[EVEDBInvType alloc] initWithStatement:stmt];
-		NCDBEveIcon* icon = eveType.imageName ? dictionary[eveType.imageName] : nil;
+		NCDBEveIcon* icon = eveType.imageName ? eveIcons[eveType.imageName] : nil;
 		
 		NCDBInvType* type = [NSEntityDescription insertNewObjectForEntityForName:@"InvType" inManagedObjectContext:context];
 		type.typeID = eveType.typeID;
@@ -222,6 +247,7 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		type.group = invGroups[@(eveType.groupID)];
 		type.marketGroup = eveType.marketGroupID ? invMarketGroups[@(eveType.marketGroupID)] : nil;
 		type.race = eveType.raceID ? chrRaces[@(eveType.raceID)] : nil;
+		type.metaGroup = invMetaGroups[@(-1)];
 		
 		if (icon)
 			type.icon = icon;
@@ -243,15 +269,8 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 			[description appendFormat:@"\n%@", eveType.traitsString];
 		}
 		
-		NCDBTrnTranslation* typeNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		typeNameTranslation.keyID = type.typeID;
-		typeNameTranslation.columnID = 8;
-		typeNameTranslation.text = eveType.typeName;
-
-		NCDBTrnTranslation* descriptionTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		descriptionTranslation.keyID = type.typeID;
-		descriptionTranslation.columnID = 33;
-		descriptionTranslation.text = description;
+		type.typeDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
+		type.typeDescription.text = description;
 	}];
 	
 	return dictionary;
@@ -265,13 +284,8 @@ NSDictionary* convertInvCategories(NSManagedObjectContext* context, EVEDBDatabas
 		NCDBInvCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"InvCategory" inManagedObjectContext:context];
 		category.categoryID = eveCategory.categoryID;
 		category.icon = eveCategory.iconID ? eveIcons[@(eveCategory.iconID)] : nil;
-		
+		category.categoryName = eveCategory.categoryName;
 		dictionary[@(category.categoryID)] = category;
-		
-		NCDBTrnTranslation* categoryNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		categoryNameTranslation.keyID = eveCategory.categoryID;
-		categoryNameTranslation.columnID = 6;
-		categoryNameTranslation.text = eveCategory.categoryName;
 	}];
 	
 	return dictionary;
@@ -286,13 +300,8 @@ NSDictionary* convertInvGroups(NSManagedObjectContext* context, EVEDBDatabase* d
 		group.groupID = eveGroup.groupID;
 		group.category = invCategories[@(eveGroup.categoryID)];
 		group.icon = eveGroup.iconID ? eveIcons[@(eveGroup.iconID)] : nil;
-		
+		group.groupName = eveGroup.groupName;
 		dictionary[@(group.groupID)] = group;
-		
-		NCDBTrnTranslation* groupNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		groupNameTranslation.keyID = eveGroup.groupID;
-		groupNameTranslation.columnID = 7;
-		groupNameTranslation.text = eveGroup.groupName;
 
 	}];
 
@@ -307,31 +316,28 @@ NSDictionary* convertInvMetaGroups(NSManagedObjectContext* context, EVEDBDatabas
 		NCDBInvMetaGroup* metaGroup = [NSEntityDescription insertNewObjectForEntityForName:@"InvMetaGroup" inManagedObjectContext:context];
 		metaGroup.metaGroupID = eveMetaGroup.metaGroupID;
 		metaGroup.icon = eveMetaGroup.iconID ? eveIcons[@(eveMetaGroup.iconID)] : nil;
-		
+		metaGroup.metaGroupName = eveMetaGroup.metaGroupName;
 		dictionary[@(metaGroup.metaGroupID)] = metaGroup;
-		
-		NCDBTrnTranslation* metaGroupNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		metaGroupNameTranslation.keyID = eveMetaGroup.metaGroupID;
-		metaGroupNameTranslation.columnID = 34;
-		metaGroupNameTranslation.text = eveMetaGroup.metaGroupName;
 	}];
-	
+
+	NCDBInvMetaGroup* metaGroup = [NSEntityDescription insertNewObjectForEntityForName:@"InvMetaGroup" inManagedObjectContext:context];
+	metaGroup.metaGroupID = -1;
+	metaGroup.icon = nil;
+	metaGroup.metaGroupName = @"";
+	dictionary[@(metaGroup.metaGroupID)] = metaGroup;
+
 	return dictionary;
 }
 
-NSDictionary* convertInvMetaTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
-	NSMutableDictionary* dictionary = [NSMutableDictionary new];
-	
+void convertInvMetaTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"select * from invMetaTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvMetaType* eveMetaType = [[EVEDBInvMetaType alloc] initWithStatement:stmt];
-		NCDBInvMetaType* metaType = [NSEntityDescription insertNewObjectForEntityForName:@"InvMetaType" inManagedObjectContext:context];
-		metaType.type = invTypes[@(eveMetaType.typeID)];
-		metaType.parentType = eveMetaType.parentTypeID ? invTypes[@(eveMetaType.parentTypeID)] : nil;
-		metaType.metaGroup = invMetaGroups[@(eveMetaType.metaGroupID)];
-		dictionary[@(eveMetaType.typeID)] = metaType;
+		NCDBInvType* type = invTypes[@(eveMetaType.typeID)];
+		NCDBInvType* parentType = eveMetaType.parentTypeID ? invTypes[@(eveMetaType.parentTypeID)] : nil;
+		if (parentType)
+			type.parentType = parentType;
+		type.metaGroup = invMetaGroups[@(eveMetaType.metaGroupID)];
 	}];
-	
-	return dictionary;
 }
 
 NSDictionary* convertInvMarketGroups(NSManagedObjectContext* context, EVEDBDatabase* database) {
@@ -343,14 +349,9 @@ NSDictionary* convertInvMarketGroups(NSManagedObjectContext* context, EVEDBDatab
 		NCDBInvMarketGroup* marketGroup = [NSEntityDescription insertNewObjectForEntityForName:@"InvMarketGroup" inManagedObjectContext:context];
 		marketGroup.marketGroupID = eveMarketGroup.marketGroupID;
 		marketGroup.icon = eveMarketGroup.iconID ? eveIcons[@(eveMarketGroup.iconID)] : nil;
-		
+		marketGroup.marketGroupName = eveMarketGroup.marketGroupName;
 		dictionary[@(marketGroup.marketGroupID)] = marketGroup;
 		eveMarketGroups[@(marketGroup.marketGroupID)] = eveMarketGroup;
-		
-		NCDBTrnTranslation* marketGroupNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		marketGroupNameTranslation.keyID = eveMarketGroup.marketGroupID;
-		marketGroupNameTranslation.columnID = 36;
-		marketGroupNameTranslation.text = eveMarketGroup.marketGroupName;
 	}];
 	[dictionary enumerateKeysAndObjectsUsingBlock:^(id key, NCDBInvMarketGroup* obj, BOOL *stop) {
 		EVEDBInvMarketGroup* eveMarketGroup = eveMarketGroups[@(obj.marketGroupID)];
@@ -386,13 +387,8 @@ NSDictionary* convertDgmAttributeTypes(NSManagedObjectContext* context, EVEDBDat
 		attributeType.attributeCategory = eveAttributeType.categoryID ? dgmAttributeCategories[@(eveAttributeType.categoryID)] : nil;
 		attributeType.icon = eveAttributeType.iconID ? eveIcons[@(eveAttributeType.iconID)] : nil;
 		attributeType.unit = eveAttributeType.unitID ? eveUnits[@(eveAttributeType.unitID)] : nil;
+		attributeType.displayName = eveAttributeType.displayName;
 		dictionary[@(attributeType.attributeID)] = attributeType;
-		
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveAttributeType.attributeID;
-		displayNameTranslation.columnID = 59;
-		displayNameTranslation.text = eveAttributeType.displayName;
-
 	}];
 	
 	return dictionary;
@@ -407,6 +403,15 @@ NSMutableArray* convertDgmTypeAttributes(NSManagedObjectContext* context, EVEDBD
 		typeAttribute.value = eveTypeAttribute.value;
 		typeAttribute.attributeType = dgmAttributeTypes[@(eveTypeAttribute.attributeID)];
 		typeAttribute.type = invTypes[@(eveTypeAttribute.typeID)];
+		if (eveTypeAttribute.attributeID == NCDBMetaGroupAttributeID) {
+			NCDBInvMetaGroup* metaGroup = invMetaGroups[@((int32_t) eveTypeAttribute.value)];
+			//assert(!typeAttribute.type.metaGroup || typeAttribute.type.metaGroup.metaGroupID == metaGroup.metaGroupID);
+			if (metaGroup)
+				typeAttribute.type.metaGroup = metaGroup;
+		}
+		else if (eveTypeAttribute.attributeID == NCDBMetaLevelAttributeID) {
+			typeAttribute.type.metaLevel = typeAttribute.value;
+		}
 		[array addObject:typeAttribute];
 	}];
 	
@@ -441,17 +446,11 @@ NSDictionary* convertCertCertificates(NSManagedObjectContext* context, EVEDBData
 		EVEDBCertCertificate* eveCertificate = [[EVEDBCertCertificate alloc] initWithStatement:stmt];
 		NCDBCertCertificate* certificate = [NSEntityDescription insertNewObjectForEntityForName:@"CertCertificate" inManagedObjectContext:context];
 		certificate.certificateID = eveCertificate.certificateID;
+		certificate.certificateName = eveCertificate.name;
 		dictionary[@(certificate.certificateID)] = certificate;
 		
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveCertificate.certificateID;
-		displayNameTranslation.columnID = NCDBCertCertificateDisplayNameTranslationColumnID;
-		displayNameTranslation.text = eveCertificate.name;
-
-		NCDBTrnTranslation* descriptionTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		descriptionTranslation.keyID = eveCertificate.certificateID;
-		descriptionTranslation.columnID = NCDBCertCertificateDescriptionTranslationColumnID;
-		descriptionTranslation.text = eveCertificate.description;
+		certificate.certificateDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
+		certificate.certificateDescription.text = eveCertificate.description;
 	}];
 	
 	return dictionary;
@@ -464,14 +463,10 @@ NSDictionary* convertCertMasteryLevels(NSManagedObjectContext* context, EVEDBDat
 		EVEDBCertSkill* eveCertSkill = [[EVEDBCertSkill alloc] initWithStatement:stmt];
 		NCDBCertMasteryLevel* masteryLevel = [NSEntityDescription insertNewObjectForEntityForName:@"CertMasteryLevel" inManagedObjectContext:context];
 		masteryLevel.level = eveCertSkill.certificateLevel;
-		masteryLevel.claimedIcon = eveIcons[@(NCDBCertMasteryLevelIconsStartID + masteryLevel.level)];
+		masteryLevel.claimedIcon = eveIcons[@(NCDBCertMasteryLevelIconsStartID + masteryLevel.level + 1)];
 		masteryLevel.unclaimedIcon = eveIcons[@(NCDBCertMasteryLevelIconsStartID)];
+		masteryLevel.displayName = eveCertSkill.certificateLevelText;
 		dictionary[@(masteryLevel.level)] = masteryLevel;
-
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = masteryLevel.level;
-		displayNameTranslation.columnID = NCDBCertMasteryLevelDisplayNameTranslationColumnID;
-		displayNameTranslation.text = eveCertSkill.certificateLevelText;
 	}];
 	
 	return dictionary;
@@ -549,12 +544,8 @@ NSDictionary* convertInvControlTowerResourcePurposes(NSManagedObjectContext* con
 		EVEDBInvControlTowerResourcePurpose* eveControlTowerResourcePurposes = [[EVEDBInvControlTowerResourcePurpose alloc] initWithStatement:stmt];
 		NCDBInvControlTowerResourcePurpose* controlTowerResourcePurposes = [NSEntityDescription insertNewObjectForEntityForName:@"InvControlTowerResourcePurpose" inManagedObjectContext:context];
 		controlTowerResourcePurposes.purposeID = eveControlTowerResourcePurposes.purposeID;
+		controlTowerResourcePurposes.purposeText = eveControlTowerResourcePurposes.purposeText;
 		dictionary[@(controlTowerResourcePurposes.purposeID)] = controlTowerResourcePurposes;
-		
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveControlTowerResourcePurposes.purposeID;
-		displayNameTranslation.columnID = NCDBInvControlTowerResourcePurposeDisplayNameTranslationColumnID;
-		displayNameTranslation.text = eveControlTowerResourcePurposes.purposeText;
 	}];
 	
 	return dictionary;
@@ -669,6 +660,7 @@ NSDictionary* convertRamActivities(NSManagedObjectContext* context, EVEDBDatabas
 		NCDBRamActivity* activity = [NSEntityDescription insertNewObjectForEntityForName:@"RamActivity" inManagedObjectContext:context];
 		activity.activityID = eveActivity.activityID;
 		activity.published = eveActivity.published;
+		activity.activityName = eveActivity.activityName;
 
 		if (eveActivity.iconNo) {
 			__block EVEDBEveIcon* eveIcon = nil;
@@ -684,11 +676,6 @@ NSDictionary* convertRamActivities(NSManagedObjectContext* context, EVEDBDatabas
 		}
 
 		dictionary[@(activity.activityID)] = activity;
-		
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveActivity.activityID;
-		displayNameTranslation.columnID = 100;
-		displayNameTranslation.text = eveActivity.activityName;
 	}];
 	
 	return dictionary;
@@ -706,12 +693,8 @@ NSDictionary* convertRamAssemblyLineTypes(NSManagedObjectContext* context, EVEDB
 		assemblyLineType.volume = eveAssemblyLineType.volume;
 		assemblyLineType.minCostPerHour = eveAssemblyLineType.minCostPerHour;
 		assemblyLineType.activity = ramActivities[@(eveAssemblyLineType.activityID)];
+		assemblyLineType.assemblyLineTypeName = eveAssemblyLineType.assemblyLineTypeName;
 		dictionary[@(assemblyLineType.assemblyLineTypeID)] = assemblyLineType;
-
-		NCDBTrnTranslation* displayNameTranslation = [NSEntityDescription insertNewObjectForEntityForName:@"TrnTranslation" inManagedObjectContext:context];
-		displayNameTranslation.keyID = eveAssemblyLineType.assemblyLineTypeID;
-		displayNameTranslation.columnID = NCDBRamAssemblyLineTypeDisplayNameTranslationColumnID;
-		displayNameTranslation.text = eveAssemblyLineType.assemblyLineTypeName;
 	}];
 	
 	return dictionary;
@@ -765,10 +748,46 @@ NSDictionary* convertChrRaces(NSManagedObjectContext* context, EVEDBDatabase* da
 		NCDBChrRace* race = [NSEntityDescription insertNewObjectForEntityForName:@"ChrRace" inManagedObjectContext:context];
 		race.raceID = eveRace.raceID;
 		race.icon = eveRace.iconID ? eveIcons[@(eveRace.iconID)] : nil;
+		race.raceName = eveRace.raceName;
 		dictionary[@(race.raceID)] = race;
 	}];
 	
 	return dictionary;
+}
+
+void convertRequiredSkills(NSManagedObjectContext* context) {
+	static int32_t requirementID[] = {182, 183, 184, 1285, 1289, 1290};
+	static int32_t skillLevelID[] = {277, 278, 279, 1286, 1287, 1288};
+
+	[invTypes enumerateKeysAndObjectsUsingBlock:^(id key, NCDBInvType* type, BOOL *stop) {
+		NSMutableDictionary* attributes = [NSMutableDictionary new];
+		for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+			for (int i = 0; i < 6; i++) {
+				if (attribute.attributeType.attributeID == requirementID[i]) {
+					attributes[@(requirementID[i])] = attribute;
+				}
+				if (attribute.attributeType.attributeID == skillLevelID[i]) {
+					attributes[@(skillLevelID[i])] = attribute;
+				}
+			}
+		}
+		for (int i = 0; i < 6; i++) {
+			NCDBDgmTypeAttribute* typeID = attributes[@(requirementID[i])];
+			NCDBDgmTypeAttribute* level = attributes[@(skillLevelID[i])];
+			if (typeID && level) {
+				NCDBInvType* skillType = invTypes[@((int32_t) typeID.value)];
+				if (skillType) {
+					NCDBInvTypeRequiredSkill* requiredSkill = [NSEntityDescription insertNewObjectForEntityForName:@"InvTypeRequiredSkill" inManagedObjectContext:context];
+					requiredSkill.skillType = skillType;
+					requiredSkill.type = type;
+					requiredSkill.skillLevel = level.value;
+				}
+				else if (type.typeID == 645) {
+					assert(0);
+				}
+			}
+		}
+	}];
 }
 
 int main(int argc, const char * argv[])
@@ -798,7 +817,7 @@ int main(int argc, const char * argv[])
 			NSLog(@"convertInvTypes");
 			invTypes = convertInvTypes(context, database);
 			NSLog(@"convertInvMetaTypes");
-			invMetaTypes = convertInvMetaTypes(context, database);
+			convertInvMetaTypes(context, database);
 			NSLog(@"convertDgmAttributeCategories");
 			dgmAttributeCategories = convertDgmAttributeCategories(context, database);
 			NSLog(@"convertDgmAttributeTypes");
@@ -845,6 +864,8 @@ int main(int argc, const char * argv[])
 			convertRamTypeRequirements(context, database);
 			NSLog(@"convertStaStations");
 			staStations = convertStaStations(context, database);
+			NSLog(@"convertRequiredSkills");
+			convertRequiredSkills(context);
 		}
 
 		

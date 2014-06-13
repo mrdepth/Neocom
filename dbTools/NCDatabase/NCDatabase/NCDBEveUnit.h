@@ -2,7 +2,7 @@
 //  NCDBEveUnit.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,6 +13,7 @@
 
 @interface NCDBEveUnit : NSManagedObject
 
+@property (nonatomic, retain) NSString * displayName;
 @property (nonatomic) int32_t unitID;
 @property (nonatomic, retain) NSSet *attributeTypes;
 @end

@@ -2,7 +2,7 @@
 //  NCDBInvType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -18,12 +18,15 @@
 #import "NCDBInvControlTowerResource.h"
 #import "NCDBInvGroup.h"
 #import "NCDBInvMarketGroup.h"
-#import "NCDBInvMetaType.h"
+#import "NCDBInvMetaGroup.h"
+#import "NCDBInvType.h"
 #import "NCDBInvTypeMaterial.h"
+#import "NCDBInvTypeRequiredSkill.h"
 #import "NCDBMapDenormalize.h"
 #import "NCDBRamInstallationTypeContent.h"
 #import "NCDBRamTypeRequirement.h"
 #import "NCDBStaStation.h"
+#import "NCDBTxtDescription.h"
 
 
 @implementation NCDBInvType
@@ -31,6 +34,8 @@
 @dynamic basePrice;
 @dynamic capacity;
 @dynamic mass;
+@dynamic metaGroupName;
+@dynamic metaLevel;
 @dynamic portionSize;
 @dynamic published;
 @dynamic radius;
@@ -46,16 +51,20 @@
 @dynamic effects;
 @dynamic group;
 @dynamic icon;
-@dynamic marketGroup;
-@dynamic metaType;
-@dynamic race;
-@dynamic typeMaterials;
-@dynamic variations;
-@dynamic masterySkills;
-@dynamic masteries;
 @dynamic installationTypeContents;
-@dynamic typeRequirements;
+@dynamic marketGroup;
+@dynamic masteries;
+@dynamic masterySkills;
+@dynamic metaGroup;
+@dynamic parentType;
+@dynamic race;
+@dynamic reguiredForSkill;
 @dynamic requiredFor;
+@dynamic requiredSkills;
 @dynamic stations;
+@dynamic typeDescription;
+@dynamic typeMaterials;
+@dynamic typeRequirements;
+@dynamic variations;
 
 @end

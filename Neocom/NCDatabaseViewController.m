@@ -14,6 +14,8 @@
 @interface NCDatabaseViewController ()
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong) NSArray* searchResults;
+@property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NSFetchedResultsController* searchResult;
 - (void) reload;
 @end
 
@@ -36,7 +38,7 @@
 		self.title = self.category.categoryName;
 	self.refreshControl = nil;
 	
-	if (!self.rows) {
+	if (!self.result) {
 		[self reload];
 	}
 	if (self.filter == NCDatabaseFilterAll)
@@ -57,9 +59,9 @@
 		id row = [sender object];
 		
 		NCDatabaseViewController* destinationViewController = segue.destinationViewController;
-		if ([row isKindOfClass:[EVEDBInvCategory class]])
+		if ([row isKindOfClass:[NCDBInvCategory class]])
 			destinationViewController.category = row;
-		else if ([row isKindOfClass:[EVEDBInvGroup class]])
+		else if ([row isKindOfClass:[NCDBInvGroup class]])
 			destinationViewController.group = row;
 		destinationViewController.filter = self.filter;
 	}
@@ -100,18 +102,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+	return tableView == self.tableView ? self.result.sections.count : self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return tableView == self.tableView ? self.rows.count : self.searchResults.count;
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
+	if ([row isKindOfClass:[NCDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
@@ -128,6 +132,11 @@
 		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		return cell;
 	}
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
@@ -162,7 +171,43 @@
 }
 
 - (void) searchWithSearchString:(NSString*) searchString {
-	NSMutableArray* searchResults = [NSMutableArray new];
+	if (searchString.length >= 2) {
+		if (self.group) {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
+			NCDatabase* database = [NCDatabase sharedDatabase];
+			request.fetchBatchSize = 50;
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		}
+		else if (self.category) {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
+			NCDatabase* database = [NCDatabase sharedDatabase];
+			request.fetchBatchSize = 50;
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		}
+		else {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"typeName CONTAINS[C] %@", searchString];
+			
+			NCDatabase* database = [NCDatabase sharedDatabase];
+			request.fetchBatchSize = 50;
+			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		}
+		NSError* error = nil;
+		[self.searchResult performFetch:&error];
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	}
+	else {
+		self.searchResult = nil;
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	}
+
+	
+/*	NSMutableArray* searchResults = [NSMutableArray new];
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:nil
 										 block:^(NCTask *task) {
@@ -202,34 +247,72 @@
 									 self.searchResults = searchResults;
 									 [self.searchDisplayController.searchResultsTableView reloadData];
 								 }
-							 }];
+							 }];*/
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
+	
+	if ([row isKindOfClass:[NCDBInvType class]]) {
+		NCDBInvType* type = row;
+		cell.titleLabel.text = type.typeName;
+		cell.iconView.image = type.icon.image.image;
 		cell.object = row;
 	}
 	else {
-		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.titleLabel.text = [row categoryName];
-		else
-			cell.titleLabel.text = [row groupName];
+		if ([row isKindOfClass:[NCDBInvCategory class]]) {
+			NCDBInvCategory* category = row;
+			cell.titleLabel.text = category.categoryName;
+			cell.iconView.image = category.icon.image.image;
+		}
+		else {
+			NCDBInvGroup* group = row;
+			cell.titleLabel.text = group.groupName;
+			cell.iconView.image = group.icon.image.image;
+		}
 		
-		NSString* iconImageName = [row icon].iconImageName;
+/*		NSString* iconImageName = [row icon].iconImageName;
 		if (iconImageName)
 			cell.iconView.image = [UIImage imageNamed:iconImageName];
 		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];*/
 		cell.object = row;
 	}
+	if (!cell.iconView.image)
+		cell.iconView.image = [[[NCDBEveIcon defaultIcon] image] image];
 }
 
 #pragma mark - Private
 
 - (void) reload {
+	if (self.group) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+		request.sortDescriptors = @[
+									[NSSortDescriptor sortDescriptorWithKey:@"metaGroup.metaGroupID" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"metaLevel" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"group == %@", self.group];
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
+	}
+	else if (self.category) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	}
+	else {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvCategory"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"categoryName" ascending:YES]];
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	}
+	NSError* error = nil;
+	[self.result performFetch:&error];
+	[self.tableView reloadData];
+	return;
 	NSMutableArray* rows = [NSMutableArray new];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone

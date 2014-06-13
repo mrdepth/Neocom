@@ -2,7 +2,7 @@
 //  NCDBEveIcon.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -10,6 +10,7 @@
 #import "NCDBCertMasteryLevel.h"
 #import "NCDBChrRace.h"
 #import "NCDBDgmAttributeType.h"
+#import "NCDBEveIconImage.h"
 #import "NCDBInvCategory.h"
 #import "NCDBInvGroup.h"
 #import "NCDBInvMarketGroup.h"
@@ -22,17 +23,17 @@
 @implementation NCDBEveIcon
 
 @dynamic iconFile;
-@dynamic image;
+@dynamic activities;
 @dynamic attributeTypes;
 @dynamic categories;
 @dynamic groups;
 @dynamic marketGroups;
+@dynamic masteryLevelClaimedIcons;
+@dynamic masteryLevelUnclaimedIcons;
 @dynamic metaGroups;
 @dynamic npcGroups;
 @dynamic races;
 @dynamic types;
-@dynamic masteryLevelUnclaimedIcons;
-@dynamic masteryLevelClaimedIcons;
-@dynamic activities;
+@dynamic image;
 
 @end

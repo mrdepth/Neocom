@@ -8,6 +8,7 @@
 
 #import "NCSkillPlan.h"
 #import "NCStorage.h"
+#import "NCDatabase.h"
 
 #define NCSkillPlanTypeIDKey @"typeID"
 #define NCSkillPlanTargetLevelKey @"targetLevel"
@@ -54,7 +55,7 @@
 - (void) save {
 	NSMutableArray* skills = [NSMutableArray new];
 	for (NCSkillData* skill in self.trainingQueue.skills) {
-		NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
+		NSDictionary* item = @{NCSkillPlanTypeIDKey: @(skill.type.typeID), NCSkillPlanTargetLevelKey: @(skill.targetLevel)};
 		[skills addObject:item];
 	}
 	
@@ -108,7 +109,7 @@
 	for (NSDictionary* item in self.skills) {
 		int32_t typeID = [item[NCSkillPlanTypeIDKey] intValue];
 		int32_t targetLevel = [item[NCSkillPlanTargetLevelKey] intValue];
-		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
 		if (type)
 			[trainingQueue addSkill:type withLevel:targetLevel];
 	}

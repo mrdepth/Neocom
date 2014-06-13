@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class EVEDBInvType;
+@class NCDBInvType;
 @class EVECharacterSheet;
 @class NCTrainingQueue;
 @interface NCCharacterAttributes : NSObject<NSCoding>
@@ -21,6 +21,6 @@
 + (instancetype) defaultCharacterAttributes;
 + (instancetype) optimalAttributesWithTrainingQueue:(NCTrainingQueue*) trainingQueue;
 - (id) initWithCharacterSheet:(EVECharacterSheet*) characterSheet;
-- (float) skillpointsPerSecondForSkill:(EVEDBInvType*) skill;
+- (float) skillpointsPerSecondForSkill:(NCDBInvType*) skill;
 
 @end

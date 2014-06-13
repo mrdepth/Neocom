@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEDBAPI.h"
 #import "NCSkillData.h"
 
 typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
@@ -26,6 +25,7 @@ typedef NS_ENUM(NSInteger, NCSkillHierarchyAvailability) {
 @interface NCSkillHierarchy : NSObject
 @property (nonatomic, strong, readonly) NSArray* skills;
 
-- (id) initWithSkill:(EVEDBInvType*) skill level:(int32_t) level account:(NCAccount*) account;
+- (id) initWithSkill:(NCDBInvTypeRequiredSkill*) skill account:(NCAccount*) account;
+- (id) initWithSkillType:(NCDBInvType*) skill level:(int32_t) level account:(NCAccount*) account;
 
 @end

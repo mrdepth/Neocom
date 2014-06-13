@@ -2,7 +2,7 @@
 //  NCDBInvBlueprintType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -24,15 +24,15 @@
 @property (nonatomic) int16_t techLevel;
 @property (nonatomic) int32_t wasteFactor;
 @property (nonatomic, retain) NCDBInvType *blueprintType;
-@property (nonatomic, retain) NSSet *meterials;
+@property (nonatomic, retain) NSSet *materials;
 @property (nonatomic, retain) NCDBInvType *productType;
 @end
 
 @interface NCDBInvBlueprintType (CoreDataGeneratedAccessors)
 
-- (void)addMeterialsObject:(NCDBInvTypeMaterial *)value;
-- (void)removeMeterialsObject:(NCDBInvTypeMaterial *)value;
-- (void)addMeterials:(NSSet *)values;
-- (void)removeMeterials:(NSSet *)values;
+- (void)addMaterialsObject:(NCDBInvTypeMaterial *)value;
+- (void)removeMaterialsObject:(NCDBInvTypeMaterial *)value;
+- (void)addMaterials:(NSSet *)values;
+- (void)removeMaterials:(NSSet *)values;
 
 @end

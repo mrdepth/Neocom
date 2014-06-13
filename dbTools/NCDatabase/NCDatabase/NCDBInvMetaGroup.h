@@ -2,27 +2,28 @@
 //  NCDBInvMetaGroup.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBEveIcon, NCDBInvMetaType;
+@class NCDBEveIcon, NCDBInvType;
 
 @interface NCDBInvMetaGroup : NSManagedObject
 
 @property (nonatomic) int32_t metaGroupID;
+@property (nonatomic, retain) NSString * metaGroupName;
 @property (nonatomic, retain) NCDBEveIcon *icon;
-@property (nonatomic, retain) NSSet *metaTypes;
+@property (nonatomic, retain) NSSet *types;
 @end
 
 @interface NCDBInvMetaGroup (CoreDataGeneratedAccessors)
 
-- (void)addMetaTypesObject:(NCDBInvMetaType *)value;
-- (void)removeMetaTypesObject:(NCDBInvMetaType *)value;
-- (void)addMetaTypes:(NSSet *)values;
-- (void)removeMetaTypes:(NSSet *)values;
+- (void)addTypesObject:(NCDBInvType *)value;
+- (void)removeTypesObject:(NCDBInvType *)value;
+- (void)addTypes:(NSSet *)values;
+- (void)removeTypes:(NSSet *)values;
 
 @end

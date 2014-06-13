@@ -15,6 +15,7 @@
 #import "NCDBCertSkill.h"
 #import "NCDBChrRace.h"
 #import "NCDBEveIcon.h"
+#import "NCDBEveIconImage.h"
 #import "NCDBInvControlTower.h"
 #import "NCDBInvMarketGroup.h"
 #import "NCDBInvControlTowerResource.h"
@@ -22,7 +23,6 @@
 #import "NCDBMapSolarSystem.h"
 #import "NCDBMapDenormalize.h"
 #import "NCDBInvType.h"
-#import "NCDBInvMetaType.h"
 #import "NCDBStaStation.h"
 #import "NCDBRamActivity.h"
 #import "NCDBDgmAttributeType.h"
@@ -38,9 +38,10 @@
 #import "NCDBInvControlTowerResourcePurpose.h"
 #import "NCDBInvMetaGroup.h"
 #import "NCDBInvTypeMaterial.h"
-#import "NCDBTrnTranslation.h"
+#import "NCDBTxtDescription.h"
 #import "NCDBDgmTypeAttribute.h"
 #import "NCDBRamInstallationTypeContent.h"
 #import "NCDBEveUnit.h"
+#import "NCDBInvTypeRequiredSkill.h"
 
 #endif

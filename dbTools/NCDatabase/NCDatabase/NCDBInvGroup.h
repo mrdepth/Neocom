@@ -2,7 +2,7 @@
 //  NCDBInvGroup.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -14,6 +14,7 @@
 @interface NCDBInvGroup : NSManagedObject
 
 @property (nonatomic) int32_t groupID;
+@property (nonatomic, retain) NSString * groupName;
 @property (nonatomic, retain) NCDBInvCategory *category;
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *npcGroups;

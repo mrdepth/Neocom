@@ -199,7 +199,7 @@
 			controller = segue.destinationViewController;
 
 		EVEAssetListItem* asset = [sender object];
-		controller.type = asset.type;
+		controller.type = (id) asset.type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCAssetsContainerViewController"]) {
 		NCAssetsContainerViewController* destinationViewController = segue.destinationViewController;

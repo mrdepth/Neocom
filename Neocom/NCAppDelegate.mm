@@ -414,20 +414,20 @@
 				for (presentedViewController = self.window.rootViewController; presentedViewController.presentedViewController; presentedViewController = presentedViewController.presentedViewController);
 				if ([presentedViewController isKindOfClass:[UINavigationController class]]) {
 					NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-					controller.type = type;
+					controller.type = (id) type;
 					[(UINavigationController*) presentedViewController pushViewController:controller animated:YES];
 				}
 				else {
 					UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewNavigationController"];
 					navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 					NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
-					controller.type = type;
+					controller.type = (id) type;
 					[presentedViewController presentViewController:navigationController animated:YES completion:nil];
 				}
 			}
 			else {
 				NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
-				controller.type = type;
+				controller.type = (id) type;
 
 				UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
 				if ([contentViewController isKindOfClass:[UINavigationController class]])

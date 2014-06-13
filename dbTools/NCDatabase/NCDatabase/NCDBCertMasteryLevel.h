@@ -2,7 +2,7 @@
 //  NCDBCertMasteryLevel.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -13,10 +13,11 @@
 
 @interface NCDBCertMasteryLevel : NSManagedObject
 
+@property (nonatomic, retain) NSString * displayName;
 @property (nonatomic) int16_t level;
-@property (nonatomic, retain) NCDBEveIcon *unclaimedIcon;
 @property (nonatomic, retain) NCDBEveIcon *claimedIcon;
 @property (nonatomic, retain) NSSet *masteries;
+@property (nonatomic, retain) NCDBEveIcon *unclaimedIcon;
 @end
 
 @interface NCDBCertMasteryLevel (CoreDataGeneratedAccessors)

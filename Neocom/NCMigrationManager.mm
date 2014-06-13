@@ -16,6 +16,7 @@
 #import "NCShipFit.h"
 #import "NCPOSFit.h"
 #import "NCStorage.h"
+#import "NCDatabase.h"
 
 @interface NCMigrationManager()
 @property (nonatomic, strong) NCStorage* storage;
@@ -276,7 +277,7 @@
 					if (components.count == 2) {
 						int32_t typeID = [[components objectAtIndex:0] intValue];
 						int32_t requiredLevel = [[components objectAtIndex:1] intValue];
-						EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+						NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
 						if (type)
 							[trainingQueue addSkill:type withLevel:requiredLevel];
 					}

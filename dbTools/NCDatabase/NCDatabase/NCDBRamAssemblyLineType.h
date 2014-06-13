@@ -2,7 +2,7 @@
 //  NCDBRamAssemblyLineType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -14,10 +14,11 @@
 @interface NCDBRamAssemblyLineType : NSManagedObject
 
 @property (nonatomic) int32_t assemblyLineTypeID;
-@property (nonatomic) float baseTimeMultiplier;
+@property (nonatomic, retain) NSString * assemblyLineTypeName;
 @property (nonatomic) float baseMaterialMultiplier;
-@property (nonatomic) float volume;
+@property (nonatomic) float baseTimeMultiplier;
 @property (nonatomic) float minCostPerHour;
+@property (nonatomic) float volume;
 @property (nonatomic, retain) NCDBRamActivity *activity;
 @property (nonatomic, retain) NSSet *installationTypeContents;
 @end

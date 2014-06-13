@@ -2,7 +2,7 @@
 //  NCDBInvCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -14,6 +14,7 @@
 @interface NCDBInvCategory : NSManagedObject
 
 @property (nonatomic) int32_t categoryID;
+@property (nonatomic, retain) NSString * categoryName;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @end

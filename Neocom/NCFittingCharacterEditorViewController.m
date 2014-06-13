@@ -46,9 +46,9 @@
 																				resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 																					if ([task isCancelled])
 																						*needsMore = NO;
-																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
-																					skillData.trainedLevel = -1;
-																					skills[@(skillData.typeID)] = skillData;
+//																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
+//																					skillData.trainedLevel = -1;
+//																					skills[@(skillData.typeID)] = skillData;
 																				}];
 											 for (NSArray* array in [[[skills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
 												 NSString* title = [[array[0] group] groupName];
@@ -198,7 +198,7 @@
 	NCFittingCharacterEditorCell* cell = (NCFittingCharacterEditorCell*) tableViewCell;
 	NCSkillData* skill = self.sections[indexPath.section][@"rows"][indexPath.row];
 	
-	cell.skillNameLabel.text = skill.typeName;
+	cell.skillNameLabel.text = skill.type.typeName;
 	cell.skillLevelLabel.text = [NSString stringWithFormat:@"%d", skill.currentLevel];
 	cell.skillData = skill;
 }

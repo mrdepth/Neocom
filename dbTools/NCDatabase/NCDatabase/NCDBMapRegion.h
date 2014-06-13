@@ -2,7 +2,7 @@
 //  NCDBMapRegion.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 15.05.14.
+//  Created by Артем Шиманский on 13.06.14.
 //
 //
 
@@ -15,11 +15,16 @@
 
 @property (nonatomic) int32_t regionID;
 @property (nonatomic, retain) NSString * regionName;
-@property (nonatomic, retain) NCDBMapConstellation *constellations;
+@property (nonatomic, retain) NSSet *constellations;
 @property (nonatomic, retain) NSSet *denormalize;
 @end
 
 @interface NCDBMapRegion (CoreDataGeneratedAccessors)
+
+- (void)addConstellationsObject:(NCDBMapConstellation *)value;
+- (void)removeConstellationsObject:(NCDBMapConstellation *)value;
+- (void)addConstellations:(NSSet *)values;
+- (void)removeConstellations:(NSSet *)values;
 
 - (void)addDenormalizeObject:(NCDBMapDenormalize *)value;
 - (void)removeDenormalizeObject:(NCDBMapDenormalize *)value;

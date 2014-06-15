@@ -7,15 +7,15 @@
 //
 
 #import "NCTableViewController.h"
-#import "EVEDBAPI.h"
 
 typedef NS_ENUM(NSInteger, NCDatabaseCertificateInfoViewControllerMode) {
 	NCDatabaseCertificateInfoViewControllerModeMasteries,
 	NCDatabaseCertificateInfoViewControllerModeRequiredFor
 };
 
+@class NCDBCertCertificate;
 @interface NCDatabaseCertificateInfoViewController : NCTableViewController
-@property (strong, nonatomic) EVEDBCertCertificate* certificate;
+@property (strong, nonatomic) NCDBCertCertificate* certificate;
 @property (weak, nonatomic) IBOutlet UIImageView* imageView;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;

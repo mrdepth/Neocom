@@ -2,7 +2,7 @@
 //  NCDBCertSkill.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //
 //
 

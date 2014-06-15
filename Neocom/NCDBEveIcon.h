@@ -2,7 +2,7 @@
 //  NCDBEveIcon.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSSet *attributeTypes;
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *groups;
+@property (nonatomic, retain) NCDBEveIconImage *image;
 @property (nonatomic, retain) NSSet *marketGroups;
 @property (nonatomic, retain) NSSet *masteryLevelClaimedIcons;
 @property (nonatomic, retain) NSSet *masteryLevelUnclaimedIcons;
@@ -25,7 +26,6 @@
 @property (nonatomic, retain) NSSet *npcGroups;
 @property (nonatomic, retain) NSSet *races;
 @property (nonatomic, retain) NSSet *types;
-@property (nonatomic, retain) NCDBEveIconImage *image;
 @end
 
 @interface NCDBEveIcon (CoreDataGeneratedAccessors)

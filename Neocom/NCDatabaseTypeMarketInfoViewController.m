@@ -8,7 +8,6 @@
 
 #import "NCDatabaseTypeMarketInfoViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
-#import "EVEDBAPI.h"
 #import "EVECentralAPI.h"
 #import "NCDatabaseTypeMarketInfoCell.h"
 #import "NSNumberFormatter+Neocom.h"
@@ -268,7 +267,7 @@
 #pragma mark - NCTableViewController
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	EVEDBInvType* type = self.type;
+	int32_t typeID = self.type.typeID;
 	__block NSError* error = nil;
 	
 	NCDatabaseTypeMarketInfoViewControllerData* data = [NCDatabaseTypeMarketInfoViewControllerData new];
@@ -276,7 +275,7 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:type.typeID
+											 EVECentralQuickLook *quickLook = [EVECentralQuickLook quickLookWithTypeID:typeID
 																											 regionIDs:nil
 																											  systemID:0
 																												 hours:0
@@ -372,7 +371,7 @@
 }
 
 - (NSString*) recordID {
-	EVEDBInvType* type = self.type;
+	NCDBInvType* type = self.type;
 	return [NSString stringWithFormat:@"NCDatabaseTypeMarketInfoViewController.%d", type.typeID];
 	//return [NSString stringWithFormat:@"%@.%d", [super recordID], type.typeID];
 }

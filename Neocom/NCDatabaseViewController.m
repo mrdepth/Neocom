@@ -12,8 +12,6 @@
 #import "UIActionSheet+Block.h"
 
 @interface NCDatabaseViewController ()
-@property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) NSArray* searchResults;
 @property (nonatomic, strong) NSFetchedResultsController* result;
 @property (nonatomic, strong) NSFetchedResultsController* searchResult;
 - (void) reload;
@@ -149,9 +147,11 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
+
 	NSString *CellIdentifier;
-	if ([row isKindOfClass:[EVEDBInvType class]])
+	if ([row isKindOfClass:[NCDBInvType class]])
 		CellIdentifier = @"TypeCell";
 	else
 		CellIdentifier = @"CategoryGroupCell";
@@ -175,7 +175,14 @@
 		if (self.group) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-			request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
+			
+			if (self.filter == NCDatabaseFilterPublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE AND typeName LIKE[C] %@", self.group, searchString];
+			else if (self.filter == NCDatabaseFilterUnpublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE AND typeName LIKE[C] %@", self.group, searchString];
+			else
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
+			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
 			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
@@ -183,7 +190,14 @@
 		else if (self.category) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-			request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
+			
+			if (self.filter == NCDatabaseFilterPublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == TRUE AND typeName LIKE[C] %@", self.category, searchString];
+			else if (self.filter == NCDatabaseFilterUnpublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == FALSE AND typeName LIKE[C] %@", self.category, searchString];
+			else
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
+			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
 			self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
@@ -191,7 +205,13 @@
 		else {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-			request.predicate = [NSPredicate predicateWithFormat:@"typeName CONTAINS[C] %@", searchString];
+
+			if (self.filter == NCDatabaseFilterPublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND typeName CONTAINS[C] %@", searchString];
+			else if (self.filter == NCDatabaseFilterUnpublished)
+				request.predicate = [NSPredicate predicateWithFormat:@"published == FALSE AND typeName CONTAINS[C] %@", searchString];
+			else
+				request.predicate = [NSPredicate predicateWithFormat:@"typeName CONTAINS[C] %@", searchString];
 			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
@@ -205,49 +225,6 @@
 		self.searchResult = nil;
 		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
-
-	
-/*	NSMutableArray* searchResults = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:nil
-										 block:^(NCTask *task) {
-											 if ([task isCancelled])
-												 return;
-											 if (searchString.length >= 2) {
-												 void (^block)(sqlite3_stmt* stmt, BOOL *needsMore) = ^(sqlite3_stmt* stmt, BOOL *needsMore) {
-													 [searchResults addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
-													 if ([task isCancelled])
-														 *needsMore = NO;
-												 };
-												 
-												 if (self.group != nil)
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																									 self.group.groupID,
-																									 searchString,
-																									 self.filter == NCDatabaseFilterPublished ? @" AND published=1" :
-																									 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
-																						resultBlock:block];
-												 else if (self.category != nil)
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT invTypes.* FROM invTypes, invGroups WHERE invGroups.categoryID=%d AND invTypes.groupID=invGroups.groupID AND typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																									 self.category.categoryID,
-																									 searchString,
-																									 self.filter == NCDatabaseFilterPublished ? @" AND invTypes.published=1" :
-																									 self.filter == NCDatabaseFilterUnpublished ? @" AND invTypes.published=0" : @""]
-																						resultBlock:block];
-												 else
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE typeName LIKE \"%%%@%%\"%@ ORDER BY typeName;",
-																									 searchString,
-																									 self.filter == NCDatabaseFilterPublished ? @" AND published=1" :
-																									 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
-																						resultBlock:block];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.searchResults = searchResults;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
-								 }
-							 }];*/
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
@@ -292,66 +269,46 @@
 									[NSSortDescriptor sortDescriptorWithKey:@"metaGroup.metaGroupID" ascending:YES],
 									[NSSortDescriptor sortDescriptorWithKey:@"metaLevel" ascending:YES],
 									[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-		request.predicate = [NSPredicate predicateWithFormat:@"group == %@", self.group];
+		
+		if (self.filter == NCDatabaseFilterPublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE", self.group];
+		else if (self.filter == NCDatabaseFilterUnpublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE", self.group];
+		else
+			request.predicate = [NSPredicate predicateWithFormat:@"group == %@", self.group];
+
 		NCDatabase* database = [NCDatabase sharedDatabase];
 		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
 	}
 	else if (self.category) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
-		request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
+		
+		if (self.filter == NCDatabaseFilterPublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND published == TRUE", self.category];
+		else if (self.filter == NCDatabaseFilterUnpublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND published == FALSE", self.category];
+		else
+			request.predicate = [NSPredicate predicateWithFormat:@"category == %@", self.category];
+
 		NCDatabase* database = [NCDatabase sharedDatabase];
 		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	}
 	else {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvCategory"];
 		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"categoryName" ascending:YES]];
+
+		if (self.filter == NCDatabaseFilterPublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE"];
+		else if (self.filter == NCDatabaseFilterUnpublished)
+			request.predicate = [NSPredicate predicateWithFormat:@"published == FALSE"];
+
 		NCDatabase* database = [NCDatabase sharedDatabase];
 		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	}
 	NSError* error = nil;
 	[self.result performFetch:&error];
 	[self.tableView reloadData];
-	return;
-	NSMutableArray* rows = [NSMutableArray new];
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 if (self.group) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invTypes WHERE groupID=%d%@ ORDER BY typeName;", self.group.groupID,
-																								 self.filter == NCDatabaseFilterPublished ? @" AND published=1":
-																								 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-											 else if (self.category) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d%@ ORDER BY groupName;", self.category.categoryID,
-																								 self.filter == NCDatabaseFilterPublished ? @" AND published=1":
-																								 self.filter == NCDatabaseFilterUnpublished ? @" AND published=0" : @""]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBInvGroup alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-											 else {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invCategories %@ ORDER BY categoryName",
-																								 self.filter == NCDatabaseFilterPublished ? @"WHERE published=1":
-																								 self.filter == NCDatabaseFilterUnpublished ? @"WHERE published=0" : @""]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBInvCategory alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.rows = rows;
-								 [self update];
-							 }];
 }
+
 @end

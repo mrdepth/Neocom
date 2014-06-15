@@ -241,7 +241,7 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		type.capacity = eveType.capacity;
 		type.mass = eveType.mass;
 		type.portionSize = eveType.portionSize;
-		type.published = eveType.published;
+		type.published = eveType.published != NO;
 		type.radius = eveType.radius;
 		type.volume = eveType.volume;
 		type.group = invGroups[@(eveType.groupID)];
@@ -285,6 +285,7 @@ NSDictionary* convertInvCategories(NSManagedObjectContext* context, EVEDBDatabas
 		category.categoryID = eveCategory.categoryID;
 		category.icon = eveCategory.iconID ? eveIcons[@(eveCategory.iconID)] : nil;
 		category.categoryName = eveCategory.categoryName;
+		category.published = eveCategory.published != NO;
 		dictionary[@(category.categoryID)] = category;
 	}];
 	
@@ -301,6 +302,7 @@ NSDictionary* convertInvGroups(NSManagedObjectContext* context, EVEDBDatabase* d
 		group.category = invCategories[@(eveGroup.categoryID)];
 		group.icon = eveGroup.iconID ? eveIcons[@(eveGroup.iconID)] : nil;
 		group.groupName = eveGroup.groupName;
+		group.published = eveGroup.published != NO;
 		dictionary[@(group.groupID)] = group;
 
 	}];
@@ -447,6 +449,7 @@ NSDictionary* convertCertCertificates(NSManagedObjectContext* context, EVEDBData
 		NCDBCertCertificate* certificate = [NSEntityDescription insertNewObjectForEntityForName:@"CertCertificate" inManagedObjectContext:context];
 		certificate.certificateID = eveCertificate.certificateID;
 		certificate.certificateName = eveCertificate.name;
+		certificate.group = invGroups[@(eveCertificate.groupID)];
 		dictionary[@(certificate.certificateID)] = certificate;
 		
 		certificate.certificateDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];

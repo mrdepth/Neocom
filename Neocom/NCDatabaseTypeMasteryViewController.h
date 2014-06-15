@@ -7,10 +7,9 @@
 //
 
 #import "NCTableViewController.h"
-#import "EVEDBAPI.h"
 
 @interface NCDatabaseTypeMasteryViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvType* type;
-@property (nonatomic, assign) NSInteger masteryLevel;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, assign) NCDBCertMasteryLevel* masteryLevel;
 
 @end

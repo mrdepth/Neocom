@@ -11,7 +11,7 @@
 #import "NCTableViewCell.h"
 
 @interface NCDatabaseTypeVariationsViewController ()
-@property (nonatomic, strong) NSArray* sections;
+@property (nonatomic, strong) NSFetchedResultsController* result;
 
 @end
 
@@ -31,52 +31,21 @@
     [super viewDidLoad];
 	self.refreshControl = nil;
 	
-	if (!self.sections) {
-//		NSMutableArray* sections = [NSMutableArray new];
-		__block NSArray* sections = nil;
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-												 __block int32_t parentTypeID = self.type.typeID;
-												 [database execSQLRequest:[NSString stringWithFormat:@"SELECT parentTypeID FROM invMetaTypes WHERE typeID=%d;", parentTypeID]
-															  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																  int32_t typeID = sqlite3_column_int(stmt, 0);
-																  if (typeID)
-																	  parentTypeID = typeID;
-																  *needsMore = NO;
-															  }];
-												 
-												 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-												 [database execSQLRequest:[NSString stringWithFormat:@"SELECT c.*, a.* FROM invTypes AS a LEFT JOIN invMetaTypes AS b ON a.typeID=b.typeID LEFT JOIN invMetaGroups AS c ON b.metaGroupID=c.metaGroupID LEFT JOIN dgmTypeAttributes AS d ON d.typeID=a.typeID AND d.attributeID=633 WHERE (b.parentTypeID=%d OR b.typeID=%d) AND marketGroupID IS NOT NULL ORDER BY d.value, typeName;", parentTypeID, parentTypeID]
-															  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																  EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-																  EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
-																  NSNumber* key = metaGroup.metaGroupID > 0 ? @(metaGroup.metaGroupID) : @(INT_MAX);
-																  NSMutableDictionary* section = sectionsDic[key];
-																  if (!section) {
-																	  NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
-																	  
-																	  section = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																				 title, @"title",
-																				 [NSMutableArray arrayWithObject:type], @"rows",
-																				 key, @"order", nil];
-																	  sectionsDic[key] = section;
-																  }
-																  else
-																	  [section[@"rows"] addObject:type];
-																  
-																  if ([task isCancelled])
-																	  *needsMore = NO;
-															  }];
-												 sections = [[sectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 self.sections = sections;
-									 [self update];
-								 }];
-	}
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+	request.sortDescriptors = @[
+								[NSSortDescriptor sortDescriptorWithKey:@"metaGroup.metaGroupID" ascending:YES],
+								[NSSortDescriptor sortDescriptorWithKey:@"metaLevel" ascending:YES],
+								[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+	
+	
+	if (self.type.parentType)
+		request.predicate = [NSPredicate predicateWithFormat:@"parentType == %@ OR SELF == %@", self.type.parentType, self.type];
+	else
+		request.predicate = [NSPredicate predicateWithFormat:@"parentType == %@ OR SELF == %@", self.type, self.type];
+
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"metaGroupName" cacheName:nil];
+	[self.result performFetch:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,12 +69,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.sections.count;
+    return self.result.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.sections[section][@"rows"] count];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
+    return sectionInfo.numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -119,7 +89,8 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return self.sections[section][@"title"];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[section];
+	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
@@ -147,10 +118,12 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	EVEDBInvType* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.result.sections[indexPath.section];
+	NCDBInvType* row = sectionInfo.objects[indexPath.row];
+	
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
 	cell.object = row;
 }
 

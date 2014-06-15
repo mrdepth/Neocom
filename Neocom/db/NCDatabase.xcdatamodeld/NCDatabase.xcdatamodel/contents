@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13A598" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="certificateDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="certificate" inverseEntity="TxtDescription" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="certificates" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="certificate" inverseEntity="CertMastery" syncable="YES"/>
     </entity>
     <entity name="CertMastery" representedClassName="NCDBCertMastery" syncable="YES">
@@ -99,6 +100,7 @@
     <entity name="InvCategory" representedClassName="NCDBInvCategory" syncable="YES">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="category" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="categories" inverseEntity="EveIcon" syncable="YES"/>
     </entity>
@@ -123,7 +125,9 @@
     <entity name="InvGroup" representedClassName="NCDBInvGroup" syncable="YES">
         <attribute name="groupID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="groups" inverseEntity="InvCategory" syncable="YES"/>
+        <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="group" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="groups" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="group" inverseEntity="NpcGroup" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="group" inverseEntity="InvType" syncable="YES"/>
@@ -272,7 +276,7 @@
     </entity>
     <fetchRequest name="DefaultIcon" entity="EveIcon" predicateString="iconFile == &quot;07_15&quot;" fetchLimit="1"/>
     <elements>
-        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="28"/>
+        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="118"/>
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="103"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="28"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
@@ -282,13 +286,14 @@
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
+        <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="28"/>
         <element name="InvBlueprintType" positionX="117" positionY="261" width="128" height="266"/>
-        <element name="InvCategory" positionX="9" positionY="54" width="128" height="28"/>
+        <element name="InvCategory" positionX="9" positionY="54" width="128" height="118"/>
         <element name="InvControlTower" positionX="-135" positionY="234" width="128" height="73"/>
         <element name="InvControlTowerResource" positionX="72" positionY="216" width="128" height="148"/>
         <element name="InvControlTowerResourcePurpose" positionX="63" positionY="207" width="128" height="28"/>
-        <element name="InvGroup" positionX="0" positionY="45" width="128" height="28"/>
+        <element name="InvGroup" positionX="0" positionY="45" width="128" height="163"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="28"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="103"/>
         <element name="InvType" positionX="-396" positionY="85" width="128" height="568"/>
@@ -305,6 +310,5 @@
         <element name="RamTypeRequirement" positionX="90" positionY="234" width="128" height="133"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="118"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="28"/>
-        <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
     </elements>
 </model>

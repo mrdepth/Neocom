@@ -14,9 +14,9 @@
 
 @interface NCDatabaseCertificatesViewController ()
 @property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) NSArray* searchResults;
 
 - (void) reload;
+
 @end
 
 @implementation NCDatabaseCertificatesViewController
@@ -73,14 +73,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return tableView == self.tableView ? self.rows.count : self.searchResults.count;
+    return self.rows.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id row = self.rows[indexPath.row];
 	NCTableViewCell *cell;
-	if ([row isKindOfClass:[EVEDBCertCertificate class]]) {
+	if ([row isKindOfClass:[NCDBCertCertificate class]]) {
 		static NSString *CellIdentifier = @"CertificateCell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
@@ -108,9 +108,9 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id row = self.rows[indexPath.row];
 	UITableViewCell *cell;
-	if ([row isKindOfClass:[EVEDBCertCertificate class]])
+	if ([row isKindOfClass:[NCDBCertCertificate class]])
 		cell = [self tableView:tableView offscreenCellWithIdentifier:@"CertificateCell"];
 	else
 		cell = [self tableView:tableView offscreenCellWithIdentifier:@"GroupCell"];
@@ -139,13 +139,15 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id row = self.rows[indexPath.row];
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
-	if ([row isKindOfClass:[EVEDBCertCertificate class]]) {
-		cell.titleLabel.text = [row name];
-		int32_t level = [objc_getAssociatedObject(row, @"masteryLevel") intValue];
-		cell.iconView.image = [UIImage imageNamed:[EVEDBCertCertificate iconImageNameWithMasteryLevel:level]];
+	if ([row isKindOfClass:[NCDBCertCertificate class]]) {
+		NCDBCertCertificate* certificate = row;
+		cell.titleLabel.text = certificate.certificateName;
+		NCDBEveIcon* icon = objc_getAssociatedObject(row, @"icon");
+		cell.iconView.image = icon.image.image;
 		NSTimeInterval trainingTime = [objc_getAssociatedObject(row, @"trainingTime") doubleValue];
+		int32_t level = [objc_getAssociatedObject(row, @"level") intValue];
 		if (trainingTime > 0)
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to level %d", nil), [NSString stringWithTimeLeft:trainingTime], level + 2];
 		else
@@ -153,14 +155,9 @@
 		cell.object = row;
 	}
 	else {
-		cell.titleLabel.text = [row groupName];
-		
-		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
-		
+		NCDBInvGroup* group = row;
+		cell.titleLabel.text = group.groupName;
+		cell.iconView.image = group.icon ? group.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
 		cell.object = row;
 	}
 }
@@ -170,43 +167,50 @@
 - (void) reload {
 	NCAccount* account = [NCAccount currentAccount];
 
-	NSMutableArray* rows = [NSMutableArray new];
+	__block NSArray* rows = nil;
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 if (self.group) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM certCerts WHERE groupID = %d ORDER BY name", self.group.groupID]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																						EVEDBCertCertificate* certificate = [[EVEDBCertCertificate alloc] initWithStatement:stmt];
-																						
-																						NSInteger level = -1;
-																						
-																						NCTrainingQueue* trainingQueue = nil;
-																						for (NSArray* skills in certificate.skills) {
-																							trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-																							for (EVEDBCertSkill* skill in skills) {
-																								[trainingQueue addSkill:skill.skill withLevel:skill.skillLevel];
-																							}
-																							if (trainingQueue.trainingTime > 0.0)
-																								break;
-																							level++;
-																						}
-																						objc_setAssociatedObject(certificate, @"masteryLevel", @(level), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-																						objc_setAssociatedObject(certificate, @"trainingTime", @(trainingQueue.trainingTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-																						[rows addObject:certificate];
-																					}];
-											 }
-											 else {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT A.* FROM invGroups as A, certCerts as B where A.groupID = B.groupID GROUP BY B.groupID ORDER BY A.groupName"
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																						EVEDBInvGroup* group = [[EVEDBInvGroup alloc] initWithStatement:stmt];
-																						[rows addObject:group];
-																					}];
-											 }
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 if (self.group) {
+													 NCDBInvGroup* group = (NCDBInvGroup*) [database.backgroundManagedObjectContext objectWithID:self.group.objectID];
+													 rows = [group.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]];
+													 for (NCDBCertCertificate* certificate in rows) {
+
+														 NCTrainingQueue* trainingQueue = nil;
+														 NCDBCertMasteryLevel* level;
+														 NCDBEveIcon* unclaimedIcon = nil;
+														 for (NCDBCertMastery* mastery in [certificate.masteries sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level.level" ascending:YES]]]) {
+															 trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+															 [trainingQueue addMastery:mastery];
+															 if (trainingQueue.trainingTime > 0.0) {
+																 if (!level)
+																	 unclaimedIcon = mastery.level.unclaimedIcon;
+																 break;
+															 }
+															 level = mastery.level;
+														 }
+														 if (level) {
+															 objc_setAssociatedObject(certificate, @"level", @(level.level), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+															 objc_setAssociatedObject(certificate, @"icon", level.claimedIcon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+														 }
+														 else {
+															 objc_setAssociatedObject(certificate, @"level", @(-1), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+															 objc_setAssociatedObject(certificate, @"icon", unclaimedIcon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+														 }
+														 
+														 objc_setAssociatedObject(certificate, @"trainingTime", @(trainingQueue.trainingTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+													 }
+												 }
+												 else {
+													 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+													 request.predicate = [NSPredicate predicateWithFormat:@"certificates.@count > 0"];
+													 rows = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
+												 }
+											 }];
+
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {

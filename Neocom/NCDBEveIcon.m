@@ -2,7 +2,7 @@
 //  NCDBEveIcon.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -27,6 +27,7 @@
 @dynamic attributeTypes;
 @dynamic categories;
 @dynamic groups;
+@dynamic image;
 @dynamic marketGroups;
 @dynamic masteryLevelClaimedIcons;
 @dynamic masteryLevelUnclaimedIcons;
@@ -34,6 +35,5 @@
 @dynamic npcGroups;
 @dynamic races;
 @dynamic types;
-@dynamic image;
 
 @end

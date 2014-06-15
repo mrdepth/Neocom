@@ -158,7 +158,7 @@
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMasteryViewController"]) {
 		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = self.type;
-		destinationViewController.masteryLevel = [row.object integerValue];
+		destinationViewController.masteryLevel = row.object;
 	}
 }
 
@@ -426,7 +426,7 @@
 													   else
 														   row.icon = level.claimedIcon;
 													   row.cellIdentifier = @"MasteryCell";
-													   row.object = key;
+													   row.object = level;
 													   [rows addObject:row];
 												   }
 												   if (rows.count > 0)
@@ -441,7 +441,7 @@
 												   row.title = NSLocalizedString(@"Blueprint", nil);
 												   row.detail = [type.blueprint.blueprintType typeName];
 												   row.icon = type.blueprint.blueprintType.icon ? type.blueprint.blueprintType.icon : self.defaultIcon;
-												   row.object = type.blueprint;
+												   row.object = type.blueprint.blueprintType;
 												   row.cellIdentifier = @"TypeCell";
 												   [rows addObject:row];
 												   

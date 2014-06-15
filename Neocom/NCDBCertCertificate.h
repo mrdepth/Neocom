@@ -2,14 +2,14 @@
 //  NCDBCertCertificate.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMastery, NCDBTxtDescription;
+@class NCDBCertMastery, NCDBInvGroup, NCDBTxtDescription;
 
 @interface NCDBCertCertificate : NSManagedObject
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * certificateName;
 @property (nonatomic, retain) NCDBTxtDescription *certificateDescription;
 @property (nonatomic, retain) NSSet *masteries;
+@property (nonatomic, retain) NCDBInvGroup *group;
 @end
 
 @interface NCDBCertCertificate (CoreDataGeneratedAccessors)

@@ -2,7 +2,7 @@
 //  NCDBInvCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //
 //
 
@@ -15,6 +15,7 @@
 
 @property (nonatomic) int32_t categoryID;
 @property (nonatomic, retain) NSString * categoryName;
+@property (nonatomic) BOOL published;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @end

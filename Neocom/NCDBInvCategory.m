@@ -2,7 +2,7 @@
 //  NCDBInvCategory.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @dynamic categoryID;
 @dynamic categoryName;
+@dynamic published;
 @dynamic groups;
 @dynamic icon;
 

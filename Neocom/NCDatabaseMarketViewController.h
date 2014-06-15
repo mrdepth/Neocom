@@ -7,9 +7,9 @@
 //
 
 #import "NCTableViewController.h"
-#import "EVEDBAPI.h"
+#import "NCDatabase.h"
 
 @interface NCDatabaseMarketViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvMarketGroup* marketGroup;
+@property (nonatomic, strong) NCDBInvMarketGroup* marketGroup;
 
 @end

@@ -13,18 +13,20 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "UIAlertView+Block.h"
 #import "NCTableViewCell.h"
+#import "NCDatabase.h"
 
 @interface NCDatabaseTypeMasteryViewControllerRow : NSObject
 @property (nonatomic, copy) NSString* title;
 @property (nonatomic, copy) NSString* detail;
-@property (nonatomic, copy) NSString* imageName;
-@property (nonatomic, copy) NSString* accessoryImageName;
+@property (nonatomic, strong) NCDBEveIcon* icon;
+@property (nonatomic, strong) NCDBEveIcon* accessoryIcon;
 @property (nonatomic, strong) id object;
 @property (nonatomic, strong) NSString* cellIdentifier;
 @end
 
 @interface NCDatabaseTypeMasteryViewController ()
 @property (nonatomic, strong) NSArray* sections;
+- (void) reload;
 @end
 
 @implementation NCDatabaseTypeMasteryViewControllerRow
@@ -46,79 +48,7 @@
     [super viewDidLoad];
 	self.title = self.type.typeName;
 	self.refreshControl = nil;
-	
-	NCAccount* account = [NCAccount currentAccount];
-	NSMutableArray* sections = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-											 NSMutableArray* rows = nil;
-											 
-											 for (EVEDBCertMastery* mastery in self.type.masteries[self.masteryLevel]) {
-												 NCTrainingQueue* sectionTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-												 [sectionTrainingQueue addMastery:mastery];
-												 
-												 rows = [NSMutableArray new];
-												 [trainingQueue addMastery:mastery];
-												 for (EVEDBCertSkill* certSkill in mastery.certificate.skills[mastery.masteryLevel]) {
-													 NCTrainingQueue* skillTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
-													 [skillTrainingQueue addSkill:certSkill.skill withLevel:certSkill.skillLevel];
-													 
-													 EVECharacterSheetSkill* characerSkill = account.characterSheet.skillsMap[@(certSkill.skillID)];
-													 
-													 NCDatabaseTypeMasteryViewControllerRow* row = [NCDatabaseTypeMasteryViewControllerRow new];
-													 row.title = [NSString stringWithFormat:@"%@ %d", certSkill.skill.typeName, certSkill.skillLevel];
-													 row.object = certSkill.skill;
-													 row.cellIdentifier = @"TypeCell";
-													 
-													 if (!characerSkill) {
-														 row.imageName = @"Icons/icon50_11.png";
-														 row.accessoryImageName = @"Icons/icon38_194.png";
-													 }
-													 else if (characerSkill.level >= certSkill.skillLevel) {
-														 row.imageName = @"Icons/icon50_11.png";
-														 row.accessoryImageName = @"Icons/icon38_193.png";
-													 }
-													 else {
-														 row.imageName = @"Icons/icon50_11.png";
-														 row.accessoryImageName = @"Icons/icon38_195.png";
-													 }
-													 
-													 if (skillTrainingQueue.trainingTime > 0.0)
-														 row.detail = [NSString stringWithTimeLeft:skillTrainingQueue.trainingTime];
-													 
-													 [rows addObject:row];
-												 }
-												 if (rows.count > 0) {
-													 NSString* title;
-													 if (sectionTrainingQueue.trainingTime > 0.0)
-														 title = [NSString stringWithFormat:@"%@ (%@)", mastery.certificate.name, [NSString stringWithTimeLeft:sectionTrainingQueue.trainingTime]];
-													 else
-														 title = mastery.certificate.name;
-													 [sections addObject:@{@"title": title, @"rows": rows}];
-												 }
-											 }
-											 
-											 if (account && account.activeSkillPlan && trainingQueue.skills.count > 0) {
-												 rows = [NSMutableArray new];
-												 NCDatabaseTypeMasteryViewControllerRow* row = [NCDatabaseTypeMasteryViewControllerRow new];
-												 row.title = NSLocalizedString(@"Add all skills to training plan", nil);
-												 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-												 row.imageName = @"Icons/icon50_13.png";
-												 row.object = trainingQueue;
-												 [rows addObject:row];
-												 
-												 [sections insertObject:@{@"title": NSLocalizedString(@"Skill Plan", nil), @"rows": rows} atIndex:0];
-											 }
-
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.sections = sections;
-									 [self update];
-								 }
-							 }];
+	[self reload];
 	// Do any additional setup after loading the view.
 }
 
@@ -220,8 +150,92 @@
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = [UIImage imageNamed:row.imageName ? row.imageName : @"Icons/icon105_32.png"];
-	cell.accessoryView = row.accessoryImageName ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:row.accessoryImageName]] : nil;
+	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
+	cell.accessoryView = row.accessoryIcon ? [[UIImageView alloc] initWithImage:row.accessoryIcon.image.image] : nil;
+}
+
+#pragma mark - Private
+
+- (void) reload {
+	NCAccount* account = [NCAccount currentAccount];
+	NSMutableArray* sections = [NSMutableArray new];
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
+												 NCDBCertMasteryLevel* masteryLevel = (NCDBCertMasteryLevel*) [database.backgroundManagedObjectContext objectWithID:self.masteryLevel.objectID];
+												 NSArray* masteries = [[type.masteries filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"level == %@", masteryLevel]]
+																	   sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificate.certificateName" ascending:YES]]];
+												 
+												 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+												 NSMutableArray* rows = nil;
+												 
+												 NCDBEveIcon* skillIcon = [NCDBEveIcon eveIconWithIconFile:@"50_11"];
+												 NCDBEveIcon* notKnownIcon = [NCDBEveIcon eveIconWithIconFile:@"38_194"];
+												 NCDBEveIcon* lowLevelIcon = [NCDBEveIcon eveIconWithIconFile:@"38_193"];
+												 NCDBEveIcon* knownIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
+												 
+												 for (NCDBCertMastery* mastery in masteries) {
+													 NCTrainingQueue* sectionTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+													 [sectionTrainingQueue addMastery:mastery];
+													 
+													 rows = [NSMutableArray new];
+													 [trainingQueue addMastery:mastery];
+													 for (NCDBCertSkill* certSkill in [mastery.skills sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]]) {
+														 NCTrainingQueue* skillTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+														 [skillTrainingQueue addSkill:certSkill.type withLevel:certSkill.skillLevel];
+														 
+														 EVECharacterSheetSkill* characerSkill = account.characterSheet.skillsMap[@(certSkill.type.typeID)];
+														 
+														 NCDatabaseTypeMasteryViewControllerRow* row = [NCDatabaseTypeMasteryViewControllerRow new];
+														 row.title = [NSString stringWithFormat:@"%@ %d", certSkill.type.typeName, certSkill.skillLevel];
+														 row.object = certSkill.type;
+														 row.cellIdentifier = @"TypeCell";
+														 row.icon = skillIcon;
+														 
+														 if (!characerSkill)
+															 row.accessoryIcon = notKnownIcon;
+														 else if (characerSkill.level >= certSkill.skillLevel)
+															 row.accessoryIcon = lowLevelIcon;
+														 else
+															 row.accessoryIcon = knownIcon;
+														 
+														 if (skillTrainingQueue.trainingTime > 0.0)
+															 row.detail = [NSString stringWithTimeLeft:skillTrainingQueue.trainingTime];
+														 
+														 [rows addObject:row];
+													 }
+													 if (rows.count > 0) {
+														 NSString* title;
+														 if (sectionTrainingQueue.trainingTime > 0.0)
+															 title = [NSString stringWithFormat:@"%@ (%@)", mastery.certificate.certificateName, [NSString stringWithTimeLeft:sectionTrainingQueue.trainingTime]];
+														 else
+															 title = mastery.certificate.certificateName;
+														 [sections addObject:@{@"title": title, @"rows": rows}];
+													 }
+												 }
+												 
+												 if (account && account.activeSkillPlan && trainingQueue.skills.count > 0) {
+													 rows = [NSMutableArray new];
+													 NCDatabaseTypeMasteryViewControllerRow* row = [NCDatabaseTypeMasteryViewControllerRow new];
+													 row.title = NSLocalizedString(@"Add all skills to training plan", nil);
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
+													 row.object = trainingQueue;
+													 [rows addObject:row];
+													 
+													 [sections insertObject:@{@"title": NSLocalizedString(@"Skill Plan", nil), @"rows": rows} atIndex:0];
+												 }
+											 }];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (![task isCancelled]) {
+									 self.sections = sections;
+									 [self update];
+								 }
+							 }];
 }
 
 @end

@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, NCDatabaseTypeMarketInfoViewControllerMode) {
 
 @class EVEDBInvType;
 @interface NCDatabaseTypeMarketInfoViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 
 @property (nonatomic, assign) NCDatabaseTypeMarketInfoViewControllerMode mode;
 

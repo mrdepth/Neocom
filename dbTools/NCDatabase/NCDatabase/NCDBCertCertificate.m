@@ -2,12 +2,13 @@
 //  NCDBCertCertificate.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 13.06.14.
+//  Created by Shimanski Artem on 15.06.14.
 //
 //
 
 #import "NCDBCertCertificate.h"
 #import "NCDBCertMastery.h"
+#import "NCDBInvGroup.h"
 #import "NCDBTxtDescription.h"
 
 
@@ -17,5 +18,6 @@
 @dynamic certificateName;
 @dynamic certificateDescription;
 @dynamic masteries;
+@dynamic group;
 
 @end

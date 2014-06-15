@@ -8,8 +8,8 @@
 
 #import "NCTableViewController.h"
 
-@class EVEDBInvType;
+@class NCDBInvType;
 @interface NCDatabaseTypeVariationsViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 
 @end

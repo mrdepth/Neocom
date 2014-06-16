@@ -250,6 +250,7 @@
 												 NCDBEveIcon* knownIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
 												 
 												 NCDBCertMasteryLevel* level = nil;
+												 NCDBEveIcon* unclaimedIcon = [NCDBEveIcon certificateUnclaimedIcon];
 												 
 												 for (NCDBCertMastery* mastery in masteries) {
 													 NSMutableArray* rows = [NSMutableArray new];
@@ -305,7 +306,7 @@
 													 
 													 if (trainingQueue.trainingTime > 0.0) {
 														 if (!level)
-															 certificateIcon = mastery.level.unclaimedIcon;
+															 certificateIcon = unclaimedIcon;
 													 }
 													 else
 														 level = mastery.level;
@@ -313,7 +314,7 @@
 												 }
 												 
 												 if (level)
-													 certificateIcon = level.claimedIcon;
+													 certificateIcon = level.icon;
 
 												 if ([task isCancelled])
 													 return;
@@ -322,7 +323,7 @@
 												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
 																			 [NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
-												 request.predicate = [NSPredicate predicateWithFormat:@"ANY masteries.certificate == %@", certificate];
+												 request.predicate = [NSPredicate predicateWithFormat:@"ANY certificates == %@", certificate];
 												 NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request
 																															  managedObjectContext:database.backgroundManagedObjectContext
 																																sectionNameKeyPath:@"group.groupName"

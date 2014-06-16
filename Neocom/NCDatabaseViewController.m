@@ -234,7 +234,7 @@
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;
 		cell.titleLabel.text = type.typeName;
-		cell.iconView.image = type.icon.image.image;
+		cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.object = row;
 	}
 	else {
@@ -249,15 +249,10 @@
 			cell.iconView.image = group.icon.image.image;
 		}
 		
-/*		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];*/
+		if (!cell.iconView.image)
+			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
 		cell.object = row;
 	}
-	if (!cell.iconView.image)
-		cell.iconView.image = [[[NCDBEveIcon defaultIcon] image] image];
 }
 
 #pragma mark - Private

@@ -2,14 +2,14 @@
 //  NCDBInvType.h
 //  NCDatabase
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMastery, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEveIcon, NCDBInvBlueprintType, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeMaterial, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBRamTypeRequirement, NCDBStaStation, NCDBTxtDescription;
+@class NCDBCertCertificate, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEveIcon, NCDBInvBlueprintType, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeMaterial, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBRamTypeRequirement, NCDBStaStation, NCDBTxtDescription;
 
 @interface NCDBInvType : NSManagedObject
 
@@ -35,7 +35,7 @@
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *installationTypeContents;
 @property (nonatomic, retain) NCDBInvMarketGroup *marketGroup;
-@property (nonatomic, retain) NSSet *masteries;
+@property (nonatomic, retain) NSSet *certificates;
 @property (nonatomic, retain) NSSet *masterySkills;
 @property (nonatomic, retain) NCDBInvMetaGroup *metaGroup;
 @property (nonatomic, retain) NCDBInvType *parentType;
@@ -77,10 +77,10 @@
 - (void)addInstallationTypeContents:(NSSet *)values;
 - (void)removeInstallationTypeContents:(NSSet *)values;
 
-- (void)addMasteriesObject:(NCDBCertMastery *)value;
-- (void)removeMasteriesObject:(NCDBCertMastery *)value;
-- (void)addMasteries:(NSSet *)values;
-- (void)removeMasteries:(NSSet *)values;
+- (void)addCertificatesObject:(NCDBCertCertificate *)value;
+- (void)removeCertificatesObject:(NCDBCertCertificate *)value;
+- (void)addCertificates:(NSSet *)values;
+- (void)removeCertificates:(NSSet *)values;
 
 - (void)addMasterySkillsObject:(NCDBCertSkill *)value;
 - (void)removeMasterySkillsObject:(NCDBCertSkill *)value;

@@ -10,6 +10,8 @@
 
 @interface NCDBEveIcon (Neocom)
 
-+ (instancetype) defaultIcon;
++ (instancetype) defaultTypeIcon;
++ (instancetype) defaultGroupIcon;
++ (instancetype) certificateUnclaimedIcon;
 + (instancetype) eveIconWithIconFile:(NSString*) iconFile;
 @end

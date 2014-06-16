@@ -122,7 +122,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		if (data) {
 			NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
 			NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
-			icon.iconFile = [iconImageName lastPathComponent];
+			icon.iconFile = [NSString stringWithFormat:@"79_0%d", i + 1];
 			icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
 			icon.image.image = imageRep;
 			dictionary[@(NCDBCertMasteryLevelIconsStartID + i)] = icon;
@@ -186,7 +186,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
-	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195"]) {
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174"]) {
 		__block EVEDBEveIcon* eveIcon = nil;
 		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
 					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -466,8 +466,7 @@ NSDictionary* convertCertMasteryLevels(NSManagedObjectContext* context, EVEDBDat
 		EVEDBCertSkill* eveCertSkill = [[EVEDBCertSkill alloc] initWithStatement:stmt];
 		NCDBCertMasteryLevel* masteryLevel = [NSEntityDescription insertNewObjectForEntityForName:@"CertMasteryLevel" inManagedObjectContext:context];
 		masteryLevel.level = eveCertSkill.certificateLevel;
-		masteryLevel.claimedIcon = eveIcons[@(NCDBCertMasteryLevelIconsStartID + masteryLevel.level + 1)];
-		masteryLevel.unclaimedIcon = eveIcons[@(NCDBCertMasteryLevelIconsStartID)];
+		masteryLevel.icon = eveIcons[@(NCDBCertMasteryLevelIconsStartID + masteryLevel.level + 1)];
 		masteryLevel.displayName = eveCertSkill.certificateLevelText;
 		dictionary[@(masteryLevel.level)] = masteryLevel;
 	}];
@@ -477,20 +476,20 @@ NSDictionary* convertCertMasteryLevels(NSManagedObjectContext* context, EVEDBDat
 
 NSDictionary* convertCertMasteries(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSMutableDictionary* dictionary = [NSMutableDictionary new];
-	
+	NSArray* levels = [[certMasteryLevels allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level" ascending:YES]]];
 	[certCertificates enumerateKeysAndObjectsUsingBlock:^(id key, NCDBCertCertificate* certificate, BOOL *stop) {
-		[certMasteryLevels enumerateKeysAndObjectsUsingBlock:^(id key, NCDBCertMasteryLevel* level, BOOL *stop) {
+		for (NCDBCertMasteryLevel* level in levels) {
 			NCDBCertMastery* mastery = [NSEntityDescription insertNewObjectForEntityForName:@"CertMastery" inManagedObjectContext:context];
 			mastery.certificate = certificate;
 			mastery.level = level;
 			dictionary[[NSString stringWithFormat:@"%d.%d", certificate.certificateID, level.level]] = mastery;
-		}];
+		};
 	}];
 	
 	[database execSQLRequest:@"SELECT * FROM certMasteries" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBCertMastery* eveCertMastery = [[EVEDBCertMastery alloc] initWithStatement:stmt];
-		NCDBCertMastery* mastery = dictionary[[NSString stringWithFormat:@"%d.%d", eveCertMastery.certificateID, eveCertMastery.masteryLevel]];
-		[mastery addTypesObject:invTypes[@(eveCertMastery.typeID)]];
+		NCDBCertCertificate* certificate = certCertificates[@(eveCertMastery.certificateID)];
+		[certificate addTypesObject:invTypes[@(eveCertMastery.typeID)]];
 	}];
 	
 	return dictionary;
@@ -777,16 +776,13 @@ void convertRequiredSkills(NSManagedObjectContext* context) {
 		for (int i = 0; i < 6; i++) {
 			NCDBDgmTypeAttribute* typeID = attributes[@(requirementID[i])];
 			NCDBDgmTypeAttribute* level = attributes[@(skillLevelID[i])];
-			if (typeID && level) {
+			if (typeID && level && ((int32_t) typeID.value) != type.typeID) {
 				NCDBInvType* skillType = invTypes[@((int32_t) typeID.value)];
 				if (skillType) {
 					NCDBInvTypeRequiredSkill* requiredSkill = [NSEntityDescription insertNewObjectForEntityForName:@"InvTypeRequiredSkill" inManagedObjectContext:context];
 					requiredSkill.skillType = skillType;
 					requiredSkill.type = type;
 					requiredSkill.skillLevel = level.value;
-				}
-				else if (type.typeID == 645) {
-					assert(0);
 				}
 			}
 		}

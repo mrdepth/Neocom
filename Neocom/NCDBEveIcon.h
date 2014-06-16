@@ -2,7 +2,7 @@
 //  NCDBEveIcon.h
 //  Neocom
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -20,8 +20,7 @@
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBEveIconImage *image;
 @property (nonatomic, retain) NSSet *marketGroups;
-@property (nonatomic, retain) NSSet *masteryLevelClaimedIcons;
-@property (nonatomic, retain) NSSet *masteryLevelUnclaimedIcons;
+@property (nonatomic, retain) NSSet *masteryLevels;
 @property (nonatomic, retain) NSSet *metaGroups;
 @property (nonatomic, retain) NSSet *npcGroups;
 @property (nonatomic, retain) NSSet *races;
@@ -55,15 +54,10 @@
 - (void)addMarketGroups:(NSSet *)values;
 - (void)removeMarketGroups:(NSSet *)values;
 
-- (void)addMasteryLevelClaimedIconsObject:(NCDBCertMasteryLevel *)value;
-- (void)removeMasteryLevelClaimedIconsObject:(NCDBCertMasteryLevel *)value;
-- (void)addMasteryLevelClaimedIcons:(NSSet *)values;
-- (void)removeMasteryLevelClaimedIcons:(NSSet *)values;
-
-- (void)addMasteryLevelUnclaimedIconsObject:(NCDBCertMasteryLevel *)value;
-- (void)removeMasteryLevelUnclaimedIconsObject:(NCDBCertMasteryLevel *)value;
-- (void)addMasteryLevelUnclaimedIcons:(NSSet *)values;
-- (void)removeMasteryLevelUnclaimedIcons:(NSSet *)values;
+- (void)addMasteryLevelsObject:(NCDBCertMasteryLevel *)value;
+- (void)removeMasteryLevelsObject:(NCDBCertMasteryLevel *)value;
+- (void)addMasteryLevels:(NSSet *)values;
+- (void)removeMasteryLevels:(NSSet *)values;
 
 - (void)addMetaGroupsObject:(NCDBInvMetaGroup *)value;
 - (void)removeMetaGroupsObject:(NCDBInvMetaGroup *)value;

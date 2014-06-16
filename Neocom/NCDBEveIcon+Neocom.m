@@ -11,21 +11,40 @@
 
 @implementation NCDBEveIcon (Neocom)
 
-+ (instancetype) defaultIcon {
-	static NCDBEveIcon* defaultIcon = nil;
-	if (!defaultIcon) {
++ (instancetype) certificateUnclaimedIcon {
+	static NCDBEveIcon* certificateUnclaimedIcon;
+	if (!certificateUnclaimedIcon) {
 		static dispatch_once_t onceToken;
 		dispatch_once(&onceToken, ^{
-			NCDatabase* database = [NCDatabase sharedDatabase];
-			[database.managedObjectContext performBlockAndWait:^{
-				NSFetchRequest* request = [database.managedObjectModel fetchRequestTemplateForName:@"DefaultIcon"];
-				defaultIcon = [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
-				[[defaultIcon image] image];
-			}];
+			certificateUnclaimedIcon = [self eveIconWithIconFile:@"79_01"];
 		});
 	}
-	return defaultIcon;
+	return certificateUnclaimedIcon;
 }
+
++ (instancetype) defaultTypeIcon {
+	static NCDBEveIcon* defaultTypeIcon;
+	if (!defaultTypeIcon) {
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+			defaultTypeIcon = [self eveIconWithIconFile:@"07_15"];
+		});
+	}
+	return defaultTypeIcon;
+}
+
+
++ (instancetype) defaultGroupIcon {
+	static NCDBEveIcon* defaultGroupIcon;
+	if (!defaultGroupIcon) {
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+			defaultGroupIcon = [self eveIconWithIconFile:@"38_174"];
+		});
+	}
+	return defaultGroupIcon;
+}
+
 
 + (instancetype) eveIconWithIconFile:(NSString*) iconFile {
 	NCDatabase* database = [NCDatabase sharedDatabase];

@@ -157,7 +157,7 @@
 	else {
 		NCDBInvGroup* group = row;
 		cell.titleLabel.text = group.groupName;
-		cell.iconView.image = group.icon ? group.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
+		cell.iconView.image = group.icon ? group.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];
 		cell.object = row;
 	}
 }
@@ -176,24 +176,21 @@
 												 if (self.group) {
 													 NCDBInvGroup* group = (NCDBInvGroup*) [database.backgroundManagedObjectContext objectWithID:self.group.objectID];
 													 rows = [group.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]];
+													 NCDBEveIcon* unclaimedIcon = [NCDBEveIcon certificateUnclaimedIcon];
 													 for (NCDBCertCertificate* certificate in rows) {
 
 														 NCTrainingQueue* trainingQueue = nil;
 														 NCDBCertMasteryLevel* level;
-														 NCDBEveIcon* unclaimedIcon = nil;
 														 for (NCDBCertMastery* mastery in [certificate.masteries sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"level.level" ascending:YES]]]) {
 															 trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 															 [trainingQueue addMastery:mastery];
-															 if (trainingQueue.trainingTime > 0.0) {
-																 if (!level)
-																	 unclaimedIcon = mastery.level.unclaimedIcon;
+															 if (trainingQueue.trainingTime > 0.0)
 																 break;
-															 }
 															 level = mastery.level;
 														 }
 														 if (level) {
 															 objc_setAssociatedObject(certificate, @"level", @(level.level), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-															 objc_setAssociatedObject(certificate, @"icon", level.claimedIcon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+															 objc_setAssociatedObject(certificate, @"icon", level.icon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 														 }
 														 else {
 															 objc_setAssociatedObject(certificate, @"level", @(-1), OBJC_ASSOCIATION_RETAIN_NONATOMIC);

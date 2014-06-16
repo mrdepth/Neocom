@@ -2,12 +2,12 @@
 //  NCDBInvType.m
 //  NCDatabase
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //
 //
 
 #import "NCDBInvType.h"
-#import "NCDBCertMastery.h"
+#import "NCDBCertCertificate.h"
 #import "NCDBCertSkill.h"
 #import "NCDBChrRace.h"
 #import "NCDBDgmEffect.h"
@@ -53,7 +53,7 @@
 @dynamic icon;
 @dynamic installationTypeContents;
 @dynamic marketGroup;
-@dynamic masteries;
+@dynamic certificates;
 @dynamic masterySkills;
 @dynamic metaGroup;
 @dynamic parentType;

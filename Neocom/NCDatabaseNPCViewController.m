@@ -11,8 +11,9 @@
 #import "NCTableViewCell.h"
 
 @interface NCDatabaseNPCViewController ()
-@property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) NSArray* searchResults;
+@property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NSFetchedResultsController* searchResult;
+- (void) reload;
 @end
 
 @implementation NCDatabaseNPCViewController
@@ -32,41 +33,7 @@
 	if (self.npcGroup)
 		self.title = self.npcGroup.npcGroupName;
 	self.refreshControl = nil;
-	
-	NSMutableArray* rows = [NSMutableArray new];
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 if (self.npcGroup == nil) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM npcGroup WHERE parentNpcGroupID IS NULL ORDER BY npcGroupName;"
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBNpcGroup alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-											 else if (self.npcGroup.groupID > 0) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * from invTypes WHERE groupID = %d ORDER BY typeName;", self.npcGroup.groupID]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBInvType alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-											 else {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * from npcGroup WHERE parentNpcGroupID = %d ORDER BY npcGroupName;", self.npcGroup.npcGroupID]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBNpcGroup alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.rows = rows;
-								 [self update];
-							 }];
+	[self reload];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,14 +66,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return tableView == self.tableView ? [self.rows count] : [self.searchResults count];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	NCTableViewCell *cell;
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
+	if ([row isKindOfClass:[NCDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
@@ -132,9 +101,10 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	NCTableViewCell *cell;
-	if ([row isKindOfClass:[EVEDBInvType class]])
+	if ([row isKindOfClass:[NCDBInvType class]])
 		cell = [self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
 	else
 		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NpcGroupCell"];
@@ -152,48 +122,63 @@
 }
 
 - (void) searchWithSearchString:(NSString*) searchString {
-	NSMutableArray* searchResults = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:nil
-										 block:^(NCTask *task) {
-											 if ([task isCancelled])
-												 return;
-											 if (searchString.length >= 2) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT a.* from invTypes AS a, invGroups AS b WHERE a.groupID=b.groupID AND b.categoryID=11 AND typeName LIKE \"%%%@%%\"ORDER BY typeName;", searchString]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-																						[searchResults addObject:type];
-																						
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.searchResults = searchResults;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
-								 }
-							 }];
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+	request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+	
+	request.predicate = [NSPredicate predicateWithFormat:@"group.category.categoryID == 11 AND typeName CONTAINS[C] %@", searchString];
+	
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	request.fetchBatchSize = 50;
+	self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	[self.searchResult performFetch:nil];
+	[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row = tableView == self.tableView ? self.rows[indexPath.row] : self.searchResults[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	if ([row isKindOfClass:[NCDBInvType class]]) {
+		NCDBInvType* type = row;
+		cell.titleLabel.text = type.typeName;
+		cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.object = row;
 	}
 	else {
-		cell.titleLabel.text = [row npcGroupName];
+		NCDBNpcGroup* npcGroup = row;
+		cell.titleLabel.text = npcGroup.npcGroupName;
 		
-		NSString* iconImageName = [row iconName];
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		cell.iconView.image = npcGroup.icon ? npcGroup.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];
 		cell.object = row;
+	}
+}
+
+#pragma mark - Private
+
+- (void) reload {
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	if (self.npcGroup) {
+		if (self.npcGroup.group) {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"group == %@", self.npcGroup.group];
+			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			[self.result performFetch:nil];
+		}
+		else {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"NpcGroup"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"npcGroupName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"parentNpcGroup == %@", self.npcGroup];
+			self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			[self.result performFetch:nil];
+		}
+	}
+	else {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"NpcGroup"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"npcGroupName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"parentNpcGroup == NULL"];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		[self.result performFetch:nil];
 	}
 }
 

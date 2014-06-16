@@ -8,7 +8,8 @@
 
 #import "NCTableViewController.h"
 
+@class NCDBNpcGroup;
 @interface NCDatabaseNPCViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBNpcGroup* npcGroup;
+@property (nonatomic, strong) NCDBNpcGroup* npcGroup;
 
 @end

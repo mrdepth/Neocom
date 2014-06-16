@@ -2,7 +2,7 @@
 //  NCDBCertMasteryLevel.h
 //  Neocom
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -15,9 +15,8 @@
 
 @property (nonatomic, retain) NSString * displayName;
 @property (nonatomic) int16_t level;
-@property (nonatomic, retain) NCDBEveIcon *claimedIcon;
+@property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *masteries;
-@property (nonatomic, retain) NCDBEveIcon *unclaimedIcon;
 @end
 
 @interface NCDBCertMasteryLevel (CoreDataGeneratedAccessors)

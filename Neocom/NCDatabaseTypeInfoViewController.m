@@ -93,7 +93,7 @@
 	if (self.type.marketGroup.marketGroupID == 0)
 		self.navigationItem.rightBarButtonItem = nil;
 	self.defaultAttributeIcon = [NCDBEveIcon eveIconWithIconFile:@"105_32"];
-	self.defaultIcon = [NCDBEveIcon defaultIcon];
+	self.defaultIcon = [NCDBEveIcon defaultTypeIcon];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -275,7 +275,7 @@
 							  range:typeIDRange];
 	
 	self.titleLabel.attributedText = title;
-	self.imageView.image = type.icon.image.image ? type.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
+	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultIcon.image.image;
 	
 	if (type.typeDescription.text.length > 0) {
 		NSMutableAttributedString* descriptionAttributesString = [[NSMutableAttributedString alloc] initWithString:type.typeDescription.text
@@ -396,7 +396,7 @@
 													   [sections addObject:section];
 											   }
 											   
-											   if (type.masteries) {
+											   if (type.certificates.count > 0) {
 												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 												   //static NSString* icons[] = {@"Icons/icon79_02.png", @"Icons/icon79_03.png", @"Icons/icon79_04.png", @"Icons/icon79_05.png", @"Icons/icon79_05.png"};
 												   
@@ -405,12 +405,15 @@
 												   section[@"rows"] = rows;
 												   
 												   NSMutableDictionary* masteries = [NSMutableDictionary new];
-												   for (NCDBCertMastery* mastery in type.masteries) {
-													   NSMutableArray* array = masteries[@(mastery.level.level)];
-													   if (!array)
-														   masteries[@(mastery.level.level)] = array = [NSMutableArray new];
-													   [array addObject:mastery];
+												   for (NCDBCertCertificate* certificate in type.certificates) {
+													   for (NCDBCertMastery* mastery in certificate.masteries) {
+														   NSMutableArray* array = masteries[@(mastery.level.level)];
+														   if (!array)
+															   masteries[@(mastery.level.level)] = array = [NSMutableArray new];
+														   [array addObject:mastery];
+													   }
 												   }
+												   NCDBEveIcon* unlcaimedIcon = [NCDBEveIcon certificateUnclaimedIcon];
 												   for (NSString* key in [[masteries allKeys] sortedArrayUsingSelector:@selector(compare:)]) {
 													   NSArray* array = masteries[key];
 													   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
@@ -421,10 +424,10 @@
 													   row.title = [NSString stringWithFormat:NSLocalizedString(@"Mastery %d", nil), [key intValue] + 1];
 													   if (trainingQueue.trainingTime > 0) {
 														   row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]];
-														   row.icon = level.unclaimedIcon;
+														   row.icon = unlcaimedIcon;
 													   }
 													   else
-														   row.icon = level.claimedIcon;
+														   row.icon = level.icon;
 													   row.cellIdentifier = @"MasteryCell";
 													   row.object = level;
 													   [rows addObject:row];
@@ -983,7 +986,7 @@
 												 float tmpInterval = intervalTurret > 0 ? intervalTurret : 1;
 												 
 												 NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil), NSLocalizedString(@"Rate of Fire", nil), NSLocalizedString(@"Optimal Range", nil), NSLocalizedString(@"Falloff", nil), NSLocalizedString(@"Tracking Speed", nil)};
-												 NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"turrets.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png", @"Icons/icon22_23.png", @"Icons/icon22_22.png"};
+												 NSString* icons[] = {@"22_12", @"22_11", @"22_09", @"22_10", @"12_09", @"22_21", @"22_15", @"22_23", @"22_22"};
 												 NSString* values[] = {
 													 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret, emDamageTurret / tmpInterval, totalDamageTurret > 0 ? emDamageTurret / totalDamageTurret * 100 : 0.0],
 													 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageTurret, explosiveDamageTurret / tmpInterval, totalDamageTurret > 0 ? explosiveDamageTurret / totalDamageTurret * 100 : 0.0],
@@ -999,7 +1002,7 @@
 												 for (int i = 0; i < 9; i++) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = titles[i];
-//													 row.icon = icons[i];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 													 row.detail = values[i];
 													 [rows addObject:row];
 												 }
@@ -1058,7 +1061,7 @@
 													 float tmpInterval = intervalMissile > 0 ? intervalMissile : 1;
 													 
 													 NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil), NSLocalizedString(@"Rate of Fire", nil), NSLocalizedString(@"Optimal Range", nil)};
-													 NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"launchers.png", @"Icons/icon22_21.png", @"Icons/icon22_15.png"};
+													 NSString* icons[] = {@"22_12", @"22_11", @"22_09", @"22_10", @"12_12", @"22_21", @"22_15"};
 													 NSString* values[] = {
 														 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageMissile, emDamageMissile / tmpInterval, totalDamageMissile > 0 ? emDamageMissile / totalDamageMissile * 100 : 0.0],
 														 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageMissile, explosiveDamageMissile / tmpInterval, totalDamageMissile > 0 ? explosiveDamageMissile / totalDamageMissile * 100 : 0.0],
@@ -1080,7 +1083,7 @@
 													 for (int i = 0; i < 7; i++) {
 														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 														 row.title = titles[i];
-//														 row.icon = icons[i];
+														 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 														 row.detail = values[i];
 														 [rows addObject:row];
 													 }
@@ -1115,7 +1118,7 @@
 												 
 												 
 												 NSString* titles[] = {NSLocalizedString(@"Em Damage", nil), NSLocalizedString(@"Explosive Damage", nil), NSLocalizedString(@"Kinetic Damage", nil), NSLocalizedString(@"Thermal Damage", nil), NSLocalizedString(@"Total Damage", nil)};
-												 NSString* icons[] = {@"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"dps.png"};
+												 NSString* icons[] = {@"22_12", @"22_11", @"22_09", @"22_10", @"22_21"};
 												 NSString* values[] = {
 													 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", emDamageTurret + emDamageMissile, emDPS, emDPS / totalDPS * 100],
 													 [NSString stringWithFormat:@"%.2f (%.2f/s, %.0f%%)", explosiveDamageTurret + explosiveDamageMissile, explosiveDPS, explosiveDPS / totalDPS * 100],
@@ -1127,7 +1130,7 @@
 												 for (int i = 0; i < 5; i++) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = titles[i];
-//													 row.icon = icons[i];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 													 row.detail = values[i];
 													 [rows addObject:row];
 												 }
@@ -1153,7 +1156,7 @@
 													 NSLocalizedString(@"Shield Thermal Damage Resistance", nil),
 													 NSLocalizedString(@"Shield Recharge Time", nil),
 													 NSLocalizedString(@"Passive Recharge Rate", nil)};
-												 NSString* icons[] = {@"shield.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png", @"Icons/icon22_16.png", @"shieldRecharge.png"};
+												 NSString* icons[] = {@"01_13", @"22_12", @"22_11", @"22_09", @"22_10", @"22_16", @"01_15"};
 												 NSString* values[] = {
 													 [NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:shieldCapacityAttribute.value]],
 													 [NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
@@ -1168,7 +1171,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = titles[i];
 													 row.detail = values[i];
-//													 row.icon = icons[i];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 													 [rows addObject:row];
 												 }
 												 
@@ -1192,7 +1195,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Repair Rate", nil);
 													 row.detail = [NSString stringWithFormat:@"%.2f HP/s", repairRate + passiveRechargeRate];
-//													 row.icon = @"shieldBooster.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"02_03"];
 													 [rows addObject:row];
 												 }
 												 [sections addObject:@{@"title" : NSLocalizedString(@"Shield", nil), @"rows" : rows}];
@@ -1214,7 +1217,7 @@
 													 NSLocalizedString(@"Armor Explosive Damage Resistance", nil),
 													 NSLocalizedString(@"Armor Kinetic Damage Resistance", nil),
 													 NSLocalizedString(@"Armor Thermal Damage Resistance", nil)};
-												 NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
+												 NSString* icons[] = {@"01_09", @"22_12", @"22_11", @"22_09", @"22_10"};
 												 NSString* values[] = {
 													 [NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:armorHPAttribute.value]],
 													 [NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
@@ -1227,7 +1230,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = titles[i];
 													 row.detail = values[i];
-//													 row.icon = icons[i];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 													 [rows addObject:row];
 												 }
 												 
@@ -1253,7 +1256,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Repair Rate", nil);
 													 row.detail = [NSString stringWithFormat:@"%.2f HP/s", repairRate];
-//													 row.icon = @"armorRepairer.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"01_11"];;
 													 [rows addObject:row];
 												 }
 												 [sections addObject:@{@"title" : NSLocalizedString(@"Armor", nil), @"rows" : rows}];
@@ -1275,7 +1278,7 @@
 													 NSLocalizedString(@"Structure Explosive Damage Resistance", nil),
 													 NSLocalizedString(@"Structure Kinetic Damage Resistance", nil),
 													 NSLocalizedString(@"Structure Thermal Damage Resistance", nil)};
-												 NSString* icons[] = {@"armor.png", @"em.png", @"explosion.png", @"kinetic.png", @"thermal.png"};
+												 NSString* icons[] = {@"02_09", @"22_12", @"22_11", @"22_09", @"22_10"};
 												 NSString* values[] = {
 													 [NSString stringWithFormat:@"%@ HP", [NSNumberFormatter neocomLocalizedStringFromInteger:hpAttribute.value]],
 													 [NSString stringWithFormat:@"%.0f %%", (1 - em) * 100],
@@ -1288,7 +1291,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = titles[i];
 													 row.detail = values[i];
-//													 row.icon = icons[i];
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:icons[i]];
 													 [rows addObject:row];
 												 }
 												 [sections addObject:@{@"title" : NSLocalizedString(@"Structure", nil), @"rows" : rows}];
@@ -1363,7 +1366,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = orbitVelocityAttribute.attributeType.displayName;
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m/s", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:orbitVelocityAttribute.value]];
-//												 row.icon = @"Icons/icon22_13.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_13"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1373,7 +1376,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Orbit Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:entityFlyRangeAttribute.value]];
-//													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1399,7 +1402,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:modifyTargetSpeedRangeAttribute.value]];
-													 row.icon = @"targetingRange.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1408,7 +1411,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), modifyTargetSpeedDurationAttribute.value / 1000.0];
-													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1487,7 +1490,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Optimal Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetPaintRangeAttribute.value]];
-//													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1496,7 +1499,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Accuracy Falloff", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetPaintFalloffAttribute.value]];
-//													 row.icon = @"Icons/icon22_23.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_23"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1505,7 +1508,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), targetPaintDurationAttribute.value / 1000];
-//													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1531,7 +1534,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Tracking Speed Bonus", nil);
 													 row.detail = [NSString stringWithFormat:@"%.0f %%", (trackingDisruptMultiplierAttribute.value - 1) * 100];
-//													 row.icon = @"Icons/icon22_22.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_22"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1540,7 +1543,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Optimal Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:trackingDisruptRangeAttribute.value]];
-//													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1549,7 +1552,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Accuracy Falloff", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:trackingDisruptFalloffAttribute.value]];
-//													 row.icon = @"Icons/icon22_23.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_23"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1558,7 +1561,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), trackingDisruptDurationAttribute.value / 1000];
-//													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1602,7 +1605,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Optimal Range", nil);
 													 row.detail = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:sensorDampenRangeAttribute.value]];
-													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1611,7 +1614,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Accuracy Falloff", nil);
 													 row.detail = [NSString stringWithFormat:@"%@ m", [NSNumberFormatter neocomLocalizedStringFromInteger:sensorDampenFalloffAttribute.value]];
-													 row.icon = @"Icons/icon22_23.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_23"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1620,7 +1623,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), sensorDampenDurationAttribute.value / 1000];
-													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1682,7 +1685,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Optimal Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetJamRangeAttribute.value]];
-//													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1691,7 +1694,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Accuracy Falloff", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:targetJamFalloffAttribute.value]];
-//													 row.icon = @"Icons/icon22_23.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_23"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1700,7 +1703,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), targetJamDurationAttribute.value / 1000];
-//													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1741,7 +1744,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Amount", nil);
 													 row.detail = value;
-//													 row.icon = @"Icons/icon22_08.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_08"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1750,7 +1753,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Optimal Range", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ m", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:capacitorDrainRangeAttribute.value]];
-//													 row.icon = @"Icons/icon22_15.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_15"];
 													 [rows addObject:row];
 												 }
 												 
@@ -1758,7 +1761,7 @@
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Duration", nil);
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%.2f s", nil), capacitorDrainDurationAttribute.value / 1000];
-//													 row.icon = @"Icons/icon22_16.png";
+													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
 												 

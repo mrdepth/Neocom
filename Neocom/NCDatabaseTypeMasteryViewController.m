@@ -150,7 +150,7 @@
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
+	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.accessoryView = row.accessoryIcon ? [[UIImageView alloc] initWithImage:row.accessoryIcon.image.image] : nil;
 }
 
@@ -166,8 +166,6 @@
 											 [database.backgroundManagedObjectContext performBlockAndWait:^{
 												 NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
 												 NCDBCertMasteryLevel* masteryLevel = (NCDBCertMasteryLevel*) [database.backgroundManagedObjectContext objectWithID:self.masteryLevel.objectID];
-												 NSArray* masteries = [[type.masteries filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"level == %@", masteryLevel]]
-																	   sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificate.certificateName" ascending:YES]]];
 												 
 												 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 												 NSMutableArray* rows = nil;
@@ -176,8 +174,8 @@
 												 NCDBEveIcon* notKnownIcon = [NCDBEveIcon eveIconWithIconFile:@"38_194"];
 												 NCDBEveIcon* lowLevelIcon = [NCDBEveIcon eveIconWithIconFile:@"38_193"];
 												 NCDBEveIcon* knownIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
-												 
-												 for (NCDBCertMastery* mastery in masteries) {
+												 for (NCDBCertCertificate* certificate in [type.certificates sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"certificateName" ascending:YES]]]) {
+													 NCDBCertMastery* mastery = [certificate.masteries objectAtIndex:masteryLevel.level];
 													 NCTrainingQueue* sectionTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 													 [sectionTrainingQueue addMastery:mastery];
 													 

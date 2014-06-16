@@ -2,7 +2,7 @@
 //  NCDBCertMasteryLevel.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -15,8 +15,7 @@
 
 @dynamic displayName;
 @dynamic level;
-@dynamic claimedIcon;
+@dynamic icon;
 @dynamic masteries;
-@dynamic unclaimedIcon;
 
 @end

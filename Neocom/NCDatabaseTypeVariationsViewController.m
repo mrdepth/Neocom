@@ -123,7 +123,7 @@
 	
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 	cell.titleLabel.text = [row typeName];
-	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultIcon] image] image];
+	cell.iconView.image = row.icon.image.image ? row.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = row;
 }
 

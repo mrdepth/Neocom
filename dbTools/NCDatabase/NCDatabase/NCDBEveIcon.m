@@ -2,7 +2,7 @@
 //  NCDBEveIcon.m
 //  NCDatabase
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //
 //
 
@@ -29,8 +29,7 @@
 @dynamic groups;
 @dynamic image;
 @dynamic marketGroups;
-@dynamic masteryLevelClaimedIcons;
-@dynamic masteryLevelUnclaimedIcons;
+@dynamic masteryLevels;
 @dynamic metaGroups;
 @dynamic npcGroups;
 @dynamic races;

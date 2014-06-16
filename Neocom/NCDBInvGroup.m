@@ -2,7 +2,7 @@
 //  NCDBInvGroup.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -20,9 +20,9 @@
 @dynamic groupName;
 @dynamic published;
 @dynamic category;
+@dynamic certificates;
 @dynamic icon;
 @dynamic npcGroups;
 @dynamic types;
-@dynamic certificates;
 
 @end

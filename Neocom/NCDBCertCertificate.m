@@ -2,13 +2,14 @@
 //  NCDBCertCertificate.m
 //  Neocom
 //
-//  Created by Shimanski Artem on 15.06.14.
+//  Created by Артем Шиманский on 16.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
 #import "NCDBCertCertificate.h"
 #import "NCDBCertMastery.h"
 #import "NCDBInvGroup.h"
+#import "NCDBInvType.h"
 #import "NCDBTxtDescription.h"
 
 
@@ -17,7 +18,8 @@
 @dynamic certificateID;
 @dynamic certificateName;
 @dynamic certificateDescription;
-@dynamic masteries;
 @dynamic group;
+@dynamic masteries;
+@dynamic types;
 
 @end

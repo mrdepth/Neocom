@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13A598" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="certificateDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="certificate" inverseEntity="TxtDescription" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="certificates" inverseEntity="InvGroup" syncable="YES"/>
-        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="certificate" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CertMastery" inverseName="certificate" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="certificates" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="CertMastery" representedClassName="NCDBCertMastery" syncable="YES">
         <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="masteries" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="level" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="masteries" inverseEntity="CertMasteryLevel" syncable="YES"/>
         <relationship name="skills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="mastery" inverseEntity="CertSkill" syncable="YES"/>
-        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="masteries" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="CertMasteryLevel" representedClassName="NCDBCertMasteryLevel" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="claimedIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevelClaimedIcons" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevels" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="level" inverseEntity="CertMastery" syncable="YES"/>
-        <relationship name="unclaimedIcon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevelUnclaimedIcons" inverseEntity="EveIcon" syncable="YES"/>
     </entity>
     <entity name="CertSkill" representedClassName="NCDBCertSkill" syncable="YES">
         <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -63,8 +62,7 @@
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
         <relationship name="marketGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="icon" inverseEntity="InvMarketGroup" syncable="YES"/>
-        <relationship name="masteryLevelClaimedIcons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="claimedIcon" inverseEntity="CertMasteryLevel" syncable="YES"/>
-        <relationship name="masteryLevelUnclaimedIcons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="unclaimedIcon" inverseEntity="CertMasteryLevel" syncable="YES"/>
+        <relationship name="masteryLevels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="icon" inverseEntity="CertMasteryLevel" syncable="YES"/>
         <relationship name="metaGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="icon" inverseEntity="InvMetaGroup" syncable="YES"/>
         <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="icon" inverseEntity="NpcGroup" syncable="YES"/>
         <relationship name="races" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="icon" inverseEntity="ChrRace" syncable="YES"/>
@@ -161,6 +159,7 @@
         <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="type" inverseEntity="DgmTypeAttribute" syncable="YES"/>
         <relationship name="blueprint" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="productType" inverseEntity="InvBlueprintType" syncable="YES"/>
         <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="blueprintType" inverseEntity="InvBlueprintType" syncable="YES"/>
+        <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="types" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="type" inverseEntity="InvControlTower" syncable="YES"/>
         <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="type" inverseEntity="MapDenormalize" syncable="YES"/>
@@ -169,7 +168,6 @@
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
         <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
-        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="types" inverseEntity="CertMastery" syncable="YES"/>
         <relationship name="masterySkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="type" inverseEntity="CertSkill" syncable="YES"/>
         <relationship name="metaGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="types" inverseEntity="InvMetaGroup" syncable="YES"/>
         <relationship name="parentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="variations" inverseEntity="InvType" syncable="YES"/>
@@ -276,16 +274,16 @@
     </entity>
     <fetchRequest name="DefaultIcon" entity="EveIcon" predicateString="iconFile == &quot;07_15&quot;" fetchLimit="1"/>
     <elements>
-        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="118"/>
-        <element name="CertMastery" positionX="-189" positionY="180" width="128" height="103"/>
-        <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="28"/>
+        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="133"/>
+        <element name="CertMastery" positionX="-189" positionY="180" width="128" height="88"/>
+        <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="105"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
         <element name="ChrRace" positionX="9" positionY="54" width="128" height="28"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="28"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
-        <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="225"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="28"/>
         <element name="InvBlueprintType" positionX="117" positionY="261" width="128" height="266"/>

@@ -21,7 +21,7 @@
 @interface NCSkillsViewControllerDataSection : NSObject
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) EVEDBInvGroup* group;
+@property (nonatomic, strong) NCDBInvGroup* group;
 @end
 
 @interface NCSkillsViewController ()
@@ -75,7 +75,7 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		controller.type = [sender skillData];
+		controller.type = [sender skillData].type;
 	}
 }
 
@@ -240,13 +240,13 @@
 		
 		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"SP: %@ (%@ SP/h)", nil),
 									  [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.skillPoints)],
-									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+									  [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
 		cell.levelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Level %d", nil), MAX(row.targetLevel, row.trainedLevel)];
 		[cell.levelImageView setGIFImageWithContentsOfURL:[[NSBundle mainBundle] URLForResource:[NSString stringWithFormat:@"level_%d%d%d", row.trainedLevel, row.targetLevel, row.active] withExtension:@"gif"]];
 		cell.dateLabel.text = row.trainingTimeToLevelUp > 0 ? [NSString stringWithFormat:@"%@ (%.0f%%)", [NSString stringWithTimeLeft:row.trainingTimeToLevelUp], progress * 100] : nil;
 	}
 	else {
-		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row] * 3600)]];
+		cell.skillPointsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP/h", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@([self.account.characterAttributes skillpointsPerSecondForSkill:row.type] * 3600)]];
 		cell.levelLabel.text = nil;
 		cell.levelImageView.image = nil;
 		cell.dateLabel.text = nil;
@@ -267,128 +267,108 @@
 
 	NSMutableArray* knownSkillsSections = [NSMutableArray new];
 	NSMutableArray* allSkillsSections = [NSMutableArray new];
-	NSMutableArray* canTrainSkillsSection = [NSMutableArray new];
+	NSMutableArray* canTrainSkillsSections = [NSMutableArray new];
 	NSMutableArray* notKnownSkillsSections = [NSMutableArray new];
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+												 request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
+												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
+																			 [NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+												 NSFetchedResultsController* result = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																														  managedObjectContext:database.backgroundManagedObjectContext
+																															sectionNameKeyPath:@"group.groupName"
+																																	 cacheName:nil];
+												 [result performFetch:nil];
+												 NSMutableDictionary* allSkillsMap = [NSMutableDictionary new];
+												 for (id<NSFetchedResultsSectionInfo> sectionInfo in result.sections) {
+													 NSMutableArray* allSkills = [NSMutableArray new];
+													 NSMutableArray* knownSkills = [NSMutableArray new];
+													 NSMutableArray* canTrainSkills = [NSMutableArray new];
+													 NSMutableArray* notKnownSkills = [NSMutableArray new];
 
-											 NSMutableDictionary* allSkills = [[NSMutableDictionary alloc] init];
-											 
-											 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT a.* FROM invTypes as a, invGroups as b where a.groupID=b.groupID and b.categoryID=16 and a.published = 1"
-																				resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																					if ([task isCancelled])
-																						*needsMore = NO;
-//																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
-//																					skillData.trainedLevel = -1;
-//																					allSkills[@(skillData.typeID)] = skillData;
-																				}];
-											 
-											 
-											 
-											 NSMutableArray* knownSkills = [NSMutableArray array];
+													 
+													 float skillPoints = 0;
+													 NCDBInvGroup* group = nil;
 
-											 for (EVECharacterSheetSkill* characterSheetSkill in characterSheet.skills) {
-												 NCSkillData* skillData = allSkills[@(characterSheetSkill.typeID)];
-												 if (skillData) {
-													 skillData.trainedLevel = characterSheetSkill.level;
-													 skillData.skillPoints = characterSheetSkill.skillpoints;
-													 skillData.characterAttributes = characterAttributes;
-													 [knownSkills addObject:skillData];
+													 for (NCDBInvType* type in sectionInfo.objects) {
+														 if (!group)
+															 group = type.group;
+														 NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
+														 EVECharacterSheetSkill* characterSheetSkill = characterSheet.skillsMap[@(type.typeID)];
+														 
+														 if (characterSheetSkill) {
+															 skillData.trainedLevel = characterSheetSkill.level;
+															 skillData.skillPoints = characterSheetSkill.skillpoints;
+															 skillData.characterAttributes = characterAttributes;
+															 if (skillData.trainedLevel < 5)
+																 [canTrainSkills addObject:skillData];
+															 [knownSkills addObject:skillData];
+															 skillPoints += skillData.skillPoints;
+														 }
+														 else {
+															 skillData.trainedLevel = -1;
+															 [notKnownSkills addObject:skillData];
+														 }
+														 
+														 [allSkills addObject:skillData];
+														 allSkillsMap[@(type.typeID)] = skillData;
+													 }
+													 
+													 NSString* title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil),
+																		sectionInfo.name,
+																		[NSNumberFormatter neocomLocalizedStringFromNumber:@(skillPoints)]];
+													 
+													 if (allSkills.count > 0) {
+														 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+														 section.title = title;
+														 section.rows = allSkills;
+														 section.group = group;
+														 [allSkillsSections addObject:section];
+													 }
+													 if (knownSkills.count > 0) {
+														 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+														 section.title = title;
+														 section.rows = knownSkills;
+														 section.group = group;
+														 [knownSkillsSections addObject:section];
+													 }
+													 if (canTrainSkills.count > 0) {
+														 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+														 section.title = title;
+														 section.rows = canTrainSkills;
+														 section.group = group;
+														 [canTrainSkillsSections addObject:section];
+													 }
+													 if (notKnownSkills.count > 0) {
+														 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
+														 section.title = title;
+														 section.rows = notKnownSkills;
+														 section.group = group;
+														 [notKnownSkillsSections addObject:section];
+													 }
 												 }
-											 }
-											 if ([task isCancelled])
-												 return;
-											 
-											 [knownSkills sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]];
-											 
-											 for (EVESkillQueueItem *item in skillQueue.skillQueue) {
-												 NCSkillData* skillData = allSkills[@(item.typeID)];
-												 if (!skillData)
-													 continue;
 												 
-												 skillData.targetLevel = MAX(skillData.targetLevel, item.level);
-												 if (item.queuePosition == 0)
-													 skillData.active = YES;
-											 }
-											 
-											 
-											 if ([task isCancelled])
-												 return;
-											 
-											 for (NSArray* skills in [knownSkills arrayGroupedByKey:@"groupID"]) {
-												 float skillPoints = 0;
-												 for (NCSkillData* skill in skills) {
-													 skillPoints += skill.skillPoints;
+												 for (EVESkillQueueItem *item in skillQueue.skillQueue) {
+													 NCSkillData* skillData = allSkillsMap[@(item.typeID)];
+													 if (!skillData)
+														 continue;
+													 
+													 skillData.targetLevel = MAX(skillData.targetLevel, item.level);
+													 if (item.queuePosition == 0)
+														 skillData.active = YES;
 												 }
-												 NSString* title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil),
-																	[[skills[0] group] groupName],
-																	[NSNumberFormatter neocomLocalizedStringFromNumber:@(skillPoints)]];
-												 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
-												 section.title = title;
-												 section.rows = skills;
-												 section.group = [skills[0] group];
-												 [knownSkillsSections addObject:section];
-											 }
-											 [knownSkillsSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-											 
-											 if ([task isCancelled])
-												 return;
-											 
-											 for (NSArray* skills in [[[allSkills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
-												 float skillPoints = 0;
-												 for (NCSkillData* skill in skills) {
-													 skillPoints += skill.skillPoints;
-												 }
-												 NSString* title = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skillpoints)", nil),
-																	[[skills[0] group] groupName],
-																	[NSNumberFormatter neocomLocalizedStringFromNumber:@(skillPoints)]];
-												 NCSkillsViewControllerDataSection* section = [NCSkillsViewControllerDataSection new];
-												 section.title = title;
-												 section.rows = skills;
-												 section.group = [skills[0] group];
-												 [allSkillsSections addObject:section];
-											 }
-											 [allSkillsSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
-											 
-											 if ([task isCancelled])
-												 return;
-											 
-											 NSPredicate* predicate = nil;
-											 
-											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 5"];
-											 for (NCSkillsViewControllerDataSection* section in allSkillsSections) {
-												 NSArray* canTrain = [section.rows filteredArrayUsingPredicate:predicate];
-												 if (canTrain.count > 0) {
-													 NCSkillsViewControllerDataSection* canTrainSection = [NCSkillsViewControllerDataSection new];
-													 canTrainSection.title = section.title;
-													 canTrainSection.rows = canTrain;
-													 canTrainSection.group = section.group;
-													 [canTrainSkillsSection addObject:canTrainSection];
-												 }
-											 }
-											 
-											 if ([task isCancelled])
-												 return;
-											 
-											 predicate = [NSPredicate predicateWithFormat:@"trainedLevel < 0"];
-											 for (NCSkillsViewControllerDataSection* section in allSkillsSections) {
-												 NSArray* canTrain = [section.rows filteredArrayUsingPredicate:predicate];
-												 if (canTrain.count > 0) {
-													 NCSkillsViewControllerDataSection* notKnownSection = [NCSkillsViewControllerDataSection new];
-													 notKnownSection.title = section.title;
-													 notKnownSection.rows = canTrain;
-													 notKnownSection.group = section.group;
-													 [notKnownSkillsSections addObject:notKnownSection];
-												 }
-											 }
+											 }];
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.allSkillsSections = allSkillsSections;
 									 self.knownSkillsSections = knownSkillsSections;
-									 self.canTrainSkillsSections = canTrainSkillsSection;
+									 self.canTrainSkillsSections = canTrainSkillsSections;
 									 self.notKnownSkillsSections = notKnownSkillsSections;
 									 [self.tableView reloadData];
 								 }

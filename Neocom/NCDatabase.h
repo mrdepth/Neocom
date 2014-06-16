@@ -48,6 +48,7 @@
 #import "NCDBDgmAttributeType+Neocom.h"
 #import "NCDBInvGroup+Neocom.h"
 #import "NCDBInvBlueprintType+Neocom.h"
+#import "NCDBMapSolarSystem+Neocom.h"
 
 @interface NCDatabase : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

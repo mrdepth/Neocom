@@ -12,7 +12,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "UIImageView+URL.h"
 #import "NSString+Neocom.h"
-#import "EVEDBAPI.h"
+#import "NCDatabase.h"
 #import "UIColor+Neocom.h"
 
 @interface NCCharacterSheetViewControllerData : NSObject<NSCoding>
@@ -233,11 +233,11 @@
 		else
 			self.allianceTimeLabel.text = nil;
 		
-		EVEDBMapSolarSystem* solarSystem = [[EVEDBMapSolarSystem alloc] initWithSQLRequest:[NSString stringWithFormat:@"SELECT * from mapSolarSystems WHERE solarSystemName==\"%@\"", characterInfo.lastKnownLocation]
-																					 error:nil];
+		NCDBMapSolarSystem* solarSystem = characterInfo.lastKnownLocation ? [NCDBMapSolarSystem mapSolarSystemWithName:characterInfo.lastKnownLocation] : nil;
+		
 		if (solarSystem) {
 			NSString* ss = [NSString stringWithFormat:@"%.1f", solarSystem.security];
-			NSString* s = [NSString stringWithFormat:@"%@ %@ / %@ / %@", ss, solarSystem.solarSystemName, solarSystem.constellation.constellationName, solarSystem.region.regionName];
+			NSString* s = [NSString stringWithFormat:@"%@ %@ / %@ / %@", ss, solarSystem.solarSystemName, solarSystem.constellation.constellationName, solarSystem.constellation.region.regionName];
 			NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
 			[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:solarSystem.security] range:NSMakeRange(0, ss.length)];
 			self.locationLabel.attributedText = title;
@@ -266,7 +266,7 @@
 				text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%d skills in queue)", nil), [NSString stringWithTimeLeft:timeLeft], (int32_t) skillQueue.skillQueue.count];
 
 				EVESkillQueueItem* item = skillQueue.skillQueue[0];
-				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 				self.currentSkillLabel.text = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, (int32_t) item.level];
 			}
 			else {

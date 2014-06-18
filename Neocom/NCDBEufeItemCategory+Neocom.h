@@ -8,8 +8,27 @@
 
 #import "NCDBEufeItemCategory.h"
 
+typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
+	NCDBEufeItemSlotNone,
+	NCDBEufeItemSlotHi,
+	NCDBEufeItemSlotMed,
+	NCDBEufeItemSlotLow,
+	NCDBEufeItemSlotRig,
+	NCDBEufeItemSlotSubsystem,
+	NCDBEufeItemSlotStructure,
+	NCDBEufeItemSlotCharge,
+	NCDBEufeItemSlotDrone,
+	NCDBEufeItemSlotImplant,
+	NCDBEufeItemSlotBooster,
+	NCDBEufeItemSlotShip,
+	NCDBEufeItemSlotControlTower
+};
+
+@class NCDBChrRace;
 @interface NCDBEufeItemCategory (Neocom)
 
 + (id) shipsCategory;
++ (id) controlTowersCategory;
++ (id) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race;
 
 @end

@@ -244,18 +244,22 @@
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
 		NSString* title;
 		NSArray* conditions;
+		NCDBEufeItemCategory* category;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12"];
 				title = NSLocalizedString(@"Hi slot", nil);
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_MED:
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13"];
 				title = NSLocalizedString(@"Med slot", nil);
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_LOW:
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11"];
 				title = NSLocalizedString(@"Low slot", nil);
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_RIG:
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID",
@@ -264,6 +268,7 @@
 							   @"dgmTypeAttributes.attributeID = 1547",
 							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", static_cast<int>(ship->getAttribute(1547)->getValue())]];
 				title = NSLocalizedString(@"Rigs", nil);
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotRig size:ship->getAttribute(1547)->getValue() race:nil];
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM: {
 				int32_t raceID = static_cast<int32_t>(ship->getAttribute(eufe::RACE_ID_ATTRIBUTE_ID)->getValue());
@@ -290,12 +295,12 @@
 				return;
 		}
 		self.controller.typePickerViewController.title = title;
-		[self.controller.typePickerViewController presentWithConditions:conditions
+		[self.controller.typePickerViewController presentWithCategory:category
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  ship->addModule(type.typeID);
 														  [self.controller reload];
 														  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)

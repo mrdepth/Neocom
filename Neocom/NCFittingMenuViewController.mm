@@ -184,7 +184,7 @@
 		}
 		else if (indexPath.row == 3) {
 			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
-			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory controlTowersCategory]
 //										 presentWithConditions:@[@"invTypes.marketGroupID = 478"]
 											  inViewController:self
 													  fromRect:cell.bounds

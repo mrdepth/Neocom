@@ -10,35 +10,16 @@
 #import "NCDatabase.h"
 #import "eufe.h"
 
-typedef enum {
-	SLOT_NONE = eufe::Module::SLOT_NONE,
-	SLOT_HI,
-	SLOT_MED,
-	SLOT_LOW,
-	SLOT_RIG,
-	SLOT_SUBSYSTEM,
-	SLOT_STRUCTURE,
-	SLOT_CHARGE,
-	SLOT_DRONE,
-	SLOT_IMPLANT,
-	SLOT_BOOSTER,
-	SLOT_SHIP,
-	SLOT_CONTROL_TOWER
-} NCDBEufeItemSlot;
-
-@interface NCDBEufeItemCategory(Private)
-
-+ (id) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race;
-
-@end
 
 @implementation NCDBEufeItemCategory (Neocom)
 
 + (id) shipsCategory {
-	return [self categoryWithSlot:SLOT_SHIP size:0 race:nil];
+	return [self categoryWithSlot:NCDBEufeItemSlotShip size:0 race:nil];
 }
 
-#pragma mark - Private
++ (id) controlTowersCategory {
+	return [self categoryWithSlot:NCDBEufeItemSlotControlTower size:0 race:nil];
+}
 
 + (id) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
 	NCDatabase* database = [NCDatabase sharedDatabase];

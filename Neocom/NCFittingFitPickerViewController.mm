@@ -93,7 +93,7 @@
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
 		cell.titleLabel.text = loadout.type.typeName;
 		cell.subtitleLabel.text = loadout.name;
-		cell.iconView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
+		cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		return cell;
 	}
 }
@@ -125,20 +125,20 @@
 	if (indexPath.section == 0) {
 		
 		NCDatabaseTypePickerViewController* controller = [self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerViewController"];
-		[controller presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-						 inViewController:self
-								 fromRect:cell.bounds
-								   inView:cell
-								 animated:YES
-						completionHandler:^(EVEDBInvType *type) {
-							NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
-							NCStorage* storage = [NCStorage sharedStorage];
-							fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-							fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-							self.selectedFit = fit;
-							[self performSegueWithIdentifier:@"Unwind" sender:cell];
-							[self dismissAnimated];
-						}];
+		[controller presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+					   inViewController:self
+							   fromRect:cell.bounds
+								 inView:cell
+							   animated:YES
+					  completionHandler:^(NCDBInvType *type) {
+						  NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
+						  NCStorage* storage = [NCStorage sharedStorage];
+						  fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+						  fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+						  self.selectedFit = fit;
+						  [self performSegueWithIdentifier:@"Unwind" sender:cell];
+						  [self dismissAnimated];
+					  }];
 	}
 	else {
 		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];

@@ -11,11 +11,11 @@
 
 @implementation EVEKillLogVictim (Neocom)
 
-- (EVEDBInvType*) shipType {
+- (NCDBInvType*) shipType {
 	return objc_getAssociatedObject(self, @"shipType");
 }
 
-- (void) setShipType:(EVEDBInvType *)shipType {
+- (void) setShipType:(NCDBInvType *)shipType {
 	objc_setAssociatedObject(self, @"shipType", shipType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

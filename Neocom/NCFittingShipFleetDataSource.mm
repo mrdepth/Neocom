@@ -286,7 +286,7 @@
 			
 			cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %s%@", fit.type.typeName, fit.pilot->getCharacterName(), booster];
 			cell.subtitleLabel.text = fit.loadoutName;
-			cell.iconView.image = [UIImage imageNamed:[fit.type typeSmallImageName]];
+			cell.iconView.image = fit.type.icon ? fit.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 			if (self.controller.fit == fit)
 				cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]];
 			else

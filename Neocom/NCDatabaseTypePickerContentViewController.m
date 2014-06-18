@@ -16,18 +16,14 @@
 @end
 
 @interface NCDatabaseTypePickerViewController ()
-@property (nonatomic, strong) NSArray* conditions;
 @property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
-@property (nonatomic, strong) NSArray* groups;
-@property (nonatomic, strong) NSSet* conditionsTables;
+@property (nonatomic, strong) NCDBEufeItemCategory* category;
 
 @end
 
 @interface NCDatabaseTypePickerContentViewController ()
-@property (nonatomic, strong) NSArray* sections;
-@property (nonatomic, strong) NSArray* searchResult;
-@property (nonatomic, strong) NSString* typesRequest;
-@property (nonatomic, strong) NSString* searchRequest;
+@property (nonatomic, strong) NSFetchedResultsController* result;
+@property (nonatomic, strong) NSFetchedResultsController* searchResult;
 
 @end
 
@@ -55,7 +51,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	if (!self.groups)
+	if (!self.result)
 		[self reload];
 }
 
@@ -68,16 +64,10 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"NCDatabaseTypePickerContentViewController"]) {
 		NCDatabaseTypePickerContentViewController* destinationViewController = segue.destinationViewController;
-		EVEDBInvMarketGroup* marketGroup = [sender object];
-		while (marketGroup.subgroups.count == 1)
-			marketGroup = marketGroup.subgroups[0];
+		NCDBEufeItemGroup* group = [sender object];
+		destinationViewController.group = group;
 		
-		if (marketGroup.subgroups.count > 0)
-			destinationViewController.groups = marketGroup.subgroups;
-		else
-			destinationViewController.groupID = marketGroup.marketGroupID;
-		
-		destinationViewController.title = marketGroup.marketGroupName;
+		destinationViewController.title = group.groupName;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
 		NCDatabaseTypeInfoViewController* controller;
@@ -85,38 +75,28 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		
-		controller.type = [sender object];
+		NCDBEufeItem* item = [sender object];
+		controller.type = item.type;
 	}
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return self.searchResult.count;
-	else
-		return self.groupID ? self.sections.count : 1;
+	return tableView == self.tableView ? self.result.sections.count : self.searchResult.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return [self.searchResult[section][@"rows"] count];
-	else
-		return self.groupID ? [self.sections[section][@"rows"] count] : self.groups.count;
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id row;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		row = self.searchResult[indexPath.section][@"rows"][indexPath.row];
-	else if (self.groupID)
-		row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	else
-		row = self.groups[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	
 	NCTableViewCell *cell = nil;
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
+	if ([row isKindOfClass:[NCDBEufeItem class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (!cell)
@@ -133,10 +113,8 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		return self.searchResult[section][@"title"];
-	else
-		return self.groupID ? self.sections[section][@"title"] : nil;
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
+	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
@@ -149,16 +127,11 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	id row;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		row = self.searchResult[indexPath.section][@"rows"][indexPath.row];
-	else if (self.groupID)
-		row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	else
-		row = self.groups[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	
 	NCTableViewCell *cell = nil;
-	if ([row isKindOfClass:[EVEDBInvType class]])
+	if ([row isKindOfClass:[NCDBEufeItem class]])
 		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"TypeCell"];
 	else
 		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"MarketGroupCell"];
@@ -171,17 +144,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	id row;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		row = self.searchResult[indexPath.section][@"rows"][indexPath.row];
-	else if (self.groupID)
-		row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	else
-		row = self.groups[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
+	if ([row isKindOfClass:[NCDBEufeItem class]]) {
+		NCDBEufeItem* item = row;
 		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
-		navigationController.completionHandler(row);
+		navigationController.completionHandler(item.type);
 	}
 }
 
@@ -193,43 +162,20 @@
 
 - (void) searchWithSearchString:(NSString*) searchString {
 	if (searchString.length > 1) {
-		NSString* searchRequest = [NSString stringWithFormat:self.searchRequest, searchString];
-		__block NSArray* searchResults = nil;
+		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
+		request.sortDescriptors = @[
+									[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
 		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-												 [database execSQLRequest:searchRequest resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-													 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-													 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
-													 
-													 NSNumber* key = @(metaGroup.metaGroupID);
-													 NSDictionary* section = sectionsDic[key];
-													 if (!section) {
-														 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
-														 
-														 section = @{@"title": title, @"rows": [NSMutableArray arrayWithObject:type], @"order": key};
-														 sectionsDic[key] = section;
-													 }
-													 else
-														 [section[@"rows"] addObject:type];
-													 if ([task isCancelled])
-														 *needsMore = NO;
-												 }];
-												 
-												 if ([task isCancelled])
-													 return;
-												 
-												 searchResults = [[sectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];;
-											 }
-								 completionHandler:^(NCTask *task) {
-									 if (![task isCancelled]) {
-										 self.searchResult = searchResults;
-										 [self.searchDisplayController.searchResultsTableView reloadData];
-									 }
-								 }];
+		request.predicate = [NSPredicate predicateWithFormat:@"ANY groups.category == %@ AND type.typeName CONTAINS[C] %@", navigationController.category, searchString];
+		
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+		NSError* error = nil;
+		[self.searchResult performFetch:&error];
+		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
 	else {
 		self.searchResult = nil;
@@ -238,31 +184,27 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id row;
-	if (tableView == self.searchDisplayController.searchResultsTableView)
-		row = self.searchResult[indexPath.section][@"rows"][indexPath.row];
-	else if (self.groupID)
-		row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	else
-		row = self.groups[indexPath.row];
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
 	
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
-	if ([row isKindOfClass:[EVEDBInvType class]]) {
-		cell.titleLabel.text = [row typeName];
-		cell.iconView.image = [UIImage imageNamed:[row typeSmallImageName]];
+	if ([row isKindOfClass:[NCDBEufeItem class]]) {
+		NCDBEufeItem* item = row;
+		cell.titleLabel.text = item.type.typeName;
+		cell.iconView.image = item.type.icon.image.image;
 		cell.object = row;
+		if (!cell.iconView.image)
+			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];
 	}
 	else {
-		if ([row isKindOfClass:[EVEDBInvCategory class]])
-			cell.titleLabel.text = [row categoryName];
-		else
-			cell.titleLabel.text = [row marketGroupName];
+		if ([row isKindOfClass:[NCDBEufeItemGroup class]]) {
+			NCDBEufeItemGroup* group = row;
+			cell.titleLabel.text = group.groupName;
+			cell.iconView.image = group.icon.image.image;
+		}
 		
-		NSString* iconImageName = [row icon].iconImageName;
-		if (iconImageName)
-			cell.iconView.image = [UIImage imageNamed:iconImageName];
-		else
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+		if (!cell.iconView.image)
+			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
 		cell.object = row;
 	}
 }
@@ -270,88 +212,36 @@
 #pragma mark - Private
 
 - (void) reload {
-	__block NSArray* sections = nil;
-	__block NSArray* groups = nil;
-	
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 NSMutableDictionary* sectionsDic = [NSMutableDictionary dictionary];
-											 if (!self.groups) {
-												 groups = [(NCDatabaseTypePickerViewController*) self.navigationController groups];
-												 self.typesRequest = nil;
-												 self.searchRequest = nil;
-											 }
-											 if (groups.count == 1)
-												 self.groupID = [groups[0] marketGroupID];
-											 
-											 if (self.groupID) {
-												 EVEDBDatabase* database = [EVEDBDatabase sharedDatabase];
-												 [database execSQLRequest:self.typesRequest resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-													 EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-													 EVEDBInvMetaGroup* metaGroup = [[EVEDBInvMetaGroup alloc] initWithStatement:stmt];
-													 
-													 NSNumber* key = @(metaGroup.metaGroupID);
-													 NSDictionary* section = sectionsDic[key];
-													 if (!section) {
-														 NSString* title = metaGroup.metaGroupName ? metaGroup.metaGroupName : @"";
-														 
-														 section = @{@"title": title, @"rows": [NSMutableArray arrayWithObject:type], @"order": key};
-														 sectionsDic[key] = section;
-													 }
-													 else
-														 [section[@"rows"] addObject:type];
-												 }];
-												 sections = [[sectionsDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];;
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 self.sections = sections;
-								 self.groups = groups;
-								 [self update];
-							 }];
-}
-
-- (NSString*) typesRequest {
 	NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
-	
-	if (!_typesRequest) {
-		NSMutableSet* fromTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
-		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:[NSString stringWithFormat:@"invTypes.marketGroupID = %d", self.groupID], @"invTypes.published = 1", nil];
-		
-		[fromTables unionSet:navigationController.conditionsTables];
-		[allConditions addObjectsFromArray:navigationController.conditions];
-		
-		_typesRequest = [NSString stringWithFormat:@"SELECT invTypes.*, invMetaGroups.* FROM invTypes \
-						 LEFT JOIN invMetaTypes ON invTypes.typeID=invMetaTypes.typeID \
-						 LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID \
-						 LEFT JOIN dgmTypeAttributes ON dgmTypeAttributes.typeID=invTypes.typeID AND dgmTypeAttributes.attributeID=633 \
-						 WHERE invTypes.typeID IN \
-						 (SELECT invTypes.typeID FROM %@ WHERE %@) GROUP BY invTypes.typeID ORDER BY dgmTypeAttributes.value, typeName;",
-						 [[fromTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
-	}
-	return _typesRequest;
-}
 
-- (NSString*) searchRequest {
-	NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
+	request.sortDescriptors = @[
+								[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
+								[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
+								[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
 	
-	if (!_searchRequest) {
-		NSMutableSet* fromTables = [[NSMutableSet alloc] initWithObjects: @"invTypes", nil];
-		NSMutableArray* allConditions = [[NSMutableArray alloc] initWithObjects:@"invTypes.typeName like \"%%%@%%\"", @"invTypes.published = 1", nil];
+	request.predicate = [NSPredicate predicateWithFormat:@"ANY groups == %@", self.group];
+	
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+	[self.result performFetch:nil];
+
+	if (self.result.fetchedObjects.count == 0) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
 		
-		[fromTables unionSet:navigationController.conditionsTables];
-		[allConditions addObjectsFromArray:navigationController.conditions];
+		if (self.group)
+			request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.group];
+		else
+			request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", navigationController.category, self.group];
 		
-		_searchRequest = [NSString stringWithFormat:@"SELECT invTypes.*, invMetaGroups.* FROM invTypes \
-						  LEFT JOIN invMetaTypes ON invTypes.typeID=invMetaTypes.typeID \
-						  LEFT JOIN invMetaGroups ON invMetaTypes.metaGroupID=invMetaGroups.metaGroupID \
-						  LEFT JOIN dgmTypeAttributes ON dgmTypeAttributes.typeID=invTypes.typeID AND dgmTypeAttributes.attributeID=633 \
-						  WHERE invTypes.typeID IN \
-						  (SELECT invTypes.typeID FROM %@ WHERE %@) GROUP BY invTypes.typeID ORDER BY dgmTypeAttributes.value, typeName;",
-						  [[fromTables allObjects] componentsJoinedByString:@","], [allConditions componentsJoinedByString:@" AND "]];
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		[self.result performFetch:nil];
 	}
-	return _searchRequest;
+	
+	return;
+
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "NCLoadoutData.h"
 #import "EVEDBAPI.h"
 #import "NCStorage.h"
+#import "NCDatabase.h"
 
 #define NCCategoryIDShip 6
 
@@ -47,9 +48,9 @@
 @dynamic url;
 @dynamic data;
 
-- (EVEDBInvType*) type {
+- (NCDBInvType*) type {
 	if (!_type) {
-		_type = [EVEDBInvType invTypeWithTypeID:self.typeID error:nil];
+		_type = [NCDBInvType invTypeWithTypeID:self.typeID];
 	}
 	return _type;
 }
@@ -62,7 +63,7 @@
 }
 
 - (NCLoadoutCategory) category {
-	return self.type.group.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
+	return self.type.group.category.categoryID == NCCategoryIDShip ? NCLoadoutCategoryShip : NCLoadoutCategoryPOS;
 }
 
 @end

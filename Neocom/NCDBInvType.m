@@ -2,7 +2,7 @@
 //  NCDBInvType.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 16.06.14.
+//  Created by Артем Шиманский on 18.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 #import "NCDBChrRace.h"
 #import "NCDBDgmEffect.h"
 #import "NCDBDgmTypeAttribute.h"
+#import "NCDBEufeItem.h"
 #import "NCDBEveIcon.h"
 #import "NCDBInvBlueprintType.h"
 #import "NCDBInvControlTower.h"
@@ -45,6 +46,7 @@
 @dynamic attributes;
 @dynamic blueprint;
 @dynamic blueprintType;
+@dynamic certificates;
 @dynamic controlTower;
 @dynamic controlTowerResources;
 @dynamic denormalize;
@@ -53,7 +55,6 @@
 @dynamic icon;
 @dynamic installationTypeContents;
 @dynamic marketGroup;
-@dynamic certificates;
 @dynamic masterySkills;
 @dynamic metaGroup;
 @dynamic parentType;
@@ -66,5 +67,6 @@
 @dynamic typeMaterials;
 @dynamic typeRequirements;
 @dynamic variations;
+@dynamic eufeItem;
 
 @end

@@ -11,6 +11,7 @@
 #import "EVEKillLogKill+Neocom.h"
 #import "EVEKillLogVictim+Neocom.h"
 #import "EVEDBInvType+Neocom.h"
+#import "NCDatabase.h"
 
 @implementation NCKillMailPilot
 
@@ -22,7 +23,7 @@
 		self.characterName = [aDecoder decodeObjectForKey:@"characterName"];
 		self.corporationID = [aDecoder decodeInt32ForKey:@"corporationID"];
 		self.corporationName = [aDecoder decodeObjectForKey:@"corporationName"];
-		self.shipType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"shipTypeID"] error:nil];
+		self.shipType = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"shipTypeID"]];
 	}
 	return self;
 }

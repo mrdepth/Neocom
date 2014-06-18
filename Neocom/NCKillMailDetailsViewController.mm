@@ -77,7 +77,7 @@
 	self.damageTakenLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Damage taken: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.killMail.victim.damageTaken]];
 	
 	if (self.killMail.victim.shipType) {
-		self.typeImageView.image = [UIImage imageNamed:self.killMail.victim.shipType.typeSmallImageName];
+		self.typeImageView.image = self.killMail.victim.shipType.icon ? self.killMail.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		self.shipLabel.text = self.killMail.victim.shipType.typeName;
 	}
 	else {
@@ -253,7 +253,7 @@
 			[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:row.allianceID size:EVEImageSizeRetina32 error:nil]];
 		
 		if (row.shipType) {
-			cell.shipTypeImageView.image = [UIImage imageNamed:row.shipType.typeSmallImageName];
+			cell.shipTypeImageView.image = row.shipType.icon ? row.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 			cell.shipLabel.text = row.shipType.typeName;
 		}
 		else {

@@ -42,6 +42,9 @@
 #import "NCDBRamInstallationTypeContent.h"
 #import "NCDBEveUnit.h"
 #import "NCDBInvTypeRequiredSkill.h"
+#import "NCDBEufeItemCategory.h"
+#import "NCDBEufeItemGroup.h"
+#import "NCDBEufeItem.h"
 
 #import "NCDBEveIcon+Neocom.h"
 #import "NCDBInvType+Neocom.h"
@@ -49,6 +52,7 @@
 #import "NCDBInvGroup+Neocom.h"
 #import "NCDBInvBlueprintType+Neocom.h"
 #import "NCDBMapSolarSystem+Neocom.h"
+#import "NCDBEufeItemCategory+Neocom.h"
 
 @interface NCDatabase : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

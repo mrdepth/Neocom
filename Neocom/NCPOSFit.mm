@@ -11,6 +11,7 @@
 #import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+Neocom.h"
+#import "NCDatabase.h"
 
 @implementation NCLoadoutDataPOS
 
@@ -86,7 +87,7 @@
 	return self;
 }
 
-- (id) initWithType:(EVEDBInvType*) type {
+- (id) initWithType:(NCDBInvType*) type {
 	if (self = [super init]) {
 		self.loadoutName = type.typeName;
 		self.type = type;
@@ -96,7 +97,7 @@
 
 - (id) initWithAsset:(EVEAssetListItem*) asset {
 	if (self = [super init]) {
-		self.type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+		self.type = [NCDBInvType invTypeWithTypeID:asset.typeID];
 		if (!self.type)
 			return nil;
 		self.loadoutName = asset.location ? asset.location.itemName : self.type.typeName;

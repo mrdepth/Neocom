@@ -55,7 +55,7 @@
 @property (nonatomic, strong) NCFittingPOSStatsDataSourcePOSStats* posStats;
 @property (nonatomic, strong) NCFittingPOSStatsDataSourcePriceStats* priceStats;
 @property (nonatomic, strong) NCPriceManager* priceManager;
-@property (nonatomic, strong) EVEDBInvControlTowerResource* posFuelRequirements;
+@property (nonatomic, strong) NCDBInvControlTowerResource* posFuelRequirements;
 @end
 
 
@@ -227,7 +227,7 @@
 		
 		if (indexPath.row == 0) {
 			if (self.priceStats) {
-				cell.iconView.image = [UIImage imageNamed:self.posFuelRequirements.resourceType.typeSmallImageName];
+				cell.iconView.image = self.posFuelRequirements.resourceType.icon ? self.posFuelRequirements.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 				cell.titleLabel.text = self.posFuelRequirements.resourceType.typeName;
 				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d/h (%@ ISK/day)", nil),
 													self.priceStats.fuelConsumtion,
@@ -333,11 +333,11 @@
 															NSMutableSet* types = [NSMutableSet set];
 															NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
-															EVEDBInvControlTowerResource* resource = self.posFuelRequirements;
+															NCDBInvControlTowerResource* resource = self.posFuelRequirements;
 															stats.fuelConsumtion = resource.quantity;
 															
 															[types addObject:@(controlTower->getTypeID())];
-															[types addObject:@(resource.resourceTypeID)];
+															[types addObject:@(resource.resourceType.typeID)];
 															
 															float upgradesDailyCost = 0;
 															for (auto i: controlTower->getStructures()) {
@@ -364,7 +364,7 @@
 															__block float posCost = 0;
 															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
 																NSInteger typeID = [key integerValue];
-																if (typeID == resource.resourceTypeID)
+																if (typeID == resource.resourceType.typeID)
 																	stats.fuelDailyCost = stats.fuelConsumtion * obj.sell.percentile * 24;
 																else if (infrastructureUpgrades[key] != nil)
 																	upgradesCost += obj.sell.percentile;
@@ -386,10 +386,10 @@
 										}];
 }
 
-- (EVEDBInvControlTowerResource*) posFuelRequirements {
+- (NCDBInvControlTowerResource*) posFuelRequirements {
 	if (!_posFuelRequirements) {
-		for (EVEDBInvControlTowerResource* resource in self.controller.fit.type.resources) {
-			if (resource.minSecurityLevel == 0.0 && resource.purposeID == 1) {
+		for (NCDBInvControlTowerResource* resource in self.controller.fit.type.controlTowerResources) {
+			if (resource.minSecurityLevel == 0.0 && resource.purpose.purposeID == 1) {
 				_posFuelRequirements = resource;
 				break;
 			}

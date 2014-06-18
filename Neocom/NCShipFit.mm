@@ -15,6 +15,7 @@
 #import "EVEAssetListItem+Neocom.h"
 #import "EVEDBInvType+Neocom.h"
 #import "NCKillMail.h"
+#import "NCDatabase.h"
 
 @implementation NCLoadoutDataShip
 
@@ -196,7 +197,7 @@
 	return self;
 }
 
-- (id) initWithType:(EVEDBInvType*) type {
+- (id) initWithType:(NCDBInvType*) type {
 	if (self = [super init]) {
 		self.loadoutName = type.typeName;
 		self.type = type;
@@ -825,11 +826,11 @@
 - (void) save {
 	[self flush];
 
-	EVEDBInvType* type;
+	NCDBInvType* type;
 
 	eufe::Ship* ship = self.pilot ? self.pilot->getShip() : nullptr;
 	if (ship)
-		type = [EVEDBInvType invTypeWithTypeID:ship->getTypeID() error:nil];
+		type = [NCDBInvType invTypeWithTypeID:ship->getTypeID()];
 	else
 		type = self.loadout.type;
 

@@ -11,6 +11,7 @@
 #import "EVEDBAPI.h"
 #import <objc/runtime.h>
 #import "NSString+MD5.h"
+#import "NCDatabase.h"
 
 @interface EVEDBInvMarketGroup (NCDatabaseTypePickerViewController)
 @property (nonatomic, strong, readonly) NSMutableArray* subgroups;
@@ -31,10 +32,11 @@
 
 @interface NCDatabaseTypePickerViewController ()
 @property (nonatomic, strong) NSArray* conditions;
-@property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
+@property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
 @property (nonatomic, strong) NSArray* groups;
 @property (nonatomic, strong) NSSet* conditionsTables;
 @property (nonatomic, strong) NSMutableDictionary* cache;
+@property (nonatomic, strong) NCDBEufeItemCategory* category;
 
 @end
 
@@ -86,6 +88,28 @@
 	}
 	[self.viewControllers[0] setTitle:self.title];
 	
+//	self.completionHandler = completion;
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[controller presentViewControllerInPopover:self fromRect:rect inView:view permittedArrowDirections:UIPopoverArrowDirectionAny animated:animated];
+	else {
+		[[self.viewControllers[0] navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)]];
+		[controller presentViewController:self animated:animated completion:nil];
+	}
+}
+
+- (void) presentWithCategory:(NCDBEufeItemCategory*) category inViewController:(UIViewController*) controller fromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated completionHandler:(void(^)(NCDBInvType* type)) completion {
+	if (![self.category isEqual:category]) {
+		self.category = category;
+		for (UIViewController* controller in self.viewControllers)
+			if ([controller.searchDisplayController isActive])
+				[controller.searchDisplayController setActive:NO animated:NO];
+		
+		if (self.viewControllers.count > 1)
+			[self setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypePickerContentViewController"]] animated:NO];
+	}
+	[self.viewControllers[0] setTitle:self.title];
+	
 	self.completionHandler = completion;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -95,6 +119,7 @@
 		[controller presentViewController:self animated:animated completion:nil];
 	}
 }
+
 
 - (void) setTitle:(NSString *)title {
 	[super setTitle:title];

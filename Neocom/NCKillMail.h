@@ -11,6 +11,7 @@
 #import "EVEOnlineAPI.h"
 
 @class EVEKillNetLogEntry;
+@class NCDBInvType;
 @interface NCKillMailPilot : NSObject<NSCoding>
 @property (nonatomic, assign) int32_t allianceID;
 @property (nonatomic, strong) NSString *allianceName;
@@ -18,7 +19,7 @@
 @property (nonatomic, strong) NSString *characterName;
 @property (nonatomic, assign) int32_t corporationID;
 @property (nonatomic, strong) NSString *corporationName;
-@property (nonatomic, strong) EVEDBInvType* shipType;
+@property (nonatomic, strong) NCDBInvType* shipType;
 @end
 
 @interface NCKillMailVictim : NCKillMailPilot

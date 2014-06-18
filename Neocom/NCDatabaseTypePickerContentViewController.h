@@ -9,7 +9,6 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseTypePickerContentViewController : NCTableViewController
-@property (nonatomic, assign) int32_t groupID;
-@property (nonatomic, strong) NSArray* groups;
+@property (nonatomic, strong) NCDBEufeItemGroup* group;
 
 @end

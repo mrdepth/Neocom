@@ -166,37 +166,39 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 2) {
 			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-			[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-												inViewController:self
-														fromRect:cell.bounds
-														  inView:cell
-														animated:YES
-											   completionHandler:^(EVEDBInvType *type) {
-												   NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
-												   NCStorage* storage = [NCStorage sharedStorage];
-												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   
-												   [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
-												   [self dismissAnimated];
-											   }];
+			
+			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+											  inViewController:self
+													  fromRect:cell.bounds
+														inView:cell
+													  animated:YES
+											 completionHandler:^(NCDBInvType *type) {
+												 NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
+												 NCStorage* storage = [NCStorage sharedStorage];
+												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 
+												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
+												 [self dismissAnimated];
+											 }];
 		}
 		else if (indexPath.row == 3) {
 			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
-			[self.typePickerViewController presentWithConditions:@[@"invTypes.marketGroupID = 478"]
-												inViewController:self
-														fromRect:cell.bounds
-														  inView:cell
-														animated:YES
-											   completionHandler:^(EVEDBInvType *type) {
-												   NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
-												   NCStorage* storage = [NCStorage sharedStorage];
-												   fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												   
-												   [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
-												   [self dismissAnimated];
-											   }];
+			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+//										 presentWithConditions:@[@"invTypes.marketGroupID = 478"]
+											  inViewController:self
+													  fromRect:cell.bounds
+														inView:cell
+													  animated:YES
+											 completionHandler:^(NCDBInvType *type) {
+												 NCPOSFit* fit = [[NCPOSFit alloc] initWithType:type];
+												 NCStorage* storage = [NCStorage sharedStorage];
+												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 
+												 [self performSegueWithIdentifier:@"NCFittingPOSViewController" sender:fit];
+												 [self dismissAnimated];
+											 }];
 		}
 	}
 	else {
@@ -230,7 +232,7 @@
 	NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
 	cell.titleLabel.text = loadout.type.typeName;
 	cell.subtitleLabel.text = loadout.name;
-	cell.iconView.image = [UIImage imageNamed:loadout.type.typeSmallImageName];
+	cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 }
 
 

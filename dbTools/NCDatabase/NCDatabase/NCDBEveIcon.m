@@ -2,7 +2,7 @@
 //  NCDBEveIcon.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 16.06.14.
+//  Created by Артем Шиманский on 18.06.14.
 //
 //
 
@@ -10,6 +10,7 @@
 #import "NCDBCertMasteryLevel.h"
 #import "NCDBChrRace.h"
 #import "NCDBDgmAttributeType.h"
+#import "NCDBEufeItemGroup.h"
 #import "NCDBEveIconImage.h"
 #import "NCDBInvCategory.h"
 #import "NCDBInvGroup.h"
@@ -34,5 +35,6 @@
 @dynamic npcGroups;
 @dynamic races;
 @dynamic types;
+@dynamic itemGroups;
 
 @end

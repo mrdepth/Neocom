@@ -141,7 +141,7 @@
 	
 	NCKillMailsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	cell.object = row;
-	cell.typeImageView.image = [UIImage imageNamed:row.victim.shipType.typeSmallImageName];
+	cell.typeImageView.image = row.victim.shipType.icon ? row.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.titleLabel.text = row.victim.shipType.typeName;
 	
 	if (row.solarSystem) {

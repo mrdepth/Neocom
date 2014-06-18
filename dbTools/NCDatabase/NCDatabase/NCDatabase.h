@@ -43,5 +43,8 @@
 #import "NCDBRamInstallationTypeContent.h"
 #import "NCDBEveUnit.h"
 #import "NCDBInvTypeRequiredSkill.h"
+#import "NCDBEufeItem.h"
+#import "NCDBEufeItemCategory.h"
+#import "NCDBEufeItemGroup.h"
 
 #endif

@@ -26,10 +26,10 @@
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign) eufe::Engine* engine;
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
-- (id) initWithType:(EVEDBInvType*) type;
+- (id) initWithType:(NCDBInvType*) type;
 - (id) initWithAsset:(EVEAssetListItem*) asset;
 
 - (void) save;

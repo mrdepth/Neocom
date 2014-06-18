@@ -148,7 +148,7 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeVariationsViewController"]) {
 		NCDatabaseTypeVariationsViewController* destinationViewController = segue.destinationViewController;
-		destinationViewController.type = self.type;
+		destinationViewController.type = self.type.parentType ? self.type.parentType : self.type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeMarketInfoViewController"]) {
 		NCDatabaseTypeMarketInfoViewController* destinationViewController = segue.destinationViewController;

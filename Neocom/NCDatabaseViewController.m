@@ -177,11 +177,11 @@
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 			
 			if (self.filter == NCDatabaseFilterPublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE AND typeName LIKE[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE AND typeName CONTAINS[C] %@", self.group, searchString];
 			else if (self.filter == NCDatabaseFilterUnpublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE AND typeName LIKE[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE AND typeName CONTAINS[C] %@", self.group, searchString];
 			else
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName CONTAINS[C] %@", self.group, searchString];
 			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
@@ -192,11 +192,11 @@
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 			
 			if (self.filter == NCDatabaseFilterPublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == TRUE AND typeName LIKE[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == TRUE AND typeName CONTAINS[C] %@", self.category, searchString];
 			else if (self.filter == NCDatabaseFilterUnpublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == FALSE AND typeName LIKE[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == FALSE AND typeName CONTAINS[C] %@", self.category, searchString];
 			else
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName CONTAINS[C] %@", self.category, searchString];
 			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;

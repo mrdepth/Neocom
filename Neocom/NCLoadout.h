@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 - (NSArray*) posLoadouts;
 @end
 
-@class EVEDBInvType;
+@class NCDBInvType;
 
 @interface NCLoadout : NSManagedObject
 
@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, NCLoadoutCategory) {
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NCLoadoutData *data;
 
-@property (nonatomic, readonly, strong) EVEDBInvType* type;
+@property (nonatomic, readonly, strong) NCDBInvType* type;
 @property (nonatomic, readonly) NCLoadoutCategory category;
 
 

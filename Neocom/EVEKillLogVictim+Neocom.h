@@ -8,9 +8,9 @@
 
 #import "EVEKillLog.h"
 
-@class EVEDBInvType;
+@class NCDBInvType;
 @interface EVEKillLogVictim (Neocom)
 
-@property (nonatomic, strong) EVEDBInvType* shipType;
+@property (nonatomic, strong) NCDBInvType* shipType;
 
 @end

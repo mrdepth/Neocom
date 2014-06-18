@@ -2,14 +2,14 @@
 //  NCDBEveIcon.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 16.06.14.
+//  Created by Артем Шиманский on 18.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
+@class NCDBCertMasteryLevel, NCDBChrRace, NCDBDgmAttributeType, NCDBEufeItemGroup, NCDBEveIconImage, NCDBInvCategory, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBNpcGroup, NCDBRamActivity;
 
 @interface NCDBEveIcon : NSManagedObject
 
@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSSet *npcGroups;
 @property (nonatomic, retain) NSSet *races;
 @property (nonatomic, retain) NSSet *types;
+@property (nonatomic, retain) NSSet *itemGroups;
 @end
 
 @interface NCDBEveIcon (CoreDataGeneratedAccessors)
@@ -78,5 +79,10 @@
 - (void)removeTypesObject:(NCDBInvType *)value;
 - (void)addTypes:(NSSet *)values;
 - (void)removeTypes:(NSSet *)values;
+
+- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)addItemGroups:(NSSet *)values;
+- (void)removeItemGroups:(NSSet *)values;
 
 @end

@@ -52,12 +52,13 @@
 @class NAPISearchItem;
 @class EVEAssetListItem;
 @class NCKillMail;
+@class NCDBInvType;
 @interface NCShipFit : NSObject
 @property (nonatomic, strong) NCLoadout* loadout;
 @property (nonatomic, strong) NSString* loadoutName;
 @property (nonatomic, assign) eufe::Character* pilot;
 @property (nonatomic, strong) NCFitCharacter* character;
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, readonly) NSString* canonicalName;
 @property (nonatomic, readonly) NSString* dnaRepresentation;
 @property (nonatomic, readonly) NSString* eveXMLRepresentation;
@@ -66,7 +67,7 @@
 @property (nonatomic, readonly) NSString* hyperlinkTag;
 
 - (id) initWithLoadout:(NCLoadout*) loadout;
-- (id) initWithType:(EVEDBInvType*) type;
+- (id) initWithType:(NCDBInvType*) type;
 - (id) initWithBattleClinicLoadout:(BCEveLoadout*) bcLoadout;
 - (id) initWithAPILoadout:(NAPISearchItem*) apiLoadout;
 - (id) initWithAsset:(EVEAssetListItem*) asset;

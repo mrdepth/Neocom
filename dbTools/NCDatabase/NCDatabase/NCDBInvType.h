@@ -2,14 +2,14 @@
 //  NCDBInvType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 16.06.14.
+//  Created by Артем Шиманский on 18.06.14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertCertificate, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEveIcon, NCDBInvBlueprintType, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeMaterial, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBRamTypeRequirement, NCDBStaStation, NCDBTxtDescription;
+@class NCDBCertCertificate, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEufeItem, NCDBEveIcon, NCDBInvBlueprintType, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeMaterial, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBRamTypeRequirement, NCDBStaStation, NCDBTxtDescription;
 
 @interface NCDBInvType : NSManagedObject
 
@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSSet *attributes;
 @property (nonatomic, retain) NCDBInvBlueprintType *blueprint;
 @property (nonatomic, retain) NCDBInvBlueprintType *blueprintType;
+@property (nonatomic, retain) NSSet *certificates;
 @property (nonatomic, retain) NCDBInvControlTower *controlTower;
 @property (nonatomic, retain) NSSet *controlTowerResources;
 @property (nonatomic, retain) NSSet *denormalize;
@@ -35,7 +36,6 @@
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *installationTypeContents;
 @property (nonatomic, retain) NCDBInvMarketGroup *marketGroup;
-@property (nonatomic, retain) NSSet *certificates;
 @property (nonatomic, retain) NSSet *masterySkills;
 @property (nonatomic, retain) NCDBInvMetaGroup *metaGroup;
 @property (nonatomic, retain) NCDBInvType *parentType;
@@ -48,6 +48,7 @@
 @property (nonatomic, retain) NSSet *typeMaterials;
 @property (nonatomic, retain) NSSet *typeRequirements;
 @property (nonatomic, retain) NSSet *variations;
+@property (nonatomic, retain) NCDBEufeItem *eufeItem;
 @end
 
 @interface NCDBInvType (CoreDataGeneratedAccessors)
@@ -56,6 +57,11 @@
 - (void)removeAttributesObject:(NCDBDgmTypeAttribute *)value;
 - (void)addAttributes:(NSSet *)values;
 - (void)removeAttributes:(NSSet *)values;
+
+- (void)addCertificatesObject:(NCDBCertCertificate *)value;
+- (void)removeCertificatesObject:(NCDBCertCertificate *)value;
+- (void)addCertificates:(NSSet *)values;
+- (void)removeCertificates:(NSSet *)values;
 
 - (void)addControlTowerResourcesObject:(NCDBInvControlTowerResource *)value;
 - (void)removeControlTowerResourcesObject:(NCDBInvControlTowerResource *)value;
@@ -76,11 +82,6 @@
 - (void)removeInstallationTypeContentsObject:(NCDBRamInstallationTypeContent *)value;
 - (void)addInstallationTypeContents:(NSSet *)values;
 - (void)removeInstallationTypeContents:(NSSet *)values;
-
-- (void)addCertificatesObject:(NCDBCertCertificate *)value;
-- (void)removeCertificatesObject:(NCDBCertCertificate *)value;
-- (void)addCertificates:(NSSet *)values;
-- (void)removeCertificates:(NSSet *)values;
 
 - (void)addMasterySkillsObject:(NCDBCertSkill *)value;
 - (void)removeMasterySkillsObject:(NCDBCertSkill *)value;

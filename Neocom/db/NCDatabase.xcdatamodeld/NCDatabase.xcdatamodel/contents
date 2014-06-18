@@ -27,6 +27,7 @@
     <entity name="ChrRace" representedClassName="NCDBChrRace" syncable="YES">
         <attribute name="raceID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="eufeCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="race" inverseEntity="EufeItemCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
     </entity>
@@ -54,6 +55,26 @@
         <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
     </entity>
+    <entity name="EufeItem" representedClassName="NCDBEufeItem" syncable="YES">
+        <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="eufeItems" inverseEntity="EufeItemCategory" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="items" inverseEntity="EufeItemGroup" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="eufeItem" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="EufeItemCategory" representedClassName="NCDBEufeItemCategory" syncable="YES">
+        <attribute name="size" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="slot" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <relationship name="eufeItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="charge" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="category" inverseEntity="EufeItemGroup" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="eufeCategories" inverseEntity="ChrRace" syncable="YES"/>
+    </entity>
+    <entity name="EufeItemGroup" representedClassName="NCDBEufeItemGroup" syncable="YES">
+        <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="itemGroups" inverseEntity="EufeItemCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="itemGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="groups" inverseEntity="EufeItem" syncable="YES"/>
+        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="subGroups" inverseEntity="EufeItemGroup" syncable="YES"/>
+        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="parentGroup" inverseEntity="EufeItemGroup" syncable="YES"/>
+    </entity>
     <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES">
         <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="icon" inverseEntity="RamActivity" syncable="YES"/>
@@ -61,6 +82,7 @@
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="icon" inverseEntity="InvCategory" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
+        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="icon" inverseEntity="EufeItemGroup" syncable="YES"/>
         <relationship name="marketGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="icon" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="masteryLevels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="icon" inverseEntity="CertMasteryLevel" syncable="YES"/>
         <relationship name="metaGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="icon" inverseEntity="InvMetaGroup" syncable="YES"/>
@@ -164,6 +186,7 @@
         <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
         <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="type" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
+        <relationship name="eufeItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="type" inverseEntity="EufeItem" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
@@ -278,12 +301,15 @@
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="105"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
-        <element name="ChrRace" positionX="9" positionY="54" width="128" height="28"/>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="118"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="28"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
-        <element name="EveIcon" positionX="18" positionY="63" width="128" height="225"/>
+        <element name="EufeItem" positionX="-171" positionY="198" width="128" height="88"/>
+        <element name="EufeItemCategory" positionX="-189" positionY="180" width="128" height="118"/>
+        <element name="EufeItemGroup" positionX="-180" positionY="189" width="128" height="133"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="28"/>
         <element name="InvBlueprintType" positionX="117" positionY="261" width="128" height="266"/>
@@ -294,7 +320,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="163"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="28"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="103"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="568"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="583"/>
         <element name="InvTypeMaterial" positionX="0" positionY="45" width="128" height="88"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="133"/>

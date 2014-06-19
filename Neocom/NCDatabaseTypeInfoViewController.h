@@ -11,6 +11,7 @@
 @class NCDBInvType;
 @interface NCDatabaseTypeInfoViewController : NCTableViewController
 @property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NSDictionary* attributes;
 
 @property (weak, nonatomic) IBOutlet UIImageView* imageView;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;

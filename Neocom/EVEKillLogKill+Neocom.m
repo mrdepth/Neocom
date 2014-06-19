@@ -11,11 +11,11 @@
 
 @implementation EVEKillLogKill (Neocom)
 
-- (EVEDBMapSolarSystem*) solarSystem {
+- (NCDBMapSolarSystem*) solarSystem {
 	return objc_getAssociatedObject(self, @"solarSystem");
 }
 
-- (void) setSolarSystem:(EVEDBMapSolarSystem *)solarSystem {
+- (void) setSolarSystem:(NCDBMapSolarSystem *)solarSystem {
 	objc_setAssociatedObject(self, @"solarSystem", solarSystem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

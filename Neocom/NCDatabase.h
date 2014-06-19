@@ -53,6 +53,10 @@
 #import "NCDBInvBlueprintType+Neocom.h"
 #import "NCDBMapSolarSystem+Neocom.h"
 #import "NCDBEufeItemCategory+Neocom.h"
+#import "NCDBStaStation+Neocom.h"
+#import "NCDBMapDenormalize+Neocom.h"
+#import "NCDBRamActivity+Neocom.h"
+#import "NCDBMapRegion+Neocom.h"
 
 @interface NCDatabase : NSObject
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

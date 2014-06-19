@@ -15,7 +15,7 @@
 #import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCStarbasesDetailsViewControllerDataRow : NSObject
-@property (nonatomic, strong) EVEDBInvControlTowerResource* resource;
+@property (nonatomic, strong) NCDBInvControlTowerResource* resource;
 @property (nonatomic, assign) NSInteger quantity;
 @property (nonatomic, strong) NSString* remains;
 @property (nonatomic, strong) UIColor* color;
@@ -24,7 +24,7 @@
 
 @interface NCStarbasesDetailsViewControllerDataSection : NSObject
 @property (nonatomic, strong) NSArray* rows;
-@property (nonatomic, strong) EVEDBInvControlTowerResourcePurpose* purpose;
+@property (nonatomic, strong) NCDBInvControlTowerResourcePurpose* purpose;
 @end
 
 @implementation NCStarbasesDetailsViewControllerDataRow
@@ -65,15 +65,14 @@
 		security = self.starbase.moon.security;
 	
 	NSMutableArray* rows = [NSMutableArray new];
-	for (EVEDBInvControlTowerResource *resource in [self.starbase.type resources]) {
-		
+	for (NCDBInvControlTowerResource *resource in self.starbase.type.controlTowerResources) {
 		if ((resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
-			(resource.factionID > 0 && self.starbase.solarSystem.region.factionID != resource.factionID))
+			(resource.factionID > 0 && self.starbase.solarSystem.constellation.region.factionID != resource.factionID))
 			continue;
 		
 		int quantity = 0;
 		for (EVEStarbaseDetailFuelItem *item in self.starbase.details.fuel) {
-			if (item.typeID == resource.resourceTypeID) {
+			if (item.typeID == resource.resourceType.typeID) {
 				quantity = item.quantity - hours * round(resource.quantity * bonus);
 				break;
 			}
@@ -96,7 +95,7 @@
 		}
 		
 		NSString *consumption;
-		if (resource.purposeID == 2 || resource.purposeID == 3)
+		if (resource.purpose.purposeID == 2 || resource.purpose.purposeID == 3)
 			consumption = NSLocalizedString(@"n/a", nil);
 		else
 			consumption = [NSString stringWithFormat:NSLocalizedString(@"%@/h", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:round(resource.quantity * bonus)]];
@@ -192,7 +191,7 @@
 	
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 	
-	cell.iconView.image = [UIImage imageNamed:row.resource.resourceType.typeSmallImageName];
+	cell.iconView.image = row.resource.resourceType.icon ? row.resource.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.titleLabel.text = row.resource.resourceType.typeName;
 	
 	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ left (%@)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.quantity], row.remains];

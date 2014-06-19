@@ -14,7 +14,7 @@
 #import "UIAlertView+Error.h"
 
 @interface NCFittingBattleClinicViewController ()
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSMutableSet* selectedTags;
 @property (nonatomic, strong) NCDatabaseTypePickerViewController* typePickerViewController;
 
@@ -111,17 +111,17 @@
 		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 		
 		self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-		[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-											inViewController:self
-													fromRect:cell.bounds
-													  inView:cell
-													animated:YES
-										   completionHandler:^(EVEDBInvType *type) {
-											   self.type = type;
-											   [self testInputData];
-											   [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-											   [self dismissAnimated];
-										   }];
+		[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+										  inViewController:self
+												  fromRect:cell.bounds
+													inView:cell
+												  animated:YES
+										 completionHandler:^(NCDBInvType *type) {
+											 self.type = type;
+											 [self testInputData];
+											 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+											 [self dismissAnimated];
+										 }];
 	}
 	else {
 		NSArray* tags = self.data;
@@ -175,7 +175,7 @@
 		}
 		else {
 			cell.titleLabel.text = self.type.typeName;
-			cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
+			cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		}
 	}
 	else {

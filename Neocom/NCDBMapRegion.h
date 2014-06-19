@@ -2,7 +2,7 @@
 //  NCDBMapRegion.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.06.14.
+//  Created by Артем Шиманский on 19.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @property (nonatomic) int32_t regionID;
 @property (nonatomic, retain) NSString * regionName;
+@property (nonatomic) int32_t factionID;
 @property (nonatomic, retain) NSSet *constellations;
 @property (nonatomic, retain) NSSet *denormalize;
 @end

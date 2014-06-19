@@ -9,6 +9,6 @@
 #import "NCTableViewController.h"
 
 @interface NCDatabaseSolarSystemPickerViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBMapRegion* region;
+@property (nonatomic, strong) NCDBMapRegion* region;
 @property (nonatomic, strong) id selectedObject;
 @end

@@ -148,10 +148,10 @@
 			controller = segue.destinationViewController;
 		
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender pointerValue]);
-		EVEDBInvType* type = [self typeWithItem:item];
+		NCDBInvType* type = [self typeWithItem:item];
 		
-		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
-			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
+		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, NCDBDgmTypeAttribute* attribute, BOOL *stop) {
+			attribute.value = item->getAttribute(attribute.attributeType.attributeID)->getValue();
 		}];
 		controller.type = (id) type;
 	}
@@ -166,7 +166,7 @@
 	}
 }
 
-- (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
+- (NCDBInvType*) typeWithItem:(eufe::Item*) item {
 	if (!item)
 		return nil;
 	@synchronized(self) {
@@ -174,9 +174,9 @@
 			self.typesCache = [NSMutableDictionary new];
 		int typeID = item->getTypeID();
 		
-		EVEDBInvType* type = self.typesCache[@(typeID)];
+		NCDBInvType* type = self.typesCache[@(typeID)];
 		if (!type) {
-			type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+			type = [NCDBInvType invTypeWithTypeID:typeID];
 			if (type)
 				self.typesCache[@(typeID)] = type;
 		}

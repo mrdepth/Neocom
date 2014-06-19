@@ -344,14 +344,14 @@
 																[types addObject:@(i->getTypeID())];
 																if (i->hasAttribute(1595)) { //anchoringRequiresSovUpgrade1
 																	int32_t typeID = (int32_t) i->getAttribute(1595)->getValue();
-																	EVEDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
+																	NCDBInvType* upgrade = infrastructureUpgrades[@(typeID)];
 																	if (!upgrade) {
-																		upgrade = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+																		upgrade = [NCDBInvType invTypeWithTypeID:typeID];
 																		if (upgrade) {
 																			[types addObject:@(typeID)];
 																			infrastructureUpgrades[@(typeID)] = upgrade;
 																			[types addObject:@(typeID)];
-																			EVEDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];//sovBillSystemCost
+																			NCDBDgmTypeAttribute* attribute = upgrade.attributesDictionary[@(1603)];
 																			upgradesDailyCost += attribute.value;
 																		}
 																	}

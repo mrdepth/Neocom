@@ -16,20 +16,20 @@
 @interface NCIndustryJobsDetailsViewControllerRow : NSObject
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSString* description;
-@property (nonatomic, strong) NSString* imageName;
+@property (nonatomic, strong) NCDBEveIcon* icon;
 @property (nonatomic, strong) NSURL* imageURL;
 @property (nonatomic, strong) id object;
 
-- (id) initWithTitle:(NSString*) title desciption:(NSString*) description imageName:(NSString*) imageName imageURL:(NSURL*) url;
+- (id) initWithTitle:(NSString*) title desciption:(NSString*) description icon:(NCDBEveIcon*) icon imageURL:(NSURL*) url;
 @end
 
 @implementation NCIndustryJobsDetailsViewControllerRow
 
-- (id) initWithTitle:(NSString*) title desciption:(NSString*) description imageName:(NSString*) imageName imageURL:(NSURL*) url {
+- (id) initWithTitle:(NSString*) title desciption:(NSString*) description icon:(NCDBEveIcon*) icon imageURL:(NSURL*) url {
 	if (self = [super init]) {
 		self.title = title;
 		self.description = description;
-		self.imageName = imageName;
+		self.icon = icon;
 		self.imageURL = url;
 	}
 	return self;
@@ -61,18 +61,18 @@
 	if (self.job.activity)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Activity", nil)
 																		   desciption:self.job.activity.activityName
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"State", nil)
 																	   desciption:[self.job localizedStateWithCurrentDate:self.currentDate]
-																		imageName:nil
+																			 icon:nil
 																		 imageURL:nil]];
 	
 	
 	if (self.job.installedItemType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Input", nil)
 																										 desciption:self.job.installedItemType.typeName
-																										  imageName:self.job.installedItemType.typeSmallImageName
+																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
 		row.object = self.job.installedItemType;
 		[rows addObject:row];
@@ -80,7 +80,7 @@
 	if (self.job.outputType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output", nil)
 																										 desciption:self.job.outputType.typeName
-																										  imageName:self.job.outputType.typeSmallImageName
+																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
 		row.object = self.job.outputType;
 		[rows addObject:row];
@@ -89,32 +89,32 @@
 	if (self.job.installedItemLocation)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Installed Location", nil)
 																		   desciption:self.job.installedItemLocation.name
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	if (self.job.outputLocation)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output Location", nil)
 																		   desciption:self.job.outputLocation.name
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	
 	if (self.job.installerName)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Installed by", nil)
 																		   desciption:self.job.installerName
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:[EVEImage characterPortraitURLWithCharacterID:(int32_t) self.job.installerID size:EVEImageSizeRetina32 error:nil]]];
 	
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Runs", nil)
 																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.runs]
-																		imageName:nil
+																			 icon:nil
 																		 imageURL:nil]];
 	
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Productivity Level", nil)
 																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemProductivityLevel]
-																		imageName:nil
+																			 icon:nil
 																		 imageURL:nil]];
 	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Material Level", nil)
 																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemMaterialLevel]
-																		imageName:nil
+																			 icon:nil
 																		 imageURL:nil]];
 	
 	NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -124,17 +124,17 @@
 	if (self.job.installTime)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Install Time", nil)
 																		   desciption:[dateFormatter stringFromDate:self.job.installTime]
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	if (self.job.beginProductionTime)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Begin Production Time", nil)
 																		   desciption:[dateFormatter stringFromDate:self.job.beginProductionTime]
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	if (self.job.endProductionTime)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"End Production Time", nil)
 																		   desciption:[dateFormatter stringFromDate:self.job.endProductionTime]
-																			imageName:nil
+																				 icon:nil
 																			 imageURL:nil]];
 	
 	self.rows = rows;
@@ -227,10 +227,7 @@
 	cell.object = row.object;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.description;
-	if (row.imageName)
-		cell.iconView.image = [UIImage imageNamed:row.imageName];
-	else
-		cell.iconView.image = nil;
+	cell.iconView.image = row.icon.image.image;
 	if (row.imageURL)
 		[cell.iconView setImageWithContentsOfURL:row.imageURL];
 }

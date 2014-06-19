@@ -62,9 +62,9 @@
 				starbase.details = details[@"details"];
 				starbase.resourceConsumptionBonus = [details[@"resourceConsumptionBonus"] floatValue];
 				
-				starbase.type = [EVEDBInvType invTypeWithTypeID:starbase.typeID error:nil];
-				starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID error:nil];
-				starbase.moon = [EVEDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID error:nil];
+				starbase.type = [NCDBInvType invTypeWithTypeID:starbase.typeID];
+				starbase.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID];
+				starbase.moon = [NCDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID];
 				starbase.title = details[@"title"];
 			}
 		}
@@ -232,9 +232,9 @@
 																									   task.progress = 0.5 + (i + progress) / n;
 																								   }];
 													 
-													 starbase.type = [EVEDBInvType invTypeWithTypeID:starbase.typeID error:nil];
-													 starbase.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID error:nil];
-													 starbase.moon = [EVEDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID error:nil];
+													 starbase.type = [NCDBInvType invTypeWithTypeID:starbase.typeID];
+													 starbase.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:starbase.locationID];
+													 starbase.moon = [NCDBMapDenormalize mapDenormalizeWithItemID:starbase.moonID];
 
 													 if (account.corporationSheet.allianceID) {
 														 for (EVESovereigntyItem* sovereignty in self.sovereignty.solarSystems) {
@@ -266,9 +266,10 @@
 												 
 												 NSArray* rows = [starbases.starbases sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"solarSystem.solarSystemName" ascending:YES]]];
 												 NSMutableArray* sections = [NSMutableArray new];
-												 for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.regionID"]) {
+												 for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.constellation.regionID"]) {
 													 NCStarbasesViewControllerDataSection* section = [NCStarbasesViewControllerDataSection new];
-													 section.title = [[[array[0] solarSystem] region] regionName];
+													 NCDBMapSolarSystem* solarSystem = [array[0] solarSystem];
+													 section.title = solarSystem.constellation.region.regionName;
 													 section.starbases = array;
 													 [sections addObject:section];
 												 }
@@ -309,7 +310,7 @@
 	
 	NCStarbasesCell* cell = (NCStarbasesCell*) tableViewCell;
 	cell.object = row;
-	cell.typeImageView.image = [UIImage imageNamed:row.type.typeSmallImageName];
+	cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.titleLabel.text = row.title;
 	
 	
@@ -380,17 +381,17 @@
 	
 	int minRemains = INT_MAX;
 	int minQuantity = 0;
-	EVEDBInvControlTowerResource *minResource = nil;
+	NCDBInvControlTowerResource *minResource = nil;
 	
-	for (EVEDBInvControlTowerResource *resource in [row.type resources]) {
-		if (resource.purposeID != 1 ||
+	for (NCDBInvControlTowerResource *resource in row.type.controlTowerResources) {
+		if (resource.purpose.purposeID != 1 ||
 			(resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
-			(resource.factionID > 0 && row.solarSystem.region.factionID != resource.factionID))
+			(resource.factionID > 0 && row.solarSystem.constellation.region.factionID != resource.factionID))
 			continue;
 		
 		int quantity = 0;
 		for (EVEStarbaseDetailFuelItem *item in row.details.fuel) {
-			if (item.typeID == resource.resourceTypeID) {
+			if (item.typeID == resource.resourceType.typeID) {
 				quantity = item.quantity - hours * round(resource.quantity * bonus);
 				break;
 			}
@@ -418,7 +419,7 @@
 	}
 	
 	if (minResource)
-		cell.resourceTypeImageView.image = [UIImage imageNamed:minResource.resourceType.typeSmallImageName];
+		cell.resourceTypeImageView.image = minResource.resourceType.icon ? minResource.resourceType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	else
 		cell.resourceTypeImageView.image = nil;
 	cell.fuelLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Fuel: %@", nil), state];

@@ -24,9 +24,9 @@
 + (id) categoryWithSlot:(NCDBEufeItemSlot) slot size:(int32_t) size race:(NCDBChrRace*) race {
 	NCDatabase* database = [NCDatabase sharedDatabase];
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemCategory"];
-	NSPredicate* predicate = [NSPredicate predicateWithFormat:@"slot == %d", (int32_t) slot];
+	NSPredicate* predicate = [NSPredicate predicateWithFormat:@"category == %d", (int32_t) slot, size];
 	if (size)
-		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"size == %d", size]]];
+		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"subcategory == %d", size]]];
 	if (race)
 		predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, [NSPredicate predicateWithFormat:@"race == %@", race]]];
 	request.predicate = predicate;

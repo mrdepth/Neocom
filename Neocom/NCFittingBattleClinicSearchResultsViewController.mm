@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.typeImage = [UIImage imageNamed:[self.type typeSmallImageName]];
+	self.typeImage = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	// Do any additional setup after loading the view.
 }
 

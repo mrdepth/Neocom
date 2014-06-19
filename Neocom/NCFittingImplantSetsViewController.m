@@ -61,9 +61,9 @@
 														 [ids addObjectsFromArray:data.boosterIDs];
 													 
 													 for (NSNumber* typeID in ids) {
-														 EVEDBInvType* type = types[typeID];
+														 NCDBInvType* type = types[typeID];
 														 if (!type) {
-															 type = [EVEDBInvType invTypeWithTypeID:[typeID intValue] error:nil];
+															 type = [NCDBInvType invTypeWithTypeID:[typeID intValue]];
 															 if (type)
 																 types[typeID] = type;
 														 }

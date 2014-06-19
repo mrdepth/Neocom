@@ -33,8 +33,8 @@
 		self.title = [aDecoder decodeObjectForKey:@"title"];
 		self.date = [aDecoder decodeObjectForKey:@"date"];
 		for (EVEKillLogKill* kill in self.kills) {
-			kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-			kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+			kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
+			kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
 		}
 	}
 	return self;
@@ -190,8 +190,8 @@
 																				task.progress = progress;
 																			}];
 											 for (EVEKillLogKill* kill in search.kills) {
-												 kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-												 kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+												 kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
+												 kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
 											 }
 										 }
 							 completionHandler:^(NCTask *task) {
@@ -240,8 +240,8 @@
 												 NSMutableDictionary* sections = [NSMutableDictionary new];
 												 
 												 for (EVEKillLogKill* kill in search.kills) {
-													 kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-													 kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+													 kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
+													 kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
 													 
 													 NCZKillBoardSearchResultsViewControllerDataSection* section = nil;
 													 NSString* key = [dateFormatter stringFromDate:kill.killTime];

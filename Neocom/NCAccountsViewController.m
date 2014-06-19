@@ -14,7 +14,6 @@
 #import "UIImageView+URL.h"
 #import "NSString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
-#import "EVEDBInvType.h"
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCStoryboardPopoverSegue.h"
 #import "NCSetting.h"
@@ -368,7 +367,7 @@
 												 
 												 if (account.skillQueue.skillQueue.count > 0) {
 													 EVESkillQueueItem* item = account.skillQueue.skillQueue[0];
-													 EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+													 NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 												 }
 											 }

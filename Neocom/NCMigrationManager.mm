@@ -104,7 +104,7 @@
 	NSArray* shipFits = [self.oldStorage.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
 	for (ShipFit* shipFit in shipFits) {
-		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:shipFit.typeID error:nil];
+		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:shipFit.typeID];
 		if (type) {
 			NCLoadoutDataShip* loadoutData = [NCLoadoutDataShip new];
 			

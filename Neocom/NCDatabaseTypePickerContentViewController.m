@@ -11,12 +11,8 @@
 #import "NCTableViewCell.h"
 #import "NCDatabaseTypeInfoViewController.h"
 
-@interface EVEDBInvMarketGroup ()
-@property (nonatomic, strong, readonly) NSMutableArray* subgroups;
-@end
-
 @interface NCDatabaseTypePickerViewController ()
-@property (nonatomic, copy) void (^completionHandler)(EVEDBInvType* type);
+@property (nonatomic, copy) void (^completionHandler)(NCDBInvType* type);
 @property (nonatomic, strong) NCDBEufeItemCategory* category;
 
 @end
@@ -41,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
 	self.refreshControl = nil;
 	// Do any additional setup after loading the view.
 }
@@ -51,6 +48,12 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	if (!self.group) {
+		NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
+		if (navigationController.category.itemGroups.count == 1)
+			self.group = [navigationController.category.itemGroups anyObject];
+	}
+
 	if (!self.result)
 		[self reload];
 }
@@ -214,17 +217,23 @@
 - (void) reload {
 	NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
 
-	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
-	request.sortDescriptors = @[
-								[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
-								[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
-								[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
-	
-	request.predicate = [NSPredicate predicateWithFormat:@"ANY groups == %@", self.group];
-	
+	NSFetchRequest* request;
 	NCDatabase* database = [NCDatabase sharedDatabase];
-	self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
-	[self.result performFetch:nil];
+
+	if (self.group) {
+		request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItem"];
+		request.sortDescriptors = @[
+									[NSSortDescriptor sortDescriptorWithKey:@"type.metaGroup.metaGroupID" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"type.metaLevel" ascending:YES],
+									[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]];
+		
+		request.predicate = [NSPredicate predicateWithFormat:@"ANY groups == %@", self.group];
+		
+		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:@"type.metaGroupName" cacheName:nil];
+		[self.result performFetch:nil];
+	}
+	else
+		self.result = nil;
 
 	if (self.result.fetchedObjects.count == 0) {
 		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"EufeItemGroup"];
@@ -233,15 +242,13 @@
 		if (self.group)
 			request.predicate = [NSPredicate predicateWithFormat:@"parentGroup == %@", self.group];
 		else
-			request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", navigationController.category, self.group];
+			request.predicate = [NSPredicate predicateWithFormat:@"category == %@ AND parentGroup == NULL", navigationController.category];
 		
 		NCDatabase* database = [NCDatabase sharedDatabase];
 		self.result = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 		[self.result performFetch:nil];
 	}
-	
-	return;
-
+	[self.tableView reloadData];
 }
 
 @end

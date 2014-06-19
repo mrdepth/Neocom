@@ -8,9 +8,9 @@
 
 #import "EVEKillLog.h"
 
-@class EVEDBMapSolarSystem;
+@class NCDBMapSolarSystem;
 @interface EVEKillLogKill (Neocom)
 
-@property (nonatomic, strong) EVEDBMapSolarSystem* solarSystem;
+@property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
 
 @end

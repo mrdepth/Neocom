@@ -8,8 +8,8 @@
 
 #import "NCTableViewController.h"
 
-@class EVEDBInvType;
+@class NCDBInvType;
 @interface NCFittingAreaEffectPickerViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvType* selectedAreaEffect;
+@property (nonatomic, strong) NCDBInvType* selectedAreaEffect;
 
 @end

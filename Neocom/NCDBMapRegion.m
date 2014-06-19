@@ -2,7 +2,7 @@
 //  NCDBMapRegion.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 18.06.14.
+//  Created by Артем Шиманский on 19.06.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @dynamic regionID;
 @dynamic regionName;
+@dynamic factionID;
 @dynamic constellations;
 @dynamic denormalize;
 

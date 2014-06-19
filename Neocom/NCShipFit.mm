@@ -7,13 +7,11 @@
 //
 
 #import "NCShipFit.h"
-#import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "BattleClinicAPI.h"
 #import "NeocomAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+Neocom.h"
-#import "EVEDBInvType+Neocom.h"
 #import "NCKillMail.h"
 #import "NCDatabase.h"
 
@@ -215,7 +213,7 @@
 			return nil;
 		else {
 			[components removeObjectAtIndex:0];
-			self.type = [EVEDBInvType invTypeWithTypeID:shipID error:nil];
+			self.type = [NCDBInvType invTypeWithTypeID:shipID];
 			if (!self.type)
 				return nil;
 			self.loadoutName = bcLoadout.title;
@@ -237,7 +235,7 @@
 					continue;
 				int32_t typeID = [[fields objectAtIndex:0] intValue];
 				int32_t amount = fields.count > 1 ? [[fields objectAtIndex:1] intValue] : 1;
-				EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+				NCDBInvType *type = [NCDBInvType invTypeWithTypeID:typeID];
 				if (type) {
 					switch (type.category) {
 						case NCTypeCategoryModule: {
@@ -318,7 +316,7 @@
 		if (components.count > 0) {
 			int32_t shipID = [components[0] intValue];
 			
-			self.type = [EVEDBInvType invTypeWithTypeID:shipID error:nil];
+			self.type = [NCDBInvType invTypeWithTypeID:shipID];
 			if (!self.type)
 				return nil;
 			self.loadoutName = apiLoadout.typeName;
@@ -345,7 +343,7 @@
 					if (!typeID)
 						continue;
 					
-					EVEDBInvType *type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+					NCDBInvType *type = [NCDBInvType invTypeWithTypeID:typeID];
 					
 					NSMutableArray* modules = nil;
 					switch (type.slot) {
@@ -438,7 +436,7 @@
 
 - (id) initWithAsset:(EVEAssetListItem*) asset {
 	if (self = [super init]) {
-		self.type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+		self.type = [NCDBInvType invTypeWithTypeID:asset.typeID];
 		if (!self.type)
 			return nil;
 		self.loadoutName = asset.location ? asset.location.itemName : self.type.typeName;
@@ -571,7 +569,7 @@
 			}
 		}
 		
-		[charges enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVEDBInvType* obj, BOOL *stop) {
+		[charges enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, NCDBInvType* obj, BOOL *stop) {
 			NCLoadoutDataShipModule* module = modules[key];
 			if (module)
 				module.chargeID = obj.typeID;
@@ -622,7 +620,7 @@
 		int32_t shipTypeID = [records[0] intValue];
 		if (!shipTypeID)
 			return nil;
-		self.type = [EVEDBInvType invTypeWithTypeID:shipTypeID error:nil];
+		self.type = [NCDBInvType invTypeWithTypeID:shipTypeID];
 		if (!self.type)
 			return nil;
 			
@@ -650,7 +648,7 @@
 				amount = [[components objectAtIndex:1] intValue];
 			
 			if (amount > 0) {
-				EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:typeID];
 				
 				
 				if (type) {
@@ -882,8 +880,8 @@
 			self.pilot->addBooster(item.typeID);
 		
 		for (NCLoadoutDataShipCargoItem* item in self.loadoutData.cargo) {
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
-			if (type.group.categoryID == NCChargeCategoryID) {
+			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
+			if (type.group.category.categoryID == NCChargeCategoryID) {
 				for (auto module: ship->getModules()) {
 					if (!module->getCharge())
 						module->setCharge(item.typeID);
@@ -1017,13 +1015,13 @@
 	for (NSInteger i = 0; i < 5; i++) {
 		int slot = 0;
 		for (NCLoadoutDataShipModule* item in [self.loadoutData valueForKey:keys[i]]) {
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 			[xml appendFormat:@"<hardware slot=\"%@ %d\" type=\"%@\"/>\n", slots[i], slot++, type.typeName];
 		}
 	}
 	
 	for (NCLoadoutDataShipDrone* drone in self.loadoutData.drones) {
-		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:drone.typeID error:nil];
+		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:drone.typeID];
 		[xml appendFormat:@"<hardware slot=\"drone bay\" qty=\"%d\" type=\"%@\"/>\n", drone.count, type.typeName];
 	}
 	
@@ -1039,9 +1037,9 @@
 		if (array.count == 0)
 			continue;
 		for (NCLoadoutDataShipModule* item in array) {
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 			if (item.chargeID) {
-				EVEDBInvType* charge = [EVEDBInvType invTypeWithTypeID:item.chargeID error:nil];
+				NCDBInvType* charge = [NCDBInvType invTypeWithTypeID:item.chargeID];
 				[eft appendFormat:@"%@, %@\n", type.typeName, charge.typeName];
 			}
 			else
@@ -1051,7 +1049,7 @@
 	}
 
 	for (NCLoadoutDataShipDrone* item in self.loadoutData.drones) {
-		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 		[eft appendFormat:@"%@ x%d\n", type.typeName, item.count];
 	}
 	return eft;

@@ -10,8 +10,8 @@
 #import "EVEOnlineAPI.h"
 #import "EVEKillLogKill+Neocom.h"
 #import "EVEKillLogVictim+Neocom.h"
-#import "EVEDBInvType+Neocom.h"
 #import "NCDatabase.h"
+#import "eufe.h"
 
 @implementation NCKillMailPilot
 
@@ -67,7 +67,7 @@
 		self.securityStatus = [aDecoder decodeFloatForKey:@"securityStatus"];
 		self.damageDone = [aDecoder decodeInt32ForKey:@"damageDone"];
 		self.finalBlow = [aDecoder decodeBoolForKey:@"finalBlow"];
-		self.weaponType = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"weaponTypeID"] error:nil];
+		self.weaponType = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"weaponTypeID"]];
 	}
 	return self;
 }
@@ -88,7 +88,7 @@
 	if (self = [super init]) {
 		self.destroyed = [aDecoder decodeBoolForKey:@"destroyed"];
 		self.qty = [aDecoder decodeInt32ForKey:@"qty"];
-		self.type = [EVEDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"typeID"] error:nil];
+		self.type = [NCDBInvType invTypeWithTypeID:[aDecoder decodeInt32ForKey:@"typeID"]];
 		self.flag = static_cast<EVEInventoryFlag>([aDecoder decodeInt32ForKey:@"flag"]);
 	}
 	return self;
@@ -118,7 +118,7 @@
 		self.cargo = [aDecoder decodeObjectForKey:@"cargo"];
 		self.attackers = [aDecoder decodeObjectForKey:@"attackers"];
 		self.victim = [aDecoder decodeObjectForKey:@"victim"];
-		self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:[aDecoder decodeInt32ForKey:@"solarSystemID"] error:nil];
+		self.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:[aDecoder decodeInt32ForKey:@"solarSystemID"]];
 		self.killTime = [aDecoder decodeObjectForKey:@"killTime"];
 	}
 	return self;
@@ -174,7 +174,7 @@
 		NSMutableArray* cargo = [NSMutableArray new];
 		
 		for (EVEKillLogItem* item in kill.items) {
-			EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:item.typeID];
 			BOOL hiSlot = NO;
 			BOOL medSlot = NO;
 			BOOL lowSlot = NO;
@@ -183,7 +183,7 @@
 
 			if (item.flag == EVEInventoryFlagNone) {
 				if ([type category] == NCTypeCategoryModule) {
-					switch ([type slot]) {
+					switch ((eufe::Module::Slot) type.slot) {
 						case eufe::Module::SLOT_HI:
 							hiSlot = YES;
 							break;
@@ -264,8 +264,8 @@
 			attacker.corporationID = item.corporationID;
 			attacker.allianceName = item.allianceName;
 			attacker.allianceID = item.allianceID;
-			attacker.shipType = [EVEDBInvType invTypeWithTypeID:item.shipTypeID error:nil];
-			attacker.weaponType = [EVEDBInvType invTypeWithTypeID:item.weaponTypeID error:nil];
+			attacker.shipType = [NCDBInvType invTypeWithTypeID:item.shipTypeID];
+			attacker.weaponType = [NCDBInvType invTypeWithTypeID:item.weaponTypeID];
 			attacker.securityStatus = item.securityStatus;
 			attacker.damageDone = item.damageDone;
 			attacker.finalBlow = item.finalBlow;

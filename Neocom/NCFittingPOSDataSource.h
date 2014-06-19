@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEDBAPI.h"
 
 @class NCFittingPOSViewController;
 @class NCTask;

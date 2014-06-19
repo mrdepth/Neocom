@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 
 @class EVEKillNetLogEntry;
 @class NCDBInvType;
+@class NCDBMapSolarSystem;
 @interface NCKillMailPilot : NSObject<NSCoding>
 @property (nonatomic, assign) int32_t allianceID;
 @property (nonatomic, strong) NSString *allianceName;
@@ -30,13 +30,13 @@
 @property (nonatomic, assign) float securityStatus;
 @property (nonatomic, assign) int32_t damageDone;
 @property (nonatomic, assign) BOOL finalBlow;
-@property (nonatomic, strong) EVEDBInvType* weaponType;
+@property (nonatomic, strong) NCDBInvType* weaponType;
 @end
 
 @interface NCKillMailItem : NSObject<NSCoding>
 @property (nonatomic, assign) BOOL destroyed;
 @property (nonatomic, assign) int32_t qty;
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, assign) EVEInventoryFlag flag;
 @end
 
@@ -50,7 +50,7 @@
 @property (nonatomic, strong) NSArray* cargo;
 @property (nonatomic, strong) NSMutableArray* attackers;
 @property (nonatomic, strong) NCKillMailVictim* victim;
-@property (nonatomic, strong) EVEDBMapSolarSystem* solarSystem;
+@property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
 @property (nonatomic, strong) NSDate* killTime;
 
 - (id) initWithKillLogKill:(EVEKillLogKill*) kill;

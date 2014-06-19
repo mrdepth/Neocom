@@ -25,15 +25,15 @@
 	return objc_getAssociatedObject(self, @"installerName");
 }
 
-- (EVEDBRamActivity*) activity {
+- (NCDBRamActivity*) activity {
 	return objc_getAssociatedObject(self, @"activity");
 }
 
-- (EVEDBInvType*) installedItemType {
+- (NCDBInvType*) installedItemType {
 	return objc_getAssociatedObject(self, @"installedItemType");
 }
 
-- (EVEDBInvType*) outputType {
+- (NCDBInvType*) outputType {
 	return objc_getAssociatedObject(self, @"outputType");
 }
 
@@ -49,15 +49,15 @@
 	return objc_setAssociatedObject(self, @"installerName", installerName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setActivity:(EVEDBRamActivity *)activity {
+- (void) setActivity:(NCDBRamActivity *)activity {
 	return objc_setAssociatedObject(self, @"activity", activity, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setInstalledItemType:(EVEDBInvType *)installedItemType {
+- (void) setInstalledItemType:(NCDBInvType *)installedItemType {
 	return objc_setAssociatedObject(self, @"installedItemType", installedItemType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void) setOutputType:(EVEDBInvType *)outputType {
+- (void) setOutputType:(NCDBInvType *)outputType {
 	return objc_setAssociatedObject(self, @"outputType", outputType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

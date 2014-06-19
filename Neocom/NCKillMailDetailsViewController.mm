@@ -224,7 +224,7 @@
 		NCKillMailItem* row = section.rows[indexPath.row];
 		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 		cell.object = row.type;
-		cell.iconView.image = [UIImage imageNamed:row.type.typeSmallImageName];
+		cell.iconView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.titleLabel.text = row.type.typeName;
 		if (row.destroyed) {
 			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ destroyed", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.qty]];
@@ -262,7 +262,7 @@
 		}
 		
 		if (row.weaponType) {
-			cell.weaponTypeImageView.image = [UIImage imageNamed:row.weaponType.typeSmallImageName];
+			cell.weaponTypeImageView.image = row.weaponType.icon ? row.weaponType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 			cell.damageDoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ damage done with %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:row.damageDone], row.weaponType.typeName];
 		}
 		else {

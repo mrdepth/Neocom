@@ -351,9 +351,9 @@
 		@synchronized(self.controller) {
 			NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
 			eufe::Module* module = section.modules[indexPath.row];
-			EVEDBInvType* type = [self.controller typeWithItem:module];
+			NCDBInvType* type = [self.controller typeWithItem:module];
 			cell.typeNameLabel.text = type.typeName;
-			cell.typeImageView.image = [UIImage imageNamed:[type typeSmallImageName]];
+			cell.typeImageView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 			
 			eufe::Charge* charge = module->getCharge();
 			
@@ -416,15 +416,15 @@
 	
 	eufe::Ship* ship = self.controller.fit.pilot->getShip();
 	eufe::Module* module = section.modules[indexPath.row];
-	EVEDBInvType* type = [self.controller typeWithItem:module];
+	NCDBInvType* type = [self.controller typeWithItem:module];
 	
 	//NSMutableArray* allSimilarModules = [NSMutableArray new];
 	eufe::ModulesList allSimilarModules;
 	
 	bool multiple = false;
 	for (auto module: section.modules) {
-		EVEDBInvType* moduleType = [self.controller typeWithItem:module];
-		if (type.marketGroupID == moduleType.marketGroupID)
+		NCDBInvType* moduleType = [self.controller typeWithItem:module];
+		if (type.marketGroup.marketGroupID == moduleType.marketGroup.marketGroupID)
 			allSimilarModules.push_back(module);
 	}
 	multiple = allSimilarModules.size() > 1;
@@ -527,12 +527,12 @@
 			conditions = @[[NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]],
 						   [NSString stringWithFormat:@"invTypes.volume <= %f", module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()]];
 		
-		[self.controller.typePickerViewController presentWithConditions:conditions
+		[self.controller.typePickerViewController presentWithCategory:type.eufeItem.charge
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  for (auto module: modules)
 															  module->setCharge(type.typeID);
 														  [self.controller reload];

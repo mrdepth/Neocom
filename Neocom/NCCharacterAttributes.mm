@@ -7,7 +7,6 @@
 //
 
 #import "NCCharacterAttributes.h"
-//#import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "NCTrainingQueue.h"
 #include <map>

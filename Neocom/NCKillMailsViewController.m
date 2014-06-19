@@ -32,8 +32,8 @@
 		self.title = [aDecoder decodeObjectForKey:@"title"];
 		self.date = [aDecoder decodeObjectForKey:@"date"];
 		for (EVEKillLogKill* kill in self.kills) {
-			kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-			kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+			kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
+			kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
 		}
 	}
 	return self;
@@ -212,8 +212,8 @@
 												 NSMutableDictionary* losses = [NSMutableDictionary new];
 
 												 for (EVEKillLogKill* kill in killLog.kills) {
-													 kill.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID error:nil];
-													 kill.victim.shipType = [EVEDBInvType invTypeWithTypeID:kill.victim.shipTypeID error:nil];
+													 kill.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:kill.solarSystemID];
+													 kill.victim.shipType = [NCDBInvType invTypeWithTypeID:kill.victim.shipTypeID];
 													 
 													 NCKillMailsViewControllerDataSection* section = nil;
 													 NSString* key = [dateFormatter stringFromDate:kill.killTime];

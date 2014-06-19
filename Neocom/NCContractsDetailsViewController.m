@@ -309,9 +309,9 @@
 	}
 	else if (indexPath.section == 1) {
 		EVEContractItemsItem* item = data.items.itemList[indexPath.row];
-		EVEDBInvType* type = self.typesDic[@(item.typeID)];
+		NCDBInvType* type = self.typesDic[@(item.typeID)];
 		if (!type) {
-			type = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+			type = [NCDBInvType invTypeWithTypeID:item.typeID];
 			if (type)
 				self.typesDic[@(item.typeID)] = type;
 		}
@@ -319,11 +319,11 @@
 		cell.object = type;
 		if (type) {
 			cell.titleLabel.text = type.typeName;
-			cell.iconView.image = [UIImage imageNamed:type.typeSmallImageName];
+			cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		}
 		else {
 			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown Type %d", nil), item.typeID];
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+			cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
 		}
 		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Quantity: %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:item.quantity]];
 	}

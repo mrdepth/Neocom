@@ -10,6 +10,6 @@
 
 @interface NCDatabaseGroupPickerViewContoller : NCTableViewController
 @property (nonatomic, assign) int32_t categoryID;
-@property (nonatomic, strong) EVEDBInvGroup* selectedGroup;
+@property (nonatomic, strong) NCDBInvGroup* selectedGroup;
 
 @end

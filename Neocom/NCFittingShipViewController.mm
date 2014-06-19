@@ -12,7 +12,6 @@
 #import "NCFittingShipImplantsDataSource.h"
 #import "NCFittingShipFleetDataSource.h"
 #import "NCFittingShipStatsDataSource.h"
-#import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "NCFitCharacter.h"
 #import "NCAccount.h"
@@ -245,12 +244,15 @@
 			controller = segue.destinationViewController;
 
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([sender[@"object"] pointerValue]);
-		EVEDBInvType* type = [self typeWithItem:item];
+		NCDBInvType* type = [self typeWithItem:item];
 		
-		[type.attributesDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* attributeID, EVEDBDgmTypeAttribute* attribute, BOOL *stop) {
-			attribute.value = item->getAttribute(attribute.attributeID)->getValue();
-		}];
+		NSMutableDictionary* attributes = [NSMutableDictionary new];
+		for (NCDBDgmTypeAttribute* attribute in type.attributes) {
+			attributes[@(attribute.attributeType.attributeID)] = @(item->getAttribute(attribute.attributeType.attributeID)->getValue());
+		}
+		
 		controller.type = (id) type;
+		controller.attributes = attributes;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingDamagePatternsViewController"]) {
 		NCFittingDamagePatternsViewController* controller;
@@ -268,7 +270,7 @@
 			controller = segue.destinationViewController;
 		eufe::Area* area = self.engine->getArea();
 		if (area)
-			controller.selectedAreaEffect = [EVEDBInvType invTypeWithTypeID:area->getTypeID() error:nil];
+			controller.selectedAreaEffect = [NCDBInvType invTypeWithTypeID:area->getTypeID()];
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingTypeVariationsViewController"]) {
 		NCFittingTypeVariationsViewController* controller;
@@ -333,7 +335,7 @@
 	}
 }
 
-- (EVEDBInvType*) typeWithItem:(eufe::Item*) item {
+- (NCDBInvType*) typeWithItem:(eufe::Item*) item {
 	if (!item)
 		return nil;
 	@synchronized(self) {
@@ -341,9 +343,9 @@
 			self.typesCache = [NSMutableDictionary new];
 		int typeID = item->getTypeID();
 		
-		EVEDBInvType* type = self.typesCache[@(typeID)];
+		NCDBInvType* type = self.typesCache[@(typeID)];
 		if (!type) {
-			type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+			type = [NCDBInvType invTypeWithTypeID:typeID];
 			if (type)
 				self.typesCache[@(typeID)] = type;
 		}
@@ -469,7 +471,7 @@
 														 typeIDs.insert(booster->getTypeID());
 
 													 for (auto typeID: typeIDs)
-														 [trainingQueue addRequiredSkillsForType:[EVEDBInvType invTypeWithTypeID:typeID error:nil]];
+														 [trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:typeID]];
 												 }
 											 }
 								 completionHandler:^(NCTask *task) {

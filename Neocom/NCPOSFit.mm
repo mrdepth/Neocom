@@ -8,7 +8,6 @@
 
 #import "NCPOSFit.h"
 #import "NCStorage.h"
-#import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+Neocom.h"
 #import "NCDatabase.h"
@@ -106,7 +105,7 @@
 		NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 		
 		for (EVEAssetListItem* item in asset.contents) {
-			EVEDBInvType* type = item.type;
+			NCDBInvType* type = item.type;
 			if (type.group.category.categoryID == eufe::STRUCTURE_CATEGORY_ID && type.group.groupID != eufe::CONTROL_TOWER_GROUP_ID) {
 				NCLoadoutDataPOSStructure* structure = structuresDic[@(item.typeID)];
 				if (!structure) {
@@ -140,9 +139,9 @@
 	}
 	self.loadoutData = [NCLoadoutDataPOS new];
 	
-	EVEDBInvType* type = nil;
+	NCDBInvType* type = nil;
 	
-	type = [EVEDBInvType invTypeWithTypeID:controlTower->getTypeID() error:nil];
+	type = [NCDBInvType invTypeWithTypeID:controlTower->getTypeID()];
 	
 	NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 	for (auto i: controlTower->getStructures()) {

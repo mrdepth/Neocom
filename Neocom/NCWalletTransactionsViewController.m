@@ -17,7 +17,7 @@
 @interface NCWalletTransactionsViewControllerDataRow : NSObject<NSCoding>
 @property (nonatomic, strong) id transaction;
 @property (nonatomic, strong) NCLocationsManagerItem* location;
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @end
 
 @interface NCWalletTransactionsViewControllerDataAccount : NSObject<NSCoding>
@@ -81,9 +81,9 @@
 		for (NCWalletTransactionsViewControllerDataAccount* account in self.accounts) {
 			for (NCWalletTransactionsViewControllerDataRow* row in account.transactions) {
 				int32_t typeID = [row.transaction typeID];
-				EVEDBInvType* type = typesDic[@(typeID)];
+				NCDBInvType* type = typesDic[@(typeID)];
 				if (!type) {
-					type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+					type = [NCDBInvType invTypeWithTypeID:typeID];
 					if (type)
 						typesDic[@(typeID)] = type;
 				}
@@ -331,9 +331,9 @@
 											 NSMutableDictionary* typesDic = [NSMutableDictionary new];
 											 for (NCWalletTransactionsViewControllerDataRow* row in allRows) {
 												 int32_t typeID = [row.transaction typeID];
-												 EVEDBInvType* type = typesDic[@(typeID)];
+												 NCDBInvType* type = typesDic[@(typeID)];
 												 if (!type) {
-													 type = [EVEDBInvType invTypeWithTypeID:typeID error:nil];
+													 type = [NCDBInvType invTypeWithTypeID:typeID];
 													 if (type)
 														 typesDic[@(typeID)] = type;
 												 }
@@ -369,11 +369,11 @@
 	cell.object = row;
 	
 	if (row.type) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.titleLabel.text = row.type.typeName;
 	}
 	else {
-		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
 		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), [row.transaction typeID]];
 	}
 	

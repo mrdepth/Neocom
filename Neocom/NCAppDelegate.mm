@@ -407,7 +407,7 @@
 	
 	NSArray* components = [resourceSpecifier pathComponents];
 	if (components.count > 0) {
-		EVEDBInvType* type = [EVEDBInvType invTypeWithTypeID:[components[0] intValue] error:nil];
+		NCDBInvType* type = [NCDBInvType invTypeWithTypeID:[components[0] intValue]];
 		if (type && type.attributesDictionary.count > 0) {
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 				UIViewController* presentedViewController = nil;

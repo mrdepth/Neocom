@@ -111,8 +111,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
+	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		static NSString *CellIdentifier = @"TypeCell";
 		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -147,8 +146,7 @@
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 	
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
+	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 
 	NSString *CellIdentifier;
 	if ([row isKindOfClass:[NCDBInvType class]])
@@ -177,11 +175,11 @@
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 			
 			if (self.filter == NCDatabaseFilterPublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE AND typeName CONTAINS[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == TRUE AND typeName LIKE[C] %@", self.group, searchString];
 			else if (self.filter == NCDatabaseFilterUnpublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE AND typeName CONTAINS[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND published == FALSE AND typeName LIKE[C] %@", self.group, searchString];
 			else
-				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName CONTAINS[C] %@", self.group, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group == %@ AND typeName LIKE[C] %@", self.group, searchString];
 			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
@@ -192,11 +190,11 @@
 			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 			
 			if (self.filter == NCDatabaseFilterPublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == TRUE AND typeName CONTAINS[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == TRUE AND typeName LIKE[C] %@", self.category, searchString];
 			else if (self.filter == NCDatabaseFilterUnpublished)
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == FALSE AND typeName CONTAINS[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND published == FALSE AND typeName LIKE[C] %@", self.category, searchString];
 			else
-				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName CONTAINS[C] %@", self.category, searchString];
+				request.predicate = [NSPredicate predicateWithFormat:@"group.category == %@ AND typeName LIKE[C] %@", self.category, searchString];
 			
 			NCDatabase* database = [NCDatabase sharedDatabase];
 			request.fetchBatchSize = 50;
@@ -228,8 +226,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
+	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
 	
 	if ([row isKindOfClass:[NCDBInvType class]]) {
 		NCDBInvType* type = row;

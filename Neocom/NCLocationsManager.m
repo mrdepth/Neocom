@@ -9,11 +9,11 @@
 #import "NCLocationsManager.h"
 #import "NCCache.h"
 #import "EVEOnlineAPI.h"
-#import "EVEDBAPI.h"
+#import "NCDatabase.h"
 
 @implementation NCLocationsManagerItem
 
-- (id) initWithName:(NSString*) name solarSystem:(EVEDBMapSolarSystem*) solarSystem {
+- (id) initWithName:(NSString*) name solarSystem:(NCDBMapSolarSystem*) solarSystem {
 	if (self = [super init]) {
 		self.name = name;
 		self.solarSystem = solarSystem;
@@ -26,7 +26,7 @@
 		self.name = [aDecoder decodeObjectForKey:@"name"];
 		int32_t solarSystemID = [aDecoder decodeInt32ForKey:@"solarSystemID"];
 		if (solarSystemID)
-			self.solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:solarSystemID error:nil];
+			self.solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:solarSystemID];
 	}
 	return self;
 }
@@ -85,7 +85,7 @@
 				
 				if (66000000 < locationIDl && locationIDl < 66014933) { //staStations
 					int32_t locationID = locationIDl - 6000001;
-					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:locationID error:nil];
+					NCDBStaStation *station = [NCDBStaStation staStationWithStationID:locationID];
 					if (station)
 						name = [[NCLocationsManagerItem alloc] initWithName:station.stationName solarSystem:station.solarSystem];
 				}
@@ -93,30 +93,30 @@
 					int32_t locationID = locationIDl - 6000000;
 					EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationID)];
 					if (conquerableStation) {
-						EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
+						NCDBMapSolarSystem *solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID];
 						name = [[NCLocationsManagerItem alloc] initWithName:conquerableStation.stationName solarSystem:solarSystem];
 					}
 				}
 				else if (60014861 < locationIDl && locationIDl < 60014928) { //ConqStations
 					EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationIDl)];
 					if (conquerableStation) {
-						EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
+						NCDBMapSolarSystem *solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID];
 						name = [[NCLocationsManagerItem alloc] initWithName:conquerableStation.stationName solarSystem:solarSystem];
 					}
 				}
 				else if (60000000 < locationIDl && locationIDl < 61000000) { //staStations
-					EVEDBStaStation *station = [EVEDBStaStation staStationWithStationID:locationIDl error:nil];
+					NCDBStaStation *station = [NCDBStaStation staStationWithStationID:locationIDl];
 					name = [[NCLocationsManagerItem alloc] initWithName:station.stationName solarSystem:station.solarSystem];
 				}
 				else if (61000000 <= locationIDl) { //ConqStations
 					EVEConquerableStationListItem *conquerableStation = self.conquerableStations[@(locationIDl)];
 					if (conquerableStation) {
-						EVEDBMapSolarSystem *solarSystem = [EVEDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID error:nil];
+						NCDBMapSolarSystem *solarSystem = [NCDBMapSolarSystem mapSolarSystemWithSolarSystemID:conquerableStation.solarSystemID];
 						name = [[NCLocationsManagerItem alloc] initWithName:conquerableStation.stationName solarSystem:solarSystem];
 					}
 				}
 				else { //mapDenormalize
-					EVEDBMapDenormalize *denormalize = [EVEDBMapDenormalize mapDenormalizeWithItemID:locationIDl error:nil];
+					NCDBMapDenormalize *denormalize = [NCDBMapDenormalize mapDenormalizeWithItemID:locationIDl];
 					if (denormalize) {
 						name = [[NCLocationsManagerItem alloc] initWithName:denormalize.itemName solarSystem:denormalize.solarSystem];
 					}

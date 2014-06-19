@@ -14,6 +14,7 @@
 #import "UIColor+Neocom.h"
 #import "UIActionSheet+Block.h"
 #import "NCSetting.h"
+#import "EVECentralQuickLookOrder+Neocom.h"
 
 @interface NCDatabaseTypeMarketInfoViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray *sellOrdersSections;
@@ -300,7 +301,7 @@
 												 for (EVECentralQuickLookOrder *order in quickLook.sellOrders) {
 													 NCDatabaseTypeMarketInfoViewControllerSection* section = sellOrdersSectionsDic[@(order.regionID)];
 													 if (!section) {
-														 EVEDBMapRegion *mapRegion = [EVEDBMapRegion mapRegionWithRegionID:order.regionID error:nil];
+														 NCDBMapRegion *mapRegion = [NCDBMapRegion mapRegionWithRegionID:order.regionID];
 														 section = [NCDatabaseTypeMarketInfoViewControllerSection new];
 														 section.title = mapRegion.regionName;
 														 section.rows = [NSMutableArray new];
@@ -317,7 +318,7 @@
 												 for (EVECentralQuickLookOrder *order in quickLook.buyOrders) {
 													 NCDatabaseTypeMarketInfoViewControllerSection* section = buyOrdersSectionsDic[@(order.regionID)];
 													 if (!section) {
-														 EVEDBMapRegion *mapRegion = [EVEDBMapRegion mapRegionWithRegionID:order.regionID error:nil];
+														 NCDBMapRegion *mapRegion = [NCDBMapRegion mapRegionWithRegionID:order.regionID];
 														 section = [NCDatabaseTypeMarketInfoViewControllerSection new];
 														 section.title = mapRegion.regionName;
 														 section.rows = [NSMutableArray new];

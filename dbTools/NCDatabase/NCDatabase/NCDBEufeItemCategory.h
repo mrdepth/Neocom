@@ -2,7 +2,7 @@
 //  NCDBEufeItemCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 18.06.14.
+//  Created by Артем Шиманский on 19.06.14.
 //
 //
 
@@ -13,8 +13,8 @@
 
 @interface NCDBEufeItemCategory : NSManagedObject
 
-@property (nonatomic) int16_t slot;
-@property (nonatomic) int16_t size;
+@property (nonatomic) int16_t category;
+@property (nonatomic) int16_t subcategory;
 @property (nonatomic, retain) NSSet *itemGroups;
 @property (nonatomic, retain) NCDBChrRace *race;
 @property (nonatomic, retain) NSSet *eufeItems;

@@ -47,14 +47,14 @@
 	self.refreshControl = nil;
 	NSMutableArray* sections = [NSMutableArray new];
 	
-	if (self.asset.type.group.categoryID != NCShipCategoryID &&
+	if (self.asset.type.group.category.categoryID != NCShipCategoryID &&
 		self.asset.type.group.groupID != NCControlTowerGroupID)
 		self.navigationItem.rightBarButtonItem = nil;
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 if (self.asset.type.group.categoryID == NCShipCategoryID) { // Ship
+											 if (self.asset.type.group.category.categoryID == NCShipCategoryID) { // Ship
 												 NSMutableArray* hiSlots = [NSMutableArray new];
 												 NSMutableArray* medSlots = [NSMutableArray new];
 												 NSMutableArray* lowSlots = [NSMutableArray new];
@@ -100,7 +100,7 @@
 												 }
 												 
 											 }
-											 else if (self.asset.type.groupID == NCHangarOrOfficeGroupID) { //Hangar or Office
+											 else if (self.asset.type.group.groupID == NCHangarOrOfficeGroupID) { //Hangar or Office
 												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"flag"] mutableCopy];
 												 
 												 [groups sortUsingComparator:^NSComparisonResult(NSArray* obj1, NSArray* obj2) {
@@ -131,7 +131,7 @@
 													 [sections addObject:section];
 												 }
 											 }
-											 else if (self.asset.type.groupID == NCShipMaintenanceArrayGroupID) { //Ship Maintenance Array
+											 else if (self.asset.type.group.groupID == NCShipMaintenanceArrayGroupID) { //Ship Maintenance Array
 												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"type.groupID"] mutableCopy];
 												 
 												 [groups sortUsingComparator:^NSComparisonResult(NSArray* obj1, NSArray* obj2) {
@@ -337,7 +337,7 @@
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
-	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	
 	cell.titleLabel.text = asset.title;
 	cell.object = asset;

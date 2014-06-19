@@ -27,27 +27,27 @@
 	objc_setAssociatedObject(self, @"resourceConsumptionBonus", @(resourceConsumptionBonus), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (EVEDBMapSolarSystem*) solarSystem {	
+- (NCDBMapSolarSystem*) solarSystem {
 	return objc_getAssociatedObject(self, @"solarSystem");
 }
 
-- (void) setSolarSystem:(EVEDBMapSolarSystem *)solarSystem {
+- (void) setSolarSystem:(NCDBMapSolarSystem *)solarSystem {
 	objc_setAssociatedObject(self, @"solarSystem", solarSystem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (EVEDBMapDenormalize*) moon {
+- (NCDBMapDenormalize*) moon {
 	return objc_getAssociatedObject(self, @"moon");
 }
 
-- (void) setMoon:(EVEDBMapDenormalize *)moon {
+- (void) setMoon:(NCDBMapDenormalize *)moon {
 	objc_setAssociatedObject(self, @"moon", moon, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (EVEDBInvType*) type {
+- (NCDBInvType*) type {
 	return objc_getAssociatedObject(self, @"type");
 }
 
-- (void) setType:(EVEDBInvType *)type {
+- (void) setType:(NCDBInvType *)type {
 	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

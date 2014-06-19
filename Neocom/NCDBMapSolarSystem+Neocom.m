@@ -14,7 +14,22 @@
 + (instancetype) mapSolarSystemWithName:(NSString*) name {
 	NCDatabase* database = [NCDatabase sharedDatabase];
 	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
-	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName == %d", name];
+	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName == %@", name];
+	request.fetchLimit = 1;
+	__block NSArray* result;
+	if ([NSThread isMainThread])
+		result = [database.managedObjectContext executeFetchRequest:request error:nil];
+	else
+		[database.backgroundManagedObjectContext performBlockAndWait:^{
+			result = [database.backgroundManagedObjectContext executeFetchRequest:request error:nil];
+		}];
+	return result.count > 0 ? result[0] : nil;
+}
+
++ (instancetype) mapSolarSystemWithSolarSystemID:(int32_t) systemID {
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+	request.predicate = [NSPredicate predicateWithFormat:@"solarSystemID == %d", systemID];
 	request.fetchLimit = 1;
 	__block NSArray* result;
 	if ([NSThread isMainThread])

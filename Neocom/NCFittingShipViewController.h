@@ -30,7 +30,7 @@
 
 - (IBAction)onChangeSection:(id)sender;
 - (IBAction)onAction:(id)sender;
-- (EVEDBInvType*) typeWithItem:(eufe::Item*) item;
+- (NCDBInvType*) typeWithItem:(eufe::Item*) item;
 - (void) reload;
 
 @end

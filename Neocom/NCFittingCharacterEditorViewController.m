@@ -8,7 +8,6 @@
 
 #import "NCFittingCharacterEditorViewController.h"
 #import "NCFitCharacter.h"
-#import "EVEDBAPI.h"
 #import "NSArray+Neocom.h"
 #import "UIActionSheet+Block.h"
 #import "NCFittingCharacterEditorCell.h"
@@ -42,23 +41,35 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT a.* FROM invTypes as a, invGroups as b where a.groupID=b.groupID and b.categoryID=16 and a.published = 1"
-																				resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																					if ([task isCancelled])
-																						*needsMore = NO;
-//																					NCSkillData* skillData = [[NCSkillData alloc] initWithStatement:stmt];
-//																					skillData.trainedLevel = -1;
-//																					skills[@(skillData.typeID)] = skillData;
-																				}];
-											 for (NSArray* array in [[[skills allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]]] arrayGroupedByKey:@"groupID"]) {
-												 NSString* title = [[array[0] group] groupName];
-												 [sections addObject:@{@"title": title, @"rows": array, @"sectionID": @([array[0] groupID])}];
-											 }
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+												 request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
+												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
+																			 [NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+												 NSFetchedResultsController* result = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																														  managedObjectContext:database.backgroundManagedObjectContext
+																															sectionNameKeyPath:@"group.groupName"
+																																	 cacheName:nil];
+												 [result performFetch:nil];
+												 for (id<NSFetchedResultsSectionInfo> sectionInfo in result.sections) {
+													 NCDBInvGroup* group = nil;
+													 
+													 NSMutableArray* rows = [NSMutableArray new];
+													 for (NCDBInvType* type in sectionInfo.objects) {
+														 if (!group)
+															 group = type.group;
+														 NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
+														 [rows addObject:skillData];
+														 skills[@(type.typeID)] = skillData;
+													 }
+													 [sections addObject:@{@"title": sectionInfo.name, @"rowS": rows, @"sectionID": @(group.groupID)}];
+												 }
+											 }];
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
 												 NCSkillData* skillData = skills[typeID];
 												 skillData.currentLevel = [level intValue];
 											 }];
-											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 
 										 }
 							 completionHandler:^(NCTask *task) {

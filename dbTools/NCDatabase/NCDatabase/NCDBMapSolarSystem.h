@@ -2,7 +2,7 @@
 //  NCDBMapSolarSystem.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 18.06.14.
+//  Created by Артем Шиманский on 19.06.14.
 //
 //
 
@@ -16,6 +16,7 @@
 @property (nonatomic) float security;
 @property (nonatomic) int32_t solarSystemID;
 @property (nonatomic, retain) NSString * solarSystemName;
+@property (nonatomic) int32_t factionID;
 @property (nonatomic, retain) NCDBMapConstellation *constellation;
 @property (nonatomic, retain) NSSet *denormalize;
 @property (nonatomic, retain) NSSet *stations;

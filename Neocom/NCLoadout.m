@@ -8,7 +8,6 @@
 
 #import "NCLoadout.h"
 #import "NCLoadoutData.h"
-#import "EVEDBAPI.h"
 #import "NCStorage.h"
 #import "NCDatabase.h"
 

@@ -96,43 +96,43 @@
 		12476CB219501A4D009E07C6 /* SqliteFetchResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6D19501A4D009E07C6 /* SqliteFetchResult.cpp */; };
 		12476CB319501A4D009E07C6 /* Structure.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12476C6F19501A4D009E07C6 /* Structure.cpp */; };
 		12476CC619501A4D009E07C6 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 12476C8519501A4D009E07C6 /* sqlite3.c */; };
-		126F198B1951A11500E5CD4F /* NCDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F198A1951A11500E5CD4F /* NCDBDgmTypeAttribute.m */; };
-		126F198E1951A11500E5CD4F /* NCDBEufeItemCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F198D1951A11500E5CD4F /* NCDBEufeItemCategory.m */; };
-		126F19911951A11500E5CD4F /* NCDBMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19901951A11500E5CD4F /* NCDBMapRegion.m */; };
-		126F19941951A11600E5CD4F /* NCDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19931951A11600E5CD4F /* NCDBCertSkill.m */; };
-		126F19971951A11600E5CD4F /* NCDBEveIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19961951A11600E5CD4F /* NCDBEveIcon.m */; };
-		126F199A1951A11600E5CD4F /* NCDBCertMasteryLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19991951A11600E5CD4F /* NCDBCertMasteryLevel.m */; };
-		126F199D1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F199C1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.m */; };
-		126F19A01951A11600E5CD4F /* NCDBDgmEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F199F1951A11600E5CD4F /* NCDBDgmEffect.m */; };
-		126F19A31951A11600E5CD4F /* NCDBMapConstellation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19A21951A11600E5CD4F /* NCDBMapConstellation.m */; };
-		126F19A61951A11600E5CD4F /* NCDBEufeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19A51951A11600E5CD4F /* NCDBEufeItem.m */; };
-		126F19A91951A11600E5CD4F /* NCDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19A81951A11600E5CD4F /* NCDBRamAssemblyLineType.m */; };
-		126F19AC1951A11600E5CD4F /* NCDBRamTypeRequirement.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19AB1951A11600E5CD4F /* NCDBRamTypeRequirement.m */; };
-		126F19AF1951A11600E5CD4F /* NCDBTxtDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19AE1951A11600E5CD4F /* NCDBTxtDescription.m */; };
-		126F19B21951A11600E5CD4F /* NCDBDgmAttributeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19B11951A11600E5CD4F /* NCDBDgmAttributeCategory.m */; };
-		126F19B51951A11600E5CD4F /* NCDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19B41951A11600E5CD4F /* NCDBCertMastery.m */; };
-		126F19B81951A11600E5CD4F /* NCDBEufeItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19B71951A11600E5CD4F /* NCDBEufeItemGroup.m */; };
-		126F19BB1951A11600E5CD4F /* NCDBInvCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19BA1951A11600E5CD4F /* NCDBInvCategory.m */; };
-		126F19BE1951A11600E5CD4F /* NCDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19BD1951A11600E5CD4F /* NCDBCertCertificate.m */; };
-		126F19C11951A11600E5CD4F /* NCDBInvBlueprintType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19C01951A11600E5CD4F /* NCDBInvBlueprintType.m */; };
-		126F19C41951A11600E5CD4F /* NCDBInvControlTower.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19C31951A11600E5CD4F /* NCDBInvControlTower.m */; };
-		126F19C71951A11600E5CD4F /* NCDBEveUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19C61951A11600E5CD4F /* NCDBEveUnit.m */; };
-		126F19CA1951A11700E5CD4F /* NCDBInvType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19C91951A11700E5CD4F /* NCDBInvType.m */; };
-		126F19CD1951A11700E5CD4F /* NCDBInvControlTowerResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19CC1951A11700E5CD4F /* NCDBInvControlTowerResource.m */; };
-		126F19D01951A11700E5CD4F /* NCDBEveIconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19CF1951A11700E5CD4F /* NCDBEveIconImage.m */; };
-		126F19D31951A11700E5CD4F /* NCDBChrRace.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19D21951A11700E5CD4F /* NCDBChrRace.m */; };
-		126F19D61951A11700E5CD4F /* NCDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19D51951A11700E5CD4F /* NCDBNpcGroup.m */; };
-		126F19D91951A11700E5CD4F /* NCDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19D81951A11700E5CD4F /* NCDBInvGroup.m */; };
-		126F19DC1951A11700E5CD4F /* NCDBInvMarketGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19DB1951A11700E5CD4F /* NCDBInvMarketGroup.m */; };
-		126F19DF1951A11700E5CD4F /* NCDBRamActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19DE1951A11700E5CD4F /* NCDBRamActivity.m */; };
-		126F19E21951A11700E5CD4F /* NCDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19E11951A11700E5CD4F /* NCDBRamInstallationTypeContent.m */; };
-		126F19E51951A11700E5CD4F /* NCDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19E41951A11700E5CD4F /* NCDBDgmAttributeType.m */; };
-		126F19E81951A11700E5CD4F /* NCDBInvMetaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19E71951A11700E5CD4F /* NCDBInvMetaGroup.m */; };
-		126F19EB1951A11700E5CD4F /* NCDBInvTypeMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19EA1951A11700E5CD4F /* NCDBInvTypeMaterial.m */; };
-		126F19EE1951A11700E5CD4F /* NCDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19ED1951A11700E5CD4F /* NCDBStaStation.m */; };
-		126F19F11951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19F01951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.m */; };
-		126F19F41951A11700E5CD4F /* NCDBMapSolarSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19F31951A11700E5CD4F /* NCDBMapSolarSystem.m */; };
-		126F19F71951A11700E5CD4F /* NCDBMapDenormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F19F61951A11700E5CD4F /* NCDBMapDenormalize.m */; };
+		126F1BC81953271800E5CD4F /* NCDBEufeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BC71953271800E5CD4F /* NCDBEufeItem.m */; };
+		126F1BCB1953271800E5CD4F /* NCDBCertSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BCA1953271800E5CD4F /* NCDBCertSkill.m */; };
+		126F1BCE1953271800E5CD4F /* NCDBEufeItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BCD1953271800E5CD4F /* NCDBEufeItemGroup.m */; };
+		126F1BD11953271800E5CD4F /* NCDBInvCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BD01953271800E5CD4F /* NCDBInvCategory.m */; };
+		126F1BD41953271800E5CD4F /* NCDBDgmAttributeType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BD31953271800E5CD4F /* NCDBDgmAttributeType.m */; };
+		126F1BD71953271800E5CD4F /* NCDBMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BD61953271800E5CD4F /* NCDBMapRegion.m */; };
+		126F1BDA1953271900E5CD4F /* NCDBRamInstallationTypeContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BD91953271900E5CD4F /* NCDBRamInstallationTypeContent.m */; };
+		126F1BDD1953271900E5CD4F /* NCDBCertCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BDC1953271900E5CD4F /* NCDBCertCertificate.m */; };
+		126F1BE01953271900E5CD4F /* NCDBNpcGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BDF1953271900E5CD4F /* NCDBNpcGroup.m */; };
+		126F1BE31953271900E5CD4F /* NCDBStaStation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BE21953271900E5CD4F /* NCDBStaStation.m */; };
+		126F1BE61953271900E5CD4F /* NCDBInvControlTower.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BE51953271900E5CD4F /* NCDBInvControlTower.m */; };
+		126F1BE91953271900E5CD4F /* NCDBInvTypeRequiredSkill.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BE81953271900E5CD4F /* NCDBInvTypeRequiredSkill.m */; };
+		126F1BEC1953271900E5CD4F /* NCDBRamAssemblyLineType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BEB1953271900E5CD4F /* NCDBRamAssemblyLineType.m */; };
+		126F1BEF1953271900E5CD4F /* NCDBEveIconImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BEE1953271900E5CD4F /* NCDBEveIconImage.m */; };
+		126F1BF21953271900E5CD4F /* NCDBDgmAttributeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BF11953271900E5CD4F /* NCDBDgmAttributeCategory.m */; };
+		126F1BF51953271900E5CD4F /* NCDBEufeItemCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BF41953271900E5CD4F /* NCDBEufeItemCategory.m */; };
+		126F1BF81953271900E5CD4F /* NCDBEveUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BF71953271900E5CD4F /* NCDBEveUnit.m */; };
+		126F1BFB1953271900E5CD4F /* NCDBInvControlTowerResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BFA1953271900E5CD4F /* NCDBInvControlTowerResource.m */; };
+		126F1BFE1953271900E5CD4F /* NCDBRamActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1BFD1953271900E5CD4F /* NCDBRamActivity.m */; };
+		126F1C011953271900E5CD4F /* NCDBInvTypeMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C001953271900E5CD4F /* NCDBInvTypeMaterial.m */; };
+		126F1C041953271900E5CD4F /* NCDBChrRace.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C031953271900E5CD4F /* NCDBChrRace.m */; };
+		126F1C071953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C061953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.m */; };
+		126F1C0A1953271900E5CD4F /* NCDBInvMetaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C091953271900E5CD4F /* NCDBInvMetaGroup.m */; };
+		126F1C0D1953271900E5CD4F /* NCDBDgmEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C0C1953271900E5CD4F /* NCDBDgmEffect.m */; };
+		126F1C101953271A00E5CD4F /* NCDBInvType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C0F1953271A00E5CD4F /* NCDBInvType.m */; };
+		126F1C131953271A00E5CD4F /* NCDBMapConstellation.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C121953271A00E5CD4F /* NCDBMapConstellation.m */; };
+		126F1C161953271A00E5CD4F /* NCDBCertMastery.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C151953271A00E5CD4F /* NCDBCertMastery.m */; };
+		126F1C191953271A00E5CD4F /* NCDBEveIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C181953271A00E5CD4F /* NCDBEveIcon.m */; };
+		126F1C1C1953271A00E5CD4F /* NCDBMapDenormalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C1B1953271A00E5CD4F /* NCDBMapDenormalize.m */; };
+		126F1C1F1953271A00E5CD4F /* NCDBMapSolarSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C1E1953271A00E5CD4F /* NCDBMapSolarSystem.m */; };
+		126F1C221953271A00E5CD4F /* NCDBDgmTypeAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C211953271A00E5CD4F /* NCDBDgmTypeAttribute.m */; };
+		126F1C251953271A00E5CD4F /* NCDBCertMasteryLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C241953271A00E5CD4F /* NCDBCertMasteryLevel.m */; };
+		126F1C281953271A00E5CD4F /* NCDBInvBlueprintType.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C271953271A00E5CD4F /* NCDBInvBlueprintType.m */; };
+		126F1C2B1953271A00E5CD4F /* NCDBRamTypeRequirement.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C2A1953271A00E5CD4F /* NCDBRamTypeRequirement.m */; };
+		126F1C2E1953271A00E5CD4F /* NCDBTxtDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C2D1953271A00E5CD4F /* NCDBTxtDescription.m */; };
+		126F1C311953271A00E5CD4F /* NCDBInvGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C301953271A00E5CD4F /* NCDBInvGroup.m */; };
+		126F1C341953271A00E5CD4F /* NCDBInvMarketGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 126F1C331953271A00E5CD4F /* NCDBInvMarketGroup.m */; };
 		127667451914C9A900530550 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667441914C9A900530550 /* CoreData.framework */; };
 		127667471914C9A900530550 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 127667461914C9A900530550 /* Foundation.framework */; };
 		1276674A1914C9A900530550 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 127667491914C9A900530550 /* main.mm */; };
@@ -340,80 +340,80 @@
 		12476C8619501A4D009E07C6 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		12476C8719501A4D009E07C6 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
 		12476C8819501A4D009E07C6 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		126F19891951A11500E5CD4F /* NCDBDgmTypeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmTypeAttribute.h; sourceTree = "<group>"; };
-		126F198A1951A11500E5CD4F /* NCDBDgmTypeAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmTypeAttribute.m; sourceTree = "<group>"; };
-		126F198C1951A11500E5CD4F /* NCDBEufeItemCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemCategory.h; sourceTree = "<group>"; };
-		126F198D1951A11500E5CD4F /* NCDBEufeItemCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemCategory.m; sourceTree = "<group>"; };
-		126F198F1951A11500E5CD4F /* NCDBMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapRegion.h; sourceTree = "<group>"; };
-		126F19901951A11500E5CD4F /* NCDBMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapRegion.m; sourceTree = "<group>"; };
-		126F19921951A11600E5CD4F /* NCDBCertSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertSkill.h; sourceTree = "<group>"; };
-		126F19931951A11600E5CD4F /* NCDBCertSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertSkill.m; sourceTree = "<group>"; };
-		126F19951951A11600E5CD4F /* NCDBEveIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveIcon.h; sourceTree = "<group>"; };
-		126F19961951A11600E5CD4F /* NCDBEveIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveIcon.m; sourceTree = "<group>"; };
-		126F19981951A11600E5CD4F /* NCDBCertMasteryLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertMasteryLevel.h; sourceTree = "<group>"; };
-		126F19991951A11600E5CD4F /* NCDBCertMasteryLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertMasteryLevel.m; sourceTree = "<group>"; };
-		126F199B1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvTypeRequiredSkill.h; sourceTree = "<group>"; };
-		126F199C1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvTypeRequiredSkill.m; sourceTree = "<group>"; };
-		126F199E1951A11600E5CD4F /* NCDBDgmEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmEffect.h; sourceTree = "<group>"; };
-		126F199F1951A11600E5CD4F /* NCDBDgmEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmEffect.m; sourceTree = "<group>"; };
-		126F19A11951A11600E5CD4F /* NCDBMapConstellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapConstellation.h; sourceTree = "<group>"; };
-		126F19A21951A11600E5CD4F /* NCDBMapConstellation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapConstellation.m; sourceTree = "<group>"; };
-		126F19A41951A11600E5CD4F /* NCDBEufeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItem.h; sourceTree = "<group>"; };
-		126F19A51951A11600E5CD4F /* NCDBEufeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItem.m; sourceTree = "<group>"; };
-		126F19A71951A11600E5CD4F /* NCDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamAssemblyLineType.h; sourceTree = "<group>"; };
-		126F19A81951A11600E5CD4F /* NCDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamAssemblyLineType.m; sourceTree = "<group>"; };
-		126F19AA1951A11600E5CD4F /* NCDBRamTypeRequirement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamTypeRequirement.h; sourceTree = "<group>"; };
-		126F19AB1951A11600E5CD4F /* NCDBRamTypeRequirement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamTypeRequirement.m; sourceTree = "<group>"; };
-		126F19AD1951A11600E5CD4F /* NCDBTxtDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBTxtDescription.h; sourceTree = "<group>"; };
-		126F19AE1951A11600E5CD4F /* NCDBTxtDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBTxtDescription.m; sourceTree = "<group>"; };
-		126F19B01951A11600E5CD4F /* NCDBDgmAttributeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmAttributeCategory.h; sourceTree = "<group>"; };
-		126F19B11951A11600E5CD4F /* NCDBDgmAttributeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmAttributeCategory.m; sourceTree = "<group>"; };
-		126F19B31951A11600E5CD4F /* NCDBCertMastery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertMastery.h; sourceTree = "<group>"; };
-		126F19B41951A11600E5CD4F /* NCDBCertMastery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertMastery.m; sourceTree = "<group>"; };
-		126F19B61951A11600E5CD4F /* NCDBEufeItemGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemGroup.h; sourceTree = "<group>"; };
-		126F19B71951A11600E5CD4F /* NCDBEufeItemGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemGroup.m; sourceTree = "<group>"; };
-		126F19B91951A11600E5CD4F /* NCDBInvCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvCategory.h; sourceTree = "<group>"; };
-		126F19BA1951A11600E5CD4F /* NCDBInvCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvCategory.m; sourceTree = "<group>"; };
-		126F19BC1951A11600E5CD4F /* NCDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertCertificate.h; sourceTree = "<group>"; };
-		126F19BD1951A11600E5CD4F /* NCDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertCertificate.m; sourceTree = "<group>"; };
-		126F19BF1951A11600E5CD4F /* NCDBInvBlueprintType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvBlueprintType.h; sourceTree = "<group>"; };
-		126F19C01951A11600E5CD4F /* NCDBInvBlueprintType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvBlueprintType.m; sourceTree = "<group>"; };
-		126F19C21951A11600E5CD4F /* NCDBInvControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTower.h; sourceTree = "<group>"; };
-		126F19C31951A11600E5CD4F /* NCDBInvControlTower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTower.m; sourceTree = "<group>"; };
-		126F19C51951A11600E5CD4F /* NCDBEveUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveUnit.h; sourceTree = "<group>"; };
-		126F19C61951A11600E5CD4F /* NCDBEveUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveUnit.m; sourceTree = "<group>"; };
-		126F19C81951A11700E5CD4F /* NCDBInvType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvType.h; sourceTree = "<group>"; };
-		126F19C91951A11700E5CD4F /* NCDBInvType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvType.m; sourceTree = "<group>"; };
-		126F19CB1951A11700E5CD4F /* NCDBInvControlTowerResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTowerResource.h; sourceTree = "<group>"; };
-		126F19CC1951A11700E5CD4F /* NCDBInvControlTowerResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTowerResource.m; sourceTree = "<group>"; };
-		126F19CE1951A11700E5CD4F /* NCDBEveIconImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveIconImage.h; sourceTree = "<group>"; };
-		126F19CF1951A11700E5CD4F /* NCDBEveIconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveIconImage.m; sourceTree = "<group>"; };
-		126F19D11951A11700E5CD4F /* NCDBChrRace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBChrRace.h; sourceTree = "<group>"; };
-		126F19D21951A11700E5CD4F /* NCDBChrRace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBChrRace.m; sourceTree = "<group>"; };
-		126F19D41951A11700E5CD4F /* NCDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBNpcGroup.h; sourceTree = "<group>"; };
-		126F19D51951A11700E5CD4F /* NCDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBNpcGroup.m; sourceTree = "<group>"; };
-		126F19D71951A11700E5CD4F /* NCDBInvGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvGroup.h; sourceTree = "<group>"; };
-		126F19D81951A11700E5CD4F /* NCDBInvGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvGroup.m; sourceTree = "<group>"; };
-		126F19DA1951A11700E5CD4F /* NCDBInvMarketGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvMarketGroup.h; sourceTree = "<group>"; };
-		126F19DB1951A11700E5CD4F /* NCDBInvMarketGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvMarketGroup.m; sourceTree = "<group>"; };
-		126F19DD1951A11700E5CD4F /* NCDBRamActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamActivity.h; sourceTree = "<group>"; };
-		126F19DE1951A11700E5CD4F /* NCDBRamActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamActivity.m; sourceTree = "<group>"; };
-		126F19E01951A11700E5CD4F /* NCDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
-		126F19E11951A11700E5CD4F /* NCDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
-		126F19E31951A11700E5CD4F /* NCDBDgmAttributeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmAttributeType.h; sourceTree = "<group>"; };
-		126F19E41951A11700E5CD4F /* NCDBDgmAttributeType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmAttributeType.m; sourceTree = "<group>"; };
-		126F19E61951A11700E5CD4F /* NCDBInvMetaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvMetaGroup.h; sourceTree = "<group>"; };
-		126F19E71951A11700E5CD4F /* NCDBInvMetaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvMetaGroup.m; sourceTree = "<group>"; };
-		126F19E91951A11700E5CD4F /* NCDBInvTypeMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvTypeMaterial.h; sourceTree = "<group>"; };
-		126F19EA1951A11700E5CD4F /* NCDBInvTypeMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvTypeMaterial.m; sourceTree = "<group>"; };
-		126F19EC1951A11700E5CD4F /* NCDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBStaStation.h; sourceTree = "<group>"; };
-		126F19ED1951A11700E5CD4F /* NCDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBStaStation.m; sourceTree = "<group>"; };
-		126F19EF1951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTowerResourcePurpose.h; sourceTree = "<group>"; };
-		126F19F01951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTowerResourcePurpose.m; sourceTree = "<group>"; };
-		126F19F21951A11700E5CD4F /* NCDBMapSolarSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapSolarSystem.h; sourceTree = "<group>"; };
-		126F19F31951A11700E5CD4F /* NCDBMapSolarSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapSolarSystem.m; sourceTree = "<group>"; };
-		126F19F51951A11700E5CD4F /* NCDBMapDenormalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapDenormalize.h; sourceTree = "<group>"; };
-		126F19F61951A11700E5CD4F /* NCDBMapDenormalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapDenormalize.m; sourceTree = "<group>"; };
+		126F1BC61953271800E5CD4F /* NCDBEufeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItem.h; sourceTree = "<group>"; };
+		126F1BC71953271800E5CD4F /* NCDBEufeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItem.m; sourceTree = "<group>"; };
+		126F1BC91953271800E5CD4F /* NCDBCertSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertSkill.h; sourceTree = "<group>"; };
+		126F1BCA1953271800E5CD4F /* NCDBCertSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertSkill.m; sourceTree = "<group>"; };
+		126F1BCC1953271800E5CD4F /* NCDBEufeItemGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemGroup.h; sourceTree = "<group>"; };
+		126F1BCD1953271800E5CD4F /* NCDBEufeItemGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemGroup.m; sourceTree = "<group>"; };
+		126F1BCF1953271800E5CD4F /* NCDBInvCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvCategory.h; sourceTree = "<group>"; };
+		126F1BD01953271800E5CD4F /* NCDBInvCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvCategory.m; sourceTree = "<group>"; };
+		126F1BD21953271800E5CD4F /* NCDBDgmAttributeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmAttributeType.h; sourceTree = "<group>"; };
+		126F1BD31953271800E5CD4F /* NCDBDgmAttributeType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmAttributeType.m; sourceTree = "<group>"; };
+		126F1BD51953271800E5CD4F /* NCDBMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapRegion.h; sourceTree = "<group>"; };
+		126F1BD61953271800E5CD4F /* NCDBMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapRegion.m; sourceTree = "<group>"; };
+		126F1BD81953271900E5CD4F /* NCDBRamInstallationTypeContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamInstallationTypeContent.h; sourceTree = "<group>"; };
+		126F1BD91953271900E5CD4F /* NCDBRamInstallationTypeContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamInstallationTypeContent.m; sourceTree = "<group>"; };
+		126F1BDB1953271900E5CD4F /* NCDBCertCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertCertificate.h; sourceTree = "<group>"; };
+		126F1BDC1953271900E5CD4F /* NCDBCertCertificate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertCertificate.m; sourceTree = "<group>"; };
+		126F1BDE1953271900E5CD4F /* NCDBNpcGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBNpcGroup.h; sourceTree = "<group>"; };
+		126F1BDF1953271900E5CD4F /* NCDBNpcGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBNpcGroup.m; sourceTree = "<group>"; };
+		126F1BE11953271900E5CD4F /* NCDBStaStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBStaStation.h; sourceTree = "<group>"; };
+		126F1BE21953271900E5CD4F /* NCDBStaStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBStaStation.m; sourceTree = "<group>"; };
+		126F1BE41953271900E5CD4F /* NCDBInvControlTower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTower.h; sourceTree = "<group>"; };
+		126F1BE51953271900E5CD4F /* NCDBInvControlTower.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTower.m; sourceTree = "<group>"; };
+		126F1BE71953271900E5CD4F /* NCDBInvTypeRequiredSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvTypeRequiredSkill.h; sourceTree = "<group>"; };
+		126F1BE81953271900E5CD4F /* NCDBInvTypeRequiredSkill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvTypeRequiredSkill.m; sourceTree = "<group>"; };
+		126F1BEA1953271900E5CD4F /* NCDBRamAssemblyLineType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamAssemblyLineType.h; sourceTree = "<group>"; };
+		126F1BEB1953271900E5CD4F /* NCDBRamAssemblyLineType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamAssemblyLineType.m; sourceTree = "<group>"; };
+		126F1BED1953271900E5CD4F /* NCDBEveIconImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveIconImage.h; sourceTree = "<group>"; };
+		126F1BEE1953271900E5CD4F /* NCDBEveIconImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveIconImage.m; sourceTree = "<group>"; };
+		126F1BF01953271900E5CD4F /* NCDBDgmAttributeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmAttributeCategory.h; sourceTree = "<group>"; };
+		126F1BF11953271900E5CD4F /* NCDBDgmAttributeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmAttributeCategory.m; sourceTree = "<group>"; };
+		126F1BF31953271900E5CD4F /* NCDBEufeItemCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEufeItemCategory.h; sourceTree = "<group>"; };
+		126F1BF41953271900E5CD4F /* NCDBEufeItemCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEufeItemCategory.m; sourceTree = "<group>"; };
+		126F1BF61953271900E5CD4F /* NCDBEveUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveUnit.h; sourceTree = "<group>"; };
+		126F1BF71953271900E5CD4F /* NCDBEveUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveUnit.m; sourceTree = "<group>"; };
+		126F1BF91953271900E5CD4F /* NCDBInvControlTowerResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTowerResource.h; sourceTree = "<group>"; };
+		126F1BFA1953271900E5CD4F /* NCDBInvControlTowerResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTowerResource.m; sourceTree = "<group>"; };
+		126F1BFC1953271900E5CD4F /* NCDBRamActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamActivity.h; sourceTree = "<group>"; };
+		126F1BFD1953271900E5CD4F /* NCDBRamActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamActivity.m; sourceTree = "<group>"; };
+		126F1BFF1953271900E5CD4F /* NCDBInvTypeMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvTypeMaterial.h; sourceTree = "<group>"; };
+		126F1C001953271900E5CD4F /* NCDBInvTypeMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvTypeMaterial.m; sourceTree = "<group>"; };
+		126F1C021953271900E5CD4F /* NCDBChrRace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBChrRace.h; sourceTree = "<group>"; };
+		126F1C031953271900E5CD4F /* NCDBChrRace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBChrRace.m; sourceTree = "<group>"; };
+		126F1C051953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvControlTowerResourcePurpose.h; sourceTree = "<group>"; };
+		126F1C061953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvControlTowerResourcePurpose.m; sourceTree = "<group>"; };
+		126F1C081953271900E5CD4F /* NCDBInvMetaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvMetaGroup.h; sourceTree = "<group>"; };
+		126F1C091953271900E5CD4F /* NCDBInvMetaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvMetaGroup.m; sourceTree = "<group>"; };
+		126F1C0B1953271900E5CD4F /* NCDBDgmEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmEffect.h; sourceTree = "<group>"; };
+		126F1C0C1953271900E5CD4F /* NCDBDgmEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmEffect.m; sourceTree = "<group>"; };
+		126F1C0E1953271A00E5CD4F /* NCDBInvType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvType.h; sourceTree = "<group>"; };
+		126F1C0F1953271A00E5CD4F /* NCDBInvType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvType.m; sourceTree = "<group>"; };
+		126F1C111953271A00E5CD4F /* NCDBMapConstellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapConstellation.h; sourceTree = "<group>"; };
+		126F1C121953271A00E5CD4F /* NCDBMapConstellation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapConstellation.m; sourceTree = "<group>"; };
+		126F1C141953271A00E5CD4F /* NCDBCertMastery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertMastery.h; sourceTree = "<group>"; };
+		126F1C151953271A00E5CD4F /* NCDBCertMastery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertMastery.m; sourceTree = "<group>"; };
+		126F1C171953271A00E5CD4F /* NCDBEveIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBEveIcon.h; sourceTree = "<group>"; };
+		126F1C181953271A00E5CD4F /* NCDBEveIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBEveIcon.m; sourceTree = "<group>"; };
+		126F1C1A1953271A00E5CD4F /* NCDBMapDenormalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapDenormalize.h; sourceTree = "<group>"; };
+		126F1C1B1953271A00E5CD4F /* NCDBMapDenormalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapDenormalize.m; sourceTree = "<group>"; };
+		126F1C1D1953271A00E5CD4F /* NCDBMapSolarSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBMapSolarSystem.h; sourceTree = "<group>"; };
+		126F1C1E1953271A00E5CD4F /* NCDBMapSolarSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBMapSolarSystem.m; sourceTree = "<group>"; };
+		126F1C201953271A00E5CD4F /* NCDBDgmTypeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBDgmTypeAttribute.h; sourceTree = "<group>"; };
+		126F1C211953271A00E5CD4F /* NCDBDgmTypeAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBDgmTypeAttribute.m; sourceTree = "<group>"; };
+		126F1C231953271A00E5CD4F /* NCDBCertMasteryLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBCertMasteryLevel.h; sourceTree = "<group>"; };
+		126F1C241953271A00E5CD4F /* NCDBCertMasteryLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBCertMasteryLevel.m; sourceTree = "<group>"; };
+		126F1C261953271A00E5CD4F /* NCDBInvBlueprintType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvBlueprintType.h; sourceTree = "<group>"; };
+		126F1C271953271A00E5CD4F /* NCDBInvBlueprintType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvBlueprintType.m; sourceTree = "<group>"; };
+		126F1C291953271A00E5CD4F /* NCDBRamTypeRequirement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBRamTypeRequirement.h; sourceTree = "<group>"; };
+		126F1C2A1953271A00E5CD4F /* NCDBRamTypeRequirement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBRamTypeRequirement.m; sourceTree = "<group>"; };
+		126F1C2C1953271A00E5CD4F /* NCDBTxtDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBTxtDescription.h; sourceTree = "<group>"; };
+		126F1C2D1953271A00E5CD4F /* NCDBTxtDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBTxtDescription.m; sourceTree = "<group>"; };
+		126F1C2F1953271A00E5CD4F /* NCDBInvGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvGroup.h; sourceTree = "<group>"; };
+		126F1C301953271A00E5CD4F /* NCDBInvGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvGroup.m; sourceTree = "<group>"; };
+		126F1C321953271A00E5CD4F /* NCDBInvMarketGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBInvMarketGroup.h; sourceTree = "<group>"; };
+		126F1C331953271A00E5CD4F /* NCDBInvMarketGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBInvMarketGroup.m; sourceTree = "<group>"; };
 		127667411914C9A900530550 /* NCDatabase */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NCDatabase; sourceTree = BUILT_PRODUCTS_DIR; };
 		127667441914C9A900530550 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		127667461914C9A900530550 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -729,80 +729,80 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				126F19F51951A11700E5CD4F /* NCDBMapDenormalize.h */,
-				126F19F61951A11700E5CD4F /* NCDBMapDenormalize.m */,
-				126F19F21951A11700E5CD4F /* NCDBMapSolarSystem.h */,
-				126F19F31951A11700E5CD4F /* NCDBMapSolarSystem.m */,
-				126F19EF1951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.h */,
-				126F19F01951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.m */,
-				126F19EC1951A11700E5CD4F /* NCDBStaStation.h */,
-				126F19ED1951A11700E5CD4F /* NCDBStaStation.m */,
-				126F19E91951A11700E5CD4F /* NCDBInvTypeMaterial.h */,
-				126F19EA1951A11700E5CD4F /* NCDBInvTypeMaterial.m */,
-				126F19E61951A11700E5CD4F /* NCDBInvMetaGroup.h */,
-				126F19E71951A11700E5CD4F /* NCDBInvMetaGroup.m */,
-				126F19E31951A11700E5CD4F /* NCDBDgmAttributeType.h */,
-				126F19E41951A11700E5CD4F /* NCDBDgmAttributeType.m */,
-				126F19E01951A11700E5CD4F /* NCDBRamInstallationTypeContent.h */,
-				126F19E11951A11700E5CD4F /* NCDBRamInstallationTypeContent.m */,
-				126F19DD1951A11700E5CD4F /* NCDBRamActivity.h */,
-				126F19DE1951A11700E5CD4F /* NCDBRamActivity.m */,
-				126F19DA1951A11700E5CD4F /* NCDBInvMarketGroup.h */,
-				126F19DB1951A11700E5CD4F /* NCDBInvMarketGroup.m */,
-				126F19D71951A11700E5CD4F /* NCDBInvGroup.h */,
-				126F19D81951A11700E5CD4F /* NCDBInvGroup.m */,
-				126F19D41951A11700E5CD4F /* NCDBNpcGroup.h */,
-				126F19D51951A11700E5CD4F /* NCDBNpcGroup.m */,
-				126F19D11951A11700E5CD4F /* NCDBChrRace.h */,
-				126F19D21951A11700E5CD4F /* NCDBChrRace.m */,
-				126F19CE1951A11700E5CD4F /* NCDBEveIconImage.h */,
-				126F19CF1951A11700E5CD4F /* NCDBEveIconImage.m */,
-				126F19CB1951A11700E5CD4F /* NCDBInvControlTowerResource.h */,
-				126F19CC1951A11700E5CD4F /* NCDBInvControlTowerResource.m */,
-				126F19C81951A11700E5CD4F /* NCDBInvType.h */,
-				126F19C91951A11700E5CD4F /* NCDBInvType.m */,
-				126F19C51951A11600E5CD4F /* NCDBEveUnit.h */,
-				126F19C61951A11600E5CD4F /* NCDBEveUnit.m */,
-				126F19C21951A11600E5CD4F /* NCDBInvControlTower.h */,
-				126F19C31951A11600E5CD4F /* NCDBInvControlTower.m */,
-				126F19BF1951A11600E5CD4F /* NCDBInvBlueprintType.h */,
-				126F19C01951A11600E5CD4F /* NCDBInvBlueprintType.m */,
-				126F19BC1951A11600E5CD4F /* NCDBCertCertificate.h */,
-				126F19BD1951A11600E5CD4F /* NCDBCertCertificate.m */,
-				126F19B91951A11600E5CD4F /* NCDBInvCategory.h */,
-				126F19BA1951A11600E5CD4F /* NCDBInvCategory.m */,
-				126F19B61951A11600E5CD4F /* NCDBEufeItemGroup.h */,
-				126F19B71951A11600E5CD4F /* NCDBEufeItemGroup.m */,
-				126F19B31951A11600E5CD4F /* NCDBCertMastery.h */,
-				126F19B41951A11600E5CD4F /* NCDBCertMastery.m */,
-				126F19B01951A11600E5CD4F /* NCDBDgmAttributeCategory.h */,
-				126F19B11951A11600E5CD4F /* NCDBDgmAttributeCategory.m */,
-				126F19AD1951A11600E5CD4F /* NCDBTxtDescription.h */,
-				126F19AE1951A11600E5CD4F /* NCDBTxtDescription.m */,
-				126F19AA1951A11600E5CD4F /* NCDBRamTypeRequirement.h */,
-				126F19AB1951A11600E5CD4F /* NCDBRamTypeRequirement.m */,
-				126F19A71951A11600E5CD4F /* NCDBRamAssemblyLineType.h */,
-				126F19A81951A11600E5CD4F /* NCDBRamAssemblyLineType.m */,
-				126F19A41951A11600E5CD4F /* NCDBEufeItem.h */,
-				126F19A51951A11600E5CD4F /* NCDBEufeItem.m */,
-				126F19A11951A11600E5CD4F /* NCDBMapConstellation.h */,
-				126F19A21951A11600E5CD4F /* NCDBMapConstellation.m */,
-				126F199E1951A11600E5CD4F /* NCDBDgmEffect.h */,
-				126F199F1951A11600E5CD4F /* NCDBDgmEffect.m */,
-				126F199B1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.h */,
-				126F199C1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.m */,
-				126F19981951A11600E5CD4F /* NCDBCertMasteryLevel.h */,
-				126F19991951A11600E5CD4F /* NCDBCertMasteryLevel.m */,
-				126F19951951A11600E5CD4F /* NCDBEveIcon.h */,
-				126F19961951A11600E5CD4F /* NCDBEveIcon.m */,
-				126F19921951A11600E5CD4F /* NCDBCertSkill.h */,
-				126F19931951A11600E5CD4F /* NCDBCertSkill.m */,
-				126F198F1951A11500E5CD4F /* NCDBMapRegion.h */,
-				126F19901951A11500E5CD4F /* NCDBMapRegion.m */,
-				126F198C1951A11500E5CD4F /* NCDBEufeItemCategory.h */,
-				126F198D1951A11500E5CD4F /* NCDBEufeItemCategory.m */,
-				126F19891951A11500E5CD4F /* NCDBDgmTypeAttribute.h */,
-				126F198A1951A11500E5CD4F /* NCDBDgmTypeAttribute.m */,
+				126F1C321953271A00E5CD4F /* NCDBInvMarketGroup.h */,
+				126F1C331953271A00E5CD4F /* NCDBInvMarketGroup.m */,
+				126F1C2F1953271A00E5CD4F /* NCDBInvGroup.h */,
+				126F1C301953271A00E5CD4F /* NCDBInvGroup.m */,
+				126F1C2C1953271A00E5CD4F /* NCDBTxtDescription.h */,
+				126F1C2D1953271A00E5CD4F /* NCDBTxtDescription.m */,
+				126F1C291953271A00E5CD4F /* NCDBRamTypeRequirement.h */,
+				126F1C2A1953271A00E5CD4F /* NCDBRamTypeRequirement.m */,
+				126F1C261953271A00E5CD4F /* NCDBInvBlueprintType.h */,
+				126F1C271953271A00E5CD4F /* NCDBInvBlueprintType.m */,
+				126F1C231953271A00E5CD4F /* NCDBCertMasteryLevel.h */,
+				126F1C241953271A00E5CD4F /* NCDBCertMasteryLevel.m */,
+				126F1C201953271A00E5CD4F /* NCDBDgmTypeAttribute.h */,
+				126F1C211953271A00E5CD4F /* NCDBDgmTypeAttribute.m */,
+				126F1C1D1953271A00E5CD4F /* NCDBMapSolarSystem.h */,
+				126F1C1E1953271A00E5CD4F /* NCDBMapSolarSystem.m */,
+				126F1C1A1953271A00E5CD4F /* NCDBMapDenormalize.h */,
+				126F1C1B1953271A00E5CD4F /* NCDBMapDenormalize.m */,
+				126F1C171953271A00E5CD4F /* NCDBEveIcon.h */,
+				126F1C181953271A00E5CD4F /* NCDBEveIcon.m */,
+				126F1C141953271A00E5CD4F /* NCDBCertMastery.h */,
+				126F1C151953271A00E5CD4F /* NCDBCertMastery.m */,
+				126F1C111953271A00E5CD4F /* NCDBMapConstellation.h */,
+				126F1C121953271A00E5CD4F /* NCDBMapConstellation.m */,
+				126F1C0E1953271A00E5CD4F /* NCDBInvType.h */,
+				126F1C0F1953271A00E5CD4F /* NCDBInvType.m */,
+				126F1C0B1953271900E5CD4F /* NCDBDgmEffect.h */,
+				126F1C0C1953271900E5CD4F /* NCDBDgmEffect.m */,
+				126F1C081953271900E5CD4F /* NCDBInvMetaGroup.h */,
+				126F1C091953271900E5CD4F /* NCDBInvMetaGroup.m */,
+				126F1C051953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.h */,
+				126F1C061953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.m */,
+				126F1C021953271900E5CD4F /* NCDBChrRace.h */,
+				126F1C031953271900E5CD4F /* NCDBChrRace.m */,
+				126F1BFF1953271900E5CD4F /* NCDBInvTypeMaterial.h */,
+				126F1C001953271900E5CD4F /* NCDBInvTypeMaterial.m */,
+				126F1BFC1953271900E5CD4F /* NCDBRamActivity.h */,
+				126F1BFD1953271900E5CD4F /* NCDBRamActivity.m */,
+				126F1BF91953271900E5CD4F /* NCDBInvControlTowerResource.h */,
+				126F1BFA1953271900E5CD4F /* NCDBInvControlTowerResource.m */,
+				126F1BF61953271900E5CD4F /* NCDBEveUnit.h */,
+				126F1BF71953271900E5CD4F /* NCDBEveUnit.m */,
+				126F1BF31953271900E5CD4F /* NCDBEufeItemCategory.h */,
+				126F1BF41953271900E5CD4F /* NCDBEufeItemCategory.m */,
+				126F1BF01953271900E5CD4F /* NCDBDgmAttributeCategory.h */,
+				126F1BF11953271900E5CD4F /* NCDBDgmAttributeCategory.m */,
+				126F1BED1953271900E5CD4F /* NCDBEveIconImage.h */,
+				126F1BEE1953271900E5CD4F /* NCDBEveIconImage.m */,
+				126F1BEA1953271900E5CD4F /* NCDBRamAssemblyLineType.h */,
+				126F1BEB1953271900E5CD4F /* NCDBRamAssemblyLineType.m */,
+				126F1BE71953271900E5CD4F /* NCDBInvTypeRequiredSkill.h */,
+				126F1BE81953271900E5CD4F /* NCDBInvTypeRequiredSkill.m */,
+				126F1BE41953271900E5CD4F /* NCDBInvControlTower.h */,
+				126F1BE51953271900E5CD4F /* NCDBInvControlTower.m */,
+				126F1BE11953271900E5CD4F /* NCDBStaStation.h */,
+				126F1BE21953271900E5CD4F /* NCDBStaStation.m */,
+				126F1BDE1953271900E5CD4F /* NCDBNpcGroup.h */,
+				126F1BDF1953271900E5CD4F /* NCDBNpcGroup.m */,
+				126F1BDB1953271900E5CD4F /* NCDBCertCertificate.h */,
+				126F1BDC1953271900E5CD4F /* NCDBCertCertificate.m */,
+				126F1BD81953271900E5CD4F /* NCDBRamInstallationTypeContent.h */,
+				126F1BD91953271900E5CD4F /* NCDBRamInstallationTypeContent.m */,
+				126F1BD51953271800E5CD4F /* NCDBMapRegion.h */,
+				126F1BD61953271800E5CD4F /* NCDBMapRegion.m */,
+				126F1BD21953271800E5CD4F /* NCDBDgmAttributeType.h */,
+				126F1BD31953271800E5CD4F /* NCDBDgmAttributeType.m */,
+				126F1BCF1953271800E5CD4F /* NCDBInvCategory.h */,
+				126F1BD01953271800E5CD4F /* NCDBInvCategory.m */,
+				126F1BCC1953271800E5CD4F /* NCDBEufeItemGroup.h */,
+				126F1BCD1953271800E5CD4F /* NCDBEufeItemGroup.m */,
+				126F1BC91953271800E5CD4F /* NCDBCertSkill.h */,
+				126F1BCA1953271800E5CD4F /* NCDBCertSkill.m */,
+				126F1BC61953271800E5CD4F /* NCDBEufeItem.h */,
+				126F1BC71953271800E5CD4F /* NCDBEufeItem.m */,
 			);
 			name = Generated;
 			sourceTree = "<group>";
@@ -859,102 +859,96 @@
 			files = (
 				12436D92194596750090D4A6 /* EVEDBMapConstellation.m in Sources */,
 				12436D99194596750090D4A6 /* EVEDBRamInstallationTypeContent.m in Sources */,
-				126F19B21951A11600E5CD4F /* NCDBDgmAttributeCategory.m in Sources */,
+				126F1BE01953271900E5CD4F /* NCDBNpcGroup.m in Sources */,
 				12476C9119501A4D009E07C6 /* ControlTower.cpp in Sources */,
+				126F1C161953271A00E5CD4F /* NCDBCertMastery.m in Sources */,
 				12436EAD194701B80090D4A6 /* NCDatabase.xcdatamodeld in Sources */,
-				126F19EB1951A11700E5CD4F /* NCDBInvTypeMaterial.m in Sources */,
-				126F19941951A11600E5CD4F /* NCDBCertSkill.m in Sources */,
 				1276674A1914C9A900530550 /* main.mm in Sources */,
 				12436D78194596750090D4A6 /* EVEDBCrtCertificate.m in Sources */,
 				12476C9E19501A4D009E07C6 /* EffectNaniteRepairPasteArmorDamageBonus.cpp in Sources */,
 				12436D87194596750090D4A6 /* EVEDBInvControlTowerResourcePurpose.m in Sources */,
 				12436D9A194596750090D4A6 /* EVEDBRamTypeRequirement.m in Sources */,
 				12436D86194596750090D4A6 /* EVEDBInvControlTowerResource.m in Sources */,
+				126F1C0A1953271900E5CD4F /* NCDBInvMetaGroup.m in Sources */,
 				12476CAF19501A4D009E07C6 /* Skill.cpp in Sources */,
-				126F19CA1951A11700E5CD4F /* NCDBInvType.m in Sources */,
-				126F19F41951A11700E5CD4F /* NCDBMapSolarSystem.m in Sources */,
 				12436D8E194596750090D4A6 /* EVEDBInvType+Installation.m in Sources */,
 				12436D7F194596750090D4A6 /* EVEDBDgmEffect.m in Sources */,
-				126F19C41951A11600E5CD4F /* NCDBInvControlTower.m in Sources */,
 				12436D90194596750090D4A6 /* EVEDBInvType.m in Sources */,
-				126F19B51951A11600E5CD4F /* NCDBCertMastery.m in Sources */,
 				12476CB319501A4D009E07C6 /* Structure.cpp in Sources */,
 				12436D7E194596750090D4A6 /* EVEDBDgmAttributeType.m in Sources */,
 				12476CAC19501A4D009E07C6 /* Module.cpp in Sources */,
 				12436D76194596750090D4A6 /* EVEDBChrRace.m in Sources */,
+				126F1BF81953271900E5CD4F /* NCDBEveUnit.m in Sources */,
 				12436DA41945967E0090D4A6 /* NSMutableString+HTML.m in Sources */,
-				126F19DF1951A11700E5CD4F /* NCDBRamActivity.m in Sources */,
 				12476CA819501A4D009E07C6 /* LocationGroupModifier.cpp in Sources */,
+				126F1BD11953271800E5CD4F /* NCDBInvCategory.m in Sources */,
 				12436D80194596750090D4A6 /* EVEDBDgmTypeAttribute.m in Sources */,
-				126F19D91951A11700E5CD4F /* NCDBInvGroup.m in Sources */,
-				126F19A01951A11600E5CD4F /* NCDBDgmEffect.m in Sources */,
 				12476C9619501A4D009E07C6 /* EffectAdaptiveArmorHardener.cpp in Sources */,
-				126F198B1951A11500E5CD4F /* NCDBDgmTypeAttribute.m in Sources */,
-				126F19A91951A11600E5CD4F /* NCDBRamAssemblyLineType.m in Sources */,
-				126F19AF1951A11600E5CD4F /* NCDBTxtDescription.m in Sources */,
-				126F19D61951A11700E5CD4F /* NCDBNpcGroup.m in Sources */,
-				126F19DC1951A11700E5CD4F /* NCDBInvMarketGroup.m in Sources */,
-				126F19D31951A11700E5CD4F /* NCDBChrRace.m in Sources */,
 				12D6DCF41920D1D5003FC5ED /* NCDBImageValueTransformer.m in Sources */,
-				126F19E21951A11700E5CD4F /* NCDBRamInstallationTypeContent.m in Sources */,
-				126F19F11951A11700E5CD4F /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12476CA119501A4D009E07C6 /* Encoder.cpp in Sources */,
+				126F1BF51953271900E5CD4F /* NCDBEufeItemCategory.m in Sources */,
+				126F1C311953271A00E5CD4F /* NCDBInvGroup.m in Sources */,
+				126F1BEF1953271900E5CD4F /* NCDBEveIconImage.m in Sources */,
 				12476CA219501A4D009E07C6 /* Engine.cpp in Sources */,
 				12436D81194596750090D4A6 /* EVEDBDgmTypeEffect.m in Sources */,
+				126F1C0D1953271900E5CD4F /* NCDBDgmEffect.m in Sources */,
 				12436D9C194596750090D4A6 /* EVEDBObject.m in Sources */,
 				12476CAB19501A4D009E07C6 /* Modifier.cpp in Sources */,
 				12436D83194596750090D4A6 /* EVEDBEveUnit.m in Sources */,
-				126F19E51951A11700E5CD4F /* NCDBDgmAttributeType.m in Sources */,
 				12436D7C194596750090D4A6 /* EVEDBDatabase.m in Sources */,
 				12476CA319501A4D009E07C6 /* FetchResult.cpp in Sources */,
-				126F19BB1951A11600E5CD4F /* NCDBInvCategory.m in Sources */,
+				126F1BDA1953271900E5CD4F /* NCDBRamInstallationTypeContent.m in Sources */,
 				12476C8F19501A4D009E07C6 /* Charge.cpp in Sources */,
-				126F19AC1951A11600E5CD4F /* NCDBRamTypeRequirement.m in Sources */,
 				12476C9919501A4D009E07C6 /* EffectEnergyDestabilizationNewInterpreter.cpp in Sources */,
+				126F1C2B1953271A00E5CD4F /* NCDBRamTypeRequirement.m in Sources */,
+				126F1C041953271900E5CD4F /* NCDBChrRace.m in Sources */,
 				12476CB019501A4D009E07C6 /* SqlConnector.cpp in Sources */,
 				12476C9D19501A4D009E07C6 /* EffectLeechInterpreter.cpp in Sources */,
-				126F19A61951A11600E5CD4F /* NCDBEufeItem.m in Sources */,
 				12476C8A19501A4D009E07C6 /* Attribute.cpp in Sources */,
 				12436D8A194596750090D4A6 /* EVEDBInvMetaGroup.m in Sources */,
 				12436D84194596750090D4A6 /* EVEDBInvBlueprintType.m in Sources */,
-				126F19971951A11600E5CD4F /* NCDBEveIcon.m in Sources */,
+				126F1BE31953271900E5CD4F /* NCDBStaStation.m in Sources */,
+				126F1BE61953271900E5CD4F /* NCDBInvControlTower.m in Sources */,
 				12436D9D194596750090D4A6 /* NSDictionary+EVEDBAPI.m in Sources */,
-				126F19C11951A11600E5CD4F /* NCDBInvBlueprintType.m in Sources */,
 				12476CB119501A4D009E07C6 /* SqliteConnector.cpp in Sources */,
+				126F1BCE1953271800E5CD4F /* NCDBEufeItemGroup.m in Sources */,
+				126F1BC81953271800E5CD4F /* NCDBEufeItem.m in Sources */,
+				126F1BCB1953271800E5CD4F /* NCDBCertSkill.m in Sources */,
 				12436D79194596750090D4A6 /* EVEDBCrtClass.m in Sources */,
-				126F199A1951A11600E5CD4F /* NCDBCertMasteryLevel.m in Sources */,
-				126F19D01951A11700E5CD4F /* NCDBEveIconImage.m in Sources */,
 				12476CB219501A4D009E07C6 /* SqliteFetchResult.cpp in Sources */,
 				12436D85194596750090D4A6 /* EVEDBInvCategory.m in Sources */,
 				12476C8C19501A4D009E07C6 /* Booster.cpp in Sources */,
+				126F1C1F1953271A00E5CD4F /* NCDBMapSolarSystem.m in Sources */,
+				126F1C191953271A00E5CD4F /* NCDBEveIcon.m in Sources */,
+				126F1BD71953271800E5CD4F /* NCDBMapRegion.m in Sources */,
 				12436D89194596750090D4A6 /* EVEDBInvMarketGroup.m in Sources */,
-				126F19CD1951A11700E5CD4F /* NCDBInvControlTowerResource.m in Sources */,
 				12476C9A19501A4D009E07C6 /* EffectEnergyTransferInterpreter.cpp in Sources */,
-				126F19B81951A11600E5CD4F /* NCDBEufeItemGroup.m in Sources */,
 				12476CA519501A4D009E07C6 /* HeatSimulator.cpp in Sources */,
+				126F1C2E1953271A00E5CD4F /* NCDBTxtDescription.m in Sources */,
+				126F1C101953271A00E5CD4F /* NCDBInvType.m in Sources */,
 				12436D77194596750090D4A6 /* EVEDBCrtCategory.m in Sources */,
-				126F19A31951A11600E5CD4F /* NCDBMapConstellation.m in Sources */,
 				12436D74194596750090D4A6 /* EVEDBCertMastery.m in Sources */,
 				12436D96194596750090D4A6 /* EVEDBNpcGroup.m in Sources */,
 				12436D8B194596750090D4A6 /* EVEDBInvMetaType.m in Sources */,
 				12436DA51945967E0090D4A6 /* NSString+HTML.m in Sources */,
+				126F1BFB1953271900E5CD4F /* NCDBInvControlTowerResource.m in Sources */,
 				12476C8D19501A4D009E07C6 /* CapacitorSimulator.cpp in Sources */,
-				126F199D1951A11600E5CD4F /* NCDBInvTypeRequiredSkill.m in Sources */,
 				12476CAE19501A4D009E07C6 /* Ship.cpp in Sources */,
+				126F1C221953271A00E5CD4F /* NCDBDgmTypeAttribute.m in Sources */,
+				126F1C071953271900E5CD4F /* NCDBInvControlTowerResourcePurpose.m in Sources */,
 				12436D95194596750090D4A6 /* EVEDBMapSolarSystem.m in Sources */,
 				12436D97194596750090D4A6 /* EVEDBRamActivity.m in Sources */,
 				12476CA019501A4D009E07C6 /* EffectSlotModifierInterpreter.cpp in Sources */,
 				12476C9719501A4D009E07C6 /* EffectArmorRepairInterpreter.cpp in Sources */,
 				12476C9819501A4D009E07C6 /* EffectByteCodeInterpreter.cpp in Sources */,
-				126F19E81951A11700E5CD4F /* NCDBInvMetaGroup.m in Sources */,
 				12436D75194596750090D4A6 /* EVEDBCertSkill.m in Sources */,
 				12436D91194596750090D4A6 /* EVEDBInvTypeMaterial.m in Sources */,
 				12436D98194596750090D4A6 /* EVEDBRamAssemblyLineType.m in Sources */,
-				126F19C71951A11600E5CD4F /* NCDBEveUnit.m in Sources */,
-				126F19F71951A11700E5CD4F /* NCDBMapDenormalize.m in Sources */,
+				126F1C011953271900E5CD4F /* NCDBInvTypeMaterial.m in Sources */,
 				12476CA619501A4D009E07C6 /* Implant.cpp in Sources */,
 				12476C9F19501A4D009E07C6 /* EffectShieldBoostingInterpreter.cpp in Sources */,
 				12436D82194596750090D4A6 /* EVEDBEveIcon.m in Sources */,
+				126F1C1C1953271A00E5CD4F /* NCDBMapDenormalize.m in Sources */,
 				12476C9B19501A4D009E07C6 /* EffectHardPointModifierEffectInterpreter.cpp in Sources */,
 				12436D88194596750090D4A6 /* EVEDBInvGroup.m in Sources */,
 				12436D8C194596750090D4A6 /* EVEDBInvTrait.m in Sources */,
@@ -962,28 +956,34 @@
 				12436D9B194596750090D4A6 /* EVEDBStaStation.m in Sources */,
 				12436D7B194596750090D4A6 /* EVEDBCrtRelationship.m in Sources */,
 				12476C9519501A4D009E07C6 /* Effect.cpp in Sources */,
+				126F1C251953271A00E5CD4F /* NCDBCertMasteryLevel.m in Sources */,
+				126F1C341953271A00E5CD4F /* NCDBInvMarketGroup.m in Sources */,
 				12436D93194596750090D4A6 /* EVEDBMapDenormalize.m in Sources */,
 				12476C8E19501A4D009E07C6 /* Character.cpp in Sources */,
 				12476C9219501A4D009E07C6 /* DamagePattern.cpp in Sources */,
-				126F198E1951A11500E5CD4F /* NCDBEufeItemCategory.m in Sources */,
 				12476CAD19501A4D009E07C6 /* Mutex.cpp in Sources */,
 				12476C9C19501A4D009E07C6 /* EffectHullRepairInterpreter.cpp in Sources */,
-				126F19BE1951A11600E5CD4F /* NCDBCertCertificate.m in Sources */,
 				12476CA919501A4D009E07C6 /* LocationRequiredSkillModifier.cpp in Sources */,
 				12476C9419501A4D009E07C6 /* Drone.cpp in Sources */,
+				126F1C281953271A00E5CD4F /* NCDBInvBlueprintType.m in Sources */,
+				126F1C131953271A00E5CD4F /* NCDBMapConstellation.m in Sources */,
 				12436D7A194596750090D4A6 /* EVEDBCrtRecommendation.m in Sources */,
+				126F1BDD1953271900E5CD4F /* NCDBCertCertificate.m in Sources */,
+				126F1BFE1953271900E5CD4F /* NCDBRamActivity.m in Sources */,
 				12476CC619501A4D009E07C6 /* sqlite3.c in Sources */,
 				12436D7D194596750090D4A6 /* EVEDBDgmAttributeCategory.m in Sources */,
+				126F1BD41953271800E5CD4F /* NCDBDgmAttributeType.m in Sources */,
 				12436D73194596750090D4A6 /* EVEDBCertCertificate.m in Sources */,
 				12436D94194596750090D4A6 /* EVEDBMapRegion.m in Sources */,
 				12436D8F194596750090D4A6 /* EVEDBInvType+Skill.m in Sources */,
-				126F19EE1951A11700E5CD4F /* NCDBStaStation.m in Sources */,
+				126F1BE91953271900E5CD4F /* NCDBInvTypeRequiredSkill.m in Sources */,
 				12476CA419501A4D009E07C6 /* Gang.cpp in Sources */,
 				12476C8919501A4D009E07C6 /* Area.cpp in Sources */,
-				126F19911951A11500E5CD4F /* NCDBMapRegion.m in Sources */,
 				12476C9319501A4D009E07C6 /* Decoder.cpp in Sources */,
 				12476CA719501A4D009E07C6 /* Item.cpp in Sources */,
+				126F1BEC1953271900E5CD4F /* NCDBRamAssemblyLineType.m in Sources */,
 				12476C9019501A4D009E07C6 /* Compiler.cpp in Sources */,
+				126F1BF21953271900E5CD4F /* NCDBDgmAttributeCategory.m in Sources */,
 				12476C8B19501A4D009E07C6 /* Blob.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

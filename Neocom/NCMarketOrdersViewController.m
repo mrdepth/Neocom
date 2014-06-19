@@ -19,7 +19,7 @@
 @property (nonatomic, strong) EVEMarketOrdersItem* marketOrder;
 @property (nonatomic, strong) NCLocationsManagerItem* location;
 @property (nonatomic, strong) NSString* characterName;
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSDate* expireDate;
 @end
 
@@ -70,9 +70,9 @@
 
 		for (NSArray* array in @[self.openOrders, self.closedOrders]) {
 			for (NCMarketOrdersViewControllerDataRow* row in array) {
-				EVEDBInvType* type = typesDic[@(row.marketOrder.typeID)];
+				NCDBInvType* type = typesDic[@(row.marketOrder.typeID)];
 				if (!type) {
-					type = [EVEDBInvType invTypeWithTypeID:row.marketOrder.typeID error:nil];
+					type = [NCDBInvType invTypeWithTypeID:row.marketOrder.typeID];
 					if (type)
 						typesDic[@(row.marketOrder.typeID)] = type;
 				}
@@ -241,9 +241,9 @@
 												 [locationsIDs addObject:@(order.stationID)];
 												 [characterIDs addObject:@(order.charID)];
 												 
-												 EVEDBInvType* type = typesDic[@(order.typeID)];
+												 NCDBInvType* type = typesDic[@(order.typeID)];
 												 if (!type) {
-													 type = [EVEDBInvType invTypeWithTypeID:order.typeID error:nil];
+													 type = [NCDBInvType invTypeWithTypeID:order.typeID];
 													 if (type)
 														 typesDic[@(order.typeID)] = type;
 												 }
@@ -315,7 +315,7 @@
 	cell.object = row;
 	
 	if (row.type) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+		cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.titleLabel.text = row.type.typeName;
 	}
 	else {

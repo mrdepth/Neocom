@@ -9,7 +9,7 @@
 #import "NCTableViewController.h"
 
 @interface NCFittingBattleClinicSearchResultsViewController : NCTableViewController
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) NSArray* tags;
 
 @end

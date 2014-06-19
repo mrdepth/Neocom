@@ -48,9 +48,9 @@
 				job.installerName = names[@(job.installerID)];
 				
 				if (job.installedItemTypeID) {
-					EVEDBInvType* type = types[@(job.installedItemTypeID)];
+					NCDBInvType* type = types[@(job.installedItemTypeID)];
 					if (!type) {
-						type = [EVEDBInvType invTypeWithTypeID:job.installedItemTypeID error:nil];
+						type = [NCDBInvType invTypeWithTypeID:job.installedItemTypeID];
 						if (type) {
 							types[@(job.installedItemTypeID)] = type;
 						}
@@ -59,9 +59,9 @@
 				}
 				
 				if (job.outputTypeID) {
-					EVEDBInvType* type = types[@(job.outputTypeID)];
+					NCDBInvType* type = types[@(job.outputTypeID)];
 					if (!type) {
-						type = [EVEDBInvType invTypeWithTypeID:job.outputTypeID error:nil];
+						type = [NCDBInvType invTypeWithTypeID:job.outputTypeID];
 						if (type) {
 							types[@(job.outputTypeID)] = type;
 						}
@@ -70,9 +70,9 @@
 				}
 				
 				if (job.activityID) {
-					EVEDBRamActivity* activity = activities[@(job.activityID)];
+					NCDBRamActivity* activity = activities[@(job.activityID)];
 					if (!activity) {
-						activity = [EVEDBRamActivity ramActivityWithActivityID:job.activityID error:nil];
+						activity = [NCDBRamActivity ramActivityWithActivityID:job.activityID];
 						if (activity) {
 							activities[@(job.activityID)] = activity;
 						}
@@ -259,9 +259,9 @@
 														 [characterIDs addObject:@(job.installerID)];
 													 
 													 if (job.installedItemTypeID) {
-														 EVEDBInvType* type = types[@(job.installedItemTypeID)];
+														 NCDBInvType* type = types[@(job.installedItemTypeID)];
 														 if (!type) {
-															 type = [EVEDBInvType invTypeWithTypeID:job.installedItemTypeID error:nil];
+															 type = [NCDBInvType invTypeWithTypeID:job.installedItemTypeID];
 															 if (type) {
 																 types[@(job.installedItemTypeID)] = type;
 															 }
@@ -270,9 +270,9 @@
 													 }
 													 
 													 if (job.outputTypeID) {
-														 EVEDBInvType* type = types[@(job.outputTypeID)];
+														 NCDBInvType* type = types[@(job.outputTypeID)];
 														 if (!type) {
-															 type = [EVEDBInvType invTypeWithTypeID:job.outputTypeID error:nil];
+															 type = [NCDBInvType invTypeWithTypeID:job.outputTypeID];
 															 if (type) {
 																 types[@(job.outputTypeID)] = type;
 															 }
@@ -281,9 +281,9 @@
 													 }
 													 
 													 if (job.activityID) {
-														 EVEDBRamActivity* activity = activities[@(job.activityID)];
+														 NCDBRamActivity* activity = activities[@(job.activityID)];
 														 if (!activity) {
-															 activity = [EVEDBRamActivity ramActivityWithActivityID:job.activityID error:nil];
+															 activity = [NCDBRamActivity ramActivityWithActivityID:job.activityID];
 															 if (activity) {
 																 activities[@(job.activityID)] = activity;
 															 }
@@ -356,7 +356,7 @@
 	cell.object = row;
 	
 	if (row.installedItemType) {
-		cell.typeImageView.image = [UIImage imageNamed:[row.installedItemType typeSmallImageName]];
+		cell.typeImageView.image = row.installedItemType.icon ? row.installedItemType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.titleLabel.text = row.installedItemType.typeName;
 	}
 	else {
@@ -366,7 +366,7 @@
 	
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endProductionTime];
 	cell.activityLabel.text = row.activity.activityName;
-	cell.activityImageView.image = row.activity.iconImageName ? [UIImage imageNamed:row.activity.iconImageName] : nil;
+	cell.activityImageView.image = row.activity.icon.image.image;
 	cell.characterLabel.text = row.installerName;
 	cell.locationLabel.text = row.installedItemLocation.name;
 	

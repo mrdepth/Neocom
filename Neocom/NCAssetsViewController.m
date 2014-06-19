@@ -61,34 +61,14 @@
 		NSDictionary* assetsDetails = [aDecoder decodeObjectForKey:@"assetsDetails"];
 
 		NSMutableDictionary* types = [NSMutableDictionary new];
-		NSMutableDictionary* groups = [NSMutableDictionary new];
-		NSMutableDictionary* categories = [NSMutableDictionary new];
 
 		__weak __block void (^weakProcess)(EVEAssetListItem*);
 		void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
-			EVEDBInvType* type = types[@(asset.typeID)];
+			NCDBInvType* type = types[@(asset.typeID)];
 			if (!type) {
-				type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+				type = [NCDBInvType invTypeWithTypeID:asset.typeID];
 				if (type) {
 					types[@(asset.typeID)] = type;
-					EVEDBInvGroup* group = groups[@(type.groupID)];
-					if (!group) {
-						group = type.group;
-						if (group) {
-							groups[@(type.groupID)] = group;
-							EVEDBInvCategory* category = categories[@(group.categoryID)];
-							if (!category) {
-								category = group.category;
-								if (category) {
-									categories[@(group.categoryID)] = category;
-								}
-							}
-							else
-								group.category = category;
-						}
-					}
-					else
-						type.group = group;
 				}
 			}
 			asset.type = type;
@@ -306,8 +286,6 @@
 											 NSMutableArray* sections = [NSMutableArray new];
 
 											 NSMutableDictionary* types = [NSMutableDictionary new];
-											 NSMutableDictionary* groups = [NSMutableDictionary new];
-											 NSMutableDictionary* categories = [NSMutableDictionary new];
 											 
 											 NSMutableArray* controlTowers = [NSMutableArray new];
 											 NSMutableArray* freeSpaceItems = [NSMutableArray new];
@@ -338,29 +316,11 @@
 												 void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* asset) {
 													 asset.owner = owner;
 													 
-													 EVEDBInvType* type = types[@(asset.typeID)];
+													 NCDBInvType* type = types[@(asset.typeID)];
 													 if (!type) {
-														 type = [EVEDBInvType invTypeWithTypeID:asset.typeID error:nil];
+														 type = [NCDBInvType invTypeWithTypeID:asset.typeID];
 														 if (type) {
 															 types[@(asset.typeID)] = type;
-															 EVEDBInvGroup* group = groups[@(type.groupID)];
-															 if (!group) {
-																 group = type.group;
-																 if (group) {
-																	 groups[@(type.groupID)] = group;
-																	 EVEDBInvCategory* category = categories[@(group.categoryID)];
-																	 if (!category) {
-																		 category = group.category;
-																		 if (category) {
-																			 categories[@(group.categoryID)] = category;
-																		 }
-																	 }
-																	 else
-																		 group.category = category;
-																 }
-															 }
-															 else
-																 type.group = group;
 														 }
 													 }
 													 
@@ -368,13 +328,13 @@
 													 
 													 if (asset.locationID > 0) {
 														 [locationIDs addObject:@(asset.locationID)];
-														 if (type.groupID == 365) { // ControlTower
+														 if (type.group.groupID == 365) { // ControlTower
 															 [controlTowers addObject:asset];
 															 [itemIDs addObject:@(asset.itemID)];
 														 }
-														 else if (type.group.categoryID == NCControlTowerGroupID ||
-																  type.group.categoryID == NCShipCategoryID ||
-																  type.groupID == NCSecureContainerGroupID) {
+														 else if (type.group.category.categoryID == NCControlTowerGroupID ||
+																  type.group.category.categoryID == NCShipCategoryID ||
+																  type.group.groupID == NCSecureContainerGroupID) {
 															 [freeSpaceItems addObject:asset];
 															 [itemIDs addObject:@(asset.itemID)];
 														 }
@@ -573,7 +533,7 @@
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
-	cell.iconView.image = [UIImage imageNamed:asset.type.typeSmallImageName];
+	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	
 	cell.titleLabel.text = asset.title;
 	cell.object = asset;

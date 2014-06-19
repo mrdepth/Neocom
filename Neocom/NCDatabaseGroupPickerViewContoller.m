@@ -29,22 +29,11 @@
 	self.refreshControl = nil;
 	
 	if (!self.rows) {
-		NSMutableArray* rows = [NSMutableArray new];
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM invGroups WHERE categoryID=%d AND published=1 ORDER BY groupName;", self.categoryID]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[rows addObject:[[EVEDBInvGroup alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 self.rows = rows;
-									 [self update];
-								 }];
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
+		request.predicate = [NSPredicate predicateWithFormat:@"category.categoryID == %d", self.categoryID];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
 	}
 }
 
@@ -112,15 +101,11 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	EVEDBInvGroup* row = self.rows[indexPath.row];
+	NCDBInvGroup* row = self.rows[indexPath.row];
 	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.groupName;
 	
-	NSString* iconImageName = row.icon.iconImageName;
-	if (iconImageName)
-		cell.iconView.image = [UIImage imageNamed:iconImageName];
-	else
-		cell.iconView.image = [UIImage imageNamed:@"Icons/icon38_174.png"];
+	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];
 	cell.object = row;
 }
 

@@ -88,15 +88,15 @@
 
     NCFittingAPISearchResultsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	
-	EVEDBInvType* ship = self.types[@(item.typeID)];
+	NCDBInvType* ship = self.types[@(item.typeID)];
 	if (!ship) {
-		ship = [EVEDBInvType invTypeWithTypeID:item.typeID error:nil];
+		ship = [NCDBInvType invTypeWithTypeID:item.typeID];
 		if (ship)
 			self.types[@(item.typeID)] = ship;
 	}
 	
 	cell.titleLabel.text = ship.typeName;
-	cell.iconImageView.image = [UIImage imageNamed:[ship typeSmallImageName]];
+	cell.iconImageView.image = ship.icon ? ship.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = item;
 	
 	if (item.flags & NeocomAPIFlagHybridTurrets)

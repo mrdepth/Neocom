@@ -10,7 +10,6 @@
 
 @interface NCFittingTypeVariationsViewController : NCDatabaseTypeVariationsViewController
 @property (nonatomic, strong) id object;
-@property (nonatomic, strong) EVEDBInvType* type;
-@property (nonatomic, strong) EVEDBInvType* selectedType;
+@property (nonatomic, strong) NCDBInvType* selectedType;
 
 @end

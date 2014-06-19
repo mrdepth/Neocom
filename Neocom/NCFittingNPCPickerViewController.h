@@ -9,5 +9,5 @@
 #import "NCDatabaseNPCViewController.h"
 
 @interface NCFittingNPCPickerViewController : NCDatabaseNPCViewController
-@property (nonatomic, strong) EVEDBInvType* selectedNPCType;
+@property (nonatomic, strong) NCDBInvType* selectedNPCType;
 @end

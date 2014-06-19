@@ -35,7 +35,7 @@
 @interface NCFittingPOSStructuresDataSourceRow : NSObject {
 	eufe::StructuresList _structures;
 }
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, readonly) eufe::StructuresList& structures;
 @end
 
@@ -53,7 +53,7 @@
 @end
 
 @interface NCFittingPOSStructuresDataSource()<UIPickerViewDataSource, UIPickerViewDelegate>
-@property (nonatomic, strong) EVEDBInvType* activeAmountType;
+@property (nonatomic, strong) NCDBInvType* activeAmountType;
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingPOSStructuresTableHeaderView* tableHeaderView;
@@ -243,14 +243,12 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Structures", nil);
 		
-		[self.controller.typePickerViewController presentWithConditions:@[@"invTypes.groupID <> 365",
-																		  @"invTypes.groupID = invGroups.groupID",
-																		  @"invGroups.categoryID = 23"]
+		[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotStructure size:0 race:nil]
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 														  eufe::Module::State state = eufe::Module::STATE_ACTIVE;
 														  eufe::Charge* charge = nullptr;
@@ -395,29 +393,14 @@
 	};
 	
 	void (^setAmmo)(eufe::StructuresList) = ^(eufe::StructuresList structures){
-		int chargeSize = structure->getChargeSize();
-		
-		NSMutableArray *groups = [NSMutableArray new];
-		for (auto i: structure->getChargeGroups())
-			[groups addObject:[NSString stringWithFormat:@"%d", i]];
-		
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-		NSArray* conditions;
-		if (chargeSize)
-			conditions = @[@"invTypes.typeID=dgmTypeAttributes.typeID",
-						   @"dgmTypeAttributes.attributeID=128",
-						   [NSString stringWithFormat:@"dgmTypeAttributes.value=%d", chargeSize],
-						   [NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]]];
-		else
-			conditions = @[[NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]],
-						   [NSString stringWithFormat:@"invTypes.volume <= %f", structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()]];
-		
-		[self.controller.typePickerViewController presentWithConditions:conditions
+
+		[self.controller.typePickerViewController presentWithCategory:row.type.eufeItem.charge
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  for (auto structure: structures)
 															  structure->setCharge(type.typeID);
 														  [self.controller reload];
@@ -426,29 +409,13 @@
 	};
 	
 	void (^setAllModulesAmmo)(NSArray*) = ^(NSArray* structures){
-		int chargeSize = structure->getChargeSize();
-		
-		NSMutableArray *groups = [NSMutableArray new];
-		for (auto i: structure->getChargeGroups())
-			[groups addObject:[NSString stringWithFormat:@"%d", i]];
-		
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Ammo", nil);
-		NSArray* conditions;
-		if (chargeSize)
-			conditions = @[@"invTypes.typeID=dgmTypeAttributes.typeID",
-						   @"dgmTypeAttributes.attributeID=128",
-						   [NSString stringWithFormat:@"dgmTypeAttributes.value=%d", chargeSize],
-						   [NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]]];
-		else
-			conditions = @[[NSString stringWithFormat:@"groupID IN (%@)", [groups componentsJoinedByString:@","]],
-						   [NSString stringWithFormat:@"invTypes.volume <= %f", structure->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue()]];
-		
-		[self.controller.typePickerViewController presentWithConditions:conditions
+		[self.controller.typePickerViewController presentWithCategory:row.type.eufeItem.charge
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  for (auto structure: controlTower->getStructures())
 															  structure->setCharge(type.typeID);
 														  [self.controller reload];
@@ -544,12 +511,12 @@
 				NCFittingPOSStructureCell* cell = (NCFittingPOSStructureCell*) tableViewCell;
 				
 				cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.structures.size()];
-				cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+				cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 				
 				eufe::Charge* charge = structure->getCharge();
 				
 				if (charge) {
-					EVEDBInvType* type = [self.controller typeWithItem:charge];
+					NCDBInvType* type = [self.controller typeWithItem:charge];
 					cell.chargeLabel.text = type.typeName;
 				}
 				else

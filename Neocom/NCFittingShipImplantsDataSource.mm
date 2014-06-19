@@ -134,7 +134,7 @@
 			[self.controller performSegueWithIdentifier:@"NCFittingImplantSetsViewControllerSave" sender:cell];
 	}
 	else {
-		EVEDBInvType* type;
+		NCDBInvType* type;
 		eufe::Item* item = nil;
 		
 		if (indexPath.section == 1)
@@ -145,40 +145,32 @@
 		
 		if (!type) {
 			if (indexPath.section == 1) {
-				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
-										@"dgmTypeAttributes.attributeID = 331",
-										[NSString stringWithFormat:@"dgmTypeAttributes.value = %ld", (long)(indexPath.row + 1)]];
-				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
-				[self.controller.typePickerViewController presentWithConditions:conditions
-															   inViewController:self.controller
-																	   fromRect:cell.bounds
-																		 inView:cell
-																	   animated:YES
-															  completionHandler:^(EVEDBInvType *type) {
-																  self.controller.fit.pilot->addImplant(type.typeID);
-																  [self.controller reload];
-																  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-																	  [self.controller dismissAnimated];
-															  }];
+				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotImplant size:indexPath.row + 1 race:nil]
+															 inViewController:self.controller
+																	 fromRect:cell.bounds
+																	   inView:cell
+																	 animated:YES
+															completionHandler:^(NCDBInvType *type) {
+																self.controller.fit.pilot->addImplant(type.typeID);
+																[self.controller reload];
+																if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+																	[self.controller dismissAnimated];
+															}];
 			}
 			else {
-				NSArray* conditions = @[@"dgmTypeAttributes.typeID = invTypes.typeID",
-										@"dgmTypeAttributes.attributeID = 1087",
-										[NSString stringWithFormat:@"dgmTypeAttributes.value = %ld", (long)(indexPath.row + 1)]];
-				
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
-				[self.controller.typePickerViewController presentWithConditions:conditions
-															   inViewController:self.controller
-																	   fromRect:cell.bounds
-																		 inView:cell
-																	   animated:YES
-															  completionHandler:^(EVEDBInvType *type) {
-																  self.controller.fit.pilot->addBooster(type.typeID);
-																  [self.controller reload];
-																  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-																	  [self.controller dismissAnimated];
-															  }];
+				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotBooster size:indexPath.row + 1 race:nil]
+															 inViewController:self.controller
+																	 fromRect:cell.bounds
+																	   inView:cell
+																	 animated:YES
+															completionHandler:^(NCDBInvType *type) {
+																self.controller.fit.pilot->addBooster(type.typeID);
+																[self.controller reload];
+																if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+																	[self.controller dismissAnimated];
+															}];
 			}
 		}
 		else {
@@ -228,7 +220,7 @@
 		}
 	}
 	else {
-		EVEDBInvType* type;
+		NCDBInvType* type;
 		if (indexPath.section == 1)
 			type = [self.controller typeWithItem:self.implants[indexPath.row]];
 		else
@@ -241,7 +233,7 @@
 		}
 		else {
 			cell.titleLabel.text = type.typeName;
-			cell.iconView.image = [UIImage imageNamed:[type typeSmallImageName]];
+			cell.iconView.image = type.icon ? type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		}
 	}
 }

@@ -2,7 +2,7 @@
 //  NCDBEufeItemCategory.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 18.06.14.
+//  Created by Артем Шиманский on 19.06.14.
 //
 //
 
@@ -14,8 +14,8 @@
 
 @implementation NCDBEufeItemCategory
 
-@dynamic slot;
-@dynamic size;
+@dynamic category;
+@dynamic subcategory;
 @dynamic itemGroups;
 @dynamic race;
 @dynamic eufeItems;

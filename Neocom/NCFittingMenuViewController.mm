@@ -248,7 +248,7 @@
 												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
-												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.groupID"])
+												 for (NSArray* array in [shipLoadouts arrayGroupedByKey:@"type.group.groupID"])
 													 [sections addObject:[array mutableCopy]];
 												 
 												 task.progress = 0.5;

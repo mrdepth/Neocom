@@ -11,5 +11,6 @@
 @interface NCDBMapSolarSystem (Neocom)
 
 + (instancetype) mapSolarSystemWithName:(NSString*) name;
++ (instancetype) mapSolarSystemWithSolarSystemID:(int32_t) systemID;
 
 @end

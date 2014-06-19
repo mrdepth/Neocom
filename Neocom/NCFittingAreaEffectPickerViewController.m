@@ -42,34 +42,30 @@
 											 NSMutableArray* incursion = [NSMutableArray array];
 											 NSMutableArray* other = [NSMutableArray array];
 											 
-											 EVEDBDatabase *database = [EVEDBDatabase sharedDatabase];
-											 if (database) {
-												 [database execSQLRequest:@"SELECT * from invTypes WHERE groupID=920 ORDER BY typeName"
-															  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																  if (![task isCancelled]) {
-																	  EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
-																	  if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
-																		  [blackHole addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
-																		  [cataclysmic addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
-																		  [incursion addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
-																		  [magnetar addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
-																		  [pulsar addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
-																		  [redGiant addObject:type];
-																	  else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
-																		  [wolfRayet addObject:type];
-																	  else
-																		  [other addObject:type];
-																  }
-																  else
-																	  *needsMore = NO;
-															  }];
-											 }
-											 
+											 NCDatabase* database = [NCDatabase sharedDatabase];
+											 [database.backgroundManagedObjectContext performBlockAndWait:^{
+												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+												 request.predicate = [NSPredicate predicateWithFormat:@"group.groupID == 920"];
+												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
+												 for (NCDBInvType* type in [database.backgroundManagedObjectContext executeFetchRequest:request error:nil]) {
+													 if ([type.typeName rangeOfString:@"Black Hole Effect Beacon Class"].location != NSNotFound)
+														 [blackHole addObject:type];
+													 else if ([type.typeName rangeOfString:@"Cataclysmic Variable Effect Beacon Class"].location != NSNotFound)
+														 [cataclysmic addObject:type];
+													 else if ([type.typeName rangeOfString:@"Incursion"].location != NSNotFound)
+														 [incursion addObject:type];
+													 else if ([type.typeName rangeOfString:@"Magnetar Effect Beacon Class"].location != NSNotFound)
+														 [magnetar addObject:type];
+													 else if ([type.typeName rangeOfString:@"Pulsar Effect Beacon Class"].location != NSNotFound)
+														 [pulsar addObject:type];
+													 else if ([type.typeName rangeOfString:@"Red Giant Beacon Class"].location != NSNotFound)
+														 [redGiant addObject:type];
+													 else if ([type.typeName rangeOfString:@"Wolf Rayet Effect Beacon Class"].location != NSNotFound)
+														 [wolfRayet addObject:type];
+													 else
+														 [other addObject:type];
+												 }
+											 }];
 											 [sections addObject:blackHole];
 											 [sections addObject:cataclysmic];
 											 [sections addObject:magnetar];
@@ -181,7 +177,7 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 	
-	EVEDBInvType* row = self.sections[indexPath.section][indexPath.row];
+	NCDBInvType* row = self.sections[indexPath.section][indexPath.row];
 	cell.titleLabel.text = row.typeName;
 	cell.accessoryView = self.selectedAreaEffect && self.selectedAreaEffect.typeID == row.typeID ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
 	cell.object = row;

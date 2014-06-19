@@ -73,11 +73,17 @@
 			}
 			else {
 				NSNumber* level = @(self.skillsLevel);
-				[[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT A.typeID FROM invTypes AS A, invGroups AS B WHERE A.groupID=B.groupID AND B.categoryID=16 AND A.published=1;"
-												   resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-													   NSInteger typeID = sqlite3_column_int(stmt, 0);
-													   mSkills[@(typeID)] = level;
-												   }];
+				NCDatabase* database = [NCDatabase sharedDatabase];
+				[database.backgroundManagedObjectContext performBlockAndWait:^{
+					NSEntityDescription* entity = [NSEntityDescription entityForName:@"InvType" inManagedObjectContext:database.backgroundManagedObjectContext];
+					NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+					request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
+					request.resultType = NSDictionaryResultType;
+					request.propertiesToFetch = @[entity.propertiesByName[@"typeID"]];
+					for (NSDictionary* object in [database.backgroundManagedObjectContext executeFetchRequest:request error:nil]) {
+						mSkills[object[@"typeID"]] = level;
+					}
+				}];
 			}
 			skills = mSkills;
 			self.skills = skills;

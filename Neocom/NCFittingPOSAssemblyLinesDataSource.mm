@@ -13,7 +13,7 @@
 #import "NCTableViewHeaderView.h"
 
 @interface NCFittingPOSAssemblyLinesDataSourceRow : NSObject
-@property (nonatomic, strong) EVEDBRamAssemblyLineType* assemblyLineType;
+@property (nonatomic, strong) NCDBRamAssemblyLineType* assemblyLineType;
 @property (nonatomic, assign) NSInteger count;
 @end
 
@@ -49,15 +49,15 @@
 															for (auto structure: controlTower->getStructures()) {
 																task.progress = j++ / n;
 																if (structure->getState() >= eufe::Module::STATE_ACTIVE) {
-																	EVEDBInvType* type = [self.controller typeWithItem:structure];
+																	NCDBInvType* type = [self.controller typeWithItem:structure];
 																	if (type) {
-																		for (EVEDBRamInstallationTypeContent* installation in type.installations) {
-																			NCFittingPOSAssemblyLinesDataSourceRow* row = assemblyLinesTypes[@(installation.assemblyLineTypeID)];
+																		for (NCDBRamInstallationTypeContent* installation in type.installationTypeContents) {
+																			NCFittingPOSAssemblyLinesDataSourceRow* row = assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)];
 																			if (!row) {
 																				row = [NCFittingPOSAssemblyLinesDataSourceRow new];
 																				row.assemblyLineType = installation.assemblyLineType;
 																				row.count = 1;
-																				assemblyLinesTypes[@(installation.assemblyLineTypeID)] = row;
+																				assemblyLinesTypes[@(installation.assemblyLineType.assemblyLineTypeID)] = row;
 																			}
 																			else
 																				row.count++;
@@ -162,7 +162,7 @@
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
 	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
-	cell.iconView.image = [UIImage imageNamed:row.assemblyLineType.activity.iconImageName];
+	cell.iconView.image = row.assemblyLineType.activity.icon ? row.assemblyLineType.activity.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 }

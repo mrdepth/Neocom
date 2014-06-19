@@ -21,8 +21,8 @@
 #import "UIActionSheet+Block.h"
 
 @interface NCFittingAPIViewController ()
-@property (nonatomic, strong) EVEDBInvType* type;
-@property (nonatomic, strong) EVEDBInvGroup* group;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NCDBInvGroup* group;
 @property (nonatomic, assign) NeocomAPIFlag flags;
 @property (nonatomic, strong) NSDictionary* criteria;
 
@@ -200,7 +200,7 @@
 				}
 				else {
 					cell.titleLabel.text = self.type.typeName;
-					cell.iconView.image = [UIImage imageNamed:[self.type typeSmallImageName]];
+					cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 					cell.accessoryView = clearButton;
 				}
 			}
@@ -315,17 +315,17 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-			[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-												inViewController:self
-														fromRect:cell.bounds
-														  inView:cell
-														animated:YES
-											   completionHandler:^(EVEDBInvType *type) {
-												   self.type = type;
-												   [self dismissAnimated];
-												   [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-												   [self update];
-											   }];
+			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+											  inViewController:self
+													  fromRect:cell.bounds
+														inView:cell
+													  animated:YES
+											 completionHandler:^(NCDBInvType *type) {
+												 self.type = type;
+												 [self dismissAnimated];
+												 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+												 [self update];
+											 }];
 		}
 		else if (indexPath.row == 1) {
 			[self performSegueWithIdentifier:@"NCDatabaseGroupPickerViewContoller" sender:cell];

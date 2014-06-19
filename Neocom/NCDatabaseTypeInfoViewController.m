@@ -141,9 +141,9 @@
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseViewController"]) {
 		NCDatabaseViewController* destinationViewController = segue.destinationViewController;
-		if ([row.object isKindOfClass:[EVEDBInvGroup class]])
+		if ([row.object isKindOfClass:[NCDBInvGroup class]])
 			destinationViewController.group = row.object;
-		else if ([row.object isKindOfClass:[EVEDBInvCategory class]])
+		else if ([row.object isKindOfClass:[NCDBInvCategory class]])
 			destinationViewController.category = row.object;
 	}
 	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeVariationsViewController"]) {

@@ -30,7 +30,7 @@
 @interface NCFittingShipDronesDataSourceRow : NSObject {
 	eufe::DronesList _drones;
 }
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, readonly) eufe::DronesList& drones;
 @end
 
@@ -47,7 +47,7 @@
 @end
 
 @interface NCFittingShipDronesDataSource()<UIPickerViewDataSource, UIPickerViewDelegate>
-@property (nonatomic, strong) EVEDBInvType* activeAmountType;
+@property (nonatomic, strong) NCDBInvType* activeAmountType;
 @property (nonatomic, assign) NSInteger maximumAmount;
 @property (nonatomic, strong) NSArray* rows;
 @property (nonatomic, strong, readwrite) NCFittingShipDronesTableHeaderView* tableHeaderView;
@@ -247,12 +247,12 @@
 	if (indexPath.row >= self.rows.count) {
 		self.controller.typePickerViewController.title = NSLocalizedString(@"Drones", nil);
 		
-		[self.controller.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"]
+		[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotDrone size:0 race:nil]
 													   inViewController:self.controller
 															   fromRect:cell.bounds
 																 inView:cell
 															   animated:YES
-													  completionHandler:^(EVEDBInvType *type) {
+													  completionHandler:^(NCDBInvType *type) {
 														  eufe::TypeID typeID = type.typeID;
 														  eufe::Ship* ship = self.controller.fit.pilot->getShip();
 														  
@@ -477,7 +477,7 @@
 				NCFittingShipDroneCell* cell = (NCFittingShipDroneCell*) tableViewCell;
 				
 				cell.typeNameLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.type.typeName, (int) row.drones.size()];
-				cell.typeImageView.image = [UIImage imageNamed:[row.type typeSmallImageName]];
+				cell.typeImageView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 				
 				if (optimal > 0) {
 					NSString *s = [NSString stringWithFormat:NSLocalizedString(@"%@m", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(optimal)]];

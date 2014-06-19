@@ -7,12 +7,12 @@
 //
 
 #import "EVEAssetList.h"
-#import "EVEDBAPI.h"
 #import "EVEOnlineAPI.h"
 
+@class NCDBInvType;
 @interface EVEAssetListItem (Neocom)
 
-@property (nonatomic, strong) EVEDBInvType* type;
+@property (nonatomic, strong) NCDBInvType* type;
 @property (nonatomic, strong) EVELocationsItem* location;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSString* owner;

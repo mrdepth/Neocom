@@ -9,7 +9,6 @@
 #import "NCAccount.h"
 #import "NCStorage.h"
 #import "NCCache.h"
-#import "EVEDBInvType.h"
 
 #define NCAccountSkillPointsUpdateInterval (60.0 * 10.0)
 

@@ -24,10 +24,10 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 };
 
 @interface NCZKillBoardViewController ()
-@property (nonatomic, strong) EVEDBInvGroup* group;
-@property (nonatomic, strong) EVEDBInvType* type;
-@property (nonatomic, strong) EVEDBMapSolarSystem* solarSystem;
-@property (nonatomic, strong) EVEDBMapRegion* region;
+@property (nonatomic, strong) NCDBInvGroup* group;
+@property (nonatomic, strong) NCDBInvType* type;
+@property (nonatomic, strong) NCDBMapSolarSystem* solarSystem;
+@property (nonatomic, strong) NCDBMapRegion* region;
 @property (nonatomic, strong) NCCharacterID* characterID;
 @property (nonatomic, strong) NSDate* date;
 @property (nonatomic, assign) NCZKillBoardViewControllerFilter filter;
@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		if (self.type) {
 			cell.accessoryView = newClearButton();
 			cell.titleLabel.text = self.type.typeName;
-			cell.iconView.image = [UIImage imageNamed:self.type.typeSmallImageName];
+			cell.iconView.image = self.type.icon ? self.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		}
 		else {
 			cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
@@ -287,20 +287,20 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 	if (indexPath.row == 0) {
 		UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 		self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-		[self.typePickerViewController presentWithConditions:@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"]
-											inViewController:self
-													fromRect:cell.bounds
-													  inView:cell
-													animated:YES
-										   completionHandler:^(EVEDBInvType *type) {
-											   self.type = type;
-											   [self dismissAnimated];
-											   [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-											   if (self.group) {
-												   self.group = nil;
-												   [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-											   }
-										   }];
+		[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+										  inViewController:self
+												  fromRect:cell.bounds
+													inView:cell
+												  animated:YES
+										 completionHandler:^(NCDBInvType *type) {
+											 self.type = type;
+											 [self dismissAnimated];
+											 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+											 if (self.group) {
+												 self.group = nil;
+												 [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+											 }
+										 }];
 
 	}
 	else if (indexPath.row == 2) {
@@ -358,7 +358,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 - (IBAction)unwindFromSolarSystemPicker:(UIStoryboardSegue*) segue {
 	NCDatabaseSolarSystemPickerViewController* sourceViewController = segue.sourceViewController;
 	if (sourceViewController.selectedObject) {
-		if ([sourceViewController.selectedObject isKindOfClass:[EVEDBMapRegion class]]) {
+		if ([sourceViewController.selectedObject isKindOfClass:[NCDBMapRegion class]]) {
 			self.region = sourceViewController.selectedObject;
 			self.solarSystem = nil;
 		}

@@ -33,31 +33,21 @@
 	
 	self.refreshControl = nil;
 	
+	NCDatabase* database = [NCDatabase sharedDatabase];
 	if (!self.rows) {
-		NSMutableArray* rows = [NSMutableArray new];
-		
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierNone
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 if (self.region)
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM mapSolarSystems WHERE regionID=%d ORDER BY solarSystemName;", self.region.regionID]
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[rows addObject:[[EVEDBMapSolarSystem alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-												 else
-													 [[EVEDBDatabase sharedDatabase] execSQLRequest:@"SELECT * FROM mapRegions ORDER BY regionName;"
-																						resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																							[rows addObject:[[EVEDBMapRegion alloc] initWithStatement:stmt]];
-																							if ([task isCancelled])
-																								*needsMore = NO;
-																						}];
-											 }
-								 completionHandler:^(NCTask *task) {
-									 self.rows = rows;
-									 [self update];
-								 }];
+		if (self.region) {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
+			request.predicate = [NSPredicate predicateWithFormat:@"constellation.region == %@", self.region];
+			request.fetchBatchSize = 50;
+			self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
+		}
+		else {
+			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
+			request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
+			request.fetchBatchSize = 50;
+			self.rows = [database.managedObjectContext executeFetchRequest:request error:nil];
+		}
 	}
 }
 
@@ -115,7 +105,7 @@
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
 	
 	UITableViewCell* cell = nil;
-	if ([row isKindOfClass:[EVEDBMapRegion class]]) {
+	if ([row isKindOfClass:[NCDBMapRegion class]]) {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
 		if (!cell)
 			cell = [self.tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
@@ -153,7 +143,7 @@
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
 	
 	UITableViewCell* cell = nil;
-	if ([row isKindOfClass:[EVEDBMapRegion class]])
+	if ([row isKindOfClass:[NCDBMapRegion class]])
 		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"RegionCell"];
 	else
 		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"SolarSystemCell"];
@@ -173,51 +163,38 @@
 
 - (void) searchWithSearchString:(NSString*) searchString {
 	NSMutableArray* searchResults = [NSMutableArray new];
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:nil
-										 block:^(NCTask *task) {
-											 if ([task isCancelled])
-												 return;
-											 if (self.region) {
-												 NSMutableArray* solarSystems = [NSMutableArray new];
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM mapSolarSystems WHERE regionID=%d AND solarSystemName LIKE \"%%%@%%\" ORDER BY solarSystemName;", self.region.regionID, searchString]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[solarSystems addObject:[[EVEDBMapSolarSystem alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-												 if (solarSystems.count > 0)
-													 [searchResults addObject:@{@"rows": solarSystems}];
-											 }
-											 else {
-												 NSMutableArray* regions = [NSMutableArray new];
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM mapRegions WHERE regionName LIKE \"%%%@%%\" ORDER BY regionName;", searchString]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[regions addObject:[[EVEDBMapRegion alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-												 if (regions.count > 0)
-													 [searchResults addObject:@{@"rows": regions, @"title": NSLocalizedString(@"Regions", nil)}];
-												 
-												 NSMutableArray* solarSystems = [NSMutableArray new];
-												 [[EVEDBDatabase sharedDatabase] execSQLRequest:[NSString stringWithFormat:@"SELECT * FROM mapSolarSystems WHERE solarSystemName LIKE \"%%%@%%\" ORDER BY solarSystemName;", searchString]
-																					resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-																						[solarSystems addObject:[[EVEDBMapSolarSystem alloc] initWithStatement:stmt]];
-																						if ([task isCancelled])
-																							*needsMore = NO;
-																					}];
-												 if (solarSystems.count > 0)
-													 [searchResults addObject:@{@"rows": solarSystems, @"title": NSLocalizedString(@"Solar Systems", nil)}];
+	
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	if (self.region) {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"constellation.region == %@ AND solarSystemName CONTAINS[C] %@", self.region, searchString];
+		request.fetchBatchSize = 50;
+		NSArray* solarSystems = [database.managedObjectContext executeFetchRequest:request error:nil];
+		if (solarSystems.count > 0)
+			[searchResults addObject:@{@"rows": solarSystems}];
+	}
+	else {
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"MapSolarSystem"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"solarSystemName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"solarSystemName CONTAINS[C] %@", searchString];
+		request.fetchBatchSize = 50;
+		NSArray* solarSystems = [database.managedObjectContext executeFetchRequest:request error:nil];
 
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (![task isCancelled]) {
-									 self.searchResults = searchResults;
-									 [self.searchDisplayController.searchResultsTableView reloadData];
-								 }
-							 }];
+		
+		request = [NSFetchRequest fetchRequestWithEntityName:@"MapRegion"];
+		request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"regionName" ascending:YES]];
+		request.predicate = [NSPredicate predicateWithFormat:@"regionName CONTAINS[C] %@", searchString];
+		request.fetchBatchSize = 50;
+		NSArray* regions = [database.managedObjectContext executeFetchRequest:request error:nil];
+		
+		if (regions.count > 0)
+			[searchResults addObject:@{@"rows": regions, @"title": NSLocalizedString(@"Regions", nil)}];
+		if (solarSystems.count > 0)
+			[searchResults addObject:@{@"rows": solarSystems, @"title": NSLocalizedString(@"Solar Systems", nil)}];
+	}
+	self.searchResults = searchResults;
+	[self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
@@ -227,7 +204,7 @@
 	else
 		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
 	
-	if ([row isKindOfClass:[EVEDBMapRegion class]]) {
+	if ([row isKindOfClass:[NCDBMapRegion class]]) {
 		NCDatabaseSolarSystemPickerRegionCell* cell = (NCDatabaseSolarSystemPickerRegionCell*) tableViewCell;
 		cell.object = row;
 		cell.titleLabel.text = [row regionName];

@@ -251,7 +251,7 @@
 
 - (IBAction)unwindFromNPCPicker:(UIStoryboardSegue*)segue {
 	NCFittingNPCPickerViewController* sourceViewController = segue.sourceViewController;
-	EVEDBInvType* type = sourceViewController.selectedNPCType;
+	NCDBInvType* type = sourceViewController.selectedNPCType;
 	NCStorage* storage = [NCStorage sharedStorage];
 	
 	NCDamagePattern* damagePattern = [[NCDamagePattern alloc] initWithEntity:[NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:storage.managedObjectContext]
@@ -259,16 +259,16 @@
 	
 	damagePattern.name = type.typeName;
 	
-	EVEDBDgmTypeAttribute* emDamageAttribute = type.attributesDictionary[@(114)];
-	EVEDBDgmTypeAttribute* explosiveDamageAttribute = type.attributesDictionary[@(116)];
-	EVEDBDgmTypeAttribute* kineticDamageAttribute = type.attributesDictionary[@(117)];
-	EVEDBDgmTypeAttribute* thermalDamageAttribute = type.attributesDictionary[@(1180)];
-	EVEDBDgmTypeAttribute* damageMultiplierAttribute = type.attributesDictionary[@(64)];
-	EVEDBDgmTypeAttribute* missileDamageMultiplierAttribute = type.attributesDictionary[@(212)];
-	EVEDBDgmTypeAttribute* missileTypeIDAttribute = type.attributesDictionary[@(507)];
+	NCDBDgmTypeAttribute* emDamageAttribute = type.attributesDictionary[@(114)];
+	NCDBDgmTypeAttribute* explosiveDamageAttribute = type.attributesDictionary[@(116)];
+	NCDBDgmTypeAttribute* kineticDamageAttribute = type.attributesDictionary[@(117)];
+	NCDBDgmTypeAttribute* thermalDamageAttribute = type.attributesDictionary[@(1180)];
+	NCDBDgmTypeAttribute* damageMultiplierAttribute = type.attributesDictionary[@(64)];
+	NCDBDgmTypeAttribute* missileDamageMultiplierAttribute = type.attributesDictionary[@(212)];
+	NCDBDgmTypeAttribute* missileTypeIDAttribute = type.attributesDictionary[@(507)];
 	
-	EVEDBDgmTypeAttribute* turretFireSpeedAttribute = type.attributesDictionary[@(51)];
-	EVEDBDgmTypeAttribute* missileLaunchDurationAttribute = type.attributesDictionary[@(506)];
+	NCDBDgmTypeAttribute* turretFireSpeedAttribute = type.attributesDictionary[@(51)];
+	NCDBDgmTypeAttribute* missileLaunchDurationAttribute = type.attributesDictionary[@(506)];
 	
 	
 	//Turrets damage
@@ -299,12 +299,12 @@
 	float intervalMissile = 0;
 	
 	if (type.effectsDictionary[@(569)]) {
-		EVEDBInvType* missile = [EVEDBInvType invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value] error:nil];
+		NCDBInvType* missile = [NCDBInvType invTypeWithTypeID:(int32_t)[missileTypeIDAttribute value]];
 		if (missile) {
-			EVEDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
-			EVEDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];
-			EVEDBDgmTypeAttribute* kineticDamageAttribute = missile.attributesDictionary[@(117)];
-			EVEDBDgmTypeAttribute* thermalDamageAttribute = missile.attributesDictionary[@(118)];
+			NCDBDgmTypeAttribute* emDamageAttribute = missile.attributesDictionary[@(114)];
+			NCDBDgmTypeAttribute* explosiveDamageAttribute = missile.attributesDictionary[@(116)];
+			NCDBDgmTypeAttribute* kineticDamageAttribute = missile.attributesDictionary[@(117)];
+			NCDBDgmTypeAttribute* thermalDamageAttribute = missile.attributesDictionary[@(118)];
 			
 			float missileDamageMultiplier = [missileDamageMultiplierAttribute value];
 			if (missileDamageMultiplier == 0)

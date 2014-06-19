@@ -9,15 +9,16 @@
 #import "EVEAssetListItem+Neocom.h"
 #import <objc/runtime.h>
 #import "NSNumberFormatter+Neocom.h"
+#import "NCDatabase.h"
 
 @implementation EVEAssetListItem (Neocom)
 
-- (EVEDBInvType*) type {
-	EVEDBInvType* type = objc_getAssociatedObject(self, @"type");
+- (NCDBInvType*) type {
+	NCDBInvType* type = objc_getAssociatedObject(self, @"type");
 	return type;
 }
 
-- (void) setType:(EVEDBInvType *)type {
+- (void) setType:(NCDBInvType *)type {
 	objc_setAssociatedObject(self, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

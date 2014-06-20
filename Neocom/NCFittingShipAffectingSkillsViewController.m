@@ -44,7 +44,7 @@
 											 NCDatabase* database = [NCDatabase sharedDatabase];
 											 [database.backgroundManagedObjectContext performBlockAndWait:^{
 												 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
-												 request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE typeID IN %@", self.affectingSkillsTypeIDs];
+												 request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND typeID IN %@", self.affectingSkillsTypeIDs];
 												 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"group.groupName" ascending:YES],
 																			 [NSSortDescriptor sortDescriptorWithKey:@"typeName" ascending:YES]];
 												 NSFetchedResultsController* result = [[NSFetchedResultsController alloc] initWithFetchRequest:request

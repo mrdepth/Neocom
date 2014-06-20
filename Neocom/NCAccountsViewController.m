@@ -77,10 +77,11 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
-		NCStorage* storage = [NCStorage sharedStorage];
-        
         self.accounts = [[aDecoder decodeObjectForKey:@"accounts"] mutableCopy];
-        [storage.managedObjectContext performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+        [context performBlockAndWait:^{
             self.apiKeys = [NSMutableArray arrayWithArray:[[NCStorage sharedStorage] allAPIKeys]];
         }];
 	}
@@ -234,8 +235,9 @@
 	[data.accounts insertObject:account atIndex:toIndexPath.row];
 	
 	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 	
-	[storage.managedObjectContext performBlockAndWait:^{
+	[context performBlockAndWait:^{
 		int32_t order = 0;
 		for (NCAccountsViewControllerDataAccount* account in data.accounts)
 			account.account.order = order++;
@@ -371,7 +373,10 @@
 													 dataAccount.currentSkill = [NSString stringWithFormat:NSLocalizedString(@"> %@ Level %d", nil), type.typeName, item.level];
 												 }
 											 }
-                                             [accountsManager.storage.managedObjectContext performBlockAndWait:^{
+											 NCStorage* storage = accountsManager.storage;
+											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+                                             [context performBlockAndWait:^{
                                                  data.apiKeys = [[NSMutableArray alloc] initWithArray:[accountsManager.storage allAPIKeys]];
                                              }];
 										 }

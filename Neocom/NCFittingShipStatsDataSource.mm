@@ -501,11 +501,13 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
+														NSCountedSet* types = [NSCountedSet set];
+														__block int32_t shipTypeID;
 														@synchronized(self.controller) {
-															NSCountedSet* types = [NSCountedSet set];
 
 															eufe::Character* character = self.controller.fit.pilot;
 															eufe::Ship* ship = character->getShip();
+															shipTypeID = ship->getTypeID();
 															
 															[types addObject:@(ship->getTypeID())];
 															
@@ -514,23 +516,24 @@
 															
 															for (auto i: ship->getDrones())
 																[types addObject:@(i->getTypeID())];
-															
-															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
-															__block float shipPrice = 0;
-															__block float fittingsPrice = 0;
-															
-															[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
-																NSInteger typeID = [key integerValue];
-																if (typeID == ship->getTypeID())
-																	shipPrice = obj.sell.percentile;
-																else
-																	fittingsPrice += obj.sell.percentile * [types countForObject:key];
-															}];
-															
-															stats.shipPrice = shipPrice;
-															stats.fittingsPrice = fittingsPrice;
-															stats.totalPrice = stats.shipPrice + stats.fittingsPrice;
 														}
+														
+														NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
+														__block float shipPrice = 0;
+														__block float fittingsPrice = 0;
+														
+														[prices enumerateKeysAndObjectsUsingBlock:^(NSNumber* key, EVECentralMarketStatType* obj, BOOL *stop) {
+															int32_t typeID = [key intValue];
+															if (typeID == shipTypeID)
+																shipPrice = obj.sell.percentile;
+															else
+																fittingsPrice += obj.sell.percentile * [types countForObject:key];
+														}];
+														
+														stats.shipPrice = shipPrice;
+														stats.fittingsPrice = fittingsPrice;
+														stats.totalPrice = stats.shipPrice + stats.fittingsPrice;
+
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {

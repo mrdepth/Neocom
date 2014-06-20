@@ -59,7 +59,7 @@
 {
 	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	cell.titleLabel.text = self.titles[indexPath.row];
-	cell.iconView.image = [UIImage imageNamed:self.icons[indexPath.row]];
+	cell.iconView.image = self.icons[indexPath.row];
 
 	NSNumber* value = self.values[indexPath.row];
 	if (self.selectedValue && [self.selectedValue integerValue] == [value integerValue])

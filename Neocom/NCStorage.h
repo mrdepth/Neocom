@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, assign, readonly) NCStorageType storageType;
+@property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
 
 + (id) sharedStorage;
 + (id) fallbackStorage;

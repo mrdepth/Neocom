@@ -258,7 +258,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	if (indexPath.row >= self.controller.fits.count) {
-		cell.iconView.image = [UIImage imageNamed:@"Icons/icon17_04.png"];
+		cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"17_04"] image] image];
 		cell.titleLabel.text = NSLocalizedString(@"Add Fleet Member", nil);
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;

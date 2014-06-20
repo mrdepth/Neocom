@@ -73,7 +73,8 @@
 							 if (selectedButtonIndex == 0) {
 								 NCAccount* account = [NCAccount currentAccount];
 								 NCStorage* storage = [NCStorage sharedStorage];
-								 [storage.managedObjectContext performBlockAndWait:^{
+								 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+								 [context performBlockAndWait:^{
 									 account.activeSkillPlan.trainingQueue = self.trainingQueue;
 									 [account.activeSkillPlan save];
 									 [storage saveContext];
@@ -89,9 +90,10 @@
 							 else if (selectedButtonIndex == 2) {
 								 NCAccount* account = [NCAccount currentAccount];
 								 NCStorage* storage = [NCStorage sharedStorage];
-								 [storage.managedObjectContext performBlockAndWait:^{
-									 NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext]
-																   insertIntoManagedObjectContext:storage.managedObjectContext];
+								 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+								 [context performBlockAndWait:^{
+									 NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
+																   insertIntoManagedObjectContext:context];
 									 skillPlan.trainingQueue = self.trainingQueue;
 									 skillPlan.name = self.skillPlanName;
 									 skillPlan.account = account;

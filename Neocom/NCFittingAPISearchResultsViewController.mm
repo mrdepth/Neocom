@@ -100,13 +100,13 @@
 	cell.object = item;
 	
 	if (item.flags & NeocomAPIFlagHybridTurrets)
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon13_06.png"];
+		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image];
 	else if (item.flags & NeocomAPIFlagLaserTurrets)
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon13_10.png"];
+		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image];
 	else if (item.flags & NeocomAPIFlagProjectileTurrets)
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon12_14.png"];
+		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image];
 	else if (item.flags & NeocomAPIFlagMissileLaunchers)
-		cell.weaponTypeImageView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
+		cell.weaponTypeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image];
 	else
 		cell.weaponTypeImageView.image = [UIImage imageNamed:@"turrets.png"];
 	

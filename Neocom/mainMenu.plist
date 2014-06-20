@@ -9,7 +9,7 @@
 			<key>title</key>
 			<string>Character Sheet</string>
 			<key>image</key>
-			<string>Icons/icon02_16.png</string>
+			<string>icon02_16.png</string>
 			<key>charAccessMask</key>
 			<integer>16777224</integer>
 			<key>corpAccessMask</key>
@@ -25,7 +25,7 @@
 			<key>title</key>
 			<string>Skills</string>
 			<key>image</key>
-			<string>Icons/icon50_13.png</string>
+			<string>icon50_13.png</string>
 			<key>charAccessMask</key>
 			<integer>17170440</integer>
 			<key>corpAccessMask</key>
@@ -39,7 +39,7 @@
 			<key>title</key>
 			<string>EVE Mail</string>
 			<key>image</key>
-			<string>Icons/icon12_01.png</string>
+			<string>icon12_01.png</string>
 			<key>charAccessMask</key>
 			<integer>3584</integer>
 			<key>corpAccessMask</key>
@@ -53,7 +53,7 @@
 			<key>title</key>
 			<string>Calendar Events</string>
 			<key>image</key>
-			<string>Icons/icon94_12.png</string>
+			<string>icon94_12.png</string>
 			<key>charAccessMask</key>
 			<integer>1</integer>
 			<key>corpAccessMask</key>
@@ -67,7 +67,7 @@
 			<key>title</key>
 			<string>Database</string>
 			<key>image</key>
-			<string>Icons/icon99_08.png</string>
+			<string>icon99_08.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -79,7 +79,7 @@
 			<key>title</key>
 			<string>Certificates</string>
 			<key>image</key>
-			<string>Icons/icon79_06.png</string>
+			<string>icon79_06.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -91,7 +91,7 @@
 			<key>title</key>
 			<string>Market</string>
 			<key>image</key>
-			<string>Icons/icon18_01.png</string>
+			<string>icon18_01.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -103,7 +103,7 @@
 			<key>title</key>
 			<string>NPC</string>
 			<key>image</key>
-			<string>Icons/icon04_07.png</string>
+			<string>icon04_07.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -117,7 +117,7 @@
 			<key>title</key>
 			<string>Fitting</string>
 			<key>image</key>
-			<string>Icons/icon17_04.png</string>
+			<string>icon17_04.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -129,7 +129,7 @@
 			<key>title</key>
 			<string>Kill Reports</string>
 			<key>image</key>
-			<string>Icons/icon50_15.png</string>
+			<string>icon50_15.png</string>
 			<key>charAccessMask</key>
 			<integer>256</integer>
 			<key>corpAccessMask</key>
@@ -141,7 +141,7 @@
 			<key>title</key>
 			<string>zKillBoard Reports</string>
 			<key>image</key>
-			<string>Icons/icon61_03.png</string>
+			<string>icon61_03.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -155,7 +155,7 @@
 			<key>title</key>
 			<string>Assets</string>
 			<key>image</key>
-			<string>Icons/icon07_13.png</string>
+			<string>icon07_13.png</string>
 			<key>charAccessMask</key>
 			<integer>2</integer>
 			<key>corpAccessMask</key>
@@ -167,7 +167,7 @@
 			<key>title</key>
 			<string>Market Orders</string>
 			<key>image</key>
-			<string>Icons/icon06_03.png</string>
+			<string>icon06_03.png</string>
 			<key>charAccessMask</key>
 			<integer>4096</integer>
 			<key>corpAccessMask</key>
@@ -179,7 +179,7 @@
 			<key>title</key>
 			<string>Contracts</string>
 			<key>image</key>
-			<string>Icons/icon64_10.png</string>
+			<string>icon64_10.png</string>
 			<key>charAccessMask</key>
 			<integer>67108864</integer>
 			<key>corpAccessMask</key>
@@ -191,7 +191,7 @@
 			<key>title</key>
 			<string>Wallet Transactions</string>
 			<key>image</key>
-			<string>Icons/icon64_15.png</string>
+			<string>icon64_15.png</string>
 			<key>charAccessMask</key>
 			<integer>4194304</integer>
 			<key>corpAccessMask</key>
@@ -203,7 +203,7 @@
 			<key>title</key>
 			<string>Wallet Journal</string>
 			<key>image</key>
-			<string>Icons/icon07_12.png</string>
+			<string>icon07_12.png</string>
 			<key>charAccessMask</key>
 			<integer>2097152</integer>
 			<key>corpAccessMask</key>
@@ -215,7 +215,7 @@
 			<key>title</key>
 			<string>Industry Jobs</string>
 			<key>image</key>
-			<string>Icons/icon33_02.png</string>
+			<string>icon33_02.png</string>
 			<key>charAccessMask</key>
 			<integer>128</integer>
 			<key>corpAccessMask</key>
@@ -227,7 +227,7 @@
 			<key>title</key>
 			<string>POS&apos;es</string>
 			<key>image</key>
-			<string>Icons/icon07_06.png</string>
+			<string>icon07_06.png</string>
 			<key>charAccessMask</key>
 			<integer>-1</integer>
 			<key>corpAccessMask</key>
@@ -253,7 +253,7 @@
 			<key>title</key>
 			<string>About</string>
 			<key>image</key>
-			<string>Icons/icon101_05.png</string>
+			<string>icon101_05.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -265,7 +265,7 @@
 			<key>title</key>
 			<string>Remove Ads</string>
 			<key>image</key>
-			<string>Icons/icon64_09.png</string>
+			<string>icon64_09.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -277,7 +277,7 @@
 			<key>title</key>
 			<string>Settings</string>
 			<key>image</key>
-			<string>Icons/icon79_10.png</string>
+			<string>icon79_10.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>

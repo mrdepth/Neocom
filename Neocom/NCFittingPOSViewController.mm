@@ -117,8 +117,10 @@
 											 block:^(NCTask *task) {
 												 @synchronized(self) {
 													 [self.fit save];
-													 
-													 [[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+													 NCStorage* storage = [NCStorage sharedStorage];
+													 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+													 [context performBlockAndWait:^{
 														 [[NCStorage sharedStorage] saveContext];
 													 }];
 												 }

@@ -204,7 +204,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
-	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174"]) {
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01"]) {
 		__block EVEDBEveIcon* eveIcon = nil;
 		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
 					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -917,32 +917,22 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	};
 	
 	__weak __block void (^weakRecursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*);
-	void (^recursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*) = ^(EVEDBInvMarketGroup* marketGroup, NCDBEufeItemCategory* category, NCDBEufeItemGroup* parentGroup, NSArray* conditions, NSSet* conditionsTables) {
+	void (^recursiveFind)(EVEDBInvMarketGroup*, NCDBEufeItemCategory*, NCDBEufeItemGroup*, NSArray*, NSSet*) = ^(EVEDBInvMarketGroup* marketGroup, NCDBEufeItemCategory* category, NCDBEufeItemGroup* itemGroup, NSArray* conditions, NSSet* conditionsTables) {
 		if (marketGroup.subgroups.count == 1) {
-			NCDBEufeItemGroup* itemGroup = parentGroup;
-			if (!itemGroup) {
-				NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(marketGroup.marketGroupID)];
-				
-				itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
-				itemGroup.category = category;
-				itemGroup.parentGroup = parentGroup;
-				itemGroup.groupName = marketGroup.marketGroupName;
-				itemGroup.icon = invMarketGroup.icon;
-			}
 			weakRecursiveFind(marketGroup.subgroups[0], category, itemGroup, conditions, conditionsTables);
 		}
 		else {
-			NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(marketGroup.marketGroupID)];
 			
-			NCDBEufeItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
-			itemGroup.category = category;
-			itemGroup.parentGroup = parentGroup;
-			itemGroup.groupName = marketGroup.marketGroupName;
-			itemGroup.icon = invMarketGroup.icon;
-
 			if (marketGroup.subgroups.count > 1) {
 				for (EVEDBInvMarketGroup* group in marketGroup.subgroups) {
-					weakRecursiveFind(group, category, itemGroup, conditions, conditionsTables);
+					NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(marketGroup.marketGroupID)];
+					NCDBEufeItemGroup* subGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+					subGroup.category = category;
+					subGroup.parentGroup = itemGroup;
+					subGroup.groupName = group.marketGroupName;
+					subGroup.icon = invMarketGroup.icon;
+
+					weakRecursiveFind(group, category, subGroup, conditions, conditionsTables);
 				}
 			}
 			else {
@@ -962,11 +952,29 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	
 	weakRecursiveFind = recursiveFind;
 	
-	void (^process)(NSArray*, NCDBEufeItemCategory*) = ^(NSArray* conditions, NCDBEufeItemCategory* category) {
+	void (^process)(NSArray*, NCDBEufeItemCategory*, NSString*) = ^(NSArray* conditions, NCDBEufeItemCategory* category, NSString* title) {
+		NCDBEufeItemGroup* parentGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+		parentGroup.category = category;
+		parentGroup.parentGroup = nil;
+		parentGroup.groupName = title;
+		parentGroup.icon = nil;
+
 		NSSet* conditionsTables = getConditionsTables(conditions);
 		NSArray* groups = getGroups(conditions, conditionsTables);
 		for (EVEDBInvMarketGroup* group in groups) {
-			recursiveFind(group, category, nil, conditions, conditionsTables);
+			NCDBEufeItemGroup* itemGroup;
+			if (groups.count > 1) {
+				NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(group.marketGroupID)];
+				itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+				itemGroup.category = category;
+				itemGroup.parentGroup = parentGroup;
+				itemGroup.groupName = group.marketGroupName;
+				itemGroup.icon = invMarketGroup.icon;
+			}
+			else
+				itemGroup = parentGroup;
+
+			recursiveFind(group, category, itemGroup, conditions, conditionsTables);
 		}
 	};
 	
@@ -984,7 +992,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 		NCDBEufeItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
 		itemGroup.category = category;
 		itemGroup.parentGroup = nil;
-		itemGroup.groupName = nil;
+		itemGroup.groupName = @"Ammo";
 		itemGroup.icon = nil;
 		
 		[database execSQLRequest:request resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -1001,15 +1009,15 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	
 	NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_HI;
-	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12"], category);
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12"], category, @"Hi Slot");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_MED;
-	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13"], category);
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13"], category, @"Med Slot");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_LOW;
-	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11"], category);
+	process(@[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11"], category, @"Low Slot");
 	
 	[database execSQLRequest:@"select value from dgmTypeAttributes as a, dgmTypeEffects as b where b.effectID = 2663 AND attributeID=1547 AND a.typeID=b.typeID group by value;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -1021,7 +1029,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 							   @"dgmTypeEffects.effectID = 2663",
 							   @"dgmTypeAttributes.typeID = invTypes.typeID",
 							   @"dgmTypeAttributes.attributeID = 1547",
-							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", value]], category);
+							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", value]], category, @"Rig Slot");
 				 }];
 
 	[database execSQLRequest:@"select raceID from invTypes as a, dgmTypeEffects as b where b.effectID = 3772 AND a.typeID=b.typeID group by raceID;"
@@ -1032,26 +1040,26 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					 category.race = chrRaces[@(raceID)];
 					 process(@[@"dgmTypeEffects.typeID = invTypes.typeID",
 							   @"dgmTypeEffects.effectID = 3772",
-							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]], category);
+							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]], category, @"Subsystems");
 				 }];
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_SHIP;
-	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"], category);
+	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 6"], category, @"Ships");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_DRONE;
-	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"], category);
+	process(@[@"invGroups.groupID = invTypes.groupID", @"invGroups.categoryID = 18"], category, @"Drones");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_CONTROL_TOWER;
-	process(@[@"invTypes.marketGroupID = 478"], category);
+	process(@[@"invTypes.marketGroupID = 478"], category, @"Control Towers");
 
 	category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
 	category.category = SLOT_STRUCTURE;
 	process(@[@"invTypes.groupID <> 365",
 			  @"invTypes.groupID = invGroups.groupID",
-			  @"invGroups.categoryID = 23"], category);
+			  @"invGroups.categoryID = 23"], category, @"Structures");
 	
 	NSMutableDictionary* chargeCategories = [NSMutableDictionary new];
 	[database execSQLRequest:@"SELECT b.* FROM dgmTypeAttributes as a, invTypes as b where a.attributeID in (604, 605, 606, 609, 610) and a.typeID=b.typeID group by a.typeID;"
@@ -1105,7 +1113,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					 category.subcategory = slot;
 					 process(@[@"dgmTypeAttributes.typeID = invTypes.typeID",
 							   @"dgmTypeAttributes.attributeID = 331",
-							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", slot]], category);
+							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", slot]], category, @"Implants");
 				 }];
 	[database execSQLRequest:@"select value from dgmTypeAttributes as a, invTypes as b where attributeID=1087 and a.typeID=b.typeID and b.published = 1 group by value;"
 				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -1115,7 +1123,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					 category.subcategory = slot;
 					 process(@[@"dgmTypeAttributes.typeID = invTypes.typeID",
 							   @"dgmTypeAttributes.attributeID = 1087",
-							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", slot]], category);
+							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", slot]], category, @"Boosters");
 				 }];
 }
 
@@ -1180,7 +1188,7 @@ int main(int argc, const char * argv[])
 			NSLog(@"convertMapSolarSystems");
 			mapSolarSystems = convertMapSolarSystems(context, database);
 			NSLog(@"convertMapDenormalize");
-//			convertMapDenormalize(context, database);
+			convertMapDenormalize(context, database);
 			NSLog(@"convertNpcGroup");
 			convertNpcGroup(context, database);
 			NSLog(@"convertRamActivities");
@@ -1198,6 +1206,7 @@ int main(int argc, const char * argv[])
 			NSLog(@"convertEufeItems");
 			convertEufeItems(context, database);
 		}
+		NSLog(@"Saving...");
 
 		
 	    // Custom code here...

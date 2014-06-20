@@ -319,7 +319,7 @@
 		cell.titleLabel.text = row.type.typeName;
 	}
 	else {
-		cell.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		cell.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
 		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.marketOrder.typeID];
 	}
 	

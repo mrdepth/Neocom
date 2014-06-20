@@ -48,8 +48,9 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
+											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 											 NSMutableDictionary* types = [NSMutableDictionary new];
-											 [storage.managedObjectContext performBlockAndWait:^{
+											 [context performBlockAndWait:^{
 												 NSArray* sets = [storage implantSets];
 												 for (NCImplantSet* set in sets) {
 													 NSMutableArray* components = [NSMutableArray new];
@@ -161,7 +162,8 @@
 							 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
 								 if (selectedButtonIndex != alertView.cancelButtonIndex) {
 									 NCStorage* storage = [NCStorage sharedStorage];
-									 [storage.managedObjectContext performBlockAndWait:^{
+									 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+									 [context performBlockAndWait:^{
 										 row.implantSet.data = self.implantSetData;
 										 [storage saveContext];
 									 }];
@@ -200,7 +202,8 @@
 													 if (name.length == 0)
 														 name = NSLocalizedString(@"Unnamed", nil);
 													 NCStorage* storage = [NCStorage sharedStorage];
-													 [storage.managedObjectContext performBlockAndWait:^{
+													 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+													 [context performBlockAndWait:^{
 														 NCImplantSet* implantSet = [[NCImplantSet alloc] initWithEntity:[NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:storage.managedObjectContext]
 																						  insertIntoManagedObjectContext:storage.managedObjectContext];
 														 implantSet.name = name;

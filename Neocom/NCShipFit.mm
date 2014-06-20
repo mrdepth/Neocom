@@ -185,7 +185,8 @@
 - (id) initWithLoadout:(NCLoadout*) loadout {
 	if (self = [super init]) {
 		NCStorage* storage = [NCStorage sharedStorage];
-		[storage.managedObjectContext performBlockAndWait:^{
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+		[context performBlockAndWait:^{
 			self.loadout = loadout;
 			self.loadoutName = loadout.name;
 			self.loadoutData = loadout.data.data;
@@ -833,14 +834,15 @@
 		type = self.loadout.type;
 
 	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 	if (!self.loadout) {
-		[storage.managedObjectContext performBlockAndWait:^{
-			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+		[context performBlockAndWait:^{
+			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 		}];
 	}
 
-	[storage.managedObjectContext performBlockAndWait:^{
+	[context performBlockAndWait:^{
 		if (![self.loadout.data.data isEqual:self.loadoutData])
 			self.loadout.data.data = self.loadoutData;
 		if (self.loadout.typeID != type.typeID)

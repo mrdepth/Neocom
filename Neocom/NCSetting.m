@@ -12,7 +12,10 @@
 
 - (NCSetting*) settingWithKey:(NSString*) key {
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSManagedObjectContext* context = self.managedObjectContext;
+	
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Setting" inManagedObjectContext:context];
 	[fetchRequest setEntity:entity];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"key == %@", key]];

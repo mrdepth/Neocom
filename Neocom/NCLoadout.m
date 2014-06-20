@@ -17,13 +17,14 @@
 
 - (NSArray*) loadouts {
 	__block NSArray *fetchedObjects = nil;
-	[self.managedObjectContext performBlockAndWait:^{
+	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
+	[context performBlockAndWait:^{
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:self.managedObjectContext];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context];
 		[fetchRequest setEntity:entity];
 		
 		NSError *error = nil;
-		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 	}];
 	return fetchedObjects;
 }

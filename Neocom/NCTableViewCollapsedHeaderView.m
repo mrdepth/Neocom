@@ -7,12 +7,13 @@
 //
 
 #import "NCTableViewCollapsedHeaderView.h"
+#import "NCDatabase.h"
 
 @implementation NCTableViewCollapsedHeaderView
 
 - (void) setCollapsed:(BOOL)value {
 	_collapsed = value;
-	self.imageView.image = [UIImage imageNamed:value ? @"Icons/icon105_04.png" : @"Icons/icon105_05.png"];
+	self.imageView.image = [UIImage imageNamed:value ? @"collapsed.png" : @"expanded.png"];
 }
 
 

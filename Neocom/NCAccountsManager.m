@@ -49,7 +49,8 @@ static NCAccountsManager* sharedManager = nil;
 }
 
 - (BOOL) addAPIKeyWithKeyID:(int32_t) keyID vCode:(NSString*) vCode error:(NSError**) errorPtr {
-	NSManagedObjectContext* context = self.storage.managedObjectContext;
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 	
 	EVEAPIKeyInfo* apiKeyInfo = [EVEAPIKeyInfo apiKeyInfoWithKeyID:keyID vCode:vCode cachePolicy:NSURLRequestReloadIgnoringLocalCacheData error:errorPtr progressHandler:nil];
 	
@@ -101,15 +102,18 @@ static NCAccountsManager* sharedManager = nil;
 
 
 - (void) removeAccount:(NCAccount*) account {
-	[self.storage.managedObjectContext performBlockAndWait:^{
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	[context performBlockAndWait:^{
 		if ([NCAccount currentAccount] == account)
 			[NCAccount setCurrentAccount:nil];
 
 		NCAPIKey* apiKey = account.apiKey;
-		[self.storage.managedObjectContext deleteObject:account];
+		[context deleteObject:account];
 		
 		if (apiKey.accounts.count == 0)
-			[self.storage.managedObjectContext deleteObject:apiKey];
+			[context deleteObject:apiKey];
 		
 		self.accounts = [self.storage allAccounts];
 		self.apiKeys = [self.storage allAPIKeys];

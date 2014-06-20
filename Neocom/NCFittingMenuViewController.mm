@@ -113,9 +113,12 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NSMutableArray* array = self.sections[indexPath.section - 1];
 		NCLoadout* loadout = array[indexPath.row];
-		[loadout.managedObjectContext performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+		[context performBlockAndWait:^{
 			[loadout.managedObjectContext deleteObject:loadout];
-			[[NCStorage sharedStorage] saveContext];
+			[storage saveContext];
 		}];
 		
 		if (array.count == 1) {
@@ -244,7 +247,8 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 NCStorage* storage = [NCStorage sharedStorage];
-											 [storage.managedObjectContext performBlockAndWait:^{
+											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+											 [context performBlockAndWait:^{
 												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 

@@ -171,7 +171,7 @@
 		cell.accessoryView = nil;
 		if (!self.type) {
 			cell.titleLabel.text = NSLocalizedString(@"Select Ship", nil);
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+			cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];;
 		}
 		else {
 			cell.titleLabel.text = self.type.typeName;

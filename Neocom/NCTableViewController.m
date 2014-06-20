@@ -86,7 +86,9 @@
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
-		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+		[context performBlockAndWait:^{
 			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
 			self.previousCollapsState = setting.value;
 		}];
@@ -132,7 +134,9 @@
 	
 	if ([self.tableView isKindOfClass:[CollapsableTableView class]]) {
 		NSString* key = NSStringFromClass(self.class);
-		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+		[context performBlockAndWait:^{
 			NCSetting* setting = [[NCStorage sharedStorage] settingWithKey:key];
 			if (![self.sectionsCollapsState isEqualToDictionary:setting.value]) {
 				if (![setting.value isEqualToDictionary:self.sectionsCollapsState]) {

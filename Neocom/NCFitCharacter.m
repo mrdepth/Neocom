@@ -19,14 +19,15 @@
 
 - (NSArray*) characters {
 	__block NSArray *fetchedObjects = nil;
-	[self.managedObjectContext performBlockAndWait:^{
+	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
+	[context performBlockAndWait:^{
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context];
 		[fetchRequest setEntity:entity];
 		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
 		
 		NSError *error = nil;
-		fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 	}];
 	return fetchedObjects;
 }

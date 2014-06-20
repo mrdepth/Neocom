@@ -169,9 +169,7 @@
 															 [fit save];
 													 }
 
-													 [[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-														 [[NCStorage sharedStorage] saveContext];
-													 }];
+													 [[NCStorage sharedStorage] saveContext];
 												 }
 											 }
 								 completionHandler:^(NCTask *task) {
@@ -412,9 +410,7 @@
 	
 	void (^save)() = ^() {
 		[self.fit save];
-		[[[NCStorage sharedStorage] managedObjectContext] performBlockAndWait:^{
-			[[NCStorage sharedStorage] saveContext];
-		}];
+		[[NCStorage sharedStorage] saveContext];
 	};
 	
 	void (^duplicate)() = ^() {

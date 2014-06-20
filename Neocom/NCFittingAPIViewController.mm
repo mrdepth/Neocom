@@ -109,7 +109,10 @@
 												 NSLocalizedString(@"Missile Launcher", nil)];
 			
 			controller.values = @[@(NeocomAPIFlagHybridTurrets), @(NeocomAPIFlagLaserTurrets), @(NeocomAPIFlagProjectileTurrets), @(NeocomAPIFlagMissileLaunchers)];
-			controller.icons = @[@"Icons/icon13_06.png", @"Icons/icon13_10.png", @"Icons/icon12_14.png", @"Icons/icon12_12.png"];
+			controller.icons = @[[[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image],
+								 [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image],
+								 [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image],
+								 [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image]];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagHybridTurrets | NeocomAPIFlagLaserTurrets | NeocomAPIFlagProjectileTurrets | NeocomAPIFlagMissileLaunchers));
 		}
 		else {
@@ -120,7 +123,9 @@
 												 @(NeocomAPIFlagActiveTank | NeocomAPIFlagShieldTank),
 												 @(NeocomAPIFlagPassiveTank)];
 			
-			controller.icons = @[@"armorRepairer.png", @"shieldBooster.png", @"shieldRecharge.png"];
+			controller.icons = @[[UIImage imageNamed:@"armorRepairer.png"],
+								 [UIImage imageNamed:@"shieldBooster.png"],
+								 [UIImage imageNamed:@"shieldRecharge.png"]];
 			controller.selectedValue = @(self.flags & (NeocomAPIFlagActiveTank | NeocomAPIFlagArmorTank | NeocomAPIFlagShieldTank | NeocomAPIFlagPassiveTank));
 		}
 	}
@@ -195,7 +200,7 @@
 				cell.subtitleLabel.text = NSLocalizedString(@"Ship", nil);
 				if (!self.type) {
 					cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
 					cell.accessoryView = nil;
 				}
 				else {
@@ -205,7 +210,7 @@
 				}
 			}
 			else if (indexPath.row == 1) {
-				cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
 				cell.subtitleLabel.text = NSLocalizedString(@"Ship Class", nil);
 				if (!self.group) {
 					cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
@@ -220,27 +225,27 @@
 				cell.subtitleLabel.text = NSLocalizedString(@"Weapon Type", nil);
 				if (self.flags & NeocomAPIFlagHybridTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Hybrid Weapon", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_06.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_06"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagLaserTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Energy Weapon", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_10.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_10"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagProjectileTurrets) {
 					cell.titleLabel.text = NSLocalizedString(@"Projectile Weapon", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon12_14.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_14"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else if (self.flags & NeocomAPIFlagMissileLaunchers) {
 					cell.titleLabel.text = NSLocalizedString(@"Missile Launcher", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon12_12.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"12_12"] image] image];
 					cell.accessoryView = clearButton;
 				}
 				else {
 					cell.titleLabel.text = NSLocalizedString(@"Any Weapon Type", nil);
-					cell.iconView.image = [UIImage imageNamed:@"Icons/icon13_03.png"];
+					cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"13_03"] image] image];
 					cell.accessoryView = nil;
 				}
 			}
@@ -438,7 +443,8 @@
 										 block:^(NCTask *task) {
 											 NSMutableArray* canonicalNames = [NSMutableArray new];
 											 NCStorage* storage = [NCStorage sharedStorage];
-											 [storage.managedObjectContext performBlockAndWait:^{
+											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+											 [context performBlockAndWait:^{
 												 for (NCLoadout* loadout in [storage shipLoadouts]) {
 													 NCShipFit* shipFit = [[NCShipFit alloc] initWithLoadout:loadout];
 													 NSString* canonicalName = shipFit.canonicalName;

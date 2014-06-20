@@ -75,6 +75,7 @@ static NCStorage* sharedStorage;
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
 
 + (id) sharedStorage {
 	@synchronized(self) {
@@ -241,7 +242,7 @@ static NCStorage* sharedStorage;
 
 - (void)saveContext
 {
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    NSManagedObjectContext *managedObjectContext = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
 	[managedObjectContext performBlockAndWait:^{
 		if (managedObjectContext != nil) {
 			NSError *error = nil;
@@ -269,20 +270,23 @@ static NCStorage* sharedStorage;
 	if (!fallbackStorage)
 		return NO;
 
-	[self.managedObjectContext performBlockAndWait:^{
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	[context performBlockAndWait:^{
 		for (NCAccount* account in [fallbackStorage allAccounts]) {
 			if (![self accountWithUUID:account.uuid]) {
-				NCAccount* copyAccount = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
+				NCAccount* copyAccount = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
 				[copyAccount setValuesForKeysWithDictionary:[account dictionaryWithValuesForKeys:[[account.entity attributesByName] allKeys]]];
 				
-				copyAccount.apiKey = [NSEntityDescription insertNewObjectForEntityForName:@"APIKey" inManagedObjectContext:self.managedObjectContext];
+				copyAccount.apiKey = [NSEntityDescription insertNewObjectForEntityForName:@"APIKey" inManagedObjectContext:context];
 				[copyAccount.apiKey setValuesForKeysWithDictionary:[account.apiKey dictionaryWithValuesForKeys:[[account.apiKey.entity attributesByName] allKeys]]];
 				
-				copyAccount.mailBox = [NSEntityDescription insertNewObjectForEntityForName:@"MailBox" inManagedObjectContext:self.managedObjectContext];
+				copyAccount.mailBox = [NSEntityDescription insertNewObjectForEntityForName:@"MailBox" inManagedObjectContext:context];
 				[copyAccount.mailBox setValuesForKeysWithDictionary:[account.mailBox dictionaryWithValuesForKeys:[[account.mailBox.entity attributesByName] allKeys]]];
 				
 				for (NCSkillPlan* skillPlan in account.skillPlans) {
-					NCSkillPlan* copySkillPlan = [NSEntityDescription insertNewObjectForEntityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext];
+					NCSkillPlan* copySkillPlan = [NSEntityDescription insertNewObjectForEntityForName:@"SkillPlan" inManagedObjectContext:context];
 					[copySkillPlan setValuesForKeysWithDictionary:[skillPlan dictionaryWithValuesForKeys:[[skillPlan.entity attributesByName] allKeys]]];
 					copySkillPlan.account = copyAccount;
 				}
@@ -295,47 +299,47 @@ static NCStorage* sharedStorage;
 			request.predicate = [NSPredicate predicateWithFormat:@"typeID == %d AND data.data == %@", loadout.typeID, loadout.data.data];
 			request.fetchLimit = 1;
 			
-			if ([self.managedObjectContext executeFetchRequest:request error:nil].count == 0) {
-				NCLoadout* copyLoadout = [NSEntityDescription insertNewObjectForEntityForName:@"Loadout" inManagedObjectContext:self.managedObjectContext];
+			if ([context executeFetchRequest:request error:nil].count == 0) {
+				NCLoadout* copyLoadout = [NSEntityDescription insertNewObjectForEntityForName:@"Loadout" inManagedObjectContext:context];
 				[copyLoadout setValuesForKeysWithDictionary:[loadout dictionaryWithValuesForKeys:[[loadout.entity attributesByName] allKeys]]];
 				
-				copyLoadout.data = [NSEntityDescription insertNewObjectForEntityForName:@"LoadoutData" inManagedObjectContext:self.managedObjectContext];
+				copyLoadout.data = [NSEntityDescription insertNewObjectForEntityForName:@"LoadoutData" inManagedObjectContext:context];
 				[copyLoadout.data setValuesForKeysWithDictionary:[loadout.data dictionaryWithValuesForKeys:[[loadout.data.entity attributesByName] allKeys]]];
 			}
 		}
 		
 		for (NCImplantSet* implantSet in [fallbackStorage implantSets]) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"ImplantSet"];
-			request.entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:self.managedObjectContext];
+			request.entity = [NSEntityDescription entityForName:@"ImplantSet" inManagedObjectContext:context];
 			request.predicate = [NSPredicate predicateWithFormat:@"name == %@ AND data == %@", implantSet.name, implantSet.data];
 			request.fetchLimit = 1;
 			
-			if ([self.managedObjectContext executeFetchRequest:request error:nil].count == 0) {
-				NCImplantSet* copyImplantSet = [NSEntityDescription insertNewObjectForEntityForName:@"ImplantSet" inManagedObjectContext:self.managedObjectContext];
+			if ([context executeFetchRequest:request error:nil].count == 0) {
+				NCImplantSet* copyImplantSet = [NSEntityDescription insertNewObjectForEntityForName:@"ImplantSet" inManagedObjectContext:context];
 				[copyImplantSet setValuesForKeysWithDictionary:[implantSet dictionaryWithValuesForKeys:[[implantSet.entity attributesByName] allKeys]]];
 			}
 		}
 		
 		for (NCDamagePattern* damagePattern in [fallbackStorage damagePatterns]) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"DamagePattern"];
-			request.entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:self.managedObjectContext];
+			request.entity = [NSEntityDescription entityForName:@"DamagePattern" inManagedObjectContext:context];
 			request.predicate = [NSPredicate predicateWithFormat:@"name == %@", damagePattern.name];
 			request.fetchLimit = 1;
 			
-			if ([self.managedObjectContext executeFetchRequest:request error:nil].count == 0) {
-				NCDamagePattern* copyDamagePattern = [NSEntityDescription insertNewObjectForEntityForName:@"DamagePattern" inManagedObjectContext:self.managedObjectContext];
+			if ([context executeFetchRequest:request error:nil].count == 0) {
+				NCDamagePattern* copyDamagePattern = [NSEntityDescription insertNewObjectForEntityForName:@"DamagePattern" inManagedObjectContext:context];
 				[copyDamagePattern setValuesForKeysWithDictionary:[damagePattern dictionaryWithValuesForKeys:[[damagePattern.entity attributesByName] allKeys]]];
 			}
 		}
 		
 		for (NCFitCharacter* character in [fallbackStorage characters]) {
 			NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"FitCharacter"];
-			request.entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext];
+			request.entity = [NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:context];
 			request.predicate = [NSPredicate predicateWithFormat:@"name == %@", character.name];
 			request.fetchLimit = 1;
 			
-			if ([self.managedObjectContext executeFetchRequest:request error:nil].count == 0) {
-				NCFitCharacter* copyCharacter = [NSEntityDescription insertNewObjectForEntityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext];
+			if ([context executeFetchRequest:request error:nil].count == 0) {
+				NCFitCharacter* copyCharacter = [NSEntityDescription insertNewObjectForEntityForName:@"FitCharacter" inManagedObjectContext:context];
 				[copyCharacter setValuesForKeysWithDictionary:[character dictionaryWithValuesForKeys:[[character.entity attributesByName] allKeys]]];
 			}
 		}
@@ -359,11 +363,28 @@ static NCStorage* sharedStorage;
 		
 		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
 		if (coordinator != nil) {
-			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+			_managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 			[_managedObjectContext setPersistentStoreCoordinator:coordinator];
 			[_managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSRollbackMergePolicyType]];
 		}
 		return _managedObjectContext;
+	}
+}
+
+- (NSManagedObjectContext *)backgroundManagedObjectContext
+{
+	@synchronized(self) {
+		if (_backgroundManagedObjectContext != nil) {
+			return _backgroundManagedObjectContext;
+		}
+		
+		NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+		if (coordinator != nil) {
+			_backgroundManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+			[_backgroundManagedObjectContext setParentContext:self.managedObjectContext];
+			//			[_backgroundManagedObjectContext setPersistentStoreCoordinator:coordinator];
+		}
+		return _backgroundManagedObjectContext;
 	}
 }
 

@@ -190,7 +190,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 		}
 		else {
 			cell.titleLabel.text = NSLocalizedString(@"Any Ship", nil);
-			cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+			cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
 			cell.accessoryView = nil;
 		}
 	}
@@ -203,7 +203,7 @@ typedef NS_ENUM(NSInteger, NCZKillBoardViewControllerFilter) {
 			cell.titleLabel.text = NSLocalizedString(@"Any Ship Class", nil);
 			cell.accessoryView = nil;
 		}
-		cell.iconView.image = [UIImage imageNamed:@"Icons/icon09_05.png"];
+		cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"09_05"] image] image];
 	}
 	else if ([cellIdentifier isEqualToString:@"CharacterCell"]) {
 		if (self.characterID) {

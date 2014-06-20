@@ -153,7 +153,10 @@
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy inTask:(NCTask*) task {
 	__block NCAccount* account = nil;
-	[self.managedObjectContext performBlockAndWait:^{
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	[context performBlockAndWait:^{
 		account = self.account;
 	}];
 
@@ -327,7 +330,10 @@
 		for (NCMailBoxMessage* message in messages)
 			[set addObject:@(message.header.messageID)];
 		
-		[self.managedObjectContext performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+		[context performBlockAndWait:^{
 			self.readedMessagesIDs = set;
 //			if ([self.managedObjectContext hasChanges])
 //				[self.managedObjectContext save:nil];
@@ -352,7 +358,10 @@
 - (NCCacheRecord*) cacheRecord {
 	if (!_cacheRecord) {
 		__block NCAccount* account = nil;
-		[self.managedObjectContext performBlockAndWait:^{
+		NCStorage* storage = [NCStorage sharedStorage];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+		[context performBlockAndWait:^{
 			account = self.account;
 		}];
 

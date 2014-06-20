@@ -405,7 +405,7 @@
 			else
 				cell.stateImageView.image = nil;
 			
-			cell.targetImageView.image = module->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+			cell.targetImageView.image = module->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
 		}
 	}
 }

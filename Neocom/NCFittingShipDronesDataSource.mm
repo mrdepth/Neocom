@@ -495,7 +495,7 @@
 				else
 					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
 				
-				cell.targetImageView.image = drone->getTarget() != NULL ? [UIImage imageNamed:@"Icons/icon04_12.png"] : nil;
+				cell.targetImageView.image = drone->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
 			}
 		}
 	}

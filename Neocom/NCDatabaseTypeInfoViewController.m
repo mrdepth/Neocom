@@ -398,7 +398,6 @@
 											   
 											   if (type.certificates.count > 0) {
 												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-												   //static NSString* icons[] = {@"Icons/icon79_02.png", @"Icons/icon79_03.png", @"Icons/icon79_04.png", @"Icons/icon79_05.png", @"Icons/icon79_05.png"};
 												   
 												   section[@"title"] = NSLocalizedString(@"Mastery", nil);
 												   NSMutableArray* rows = [NSMutableArray array];
@@ -781,7 +780,7 @@
 														 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 														 row.title = NSLocalizedString(@"Add required skills to training plan", nil);
 														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
-														 //													 row.icon = @"Icons/icon50_13.png";
+														 row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
 														 row.object = requiredSkillsQueue;
 														 [rows addObject:row];
 													 }

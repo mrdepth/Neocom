@@ -13,7 +13,8 @@
 @implementation NCStorage(NCSetting)
 
 - (NCAPIKey*) apiKeyWithKeyID:(int32_t) keyID {
-	NSManagedObjectContext* context = self.managedObjectContext;
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 	
 	__block NSArray *result = nil;
 	[context performBlockAndWait:^{
@@ -27,7 +28,8 @@
 }
 
 - (NSArray*) allAPIKeys {
-	NSManagedObjectContext* context = self.managedObjectContext;
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
 	
 	__block NSArray* apiKeys = nil;
 	[context performBlockAndWait:^{

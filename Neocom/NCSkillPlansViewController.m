@@ -46,9 +46,7 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 	NCStorage* storage = [NCStorage sharedStorage];
-	[storage.managedObjectContext performBlockAndWait:^{
-		[storage saveContext];
-	}];
+	[storage saveContext];
 }
 
 #pragma mark - Table view data source
@@ -97,8 +95,9 @@
 		BOOL active = skillPlan.active;
 		
 		NCStorage* storage = [NCStorage sharedStorage];
-		[storage.managedObjectContext performBlockAndWait:^{
-			[skillPlan.managedObjectContext deleteObject:skillPlan];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+		[context performBlockAndWait:^{
+			[context deleteObject:skillPlan];
 			[storage saveContext];
 		}];
 		
@@ -122,9 +121,10 @@
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
 		NSMutableArray* skillPlans = [self.skillPlans mutableCopy];
 		NCStorage* storage = [NCStorage sharedStorage];
-		[storage.managedObjectContext performBlockAndWait:^{
-			NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:storage.managedObjectContext]
-										  insertIntoManagedObjectContext:storage.managedObjectContext];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+		[context performBlockAndWait:^{
+			NCSkillPlan* skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
+										  insertIntoManagedObjectContext:context];
 			skillPlan.name = NSLocalizedString(@"Skill Plan", nil);
 			skillPlan.account = [NCAccount currentAccount];
 			[skillPlans addObject:skillPlan];
@@ -194,7 +194,9 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 [account.managedObjectContext performBlockAndWait:^{
+											 NCStorage* storage = [NCStorage sharedStorage];
+											 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+											 [context performBlockAndWait:^{
 												skillPlans = [[account skillPlans] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 											 }];
 											 for (NCSkillPlan* skillPlan in skillPlans)

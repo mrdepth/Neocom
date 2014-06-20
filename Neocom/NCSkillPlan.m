@@ -59,10 +59,13 @@
 		[skills addObject:item];
 	}
 	
-	[self.managedObjectContext performBlockAndWait:^{
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	[context performBlockAndWait:^{
 		self.skills = skills;
-		if ([self.managedObjectContext hasChanges])
-			[self.managedObjectContext save:nil];
+		if ([context hasChanges])
+			[context save:nil];
 	}];
 }
 

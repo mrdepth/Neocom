@@ -237,7 +237,7 @@
 		}
 		else if (indexPath.row == 1) {
 			if (self.priceStats) {
-				cell.iconView.image = [UIImage imageNamed:@"Icons/icon95_02.png"];
+				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"95_02"] image] image];
 				cell.titleLabel.text = NSLocalizedString(@"Infrastructure Upgrades Cost", nil);
 				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK (%@ ISK/day)", nil),
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.upgradesCost)],
@@ -247,7 +247,7 @@
 		}
 		else if (indexPath.row == 2) {
 			if (self.priceStats) {
-				cell.iconView.image = [UIImage imageNamed:@"Icons/icon07_12.png"];
+				cell.iconView.image = [[[NCDBEveIcon eveIconWithIconFile:@"07_12"] image] image];;
 				cell.titleLabel.text = NSLocalizedString(@"POS Cost", nil);
 				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil),
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.posCost)]];

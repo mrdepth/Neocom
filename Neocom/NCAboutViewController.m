@@ -31,7 +31,7 @@
 	self.refreshControl = nil;
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	self.versionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
-	self.sdeVersionLabel.text = @"Rubicon_1.4";
+	self.sdeVersionLabel.text = @"Kronos_1.0";
 }
 
 - (void)didReceiveMemoryWarning

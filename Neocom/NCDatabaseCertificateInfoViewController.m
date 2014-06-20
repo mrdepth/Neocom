@@ -267,6 +267,7 @@
 														 row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.skillLevel];
 														 row.object = skill.type;
 														 row.cellIdentifier = @"TypeCell";
+														 row.icon = skillIcon;
 														 
 														 if (!characerSkill)
 															 row.accessoryIcon = notKnownIcon;

@@ -81,7 +81,7 @@
 		self.shipLabel.text = self.killMail.victim.shipType.typeName;
 	}
 	else {
-		self.typeImageView.image = [UIImage imageNamed:@"Icons/icon74_14.png"];
+		self.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
 		self.shipLabel.text = NSLocalizedString(@"Unknown Ship Type", nil);
 	}
 	

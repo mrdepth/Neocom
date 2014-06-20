@@ -13,6 +13,7 @@
 #import "NCFittingCharacterEditorCell.h"
 #import "UIAlertView+Block.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NSString+Neocom.h"
 
 @interface NCFittingCharacterEditorViewController ()
 @property (nonatomic, strong) NSArray* sections;
@@ -63,7 +64,7 @@
 														 [rows addObject:skillData];
 														 skills[@(type.typeID)] = skillData;
 													 }
-													 [sections addObject:@{@"title": sectionInfo.name, @"rowS": rows, @"sectionID": @(group.groupID)}];
+													 [sections addObject:@{@"title": sectionInfo.name, @"rows": rows, @"sectionID": @(group.groupID)}];
 												 }
 											 }];
 											 [self.character.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NSNumber* level, BOOL *stop) {
@@ -96,28 +97,52 @@
 }
 
 - (IBAction)onAction:(id)sender {
+	NCAccount* account = [NCAccount currentAccount];
+	NCSkillPlan* activeSkillPlan = account.activeSkillPlan;
+	NSArray* otherButtonTitles = activeSkillPlan ? @[NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Add to active Skill Plan", nil)] : @[NSLocalizedString(@"Rename", nil)];
+
 	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
 					   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 				  destructiveButtonTitle:nil
-					   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+					   otherButtonTitles:otherButtonTitles
 						 completionBlock:^(UIActionSheet *actionSheet, NSInteger selectedButtonIndex) {
 							 if (selectedButtonIndex != actionSheet.cancelButtonIndex) {
-								 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
-																				  message:nil
-																		cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-																		otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
-																		  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-																			  if (selectedButtonIndex != alertView.cancelButtonIndex) {
-																				  UITextField* textField = [alertView textFieldAtIndex:0];
-																				  self.character.name = textField.text;
-																				  self.title = self.character.name;
-																			  }
-																		  } cancelBlock:nil];
-								 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-								 UITextField* textField = [alertView textFieldAtIndex:0];
-								 textField.text = self.character.name;
-								 [alertView show];
+								 if (selectedButtonIndex == 0) {
+									 UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename", nil)
+																					  message:nil
+																			cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+																			otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+																			  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+																				  if (selectedButtonIndex != alertView.cancelButtonIndex) {
+																					  UITextField* textField = [alertView textFieldAtIndex:0];
+																					  self.character.name = textField.text;
+																					  self.title = self.character.name;
+																				  }
+																			  } cancelBlock:nil];
+									 alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+									 UITextField* textField = [alertView textFieldAtIndex:0];
+									 textField.text = self.character.name;
+									 [alertView show];
+								 }
+								 else {
+									 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+									 [self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
+										 [trainingQueue addSkill:skillData.type withLevel:skillData.currentLevel];
+									 }];
+									 
+									 [[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
+															  message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
+													cancelButtonTitle:NSLocalizedString(@"No", nil)
+													otherButtonTitles:@[NSLocalizedString(@"Yes", nil)]
+													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+														  if (selectedButtonIndex != alertView.cancelButtonIndex) {
+															  [activeSkillPlan mergeWithTrainingQueue:trainingQueue];
+														  }
+													  }
+														  cancelBlock:nil] show];
+
+								 }
 							 }
 						 }
 							 cancelBlock:nil] showFromBarButtonItem:sender animated:YES];

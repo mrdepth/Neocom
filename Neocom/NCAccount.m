@@ -42,7 +42,7 @@ static NCAccount* currentAccount = nil;
 @implementation NCStorage(NCAccount)
 
 - (NSArray*) allAccounts {
-	NSManagedObjectContext* context = self.managedObjectContext;
+	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
 	
 	__block NSArray* accounts = nil;
 	[context performBlockAndWait:^{
@@ -57,7 +57,7 @@ static NCAccount* currentAccount = nil;
 }
 
 - (NCAccount*) accountWithUUID:(NSString*) uuid {
-	NSManagedObjectContext* context = self.managedObjectContext;
+	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
 	
 	__block NSArray* accounts = nil;
 	[context performBlockAndWait:^{
@@ -120,8 +120,11 @@ static NCAccount* currentAccount = nil;
 }
 
 - (void) awakeFromInsert {
-	self.mailBox = [[NCMailBox alloc] initWithEntity:[NSEntityDescription entityForName:@"MailBox" inManagedObjectContext:self.managedObjectContext]
-					  insertIntoManagedObjectContext:self.managedObjectContext];
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	self.mailBox = [[NCMailBox alloc] initWithEntity:[NSEntityDescription entityForName:@"MailBox" inManagedObjectContext:context]
+					  insertIntoManagedObjectContext:context];
 }
 
 - (void) willSave {
@@ -208,7 +211,10 @@ static NCAccount* currentAccount = nil;
 	if (shouldStop)
 		return NO;
 
-	[self.managedObjectContext performBlockAndWait:^{
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	[context performBlockAndWait:^{
 		for (NCSkillPlan* skillPlan in self.skillPlans)
 			[skillPlan reloadIfNeeded];
 	}];
@@ -365,10 +371,13 @@ static NCAccount* currentAccount = nil;
 		if (!_activeSkillPlan || [_activeSkillPlan isDeleted]) {
 			__block NCSkillPlan* skillPlan = nil;
 
-			[self.managedObjectContext performBlockAndWait:^{
+			NCStorage* storage = [NCStorage sharedStorage];
+			NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+			[context performBlockAndWait:^{
 				if (self.skillPlans.count == 0) {
-					skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:self.managedObjectContext]
-									 insertIntoManagedObjectContext:self.managedObjectContext];
+					skillPlan = [[NCSkillPlan alloc] initWithEntity:[NSEntityDescription entityForName:@"SkillPlan" inManagedObjectContext:context]
+									 insertIntoManagedObjectContext:context];
 					skillPlan.active = YES;
 					skillPlan.account = self;
 					skillPlan.name = NSLocalizedString(@"Default Skill Plan", nil);
@@ -389,8 +398,8 @@ static NCAccount* currentAccount = nil;
 					else
 						skillPlan = [skillPlans anyObject];
 				}
-				if ([self.managedObjectContext hasChanges])
-					[self.managedObjectContext save:nil];
+				if ([context hasChanges])
+					[context save:nil];
 			}];
 			_activeSkillPlan = skillPlan;
 		}

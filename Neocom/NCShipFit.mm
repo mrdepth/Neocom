@@ -835,20 +835,21 @@
 
 	NCStorage* storage = [NCStorage sharedStorage];
 	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-	if (!self.loadout) {
-		[context performBlockAndWait:^{
-			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
-		}];
-	}
 
 	[context performBlockAndWait:^{
+		if (!self.loadout) {
+			self.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+			self.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+		}
+
 		if (![self.loadout.data.data isEqual:self.loadoutData])
 			self.loadout.data.data = self.loadoutData;
 		if (self.loadout.typeID != type.typeID)
 			self.loadout.typeID = type.typeID;
 		if (![self.loadoutName isEqualToString:self.loadout.name])
 			self.loadout.name = self.loadoutName;
+		if ([context hasChanges])
+			[context save:nil];
 	}];
 }
 

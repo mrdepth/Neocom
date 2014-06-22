@@ -242,7 +242,7 @@ static NCStorage* sharedStorage;
 
 - (void)saveContext
 {
-    NSManagedObjectContext *managedObjectContext = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
 	[managedObjectContext performBlockAndWait:^{
 		if (managedObjectContext != nil) {
 			NSError *error = nil;
@@ -373,6 +373,7 @@ static NCStorage* sharedStorage;
 
 - (NSManagedObjectContext *)backgroundManagedObjectContext
 {
+	return self.managedObjectContext;
 	@synchronized(self) {
 		if (_backgroundManagedObjectContext != nil) {
 			return _backgroundManagedObjectContext;

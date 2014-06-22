@@ -178,8 +178,10 @@
 											 completionHandler:^(NCDBInvType *type) {
 												 NCShipFit* fit = [[NCShipFit alloc] initWithType:type];
 												 NCStorage* storage = [NCStorage sharedStorage];
-												 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
-												 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 [storage.managedObjectContext performBlockAndWait:^{
+													 fit.loadout = [[NCLoadout alloc] initWithEntity:[NSEntityDescription entityForName:@"Loadout" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+													 fit.loadout.data = [[NCLoadoutData alloc] initWithEntity:[NSEntityDescription entityForName:@"LoadoutData" inManagedObjectContext:storage.managedObjectContext] insertIntoManagedObjectContext:storage.managedObjectContext];
+												 }];
 												 
 												 [self performSegueWithIdentifier:@"NCFittingShipViewController" sender:fit];
 												 [self dismissAnimated];

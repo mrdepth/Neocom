@@ -519,6 +519,8 @@
 													   else {
 														   if (attribute.attributeType.displayName.length == 0 && attribute.attributeType.attributeName.length == 0)
 															   continue;
+														   NSNumber* modifiedValue = self.attributes[@(attribute.attributeType.attributeID)];
+														   float value = modifiedValue ? [modifiedValue floatValue] : attribute.value;
 														   
 														   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 														   row.title = attribute.attributeType.displayName.length > 0 ? attribute.attributeType.displayName : attribute.attributeType.attributeName;
@@ -552,13 +554,13 @@
 														   }
 														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBoolean) {
 															   row.icon = attribute.attributeType.icon;
-															   row.detail = attribute.value == 0.0 ? NSLocalizedString(@"Yes", nil) : NSLocalizedString(@"No", nil);
+															   row.detail = value == 0.0 ? NSLocalizedString(@"Yes", nil) : NSLocalizedString(@"No", nil);
 															   [rows addObject:row];
 														   }
 														   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDBonus) {
 															   row.icon = attribute.attributeType.icon;
 															   row.detail = [NSString stringWithFormat:@"+%@",
-																			 [NSNumberFormatter neocomLocalizedStringFromNumber:@(attribute.value)]];
+																			 [NSNumberFormatter neocomLocalizedStringFromNumber:@(value)]];
 															   [rows addObject:row];
 														   }
 														   else {
@@ -572,7 +574,6 @@
 																   row.detail = [NSString stringWithFormat:@"%d", level];
 															   }
 															   else {
-																   float value = 0;
 																   NSString *unit;
 																   
 																   if (attribute.attributeType.attributeID == EVEDBAttributeIDBaseWarpSpeed) {
@@ -580,23 +581,23 @@
 																	   unit = NSLocalizedString(@"AU/sec", nil);
 																   }
 																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDInverseAbsolutePercentID || attribute.attributeType.unit.unitID == EVEDBUnitIDInversedModifierPercentID) {
-																	   value = (1 - attribute.value) * 100;
+																	   value = (1 - value) * 100;
 																	   unit = attribute.attributeType.unit.displayName;
 																   }
 																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDModifierPercentID) {
-																	   value = (attribute.value - 1) * 100;
+																	   value = (value - 1) * 100;
 																	   unit = attribute.attributeType.unit.displayName;
 																   }
 																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDAbsolutePercentID) {
-																	   value = attribute.value * 100;
+																	   value = value * 100;
 																	   unit = attribute.attributeType.unit.displayName;
 																   }
 																   else if (attribute.attributeType.unit.unitID == EVEDBUnitIDMillisecondsID) {
-																	   value = attribute.value / 1000.0;
+																	   value = value / 1000.0;
 																	   unit = attribute.attributeType.unit.displayName;
 																   }
 																   else {
-																	   value = attribute.value;
+																	   value = value;
 																	   unit = attribute.attributeType.unit.displayName;
 																   }
 																   row.detail = [NSString stringWithFormat:@"%@ %@",

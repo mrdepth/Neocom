@@ -80,10 +80,11 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
+														NSMutableDictionary* structuresDic = [NSMutableDictionary new];
+
 														@synchronized(self.controller) {
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 															
-															NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 															
 															for (auto structure: controlTower->getStructures()) {
 																NSInteger typeID = structure->getTypeID();
@@ -101,22 +102,21 @@
 															
 															totalCPU = controlTower->getTotalCpu();
 															usedCPU = controlTower->getCpuUsed();
+														}
 															
-															rows = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
-															
-															if (self.activeAmountType) {
-																NSInteger i = 1;
-																for (NCFittingPOSStructuresDataSourceRow* row in rows) {
-																	if (row.type.typeID == self.activeAmountType.typeID) {
-																		NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
-																		pickerRow.associatedRow = row;
-																		[rows insertObject:pickerRow atIndex:i];
-																		break;
-																	}
-																	i++;
+														rows = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+														
+														if (self.activeAmountType) {
+															NSInteger i = 1;
+															for (NCFittingPOSStructuresDataSourceRow* row in rows) {
+																if (row.type.typeID == self.activeAmountType.typeID) {
+																	NCFittingPOSStructuresDataSourcePickerRow* pickerRow = [NCFittingPOSStructuresDataSourcePickerRow new];
+																	pickerRow.associatedRow = row;
+																	[rows insertObject:pickerRow atIndex:i];
+																	break;
 																}
+																i++;
 															}
-
 														}
 													}
 										completionHandler:^(NCTask *task) {
@@ -139,6 +139,7 @@
 - (NCFittingPOSStructuresTableHeaderView*) tableHeaderView {
 	if (!_tableHeaderView) {
 		_tableHeaderView = [NCFittingPOSStructuresTableHeaderView viewWithNibName:@"NCFittingPOSStructuresTableHeaderView" bundle:nil];
+		_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _tableHeaderView;
 }

@@ -132,7 +132,7 @@
 												 }
 											 }
 											 else if (self.asset.type.group.groupID == NCShipMaintenanceArrayGroupID) { //Ship Maintenance Array
-												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"type.groupID"] mutableCopy];
+												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"type.group.groupID"] mutableCopy];
 												 
 												 [groups sortUsingComparator:^NSComparisonResult(NSArray* obj1, NSArray* obj2) {
 													 EVEAssetListItem* asset1 = obj1[0];
@@ -149,7 +149,7 @@
 												 }
 											 }
 											 else {
-												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"type.group.categoryID"] mutableCopy];
+												 NSMutableArray* groups = [[self.asset.contents arrayGroupedByKey:@"type.group.category.categoryID"] mutableCopy];
 												 
 												 [groups sortUsingComparator:^NSComparisonResult(NSArray* obj1, NSArray* obj2) {
 													 EVEAssetListItem* asset1 = obj1[0];

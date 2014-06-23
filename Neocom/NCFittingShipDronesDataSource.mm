@@ -77,13 +77,14 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
+														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+
 														@synchronized(self.controller) {
 															if (!self.controller.fit.pilot)
 																return;
 
 															eufe::Ship* ship = self.controller.fit.pilot->getShip();
 															
-															NSMutableDictionary* dronesDic = [NSMutableDictionary new];
 															
 															for (auto drone: ship->getDrones()) {
 																NSInteger typeID = drone->getTypeID();
@@ -104,18 +105,18 @@
 															
 															maxActiveDrones = ship->getMaxActiveDrones();
 															activeDrones = ship->getActiveDrones();
-															rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
-															if (self.activeAmountType) {
-																NSInteger i = 1;
-																for (NCFittingShipDronesDataSourceRow* row in rows) {
-																	if (row.type.typeID == self.activeAmountType.typeID) {
-																		NCFittingShipDronesDataSourcePickerRow* pickerRow = [NCFittingShipDronesDataSourcePickerRow new];
-																		pickerRow.associatedRow = row;
-																		[rows insertObject:pickerRow atIndex:i];
-																		break;
-																	}
-																	i++;
+														}
+														rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
+														if (self.activeAmountType) {
+															NSInteger i = 1;
+															for (NCFittingShipDronesDataSourceRow* row in rows) {
+																if (row.type.typeID == self.activeAmountType.typeID) {
+																	NCFittingShipDronesDataSourcePickerRow* pickerRow = [NCFittingShipDronesDataSourcePickerRow new];
+																	pickerRow.associatedRow = row;
+																	[rows insertObject:pickerRow atIndex:i];
+																	break;
 																}
+																i++;
 															}
 														}
 													}
@@ -145,6 +146,7 @@
 - (NCFittingShipDronesTableHeaderView*) tableHeaderView {
 	if (!_tableHeaderView) {
 		_tableHeaderView = [NCFittingShipDronesTableHeaderView viewWithNibName:@"NCFittingShipDronesTableHeaderView" bundle:nil];
+		_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _tableHeaderView;
 }

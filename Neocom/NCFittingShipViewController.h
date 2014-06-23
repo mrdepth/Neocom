@@ -16,6 +16,7 @@
 
 @interface NCFittingShipViewController : NCViewController
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sectionSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (nonatomic, weak) NCFittingShipWorkspaceViewController* workspaceViewController;
 @property (nonatomic, weak) NCFittingShipStatsViewController* statsViewController;
 @property (nonatomic, strong, readonly) NCDatabaseTypePickerViewController* typePickerViewController;

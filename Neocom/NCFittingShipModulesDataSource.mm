@@ -144,6 +144,7 @@
 - (NCFittingShipModulesTableHeaderView*) tableHeaderView {
 	if (!_tableHeaderView) {
 		_tableHeaderView = [NCFittingShipModulesTableHeaderView viewWithNibName:@"NCFittingShipModulesTableHeaderView" bundle:nil];
+		_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _tableHeaderView;
 }

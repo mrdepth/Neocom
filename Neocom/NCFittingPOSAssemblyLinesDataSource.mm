@@ -39,7 +39,7 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														@synchronized(self.controller) {
+														//@synchronized(self.controller) {
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 															
 															NSMutableDictionary* assemblyLinesTypes = [NSMutableDictionary new];
@@ -72,7 +72,7 @@
 																NCFittingPOSAssemblyLinesDataSourceRow* b = [obj2 objectAtIndex:0];
 																return [a.assemblyLineType.activity.activityName compare:b.assemblyLineType.activity.activityName];
 															}];
-														}
+														//}
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {

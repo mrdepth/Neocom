@@ -147,7 +147,24 @@
 								 
 								 self.workspaceViewController.tableView.dataSource = dataSource;
 								 self.workspaceViewController.tableView.delegate = dataSource;
-								 self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+								 //self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+								 
+								 for (UIView* view in self.headerView.subviews)
+									 [view removeFromSuperview];
+								 
+								 if (dataSource.tableHeaderView) {
+									 NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
+									 [self.headerView addSubview:dataSource.tableHeaderView];
+									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
+																											 options:0
+																											 metrics:nil
+																											   views:bindings]];
+									 [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+																											 options:0
+																											 metrics:nil
+																											   views:bindings]];
+								 }
+
 								 [self reload];
 							 }];
 }
@@ -160,21 +177,12 @@
 - (void) willMoveToParentViewController:(UIViewController *)parent {
 	[super willMoveToParentViewController:parent];
 	if (parent == nil) {
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 @synchronized(self) {
-													 for (NCShipFit* fit in self.fits) {
-														 if (fit.loadout)
-															 [fit save];
-													 }
-
-													 [[NCStorage sharedStorage] saveContext];
-												 }
-											 }
-								 completionHandler:^(NCTask *task) {
-									 
-								 }];
+		for (NCShipFit* fit in self.fits) {
+			if (fit.loadout)
+				[fit save];
+		}
+		
+		[[NCStorage sharedStorage] saveContext];
 	}
 }
 
@@ -369,7 +377,23 @@
 	
 	self.workspaceViewController.tableView.dataSource = dataSource;
 	self.workspaceViewController.tableView.delegate = dataSource;
-	self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+	//self.workspaceViewController.tableView.tableHeaderView = dataSource.tableHeaderView;
+	
+	for (UIView* view in self.headerView.subviews)
+		[view removeFromSuperview];
+
+	if (dataSource.tableHeaderView) {
+		NSDictionary* bindings = @{@"view": dataSource.tableHeaderView};
+		[self.headerView addSubview:dataSource.tableHeaderView];
+		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
+																				options:0
+																				metrics:nil
+																				  views:bindings]];
+		[self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+																				options:0
+																				metrics:nil
+																				  views:bindings]];
+	}
 	[dataSource reload];
 }
 
@@ -756,7 +780,23 @@
 																								}
 																							}
 																				completionHandler:^(NCTask *task) {
-																					[[UIPasteboard generalPasteboard] setString:shortenLink];
+																					if (!error) {
+																						[[UIPasteboard generalPasteboard] setString:shortenLink];
+																						[[UIAlertView alertViewWithTitle:nil
+																												 message:NSLocalizedString(@"Link has been copied to clipboard", nil)
+																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+																									   otherButtonTitles:nil
+																										 completionBlock:nil
+																											 cancelBlock:nil] show];
+																					}
+																					else {
+																						[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Error", nil)
+																												 message:[error localizedDescription]
+																									   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+																									   otherButtonTitles:nil
+																										 completionBlock:nil
+																											 cancelBlock:nil] show];
+																					}
 																				}];
 													   [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"fitting:%@", self.fit.dnaRepresentation]];
 												   }

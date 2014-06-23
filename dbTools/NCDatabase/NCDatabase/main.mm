@@ -925,7 +925,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 			
 			if (marketGroup.subgroups.count > 1) {
 				for (EVEDBInvMarketGroup* group in marketGroup.subgroups) {
-					NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(marketGroup.marketGroupID)];
+					NCDBInvMarketGroup* invMarketGroup = invMarketGroups[@(group.marketGroupID)];
 					NCDBEufeItemGroup* subGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
 					subGroup.category = category;
 					subGroup.parentGroup = itemGroup;

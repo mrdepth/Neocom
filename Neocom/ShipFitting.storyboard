@@ -1463,24 +1463,35 @@ IAogA
                                 </items>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
-                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETv-oZ-Cca">
-                                <rect key="frame" x="0.0" y="108" width="320" height="460"/>
+                            <containerView clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETv-oZ-Cca">
+                                <rect key="frame" x="0.0" y="132" width="320" height="436"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="AJi-xr-hae" kind="embed" id="law-5m-CMc"/>
                                 </connections>
                             </containerView>
+                            <view opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="g4v-Dw-0GZ">
+                                <rect key="frame" x="0.0" y="108" width="320" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="200" id="dXk-1V-IqN"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jyE-4C-gbM" firstAttribute="top" secondItem="0Es-eE-LmL" secondAttribute="bottom" id="5nM-0F-Xdj"/>
                             <constraint firstItem="jyE-4C-gbM" firstAttribute="leading" secondItem="xhC-K1-h68" secondAttribute="leading" id="9D7-Xf-4Go"/>
                             <constraint firstAttribute="trailing" secondItem="jyE-4C-gbM" secondAttribute="trailing" id="GxZ-tG-xlC"/>
+                            <constraint firstAttribute="trailing" secondItem="g4v-Dw-0GZ" secondAttribute="trailing" id="eZn-nm-lA4"/>
                             <constraint firstItem="ETv-oZ-Cca" firstAttribute="leading" secondItem="xhC-K1-h68" secondAttribute="leading" id="hgO-KN-xjo"/>
                             <constraint firstAttribute="trailing" secondItem="ETv-oZ-Cca" secondAttribute="trailing" id="p0s-WP-Yhj"/>
                             <constraint firstItem="6BP-Ua-sRd" firstAttribute="top" secondItem="ETv-oZ-Cca" secondAttribute="bottom" id="p2S-C6-WOZ"/>
-                            <constraint firstItem="ETv-oZ-Cca" firstAttribute="top" secondItem="jyE-4C-gbM" secondAttribute="bottom" id="tBl-Gu-p4d"/>
+                            <constraint firstItem="g4v-Dw-0GZ" firstAttribute="leading" secondItem="xhC-K1-h68" secondAttribute="leading" id="pJ9-KO-cod"/>
+                            <constraint firstItem="g4v-Dw-0GZ" firstAttribute="top" secondItem="jyE-4C-gbM" secondAttribute="bottom" id="tDE-dN-fAC"/>
+                            <constraint firstItem="ETv-oZ-Cca" firstAttribute="top" secondItem="g4v-Dw-0GZ" secondAttribute="bottom" id="thC-xb-Ecv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vJY-Dr-bpG">
@@ -1493,6 +1504,7 @@ IAogA
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
+                        <outlet property="headerView" destination="g4v-Dw-0GZ" id="RGO-En-2Ve"/>
                         <outlet property="sectionSegmentedControl" destination="L60-H4-aIg" id="xXb-Fc-TDY"/>
                         <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" id="M1g-g8-PJm"/>
                         <segue destination="GS3-JK-anj" kind="push" identifier="NCFittingRequiredSkillsViewController" id="Ve0-rS-KGn"/>
@@ -2189,7 +2201,7 @@ IAogA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="M1g-g8-PJm"/>
         <segue reference="wmr-bV-V4i"/>
-        <segue reference="AOd-5w-GW9"/>
     </inferredMetricsTieBreakers>
 </document>

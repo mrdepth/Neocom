@@ -45,7 +45,7 @@
 												 NSArray* shipLoadouts = [[storage shipLoadouts] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 												 task.progress = 0.25;
 												 
-												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.groupID"]];
+												 [sections addObjectsFromArray:[shipLoadouts arrayGroupedByKey:@"type.group.groupID"]];
 												 task.progress = 0.5;
 												 [sections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 													 NCLoadout* a = [obj1 objectAtIndex:0];

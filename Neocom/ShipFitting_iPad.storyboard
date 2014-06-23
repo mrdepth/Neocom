@@ -10,7 +10,7 @@
             <objects>
                 <tableViewController id="2YW-A6-MhM" customClass="NCFittingShipWorkspaceViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="24" sectionFooterHeight="22" id="bDF-U4-uho">
-                        <rect key="frame" x="0.0" y="0.0" width="382" height="660"/>
+                        <rect key="frame" x="0.0" y="0.0" width="382" height="636"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -270,7 +270,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ttX-n7-XuB">
-                                <rect key="frame" x="0.0" y="108" width="382" height="660"/>
+                                <rect key="frame" x="0.0" y="132" width="382" height="636"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
@@ -288,11 +288,22 @@
                                     <segue destination="Qef-Et-Dj8" kind="embed" id="nyf-Vx-bqj"/>
                                 </connections>
                             </containerView>
+                            <view opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="24" translatesAutoresizingMaskIntoConstraints="NO" id="WX8-PL-eVP">
+                                <rect key="frame" x="0.0" y="108" width="382" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="200" id="Swy-O7-hhe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ttX-n7-XuB" firstAttribute="top" secondItem="fyU-bp-CBl" secondAttribute="bottom" id="1Fr-V4-92g"/>
+                            <constraint firstItem="WX8-PL-eVP" firstAttribute="top" secondItem="fyU-bp-CBl" secondAttribute="bottom" id="2VU-OH-6VB"/>
+                            <constraint firstItem="ttX-n7-XuB" firstAttribute="width" secondItem="WX8-PL-eVP" secondAttribute="width" id="Bzx-q5-MAf"/>
+                            <constraint firstItem="ttX-n7-XuB" firstAttribute="top" secondItem="WX8-PL-eVP" secondAttribute="bottom" id="Ife-0T-NNE"/>
                             <constraint firstItem="fyU-bp-CBl" firstAttribute="top" secondItem="vbG-ac-gAa" secondAttribute="bottom" id="NVK-P3-f99"/>
+                            <constraint firstItem="WX8-PL-eVP" firstAttribute="leading" secondItem="QXG-x6-LWZ" secondAttribute="leading" id="P7b-Ek-qma"/>
                             <constraint firstAttribute="trailing" secondItem="u8w-Ul-QGq" secondAttribute="trailing" id="PG4-HK-ehp"/>
                             <constraint firstItem="u8w-Ul-QGq" firstAttribute="leading" secondItem="ttX-n7-XuB" secondAttribute="trailing" constant="1" id="V6L-oI-8uc"/>
                             <constraint firstItem="fyU-bp-CBl" firstAttribute="leading" secondItem="QXG-x6-LWZ" secondAttribute="leading" id="bRq-AG-enc"/>
@@ -316,6 +327,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="headerView" destination="WX8-PL-eVP" id="wKK-rv-7pC"/>
                         <outlet property="sectionSegmentedControl" destination="MqY-kj-tRi" id="J8z-2J-UXx"/>
                         <segue destination="2zu-Mo-Rxj" kind="custom" identifier="NCFittingDamagePatternsViewController" customClass="NCStoryboardPopoverSegue" id="Q9P-t8-WRb"/>
                         <segue destination="6b4-Ik-E64" kind="custom" identifier="NCFittingAreaEffectPickerViewController" customClass="NCStoryboardPopoverSegue" id="EMp-WV-8fb"/>
@@ -1295,7 +1307,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="28"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-gi-OPH">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YDl-gi-OPH">
                                             <rect key="frame" x="39" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1310,18 +1322,18 @@
                                                 <constraint firstAttribute="width" constant="24" id="aZh-8m-LhB"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="OU3-vv-NcB">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="OU3-vv-NcB">
                                             <rect key="frame" x="113" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="gCf-a3-L4X">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="launchers.png" translatesAutoresizingMaskIntoConstraints="NO" id="gCf-a3-L4X">
                                             <rect key="frame" x="90" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cbM-Y3-EOn">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cbM-Y3-EOn">
                                             <rect key="frame" x="188" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1332,7 +1344,7 @@
                                             <rect key="frame" x="164" y="2" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5d9-ue-ATa">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5d9-ue-ATa">
                                             <rect key="frame" x="262" y="2" width="43" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
@@ -1340,7 +1352,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="udy-e7-zg6">
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="udy-e7-zg6">
                                             <rect key="frame" x="239" y="2" width="23" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         </imageView>
@@ -2412,6 +2424,6 @@ IAogA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="2kd-1b-uC9"/>
-        <segue reference="6bs-4P-GkR"/>
+        <segue reference="6de-rM-WXG"/>
     </inferredMetricsTieBreakers>
 </document>

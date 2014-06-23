@@ -202,7 +202,10 @@
 	
 	
 	
-	void (^showInfo)(NSArray*) = ^(NSArray* modules){
+	void (^showInfo)() = ^{
+		[self.controller performSegueWithIdentifier:@"NCDatabaseTypeInfoViewController"
+											 sender:@{@"sender": cell, @"object": [NSValue valueWithPointer:character->getShip()]}];
+
 /*		ItemInfo* itemInfo = self.pilots[indexPath.row][@"ship"];
 		ItemViewController *itemViewController = [[ItemViewController alloc] initWithNibName:@"ItemViewController" bundle:nil];
 		[itemInfo updateAttributes];

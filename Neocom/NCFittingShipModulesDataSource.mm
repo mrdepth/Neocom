@@ -506,8 +506,10 @@
 		}
 	}
 	else {
-		[statesButtons addObject:ActionButtonOnline];
-		[statesActions addObject:putOnline];
+		if (module->canHaveState(eufe::Module::STATE_ONLINE)) {
+			[statesButtons addObject:ActionButtonOnline];
+			[statesActions addObject:putOnline];
+		}
 	}
 	
 	void (^setAmmo)(eufe::ModulesList) = ^(eufe::ModulesList modules){
@@ -654,13 +656,15 @@
 	
 	
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[buttons addObjectsFromArray:statesButtons];
-		[actions addObjectsFromArray:statesActions];
-	}
-	else {
-		[buttons addObject:ActionButtonChangeState];
-		[actions addObject:changeState];
+	if (statesButtons.count > 0) {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			[buttons addObjectsFromArray:statesButtons];
+			[actions addObjectsFromArray:statesActions];
+		}
+		else {
+			[buttons addObject:ActionButtonChangeState];
+			[actions addObject:changeState];
+		}
 	}
 	
 	if (module->getChargeGroups().size() > 0) {

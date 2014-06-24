@@ -346,7 +346,7 @@
 											   //static int32_t skillLevelID[] = {277, 278, 279, 1286, 1287, 1288};
 											   
 											   {
-												   int32_t count = type.parentType ? type.parentType.variations.count : type.variations.count;
+												   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
 												   if (count > 0) {
 													   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 													   section[@"title"] = NSLocalizedString(@"Variations", nil);
@@ -355,7 +355,7 @@
 													   
 													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													   row.title = NSLocalizedString(@"Variations", nil);
-													   row.detail = [NSString stringWithFormat:@"%d", count + 1];
+													   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
 													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
 													   row.cellIdentifier = @"VariationsCell";
 													   [rows addObject:row];

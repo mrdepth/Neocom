@@ -287,7 +287,8 @@
 		NSArray* modules = sender[@"object"];
 		controller.object = modules;
 		eufe::Item* item = reinterpret_cast<eufe::Item*>([modules[0] pointerValue]);
-		controller.type = [self typeWithItem:item];
+		NCDBInvType* type = [self typeWithItem:item];
+		controller.type = type.parentType ? type.parentType : type;
 	}
 	else if ([segue.identifier isEqualToString:@"NCFittingRequiredSkillsViewController"]) {
 		NCFittingRequiredSkillsViewController* controller;
@@ -347,16 +348,22 @@
 	@synchronized(self) {
 		if (!self.typesCache)
 			self.typesCache = [NSMutableDictionary new];
-		int typeID = item->getTypeID();
-		
-		NCDBInvType* type = self.typesCache[@(typeID)];
-		if (!type) {
-			type = [NCDBInvType invTypeWithTypeID:typeID];
-			if (type)
-				self.typesCache[@(typeID)] = type;
-		}
-		return type;
 	}
+	int typeID = item->getTypeID();
+	
+	NCDBInvType* type;
+	@synchronized(self) {
+		type = self.typesCache[@(typeID)];
+	}
+	if (!type) {
+		type = [NCDBInvType invTypeWithTypeID:typeID];
+		if (type) {
+			@synchronized(self) {
+				self.typesCache[@(typeID)] = type;
+			}
+		}
+	}
+	return type;
 }
 
 - (void) reload {

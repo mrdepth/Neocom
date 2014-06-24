@@ -78,24 +78,14 @@
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
+														eufe::DronesList drones;
 
 														@synchronized(self.controller) {
 															if (!self.controller.fit.pilot)
 																return;
 
 															eufe::Ship* ship = self.controller.fit.pilot->getShip();
-															
-															
-															for (auto drone: ship->getDrones()) {
-																NSInteger typeID = drone->getTypeID();
-																NCFittingShipDronesDataSourceRow* row = dronesDic[@(typeID)];
-																if (!row) {
-																	row = [NCFittingShipDronesDataSourceRow new];
-																	row.type = [self.controller typeWithItem:drone];
-																	dronesDic[@(typeID)] = row;
-																}
-																row.drones.push_back(drone);
-															}
+															drones = ship->getDrones();
 															
 															totalDB = ship->getTotalDroneBay();
 															usedDB = ship->getDroneBayUsed();
@@ -106,6 +96,18 @@
 															maxActiveDrones = ship->getMaxActiveDrones();
 															activeDrones = ship->getActiveDrones();
 														}
+														
+														for (auto drone: drones) {
+															NSInteger typeID = drone->getTypeID();
+															NCFittingShipDronesDataSourceRow* row = dronesDic[@(typeID)];
+															if (!row) {
+																row = [NCFittingShipDronesDataSourceRow new];
+																row.type = [self.controller typeWithItem:drone];
+																dronesDic[@(typeID)] = row;
+															}
+															row.drones.push_back(drone);
+														}
+
 														rows = [[[dronesDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
 														if (self.activeAmountType) {
 															NSInteger i = 1;

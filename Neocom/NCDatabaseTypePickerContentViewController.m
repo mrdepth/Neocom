@@ -208,8 +208,6 @@
 #pragma mark - Private
 
 - (void) reload {
-	NCDatabaseTypePickerViewController* navigationController = (NCDatabaseTypePickerViewController*) self.navigationController;
-
 	NSFetchRequest* request;
 	NCDatabase* database = [NCDatabase sharedDatabase];
 

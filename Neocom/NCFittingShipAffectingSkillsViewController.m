@@ -59,7 +59,7 @@
 														 if (!group)
 															 group = type.group;
 														 NCSkillData* skillData = [[NCSkillData alloc] initWithInvType:type];
-														 skillData.currentLevel = [self.character.skills[@(type.typeID)] integerValue];
+														 skillData.currentLevel = [self.character.skills[@(type.typeID)] intValue];
 														 [rows addObject:skillData];
 														 skills[@(type.typeID)] = skillData;
 													 }

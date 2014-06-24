@@ -146,7 +146,7 @@
 		if (!type) {
 			if (indexPath.section == 1) {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Implants", nil);
-				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotImplant size:indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotImplant size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell
@@ -160,7 +160,7 @@
 			}
 			else {
 				self.controller.typePickerViewController.title = NSLocalizedString(@"Boosters", nil);
-				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotBooster size:indexPath.row + 1 race:nil]
+				[self.controller.typePickerViewController presentWithCategory:[NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotBooster size:(int32_t) indexPath.row + 1 race:nil]
 															 inViewController:self.controller
 																	 fromRect:cell.bounds
 																	   inView:cell

@@ -65,7 +65,7 @@
 		security = self.starbase.moon.security;
 	
 	NSMutableArray* rows = [NSMutableArray new];
-	for (NCDBInvControlTowerResource *resource in self.starbase.type.controlTowerResources) {
+	for (NCDBInvControlTowerResource *resource in self.starbase.type.controlTower.resources) {
 		if ((resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
 			(resource.factionID > 0 && self.starbase.solarSystem.constellation.region.factionID != resource.factionID))
 			continue;
@@ -110,7 +110,7 @@
 	
 	[rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"resource.resourceType.typeName" ascending:YES]]];
 	NSMutableArray* sections = [NSMutableArray new];
-	for (NSArray* array in [rows arrayGroupedByKey:@"resource.purposeID"]) {
+	for (NSArray* array in [rows arrayGroupedByKey:@"resource.purpose.purposeID"]) {
 		NCStarbasesDetailsViewControllerDataSection* section = [NCStarbasesDetailsViewControllerDataSection new];
 		section.rows = array;
 		section.purpose = [[array[0] resource] purpose];

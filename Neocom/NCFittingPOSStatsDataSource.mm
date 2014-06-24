@@ -388,7 +388,7 @@
 
 - (NCDBInvControlTowerResource*) posFuelRequirements {
 	if (!_posFuelRequirements) {
-		for (NCDBInvControlTowerResource* resource in self.controller.fit.type.controlTowerResources) {
+		for (NCDBInvControlTowerResource* resource in self.controller.fit.type.controlTower.resources) {
 			if (resource.minSecurityLevel == 0.0 && resource.purpose.purposeID == 1) {
 				_posFuelRequirements = resource;
 				break;

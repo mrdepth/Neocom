@@ -266,7 +266,7 @@
 												 
 												 NSArray* rows = [starbases.starbases sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"solarSystem.solarSystemName" ascending:YES]]];
 												 NSMutableArray* sections = [NSMutableArray new];
-												 for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.constellation.regionID"]) {
+												 for (NSArray* array in [rows arrayGroupedByKey:@"solarSystem.constellation.region.regionID"]) {
 													 NCStarbasesViewControllerDataSection* section = [NCStarbasesViewControllerDataSection new];
 													 NCDBMapSolarSystem* solarSystem = [array[0] solarSystem];
 													 section.title = solarSystem.constellation.region.regionName;
@@ -383,7 +383,7 @@
 	int minQuantity = 0;
 	NCDBInvControlTowerResource *minResource = nil;
 	
-	for (NCDBInvControlTowerResource *resource in row.type.controlTowerResources) {
+	for (NCDBInvControlTowerResource *resource in row.type.controlTower.resources) {
 		if (resource.purpose.purposeID != 1 ||
 			(resource.minSecurityLevel > 0 && security < resource.minSecurityLevel) ||
 			(resource.factionID > 0 && row.solarSystem.constellation.region.factionID != resource.factionID))

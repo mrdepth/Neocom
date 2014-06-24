@@ -139,7 +139,7 @@
 - (NCFittingPOSStructuresTableHeaderView*) tableHeaderView {
 	if (!_tableHeaderView) {
 		_tableHeaderView = [NCFittingPOSStructuresTableHeaderView viewWithNibName:@"NCFittingPOSStructuresTableHeaderView" bundle:nil];
-		_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
+		//_tableHeaderView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _tableHeaderView;
 }

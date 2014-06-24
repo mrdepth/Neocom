@@ -16,7 +16,7 @@
 @implementation NCStorage(NCLoadout)
 
 - (NSArray*) loadouts {
-	__block NSArray *fetchedObjects = nil;
+	NSMutableArray* loadouts = [NSMutableArray new];
 	NSManagedObjectContext* context = [NSThread isMainThread] ? self.managedObjectContext : self.backgroundManagedObjectContext;
 	[context performBlockAndWait:^{
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -24,9 +24,17 @@
 		[fetchRequest setEntity:entity];
 		
 		NSError *error = nil;
-		fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+		NSArray* fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+		for (NCLoadout* loadout in fetchedObjects) {
+			if (!loadout.typeID)
+				[context deleteObject:loadout];
+			else
+				[loadouts addObject:loadout];
+		}
+		if ([context hasChanges])
+			[context save:nil];
 	}];
-	return fetchedObjects;
+	return loadouts;
 }
 
 - (NSArray*) shipLoadouts {

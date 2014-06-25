@@ -363,11 +363,28 @@
 	if (shipFit) {
 		NCFittingShipViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCFittingShipViewController"];
 		controller.fit = shipFit;
-		UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
-		if ([contentViewController isKindOfClass:[UINavigationController class]])
-			[contentViewController pushViewController:controller animated:YES];
-		else
-			[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+		
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+			UISplitViewController* splitViewController = (UISplitViewController*) self.window.rootViewController;
+			UINavigationController* navigationController = splitViewController.viewControllers[1];
+			
+			if ([navigationController isKindOfClass:[UINavigationController class]]) {
+				[navigationController dismissViewControllerAnimated:YES completion:nil];
+				[navigationController pushViewController:controller animated:YES];
+			}
+			else
+				[splitViewController setViewControllers:@[splitViewController.viewControllers[0], controller]];
+
+		}
+		else {
+			UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
+			if ([contentViewController isKindOfClass:[UINavigationController class]]) {
+				[contentViewController dismissViewControllerAnimated:YES completion:nil];
+				[contentViewController pushViewController:controller animated:YES];
+			}
+			else
+				[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+		}
 	}
 }
 

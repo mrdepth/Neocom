@@ -832,7 +832,7 @@
 		12436DAD1945A06B0090D4A6 /* NCDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabase.m; sourceTree = "<group>"; };
 		12436E121946E4670090D4A6 /* NCDBImageValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBImageValueTransformer.h; sourceTree = "<group>"; };
 		12436E131946E4670090D4A6 /* NCDBImageValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBImageValueTransformer.m; sourceTree = "<group>"; };
-		12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = db/NCDatabase.sqlite; sourceTree = "<group>"; };
+		12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NCDatabase.sqlite; sourceTree = "<group>"; };
 		1243761B189653980078F526 /* Character.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Character.storyboard; sourceTree = "<group>"; };
 		1243771318969E590078F526 /* NCDatabaseNPCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseNPCViewController.h; sourceTree = "<group>"; };
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
@@ -2247,7 +2247,6 @@
 			isa = PBXGroup;
 			children = (
 				1288A9DD1948386E00C61334 /* Generated */,
-				12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */,
 				12436DA91945A0310090D4A6 /* NCDatabase.xcdatamodeld */,
 				12436DAC1945A06B0090D4A6 /* NCDatabase.h */,
 				12436DAD1945A06B0090D4A6 /* NCDatabase.m */,
@@ -2340,6 +2339,7 @@
 			isa = PBXGroup;
 			children = (
 				1261593B18EE7BFD0049B9CE /* eufe.sqlite */,
+				12436E9A1946F7360090D4A6 /* NCDatabase.sqlite */,
 			);
 			path = db;
 			sourceTree = "<group>";

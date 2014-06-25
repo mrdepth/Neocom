@@ -166,7 +166,7 @@
 #pragma mark Table view delegate
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 87;
+	return 165;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -306,8 +306,43 @@
 	cell.titleLabel.text = row.title;
 	cell.typeLabel.text = [row localizedTypeString];
 	cell.locationLabel.text = row.startStation.name;
-	cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.price)]];
-	cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.buyout)]];
+
+	if (row.price > 0) {
+		cell.priceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.price)]];
+		cell.priceTitleLabel.text = NSLocalizedString(@"Price:", nil);
+	}
+	else {
+		cell.priceLabel.text = nil;
+		cell.priceTitleLabel.text = nil;
+	}
+	
+	if (row.buyout > 0) {
+		cell.buyoutLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.buyout)]];
+		cell.buyoutTitleLabel.text = NSLocalizedString(@"Buyout:", nil);
+	}
+	else {
+		cell.buyoutLabel.text = nil;
+		cell.buyoutTitleLabel.text = nil;
+	}
+
+	if (row.reward > 0) {
+		cell.rewardLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.reward)]];
+		cell.rewardTitleLabel.text = NSLocalizedString(@"Reward:", nil);
+	}
+	else {
+		cell.rewardLabel.text = nil;
+		cell.rewardTitleLabel.text = nil;
+	}
+
+	if (row.collateral > 0) {
+		cell.collateralLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.collateral)]];
+		cell.collateralTitleLabel.text = NSLocalizedString(@"Collateral:", nil);
+	}
+	else {
+		cell.collateralLabel.text = nil;
+		cell.collateralTitleLabel.text = nil;
+	}
+	
 	cell.issuerLabel.text = row.issuerName;
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.dateIssued];
 	

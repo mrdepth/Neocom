@@ -389,7 +389,7 @@
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="Z2a-fx-qEN" secondAttribute="bottom" constant="4" id="1KY-HW-Ov3"/>
+                                        <constraint firstAttribute="bottom" secondItem="Z2a-fx-qEN" secondAttribute="bottom" priority="999" constant="4" id="1KY-HW-Ov3"/>
                                         <constraint firstItem="Xfk-ey-Uh6" firstAttribute="leading" secondItem="meY-fV-VRC" secondAttribute="leading" id="Epa-YE-Cfw"/>
                                         <constraint firstItem="0nH-ob-s4i" firstAttribute="top" secondItem="PDF-OP-cgU" secondAttribute="top" id="EzQ-Ll-ELj"/>
                                         <constraint firstItem="Xfk-ey-Uh6" firstAttribute="trailing" secondItem="7MQ-Ql-GfN" secondAttribute="trailing" id="GR0-fy-Rd5"/>
@@ -576,7 +576,7 @@
                                     <constraints>
                                         <constraint firstItem="sxQ-Sa-gIS" firstAttribute="top" secondItem="uSn-xj-F8b" secondAttribute="bottom" constant="1" id="AYB-fe-NX3"/>
                                         <constraint firstItem="ya9-qh-iZd" firstAttribute="top" secondItem="2L2-4k-gxN" secondAttribute="top" constant="4" id="DNh-1L-Pay"/>
-                                        <constraint firstAttribute="bottom" secondItem="ya9-qh-iZd" secondAttribute="bottom" constant="4" id="DV7-VE-NyE"/>
+                                        <constraint firstAttribute="bottom" secondItem="ya9-qh-iZd" secondAttribute="bottom" priority="999" constant="4" id="DV7-VE-NyE"/>
                                         <constraint firstItem="sxQ-Sa-gIS" firstAttribute="top" secondItem="XcJ-CB-zaH" secondAttribute="top" id="GYt-Na-3ca"/>
                                         <constraint firstItem="XcJ-CB-zaH" firstAttribute="bottom" secondItem="sxQ-Sa-gIS" secondAttribute="bottom" id="GbT-YJ-zqm"/>
                                         <constraint firstItem="sxQ-Sa-gIS" firstAttribute="leading" secondItem="uSn-xj-F8b" secondAttribute="leading" id="KDP-0Y-vO7"/>

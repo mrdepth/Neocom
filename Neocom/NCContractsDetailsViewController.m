@@ -270,6 +270,20 @@
 											 if (self.contract.endStation)
 												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"End Station", nil)
 																													description:self.contract.endStation.name]];
+											 
+											 if (self.contract.price > 0)
+												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Price", nil)
+																													description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.price)]]]];
+											 if (self.contract.buyout > 0)
+												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Buyout", nil)
+																													description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.buyout)]]]];
+											 if (self.contract.reward > 0)
+												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Reward", nil)
+																													description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.reward)]]]];
+											 if (self.contract.collateral > 0)
+												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Collateral", nil)
+																													description:[NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.contract.collateral)]]]];
+											 
 											 if (self.contract.dateIssued)
 												 [rows addObject:[[NCContractsDetailsViewControllerDataRow alloc] initWithTitle:NSLocalizedString(@"Issued", nil)
 																													description:[self.dateFormatter stringFromDate:self.contract.dateIssued]]];

@@ -252,11 +252,15 @@ static NCAccount* currentAccount = nil;
 	EVESkillQueue* skillQueue = self.skillQueue;
 	EVECharacterInfo* characterInfo = self.characterInfo;
 	
-	@synchronized(self) {
-		characterSheet = [self.characterSheetCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data.data;
-		if (!_characterAttributes && characterSheet)
-			_characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
-		if (characterSheet && skillQueue && (!self.lastSkillPointsUpdate || [self.lastSkillPointsUpdate timeIntervalSinceNow] < -NCAccountSkillPointsUpdateInterval)) {
+	NCStorage* storage = [NCStorage sharedStorage];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
+
+	characterSheet = [self.characterSheetCacheRecord.data.data isKindOfClass:[NSError class]] ? nil : self.characterSheetCacheRecord.data.data;
+	if (!_characterAttributes && characterSheet)
+		_characterAttributes = [[NCCharacterAttributes alloc] initWithCharacterSheet:characterSheet];
+
+	if (characterSheet && skillQueue && (!self.lastSkillPointsUpdate || [self.lastSkillPointsUpdate timeIntervalSinceNow] < -NCAccountSkillPointsUpdateInterval)) {
+		[context performBlockAndWait:^{
 			[characterSheet updateSkillPointsFromSkillQueue:skillQueue];
 			
 			if (characterInfo) {
@@ -269,8 +273,9 @@ static NCAccount* currentAccount = nil;
 			self.lastSkillPointsUpdate = [NSDate date];
 			
 			[self.activeSkillPlan updateSkillPoints];
-		}
+		}];
 	}
+	
 	return characterSheet;
 }
 

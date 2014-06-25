@@ -99,7 +99,9 @@
 - (IBAction)onAction:(id)sender {
 	NCAccount* account = [NCAccount currentAccount];
 	NCSkillPlan* activeSkillPlan = account.activeSkillPlan;
-	NSArray* otherButtonTitles = activeSkillPlan ? @[NSLocalizedString(@"Rename", nil), NSLocalizedString(@"Add to active Skill Plan", nil)] : @[NSLocalizedString(@"Rename", nil)];
+	NSArray* otherButtonTitles = activeSkillPlan ? @[NSLocalizedString(@"Rename", nil),
+													 NSLocalizedString(@"Add to active Skill Plan", nil),
+													 NSLocalizedString(@"Import from active Skill Plan", nil)] : @[NSLocalizedString(@"Rename", nil)];
 
 	[[UIActionSheet actionSheetWithStyle:UIActionSheetStyleBlackTranslucent
 								   title:nil
@@ -125,7 +127,7 @@
 									 textField.text = self.character.name;
 									 [alertView show];
 								 }
-								 else {
+								 else if (selectedButtonIndex == 1){
 									 NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 									 [self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
 										 [trainingQueue addSkill:skillData.type withLevel:skillData.currentLevel];
@@ -142,6 +144,29 @@
 													  }
 														  cancelBlock:nil] show];
 
+								 }
+								 else {
+									 [[UIAlertView alertViewWithTitle:nil
+															  message:NSLocalizedString(@"Your skill levels will be replaced with values from skill plan", nil)
+													cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+													otherButtonTitles:@[NSLocalizedString(@"Import", nil)]
+													  completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+														  if (selectedButtonIndex != alertView.cancelButtonIndex) {
+															  [self.skills enumerateKeysAndObjectsUsingBlock:^(NSNumber* typeID, NCSkillData* skillData, BOOL *stop) {
+																  skillData.currentLevel = 0;
+															  }];
+														  }
+														  for (EVECharacterSheetSkill* characterSkill in account.characterSheet.skills) {
+															  NCSkillData* skill = self.skills[@(characterSkill.typeID)];
+															  skill.currentLevel = MAX(skill.currentLevel, characterSkill.level);
+														  }
+														  for (NCSkillData* skillPlanSkill in activeSkillPlan.trainingQueue.skills) {
+															  NCSkillData* skill = self.skills[@(skillPlanSkill.type.typeID)];
+															  skill.currentLevel = MAX(skill.currentLevel, skillPlanSkill.targetLevel);
+														  }
+														  [self.tableView reloadData];
+													  }
+														  cancelBlock:nil] show];
 								 }
 							 }
 						 }

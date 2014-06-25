@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -415,7 +415,7 @@
                                         <constraint firstItem="07v-Rw-1Ol" firstAttribute="leading" secondItem="fVP-Ou-GDS" secondAttribute="leading" id="WGf-lp-0S6"/>
                                         <constraint firstItem="l4J-I0-hh3" firstAttribute="bottom" secondItem="qGc-29-c01" secondAttribute="bottom" id="Xc6-zo-CSB"/>
                                         <constraint firstItem="07v-Rw-1Ol" firstAttribute="trailing" secondItem="qGc-29-c01" secondAttribute="trailing" id="axu-Z4-oq9"/>
-                                        <constraint firstAttribute="bottom" secondItem="yOx-T0-ZX1" secondAttribute="bottom" constant="4" id="dQp-4a-u6H"/>
+                                        <constraint firstAttribute="bottom" secondItem="yOx-T0-ZX1" secondAttribute="bottom" priority="999" constant="4" id="dQp-4a-u6H"/>
                                         <constraint firstItem="qGc-29-c01" firstAttribute="leading" secondItem="m5c-Vm-jfc" secondAttribute="leading" id="gwD-Ec-O4g"/>
                                         <constraint firstItem="fVP-Ou-GDS" firstAttribute="top" secondItem="07v-Rw-1Ol" secondAttribute="bottom" constant="1" id="h5A-7C-jPT"/>
                                         <constraint firstItem="l4J-I0-hh3" firstAttribute="leading" secondItem="9f9-Y2-U8t" secondAttribute="leading" constant="20" symbolic="YES" id="mug-bL-ZAJ"/>
@@ -595,7 +595,7 @@
                                         <constraint firstItem="811-lt-0TZ" firstAttribute="top" secondItem="Yps-yH-VfD" secondAttribute="top" id="S2m-iD-cQK"/>
                                         <constraint firstItem="Yps-yH-VfD" firstAttribute="trailing" secondItem="ChA-uU-WzT" secondAttribute="trailing" id="T7v-ST-LuO"/>
                                         <constraint firstItem="Yps-yH-VfD" firstAttribute="bottom" secondItem="811-lt-0TZ" secondAttribute="bottom" id="TLY-gC-6bs"/>
-                                        <constraint firstAttribute="bottom" secondItem="zhP-ap-xNT" secondAttribute="bottom" constant="4" id="Xgs-2U-wor"/>
+                                        <constraint firstAttribute="bottom" secondItem="zhP-ap-xNT" secondAttribute="bottom" priority="999" constant="4" id="Xgs-2U-wor"/>
                                         <constraint firstItem="811-lt-0TZ" firstAttribute="leading" secondItem="ChA-uU-WzT" secondAttribute="leading" id="YJP-xy-KKC"/>
                                         <constraint firstItem="zhP-ap-xNT" firstAttribute="top" secondItem="BNq-t4-9aa" secondAttribute="top" constant="4" id="Yn7-NX-fAb"/>
                                         <constraint firstItem="Yps-yH-VfD" firstAttribute="bottom" secondItem="zhP-ap-xNT" secondAttribute="bottom" id="eQ6-Yz-Oe2"/>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view opaque="NO" contentMode="scaleToFill" id="5Ze-oP-d8k" customClass="NCFittingShipModulesTableHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" placeholderIntrinsicWidth="92" placeholderIntrinsicHeight="15" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="QN6-3d-Vop" customClass="NCProgressLabel">
+                    <rect key="frame" x="39" y="5" width="92" height="15"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="powerGrid.png" translatesAutoresizingMaskIntoConstraints="NO" id="5AS-bE-KJr">
+                    <rect key="frame" x="15" y="0.0" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="8Cq-ud-czo"/>
+                        <constraint firstAttribute="width" constant="24" id="a1l-FU-L3Z"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="46" placeholderIntrinsicHeight="15" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fJq-Jd-he1" customClass="NCProgressLabel">
+                    <rect key="frame" x="172" y="5" width="46" height="15"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="cpu.png" translatesAutoresizingMaskIntoConstraints="NO" id="i0X-y7-ULu">
+                    <rect key="frame" x="148" y="0.0" width="24" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="46" placeholderIntrinsicHeight="15" text="" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2XW-8h-jmy" customClass="NCProgressLabel">
+                    <rect key="frame" x="259" y="5" width="46" height="15"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="calibration.png" translatesAutoresizingMaskIntoConstraints="NO" id="njH-sk-Kk0">
+                    <rect key="frame" x="235" y="0.0" width="24" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B4D-FZ-hbG">
+                    <rect key="frame" x="131" y="12" width="17" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="iDW-m0-LF8"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jg4-5v-wEO">
+                    <rect key="frame" x="218" y="12" width="17" height="1"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="wgE-wp-qeP"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="5AS-bE-KJr" secondAttribute="bottom" id="0S0-Jk-4eX"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="leading" secondItem="i0X-y7-ULu" secondAttribute="trailing" id="0aL-co-kGZ"/>
+                <constraint firstItem="2XW-8h-jmy" firstAttribute="leading" secondItem="njH-sk-Kk0" secondAttribute="trailing" id="37c-yc-TpX"/>
+                <constraint firstAttribute="trailing" secondItem="2XW-8h-jmy" secondAttribute="trailing" constant="15" id="7a5-YD-OYA"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="njH-sk-Kk0" secondAttribute="centerY" id="8Pa-y5-07c"/>
+                <constraint firstItem="njH-sk-Kk0" firstAttribute="width" secondItem="5AS-bE-KJr" secondAttribute="width" id="Bys-mL-Y4M"/>
+                <constraint firstItem="B4D-FZ-hbG" firstAttribute="leading" secondItem="QN6-3d-Vop" secondAttribute="trailing" id="Cpb-ae-20m"/>
+                <constraint firstItem="njH-sk-Kk0" firstAttribute="height" secondItem="5AS-bE-KJr" secondAttribute="height" id="HfB-9A-erZ"/>
+                <constraint firstItem="i0X-y7-ULu" firstAttribute="leading" secondItem="B4D-FZ-hbG" secondAttribute="trailing" id="M72-OI-dw5"/>
+                <constraint firstItem="njH-sk-Kk0" firstAttribute="width" secondItem="i0X-y7-ULu" secondAttribute="width" id="Nbd-CM-ZNo"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="QN6-3d-Vop" secondAttribute="centerY" id="P8X-Qp-XGe"/>
+                <constraint firstItem="Jg4-5v-wEO" firstAttribute="width" secondItem="B4D-FZ-hbG" secondAttribute="width" id="QUU-ib-ViL"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="5AS-bE-KJr" secondAttribute="centerY" id="S5u-s8-XUg"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="i0X-y7-ULu" secondAttribute="centerY" id="X84-Tb-bjS"/>
+                <constraint firstItem="Jg4-5v-wEO" firstAttribute="leading" secondItem="fJq-Jd-he1" secondAttribute="trailing" id="aeP-cu-MPH"/>
+                <constraint firstItem="5AS-bE-KJr" firstAttribute="top" secondItem="5Ze-oP-d8k" secondAttribute="top" id="cf9-DU-Ppo"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="B4D-FZ-hbG" secondAttribute="centerY" id="dcf-d8-dLt"/>
+                <constraint firstItem="njH-sk-Kk0" firstAttribute="leading" secondItem="Jg4-5v-wEO" secondAttribute="trailing" id="ec0-EF-i4R"/>
+                <constraint firstItem="njH-sk-Kk0" firstAttribute="height" secondItem="i0X-y7-ULu" secondAttribute="height" id="fcB-pH-YVE"/>
+                <constraint firstItem="QN6-3d-Vop" firstAttribute="leading" secondItem="5AS-bE-KJr" secondAttribute="trailing" id="jtg-Ad-jeM"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="2XW-8h-jmy" secondAttribute="centerY" id="nIh-JF-P2B"/>
+                <constraint firstItem="5AS-bE-KJr" firstAttribute="leading" secondItem="5Ze-oP-d8k" secondAttribute="leading" constant="15" id="nn4-Ja-Qdi"/>
+                <constraint firstItem="fJq-Jd-he1" firstAttribute="centerY" secondItem="Jg4-5v-wEO" secondAttribute="centerY" id="yDq-5i-pmY"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="calibrationLabel" destination="2XW-8h-jmy" id="jke-WK-p64"/>
+                <outlet property="cpuLabel" destination="fJq-Jd-he1" id="8WH-tF-oJ0"/>
+                <outlet property="powerGridLabel" destination="QN6-3d-Vop" id="3wq-8o-1Ny"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="calibration.png" width="64" height="64"/>
+        <image name="cpu.png" width="64" height="64"/>
+        <image name="powerGrid.png" width="64" height="64"/>
+    </resources>
+</document>

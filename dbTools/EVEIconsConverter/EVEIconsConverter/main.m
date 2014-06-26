@@ -12,8 +12,8 @@ int main(int argc, const char * argv[])
 {
 
 	@autoreleasepool {
-		NSString *folder = @"/Users/shimanski/Documents/doc/Neocom/Icons/items";
-		NSString *outputFolder = @"/Users/shimanski/Documents/doc/Neocom/IconsOut";
+		NSString *folder = @"./EVEIcons/items";
+		NSString *outputFolder = @"./Icons";
 		[[NSFileManager defaultManager] createDirectoryAtPath:outputFolder withIntermediateDirectories:YES attributes:nil error:nil];
 		NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folder error:nil];
 		
@@ -24,8 +24,10 @@ int main(int argc, const char * argv[])
 		
 		for (NSString *fileName in fileNames) {
 			NSArray *components = [[fileName stringByDeletingPathExtension] componentsSeparatedByString:@"_"];
-			if (components.count != 3)
+			if (components.count != 3) {
+				map[fileName] = @{@"fileName": fileName, @"size": @(64)};
 				continue;
+			}
 			NSString *a = [components objectAtIndex:0];
 			NSString *b = [components objectAtIndex:1];
 			NSString *c = [components objectAtIndex:2];

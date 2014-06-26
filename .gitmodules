@@ -1,9 +1,9 @@
-[submodule "EVEOnlineAPI"]
-	path = EVEOnlineAPI
+[submodule "ThirdParty/EVEOnlineAPI"]
+	path = ThirdParty/EVEOnlineAPI
 	url = https://github.com/mrdepth/EVEOnlineAPI.git
-[submodule "eufe"]
-	path = eufe
-	url = https://github.com/mrdepth/eufe.git
-[submodule "tools"]
-	path = tools
+[submodule "ThirdParty/tools"]
+	path = ThirdParty/tools
 	url = https://github.com/mrdepth/tools.git
+[submodule "ThirdParty/eufe"]
+	path = ThirdParty/eufe
+	url = ../eufe.git

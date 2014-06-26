@@ -1,0 +1,63 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+	#import <UIKit/UIKit.h>
+	#import <Foundation/Foundation.h>
+	#import <CoreData/CoreData.h>
+	#import <MessageUI/MessageUI.h>
+	#import <StoreKit/StoreKit.h>
+	#import <CoreText/CoreText.h>
+#endif
+
+#define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
+#define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"
+#define NCSettingsAPIAlwaysUploadFitsKey @"NCSettingsAPIAlwaysUploadFitsKey"
+#define NCSettingsUDIDKey @"NCSettingsUDIDKey"
+#define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
+#define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
+
+#define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
+
+#define NCSettingsUseCloudKey @"NCSettingsUseCloudKey"
+#define NCSettingsCloudTokenKey @"NCSettingsCloudTokenKey"
+#define NCSettingsMigratedToCloudKey @"NCSettingsMigratedToCloudKey"
+
+#define NCBattleClinicAPIKey @"D8368891670D2D7079B17A59B4268C0B95D663FF"
+
+
+#define NCShipCategoryID 6
+#define NCChargeCategoryID 8
+#define NCModuleCategoryID 7
+#define NCSubsystemCategoryID 32
+#define NCDroneCategoryID 18
+
+#define NCStructureCategoryID 23
+
+#define NCControlTowerGroupID 365
+#define NCSecureContainerGroupID 340
+#define NCHangarOrOfficeGroupID 471
+#define NCShipMaintenanceArrayGroupID 363
+
+#define NCInAppFullProductID @"com.shimanski.eveuniverse.full"
+#define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
+#define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"
+#define NCInAppDonate10ProductID @"com.shimanski.eveuniverse.donation10"
+
+#define NCAccountDidChangeNotification @"NCAccountDidChangeNotification"
+#define NCApplicationDidRemoveAddsNotification @"NCApplicationDidRemoveAddsNotification"
+
+#define NCMarketPricesMonitorDidChangeNotification @"NCMarketPricesMonitorDidChangeNotification"
+#define NCSkillQueueNotificationTimeDidChangeNotification @"NCSkillQueueNotificationTimeDidChangeNotification"
+
+#define NCStorageDidChangeNotification @"NCStorageDidChangeNotification"

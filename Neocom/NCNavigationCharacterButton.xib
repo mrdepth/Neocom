@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1" customClass="NCNavigationCharacterButton">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4CW-GZ-qct">
+                    <rect key="frame" x="6" y="6" width="32" height="32"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="OX3-3b-QVu"/>
+                        <constraint firstAttribute="height" constant="32" id="acO-dE-mWN"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Select account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z6m-jq-qRc">
+                    <rect key="frame" x="43" y="6" width="103" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7rH-kN-luC">
+                    <rect key="frame" x="43" y="38" width="103" height="0.0"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" image="navigationArrowUp.png" translatesAutoresizingMaskIntoConstraints="NO" id="gOX-9l-3Ra">
+                    <rect key="frame" x="156" y="18" width="12" height="8"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="8" id="vmJ-Xu-kjl"/>
+                        <constraint firstAttribute="width" constant="12" id="wmO-co-wAG"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="z6m-jq-qRc" firstAttribute="top" secondItem="4CW-GZ-qct" secondAttribute="top" id="GKX-Ns-5bf"/>
+                <constraint firstItem="7rH-kN-luC" firstAttribute="trailing" secondItem="z6m-jq-qRc" secondAttribute="trailing" id="L6C-Dp-br4"/>
+                <constraint firstItem="7rH-kN-luC" firstAttribute="top" secondItem="z6m-jq-qRc" secondAttribute="bottom" id="Nbd-Gi-VSo"/>
+                <constraint firstItem="gOX-9l-3Ra" firstAttribute="leading" secondItem="z6m-jq-qRc" secondAttribute="trailing" constant="10" id="Xjt-EH-ofJ"/>
+                <constraint firstItem="4CW-GZ-qct" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="6" id="mrP-LH-R51"/>
+                <constraint firstItem="4CW-GZ-qct" firstAttribute="bottom" secondItem="7rH-kN-luC" secondAttribute="bottom" id="sVS-3Q-gID"/>
+                <constraint firstAttribute="centerY" secondItem="4CW-GZ-qct" secondAttribute="centerY" id="tE0-Au-UUJ"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gOX-9l-3Ra" secondAttribute="trailing" constant="6" id="ukz-5b-87u"/>
+                <constraint firstItem="z6m-jq-qRc" firstAttribute="leading" secondItem="4CW-GZ-qct" secondAttribute="trailing" constant="5" id="wMM-qW-87u"/>
+                <constraint firstItem="7rH-kN-luC" firstAttribute="leading" secondItem="z6m-jq-qRc" secondAttribute="leading" id="zJM-c4-7Lh"/>
+                <constraint firstItem="gOX-9l-3Ra" firstAttribute="centerY" secondItem="4CW-GZ-qct" secondAttribute="centerY" id="zb2-4P-bZO"/>
+            </constraints>
+            <connections>
+                <outlet property="arrowImageView" destination="gOX-9l-3Ra" id="Dza-aW-yUv"/>
+                <outlet property="logoImageView" destination="4CW-GZ-qct" id="i6z-0R-3jg"/>
+                <outlet property="nameLabel" destination="z6m-jq-qRc" id="NfE-Z3-cn1"/>
+                <outlet property="subtitleLabel" destination="7rH-kN-luC" id="6hP-6R-1S2"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="navigationArrowUp.png" width="12" height="8"/>
+    </resources>
+</document>

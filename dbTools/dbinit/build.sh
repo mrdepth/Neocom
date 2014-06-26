@@ -19,7 +19,9 @@ sqlite3 ./eveDB/eve.sqlite ".read init.sql"
 #sqlite3 ./eveDB/eve.sqlite ".read invMarketGroupsFix.sql"
 
 echo ".read eveDB/evedbTablesExtract.sql"
-sqlite3 ./eveDB/eve.sqlite ".read eveDB/evedbTablesExtract.sql" > tablesInit.sql
+sqlite3 ./eveDB/eve.sqlite ".read eveDB/evedbTablesExtract.sql" > tmp.sql
+sed 's/integer/int/g' tmp.sql > tablesInit.sql
+rm tmp.sql
 
 echo ".read tablesInit.sql"
 sqlite3 evedb.sqlite ".read tablesInit.sql"
@@ -29,3 +31,7 @@ sqlite3 ./eveDB/eve.sqlite ".read eveDbInit.sql"
 
 echo ".read eveDB/eveIcons.sql"
 sqlite3 ./evedb.sqlite ".read eveDB/eveIcons.sql"
+
+echo ".read eveDB/npc.sql"
+sqlite3 evedb.sqlite ".read eveDB/npc.sql"
+sqlite3 evedb.sqlite "CREATE INDEX \"npcGroup_parentNpcGroupID\" ON \"npcGroup\" (\"parentNpcGroupID\" ASC);"

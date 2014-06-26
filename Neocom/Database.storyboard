@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="j3a-oE-aeX">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseViewController" definesPresentationContext="YES" id="fMd-jc-Ej0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bWk-9L-lbA">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="fQN-VN-Su3" kind="relationship" relationship="rootViewController" id="NZA-Xm-9UK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mdE-d5-SAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="446"/>
+        </scene>
+        <!--Database View Controller - Database-->
+        <scene sceneID="VPG-1H-jaK">
+            <objects>
+                <tableViewController id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-KK-Gfj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="ADb-Gm-4tZ">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="fQN-VN-Su3" id="Huw-H9-9ya"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="WHp-Mq-BUa" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WHp-Mq-BUa" id="Shw-5U-cdz">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="fQN-VN-Su3" kind="push" identifier="NCDatabaseViewController" id="XCS-La-EyZ"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eUp-d6-v1a" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="171" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eUp-d6-v1a" id="cnc-zd-sRz">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="raC-Em-4AD"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fQN-VN-Su3" id="HDc-Hl-wvO"/>
+                            <outlet property="delegate" destination="fQN-VN-Su3" id="13b-G4-Inr"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Database" id="Mqf-D6-byQ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="fhQ-hK-Qkd"/>
+                        <barButtonItem key="rightBarButtonItem" title="All" id="4FX-2W-XKe">
+                            <connections>
+                                <action selector="onFilter:" destination="fQN-VN-Su3" id="Ztx-2g-bEn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="DFF-rH-mFo" id="7f0-Bg-oG6"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Blv-JK-F9s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="DFF-rH-mFo">
+                    <connections>
+                        <outlet property="delegate" destination="fQN-VN-Su3" id="wvT-CH-Mv9"/>
+                        <outlet property="searchBar" destination="ADb-Gm-4tZ" id="geA-V0-ACu"/>
+                        <outlet property="searchContentsController" destination="fQN-VN-Su3" id="vT2-A8-Hyz"/>
+                        <outlet property="searchResultsDataSource" destination="fQN-VN-Su3" id="z1D-yJ-B8a"/>
+                        <outlet property="searchResultsDelegate" destination="fQN-VN-Su3" id="1rx-EP-wEd"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-855" y="446"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="EL6-jd-GTK">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseMarketViewController" definesPresentationContext="YES" id="d0F-gf-Hwr" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="diK-TM-jy4">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="lEO-4A-qIj" kind="relationship" relationship="rootViewController" id="6M7-4Q-PK5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0lb-2b-9WR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="1168"/>
+        </scene>
+        <!--Database Market View Controller - Market-->
+        <scene sceneID="jEJ-dz-n4I">
+            <objects>
+                <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="j3L-Vy-TYS" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="Dsz-vk-uDL">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="lEO-4A-qIj" id="hdv-H7-MPN"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="1XI-h0-KBK" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1XI-h0-KBK" id="pQT-Iq-REx">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="lEO-4A-qIj" kind="push" identifier="NCDatabaseMarketViewController" id="twR-qx-GpS"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="19o-fQ-6Zi" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="19o-fQ-6Zi" id="C1S-7t-ASi">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="4UZ-Rj-aNc" kind="push" identifier="NCDatabaseTypeMarketInfoViewController" id="dFJ-0K-RGe"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="lEO-4A-qIj" id="lIr-FJ-G4s"/>
+                            <outlet property="delegate" destination="lEO-4A-qIj" id="V8v-6C-cIx"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Market" id="zxr-ed-nHP">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="3oy-hS-sC1"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="awT-Az-HAp" id="s8V-8z-tBv"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0HL-eY-lho" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="awT-Az-HAp">
+                    <connections>
+                        <outlet property="delegate" destination="lEO-4A-qIj" id="7ms-sM-Mkw"/>
+                        <outlet property="searchBar" destination="Dsz-vk-uDL" id="0jE-FN-xy1"/>
+                        <outlet property="searchContentsController" destination="lEO-4A-qIj" id="XrV-EO-K3I"/>
+                        <outlet property="searchResultsDataSource" destination="lEO-4A-qIj" id="xAH-ip-r5a"/>
+                        <outlet property="searchResultsDelegate" destination="lEO-4A-qIj" id="KZ6-zG-Lz7"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-855" y="1168"/>
+        </scene>
+        <!--Database Certificates View Controller - Certificates-->
+        <scene sceneID="5tt-L0-cHf">
+            <objects>
+                <tableViewController id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HLV-HU-SWV" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="RQA-J7-dWd" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RQA-J7-dWd" id="psZ-MV-Iu3">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="igD-MV-bsc" kind="push" identifier="NCDatabaseCertificatesViewController" id="b7v-fB-7yw"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CertificateCell" id="uWo-ht-23E" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uWo-ht-23E" id="wFo-60-LFE">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="Gaj-wd-8of" kind="push" identifier="NCDatabaseCertificateInfoViewController" id="x80-mj-lXM"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="igD-MV-bsc" id="qbQ-6l-t3q"/>
+                            <outlet property="delegate" destination="igD-MV-bsc" id="N6z-Dc-NY2"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Certificates" id="ilS-ZM-eW2">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="7Ir-6A-tCu"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Te0-4J-OJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-855" y="1868"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="I00-dz-wQ1">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseCertificatesViewController" definesPresentationContext="YES" id="oS0-Bs-ODj" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Aj8-R9-741">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="igD-MV-bsc" kind="relationship" relationship="rootViewController" id="Vbq-vg-5yp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wts-Zn-1Bz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="1868"/>
+        </scene>
+        <!--Database Type Info View Controller - Info-->
+        <scene sceneID="rfB-z4-tJP">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="dFj-mD-7QZ" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OBL-hF-jNg" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="Z7D-M6-dDM">
+                            <rect key="frame" x="0.0" y="64" width="320" height="297"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="s5t-gK-Wwc">
+                                    <rect key="frame" x="15" y="15" width="64" height="64"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="64" id="OLS-HM-rom"/>
+                                        <constraint firstAttribute="width" constant="64" id="er8-6h-wKM"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="EvT-51-Y7k" customClass="NCLabel">
+                                    <rect key="frame" x="87" y="53" width="218" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="sH6-hb-ETj" customClass="NCLabel">
+                                    <rect key="frame" x="15" y="79" width="290" height="218"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="s5t-gK-Wwc" firstAttribute="bottom" secondItem="EvT-51-Y7k" secondAttribute="bottom" id="42C-R8-J8o"/>
+                                <constraint firstAttribute="trailing" secondItem="EvT-51-Y7k" secondAttribute="trailing" constant="15" id="4rt-BI-SVW"/>
+                                <constraint firstItem="sH6-hb-ETj" firstAttribute="leading" secondItem="s5t-gK-Wwc" secondAttribute="leading" id="82D-hQ-c8c"/>
+                                <constraint firstItem="sH6-hb-ETj" firstAttribute="top" secondItem="EvT-51-Y7k" secondAttribute="bottom" id="ChT-10-yge"/>
+                                <constraint firstItem="s5t-gK-Wwc" firstAttribute="leading" secondItem="Z7D-M6-dDM" secondAttribute="leading" constant="15" id="CwE-PS-x0e"/>
+                                <constraint firstItem="EvT-51-Y7k" firstAttribute="leading" secondItem="s5t-gK-Wwc" secondAttribute="trailing" constant="8" id="Pda-dT-hw3"/>
+                                <constraint firstItem="sH6-hb-ETj" firstAttribute="trailing" secondItem="EvT-51-Y7k" secondAttribute="trailing" id="YpC-Qo-Etm"/>
+                                <constraint firstItem="EvT-51-Y7k" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Z7D-M6-dDM" secondAttribute="top" constant="4" id="cXU-nC-xHv"/>
+                                <constraint firstAttribute="bottom" secondItem="sH6-hb-ETj" secondAttribute="bottom" id="kuT-m1-GIc"/>
+                                <constraint firstItem="s5t-gK-Wwc" firstAttribute="top" secondItem="Z7D-M6-dDM" secondAttribute="top" constant="15" id="zK4-6c-M2X"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="1P8-qh-ZaK" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="383" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1P8-qh-ZaK" id="UJz-gp-Y0I">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="F28-hU-6Zt" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="427" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F28-hU-6Zt" id="85O-Y8-aKf">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="fQN-VN-Su3" kind="push" identifier="NCDatabaseViewController" id="edv-w8-2To"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="iVW-my-8RU" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="471" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iVW-my-8RU" id="6tS-Sd-sn4">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="1vl-1S-TPM"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VariationsCell" id="dFm-oA-Uxv" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="515" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dFm-oA-Uxv" id="7Cd-bT-TVR">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="h8M-vq-ZAF" kind="push" identifier="NCDatabaseTypeVariationsViewController" id="G7R-Uk-JDa"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MasteryCell" id="foB-Xa-qJm" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="559" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="foB-Xa-qJm" id="TVe-nk-s2n">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="eTY-fq-Zqi" kind="push" identifier="NCDatabaseTypeMasteryViewController" id="bNh-qh-vce"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="dFj-mD-7QZ" id="VUT-Rn-3hw"/>
+                            <outlet property="delegate" destination="dFj-mD-7QZ" id="fnj-uA-PQ1"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Info" id="H94-e0-0QE">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="GeH-Tl-Wgn"/>
+                        <barButtonItem key="rightBarButtonItem" title="Market" id="mh0-HP-T56">
+                            <connections>
+                                <segue destination="4UZ-Rj-aNc" kind="push" identifier="NCDatabaseTypeMarketInfoViewController" id="LHH-Wy-jrm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="sH6-hb-ETj" id="ZaM-FL-6ad"/>
+                        <outlet property="imageView" destination="s5t-gK-Wwc" id="WVH-6q-z9J"/>
+                        <outlet property="titleLabel" destination="EvT-51-Y7k" id="Fbd-P6-tzb"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-221" y="446"/>
+        </scene>
+        <!--Database Type Market Info View Controller-->
+        <scene sceneID="rAT-aI-Ucb">
+            <objects>
+                <tableViewController id="4UZ-Rj-aNc" customClass="NCDatabaseTypeMarketInfoViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" id="o9p-bO-Zi9" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="LCA-F3-84x">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="4UZ-Rj-aNc" id="zOi-TA-qBM"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDatabaseTypeMarketInfoCell" id="xuG-5O-pih" customClass="NCDatabaseTypeMarketInfoCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="57"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xuG-5O-pih" id="toH-rz-hU2">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-K5-hJE">
+                                            <rect key="frame" x="15" y="22" width="74" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d0L-9z-KIz">
+                                            <rect key="frame" x="15" y="37" width="290" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekU-dw-Sqg">
+                                            <rect key="frame" x="253" y="6" width="52" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Jumps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18a-Z1-FYP">
+                                            <rect key="frame" x="267" y="22" width="38" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
+                                            <rect key="frame" x="15" y="4" width="35" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHt-kE-cLL">
+                                            <rect key="frame" x="225" y="6" width="20" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="QHt-kE-cLL" firstAttribute="centerY" secondItem="ipV-W6-Vem" secondAttribute="centerY" id="0eh-IX-cyC"/>
+                                        <constraint firstItem="d0L-9z-KIz" firstAttribute="trailing" secondItem="18a-Z1-FYP" secondAttribute="trailing" id="AjB-xI-bHq"/>
+                                        <constraint firstItem="d0L-9z-KIz" firstAttribute="top" secondItem="gfs-K5-hJE" secondAttribute="bottom" id="BsX-TU-Mqh"/>
+                                        <constraint firstItem="ipV-W6-Vem" firstAttribute="leading" secondItem="toH-rz-hU2" secondAttribute="leading" constant="15" id="Doq-rg-uJw"/>
+                                        <constraint firstAttribute="trailing" secondItem="ekU-dw-Sqg" secondAttribute="trailing" constant="15" id="GHa-Zy-1Dr"/>
+                                        <constraint firstItem="gfs-K5-hJE" firstAttribute="top" secondItem="ipV-W6-Vem" secondAttribute="bottom" id="JWd-qa-N7F"/>
+                                        <constraint firstItem="QHt-kE-cLL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ipV-W6-Vem" secondAttribute="trailing" constant="8" id="Mui-3h-8hZ"/>
+                                        <constraint firstItem="ekU-dw-Sqg" firstAttribute="leading" secondItem="QHt-kE-cLL" secondAttribute="trailing" constant="8" id="S1U-Jf-C74"/>
+                                        <constraint firstItem="ipV-W6-Vem" firstAttribute="top" secondItem="toH-rz-hU2" secondAttribute="top" constant="4" id="T3w-eG-Uro"/>
+                                        <constraint firstItem="gfs-K5-hJE" firstAttribute="top" secondItem="18a-Z1-FYP" secondAttribute="top" id="Ynn-ZX-OkR"/>
+                                        <constraint firstItem="gfs-K5-hJE" firstAttribute="leading" secondItem="ipV-W6-Vem" secondAttribute="leading" id="bye-Jy-kjE"/>
+                                        <constraint firstItem="QHt-kE-cLL" firstAttribute="centerY" secondItem="ekU-dw-Sqg" secondAttribute="centerY" id="ks1-N3-4e6"/>
+                                        <constraint firstItem="gfs-K5-hJE" firstAttribute="leading" secondItem="d0L-9z-KIz" secondAttribute="leading" id="m5q-8C-VNn"/>
+                                        <constraint firstItem="18a-Z1-FYP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gfs-K5-hJE" secondAttribute="trailing" constant="8" id="n2d-7e-3Gi"/>
+                                        <constraint firstItem="d0L-9z-KIz" firstAttribute="trailing" secondItem="ekU-dw-Sqg" secondAttribute="trailing" id="wLF-dS-9dz"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dateLabel" destination="ekU-dw-Sqg" id="Grn-tt-zzk"/>
+                                    <outlet property="jumpsLabel" destination="18a-Z1-FYP" id="11t-2f-pcF"/>
+                                    <outlet property="priceLabel" destination="ipV-W6-Vem" id="ZKp-Tm-2gh"/>
+                                    <outlet property="quantityLabel" destination="QHt-kE-cLL" id="dWI-RT-WIZ"/>
+                                    <outlet property="solarSystemlabel" destination="gfs-K5-hJE" id="imT-I9-XeI"/>
+                                    <outlet property="stationLabel" destination="d0L-9z-KIz" id="f8V-1h-e5W"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4UZ-Rj-aNc" id="Pnk-aZ-7t2"/>
+                            <outlet property="delegate" destination="4UZ-Rj-aNc" id="zKc-eu-UzE"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="dNV-kF-XpI">
+                        <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="KR3-Bu-kXk"/>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rCc-31-HT7">
+                            <rect key="frame" x="85" y="6" width="150" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="Summary ▾">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="onChangeMode:" destination="4UZ-Rj-aNc" eventType="touchUpInside" id="bC4-7b-6Io"/>
+                            </connections>
+                        </button>
+                        <barButtonItem key="rightBarButtonItem" title="Info" id="5Pw-5y-717">
+                            <connections>
+                                <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="He4-ED-1Vg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="Gft-9t-cXH" id="kXr-xZ-Tbv"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rbt-51-5y4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="Gft-9t-cXH">
+                    <connections>
+                        <outlet property="delegate" destination="4UZ-Rj-aNc" id="6h8-j9-Vwq"/>
+                        <outlet property="searchBar" destination="LCA-F3-84x" id="bgo-xP-Hnb"/>
+                        <outlet property="searchContentsController" destination="4UZ-Rj-aNc" id="g5g-u1-gAc"/>
+                        <outlet property="searchResultsDataSource" destination="4UZ-Rj-aNc" id="NcL-FB-eA9"/>
+                        <outlet property="searchResultsDelegate" destination="4UZ-Rj-aNc" id="drL-11-luq"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-221" y="1176"/>
+        </scene>
+        <!--Database Type Variations View Controller - Variations-->
+        <scene sceneID="WxF-GY-BVg">
+            <objects>
+                <tableViewController id="h8M-vq-ZAF" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SN9-mh-0xo" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="TZT-wa-ETv" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TZT-wa-ETv" id="tlY-Zv-p24">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="itz-y8-GPm"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="h8M-vq-ZAF" id="V0k-6E-7mV"/>
+                            <outlet property="delegate" destination="h8M-vq-ZAF" id="UPn-PG-PlL"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Variations" id="1oU-gs-Yli">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="lw7-0b-fOg"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X44-R4-PR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="291" y="446"/>
+        </scene>
+        <!--Database Type Mastery View Controller - Mastery-->
+        <scene sceneID="Qgr-cU-BXc">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" id="eTY-fq-Zqi" customClass="NCDatabaseTypeMasteryViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="CCl-vh-9Qn" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="8Do-OK-vSG" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Do-OK-vSG" id="dtL-a8-Q8m">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="5TQ-1v-M1z" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5TQ-1v-M1z" id="gmt-D2-IXx">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="9bT-PP-PTB"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="eTY-fq-Zqi" id="otY-9x-zG0"/>
+                            <outlet property="delegate" destination="eTY-fq-Zqi" id="LxF-u1-egh"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Mastery" id="wg6-9O-bru">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Fro-xH-ANg"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q8R-2l-rFw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="291" y="1168"/>
+        </scene>
+        <!--Database Certificate Info View Controller-->
+        <scene sceneID="vv0-Cz-Kwk">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseCertificateInfoViewController" id="Gaj-wd-8of" customClass="NCDatabaseCertificateInfoViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IFE-bU-Py4" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="erT-9U-ZEO">
+                            <rect key="frame" x="0.0" y="64" width="320" height="297"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1nz-PG-LVe">
+                                    <rect key="frame" x="15" y="15" width="64" height="64"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="64" id="G0J-Qb-GHS"/>
+                                        <constraint firstAttribute="height" constant="64" id="Plh-jk-tGW"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="6z7-Sz-5Cd" customClass="NCLabel">
+                                    <rect key="frame" x="87" y="53" width="218" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="3lh-aX-v1P" customClass="NCLabel">
+                                    <rect key="frame" x="15" y="79" width="290" height="218"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="1nz-PG-LVe" firstAttribute="leading" secondItem="erT-9U-ZEO" secondAttribute="leading" constant="15" id="IFv-3G-zTv"/>
+                                <constraint firstItem="3lh-aX-v1P" firstAttribute="top" secondItem="6z7-Sz-5Cd" secondAttribute="bottom" id="Jl3-1R-3bM"/>
+                                <constraint firstItem="6z7-Sz-5Cd" firstAttribute="top" relation="greaterThanOrEqual" secondItem="erT-9U-ZEO" secondAttribute="top" constant="4" id="N2s-YR-BaE"/>
+                                <constraint firstAttribute="bottom" secondItem="3lh-aX-v1P" secondAttribute="bottom" id="Osc-iD-Dse"/>
+                                <constraint firstItem="1nz-PG-LVe" firstAttribute="top" secondItem="erT-9U-ZEO" secondAttribute="top" constant="15" id="UzE-EF-gVN"/>
+                                <constraint firstItem="1nz-PG-LVe" firstAttribute="bottom" secondItem="6z7-Sz-5Cd" secondAttribute="bottom" id="XOF-1g-JUA"/>
+                                <constraint firstItem="6z7-Sz-5Cd" firstAttribute="leading" secondItem="1nz-PG-LVe" secondAttribute="trailing" constant="8" id="gI8-K8-9Oj"/>
+                                <constraint firstItem="3lh-aX-v1P" firstAttribute="leading" secondItem="1nz-PG-LVe" secondAttribute="leading" id="lzF-yZ-o5O"/>
+                                <constraint firstAttribute="trailing" secondItem="6z7-Sz-5Cd" secondAttribute="trailing" constant="15" id="sPA-1A-epD"/>
+                                <constraint firstItem="3lh-aX-v1P" firstAttribute="trailing" secondItem="6z7-Sz-5Cd" secondAttribute="trailing" id="w84-HM-gE2"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="8TG-Z4-MgS" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="383" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8TG-Z4-MgS" id="b6r-8p-FzL">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="Uh8-HD-X8G" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="427" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uh8-HD-X8G" id="fI9-ft-OJz">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="SQ9-TP-fSp"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Gaj-wd-8of" id="Db7-zk-T28"/>
+                            <outlet property="delegate" destination="Gaj-wd-8of" id="PId-NE-Sax"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="EbJ-lr-Gys">
+                        <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title="Back" id="618-YC-ss9"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="QUc-Ur-jl3">
+                            <rect key="frame" x="68" y="7" width="185" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Mastery"/>
+                                <segment title="Required For"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="onChangeMode:" destination="Gaj-wd-8of" eventType="valueChanged" id="WfZ-dH-Wsx"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="3lh-aX-v1P" id="hPS-La-zgI"/>
+                        <outlet property="imageView" destination="1nz-PG-LVe" id="wIO-TZ-ZM5"/>
+                        <outlet property="titleLabel" destination="6z7-Sz-5Cd" id="gPN-Ad-NzX"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="REX-7Y-dR2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-221" y="1868"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eHp-nh-qwt">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseNPCViewController" definesPresentationContext="YES" id="Akf-cN-gq9" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ReS-oE-a5w">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="7iv-ne-LEg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KJO-Vn-frZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="2666"/>
+        </scene>
+        <!--DatabaseNPC View Controller - NPC-->
+        <scene sceneID="ytX-d2-sFZ">
+            <objects>
+                <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="opI-2D-O7f">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="RxM-EB-Sff">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="dG5-dx-SwW" id="yVR-2K-HDR"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NpcGroupCell" id="8Ba-fa-lqe" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Ba-fa-lqe" id="dAT-Z9-wDZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dG5-dx-SwW" kind="push" identifier="NCDatabaseNPCViewController" id="TcL-A8-s90"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="hIL-ed-Opm" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hIL-ed-Opm" id="CnK-4u-vZw">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" id="r4q-Am-NEf"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="NPC" id="0Cx-9e-L36">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="38J-Tq-rpg"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="jl9-gW-d3I" id="sUl-5C-dIv"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x9g-WC-pWP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="jl9-gW-d3I">
+                    <connections>
+                        <outlet property="delegate" destination="dG5-dx-SwW" id="EXS-5K-nNI"/>
+                        <outlet property="searchBar" destination="RxM-EB-Sff" id="sit-us-KjN"/>
+                        <outlet property="searchContentsController" destination="dG5-dx-SwW" id="Kcf-Eb-7OM"/>
+                        <outlet property="searchResultsDataSource" destination="dG5-dx-SwW" id="9BZ-it-GQ5"/>
+                        <outlet property="searchResultsDelegate" destination="dG5-dx-SwW" id="nJc-Nw-vjl"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-823" y="2666"/>
+        </scene>
+        <!--Database Type Picker Content View Controller - Categories-->
+        <scene sceneID="2YB-SZ-oay">
+            <objects>
+                <tableViewController storyboardIdentifier="NCDatabaseTypePickerContentViewController" id="zhh-zy-fcT" customClass="NCDatabaseTypePickerContentViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="oEA-vh-hJz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="s52-vn-KKk">
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="zhh-zy-fcT" id="Llu-fB-2q9"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="jqY-FX-45r" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jqY-FX-45r" id="hYC-GJ-N2z">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="zhh-zy-fcT" kind="push" identifier="NCDatabaseTypePickerContentViewController" id="CPb-bF-0vU"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="ibf-6S-WRk" customClass="NCTableViewCell">
+                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ibf-6S-WRk" id="Sm1-iW-lqw">
+                                    <rect key="frame" x="0.0" y="0.0" width="253" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="dFj-mD-7QZ" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="E04-iH-wb4"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Categories" id="9Wu-uS-gXM">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="J2J-vz-rHR"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="EJa-ky-XRU" id="opS-5Q-Eok"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e8R-GH-3Ye" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="EJa-ky-XRU">
+                    <connections>
+                        <outlet property="delegate" destination="zhh-zy-fcT" id="xyj-x2-C6G"/>
+                        <outlet property="searchBar" destination="s52-vn-KKk" id="1Lz-oa-Ah5"/>
+                        <outlet property="searchContentsController" destination="zhh-zy-fcT" id="qA6-Dc-WAS"/>
+                        <outlet property="searchResultsDataSource" destination="zhh-zy-fcT" id="hw3-Ou-ozV"/>
+                        <outlet property="searchResultsDelegate" destination="zhh-zy-fcT" id="I96-KJ-wPw"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-855" y="-292"/>
+        </scene>
+        <!--Database Type Picker View Controller-->
+        <scene sceneID="v9a-vM-rkF">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseTypePickerViewController" definesPresentationContext="YES" id="6ie-Hs-w49" customClass="NCDatabaseTypePickerViewController" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="vJZ-GS-bga">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zhh-zy-fcT" kind="relationship" relationship="rootViewController" id="qyD-gc-O13"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HqW-f6-NcH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1371" y="-292"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="r4q-Am-NEf"/>
+        <segue reference="7iv-ne-LEg"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="Vbq-vg-5yp"/>
+        <segue reference="qyD-gc-O13"/>
+        <segue reference="6M7-4Q-PK5"/>
+        <segue reference="dFJ-0K-RGe"/>
+    </inferredMetricsTieBreakers>
+</document>

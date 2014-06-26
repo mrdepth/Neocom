@@ -23,14 +23,15 @@ INSERT INTO eveDB.invControlTowerResourcePurposes SELECT * FROM invControlTowerR
 INSERT INTO eveDB.invControlTowerResources SELECT * FROM invControlTowerResources;
 INSERT INTO eveDB.invMetaGroups SELECT * FROM invMetaGroups;
 INSERT INTO eveDB.invMetaTypes SELECT * FROM invMetaTypes;
-INSERT INTO eveDB.crtCategories SELECT * FROM crtCategories;
-INSERT INTO eveDB.crtCertificates SELECT * FROM crtCertificates;
-INSERT INTO eveDB.crtClasses SELECT * FROM crtClasses;
-INSERT INTO eveDB.crtRecommendations SELECT * FROM crtRecommendations;
-INSERT INTO eveDB.crtRelationships SELECT * FROM crtRelationships;
+INSERT INTO eveDB.invTraits SELECT * FROM invTraits;
+INSERT INTO eveDB.certCerts SELECT * FROM certCerts;
+INSERT INTO eveDB.certMasteries SELECT * FROM certMasteries;
+INSERT INTO eveDB.certSkills SELECT * FROM certSkills;
 INSERT INTO eveDB.ramAssemblyLineTypes SELECT * FROM ramAssemblyLineTypes;
 INSERT INTO eveDB.ramInstallationTypeContents SELECT * FROM ramInstallationTypeContents;
 INSERT INTO eveDB.ramTypeRequirements SELECT * FROM ramTypeRequirements;
+
+INSERT INTO eveDB.chrRaces SELECT * FROM chrRaces;
 
 UPDATE eveDB.dgmAttributeTypes SET categoryID=9 WHERE categoryID is NULL or categoryID=0;
 
@@ -40,6 +41,8 @@ UPDATE eveDB.dgmAttributeTypes SET iconID=1396 WHERE attributeID=974;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1395 WHERE attributeID=975;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1393 WHERE attributeID=976;
 UPDATE eveDB.dgmAttributeTypes SET iconID=1394 WHERE attributeID=977;
+
+UPDATE eveDB.dgmAttributeTypes SET published = 0 WHERE attributeName like "requiredSkill%Level";
 
 INSERT INTO eveDB.invMetaTypes VALUES (29984,NULL,14);
 INSERT INTO eveDB.invMetaTypes VALUES (29986,NULL,14);
@@ -67,5 +70,19 @@ INSERT INTO eveDB.invMetaTypes
 		FROM dgmTypeAttributes AS a, invTypes AS b
 		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
+CREATE INDEX eveDB.certCerts_groupID ON "certCerts" ("groupid" ASC);
+CREATE INDEX eveDB.certMasteries_certID_typeID ON "certMasteries" ("certID" ASC, "typeID" ASC);
+CREATE INDEX eveDB.certMasteries_typeID ON "certMasteries" ("typeID" ASC);
+CREATE INDEX eveDB.certSkills_certID ON "certSkills" ("certID" ASC);
+CREATE INDEX eveDB.invGroups_categoryID_published_groupName ON "invGroups" ("categoryID" ASC, "published" ASC, "groupName" ASC);
+CREATE INDEX eveDB.invMarketGroups_parentGroupID_marketGroupName ON "invMarketGroups" ("parentGroupID" ASC, "marketGroupName" ASC);
+CREATE INDEX eveDB.invMetaTypes_parentTypeID ON "invMetaTypes" ("parentTypeID" ASC);
+CREATE INDEX eveDB.invTypes_groupID ON "invTypes" ("groupID" ASC);
+CREATE INDEX eveDB.invTypes_marketGroupID ON "invTypes" ("marketGroupID" ASC);
+CREATE INDEX eveDB.invTypes_typeName ON "invTypes" ("typeName" ASC);
+CREATE INDEX eveDB.mapRegions_regionName ON "mapRegions" ("regionName" ASC);
+CREATE INDEX eveDB.mapSolarSystems_regionID_solarSystemName ON "mapSolarSystems" ("regionID" ASC, "solarSystemName" ASC);
+CREATE INDEX eveDB.mapSolarSystems_solarSystemName ON "mapSolarSystems" ("solarSystemName" ASC);
+CREATE INDEX eveDB.invTraits_typeID ON "invTraits" ("typeID" ASC);
 
 --COMMIT TRANSACTION;

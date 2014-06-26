@@ -1,0 +1,50 @@
+//
+//  NCDatabase.h
+//  NCDatabase
+//
+//  Created by Артем Шиманский on 12.05.14.
+//
+//
+
+#ifndef NCDatabase_NCDatabase_h
+#define NCDatabase_NCDatabase_h
+
+#import "NCDBCertCertificate.h"
+#import "NCDBCertMastery.h"
+#import "NCDBCertMasteryLevel.h"
+#import "NCDBCertSkill.h"
+#import "NCDBChrRace.h"
+#import "NCDBEveIcon.h"
+#import "NCDBEveIconImage.h"
+#import "NCDBInvControlTower.h"
+#import "NCDBInvMarketGroup.h"
+#import "NCDBInvControlTowerResource.h"
+#import "NCDBRamAssemblyLineType.h"
+#import "NCDBMapSolarSystem.h"
+#import "NCDBMapDenormalize.h"
+#import "NCDBInvType.h"
+#import "NCDBStaStation.h"
+#import "NCDBRamActivity.h"
+#import "NCDBDgmAttributeType.h"
+#import "NCDBDgmEffect.h"
+#import "NCDBRamTypeRequirement.h"
+#import "NCDBInvCategory.h"
+#import "NCDBInvBlueprintType.h"
+#import "NCDBInvGroup.h"
+#import "NCDBDgmAttributeCategory.h"
+#import "NCDBNpcGroup.h"
+#import "NCDBMapRegion.h"
+#import "NCDBMapConstellation.h"
+#import "NCDBInvControlTowerResourcePurpose.h"
+#import "NCDBInvMetaGroup.h"
+#import "NCDBInvTypeMaterial.h"
+#import "NCDBTxtDescription.h"
+#import "NCDBDgmTypeAttribute.h"
+#import "NCDBRamInstallationTypeContent.h"
+#import "NCDBEveUnit.h"
+#import "NCDBInvTypeRequiredSkill.h"
+#import "NCDBEufeItem.h"
+#import "NCDBEufeItemCategory.h"
+#import "NCDBEufeItemGroup.h"
+
+#endif

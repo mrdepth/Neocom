@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NCTableViewCollapsedHeaderView">
+            <connections>
+                <outlet property="imageView" destination="QD5-iy-KHL" id="4TT-oy-vSf"/>
+                <outlet property="textLabel" destination="8HC-e1-iVZ" id="jVS-T9-CNp"/>
+            </connections>
+        </placeholder>
+        <view opaque="NO" contentMode="scaleToFill" id="T6A-oh-aTz">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="751" image="collapsed.png" translatesAutoresizingMaskIntoConstraints="NO" id="QD5-iy-KHL">
+                    <rect key="frame" x="4" y="10" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="FzW-MJ-icJ"/>
+                        <constraint firstAttribute="height" constant="24" id="z6O-tj-pnL"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8HC-e1-iVZ">
+                    <rect key="frame" x="28" y="13" width="277" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QD5-iy-KHL" firstAttribute="leading" secondItem="T6A-oh-aTz" secondAttribute="leading" constant="4" id="RfW-Am-h1f"/>
+                <constraint firstItem="8HC-e1-iVZ" firstAttribute="leading" secondItem="QD5-iy-KHL" secondAttribute="trailing" id="cHM-Q9-FOs"/>
+                <constraint firstAttribute="trailing" secondItem="8HC-e1-iVZ" secondAttribute="trailing" constant="15" id="g4T-Ei-YXK"/>
+                <constraint firstAttribute="centerY" secondItem="QD5-iy-KHL" secondAttribute="centerY" id="y10-aX-20X"/>
+                <constraint firstItem="8HC-e1-iVZ" firstAttribute="centerY" secondItem="QD5-iy-KHL" secondAttribute="centerY" id="yLn-Us-iYW"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="collapsed.png" width="32" height="32"/>
+    </resources>
+</document>

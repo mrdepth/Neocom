@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B46C8998-66CD-4EC1-93F8-726610EFEC87</string>
+	<key>IDESourceControlProjectName</key>
+	<string>EVENPCBuilder</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9F99D383-5B58-4B17-A552-C39236B71C79</key>
+		<string>ssh://github.com/mrdepth/EVEUniverse.git</string>
+		<key>B642EC0C-2295-4A71-A2F2-9C1CE80F777B</key>
+		<string>https://github.com/mrdepth/EVEOnlineAPI.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>dbTools/EVENPCBuilder/EVENPCBuilder.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9F99D383-5B58-4B17-A552-C39236B71C79</key>
+		<string>../../../..</string>
+		<key>B642EC0C-2295-4A71-A2F2-9C1CE80F777B</key>
+		<string>../../../../ThirdParty/EVEOnlineAPI</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/mrdepth/EVEUniverse.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9F99D383-5B58-4B17-A552-C39236B71C79</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B642EC0C-2295-4A71-A2F2-9C1CE80F777B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>EVEOnlineAPI</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9F99D383-5B58-4B17-A552-C39236B71C79</string>
+			<key>IDESourceControlWCCName</key>
+			<string>EVEUniverse</string>
+		</dict>
+	</array>
+</dict>
+</plist>

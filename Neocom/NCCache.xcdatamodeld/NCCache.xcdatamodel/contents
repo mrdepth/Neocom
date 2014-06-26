@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Record" representedClassName="NCCacheRecord" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="expireDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="recordID" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RecordData" inverseName="record" inverseEntity="RecordData" syncable="YES"/>
+    </entity>
+    <entity name="RecordData" representedClassName="NCCacheRecordData" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Transformable" valueTransformerName="NCValueTransformer" syncable="YES"/>
+        <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="data" inverseEntity="Record" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Record" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="RecordData" positionX="0" positionY="0" width="128" height="75"/>
+    </elements>
+</model>

@@ -209,14 +209,15 @@
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy)cachePolicy {
-	if (self.skillQueue.cacheExpireDate) {
-		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
-		NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-		if (delay > 0)
-			[self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
-		else
-			[self reload];
-	}
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(reload) object:nil];
+	NSTimeInterval delay = 0;
+	if (self.skillQueue)
+		delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
+	else if (self.characterSheet)
+		delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
+	if (delay > 0)
+		[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+
 	if (self.marketStat.cacheExpireDate)
 		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
 	else
@@ -262,11 +263,14 @@
 									 self.skillQueue = skillQueue;
 									 [self update];
 									 
-									 if (self.skillQueue) {
-										 NSTimeInterval delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
-										 if (delay > 0)
-											 [self performSelector:@selector(reload) withObject:nil afterDelay:[self.skillQueue.cacheExpireDate timeIntervalSinceNow]];
-									 }
+									 NSTimeInterval delay = 0;
+									 if (self.skillQueue)
+										delay = [self.skillQueue.cacheExpireDate timeIntervalSinceNow];
+									 else if (self.characterSheet)
+										 delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
+									 if (delay > 0)
+										 [self performSelector:@selector(reload) withObject:nil afterDelay:delay];
+
 								 }
 							 }];
 }

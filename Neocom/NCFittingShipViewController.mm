@@ -98,7 +98,7 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-											 @synchronized(self) {
+//											 @synchronized(self) {
 												 if (!fit.pilot) {
 													 fit.pilot = self.engine->getGang()->addPilot();
 													 NCAccount* account = [NCAccount currentAccount];
@@ -112,7 +112,7 @@
 													 fit.character = character;
 													 [fit load];
 												 }
-											 }
+//											 }
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
@@ -475,7 +475,7 @@
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
-												 @synchronized(self) {
+												 //@synchronized(self) {
 													 std::set<eufe::TypeID> typeIDs;
 													 eufe::Character* character = self.fit.pilot;
 													 eufe::Ship* ship = character->getShip();
@@ -499,7 +499,7 @@
 
 													 for (auto typeID: typeIDs)
 														 [trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:typeID]];
-												 }
+												 //}
 											 }
 								 completionHandler:^(NCTask *task) {
 									 if (![task isCancelled]) {

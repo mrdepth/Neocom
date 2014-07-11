@@ -104,14 +104,14 @@
 	self.sections = sections;
 
 	if (self.tableView.dataSource == self) {
-		[self.tableView reloadData];
+//		[self.tableView reloadData];
 	}
 
-	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+/*	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
 //														@synchronized(self.controller) {
-															
+*/
 															totalPG = ship->getTotalPowerGrid();
 															usedPG = ship->getPowerGridUsed();
 															
@@ -126,9 +126,9 @@
 															self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 															self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 //														}
-													}
-										completionHandler:^(NCTask *task) {
-											if (![task isCancelled]) {
+//													}
+//										completionHandler:^(NCTask *task) {
+//											if (![task isCancelled]) {
 												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
 												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
@@ -139,8 +139,8 @@
 												if (self.tableView.dataSource == self) {
 													[self.tableView reloadData];
 												}
-											}
-										}];
+//											}
+//										}];
 }
 
 - (NCFittingShipModulesTableHeaderView*) tableHeaderView {

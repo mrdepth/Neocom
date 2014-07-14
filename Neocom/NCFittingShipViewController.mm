@@ -95,12 +95,14 @@
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
 	
+	std::shared_ptr<eufe::Engine> engine = self.engine;
+	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 //											 @synchronized(self) {
 												 if (!fit.pilot) {
-													 fit.pilot = self.engine->getGang()->addPilot();
+													 fit.pilot = engine->getGang()->addPilot();
 													 NCAccount* account = [NCAccount currentAccount];
 													 NCFitCharacter* character;
 													 
@@ -617,12 +619,14 @@
 	NCShipFit* fit = sourceViewController.selectedFit;
 	if (!fit)
 		return;
+	std::shared_ptr<eufe::Engine> engine = self.engine;
+	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 @synchronized(self) {
 												 if (!fit.pilot) {
-													 fit.pilot = self.engine->getGang()->addPilot();
+													 fit.pilot = engine->getGang()->addPilot();
 													 NCAccount* account = [NCAccount currentAccount];
 													 NCFitCharacter* character;
 													 

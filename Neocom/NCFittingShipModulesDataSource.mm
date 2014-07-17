@@ -245,6 +245,7 @@
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= section.modules.size()) {
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
+		NCDBInvType* type = [self.controller typeWithItem:ship];
 		NSString* title;
 		NSArray* conditions;
 		NCDBEufeItemCategory* category;
@@ -292,6 +293,7 @@
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID",
 							   @"dgmTypeEffects.effectID = 3772",
 							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]];
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
 				break;
 			}
 			default:

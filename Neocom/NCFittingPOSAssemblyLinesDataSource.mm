@@ -66,7 +66,7 @@
 																}
 															}
 															sections = [[assemblyLinesTypes allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"assemblyLineType.assemblyLineTypeName" ascending:YES]]];
-															sections = [sections arrayGroupedByKey:@"assemblyLineType.activityID"];
+															sections = [sections arrayGroupedByKey:@"assemblyLineType.activity.activityID"];
 															sections = [sections sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 																NCFittingPOSAssemblyLinesDataSourceRow* a = [obj1 objectAtIndex:0];
 																NCFittingPOSAssemblyLinesDataSourceRow* b = [obj2 objectAtIndex:0];

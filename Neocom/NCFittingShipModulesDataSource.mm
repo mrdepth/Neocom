@@ -364,7 +364,12 @@
 			
 			if (charge) {
 				type = [self.controller typeWithItem:charge];
-				cell.chargeLabel.text = type.typeName;
+				float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
+				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
+				if (volume > 0 && capacity > 0)
+					cell.chargeLabel.text = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
+				else
+					cell.chargeLabel.text = type.typeName;
 			}
 			else
 				cell.chargeLabel.text = nil;

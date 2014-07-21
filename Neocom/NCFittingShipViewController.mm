@@ -176,16 +176,16 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) willMoveToParentViewController:(UIViewController *)parent {
-	[super willMoveToParentViewController:parent];
-	if (parent == nil) {
+- (void) viewWillDisappear:(BOOL)animated {
+	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		for (NCShipFit* fit in self.fits) {
 			if (fit.loadout)
 				[fit save];
 		}
-		
+		self.fits = nil;
 		[[NCStorage sharedStorage] saveContext];
 	}
+	[super viewWillDisappear:animated];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

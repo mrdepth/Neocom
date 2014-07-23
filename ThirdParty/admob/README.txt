@@ -1,8 +1,8 @@
-============================
-Google AdMob Ads SDK for iOS
-============================
+=============================
+Google Mobile Ads SDK for iOS
+=============================
 
-This is the Google AdMob Ads SDK for iOS.
+This is the Google Mobile Ads SDK for iOS.
 
 Requirements:
 - An AdMob site ID or DoubleClick for Publishers account.

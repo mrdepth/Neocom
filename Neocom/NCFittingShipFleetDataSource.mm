@@ -170,6 +170,13 @@
 		[boosterActions insertObject:removeBooster atIndex:0];
 	
 	void (^remove)() = ^(){
+		if (self.controller.fit == fit) {
+			NSInteger i = [self.controller.fits indexOfObject:fit];
+			if (i > 0)
+				self.controller.fit = self.controller.fits[i - 1];
+			else
+				self.controller.fit = self.controller.fits[i + 1];
+		}
 		[self.controller.fits removeObject:fit];
 		gang->removePilot(character);
 		[self.controller reload];

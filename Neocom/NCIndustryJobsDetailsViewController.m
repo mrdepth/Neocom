@@ -77,7 +77,7 @@
 		row.object = self.job.blueprintType;
 		[rows addObject:row];
 	}
-	if (self.job.outputLocation) {
+	if (self.job.productType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output", nil)
 																										 desciption:self.job.productType.typeName
 																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]

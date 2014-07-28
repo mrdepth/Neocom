@@ -58,7 +58,7 @@
 }
 
 - (void) setProductType:(NCDBInvType *)productType {
-	return objc_setAssociatedObject(self, @"product", productType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	return objc_setAssociatedObject(self, @"productType", productType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (NSString*) localizedStateWithCurrentDate:(NSDate*) date {

@@ -285,7 +285,7 @@
 		
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@ ISK", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
-				[NSNumberFormatter neocomLocalizedStringFromInteger:self.characterSheet.balance]];
+				[NSString shortStringWithFloat:self.characterSheet.balance unit:NSLocalizedString(@"ISK", nil)]];
 	}
 	else
 		return nil;

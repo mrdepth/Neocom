@@ -101,9 +101,9 @@
 	for (NSArray* array in @[self.activeJobs, self.finishedJobs]) {
 		for (EVEIndustryJobsItem* job in array) {
 			if (job.blueprintLocationID)
-				locations[@(job.blueprintLocationID)] = [NSNumber numberWithInteger:job.blueprintLocationID];
+				locations[@(job.blueprintLocationID)] = job.blueprintLocation;
 			if (job.outputLocationID)
-				locations[@(job.outputLocationID)] = [NSNumber numberWithLongLong:job.outputLocationID];
+				locations[@(job.outputLocationID)] = job.outputLocation;
 			if (job.installerName)
 				names[@(job.installerID)] = job.installerName;
 		}
@@ -244,6 +244,8 @@
 												 NSMutableDictionary* activities = [NSMutableDictionary new];
 
 												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
+													 if (job.blueprintLocationID)
+														 [locationsIDs addObject:@(job.blueprintLocationID)];
 													 if (job.outputLocationID)
 														 [locationsIDs addObject:@(job.outputLocationID)];
 													 if (job.installerID)
@@ -258,6 +260,17 @@
 															 }
 														 }
 														 job.productTypeID = type.typeID;
+													 }
+													 
+													 if (job.blueprintTypeID) {
+														 NCDBInvType* type = types[@(job.blueprintTypeID)];
+														 if (!type) {
+															 type = [NCDBInvType invTypeWithTypeID:job.blueprintTypeID];
+															 if (type) {
+																 types[@(job.blueprintTypeID)] = type;
+															 }
+														 }
+														 job.blueprintType = type;
 													 }
 													 
 													 if (job.activityID) {
@@ -287,6 +300,12 @@
 																									  error:nil
 																							progressHandler:nil];
                          
+												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
+													 job.blueprintLocation = locationNames[@(job.blueprintLocationID)];
+													 job.outputLocation = locationNames[@(job.outputLocationID)];
+													 job.installerName = characterName.characters[@(job.installerID)];
+												 }
+												 
 												 [activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
 												 [finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
 												 

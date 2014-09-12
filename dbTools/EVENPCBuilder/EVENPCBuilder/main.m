@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EVEDBAPI.h"
 
 int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 	int groupID = parentGroupID + 1;
@@ -26,7 +27,7 @@ int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 int main(int argc, const char * argv[])
 {
 	@autoreleasepool {
-		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.json"]
+		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"/Users/admin/Work/git/Neocom/dbTools/EVENPCBuilder/npc.json"]
 													   options:0
 														 error:nil];
 		NSMutableArray* rows = [NSMutableArray new];
@@ -40,7 +41,7 @@ CREATE TABLE \"npcGroup\" (\n\
 PRIMARY KEY (\"npcGroupID\")\n\
 );\n"];
 		parse(rows, npc, 0);
-		[[rows componentsJoinedByString:@"\n"] writeToFile:@"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.sql"
+		[[rows componentsJoinedByString:@"\n"] writeToFile:@"/Users/admin/Work/git/Neocom/dbTools/EVENPCBuilder/npc.sql"
 												atomically:YES
 												  encoding:NSUTF8StringEncoding
 													 error:nil];

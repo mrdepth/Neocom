@@ -117,9 +117,6 @@
 													 title:NCTaskManagerDefaultTitle
 													 block:^(NCTask *task) {
 														 NCStorage* storage = [NCStorage cloudStorage];
-														 if (!storage)
-															 storage = [NCStorage fallbackStorage];
-
 														 [NCStorage setSharedStorage:storage];
 														 NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 														 [NCAccountsManager setSharedManager:accountsManager];
@@ -263,8 +260,6 @@
 													 title:NCTaskManagerDefaultTitle
 													 block:^(NCTask *task) {
 														 storage = [NCStorage cloudStorage];
-														 if (!storage)
-															 storage = [NCStorage fallbackStorage];
 														 accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 													 }
 										 completionHandler:^(NCTask *task) {

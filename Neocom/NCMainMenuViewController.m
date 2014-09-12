@@ -217,13 +217,9 @@
 		delay = [self.characterSheet.cacheExpireDate timeIntervalSinceNow];
 	if (delay > 0)
 		[self performSelector:@selector(reload) withObject:nil afterDelay:delay];
-	else
-		[self reload];
 
 	if (self.marketStat.cacheExpireDate)
-		delay = [self.marketStat.cacheExpireDate timeIntervalSinceNow];
-	if (delay > 0)
-		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:delay];
+		[self performSelector:@selector(updatePrices) withObject:nil afterDelay:[self.marketStat.cacheExpireDate timeIntervalSinceNow]];
 	else
 		[self updatePrices];
 	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
@@ -289,7 +285,7 @@
 		
 		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@ ISK", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
-				[NSString shortStringWithFloat:self.characterSheet.balance unit:NSLocalizedString(@"ISK", nil)]];
+				[NSNumberFormatter neocomLocalizedStringFromInteger:self.characterSheet.balance]];
 	}
 	else
 		return nil;

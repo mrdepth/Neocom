@@ -69,26 +69,26 @@
 																		 imageURL:nil]];
 	
 	
-	if (self.job.blueprintType) {
+	if (self.job.installedItemType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Input", nil)
-																										 desciption:self.job.blueprintType.typeName
-																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:self.job.installedItemType.typeName
+																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.blueprintType;
+		row.object = self.job.installedItemType;
 		[rows addObject:row];
 	}
-	if (self.job.productType) {
+	if (self.job.outputType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output", nil)
-																										 desciption:self.job.productType.typeName
-																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:self.job.outputType.typeName
+																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.productType;
+		row.object = self.job.outputType;
 		[rows addObject:row];
 	}
 	
-	if (self.job.blueprintLocation)
+	if (self.job.installedItemLocation)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Installed Location", nil)
-																		   desciption:self.job.blueprintLocation.name
+																		   desciption:self.job.installedItemLocation.name
 																				 icon:nil
 																			 imageURL:nil]];
 	if (self.job.outputLocation)
@@ -108,18 +108,32 @@
 																			 icon:nil
 																		 imageURL:nil]];
 	
+	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Productivity Level", nil)
+																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemProductivityLevel]
+																			 icon:nil
+																		 imageURL:nil]];
+	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Material Level", nil)
+																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemMaterialLevel]
+																			 icon:nil
+																		 imageURL:nil]];
+	
 	NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-
-	if (self.job.startDate)
-		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Begin Production Time", nil)
-																		   desciption:[dateFormatter stringFromDate:self.job.startDate]
+	
+	if (self.job.installTime)
+		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Install Time", nil)
+																		   desciption:[dateFormatter stringFromDate:self.job.installTime]
 																				 icon:nil
 																			 imageURL:nil]];
-	if (self.job.endDate)
+	if (self.job.beginProductionTime)
+		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Begin Production Time", nil)
+																		   desciption:[dateFormatter stringFromDate:self.job.beginProductionTime]
+																				 icon:nil
+																			 imageURL:nil]];
+	if (self.job.endProductionTime)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"End Production Time", nil)
-																		   desciption:[dateFormatter stringFromDate:self.job.endDate]
+																		   desciption:[dateFormatter stringFromDate:self.job.endProductionTime]
 																				 icon:nil
 																			 imageURL:nil]];
 	

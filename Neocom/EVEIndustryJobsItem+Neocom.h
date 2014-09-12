@@ -12,12 +12,12 @@
 @class NCDBRamActivity;
 @class NCDBInvType;
 @interface EVEIndustryJobsItem (Neocom)
-@property (nonatomic, strong) NCLocationsManagerItem* blueprintLocation;
+@property (nonatomic, strong) NCLocationsManagerItem* installedItemLocation;
 @property (nonatomic, strong) NCLocationsManagerItem* outputLocation;
 @property (nonatomic, strong) NSString* installerName;
 @property (nonatomic, strong) NCDBRamActivity* activity;
-@property (nonatomic, strong) NCDBInvType* blueprintType;
-@property (nonatomic, strong) NCDBInvType* productType;
+@property (nonatomic, strong) NCDBInvType* installedItemType;
+@property (nonatomic, strong) NCDBInvType* outputType;
 
 - (NSString*) localizedStateWithCurrentDate:(NSDate*) date;
 @end

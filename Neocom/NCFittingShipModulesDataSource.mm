@@ -86,32 +86,30 @@
 	eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
 	int n = sizeof(slots) / sizeof(eufe::Module::Slot);
 	
-//	@synchronized(self.controller) {
-		for (int i = 0; i < n; i++) {
-			int numberOfSlots = ship->getNumberOfSlots(slots[i]);
-			if (numberOfSlots > 0) {
-				eufe::ModulesList modules;
-				ship->getModules(slots[i], std::inserter(modules, modules.end()));
-				
-				NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
-				section.slot = slots[i];
-				section.numberOfSlots = numberOfSlots;
-				section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
-				[sections addObject:section];
-			}
+	for (int i = 0; i < n; i++) {
+		int numberOfSlots = ship->getNumberOfSlots(slots[i]);
+		if (numberOfSlots > 0) {
+			eufe::ModulesList modules;
+			ship->getModules(slots[i], std::inserter(modules, modules.end()));
+			
+			NCFittingShipModulesDataSourceSection* section = [NCFittingShipModulesDataSourceSection new];
+			section.slot = slots[i];
+			section.numberOfSlots = numberOfSlots;
+			section.modules.insert(section.modules.begin(), modules.begin(), modules.end());
+			[sections addObject:section];
 		}
-//	}
+	}
 	self.sections = sections;
 
 	if (self.tableView.dataSource == self) {
-//		[self.tableView reloadData];
+		[self.tableView reloadData];
 	}
 
-/*	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-//														@synchronized(self.controller) {
-*/
+														@synchronized(self.controller) {
+															
 															totalPG = ship->getTotalPowerGrid();
 															usedPG = ship->getPowerGridUsed();
 															
@@ -125,10 +123,10 @@
 															self.totalTurretHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_TURRET);
 															self.usedMissileHardpoints = ship->getUsedHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
 															self.totalMissileHardpoints = ship->getNumberOfHardpoints(eufe::Module::HARDPOINT_LAUNCHER);
-//														}
-//													}
-//										completionHandler:^(NCTask *task) {
-//											if (![task isCancelled]) {
+														}
+													}
+										completionHandler:^(NCTask *task) {
+											if (![task isCancelled]) {
 												self.tableHeaderView.powerGridLabel.text = [NSString stringWithTotalResources:totalPG usedResources:usedPG unit:@"MW"];
 												self.tableHeaderView.powerGridLabel.progress = totalPG > 0 ? usedPG / totalPG : 0;
 												self.tableHeaderView.cpuLabel.text = [NSString stringWithTotalResources:totalCPU usedResources:usedCPU unit:@"tf"];
@@ -139,8 +137,8 @@
 												if (self.tableView.dataSource == self) {
 													[self.tableView reloadData];
 												}
-//											}
-//										}];
+											}
+										}];
 }
 
 - (NCFittingShipModulesTableHeaderView*) tableHeaderView {
@@ -245,7 +243,6 @@
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.row >= section.modules.size()) {
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
-		NCDBInvType* type = [self.controller typeWithItem:ship];
 		NSString* title;
 		NSArray* conditions;
 		NCDBEufeItemCategory* category;
@@ -293,7 +290,6 @@
 				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID",
 							   @"dgmTypeEffects.effectID = 3772",
 							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]];
-				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
 				break;
 			}
 			default:
@@ -353,7 +349,7 @@
 		}
 	}
 	else {
-//		@synchronized(self.controller) {
+		@synchronized(self.controller) {
 			NCFittingShipModuleCell* cell = (NCFittingShipModuleCell*) tableViewCell;
 			eufe::Module* module = section.modules[indexPath.row];
 			NCDBInvType* type = [self.controller typeWithItem:module];
@@ -364,12 +360,7 @@
 			
 			if (charge) {
 				type = [self.controller typeWithItem:charge];
-				float volume = charge->getAttribute(eufe::VOLUME_ATTRIBUTE_ID)->getValue();
-				float capacity = module->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-				if (volume > 0 && capacity > 0)
-					cell.chargeLabel.text = [NSString stringWithFormat:@"%@ x %d", type.typeName, (int)(capacity / volume)];
-				else
-					cell.chargeLabel.text = type.typeName;
+				cell.chargeLabel.text = type.typeName;
 			}
 			else
 				cell.chargeLabel.text = nil;
@@ -416,7 +407,7 @@
 				cell.stateImageView.image = nil;
 			
 			cell.targetImageView.image = module->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
-//		}
+		}
 	}
 }
 

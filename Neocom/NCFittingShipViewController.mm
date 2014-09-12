@@ -95,14 +95,12 @@
 		self.fits = [[NSMutableArray alloc] initWithObjects:self.fit, nil];
 	NCShipFit* fit = self.fit;
 	
-	std::shared_ptr<eufe::Engine> engine = self.engine;
-	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
-//											 @synchronized(self) {
+											 @synchronized(self) {
 												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
+													 fit.pilot = self.engine->getGang()->addPilot();
 													 NCAccount* account = [NCAccount currentAccount];
 													 NCFitCharacter* character;
 													 
@@ -114,7 +112,7 @@
 													 fit.character = character;
 													 [fit load];
 												 }
-//											 }
+											 }
 										 }
 							 completionHandler:^(NCTask *task) {
 								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
@@ -176,16 +174,16 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+- (void) willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
+	if (parent == nil) {
 		for (NCShipFit* fit in self.fits) {
 			if (fit.loadout)
 				[fit save];
 		}
-		self.fits = nil;
+		
 		[[NCStorage sharedStorage] saveContext];
 	}
-	[super viewWillDisappear:animated];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -477,7 +475,7 @@
 		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 											 title:NCTaskManagerDefaultTitle
 											 block:^(NCTask *task) {
-												 //@synchronized(self) {
+												 @synchronized(self) {
 													 std::set<eufe::TypeID> typeIDs;
 													 eufe::Character* character = self.fit.pilot;
 													 eufe::Ship* ship = character->getShip();
@@ -501,7 +499,7 @@
 
 													 for (auto typeID: typeIDs)
 														 [trainingQueue addRequiredSkillsForType:[NCDBInvType invTypeWithTypeID:typeID]];
-												 //}
+												 }
 											 }
 								 completionHandler:^(NCTask *task) {
 									 if (![task isCancelled]) {
@@ -619,14 +617,12 @@
 	NCShipFit* fit = sourceViewController.selectedFit;
 	if (!fit)
 		return;
-	std::shared_ptr<eufe::Engine> engine = self.engine;
-	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 @synchronized(self) {
 												 if (!fit.pilot) {
-													 fit.pilot = engine->getGang()->addPilot();
+													 fit.pilot = self.engine->getGang()->addPilot();
 													 NCAccount* account = [NCAccount currentAccount];
 													 NCFitCharacter* character;
 													 

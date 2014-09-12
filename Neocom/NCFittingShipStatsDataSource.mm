@@ -111,7 +111,7 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-//														@synchronized(self.controller) {
+														@synchronized(self.controller) {
 															eufe::Character* character = self.controller.fit.pilot;
 															if (!character)
 																return;
@@ -194,7 +194,7 @@
 															stats.warpSpeed = ship->getWarpSpeed();
 															
 															stats.damagePattern = self.controller.damagePattern;
-//														}
+														}
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
@@ -503,7 +503,7 @@
 													block:^(NCTask *task) {
 														NSCountedSet* types = [NSCountedSet set];
 														__block int32_t shipTypeID;
-//														@synchronized(self.controller) {
+														@synchronized(self.controller) {
 
 															eufe::Character* character = self.controller.fit.pilot;
 															eufe::Ship* ship = character->getShip();
@@ -516,7 +516,7 @@
 															
 															for (auto i: ship->getDrones())
 																[types addObject:@(i->getTypeID())];
-//														}
+														}
 														
 														NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
 														__block float shipPrice = 0;

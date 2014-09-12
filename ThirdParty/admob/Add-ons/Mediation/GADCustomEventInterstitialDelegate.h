@@ -1,6 +1,6 @@
 //
 //  GADCustomEventInterstitialDelegate.h
-//  Google Mobile Ads SDK
+//  Google AdMob Ads SDK
 //
 //  Copyright 2012 Google Inc. All rights reserved.
 //

@@ -1,8 +1,8 @@
 //
 //  GADAdNetworkExtras.h
-//  Google Mobile Ads SDK
+//  Google Ads iOS SDK
 //
-//  Copyright 2012 Google Inc. All rights reserved.
+//  Copyright (c) 2012 Google Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

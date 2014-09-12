@@ -82,7 +82,7 @@
 													block:^(NCTask *task) {
 														NSMutableDictionary* structuresDic = [NSMutableDictionary new];
 
-//														@synchronized(self.controller) {
+														@synchronized(self.controller) {
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 															
 															
@@ -102,7 +102,7 @@
 															
 															totalCPU = controlTower->getTotalCpu();
 															usedCPU = controlTower->getCpuUsed();
-//														}
+														}
 															
 														rows = [[[structuresDic allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]] mutableCopy];
 														
@@ -502,7 +502,7 @@
 	else {
 		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
 		if (![row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-//			@synchronized(self.controller) {
+			@synchronized(self.controller) {
 				eufe::Structure* structure = row.structures.front();
 				
 				int optimal = (int) structure->getMaxRange();
@@ -549,7 +549,7 @@
 						cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
 						break;
 				}
-//			}
+			}
 		}
 	}
 }

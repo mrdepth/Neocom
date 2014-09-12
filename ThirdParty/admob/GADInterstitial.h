@@ -1,6 +1,6 @@
 //
 //  GADInterstitial.h
-//  Google Mobile Ads SDK
+//  Google AdMob Ads SDK
 //
 //  Copyright 2011 Google Inc. All rights reserved.
 //
@@ -34,9 +34,8 @@
 /// Remember to nil the delegate before deallocating this object.
 @property(nonatomic, weak) id<GADInterstitialDelegate> delegate;
 
-/// Optional delegate object that receives in-app purchase notifications from this ad. Required for
-/// the custom in-app purchase flow, but ignored when using the default in-app purchase flow.
-/// Remember to nil the delegate before deallocating this object.
+/// Optional delegate object that receives In-App Purchase (IAP) notifications from this
+/// GADInterstital ad. Remember to nil the delegate before deallocating this object.
 @property(nonatomic, weak) id<GADInAppPurchaseDelegate> inAppPurchaseDelegate;
 
 #pragma mark Making an Ad Request
@@ -56,7 +55,7 @@
 /// to indicate that your app should continue when the interstitial has finished.
 - (void)loadAndDisplayRequest:(GADRequest *)request
                   usingWindow:(UIWindow *)window
-                 initialImage:(UIImage *)image __attribute__((deprecated(" use loadRequest:.")));
+                 initialImage:(UIImage *)image;
 
 #pragma mark Post-Request
 

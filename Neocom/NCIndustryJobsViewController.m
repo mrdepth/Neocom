@@ -34,32 +34,39 @@
 			self.activeJobs = @[];
 		if (!self.finishedJobs)
 			self.finishedJobs = @[];
+
+		NSDictionary* locations = [aDecoder decodeObjectForKey:@"locations"];
+		NSDictionary* names = [aDecoder decodeObjectForKey:@"names"];
 		
 		NSMutableDictionary* types = [NSMutableDictionary new];
 		NSMutableDictionary* activities = [NSMutableDictionary new];
 		
 		for (NSArray* array in @[self.activeJobs, self.finishedJobs]) {
 			for (EVEIndustryJobsItem* job in array) {
-				if (job.blueprintTypeID) {
-					NCDBInvType* type = types[@(job.blueprintTypeID)];
+				job.installedItemLocation = locations[@(job.installedItemLocationID)];
+				job.outputLocation = locations[@(job.outputLocationID)];
+				job.installerName = names[@(job.installerID)];
+				
+				if (job.installedItemTypeID) {
+					NCDBInvType* type = types[@(job.installedItemTypeID)];
 					if (!type) {
-						type = [NCDBInvType invTypeWithTypeID:job.blueprintTypeID];
+						type = [NCDBInvType invTypeWithTypeID:job.installedItemTypeID];
 						if (type) {
-							types[@(job.blueprintTypeID)] = type;
+							types[@(job.installedItemTypeID)] = type;
 						}
 					}
-					job.blueprintType = type;
+					job.installedItemType = type;
 				}
 				
-				if (job.productTypeID) {
-					NCDBInvType* type = types[@(job.productTypeID)];
+				if (job.outputTypeID) {
+					NCDBInvType* type = types[@(job.outputTypeID)];
 					if (!type) {
-						type = [NCDBInvType invTypeWithTypeID:job.productTypeID];
+						type = [NCDBInvType invTypeWithTypeID:job.outputTypeID];
 						if (type) {
-							types[@(job.productTypeID)] = type;
+							types[@(job.outputTypeID)] = type;
 						}
 					}
-					job.productType = type;
+					job.outputType = type;
 				}
 				
 				if (job.activityID) {
@@ -100,9 +107,9 @@
 	
 	for (NSArray* array in @[self.activeJobs, self.finishedJobs]) {
 		for (EVEIndustryJobsItem* job in array) {
-			if (job.blueprintLocationID)
-				locations[@(job.blueprintLocationID)] = job.blueprintLocation;
-			if (job.outputLocationID)
+			if (job.installedItemLocation)
+				locations[@(job.installedItemLocationID)] = job.installedItemLocation;
+			if (job.outputLocation)
 				locations[@(job.outputLocationID)] = job.outputLocation;
 			if (job.installerName)
 				names[@(job.installerID)] = job.installerName;
@@ -244,33 +251,33 @@
 												 NSMutableDictionary* activities = [NSMutableDictionary new];
 
 												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
-													 if (job.blueprintLocationID)
-														 [locationsIDs addObject:@(job.blueprintLocationID)];
+													 if (job.installedItemLocationID)
+														 [locationsIDs addObject:@(job.installedItemLocationID)];
 													 if (job.outputLocationID)
 														 [locationsIDs addObject:@(job.outputLocationID)];
 													 if (job.installerID)
 														 [characterIDs addObject:@(job.installerID)];
 													 
-													 if (job.productTypeID) {
-														 NCDBInvType* type = types[@(job.productTypeID)];
+													 if (job.installedItemTypeID) {
+														 NCDBInvType* type = types[@(job.installedItemTypeID)];
 														 if (!type) {
-															 type = [NCDBInvType invTypeWithTypeID:job.productTypeID];
+															 type = [NCDBInvType invTypeWithTypeID:job.installedItemTypeID];
 															 if (type) {
-																 types[@(job.productTypeID)] = type;
+																 types[@(job.installedItemTypeID)] = type;
 															 }
 														 }
-														 job.productTypeID = type.typeID;
+														 job.installedItemType = type;
 													 }
 													 
-													 if (job.blueprintTypeID) {
-														 NCDBInvType* type = types[@(job.blueprintTypeID)];
+													 if (job.outputTypeID) {
+														 NCDBInvType* type = types[@(job.outputTypeID)];
 														 if (!type) {
-															 type = [NCDBInvType invTypeWithTypeID:job.blueprintTypeID];
+															 type = [NCDBInvType invTypeWithTypeID:job.outputTypeID];
 															 if (type) {
-																 types[@(job.blueprintTypeID)] = type;
+																 types[@(job.outputTypeID)] = type;
 															 }
 														 }
-														 job.blueprintType = type;
+														 job.outputType = type;
 													 }
 													 
 													 if (job.activityID) {
@@ -283,9 +290,9 @@
 														 }
 														 job.activity = activity;
 													 }
-//													 if (job.completed)
-//														 [finishedJobs addObject:job];
-//													 else
+													 if (job.completed)
+														 [finishedJobs addObject:job];
+													 else
 														 [activeJobs addObject:job];
 												 }
 												 
@@ -299,15 +306,14 @@
 																								cachePolicy:NSURLRequestUseProtocolCachePolicy
 																									  error:nil
 																							progressHandler:nil];
-                         
+												 
 												 for (EVEIndustryJobsItem* job in industryJobs.jobs) {
-													 job.blueprintLocation = locationNames[@(job.blueprintLocationID)];
+													 job.installedItemLocation = locationNames[@(job.installedItemLocationID)];
 													 job.outputLocation = locationNames[@(job.outputLocationID)];
 													 job.installerName = characterName.characters[@(job.installerID)];
 												 }
-												 
-												 [activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endDate" ascending:YES]]];
-												 [finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"completedDate" ascending:NO]]];
+												 [activeJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endProductionTime" ascending:YES]]];
+												 [finishedJobs sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"endProductionTime" ascending:NO]]];
 												 
 												 data.activeJobs = activeJobs;
 												 data.finishedJobs = finishedJobs;
@@ -349,24 +355,33 @@
 	NCIndustryJobsCell* cell = (NCIndustryJobsCell*) tableViewCell;
 	cell.object = row;
 	
-	if (row.blueprintType) {
-		cell.typeImageView.image = row.blueprintType.icon ? row.blueprintType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		cell.titleLabel.text = row.blueprintType.typeName;
+	if (row.installedItemType) {
+		cell.typeImageView.image = row.installedItemType.icon ? row.installedItemType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+		cell.titleLabel.text = row.installedItemType.typeName;
 	}
 	else {
 		cell.typeImageView.image = [[[NCDBEveIcon eveIconWithIconFile:@"74_14"] image] image];
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.blueprintType];
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Unknown type %d", nil), row.installedItemTypeID];
 	}
 	
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endDate];
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.endProductionTime];
 	cell.activityLabel.text = row.activity.activityName;
 	cell.activityImageView.image = row.activity.icon.image.image;
 	cell.characterLabel.text = row.installerName;
-	cell.locationLabel.text = row.blueprintLocation.name;
+	cell.locationLabel.text = row.installedItemLocation.name;
 	
 	NSString* status = [row localizedStateWithCurrentDate:self.currentDate];
 	UIColor* statusColor = nil;
-	statusColor = [UIColor yellowColor];
+	if (!row.completed) {
+		statusColor = [UIColor yellowColor];
+	}
+	else {
+		if (row.completedStatus == 1) {
+			statusColor = [UIColor greenColor];
+		}
+		else
+			statusColor = [UIColor redColor];
+	}
 	cell.stateLabel.text = status;
 	cell.stateLabel.textColor = statusColor;
 }

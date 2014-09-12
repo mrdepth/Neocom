@@ -1,6 +1,6 @@
 //
 //  GADBannerView.h
-//  Google Mobile Ads SDK
+//  Google AdMob Ads SDK
 //
 //  Copyright 2011 Google Inc. All rights reserved.
 //
@@ -36,12 +36,14 @@
 #pragma mark Initialization
 
 /// Initializes a GADBannerView and sets it to the specified size, and specifies its placement
-/// within its superview bounds. Returns nil if |adSize| is an invalid ad size.
-- (instancetype)initWithAdSize:(GADAdSize)adSize origin:(CGPoint)origin;
+/// within its superview bounds. If |size| is invalid, an instance of GADBannerView is not created
+/// and nil is returned instead.
+- (id)initWithAdSize:(GADAdSize)size origin:(CGPoint)origin;
 
 /// Initializes a GADBannerView and sets it to the specified size, and specifies its placement at
-/// the top left of its superview. Returns nil if |adSize| is an invalid ad size.
-- (instancetype)initWithAdSize:(GADAdSize)adSize;
+/// the top left of its superview. If |size| is invalid, an instance of GADBannerView is not created
+/// and nil is returned instead.
+- (id)initWithAdSize:(GADAdSize)size;
 
 #pragma mark Pre-Request
 
@@ -92,11 +94,10 @@
 ///
 ///   @end
 ///   \endcode
-@property(nonatomic, weak) id<GADBannerViewDelegate> delegate;
+@property(nonatomic, weak) NSObject<GADBannerViewDelegate> *delegate;
 
-/// Optional delegate object that receives in-app purchase notifications from this ad. Required for
-/// the custom in-app purchase flow, but ignored when using the default in-app purchase flow.
-/// Remember to nil the delegate before deallocating this object.
+/// Optional delegate object that receives In-App Purchase (IAP) notifications from this
+/// GADBannerView. Remember to nil the delegate before deallocating this object.
 @property(nonatomic, weak) id<GADInAppPurchaseDelegate> inAppPurchaseDelegate;
 
 #pragma mark Making an Ad Request

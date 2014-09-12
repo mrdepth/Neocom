@@ -406,7 +406,6 @@
 		129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2638187E929800E2062C /* NCMainMenuContainerViewController.m */; };
 		129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */; };
 		129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */; };
-		129DF51E197F81B400777592 /* libFlurry_5.2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DF51D197F81B400777592 /* libFlurry_5.2.0.a */; };
 		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
 		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
 		129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
@@ -478,6 +477,7 @@
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */; };
 		12D6DC0D1920A296003FC5ED /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12D6DC0B1920A296003FC5ED /* README.txt */; };
+		12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
@@ -665,12 +665,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 12B68566195EB1B20043B30A;
 			remoteInfo = today;
-		129DF51B197F81AD00777592 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12C5178C196D13450004CF96;
-			remoteInfo = eufeTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1384,7 +1378,6 @@
 		129D263B187E98C100E2062C /* NCNavigationCharacterButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationCharacterButton.h; sourceTree = "<group>"; };
 		129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationCharacterButton.m; sourceTree = "<group>"; };
 		129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCNavigationCharacterButton.xib; sourceTree = "<group>"; };
-		129DF51D197F81B400777592 /* libFlurry_5.2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.2.0.a; sourceTree = "<group>"; };
 		129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		129FEE161860313D00F75FA6 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
 		129FEE171860313D00F75FA6 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
@@ -1514,6 +1507,7 @@
 		12D6DC091920A296003FC5ED /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		12D6DC0B1920A296003FC5ED /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
@@ -1739,13 +1733,13 @@
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
+				12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
 				12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */,
 				12F9561E18CDB81C005CEAD6 /* SystemConfiguration.framework in Frameworks */,
 				12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */,
 				12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */,
-				129DF51E197F81B400777592 /* libFlurry_5.2.0.a in Frameworks */,
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
@@ -2413,7 +2407,7 @@
 			isa = PBXGroup;
 			children = (
 				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				129DF51D197F81B400777592 /* libFlurry_5.2.0.a */,
+				12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -3096,7 +3090,6 @@
 			children = (
 				1271239318978236005F46EE /* compiler */,
 				1271239518978236005F46EE /* libeufe.a */,
-				129DF51C197F81AD00777592 /* eufeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4697,13 +4690,6 @@
 			fileType = archive.ar;
 			path = libeufe.a;
 			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		129DF51C197F81AD00777592 /* eufeTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = eufeTests.xctest;
-			remoteRef = 129DF51B197F81AD00777592 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

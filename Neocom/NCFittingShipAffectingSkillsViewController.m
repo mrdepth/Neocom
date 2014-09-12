@@ -103,8 +103,8 @@
 			controller = [segue.destinationViewController viewControllers][0];
 		else
 			controller = segue.destinationViewController;
-		NCSkillData* skillData = [sender skillData];
-		controller.type = skillData.type;
+		
+		controller.type = [sender skillData];
 	}
 }
 

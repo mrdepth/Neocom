@@ -12,6 +12,8 @@
 @implementation NSString (Neocom)
 
 + (NSInteger) dimensionForValue:(float) value {
+	if (isinf(value))
+		return 1;
 	value = fabs(value);
 	if (value >= 10000000)
 		return 1000000;
@@ -50,6 +52,11 @@
 }
 
 + (NSString*) shortStringWithFloat:(float) value unit:(NSString*) unit {
+	if (isinf(value))
+		return unit ?
+		[NSString stringWithFormat:@"%f %@", value, unit] :
+		[NSString stringWithFormat:@"%f", value];
+
 	NSInteger dimension = [self dimensionForValue:value];
 	value /= dimension;
 	return unit ?

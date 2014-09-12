@@ -1,9 +1,9 @@
-///
-///  GADCustomEventExtras.h
-///  Google Ads iOS SDK
-///
-///  Copyright (c) 2012 Google Inc. All rights reserved.
-///
+//
+//  GADCustomEventExtras.h
+//  Google Mobile Ads SDK
+//
+//  Copyright 2012 Google Inc. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 

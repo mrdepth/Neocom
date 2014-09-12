@@ -80,7 +80,7 @@
 														NSMutableDictionary* dronesDic = [NSMutableDictionary new];
 														eufe::DronesList drones;
 
-														@synchronized(self.controller) {
+//														@synchronized(self.controller) {
 															if (!self.controller.fit.pilot)
 																return;
 
@@ -95,7 +95,7 @@
 															
 															maxActiveDrones = ship->getMaxActiveDrones();
 															activeDrones = ship->getActiveDrones();
-														}
+//														}
 														
 														for (auto drone: drones) {
 															NSInteger typeID = drone->getTypeID();
@@ -470,7 +470,7 @@
 	else {
 		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
 		if (![row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
-			@synchronized(self.controller) {
+//			@synchronized(self.controller) {
 				
 				eufe::Drone* drone = row.drones.front();
 				
@@ -500,7 +500,7 @@
 					cell.stateImageView.image = [UIImage imageNamed:@"offline.png"];
 				
 				cell.targetImageView.image = drone->getTarget() != NULL ? [[[NCDBEveIcon eveIconWithIconFile:@"04_12"] image] image] : nil;
-			}
+//			}
 		}
 	}
 }

@@ -248,13 +248,17 @@ NSDictionary* convertEveUnits(NSManagedObjectContext* context, EVEDBDatabase* da
 NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSMutableDictionary* dictionary = [NSMutableDictionary new];
 	
+	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"\\\\u(.{4})"
+																				options:NSRegularExpressionCaseInsensitive
+									   
+																				  error:nil];
+
 	[database execSQLRequest:@"select * from invTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvType* eveType = [[EVEDBInvType alloc] initWithStatement:stmt];
 		NCDBEveIcon* icon = eveType.imageName ? eveIcons[eveType.imageName] : nil;
 		
 		NCDBInvType* type = [NSEntityDescription insertNewObjectForEntityForName:@"InvType" inManagedObjectContext:context];
 		type.typeID = eveType.typeID;
-		type.typeName = eveType.typeName;
 		type.basePrice = eveType.basePrice;
 		type.capacity = eveType.capacity;
 		type.mass = eveType.mass;
@@ -266,6 +270,27 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		type.marketGroup = eveType.marketGroupID ? invMarketGroups[@(eveType.marketGroupID)] : nil;
 		type.race = eveType.raceID ? chrRaces[@(eveType.raceID)] : nil;
 		type.metaGroup = invMetaGroups[@(-1)];
+		
+		NSMutableString* typeName = [NSMutableString stringWithString:eveType.typeName];
+		NSMutableDictionary* ranges = [NSMutableDictionary new];
+		for (NSTextCheckingResult* m in [expression matchesInString:typeName options:0 range:NSMakeRange(0, typeName.length)]) {
+			NSString* s2 = [typeName substringWithRange:[m rangeAtIndex:1]];
+			NSScanner* scanner = [NSScanner scannerWithString:s2];
+			unsigned int i;
+			unichar *u = (unichar*) &i;
+			[scanner scanHexInt:&i];
+			NSString* s3 = [NSString stringWithCharacters:u length:1];
+			ranges[@([m rangeAtIndex:0].location)] = @{@"string": s3, @"range":[NSValue valueWithRange:[m rangeAtIndex:0]]};
+		}
+		for (NSString* key in [[[ranges allKeys] sortedArrayUsingSelector:@selector(compare:)] reverseObjectEnumerator]) {
+			NSDictionary* obj = ranges[key];
+			NSRange range = [obj[@"range"] rangeValue];
+			NSString* string = obj[@"string"];
+			[typeName replaceCharactersInRange:range withString:string];
+		}
+
+		type.typeName = typeName;
+
 		
 		if (icon)
 			type.icon = icon;
@@ -1131,7 +1156,7 @@ int main(int argc, const char * argv[])
 {
 
 	@autoreleasepool {
-	    NSManagedObjectContext *context = managedObjectContext();
+		NSManagedObjectContext *context = managedObjectContext();
 
 		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:@"./evedb.sqlite"];
 		[EVEDBDatabase setSharedDatabase:database];

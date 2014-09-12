@@ -44,6 +44,8 @@ UPDATE eveDB.dgmAttributeTypes SET iconID=1394 WHERE attributeID=977;
 
 UPDATE eveDB.dgmAttributeTypes SET published = 0 WHERE attributeName like "requiredSkill%Level";
 
+UPDATE eveDB.invTypes SET published = 0 WHERE typeName like "%QA%";
+
 INSERT INTO eveDB.invMetaTypes VALUES (29984,NULL,14);
 INSERT INTO eveDB.invMetaTypes VALUES (29986,NULL,14);
 INSERT INTO eveDB.invMetaTypes VALUES (29988,NULL,14);
@@ -70,7 +72,7 @@ INSERT INTO eveDB.invMetaTypes
 		FROM dgmTypeAttributes AS a, invTypes AS b
 		WHERE a.typeID=b.typeID AND b.published = 1 AND b.marketGroupID IS NOT NULL AND b.marketGroupID > 0 AND a.attributeID=633 AND a.value=0 AND a.typeID NOT IN (SELECT typeID FROM eveDB.invMetaTypes);
 
-CREATE INDEX eveDB.certCerts_groupID ON "certCerts" ("groupid" ASC);
+CREATE INDEX eveDB.certCerts_groupID ON "certCerts" ("groupID" ASC);
 CREATE INDEX eveDB.certMasteries_certID_typeID ON "certMasteries" ("certID" ASC, "typeID" ASC);
 CREATE INDEX eveDB.certMasteries_typeID ON "certMasteries" ("typeID" ASC);
 CREATE INDEX eveDB.certSkills_certID ON "certSkills" ("certID" ASC);

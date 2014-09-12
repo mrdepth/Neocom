@@ -1,6 +1,6 @@
 //
 //  GADCustomEventBanner.h
-//  Google AdMob Ads SDK
+//  Google Mobile Ads SDK
 //
 //  Copyright 2012 Google Inc. All rights reserved.
 //

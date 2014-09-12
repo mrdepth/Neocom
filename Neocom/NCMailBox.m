@@ -163,7 +163,12 @@
 	if (account.accountType == NCAccountTypeCorporate)
 		return;
 	
-	NCMailBoxCacheData* data = self.cacheRecord.data.data;
+	NCCache* cache = [NCCache sharedCache];
+
+	__block NCMailBoxCacheData* data;
+	[cache.managedObjectContext performBlockAndWait:^{
+		data = self.cacheRecord.data.data;
+	}];
 	
 	EVEMailMessages* messageHeaders = [EVEMailMessages mailMessagesWithKeyID:account.apiKey.keyID
 																	   vCode:account.apiKey.vCode
@@ -313,7 +318,6 @@
 	data.messages = messages;
 	data.contacts = contacts;
 	
-	NCCache* cache = [NCCache sharedCache];
 	self.updateDate = messageHeaders.cacheDate;
 	[cache.managedObjectContext performBlockAndWait:^{
 		self.cacheRecord.data.data = data;

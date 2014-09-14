@@ -114,8 +114,10 @@ def dump(objects, table):
 	f.append("")
 	f.append("BEGIN TRANSACTION;");
 	
-	if (table == "dgmOperands" or table == "invControlTowerResources"):
+	if (table == "invControlTowerResources"):
 		objects = objects.itervalues()
+	elif (table == "dgmOperands"):
+		objects = objects["lret"].itervalues();
 
 	for obj in objects:#.itervalues():
 

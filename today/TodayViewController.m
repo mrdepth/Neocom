@@ -14,6 +14,7 @@
 
 @interface TodayViewController () <NCWidgetProviding>
 @property (nonatomic, strong) NSArray* rows;
+@property (nonatomic, assign) UIEdgeInsets defaultMarginInsets;
 - (void) update;
 @end
 
@@ -29,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
 	[self update];
 }
 
@@ -49,7 +51,10 @@
 }
 
 - (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets {
+	self.defaultMarginInsets = defaultMarginInsets;
+	defaultMarginInsets.left = 0;
 	defaultMarginInsets.bottom = 0;
+	[self.tableView reloadData];
 	return defaultMarginInsets;
 }
 
@@ -85,8 +90,20 @@
 	}
 	cell.skillQueueLabel.text = text;
 	cell.skillQueueLabel.textColor = color;
-	
+	cell.leftMarginConstraint.constant = self.defaultMarginInsets.left;
 	return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 37;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	NCTodayRow* row = self.rows[indexPath.row];
+	[self.extensionContext openURL:[NSURL URLWithString:[NSString stringWithFormat:@"ncaccount:%@", row.uuid]] completionHandler:nil];
 }
 
 #pragma mark - Private
@@ -101,7 +118,7 @@
 								 byAccessor:^(NSURL *newURL) {
 									 self.rows = [NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfURL:newURL]];
 								 }];
-	self.preferredContentSize = CGSizeMake(self.view.frame.size.width, self.tableView.rowHeight * [self tableView:self.tableView numberOfRowsInSection:1]);
+	self.preferredContentSize = CGSizeMake(self.view.frame.size.width, 37 * [self tableView:self.tableView numberOfRowsInSection:1]);
 	[self.tableView reloadData];
 }
 

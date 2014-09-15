@@ -131,6 +131,7 @@
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
 		12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */; };
+		124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */; };
 		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
@@ -477,7 +478,6 @@
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */; };
 		12D6DC0D1920A296003FC5ED /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12D6DC0B1920A296003FC5ED /* README.txt */; };
-		12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
@@ -631,6 +631,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		124C3D9819C2C29B00FCF18E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12EB84741980CD670058D497;
+			remoteInfo = eufeTests;
+		};
 		1271239218978236005F46EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
@@ -875,6 +882,7 @@
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
 		12476C0F194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+Neocom.h"; sourceTree = "<group>"; };
 		12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+Neocom.m"; sourceTree = "<group>"; };
+		124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
 		125F681818852DA9005732FA /* NCSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsViewController.h; sourceTree = "<group>"; };
@@ -1507,7 +1515,6 @@
 		12D6DC091920A296003FC5ED /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		12D6DC0B1920A296003FC5ED /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
@@ -1732,8 +1739,8 @@
 			files = (
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
+				124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
-				12E4CF581918E3CE00B76710 /* libFlurry_5.0.0.a in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
 				12F9562018CDB822005CEAD6 /* AVFoundation.framework in Frameworks */,
@@ -2407,7 +2414,7 @@
 			isa = PBXGroup;
 			children = (
 				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				12E4CF571918E3CE00B76710 /* libFlurry_5.0.0.a */,
+				124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -3090,6 +3097,7 @@
 			children = (
 				1271239318978236005F46EE /* compiler */,
 				1271239518978236005F46EE /* libeufe.a */,
+				124C3D9919C2C29B00FCF18E /* eufeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4678,6 +4686,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		124C3D9919C2C29B00FCF18E /* eufeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = eufeTests.xctest;
+			remoteRef = 124C3D9819C2C29B00FCF18E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		1271239318978236005F46EE /* compiler */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -5477,8 +5492,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -5522,6 +5537,7 @@
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -5540,6 +5556,7 @@
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

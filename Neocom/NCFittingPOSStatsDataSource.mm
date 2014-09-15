@@ -74,7 +74,7 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														@synchronized(self.controller) {
+//														@synchronized(self.controller) {
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
 															
 															stats.totalPG = controlTower->getTotalPowerGrid();
@@ -96,7 +96,7 @@
 															stats.volleyDamage = controlTower->getWeaponVolley();
 															
 															stats.damagePattern = self.controller.damagePattern;
-														}
+//														}
 													}
 										completionHandler:^(NCTask *task) {
 											if (![task isCancelled]) {
@@ -329,7 +329,7 @@
 	[[self.controller taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 													title:NCTaskManagerDefaultTitle
 													block:^(NCTask *task) {
-														@synchronized(self.controller) {
+//														@synchronized(self.controller) {
 															NSMutableSet* types = [NSMutableSet set];
 															NSMutableDictionary* infrastructureUpgrades = [NSMutableDictionary dictionary];
 															eufe::ControlTower* controlTower = self.controller.engine->getControlTower();
@@ -356,7 +356,7 @@
 																		}
 																	}
 																}
-															}
+//															}
 															
 															NSDictionary* prices = [self.priceManager pricesWithTypes:[types allObjects]];
 															

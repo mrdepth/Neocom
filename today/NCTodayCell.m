@@ -7,6 +7,7 @@
 //
 
 #import "NCTodayCell.h"
+#import <NotificationCenter/NotificationCenter.h>
 
 @implementation NCTodayCell
 
@@ -21,14 +22,14 @@
 
 - (void)awakeFromNib
 {
-    // Initialization code
+	UIView* view = [[UIView alloc] initWithFrame:self.bounds];
+	view.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.1];
+	self.selectedBackgroundView = view;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

@@ -1,9 +1,9 @@
-///
-///  GADCustomEventBannerDelegate.h
-///  Google AdMob Ads SDK
-///
-///  Copyright 2012 Google Inc. All rights reserved.
-///
+//
+//  GADCustomEventBannerDelegate.h
+//  Google Mobile Ads SDK
+//
+//  Copyright 2012 Google Inc. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
@@ -25,7 +25,7 @@
 - (void)customEventBanner:(id<GADCustomEventBanner>)customEvent didFailAd:(NSError *)error;
 
 /// Your Custom Event object should call this when the user touches or "clicks" the ad to initiate
-/// an action. When the SDK receives this callback, it reports the click back to the Mediation
+/// an action. When the SDK receives this callback, it reports the click back to the mediation
 /// server. This callback is optional.
 - (void)customEventBanner:(id<GADCustomEventBanner>)customEvent clickDidOccurInAd:(UIView *)view;
 

@@ -109,27 +109,15 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) willMoveToParentViewController:(UIViewController *)parent {
-	[super willMoveToParentViewController:parent];
-	if (parent == nil) {
-		[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-											 title:NCTaskManagerDefaultTitle
-											 block:^(NCTask *task) {
-												 @synchronized(self) {
-													 [self.fit save];
-													 NCStorage* storage = [NCStorage sharedStorage];
-													 NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
-													 [context performBlockAndWait:^{
-														 [[NCStorage sharedStorage] saveContext];
-													 }];
-												 }
-											 }
-								 completionHandler:^(NCTask *task) {
-									 
-								 }];
+- (void) viewWillDisappear:(BOOL)animated {
+	if ([self isMovingFromParentViewController] || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		[self.fit save];
+		self.fit = nil;
+		[[NCStorage sharedStorage] saveContext];
 	}
+	[super viewWillDisappear:animated];
 }
+
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue isKindOfClass:[NCStoryboardPopoverSegue class]]) {

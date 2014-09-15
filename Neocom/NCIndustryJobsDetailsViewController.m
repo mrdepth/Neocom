@@ -69,26 +69,26 @@
 																		 imageURL:nil]];
 	
 	
-	if (self.job.installedItemType) {
+	if (self.job.blueprintType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Input", nil)
-																										 desciption:self.job.installedItemType.typeName
-																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:self.job.blueprintType.typeName
+																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.installedItemType;
+		row.object = self.job.blueprintType;
 		[rows addObject:row];
 	}
-	if (self.job.outputType) {
+	if (self.job.productType) {
 		NCIndustryJobsDetailsViewControllerRow* row = [[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Output", nil)
-																										 desciption:self.job.outputType.typeName
-																											   icon:self.job.installedItemType.icon ? self.job.installedItemType.icon : [NCDBEveIcon defaultTypeIcon]
+																										 desciption:self.job.productType.typeName
+																											   icon:self.job.blueprintType.icon ? self.job.blueprintType.icon : [NCDBEveIcon defaultTypeIcon]
 																										   imageURL:nil];
-		row.object = self.job.outputType;
+		row.object = self.job.productType;
 		[rows addObject:row];
 	}
 	
-	if (self.job.installedItemLocation)
+	if (self.job.blueprintLocation)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Installed Location", nil)
-																		   desciption:self.job.installedItemLocation.name
+																		   desciption:self.job.blueprintLocation.name
 																				 icon:nil
 																			 imageURL:nil]];
 	if (self.job.outputLocation)
@@ -108,32 +108,18 @@
 																			 icon:nil
 																		 imageURL:nil]];
 	
-	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Productivity Level", nil)
-																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemProductivityLevel]
-																			 icon:nil
-																		 imageURL:nil]];
-	[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Material Level", nil)
-																	   desciption:[NSNumberFormatter neocomLocalizedStringFromInteger:self.job.installedItemMaterialLevel]
-																			 icon:nil
-																		 imageURL:nil]];
-	
 	NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy.MM.dd HH:mm"];
 	[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
-	
-	if (self.job.installTime)
-		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Install Time", nil)
-																		   desciption:[dateFormatter stringFromDate:self.job.installTime]
-																				 icon:nil
-																			 imageURL:nil]];
-	if (self.job.beginProductionTime)
+
+	if (self.job.startDate)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"Begin Production Time", nil)
-																		   desciption:[dateFormatter stringFromDate:self.job.beginProductionTime]
+																		   desciption:[dateFormatter stringFromDate:self.job.startDate]
 																				 icon:nil
 																			 imageURL:nil]];
-	if (self.job.endProductionTime)
+	if (self.job.endDate)
 		[rows addObject:[[NCIndustryJobsDetailsViewControllerRow alloc] initWithTitle:NSLocalizedString(@"End Production Time", nil)
-																		   desciption:[dateFormatter stringFromDate:self.job.endProductionTime]
+																		   desciption:[dateFormatter stringFromDate:self.job.endDate]
 																				 icon:nil
 																			 imageURL:nil]];
 	

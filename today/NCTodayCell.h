@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillQueueLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftMarginConstraint;
 
 @end

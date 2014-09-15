@@ -117,6 +117,9 @@
 													 title:NCTaskManagerDefaultTitle
 													 block:^(NCTask *task) {
 														 NCStorage* storage = [NCStorage cloudStorage];
+														 if (!storage)
+															 storage = [NCStorage fallbackStorage];
+
 														 [NCStorage setSharedStorage:storage];
 														 NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 														 [NCAccountsManager setSharedManager:accountsManager];
@@ -199,6 +202,16 @@
 		else if ([scheme isEqualToString:@"showinfo"]) {
 			[self showTypeInfoWithURL:url];
 		}
+		else if ([scheme isEqualToString:@"ncaccount"]) {
+			NSMutableString* uuid = [NSMutableString stringWithString:[url absoluteString]];
+			[uuid replaceOccurrencesOfString:@"ncaccount://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
+			[uuid replaceOccurrencesOfString:@"ncaccount:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
+			NCAccount* account = nil;
+			if (uuid)
+				account = [[NCStorage sharedStorage] accountWithUUID:uuid];
+			if (account)
+				[NCAccount setCurrentAccount:account];
+		}
 	});
 	return YES;
 }
@@ -260,6 +273,8 @@
 													 title:NCTaskManagerDefaultTitle
 													 block:^(NCTask *task) {
 														 storage = [NCStorage cloudStorage];
+														 if (!storage)
+															 storage = [NCStorage fallbackStorage];
 														 accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 													 }
 										 completionHandler:^(NCTask *task) {

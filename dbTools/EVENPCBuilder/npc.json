@@ -1,1219 +1,1238 @@
-[
+ [
   {
-    "groupName": "Asteroid",
-    "groups": [
-      {
-        "groupName": "Angel Cartel",
-		"iconName": "angelCartel.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "576"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "552"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "793"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "793"
-          }
-        ]
-      },
-      {
-        "groupName": "Blood Raiders",
-		"iconName": "bloodRaider.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "578"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "556"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "795"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "849"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "791"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "796"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "792"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "555"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "577"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "557"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "558"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "559"
-          }
-        ]
-      },
-      {
-        "groupName": "Guristas Pirates",
-		"iconName": "guristasPirates.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "580"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "560"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "797"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "850"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "798"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "799"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "800"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "561"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "579"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "562"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "563"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "564"
-          }
-        ]
-      },
-      {
-        "groupName": "Rogue Drone",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "755"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "756"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "843"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "844"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "845"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "846"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "847"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "757"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "758"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "759"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "760"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "1174"
-          },
-          {
-            "groupName": "Swarm",
-            "groupID": "761"
-          }
-        ]
-      },
-      {
-        "groupName": "Sansha's Nation",
-		"iconName": "sanshasNation.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "582"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "565"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "807"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "851"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "808"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "809"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "810"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "566"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "581"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "567"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "568"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "569"
-          }
-        ]
-      },
-      {
-        "groupName": "Serpentis",
-		"iconName": "serpentis.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "584"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "570"
-          },
-          {
-            "groupName": "Commander Battlecruiser",
-            "groupID": "811"
-          },
-          {
-            "groupName": "Commander Battleship",
-            "groupID": "852"
-          },
-          {
-            "groupName": "Commander Cruiser",
-            "groupID": "812"
-          },
-          {
-            "groupName": "Commander Destroyer",
-            "groupID": "813"
-          },
-          {
-            "groupName": "Commander Frigate",
-            "groupID": "814"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "571"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "583"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "572"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "573"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "574"
-          }
-        ]
-      }
-    ]
+  "groupName": "Asteroid",
+  "groups": [
+			 {
+			 "groupName": "Angel Cartel",
+			 "iconName": "angelCartel.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "576"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "552"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "793"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "793"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Blood Raiders",
+			 "iconName": "bloodRaider.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "578"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "556"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "795"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "849"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "791"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "796"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "792"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "555"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "577"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "557"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "558"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "559"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Guristas Pirates",
+			 "iconName": "guristasPirates.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "580"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "560"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "797"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "850"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "798"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "799"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "800"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "561"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "579"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "562"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "563"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "564"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Mordus Legion",
+			 "iconName": "mordusLegion.png",
+			 "groups": [
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "1287"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "1286"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "1285"
+						},
+
+						]
+			 },
+			 {
+			 "groupName": "Rogue Drone",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "755"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "756"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "843"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "844"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "845"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "846"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "847"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "757"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "758"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "759"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "760"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "1174"
+						},
+						{
+						"groupName": "Swarm",
+						"groupID": "761"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Sansha's Nation",
+			 "iconName": "sanshasNation.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "582"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "565"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "807"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "851"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "808"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "809"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "810"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "566"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "581"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "567"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "568"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "569"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Serpentis",
+			 "iconName": "serpentis.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "584"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "570"
+						},
+						{
+						"groupName": "Commander Battlecruiser",
+						"groupID": "811"
+						},
+						{
+						"groupName": "Commander Battleship",
+						"groupID": "852"
+						},
+						{
+						"groupName": "Commander Cruiser",
+						"groupID": "812"
+						},
+						{
+						"groupName": "Commander Destroyer",
+						"groupID": "813"
+						},
+						{
+						"groupName": "Commander Frigate",
+						"groupID": "814"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "571"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "583"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "572"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "573"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "574"
+						}
+						]
+			 }
+			 ]
   },
   {
-    "groupName": "Deadspace",
-    "groups": [
-      {
-        "groupName": "Angel Cartel",
-		"iconName": "angelCartel.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "593"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "594"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "595"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "596"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "597"
-          }
-        ]
-      },
-      {
-        "groupName": "Blood Raiders",
-		"iconName": "bloodRaider.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "602"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "603"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "604"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "605"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "606"
-          }
-        ]
-      },
-      {
-        "groupName": "Guristas Pirates",
-		"iconName": "guristasPirates.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "611"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "612"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "613"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "614"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "615"
-          }
-        ]
-      },
-      {
-        "groupName": "Overseer",
-        "groups": [
-          {
-            "groupName": "Battleship",
-            "groupID": "821"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "820"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "819"
-          },
-          {
-            "groupName": "Belongings",
-            "groupID": "496"
-          },
-          {
-            "groupName": "Sentry",
-            "groupID": "495"
-          },
-          {
-            "groupName": "Structure",
-            "groupID": "494"
-          }
-        ]
-      },
-      {
-        "groupName": "Rogue Drone",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "801"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "802"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "803"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "804"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "805"
-          },
-          {
-            "groupName": "Swarm",
-            "groupID": "806"
-          }
-        ]
-      },
-      {
-        "groupName": "Sansha's Nation",
-		"iconName": "sanshasNation.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "620"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "621"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "622"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "623"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "624"
-          },
-          {
-            "groupName": "Hauler",
-            "groupID": "568"
-          },
-          {
-            "groupName": "Officer",
-            "groupID": "569"
-          }
-        ]
-      },
-      {
-        "groupName": "Serpentis",
-		"iconName": "serpentis.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "629"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "630"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "631"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "632"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "633"
-          }
-        ]
-      },
-      {
-        "groupName": "Sleeper",
-        "groups": [
-          {
-            "groupName": "Awakened Defender",
-            "groupID": "984"
-          },
-          {
-            "groupName": "Awakened Patroller",
-            "groupID": "985"
-          },
-          {
-            "groupName": "Awakened Sentinel",
-            "groupID": "960"
-          },
-          {
-            "groupName": "Emergent Defender",
-            "groupID": "986"
-          },
-          {
-            "groupName": "Emergent Patroller",
-            "groupID": "987"
-          },
-          {
-            "groupName": "Emergent Sentinel",
-            "groupID": "961"
-          },
-          {
-            "groupName": "Sleepless Defender",
-            "groupID": "982"
-          },
-          {
-            "groupName": "Sleepless Patroller",
-            "groupID": "983"
-          },
-          {
-            "groupName": "Sleepless Sentinel",
-            "groupID": "959"
-          }
-        ]
-      }
-    ]
+  "groupName": "Deadspace",
+  "groups": [
+			 {
+			 "groupName": "Angel Cartel",
+			 "iconName": "angelCartel.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "593"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "594"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "595"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "596"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "597"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Blood Raiders",
+			 "iconName": "bloodRaider.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "602"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "603"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "604"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "605"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "606"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Guristas Pirates",
+			 "iconName": "guristasPirates.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "611"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "612"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "613"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "614"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "615"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Overseer",
+			 "groups": [
+						{
+						"groupName": "Battleship",
+						"groupID": "821"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "820"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "819"
+						},
+						{
+						"groupName": "Belongings",
+						"groupID": "496"
+						},
+						{
+						"groupName": "Sentry",
+						"groupID": "495"
+						},
+						{
+						"groupName": "Structure",
+						"groupID": "494"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Rogue Drone",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "801"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "802"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "803"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "804"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "805"
+						},
+						{
+						"groupName": "Swarm",
+						"groupID": "806"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Sansha's Nation",
+			 "iconName": "sanshasNation.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "620"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "621"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "622"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "623"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "624"
+						},
+						{
+						"groupName": "Hauler",
+						"groupID": "568"
+						},
+						{
+						"groupName": "Officer",
+						"groupID": "569"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Serpentis",
+			 "iconName": "serpentis.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "629"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "630"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "631"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "632"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "633"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Sleeper",
+			 "groups": [
+						{
+						"groupName": "Awakened Defender",
+						"groupID": "984"
+						},
+						{
+						"groupName": "Awakened Patroller",
+						"groupID": "985"
+						},
+						{
+						"groupName": "Awakened Sentinel",
+						"groupID": "960"
+						},
+						{
+						"groupName": "Emergent Defender",
+						"groupID": "986"
+						},
+						{
+						"groupName": "Emergent Patroller",
+						"groupID": "987"
+						},
+						{
+						"groupName": "Emergent Sentinel",
+						"groupID": "961"
+						},
+						{
+						"groupName": "Sleepless Defender",
+						"groupID": "982"
+						},
+						{
+						"groupName": "Sleepless Patroller",
+						"groupID": "983"
+						},
+						{
+						"groupName": "Sleepless Sentinel",
+						"groupID": "959"
+						}
+						]
+			 }
+			 ]
   },
   {
-    "groupName": "FW",
-    "groups": [
-      {
-        "groupName": "Amarr Empire",
-		"iconName": "amarrEmpire.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "1183"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1179"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "1175"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1169"
-          }
-        ]
-      },
-      {
-        "groupName": "Caldari State",
-		"iconName": "caldariState.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "1184"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1180"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "1176"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1167"
-          }
-        ]
-      },
-      {
-        "groupName": "Gallente Federation",
-		"iconName": "gallenteFederation.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "1185"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1181"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "1177"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1168"
-          }
-        ]
-      },
-      {
-        "groupName": "Minmatar Republic",
-		"iconName": "minmatarRepublic.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "1186"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1182"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "1178"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1166"
-          }
-        ]
-      },
-      {
-        "groupName": "Infrastructure Hub",
-        "groupID": "925"
-      }
-    ]
+  "groupName": "FW",
+  "groups": [
+			 {
+			 "groupName": "Amarr Empire",
+			 "iconName": "amarrEmpire.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "1183"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1179"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "1175"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1169"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Caldari State",
+			 "iconName": "caldariState.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "1184"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1180"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "1176"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1167"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Gallente Federation",
+			 "iconName": "gallenteFederation.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "1185"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1181"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "1177"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1168"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Minmatar Republic",
+			 "iconName": "minmatarRepublic.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "1186"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1182"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "1178"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1166"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Infrastructure Hub",
+			 "groupID": "925"
+			 }
+			 ]
   },
   {
-    "groupName": "Ghost Sites",
-    "groups": [
-      {
-        "groupName": "Angel Cartel",
-		"iconName": "angelCartel.png",
-        "groups": [
-          {
-            "groupName": "Cruiser",
-            "groupID": "1252"
-          }
-        ]
-      },
-      {
-        "groupName": "Blood Raiders",
-		"iconName": "bloodRaider.png",
-        "groups": [
-          {
-            "groupName": "Cruiser",
-            "groupID": "1255"
-          }
-        ]
-      },
-      {
-        "groupName": "Guristas Pirates",
-		"iconName": "guristasPirates.png",
-        "groups": [
-          {
-            "groupName": "Cruiser",
-            "groupID": "1259"
-          }
-        ]
-      },
-      {
-        "groupName": "Sansha's Nation",
-		"iconName": "sanshasNation.png",
-        "groups": [
-          {
-            "groupName": "Cruiser",
-            "groupID": "1265"
-          }
-        ]
-      },
-      {
-        "groupName": "Serpentis",
-		"iconName": "serpentis.png",
-        "groups": [
-          {
-            "groupName": "Cruiser",
-            "groupID": "1262"
-          }
-        ]
-      }
-    ]
+  "groupName": "Ghost Sites",
+  "groups": [
+			 {
+			 "groupName": "Angel Cartel",
+			 "iconName": "angelCartel.png",
+			 "groups": [
+						{
+						"groupName": "Cruiser",
+						"groupID": "1252"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Blood Raiders",
+			 "iconName": "bloodRaider.png",
+			 "groups": [
+						{
+						"groupName": "Cruiser",
+						"groupID": "1255"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Guristas Pirates",
+			 "iconName": "guristasPirates.png",
+			 "groups": [
+						{
+						"groupName": "Cruiser",
+						"groupID": "1259"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Sansha's Nation",
+			 "iconName": "sanshasNation.png",
+			 "groups": [
+						{
+						"groupName": "Cruiser",
+						"groupID": "1265"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Serpentis",
+			 "iconName": "serpentis.png",
+			 "groups": [
+						{
+						"groupName": "Cruiser",
+						"groupID": "1262"
+						}
+						]
+			 }
+			 ]
   },
   {
-    "groupName": "Incursion",
-    "groups": [
-      {
-        "groupName": "Sansha's Nation",
-		"iconName": "sanshasNation.png",
-        "groups": [
-          {
-            "groupName": "Battleship",
-            "groupID": "1056"
-          },
-          {
-            "groupName": "Capital",
-            "groupID": "1052"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1054"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1053"
-          },
-          {
-            "groupName": "Industrial",
-            "groupID": "1051"
-          }
-        ]
-      }
-    ]
+  "groupName": "Incursion",
+  "groups": [
+			 {
+			 "groupName": "Sansha's Nation",
+			 "iconName": "sanshasNation.png",
+			 "groups": [
+						{
+						"groupName": "Battleship",
+						"groupID": "1056"
+						},
+						{
+						"groupName": "Capital",
+						"groupID": "1052"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1054"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1053"
+						},
+						{
+						"groupName": "Industrial",
+						"groupID": "1051"
+						}
+						]
+			 }
+			 ]
   },
   {
-    "groupName": "Mission",
-    "groups": [
-      {
-        "groupName": "Amarr Empire",
-		"iconName": "amarrEmpire.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "666"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "667"
-          },
-          {
-            "groupName": "Carrier",
-            "groupID": "865"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "668"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "669"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "665"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "670"
-          }
-        ]
-      },
-      {
-        "groupName": "CONCORD Assembly",
-		"iconName": "concord.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "696"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "697"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "695"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "694"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "693"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "698"
-          }
-        ]
-      },
-      {
-        "groupName": "Caldari State",
-		"iconName": "caldariState.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "672"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "674"
-          },
-          {
-            "groupName": "Carrier",
-            "groupID": "866"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "673"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "676"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "671"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "675"
-          }
-        ]
-      },
-      {
-        "groupName": "Gallente Federation",
-		"iconName": "gallenteFederation.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "681"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "680"
-          },
-          {
-            "groupName": "Carrier",
-            "groupID": "867"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "678"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "679"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "677"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "682"
-          }
-        ]
-      },
-      {
-        "groupName": "Minmatar Republic",
-		"iconName": "minmatarRepublic.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "685"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "706"
-          },
-          {
-            "groupName": "Carrier",
-            "groupID": "868"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "705"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "684"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "683"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "686"
-          }
-        ]
-      },
-      {
-        "groupName": "Khanid Kingdom",
-		"iconName": "khanidKingdom.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "690"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "691"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "689"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "688"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "687"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "692"
-          }
-        ]
-      },
-      {
-        "groupName": "Mordu's Legion",
-		"iconName": "mordusLegion.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "702"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "703"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "701"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "700"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "699"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "704"
-          }
-        ]
-      },
-      {
-        "groupName": "Thukker Tribe",
-		"iconName": "thukkerTribe.png",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "822"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "823"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "824"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "825"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "826"
-          },
-          {
-            "groupName": "Other",
-            "groupID": "827"
-          }
-        ]
-      },
-      {
-        "groupName": "Generic",
-        "groups": [
-          {
-            "groupName": "Battlecruiser",
-            "groupID": "828"
-          },
-          {
-            "groupName": "Battleship",
-            "groupID": "816"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "817"
-          },
-          {
-            "groupName": "Destroyer",
-            "groupID": "829"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "818"
-          }
-        ]
-      },
-      {
-        "groupName": "Faction",
-        "groups": [
-          {
-            "groupName": "Battleship",
-            "groupID": "924"
-          },
-          {
-            "groupName": "Cruiser",
-            "groupID": "1006"
-          },
-          {
-            "groupName": "Frigate",
-            "groupID": "1007"
-          },
-          {
-            "groupName": "Industrials",
-            "groupID": "927"
-          },
-          {
-            "groupName": "Transports",
-            "groupID": "875"
-          }
-        ]
-      },
-      {
-        "groupName": "Drone",
-        "groups": [
-          {
-            "groupName": "Drone",
-            "groupID": "337"
-          },
-          {
-            "groupName": "Fighter Drone",
-            "groupID": "861"
-          }
-        ]
-      },
-      {
-        "groupName": "Container",
-        "groups": [
-          {
-            "groupName": "Container",
-            "groupID": "952"
-          }
-        ]
-      }
-    ]
+  "groupName": "Mission",
+  "groups": [
+			 {
+			 "groupName": "Amarr Empire",
+			 "iconName": "amarrEmpire.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "666"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "667"
+						},
+						{
+						"groupName": "Carrier",
+						"groupID": "865"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "668"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "669"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "665"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "670"
+						}
+						]
+			 },
+			 {
+			 "groupName": "CONCORD Assembly",
+			 "iconName": "concord.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "696"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "697"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "695"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "694"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "693"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "698"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Caldari State",
+			 "iconName": "caldariState.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "672"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "674"
+						},
+						{
+						"groupName": "Carrier",
+						"groupID": "866"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "673"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "676"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "671"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "675"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Gallente Federation",
+			 "iconName": "gallenteFederation.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "681"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "680"
+						},
+						{
+						"groupName": "Carrier",
+						"groupID": "867"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "678"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "679"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "677"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "682"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Minmatar Republic",
+			 "iconName": "minmatarRepublic.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "685"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "706"
+						},
+						{
+						"groupName": "Carrier",
+						"groupID": "868"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "705"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "684"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "683"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "686"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Khanid Kingdom",
+			 "iconName": "khanidKingdom.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "690"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "691"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "689"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "688"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "687"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "692"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Mordu's Legion",
+			 "iconName": "mordusLegion.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "702"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "703"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "701"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "700"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "699"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "704"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Thukker Tribe",
+			 "iconName": "thukkerTribe.png",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "822"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "823"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "824"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "825"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "826"
+						},
+						{
+						"groupName": "Other",
+						"groupID": "827"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Generic",
+			 "groups": [
+						{
+						"groupName": "Battlecruiser",
+						"groupID": "828"
+						},
+						{
+						"groupName": "Battleship",
+						"groupID": "816"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "817"
+						},
+						{
+						"groupName": "Destroyer",
+						"groupID": "829"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "818"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Faction",
+			 "groups": [
+						{
+						"groupName": "Battleship",
+						"groupID": "924"
+						},
+						{
+						"groupName": "Cruiser",
+						"groupID": "1006"
+						},
+						{
+						"groupName": "Frigate",
+						"groupID": "1007"
+						},
+						{
+						"groupName": "Industrials",
+						"groupID": "927"
+						},
+						{
+						"groupName": "Transports",
+						"groupID": "875"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Drone",
+			 "groups": [
+						{
+						"groupName": "Drone",
+						"groupID": "337"
+						},
+						{
+						"groupName": "Fighter Drone",
+						"groupID": "861"
+						}
+						]
+			 },
+			 {
+			 "groupName": "Container",
+			 "groups": [
+						{
+						"groupName": "Container",
+						"groupID": "952"
+						}
+						]
+			 }
+			 ]
   },
   {
-    "groupName": "Storyline",
-    "groups": [
-      {
-        "groupName": "Battleship",
-        "groupID": "523"
-      },
-      {
-        "groupName": "Cruiser",
-        "groupID": "522"
-      },
-      {
-        "groupName": "Frigate",
-        "groupID": "520"
-      },
-      {
-        "groupName": "Mission Battleship",
-        "groupID": "534"
-      },
-      {
-        "groupName": "Mission Cruiser",
-        "groupID": "533"
-      },
-      {
-        "groupName": "Mission Frigate",
-        "groupID": "527"
-      }
-    ]
+  "groupName": "Storyline",
+  "groups": [
+			 {
+			 "groupName": "Battleship",
+			 "groupID": "523"
+			 },
+			 {
+			 "groupName": "Cruiser",
+			 "groupID": "522"
+			 },
+			 {
+			 "groupName": "Frigate",
+			 "groupID": "520"
+			 },
+			 {
+			 "groupName": "Mission Battleship",
+			 "groupID": "534"
+			 },
+			 {
+			 "groupName": "Mission Cruiser",
+			 "groupID": "533"
+			 },
+			 {
+			 "groupName": "Mission Frigate",
+			 "groupID": "527"
+			 }
+			 ]
   },
   {
-    "groupName": "Drones",
-    "groups": [
-      {
-        "groupName": "Concord Drone",
-        "groupID": "301"
-      },
-      {
-        "groupName": "Convoy",
-        "groupID": "297"
-      },
-      {
-        "groupName": "Convoy Drone",
-        "groupID": "298"
-      },
-      {
-        "groupName": "Faction Drone",
-        "groupID": "288"
-      },
-      {
-        "groupName": "LCO Drone",
-        "groupID": "279"
-      },
-      {
-        "groupName": "Pirate Drone",
-        "groupID": "185"
-      },
-      {
-        "groupName": "Police Drone",
-        "groupID": "182"
-      },
-      {
-        "groupName": "Rogue Drone",
-        "groupID": "287"
-      },
-      {
-        "groupName": "Customs Official",
-        "groupID": "446"
-      }
-    ]
+  "groupName": "Drones",
+  "groups": [
+			 {
+			 "groupName": "Concord Drone",
+			 "groupID": "301"
+			 },
+			 {
+			 "groupName": "Convoy",
+			 "groupID": "297"
+			 },
+			 {
+			 "groupName": "Convoy Drone",
+			 "groupID": "298"
+			 },
+			 {
+			 "groupName": "Faction Drone",
+			 "groupID": "288"
+			 },
+			 {
+			 "groupName": "LCO Drone",
+			 "groupID": "279"
+			 },
+			 {
+			 "groupName": "Pirate Drone",
+			 "groupID": "185"
+			 },
+			 {
+			 "groupName": "Police Drone",
+			 "groupID": "182"
+			 },
+			 {
+			 "groupName": "Rogue Drone",
+			 "groupID": "287"
+			 },
+			 {
+			 "groupName": "Customs Official",
+			 "groupID": "446"
+			 }
+			 ]
   },
   {
-    "groupName": "Other",
-    "groups": [
-      {
-        "groupName": "Billboard",
-        "groupID": "323"
-      },
-      {
-        "groupName": "Capture Point",
-        "groupID": "922"
-      },
-      {
-        "groupName": "Destructible Agents In Space",
-        "groupID": "715"
-      },
-      {
-        "groupName": "Destructible Sentry Gun",
-        "groupID": "383"
-      },
-      {
-        "groupName": "Large Collidable Ship",
-        "groupID": "784"
-      },
-      {
-        "groupName": "Large Collidable Structure",
-        "groupID": "319"
-      },
-      {
-        "groupName": "Mini Container",
-        "groupID": "1208"
-      },
-      {
-        "groupName": "Scatter Container",
-        "groupID": "1207"
-      },
-      {
-        "groupName": "Sentry Gun",
-        "groupID": "99"
-      },
-      {
-        "groupName": "Spawn Container",
-        "groupID": "306"
-      },
-      {
-        "groupName": "Temporary Cloud",
-        "groupID": "335"
-      },
-      {
-        "groupName": "Tutorial Drone",
-        "groupID": "286"
-      },
-      {
-        "groupName": "Zombie Entities",
-        "groupID": "934"
-      }
-    ]
+  "groupName": "Other",
+  "groups": [
+			 {
+			 "groupName": "Billboard",
+			 "groupID": "323"
+			 },
+			 {
+			 "groupName": "Capture Point",
+			 "groupID": "922"
+			 },
+			 {
+			 "groupName": "Destructible Agents In Space",
+			 "groupID": "715"
+			 },
+			 {
+			 "groupName": "Destructible Sentry Gun",
+			 "groupID": "383"
+			 },
+			 {
+			 "groupName": "Large Collidable Ship",
+			 "groupID": "784"
+			 },
+			 {
+			 "groupName": "Large Collidable Structure",
+			 "groupID": "319"
+			 },
+			 {
+			 "groupName": "Mini Container",
+			 "groupID": "1208"
+			 },
+			 {
+			 "groupName": "Scatter Container",
+			 "groupID": "1207"
+			 },
+			 {
+			 "groupName": "Sentry Gun",
+			 "groupID": "99"
+			 },
+			 {
+			 "groupName": "Spawn Container",
+			 "groupID": "306"
+			 },
+			 {
+			 "groupName": "Temporary Cloud",
+			 "groupID": "335"
+			 },
+			 {
+			 "groupName": "Tutorial Drone",
+			 "groupID": "286"
+			 },
+			 {
+			 "groupName": "Zombie Entities",
+			 "groupID": "934"
+			 }
+			 ]
   }
-]
+  ]

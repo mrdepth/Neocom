@@ -77,6 +77,7 @@
 
 													 row.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]]];
 													 row.name = account.characterInfo.characterName;
+													 row.uuid = account.uuid;
 													 [todayRows addObject:row];
 													 
 													 if (!account.skillQueue)

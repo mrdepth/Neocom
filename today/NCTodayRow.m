@@ -15,6 +15,7 @@
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:self.name forKey:@"name"];
 	[aCoder encodeObject:self.skillQueueEndDate forKey:@"skillQueueEndDate"];
+	[aCoder encodeObject:self.uuid forKey:@"uuid"];
 	if (self.image)
 		[aCoder encodeObject:UIImagePNGRepresentation(self.image) forKey:@"image"];
 }
@@ -24,6 +25,7 @@
 		self.name = [aDecoder decodeObjectForKey:@"name"];
 		self.skillQueueEndDate = [aDecoder decodeObjectForKey:@"skillQueueEndDate"];
 		self.image = [UIImage imageWithData:[aDecoder decodeObjectForKey:@"image"]];
+		self.uuid = [aDecoder decodeObjectForKey:@"uuid"];
 	}
 	return self;
 }

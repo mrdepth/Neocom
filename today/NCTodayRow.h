@@ -12,4 +12,5 @@
 @property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSDate* skillQueueEndDate;
+@property (nonatomic, strong) NSString* uuid;
 @end

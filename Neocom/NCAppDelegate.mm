@@ -202,6 +202,16 @@
 		else if ([scheme isEqualToString:@"showinfo"]) {
 			[self showTypeInfoWithURL:url];
 		}
+		else if ([scheme isEqualToString:@"ncaccount"]) {
+			NSMutableString* uuid = [NSMutableString stringWithString:[url absoluteString]];
+			[uuid replaceOccurrencesOfString:@"ncaccount://" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
+			[uuid replaceOccurrencesOfString:@"ncaccount:" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, uuid.length)];
+			NCAccount* account = nil;
+			if (uuid)
+				account = [[NCStorage sharedStorage] accountWithUUID:uuid];
+			if (account)
+				[NCAccount setCurrentAccount:account];
+		}
 	});
 	return YES;
 }

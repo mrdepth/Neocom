@@ -9,6 +9,7 @@
 #import "NCNotificationsManager.h"
 #import "NCTaskManager.h"
 #import "NCAccountsManager.h"
+#import "NCTodayRow.h"
 
 #define NCNotificationsManagerUpdateTime (60 * 30)
 
@@ -65,8 +66,21 @@
 		[[self taskManager] addTaskWithIndentifier:nil
 											 title:nil
 											 block:^(NCTask *task) {
+												 NSMutableArray* todayRows = [NSMutableArray new];
+												 NCTodayRow* row = [NCTodayRow new];
+												 
 												 for (NCAccount* account in accountsManager.accounts) {
-													 if (account.accountType != NCAccountTypeCharacter || !account.skillQueue)
+													 if (account.accountType != NCAccountTypeCharacter)
+														 continue;
+													 if (!account.uuid)
+														 continue;
+
+													 row.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]]];
+													 row.name = account.characterInfo.characterName;
+													 row.uuid = account.uuid;
+													 [todayRows addObject:row];
+													 
+													 if (!account.skillQueue)
 														 continue;
 													 
 													 if  ([account.skillQueue.cacheExpireDate compare:[NSDate date]] == NSOrderedAscending) {
@@ -74,14 +88,15 @@
 																				  error:nil
 																		progressHandler:nil];
 													 }
-													 if (!account.uuid)
-														 continue;
+													 
+													 NSDate *endTime = account.skillQueue.skillQueue.count > 0 ? [[account.skillQueue.skillQueue lastObject] endTime] : nil;
+													 row.skillQueueEndDate = [account.skillQueue localTimeWithServerTime:endTime];
+
 													 
 													 [accounts addObject:account.uuid];
 													 if (account.skillQueue.skillQueue.count == 0)
 														 continue;
 													 
-													 NSDate *endTime = [[account.skillQueue.skillQueue lastObject] endTime];
 													 if (endTime) {
 														 endTime = [account.skillQueue localTimeWithServerTime:endTime];
 														 NSTimeInterval dif = [endTime timeIntervalSinceNow];
@@ -131,6 +146,19 @@
 														 notification.applicationIconBadgeNumber = badge++;
 														 [uuids addObject:uuid];
 													 }
+												 }
+												 
+												 NSURL* url = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:@"group.com.shimanski.eveuniverse.today"];
+												 if (url) {
+													 url = [url URLByAppendingPathComponent:@"today.plist"];
+													 NSFileCoordinator* coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+													 [coordinator coordinateWritingItemAtURL:url
+																					 options:NSFileCoordinatorWritingForReplacing
+																					   error:nil
+																				  byAccessor:^(NSURL *newURL) {
+																					  NSData* data = [NSKeyedArchiver archivedDataWithRootObject:todayRows];
+																					  [data writeToURL:newURL atomically:YES];
+																				  }];
 												 }
 											 }
 								 completionHandler:^(NCTask *task) {

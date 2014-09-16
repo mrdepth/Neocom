@@ -131,6 +131,7 @@
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
 		12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */; };
+		124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */; };
 		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
@@ -406,7 +407,6 @@
 		129D2639187E929800E2062C /* NCMainMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D2638187E929800E2062C /* NCMainMenuContainerViewController.m */; };
 		129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */; };
 		129D263F187E98D500E2062C /* NCNavigationCharacterButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */; };
-		129DF51E197F81B400777592 /* libFlurry_5.2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DF51D197F81B400777592 /* libFlurry_5.2.0.a */; };
 		129FEE15186030FD00F75FA6 /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */; };
 		129FEE181860313D00F75FA6 /* NCStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE171860313D00F75FA6 /* NCStorage.m */; };
 		129FEE361860326E00F75FA6 /* NCAPIKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 129FEE351860326E00F75FA6 /* NCAPIKey.m */; };
@@ -439,6 +439,10 @@
 		12B5AE4D18CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */; };
 		12B5AE4E18CF0A0D00D05D60 /* buttonBackgroundSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */; };
 		12B5AE4F18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */; };
+		12B68569195EB1B30043B30A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68568195EB1B30043B30A /* NotificationCenter.framework */; };
+		12B6856F195EB1B30043B30A /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B6856E195EB1B30043B30A /* TodayViewController.m */; };
+		12B68571195EB1B30043B30A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B68570195EB1B30043B30A /* MainInterface.storyboard */; };
+		12B68574195EB1B30043B30A /* com.shimanski.eveuniverse.today.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */; };
 		12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */; };
 		12B971A718EC2A11008F8740 /* NCFittingPOSStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.m */; };
 		12B971A918EC3D08008F8740 /* KillBoard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B971A818EC3D08008F8740 /* KillBoard_iPad.storyboard */; };
@@ -475,6 +479,11 @@
 		12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */; };
 		12D6DC0D1920A296003FC5ED /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12D6DC0B1920A296003FC5ED /* README.txt */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
+		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
+		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
+		12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E86943195EC700004B66D0 /* NCTodayCell.m */; };
+		12E86945195EC700004B66D0 /* NCTodayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E86943195EC700004B66D0 /* NCTodayCell.m */; };
+		12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
@@ -622,6 +631,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		124C3D9819C2C29B00FCF18E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 12EB84741980CD670058D497;
+			remoteInfo = eufeTests;
+		};
 		1271239218978236005F46EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
@@ -643,14 +659,35 @@
 			remoteGlobalIDString = 12A3C6AE177C283E0067E00C;
 			remoteInfo = eufe;
 		};
-		129DF51B197F81AD00777592 /* PBXContainerItemProxy */ = {
+		12B68572195EB1B30043B30A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 12C5178C196D13450004CF96;
-			remoteInfo = eufeTests;
+			containerPortal = 120968471845F0CB00921A37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12B68566195EB1B20043B30A;
+			remoteInfo = today;
+		};
+		12B68575195EB1B30043B30A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 120968471845F0CB00921A37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12B68566195EB1B20043B30A;
+			remoteInfo = today;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		12B6857B195EB1B30043B30A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				12B68574195EB1B30043B30A /* com.shimanski.eveuniverse.today.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1202FC7418A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShipAffectingSkillsViewController.h; sourceTree = "<group>"; };
@@ -845,6 +882,7 @@
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
 		12476C0F194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+Neocom.h"; sourceTree = "<group>"; };
 		12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+Neocom.m"; sourceTree = "<group>"; };
+		124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
 		125F681818852DA9005732FA /* NCSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsViewController.h; sourceTree = "<group>"; };
@@ -1348,7 +1386,6 @@
 		129D263B187E98C100E2062C /* NCNavigationCharacterButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNavigationCharacterButton.h; sourceTree = "<group>"; };
 		129D263C187E98C100E2062C /* NCNavigationCharacterButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNavigationCharacterButton.m; sourceTree = "<group>"; };
 		129D263E187E98D500E2062C /* NCNavigationCharacterButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCNavigationCharacterButton.xib; sourceTree = "<group>"; };
-		129DF51D197F81B400777592 /* libFlurry_5.2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.2.0.a; sourceTree = "<group>"; };
 		129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		129FEE161860313D00F75FA6 /* NCStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStorage.h; sourceTree = "<group>"; };
 		129FEE171860313D00F75FA6 /* NCStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStorage.m; sourceTree = "<group>"; };
@@ -1396,6 +1433,13 @@
 		12B5AE4918CF0A0D00D05D60 /* buttonBackgroundNormal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundNormal@2x.png"; sourceTree = "<group>"; };
 		12B5AE4A18CF0A0D00D05D60 /* buttonBackgroundSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonBackgroundSelected.png; sourceTree = "<group>"; };
 		12B5AE4B18CF0A0D00D05D60 /* buttonBackgroundSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackgroundSelected@2x.png"; sourceTree = "<group>"; };
+		12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.shimanski.eveuniverse.today.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		12B68568195EB1B30043B30A /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		12B6856C195EB1B30043B30A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12B6856D195EB1B30043B30A /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		12B6856E195EB1B30043B30A /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		12B68570195EB1B30043B30A /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		12B6857C195EB1C30043B30A /* com.shimanski.eveuniverse.today.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = com.shimanski.eveuniverse.today.entitlements; sourceTree = "<group>"; };
 		12B971A218EC28D2008F8740 /* POSFitting_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = POSFitting_iPad.storyboard; sourceTree = "<group>"; };
 		12B971A518EC2A11008F8740 /* NCFittingPOSStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPOSStatsViewController.h; sourceTree = "<group>"; };
 		12B971A618EC2A11008F8740 /* NCFittingPOSStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingPOSStatsViewController.m; sourceTree = "<group>"; };
@@ -1473,6 +1517,10 @@
 		12D6DC0B1920A296003FC5ED /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
+		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
+		12E8693F195EC14D004B66D0 /* NCTodayRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTodayRow.m; sourceTree = "<group>"; };
+		12E86942195EC700004B66D0 /* NCTodayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayCell.h; sourceTree = "<group>"; };
+		12E86943195EC700004B66D0 /* NCTodayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTodayCell.m; sourceTree = "<group>"; };
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
 		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
@@ -1691,6 +1739,7 @@
 			files = (
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
+				124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
@@ -1698,7 +1747,6 @@
 				12F9561E18CDB81C005CEAD6 /* SystemConfiguration.framework in Frameworks */,
 				12F9561C18CDB80E005CEAD6 /* MobileCoreServices.framework in Frameworks */,
 				12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */,
-				129DF51E197F81B400777592 /* libFlurry_5.2.0.a in Frameworks */,
 				12F9561A18CDB802005CEAD6 /* AudioToolbox.framework in Frameworks */,
 				12430BB918C87F760025D971 /* StoreKit.framework in Frameworks */,
 				123F0AD318C5B78500D53602 /* libz.dylib in Frameworks */,
@@ -1709,6 +1757,14 @@
 				120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */,
 				120968571845F0CB00921A37 /* UIKit.framework in Frameworks */,
 				120968531845F0CB00921A37 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12B68564195EB1B20043B30A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12B68569195EB1B30043B30A /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1784,6 +1840,7 @@
 			isa = PBXGroup;
 			children = (
 				120968581845F0CB00921A37 /* Neocom */,
+				12B6856A195EB1B30043B30A /* today */,
 				120968511845F0CB00921A37 /* Frameworks */,
 				120968501845F0CB00921A37 /* Products */,
 			);
@@ -1793,6 +1850,7 @@
 			isa = PBXGroup;
 			children = (
 				1209684F1845F0CB00921A37 /* Neocom.app */,
+				12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1818,6 +1876,7 @@
 				120968541845F0CB00921A37 /* CoreGraphics.framework */,
 				120968561845F0CB00921A37 /* UIKit.framework */,
 				120968711845F0CB00921A37 /* XCTest.framework */,
+				12B68568195EB1B30043B30A /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2355,7 +2414,7 @@
 			isa = PBXGroup;
 			children = (
 				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				129DF51D197F81B400777592 /* libFlurry_5.2.0.a */,
+				124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -3038,7 +3097,7 @@
 			children = (
 				1271239318978236005F46EE /* compiler */,
 				1271239518978236005F46EE /* libeufe.a */,
-				129DF51C197F81AD00777592 /* eufeTests.xctest */,
+				124C3D9919C2C29B00FCF18E /* eufeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3690,6 +3749,29 @@
 			name = NCFittingDamagePatternCell;
 			sourceTree = "<group>";
 		};
+		12B6856A195EB1B30043B30A /* today */ = {
+			isa = PBXGroup;
+			children = (
+				12E8693D195EC123004B66D0 /* NCTodayRow */,
+				12B6857C195EB1C30043B30A /* com.shimanski.eveuniverse.today.entitlements */,
+				12B6856D195EB1B30043B30A /* TodayViewController.h */,
+				12B6856E195EB1B30043B30A /* TodayViewController.m */,
+				12E86942195EC700004B66D0 /* NCTodayCell.h */,
+				12E86943195EC700004B66D0 /* NCTodayCell.m */,
+				12B68570195EB1B30043B30A /* MainInterface.storyboard */,
+				12B6856B195EB1B30043B30A /* Supporting Files */,
+			);
+			path = today;
+			sourceTree = "<group>";
+		};
+		12B6856B195EB1B30043B30A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				12B6856C195EB1B30043B30A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		12B971A418EC29FC008F8740 /* NCFittingPOSStatsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3915,6 +3997,15 @@
 				12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */,
 			);
 			name = NCDatabaseTypeVariationsViewController;
+			sourceTree = "<group>";
+		};
+		12E8693D195EC123004B66D0 /* NCTodayRow */ = {
+			isa = PBXGroup;
+			children = (
+				12E8693E195EC14D004B66D0 /* NCTodayRow.h */,
+				12E8693F195EC14D004B66D0 /* NCTodayRow.m */,
+			);
+			name = NCTodayRow;
 			sourceTree = "<group>";
 		};
 		12EC0AC318C0BA680010169C /* NCNotificationsManager */ = {
@@ -4506,16 +4597,36 @@
 				1209684B1845F0CB00921A37 /* Sources */,
 				1209684C1845F0CB00921A37 /* Frameworks */,
 				1209684D1845F0CB00921A37 /* Resources */,
+				12B6857B195EB1B30043B30A /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				127123AC1897ABF8005F46EE /* PBXTargetDependency */,
+				12B68573195EB1B30043B30A /* PBXTargetDependency */,
+				12B68576195EB1B30043B30A /* PBXTargetDependency */,
 			);
 			name = Neocom;
 			productName = Neocom;
 			productReference = 1209684F1845F0CB00921A37 /* Neocom.app */;
 			productType = "com.apple.product-type.application";
+		};
+		12B68566195EB1B20043B30A /* today */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12B6857A195EB1B30043B30A /* Build configuration list for PBXNativeTarget "today" */;
+			buildPhases = (
+				12B68563195EB1B20043B30A /* Sources */,
+				12B68564195EB1B20043B30A /* Frameworks */,
+				12B68565195EB1B20043B30A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = today;
+			productName = today;
+			productReference = 12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -4530,7 +4641,19 @@
 					1209684E1845F0CB00921A37 = {
 						DevelopmentTeam = YB4RLQ4M9A;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					12B68566195EB1B20043B30A = {
+						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = YB4RLQ4M9A;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 						};
@@ -4557,11 +4680,19 @@
 			projectRoot = "";
 			targets = (
 				1209684E1845F0CB00921A37 /* Neocom */,
+				12B68566195EB1B20043B30A /* today */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		124C3D9919C2C29B00FCF18E /* eufeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = eufeTests.xctest;
+			remoteRef = 124C3D9819C2C29B00FCF18E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		1271239318978236005F46EE /* compiler */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -4574,13 +4705,6 @@
 			fileType = archive.ar;
 			path = libeufe.a;
 			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		129DF51C197F81AD00777592 /* eufeTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = eufeTests.xctest;
-			remoteRef = 129DF51B197F81AD00777592 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -4796,6 +4920,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12B68565195EB1B20043B30A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12B68571195EB1B30043B30A /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -4850,6 +4982,7 @@
 				123F0AD118C5B5FF00D53602 /* NSData+Neocom.m in Sources */,
 				122C98AB18B5EAF900386EDE /* NCIndustryJobsCell.m in Sources */,
 				126A0E46185F3B9300A8E8A3 /* EVENotificationTexts.m in Sources */,
+				12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */,
 				126A0E41185F3B9300A8E8A3 /* EVEMailBodies.m in Sources */,
 				1202FC7618A8AF6F0093D8F7 /* NCFittingShipAffectingSkillsViewController.m in Sources */,
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
@@ -5180,6 +5313,7 @@
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
 				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
 				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,
+				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,
 				8456E86618AA9F90000DAE75 /* NCFittingPOSDataSource.mm in Sources */,
 				126A0E58185F3B9300A8E8A3 /* EVEOutpostServiceDetail.m in Sources */,
 				126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */,
@@ -5195,6 +5329,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12B68563195EB1B20043B30A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */,
+				12E86945195EC700004B66D0 /* NCTodayCell.m in Sources */,
+				12B6856F195EB1B30043B30A /* TodayViewController.m in Sources */,
+				12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -5202,6 +5347,16 @@
 			isa = PBXTargetDependency;
 			name = eufe;
 			targetProxy = 127123AB1897ABF8005F46EE /* PBXContainerItemProxy */;
+		};
+		12B68573195EB1B30043B30A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12B68566195EB1B20043B30A /* today */;
+			targetProxy = 12B68572195EB1B30043B30A /* PBXContainerItemProxy */;
+		};
+		12B68576195EB1B30043B30A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12B68566195EB1B20043B30A /* today */;
+			targetProxy = 12B68575195EB1B30043B30A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -5337,8 +5492,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neocom/Neocom-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -5363,6 +5518,48 @@
 			};
 			name = Release;
 		};
+		12B68577195EB1B30043B30A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = today/com.shimanski.eveuniverse.today.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = today/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		12B68578195EB1B30043B30A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = today/com.shimanski.eveuniverse.today.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = today/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "com.shimanski.eveuniverse.$(TARGET_NAME:rfc1034identifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5380,6 +5577,15 @@
 			buildConfigurations = (
 				120968821845F0CB00921A37 /* Debug */,
 				120968831845F0CB00921A37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12B6857A195EB1B30043B30A /* Build configuration list for PBXNativeTarget "today" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12B68577195EB1B30043B30A /* Debug */,
+				12B68578195EB1B30043B30A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

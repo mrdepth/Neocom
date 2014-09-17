@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -29,6 +29,7 @@
         <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="eufeCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="race" inverseEntity="EufeItemCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="race" inverseEntity="IndProduct" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="DgmAttributeCategory" representedClassName="NCDBDgmAttributeCategory" syncable="YES">
@@ -99,23 +100,36 @@
         <attribute name="unitID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="unit" inverseEntity="DgmAttributeType" syncable="YES"/>
     </entity>
-    <entity name="InvBlueprintType" representedClassName="NCDBInvBlueprintType" syncable="YES">
-        <attribute name="materialModifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    <entity name="IndActivity" representedClassName="NCDBIndActivity" syncable="YES">
+        <attribute name="time" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="indActivities" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndBlueprintType" inverseName="activities" inverseEntity="IndBlueprintType" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="activity" inverseEntity="IndProduct" syncable="YES"/>
+        <relationship name="requiredMaterials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredMaterial" inverseName="activity" inverseEntity="IndRequiredMaterial" syncable="YES"/>
+        <relationship name="requiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="activity" inverseEntity="IndRequiredSkill" syncable="YES"/>
+    </entity>
+    <entity name="IndBlueprintType" representedClassName="NCDBIndBlueprintType" syncable="YES">
         <attribute name="maxProductionLimit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="productionTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="productivityModifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="researchCopyTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="researchMaterialTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="researchProductivityTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="researchTechTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="techLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="wasteFactor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprintType" inverseEntity="InvType" syncable="YES"/>
-        <relationship name="materials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeMaterial" inverseName="blueprintType" inverseEntity="InvTypeMaterial" syncable="YES"/>
-        <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprint" inverseEntity="InvType" syncable="YES"/>
-        <fetchedProperty name="fetchedProperty" optional="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="InvBlueprintType"/>
-        </fetchedProperty>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="blueprintType" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprintType" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="IndProduct" representedClassName="NCDBIndProduct" syncable="YES">
+        <attribute name="probability" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="products" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="products" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="products" inverseEntity="ChrRace" syncable="YES"/>
+    </entity>
+    <entity name="IndRequiredMaterial" representedClassName="NCDBIndRequiredMaterial" syncable="YES">
+        <attribute name="consume" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredMaterials" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="materialType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="materials" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="IndRequiredSkill" representedClassName="NCDBIndRequiredSkill" syncable="YES">
+        <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredSkills" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="skillType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="indRequiredSkills" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="InvCategory" representedClassName="NCDBInvCategory" syncable="YES">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -179,8 +193,7 @@
         <attribute name="typeName" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" indexed="YES" syncable="YES"/>
         <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="type" inverseEntity="DgmTypeAttribute" syncable="YES"/>
-        <relationship name="blueprint" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="productType" inverseEntity="InvBlueprintType" syncable="YES"/>
-        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="blueprintType" inverseEntity="InvBlueprintType" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndBlueprintType" inverseName="type" inverseEntity="IndBlueprintType" syncable="YES"/>
         <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="types" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="type" inverseEntity="InvControlTower" syncable="YES"/>
         <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
@@ -189,25 +202,20 @@
         <relationship name="eufeItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="type" inverseEntity="EufeItem" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="indRequiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="skillType" inverseEntity="IndRequiredSkill" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
         <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="masterySkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="type" inverseEntity="CertSkill" syncable="YES"/>
+        <relationship name="materials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredMaterial" inverseName="materialType" inverseEntity="IndRequiredMaterial" syncable="YES"/>
         <relationship name="metaGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="types" inverseEntity="InvMetaGroup" syncable="YES"/>
         <relationship name="parentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="variations" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="productType" inverseEntity="IndProduct" syncable="YES"/>
         <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="types" inverseEntity="ChrRace" syncable="YES"/>
         <relationship name="reguiredForSkill" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeRequiredSkill" inverseName="skillType" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
-        <relationship name="requiredFor" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="requiredType" inverseEntity="RamTypeRequirement" syncable="YES"/>
         <relationship name="requiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="InvTypeRequiredSkill" inverseName="type" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="stationType" inverseEntity="StaStation" syncable="YES"/>
         <relationship name="typeDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="type" inverseEntity="TxtDescription" syncable="YES"/>
-        <relationship name="typeMaterials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeMaterial" inverseName="materialType" inverseEntity="InvTypeMaterial" syncable="YES"/>
-        <relationship name="typeRequirements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="type" inverseEntity="RamTypeRequirement" syncable="YES"/>
         <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="parentType" inverseEntity="InvType" syncable="YES"/>
-    </entity>
-    <entity name="InvTypeMaterial" representedClassName="NCDBInvTypeMaterial" syncable="YES">
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvBlueprintType" inverseName="materials" inverseEntity="InvBlueprintType" syncable="YES"/>
-        <relationship name="materialType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeMaterials" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="InvTypeRequiredSkill" representedClassName="NCDBInvTypeRequiredSkill" syncable="YES">
         <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -260,7 +268,7 @@
         <attribute name="published" optional="YES" attributeType="Boolean" indexed="YES" syncable="YES"/>
         <relationship name="assemblyLineTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="activity" inverseEntity="RamAssemblyLineType" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="activities" inverseEntity="EveIcon" syncable="YES"/>
-        <relationship name="typeRequirements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamTypeRequirement" inverseName="activity" inverseEntity="RamTypeRequirement" syncable="YES"/>
+        <relationship name="indActivities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="activity" inverseEntity="IndActivity" syncable="YES"/>
     </entity>
     <entity name="RamAssemblyLineType" representedClassName="NCDBRamAssemblyLineType" syncable="YES">
         <attribute name="assemblyLineTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -276,14 +284,6 @@
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="assemblyLineType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="installationTypeContents" inverseEntity="RamAssemblyLineType" syncable="YES"/>
         <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="installationTypeContents" inverseEntity="InvType" syncable="YES"/>
-    </entity>
-    <entity name="RamTypeRequirement" representedClassName="NCDBRamTypeRequirement" syncable="YES">
-        <attribute name="damagePerJob" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="recycle" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="typeRequirements" inverseEntity="RamActivity" syncable="YES"/>
-        <relationship name="requiredType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="requiredFor" inverseEntity="InvType" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeRequirements" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="StaStation" representedClassName="NCDBStaStation" syncable="YES">
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -303,7 +303,7 @@
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="103"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
-        <element name="ChrRace" positionX="9" positionY="54" width="128" height="118"/>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="135"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="163"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
@@ -314,7 +314,6 @@
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="88"/>
-        <element name="InvBlueprintType" positionX="117" positionY="261" width="128" height="266"/>
         <element name="InvCategory" positionX="9" positionY="54" width="128" height="118"/>
         <element name="InvControlTower" positionX="-135" positionY="234" width="128" height="73"/>
         <element name="InvControlTowerResource" positionX="72" positionY="216" width="128" height="148"/>
@@ -322,8 +321,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="163"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="133"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="103"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="583"/>
-        <element name="InvTypeMaterial" positionX="0" positionY="45" width="128" height="88"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="568"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="133"/>
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="148"/>
@@ -333,8 +331,12 @@
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="133"/>
         <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="163"/>
         <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="88"/>
-        <element name="RamTypeRequirement" positionX="90" positionY="234" width="128" height="133"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="118"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="28"/>
+        <element name="IndBlueprintType" positionX="-180" positionY="189" width="128" height="88"/>
+        <element name="IndActivity" positionX="-171" positionY="198" width="128" height="133"/>
+        <element name="IndProduct" positionX="-162" positionY="207" width="128" height="118"/>
+        <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="103"/>
+        <element name="IndRequiredSkill" positionX="-144" positionY="225" width="128" height="88"/>
     </elements>
 </model>

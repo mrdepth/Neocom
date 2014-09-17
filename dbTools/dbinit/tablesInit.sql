@@ -38,21 +38,48 @@ CREATE TABLE "eveUnits" (
   "description" varchar(1000) DEFAULT NULL,
   PRIMARY KEY ("unitID")
 );
-CREATE TABLE "invBlueprintTypes" (
-  "blueprintTypeID" int NOT NULL,
-  "parentBlueprintTypeID" int DEFAULT NULL,
+CREATE TABLE "industryActivity" (
+  "typeID" int NOT NULL DEFAULT '0',
+  "time" int DEFAULT NULL,
+  "activityID" int NOT NULL DEFAULT '0',
+  PRIMARY KEY ("typeID","activityID")
+);
+
+CREATE TABLE "industryActivityMaterials" (
+  "typeID" int DEFAULT NULL,
+  "activityID" int DEFAULT NULL,
+  "materialTypeID" int DEFAULT NULL,
+  "quantity" int DEFAULT NULL,
+  "consume" int DEFAULT NULL
+);
+CREATE TABLE "industryActivityProbabilities" (
+  "typeID" int DEFAULT NULL,
+  "activityID" int DEFAULT NULL,
   "productTypeID" int DEFAULT NULL,
-  "productionTime" int DEFAULT NULL,
-  "techLevel" int DEFAULT NULL,
-  "researchProductivityTime" int DEFAULT NULL,
-  "researchMaterialTime" int DEFAULT NULL,
-  "researchCopyTime" int DEFAULT NULL,
-  "researchTechTime" int DEFAULT NULL,
-  "productivityModifier" int DEFAULT NULL,
-  "materialModifier" int DEFAULT NULL,
-  "wasteFactor" int DEFAULT NULL,
+  "probability" decimal(3,2) DEFAULT NULL
+);
+CREATE TABLE "industryActivityProducts" (
+  "typeID" int DEFAULT NULL,
+  "activityID" int DEFAULT NULL,
+  "productTypeID" int DEFAULT NULL,
+  "quantity" int DEFAULT NULL
+);
+CREATE TABLE "industryActivityRaces" (
+  "typeID" int DEFAULT NULL,
+  "activityID" int DEFAULT NULL,
+  "productTypeID" int DEFAULT NULL,
+  "raceID" int DEFAULT NULL
+);
+CREATE TABLE "industryActivitySkills" (
+  "typeID" int DEFAULT NULL,
+  "activityID" int DEFAULT NULL,
+  "skillID" int DEFAULT NULL,
+  "level" int DEFAULT NULL
+);
+CREATE TABLE "industryBlueprints" (
+  "typeID" int NOT NULL,
   "maxProductionLimit" int DEFAULT NULL,
-  PRIMARY KEY ("blueprintTypeID")
+  PRIMARY KEY ("typeID")
 );
 CREATE TABLE "invControlTowerResourcePurposes" (
   "purpose" int  NOT NULL,
@@ -189,6 +216,7 @@ CREATE TABLE "ramAssemblyLineTypes" (
   "description" varchar(1000) DEFAULT NULL,
   "baseTimeMultiplier" double DEFAULT NULL,
   "baseMaterialMultiplier" double DEFAULT NULL,
+  "baseCostMultiplier" double DEFAULT NULL,
   "volume" double DEFAULT NULL,
   "activityID" int  DEFAULT NULL,
   "minCostPerHour" double DEFAULT NULL,
@@ -199,16 +227,6 @@ CREATE TABLE "ramInstallationTypeContents" (
   "assemblyLineTypeID" int  NOT NULL,
   "quantity" int  DEFAULT NULL,
   PRIMARY KEY ("installationTypeID","assemblyLineTypeID")
-);
-
-CREATE TABLE "ramTypeRequirements" (
-  "typeID" int NOT NULL,
-  "activityID" int  NOT NULL,
-  "requiredTypeID" int NOT NULL,
-  "quantity" int DEFAULT NULL,
-  "damagePerJob" double DEFAULT NULL,
-  "recycle" int DEFAULT NULL,
-  PRIMARY KEY ("typeID","activityID","requiredTypeID")
 );
 
 CREATE TABLE "staStations" (
@@ -238,7 +256,14 @@ CREATE INDEX "staStations_staStations_IX_constellation" ON "staStations" ("const
 CREATE INDEX "staStations_staStations_IX_operation" ON "staStations" ("operationID");
 CREATE INDEX "staStations_staStations_IX_type" ON "staStations" ("stationTypeID");
 CREATE INDEX "staStations_staStations_IX_corporation" ON "staStations" ("corporationID");
+CREATE INDEX "industryActivitySkills_typeID" ON "industryActivitySkills" ("typeID");
+CREATE INDEX "industryActivitySkills_typeID_2" ON "industryActivitySkills" ("typeID","activityID");
+CREATE INDEX "industryActivityRaces_typeID" ON "industryActivityRaces" ("typeID");
+CREATE INDEX "industryActivityRaces_typeID_2" ON "industryActivityRaces" ("typeID","activityID");
+CREATE INDEX "industryActivityRaces_productTypeID" ON "industryActivityRaces" ("productTypeID");
 CREATE INDEX "mapRegions_mapRegions_IX_region" ON "mapRegions" ("regionID");
+CREATE INDEX "industryActivityMaterials_typeID" ON "industryActivityMaterials" ("typeID");
+CREATE INDEX "industryActivityMaterials_typeID_2" ON "industryActivityMaterials" ("typeID","activityID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupRegion" ON "mapDenormalize" ("groupID","regionID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupConstellation" ON "mapDenormalize" ("groupID","constellationID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_groupSystem" ON "mapDenormalize" ("groupID","solarSystemID");
@@ -246,10 +271,19 @@ CREATE INDEX "mapDenormalize_mapDenormalize_IX_system" ON "mapDenormalize" ("sol
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_constellation" ON "mapDenormalize" ("constellationID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
+CREATE INDEX "mapDenormalize_mapDenormalize_gis" ON "mapDenormalize" ("solarSystemID","x","y","z","itemName","itemID");
 CREATE INDEX "mapConstellations_mapConstellations_IX_region" ON "mapConstellations" ("regionID");
+CREATE INDEX "industryActivityProbabilities_typeID" ON "industryActivityProbabilities" ("typeID");
+CREATE INDEX "industryActivityProbabilities_typeID_2" ON "industryActivityProbabilities" ("typeID","activityID");
+CREATE INDEX "industryActivityProbabilities_productTypeID" ON "industryActivityProbabilities" ("productTypeID");
+CREATE INDEX "industryActivity_activityID" ON "industryActivity" ("activityID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
+CREATE INDEX "mapSolarSystems_mss_name" ON "mapSolarSystems" ("solarSystemName");
+CREATE INDEX "industryActivityProducts_typeID" ON "industryActivityProducts" ("typeID");
+CREATE INDEX "industryActivityProducts_typeID_2" ON "industryActivityProducts" ("typeID","activityID");
+CREATE INDEX "industryActivityProducts_productTypeID" ON "industryActivityProducts" ("productTypeID");
 CREATE TABLE dgmAttributeTypes (
   "attributeID" smallint(6) NOT NULL,
   "attributeName" varchar(100) default NULL,

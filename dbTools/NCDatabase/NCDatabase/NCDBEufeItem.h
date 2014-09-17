@@ -2,7 +2,7 @@
 //  NCDBEufeItem.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -13,9 +13,9 @@
 
 @interface NCDBEufeItem : NSManagedObject
 
+@property (nonatomic, retain) NCDBEufeItemCategory *charge;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBInvType *type;
-@property (nonatomic, retain) NCDBEufeItemCategory *charge;
 @end
 
 @interface NCDBEufeItem (CoreDataGeneratedAccessors)

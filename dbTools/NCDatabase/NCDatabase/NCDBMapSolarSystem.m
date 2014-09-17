@@ -2,7 +2,7 @@
 //  NCDBMapSolarSystem.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -14,10 +14,10 @@
 
 @implementation NCDBMapSolarSystem
 
+@dynamic factionID;
 @dynamic security;
 @dynamic solarSystemID;
 @dynamic solarSystemName;
-@dynamic factionID;
 @dynamic constellation;
 @dynamic denormalize;
 @dynamic stations;

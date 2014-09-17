@@ -2,7 +2,7 @@
 //  NCDBEufeItem.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -14,8 +14,8 @@
 
 @implementation NCDBEufeItem
 
+@dynamic charge;
 @dynamic groups;
 @dynamic type;
-@dynamic charge;
 
 @end

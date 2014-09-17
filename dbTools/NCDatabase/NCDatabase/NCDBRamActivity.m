@@ -2,14 +2,14 @@
 //  NCDBRamActivity.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
 #import "NCDBRamActivity.h"
 #import "NCDBEveIcon.h"
+#import "NCDBIndActivity.h"
 #import "NCDBRamAssemblyLineType.h"
-#import "NCDBRamTypeRequirement.h"
 
 
 @implementation NCDBRamActivity
@@ -19,6 +19,6 @@
 @dynamic published;
 @dynamic assemblyLineTypes;
 @dynamic icon;
-@dynamic typeRequirements;
+@dynamic indActivities;
 
 @end

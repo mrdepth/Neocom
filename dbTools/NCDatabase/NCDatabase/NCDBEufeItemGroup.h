@@ -2,7 +2,7 @@
 //  NCDBEufeItemGroup.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -15,10 +15,10 @@
 
 @property (nonatomic, retain) NSString * groupName;
 @property (nonatomic, retain) NCDBEufeItemCategory *category;
+@property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *items;
 @property (nonatomic, retain) NCDBEufeItemGroup *parentGroup;
 @property (nonatomic, retain) NSSet *subGroups;
-@property (nonatomic, retain) NCDBEveIcon *icon;
 @end
 
 @interface NCDBEufeItemGroup (CoreDataGeneratedAccessors)

@@ -63,6 +63,9 @@ NSDictionary* staStations;
 NSDictionary* ramActivities;
 NSDictionary* ramAssemblyLineTypes;
 NSDictionary* chrRaces;
+NSDictionary* indBlueprintTypes;
+NSDictionary* indActivities;
+NSDictionary* indProducts;
 
 static NSManagedObjectModel *managedObjectModel()
 {
@@ -549,7 +552,7 @@ void convertCertSkills(NSManagedObjectContext* context, EVEDBDatabase* database)
 	}];
 }
 
-void convertInvBlueprintTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
+/*void convertInvBlueprintTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM invBlueprintTypes" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvBlueprintType* eveBlueprintType = [[EVEDBInvBlueprintType alloc] initWithStatement:stmt];
 		NCDBInvBlueprintType* blueprintType = [NSEntityDescription insertNewObjectForEntityForName:@"InvBlueprintType" inManagedObjectContext:context];
@@ -566,9 +569,9 @@ void convertInvBlueprintTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		blueprintType.blueprintType = invTypes[@(eveBlueprintType.blueprintTypeID)];
 		blueprintType.productType = invTypes[@(eveBlueprintType.productTypeID)];
 	}];
-}
+}*/
 
-void convertInvTypeMaterials(NSManagedObjectContext* context, EVEDBDatabase* database) {
+/*void convertInvTypeMaterials(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM invTypeMaterials" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBInvTypeMaterial* eveTypeMaterial = [[EVEDBInvTypeMaterial alloc] initWithStatement:stmt];
 		NCDBInvType* product = invTypes[@(eveTypeMaterial.typeID)];
@@ -580,7 +583,7 @@ void convertInvTypeMaterials(NSManagedObjectContext* context, EVEDBDatabase* dat
 			typeMaterial.quantity = eveTypeMaterial.quantity;
 		}
 	}];
-}
+}*/
 
 NSDictionary* convertInvControlTowerResourcePurposes(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSMutableDictionary* dictionary = [NSMutableDictionary new];
@@ -757,7 +760,7 @@ void convertRamInstallationTypeContents(NSManagedObjectContext* context, EVEDBDa
 	}];
 }
 
-void convertRamTypeRequirements(NSManagedObjectContext* context, EVEDBDatabase* database) {
+/*void convertRamTypeRequirements(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM ramTypeRequirements" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBRamTypeRequirement* eveTypeRequirement = [[EVEDBRamTypeRequirement alloc] initWithStatement:stmt];
 		NCDBRamTypeRequirement* typeRequirement = [NSEntityDescription insertNewObjectForEntityForName:@"RamTypeRequirement" inManagedObjectContext:context];
@@ -768,7 +771,7 @@ void convertRamTypeRequirements(NSManagedObjectContext* context, EVEDBDatabase* 
 		typeRequirement.requiredType = invTypes[@(eveTypeRequirement.requiredTypeID)];
 		typeRequirement.activity = ramActivities[@(eveTypeRequirement.activityID)];
 	}];
-}
+}*/
 
 NSDictionary* convertStaStations(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	NSMutableDictionary* dictionary = [NSMutableDictionary new];
@@ -831,6 +834,87 @@ void convertRequiredSkills(NSManagedObjectContext* context) {
 				}
 			}
 		}
+	}];
+}
+
+NSDictionary* convertIndustryBlueprints(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	NSMutableDictionary* dictionary = [NSMutableDictionary new];
+	
+	[database execSQLRequest:@"SELECT * FROM industryBlueprints" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryBlueprint* eveBlueprint = [[EVEDBIndustryBlueprint alloc] initWithStatement:stmt];
+		NCDBIndBlueprintType* blueprintType = [NSEntityDescription insertNewObjectForEntityForName:@"IndBlueprintType" inManagedObjectContext:context];
+		blueprintType.type = invTypes[@(eveBlueprint.typeID)];
+		blueprintType.maxProductionLimit = eveBlueprint.maxProductionLimit;
+		dictionary[@(eveBlueprint.typeID)] = blueprintType;
+	}];
+	
+	return dictionary;
+}
+
+NSDictionary* convertIndustryActivity(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	NSMutableDictionary* dictionary = [NSMutableDictionary new];
+	
+	[database execSQLRequest:@"SELECT * FROM industryActivity" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivity* eveActivity = [[EVEDBIndustryActivity alloc] initWithStatement:stmt];
+		NCDBIndActivity* activity = [NSEntityDescription insertNewObjectForEntityForName:@"IndActivity" inManagedObjectContext:context];
+		activity.time = eveActivity.time;
+		activity.activity = ramActivities[@(eveActivity.activityID)];
+		activity.blueprintType = indBlueprintTypes[@(eveActivity.typeID)];
+		dictionary[[NSString stringWithFormat:@"%d.%d", eveActivity.typeID, eveActivity.activityID]] = activity;
+	}];
+	
+	return dictionary;
+}
+
+void convertIndustryActivityMaterials(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM industryActivityMaterials" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivityMaterial* eveActivityMaterial = [[EVEDBIndustryActivityMaterial alloc] initWithStatement:stmt];
+		NCDBIndRequiredMaterial* requiredMaterial = [NSEntityDescription insertNewObjectForEntityForName:@"IndRequiredMaterial" inManagedObjectContext:context];
+		requiredMaterial.materialType = invTypes[@(eveActivityMaterial.materialTypeID)];
+		requiredMaterial.quantity = eveActivityMaterial.quantity;
+		requiredMaterial.consume = eveActivityMaterial.consume;
+		requiredMaterial.activity = indActivities[[NSString stringWithFormat:@"%d.%d", eveActivityMaterial.typeID, eveActivityMaterial.activityID]];
+	}];
+}
+
+NSDictionary* convertIndustryActivityProducts(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	NSMutableDictionary* dictionary = [NSMutableDictionary new];
+	
+	[database execSQLRequest:@"SELECT * FROM industryActivityProducts" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivityProduct* eveProduct = [[EVEDBIndustryActivityProduct alloc] initWithStatement:stmt];
+		NCDBIndProduct* product = [NSEntityDescription insertNewObjectForEntityForName:@"IndProduct" inManagedObjectContext:context];
+		product.quantity = eveProduct.quantity;
+		product.productType = invTypes[@(eveProduct.productTypeID)];
+		product.activity = indActivities[[NSString stringWithFormat:@"%d.%d", eveProduct.typeID, eveProduct.activityID]];
+		dictionary[[NSString stringWithFormat:@"%d.%d.%d", eveProduct.typeID, eveProduct.activityID, eveProduct.productTypeID]] = product;
+	}];
+	
+	return dictionary;
+}
+
+void convertIndustryActivityProbabilities(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM industryActivityProbabilities" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivityProbability* eveActivityProbability = [[EVEDBIndustryActivityProbability alloc] initWithStatement:stmt];
+		NCDBIndProduct* product = indProducts[[NSString stringWithFormat:@"%d.%d.%d", eveActivityProbability.typeID, eveActivityProbability.activityID, eveActivityProbability.productTypeID]];
+		product.probability = eveActivityProbability.probability;
+	}];
+}
+
+void convertIndustryActivityRaces(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM industryActivityRaces" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivityRace* eveActivityRace = [[EVEDBIndustryActivityRace alloc] initWithStatement:stmt];
+		NCDBIndProduct* product = indProducts[[NSString stringWithFormat:@"%d.%d.%d", eveActivityRace.typeID, eveActivityRace.activityID, eveActivityRace.productTypeID]];
+		product.race = chrRaces[@(eveActivityRace.raceID)];
+	}];
+}
+
+void convertIndustryActivitySkills(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM industryActivitySkills" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBIndustryActivitySkill* eveActivitySkill = [[EVEDBIndustryActivitySkill alloc] initWithStatement:stmt];
+		NCDBIndRequiredSkill* requiredSkill = [NSEntityDescription insertNewObjectForEntityForName:@"IndRequiredSkill" inManagedObjectContext:context];
+		requiredSkill.skillLevel = eveActivitySkill.level;
+		requiredSkill.activity = indActivities[[NSString stringWithFormat:@"%d.%d", eveActivitySkill.typeID, eveActivitySkill.activityID]];
+		requiredSkill.skillType = invTypes[@(eveActivitySkill.skillID)];
 	}];
 }
 
@@ -1198,10 +1282,10 @@ int main(int argc, const char * argv[])
 			certMasteries = convertCertMasteries(context, database);
 			NSLog(@"convertCertSkills");
 			convertCertSkills(context, database);
-			NSLog(@"convertInvBlueprintTypes");
-			convertInvBlueprintTypes(context, database);
-			NSLog(@"convertInvTypeMaterials");
-			convertInvTypeMaterials(context, database);
+//			NSLog(@"convertInvBlueprintTypes");
+//			convertInvBlueprintTypes(context, database);
+//			NSLog(@"convertInvTypeMaterials");
+//			convertInvTypeMaterials(context, database);
 			NSLog(@"convertInvControlTowerResourcePurposes");
 			invControlTowerResourcePurposes = convertInvControlTowerResourcePurposes(context, database);
 			NSLog(@"convertInvControlTowerResources");
@@ -1222,14 +1306,28 @@ int main(int argc, const char * argv[])
 			ramAssemblyLineTypes = convertRamAssemblyLineTypes(context, database);
 			NSLog(@"convertRamInstallationTypeContents");
 			convertRamInstallationTypeContents(context, database);
-			NSLog(@"convertRamTypeRequirements");
-			convertRamTypeRequirements(context, database);
+//			NSLog(@"convertRamTypeRequirements");
+//			convertRamTypeRequirements(context, database);
 			NSLog(@"convertStaStations");
 			staStations = convertStaStations(context, database);
 			NSLog(@"convertRequiredSkills");
 			convertRequiredSkills(context);
 			NSLog(@"convertEufeItems");
 			convertEufeItems(context, database);
+			NSLog(@"convertIndustryBlueprints");
+			indBlueprintTypes = convertIndustryBlueprints(context, database);
+			NSLog(@"convertIndustryActivity");
+			indActivities = convertIndustryActivity(context, database);
+			NSLog(@"convertIndustryActivityMaterials");
+			convertIndustryActivityMaterials(context, database);
+			NSLog(@"convertIndustryActivityProducts");
+			indProducts = convertIndustryActivityProducts(context, database);
+			NSLog(@"convertIndustryActivityProbabilities");
+			convertIndustryActivityProbabilities(context, database);
+			NSLog(@"convertIndustryActivityRaces");
+			convertIndustryActivityRaces(context, database);
+			NSLog(@"convertIndustryActivitySkills");
+			convertIndustryActivitySkills(context, database);
 		}
 		NSLog(@"Saving...");
 

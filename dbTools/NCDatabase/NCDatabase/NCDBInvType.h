@@ -2,14 +2,14 @@
 //  NCDBInvType.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NCDBCertCertificate, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEufeItem, NCDBEveIcon, NCDBInvBlueprintType, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeMaterial, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBRamTypeRequirement, NCDBStaStation, NCDBTxtDescription;
+@class NCDBCertCertificate, NCDBCertSkill, NCDBChrRace, NCDBDgmEffect, NCDBDgmTypeAttribute, NCDBEufeItem, NCDBEveIcon, NCDBIndBlueprintType, NCDBIndProduct, NCDBIndRequiredMaterial, NCDBIndRequiredSkill, NCDBInvControlTower, NCDBInvControlTowerResource, NCDBInvGroup, NCDBInvMarketGroup, NCDBInvMetaGroup, NCDBInvType, NCDBInvTypeRequiredSkill, NCDBMapDenormalize, NCDBRamInstallationTypeContent, NCDBStaStation, NCDBTxtDescription;
 
 @interface NCDBInvType : NSManagedObject
 
@@ -25,13 +25,14 @@
 @property (nonatomic, retain) NSString * typeName;
 @property (nonatomic) float volume;
 @property (nonatomic, retain) NSSet *attributes;
-@property (nonatomic, retain) NCDBInvBlueprintType *blueprint;
-@property (nonatomic, retain) NCDBInvBlueprintType *blueprintType;
+@property (nonatomic, retain) NSSet *products;
+@property (nonatomic, retain) NCDBIndBlueprintType *blueprintType;
 @property (nonatomic, retain) NSSet *certificates;
 @property (nonatomic, retain) NCDBInvControlTower *controlTower;
 @property (nonatomic, retain) NSSet *controlTowerResources;
 @property (nonatomic, retain) NSSet *denormalize;
 @property (nonatomic, retain) NSSet *effects;
+@property (nonatomic, retain) NCDBEufeItem *eufeItem;
 @property (nonatomic, retain) NCDBInvGroup *group;
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *installationTypeContents;
@@ -41,14 +42,12 @@
 @property (nonatomic, retain) NCDBInvType *parentType;
 @property (nonatomic, retain) NCDBChrRace *race;
 @property (nonatomic, retain) NSSet *reguiredForSkill;
-@property (nonatomic, retain) NSSet *requiredFor;
 @property (nonatomic, retain) NSOrderedSet *requiredSkills;
 @property (nonatomic, retain) NSSet *stations;
 @property (nonatomic, retain) NCDBTxtDescription *typeDescription;
-@property (nonatomic, retain) NSSet *typeMaterials;
-@property (nonatomic, retain) NSSet *typeRequirements;
+@property (nonatomic, retain) NSSet *materials;
+@property (nonatomic, retain) NSSet *indRequiredSkills;
 @property (nonatomic, retain) NSSet *variations;
-@property (nonatomic, retain) NCDBEufeItem *eufeItem;
 @end
 
 @interface NCDBInvType (CoreDataGeneratedAccessors)
@@ -57,6 +56,11 @@
 - (void)removeAttributesObject:(NCDBDgmTypeAttribute *)value;
 - (void)addAttributes:(NSSet *)values;
 - (void)removeAttributes:(NSSet *)values;
+
+- (void)addProductsObject:(NCDBIndProduct *)value;
+- (void)removeProductsObject:(NCDBIndProduct *)value;
+- (void)addProducts:(NSSet *)values;
+- (void)removeProducts:(NSSet *)values;
 
 - (void)addCertificatesObject:(NCDBCertCertificate *)value;
 - (void)removeCertificatesObject:(NCDBCertCertificate *)value;
@@ -93,11 +97,6 @@
 - (void)addReguiredForSkill:(NSSet *)values;
 - (void)removeReguiredForSkill:(NSSet *)values;
 
-- (void)addRequiredForObject:(NCDBRamTypeRequirement *)value;
-- (void)removeRequiredForObject:(NCDBRamTypeRequirement *)value;
-- (void)addRequiredFor:(NSSet *)values;
-- (void)removeRequiredFor:(NSSet *)values;
-
 - (void)insertObject:(NCDBInvTypeRequiredSkill *)value inRequiredSkillsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromRequiredSkillsAtIndex:(NSUInteger)idx;
 - (void)insertRequiredSkills:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
@@ -113,15 +112,15 @@
 - (void)addStations:(NSSet *)values;
 - (void)removeStations:(NSSet *)values;
 
-- (void)addTypeMaterialsObject:(NCDBInvTypeMaterial *)value;
-- (void)removeTypeMaterialsObject:(NCDBInvTypeMaterial *)value;
-- (void)addTypeMaterials:(NSSet *)values;
-- (void)removeTypeMaterials:(NSSet *)values;
+- (void)addMaterialsObject:(NCDBIndRequiredMaterial *)value;
+- (void)removeMaterialsObject:(NCDBIndRequiredMaterial *)value;
+- (void)addMaterials:(NSSet *)values;
+- (void)removeMaterials:(NSSet *)values;
 
-- (void)addTypeRequirementsObject:(NCDBRamTypeRequirement *)value;
-- (void)removeTypeRequirementsObject:(NCDBRamTypeRequirement *)value;
-- (void)addTypeRequirements:(NSSet *)values;
-- (void)removeTypeRequirements:(NSSet *)values;
+- (void)addIndRequiredSkillsObject:(NCDBIndRequiredSkill *)value;
+- (void)removeIndRequiredSkillsObject:(NCDBIndRequiredSkill *)value;
+- (void)addIndRequiredSkills:(NSSet *)values;
+- (void)removeIndRequiredSkills:(NSSet *)values;
 
 - (void)addVariationsObject:(NCDBInvType *)value;
 - (void)removeVariationsObject:(NCDBInvType *)value;

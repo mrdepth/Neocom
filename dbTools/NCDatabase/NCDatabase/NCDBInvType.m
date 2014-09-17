@@ -2,7 +2,7 @@
 //  NCDBInvType.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -14,18 +14,19 @@
 #import "NCDBDgmTypeAttribute.h"
 #import "NCDBEufeItem.h"
 #import "NCDBEveIcon.h"
-#import "NCDBInvBlueprintType.h"
+#import "NCDBIndBlueprintType.h"
+#import "NCDBIndProduct.h"
+#import "NCDBIndRequiredMaterial.h"
+#import "NCDBIndRequiredSkill.h"
 #import "NCDBInvControlTower.h"
 #import "NCDBInvControlTowerResource.h"
 #import "NCDBInvGroup.h"
 #import "NCDBInvMarketGroup.h"
 #import "NCDBInvMetaGroup.h"
 #import "NCDBInvType.h"
-#import "NCDBInvTypeMaterial.h"
 #import "NCDBInvTypeRequiredSkill.h"
 #import "NCDBMapDenormalize.h"
 #import "NCDBRamInstallationTypeContent.h"
-#import "NCDBRamTypeRequirement.h"
 #import "NCDBStaStation.h"
 #import "NCDBTxtDescription.h"
 
@@ -44,13 +45,14 @@
 @dynamic typeName;
 @dynamic volume;
 @dynamic attributes;
-@dynamic blueprint;
+@dynamic products;
 @dynamic blueprintType;
 @dynamic certificates;
 @dynamic controlTower;
 @dynamic controlTowerResources;
 @dynamic denormalize;
 @dynamic effects;
+@dynamic eufeItem;
 @dynamic group;
 @dynamic icon;
 @dynamic installationTypeContents;
@@ -60,13 +62,11 @@
 @dynamic parentType;
 @dynamic race;
 @dynamic reguiredForSkill;
-@dynamic requiredFor;
 @dynamic requiredSkills;
 @dynamic stations;
 @dynamic typeDescription;
-@dynamic typeMaterials;
-@dynamic typeRequirements;
+@dynamic materials;
+@dynamic indRequiredSkills;
 @dynamic variations;
-@dynamic eufeItem;
 
 @end

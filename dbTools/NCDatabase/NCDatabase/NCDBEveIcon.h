@@ -2,7 +2,7 @@
 //  NCDBEveIcon.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -19,13 +19,13 @@
 @property (nonatomic, retain) NSSet *categories;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBEveIconImage *image;
+@property (nonatomic, retain) NSSet *itemGroups;
 @property (nonatomic, retain) NSSet *marketGroups;
 @property (nonatomic, retain) NSSet *masteryLevels;
 @property (nonatomic, retain) NSSet *metaGroups;
 @property (nonatomic, retain) NSSet *npcGroups;
 @property (nonatomic, retain) NSSet *races;
 @property (nonatomic, retain) NSSet *types;
-@property (nonatomic, retain) NSSet *itemGroups;
 @end
 
 @interface NCDBEveIcon (CoreDataGeneratedAccessors)
@@ -49,6 +49,11 @@
 - (void)removeGroupsObject:(NCDBInvGroup *)value;
 - (void)addGroups:(NSSet *)values;
 - (void)removeGroups:(NSSet *)values;
+
+- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)addItemGroups:(NSSet *)values;
+- (void)removeItemGroups:(NSSet *)values;
 
 - (void)addMarketGroupsObject:(NCDBInvMarketGroup *)value;
 - (void)removeMarketGroupsObject:(NCDBInvMarketGroup *)value;
@@ -79,10 +84,5 @@
 - (void)removeTypesObject:(NCDBInvType *)value;
 - (void)addTypes:(NSSet *)values;
 - (void)removeTypes:(NSSet *)values;
-
-- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addItemGroups:(NSSet *)values;
-- (void)removeItemGroups:(NSSet *)values;
 
 @end

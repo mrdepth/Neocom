@@ -29,4 +29,12 @@ select sql || ";" from sqlite_master where tbl_name IN (
 "ramAssemblyLineTypes",
 "ramInstallationTypeContents",
 "ramTypeRequirements",
-"staStations");
+"staStations",
+"industryActivity",
+"industryActivityMaterials",
+"industryActivityProbabilities",
+"industryActivityProducts",
+"industryActivityRaces",
+"industryActivitySkills",
+"industryBlueprints"
+);

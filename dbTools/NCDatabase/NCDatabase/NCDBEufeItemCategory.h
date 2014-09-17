@@ -2,7 +2,7 @@
 //  NCDBEufeItemCategory.h
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -15,21 +15,21 @@
 
 @property (nonatomic) int16_t category;
 @property (nonatomic) int16_t subcategory;
+@property (nonatomic, retain) NSSet *eufeItems;
 @property (nonatomic, retain) NSSet *itemGroups;
 @property (nonatomic, retain) NCDBChrRace *race;
-@property (nonatomic, retain) NSSet *eufeItems;
 @end
 
 @interface NCDBEufeItemCategory (CoreDataGeneratedAccessors)
-
-- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
-- (void)addItemGroups:(NSSet *)values;
-- (void)removeItemGroups:(NSSet *)values;
 
 - (void)addEufeItemsObject:(NCDBEufeItem *)value;
 - (void)removeEufeItemsObject:(NCDBEufeItem *)value;
 - (void)addEufeItems:(NSSet *)values;
 - (void)removeEufeItems:(NSSet *)values;
+
+- (void)addItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)removeItemGroupsObject:(NCDBEufeItemGroup *)value;
+- (void)addItemGroups:(NSSet *)values;
+- (void)removeItemGroups:(NSSet *)values;
 
 @end

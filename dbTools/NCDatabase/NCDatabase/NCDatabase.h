@@ -27,9 +27,7 @@
 #import "NCDBRamActivity.h"
 #import "NCDBDgmAttributeType.h"
 #import "NCDBDgmEffect.h"
-#import "NCDBRamTypeRequirement.h"
 #import "NCDBInvCategory.h"
-#import "NCDBInvBlueprintType.h"
 #import "NCDBInvGroup.h"
 #import "NCDBDgmAttributeCategory.h"
 #import "NCDBNpcGroup.h"
@@ -37,7 +35,6 @@
 #import "NCDBMapConstellation.h"
 #import "NCDBInvControlTowerResourcePurpose.h"
 #import "NCDBInvMetaGroup.h"
-#import "NCDBInvTypeMaterial.h"
 #import "NCDBTxtDescription.h"
 #import "NCDBDgmTypeAttribute.h"
 #import "NCDBRamInstallationTypeContent.h"
@@ -46,5 +43,10 @@
 #import "NCDBEufeItem.h"
 #import "NCDBEufeItemCategory.h"
 #import "NCDBEufeItemGroup.h"
+#import "NCDBIndActivity.h"
+#import "NCDBIndBlueprintType.h"
+#import "NCDBIndProduct.h"
+#import "NCDBIndRequiredMaterial.h"
+#import "NCDBIndRequiredSkill.h"
 
 #endif

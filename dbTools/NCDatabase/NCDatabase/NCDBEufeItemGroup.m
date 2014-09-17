@@ -2,7 +2,7 @@
 //  NCDBEufeItemGroup.m
 //  NCDatabase
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 17.09.14.
 //
 //
 
@@ -17,9 +17,9 @@
 
 @dynamic groupName;
 @dynamic category;
+@dynamic icon;
 @dynamic items;
 @dynamic parentGroup;
 @dynamic subGroups;
-@dynamic icon;
 
 @end

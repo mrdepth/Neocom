@@ -91,6 +91,7 @@
 	cell.skillQueueLabel.text = text;
 	cell.skillQueueLabel.textColor = color;
 	cell.leftMarginConstraint.constant = self.defaultMarginInsets.left;
+	cell.separatorInset = UIEdgeInsetsMake(0, self.defaultMarginInsets.left, 0, cell.separatorInset.right);
 	return cell;
 }
 

@@ -261,25 +261,27 @@
 														 NCTrainingQueue* skillTrainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 														 [skillTrainingQueue addSkill:skill.type withLevel:skill.skillLevel];
 														 
-														 EVECharacterSheetSkill* characerSkill = account.characterSheet.skillsMap[@(skill.type.typeID)];
-														 
-														 NCDatabaseCertificateInfoViewControllerRow* row = [NCDatabaseCertificateInfoViewControllerRow new];
-														 row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.skillLevel];
-														 row.object = skill.type;
-														 row.cellIdentifier = @"TypeCell";
-														 row.icon = skillIcon;
-														 
-														 if (!characerSkill)
-															 row.accessoryIcon = notKnownIcon;
-														 else if (characerSkill.level >= skill.skillLevel)
-															 row.accessoryIcon = lowLevelIcon;
-														 else
-															 row.accessoryIcon = knownIcon;
-														 
-														 if (skillTrainingQueue.trainingTime > 0.0)
-															 row.detail = [NSString stringWithTimeLeft:skillTrainingQueue.trainingTime];
-														 
-														 [rows addObject:row];
+														 if (skill.skillLevel > 0) {
+															 EVECharacterSheetSkill* characerSkill = account.characterSheet.skillsMap[@(skill.type.typeID)];
+															 
+															 NCDatabaseCertificateInfoViewControllerRow* row = [NCDatabaseCertificateInfoViewControllerRow new];
+															 row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.skillLevel];
+															 row.object = skill.type;
+															 row.cellIdentifier = @"TypeCell";
+															 row.icon = skillIcon;
+															 
+															 if (!characerSkill)
+																 row.accessoryIcon = notKnownIcon;
+															 else if (characerSkill.level >= skill.skillLevel)
+																 row.accessoryIcon = lowLevelIcon;
+															 else
+																 row.accessoryIcon = knownIcon;
+															 
+															 if (skillTrainingQueue.trainingTime > 0.0)
+																 row.detail = [NSString stringWithTimeLeft:skillTrainingQueue.trainingTime];
+															 
+															 [rows addObject:row];
+														 }
 													 }
 													 
 													 NSString* title;

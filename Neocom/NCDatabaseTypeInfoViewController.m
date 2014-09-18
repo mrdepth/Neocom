@@ -435,17 +435,18 @@
 													   [sections addObject:section];
 											   }
 											   
-											   if (type.blueprint) {
+											   if (type.products) {
 												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 												   NSMutableArray *rows = [NSMutableArray array];
-												   
-												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-												   row.title = NSLocalizedString(@"Blueprint", nil);
-												   row.detail = [type.blueprint.blueprintType typeName];
-												   row.icon = type.blueprint.blueprintType.icon ? type.blueprint.blueprintType.icon : self.defaultIcon;
-												   row.object = type.blueprint.blueprintType;
-												   row.cellIdentifier = @"TypeCell";
-												   [rows addObject:row];
+												   for (NCDBIndProduct* product in type.products) {
+													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													   row.title = NSLocalizedString(@"Blueprint", nil);
+													   row.detail = [product.activity.blueprintType.type typeName];
+													   row.icon = product.activity.blueprintType.type.icon ? product.activity.blueprintType.type.icon : self.defaultIcon;
+													   row.object = product.activity.blueprintType.type;
+													   row.cellIdentifier = @"TypeCell";
+													   [rows addObject:row];
+												   }
 												   
 												   section[@"title"] = NSLocalizedString(@"Manufacturing", nil);
 												   section[@"rows"] = rows;
@@ -665,8 +666,108 @@
 											 NCDatabase* database = [NCDatabase sharedDatabase];
 											 [database.backgroundManagedObjectContext performBlockAndWait:^{
 												 NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
+												 NCDBIndBlueprintType* blueprintType = type.blueprintType;
+												 NCDBEveIcon* skillIcon = [NCDBEveIcon eveIconWithIconFile:@"50_11"];
+
+												 for (NCDBIndActivity* activity in [blueprintType.activities sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"activity.activityID" ascending:YES]]]) {
+													 NSMutableArray* rows = [NSMutableArray new];
+													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													 row.title = NSLocalizedString(@"Time", nil);
+													 row.detail = [NSString stringWithTimeLeft:activity.time];
+													 [rows addObject:row];
+
+													 if (activity.products.count > 0) {
+														 for (NCDBIndProduct* product in [activity.products sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"productType.typeName" ascending:YES]]]) {
+															 row = [NCDatabaseTypeInfoViewControllerRow new];
+															 row.title = NSLocalizedString(@"Product", nil);
+															 row.detail = product.productType.typeName;
+															 row.icon = product.productType.icon;
+															 row.object = product.productType;
+															 row.cellIdentifier = @"TypeCell";
+															 [rows addObject:row];
+														 }
+													 }
+													 if (rows.count > 0)
+														 [sections addObject:@{@"title" : activity.activity.activityName, @"rows" : rows}];
+													 
+													 if (activity.requiredMaterials.count > 0) {
+														 rows = [NSMutableArray new];
+														 for (NCDBIndRequiredMaterial* material in activity.requiredMaterials) {
+															 row = [NCDatabaseTypeInfoViewControllerRow new];
+															 row.title = material.materialType.typeName;
+															 row.detail = [NSNumberFormatter neocomLocalizedStringFromInteger:material.quantity];
+															 row.icon = material.materialType.icon;
+															 row.object = material.materialType;
+															 row.cellIdentifier = @"TypeCell";
+															 [rows addObject:row];
+														 }
+														 [sections addObject:@{@"title" : [NSString stringWithFormat:NSLocalizedString(@"%@ - Material / Mineral", nil), activity.activity.activityName], @"rows" : rows}];
+													 }
+													 
+													 if (activity.requiredSkills.count > 0) {
+														 rows = [NSMutableArray new];
+														 
+														 NCTrainingQueue* requiredSkillsQueue = [[NCTrainingQueue alloc] initWithAccount:account];
+														 for (NCDBIndRequiredSkill* skill in activity.requiredSkills)
+															 [requiredSkillsQueue addSkill:skill.skillType withLevel:skill.skillLevel];
+														 
+														 NSString* title = nil;
+														 
+														 if (requiredSkillsQueue.trainingTime > 0)
+															 title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills (%@)", nil), activity.activity.activityName, [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
+														 else
+															 title = [NSString stringWithFormat:NSLocalizedString(@"%@ - Skills", nil), activity.activity.activityName];
+														 
+														 
+														 if (requiredSkillsQueue.skills.count && account && account.activeSkillPlan) {
+															 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+															 row.title = NSLocalizedString(@"Add required skills to training plan", nil);
+															 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:requiredSkillsQueue.trainingTime]];
+															 row.icon = [NCDBEveIcon eveIconWithIconFile:@"50_13"];
+															 row.object = requiredSkillsQueue;
+															 [rows addObject:row];
+														 }
+
+														 
+														 for (NCDBIndRequiredSkill* skill in [activity.requiredSkills sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"skillType.typeName" ascending:YES]]]) {
+															 NCSkillHierarchy* hierarchy = [[NCSkillHierarchy alloc] initWithSkillType:skill.skillType level:skill.skillLevel account:account];
+															 
+															 for (NCSkillHierarchySkill* skill in hierarchy.skills) {
+																 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+																 row.title = [NSString stringWithFormat:@"%@ %d", skill.type.typeName, skill.targetLevel];
+																 row.object = skill.type;
+																 row.cellIdentifier = @"TypeCell";
+																 row.indentationLevel = skill.nestingLevel;
+																 row.icon = skillIcon;
+																 
+																 switch (skill.availability) {
+																	 case NCSkillHierarchyAvailabilityLearned:
+																		 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_193"];
+																		 break;
+																	 case NCSkillHierarchyAvailabilityNotLearned:
+																		 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_194"];
+																		 break;
+																	 case NCSkillHierarchyAvailabilityLowLevel:
+																		 row.accessoryIcon = [NCDBEveIcon eveIconWithIconFile:@"38_195"];
+																		 break;
+																	 default:
+																		 break;
+																 }
+																 
+																 if (skill.availability != NCSkillHierarchyAvailabilityLearned)
+																	 row.detail = [NSString stringWithTimeLeft:[skill trainingTimeToFinishWithCharacterAttributes:attributes]];
+																 
+																 [rows addObject:row];
+															 }
+														 }
+														 
+														 if (rows.count > 0)
+															 [sections addObject:@{@"title" : title, @"rows" : rows}];
+
+													 }
+												 }
 												 
-												 NSMutableArray *rows = [NSMutableArray new];
+/*												 NSMutableArray *rows = [NSMutableArray new];
 												 NCDatabaseTypeInfoViewControllerRow* row;
 												 
 												 NCDBInvType* productType = type.blueprintType.productType;
@@ -860,7 +961,7 @@
 													 
 													 if (rows.count > 0)
 														 [sections addObject:@{@"title" : [NSString stringWithFormat:NSLocalizedString(@"%@ - Material / Mineral", nil), activity.activityName], @"rows" : rows}];
-												 }
+												 }*/
 
 											 }];
 										 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="yvF-4n-Sgb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="yvF-4n-Sgb">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
-        <!--Fitting Menu View Controller - Fitting-->
+        <!--Fitting-->
         <scene sceneID="LYA-jm-DFx">
             <objects>
                 <tableViewController id="lhY-Pd-wMi" customClass="NCFittingMenuViewController" sceneMemberID="viewController">
@@ -23,7 +22,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem0Cell" id="Ik0-4o-vy7">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem5Cell" id="Ik0-4o-vy7">
                                 <rect key="frame" x="0.0" y="127" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ik0-4o-vy7" id="uZK-2h-3qt">
@@ -32,7 +31,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="battleclinic.png" translatesAutoresizingMaskIntoConstraints="NO" id="nuo-vo-dLO">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="WxD-bg-dgp"/>
                                                 <constraint firstAttribute="height" constant="32" id="sl8-aO-QdH"/>
@@ -40,7 +38,6 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Browse Fits on BattleClinic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N7u-w1-f4u">
                                             <rect key="frame" x="55" y="4" width="224" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -61,7 +58,7 @@
                                     <segue destination="ctQ-FQ-V95" kind="push" id="IQu-at-MuI"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem1Cell" id="jCb-pv-tqz">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem0Cell" id="jCb-pv-tqz">
                                 <rect key="frame" x="0.0" y="168" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jCb-pv-tqz" id="5DS-W6-Ng6">
@@ -70,7 +67,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon26_02.png" translatesAutoresizingMaskIntoConstraints="NO" id="351-tg-1Mc">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" priority="900" constant="32" id="7gs-qt-Juw"/>
                                                 <constraint firstAttribute="width" constant="32" id="UWN-Gb-UoE"/>
@@ -78,7 +74,6 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Browse Community Fits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJC-ER-h5w">
                                             <rect key="frame" x="55" y="4" width="224" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -101,7 +96,7 @@
                                     <segue destination="Fue-9f-KvO" kind="push" identifier="NCFittingAPIViewController" id="2z5-xn-4ec"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem2Cell" id="qO3-pr-vCL">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem1Cell" id="qO3-pr-vCL">
                                 <rect key="frame" x="0.0" y="209" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qO3-pr-vCL" id="eEd-CS-fhj">
@@ -110,7 +105,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon17_04.png" translatesAutoresizingMaskIntoConstraints="NO" id="qgN-9O-g1V">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" priority="900" constant="32" id="13A-6R-KWp"/>
                                                 <constraint firstAttribute="width" constant="32" id="Stx-gZ-hUZ"/>
@@ -118,7 +112,6 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXe-O0-ifO">
                                             <rect key="frame" x="55" y="4" width="257" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -138,7 +131,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem3Cell" id="3vE-ma-PSk">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem2Cell" id="3vE-ma-PSk">
                                 <rect key="frame" x="0.0" y="250" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3vE-ma-PSk" id="aGL-8B-AOf">
@@ -147,7 +140,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon07_06.png" translatesAutoresizingMaskIntoConstraints="NO" id="x1E-b9-cgA">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" priority="900" constant="32" id="aaE-xX-Gfi"/>
                                                 <constraint firstAttribute="width" constant="32" id="fck-vt-Flf"/>
@@ -155,7 +147,6 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New POS Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pzf-e8-wHs">
                                             <rect key="frame" x="55" y="4" width="257" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -184,7 +175,6 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon94_03.png" translatesAutoresizingMaskIntoConstraints="NO" id="3pW-Eq-aeS">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="32" id="JOe-3A-lyP"/>
                                                 <constraint firstAttribute="height" priority="900" constant="32" id="uBr-Ey-eye"/>
@@ -192,7 +182,6 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOe-IF-Sw5">
                                             <rect key="frame" x="55" y="4" width="257" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -230,7 +219,7 @@
             </objects>
             <point key="canvasLocation" x="-3456" y="-1281"/>
         </scene>
-        <!--FittingAPI View Controller - Community Fits-->
+        <!--Community Fits-->
         <scene sceneID="KBB-Dz-fh4">
             <objects>
                 <tableViewController id="Fue-9f-KvO" customClass="NCFittingAPIViewController" sceneMemberID="viewController">
@@ -292,7 +281,7 @@
             </objects>
             <point key="canvasLocation" x="-3050" y="-2767"/>
         </scene>
-        <!--FittingAPI Search Results View Controller - Community Fits-->
+        <!--Community Fits-->
         <scene sceneID="ebY-tW-hMs">
             <objects>
                 <tableViewController id="DTu-Ea-hMw" customClass="NCFittingAPISearchResultsViewController" sceneMemberID="viewController">
@@ -334,7 +323,6 @@
                                     <subviews>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jcn-0H-ppg">
                                             <rect key="frame" x="15" y="4" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="Crv-UO-Cme"/>
                                                 <constraint firstAttribute="width" constant="32" id="VKd-Jd-4Q8"/>
@@ -342,21 +330,18 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="asdasdf" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="QaY-Ue-Evq">
                                             <rect key="frame" x="55" y="4" width="250" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100 000 000 EHP, Passive Shield Tank" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="c7A-0m-sid">
                                             <rect key="frame" x="83" y="26" width="222" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="armor.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ldr-bi-S47">
                                             <rect key="frame" x="55" y="22" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="VC8-ua-lP8"/>
                                                 <constraint firstAttribute="height" constant="24" id="ckE-Ch-5i3"/>
@@ -364,69 +349,57 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1000 DPS" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="rEg-Xf-Nnk">
                                             <rect key="frame" x="43" y="50" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="turrets.png" translatesAutoresizingMaskIntoConstraints="NO" id="fYJ-ja-GH7">
                                             <rect key="frame" x="15" y="46" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Speed: 9000 m/s" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="k04-NN-Pyb">
                                             <rect key="frame" x="43" y="98" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="velocity.png" translatesAutoresizingMaskIntoConstraints="NO" id="zEB-4G-YwR">
                                             <rect key="frame" x="15" y="94" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Optimal: 10 000 m" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="EeB-yI-nSz">
                                             <rect key="frame" x="43" y="74" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="targetingRange.png" translatesAutoresizingMaskIntoConstraints="NO" id="lIq-Kh-sgD">
                                             <rect key="frame" x="15" y="70" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Falloff: 10 000 m" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="RmY-yS-35w">
                                             <rect key="frame" x="192" y="74" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="falloff.png" translatesAutoresizingMaskIntoConstraints="NO" id="FQ5-JN-eum">
                                             <rect key="frame" x="164" y="70" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Capacitor is stable" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Nff-0r-Nbg">
                                             <rect key="frame" x="192" y="98" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="capacitor.png" translatesAutoresizingMaskIntoConstraints="NO" id="G78-6Y-JGs">
                                             <rect key="frame" x="164" y="94" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1000 DPS" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="o3P-BT-e9z">
                                             <rect key="frame" x="192" y="50" width="113" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="droneBandwidth.png" translatesAutoresizingMaskIntoConstraints="NO" id="FgQ-4r-Yjr">
                                             <rect key="frame" x="164" y="46" width="24" height="24"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -520,7 +493,7 @@
             </objects>
             <point key="canvasLocation" x="-2441" y="-2767"/>
         </scene>
-        <!--Fitting Battle Clinic View Controller - Battleclinic-->
+        <!--Battleclinic-->
         <scene sceneID="rfQ-pB-zJn">
             <objects>
                 <tableViewController id="ctQ-FQ-V95" customClass="NCFittingBattleClinicViewController" sceneMemberID="viewController">
@@ -557,7 +530,7 @@
             </objects>
             <point key="canvasLocation" x="-3045" y="-2070"/>
         </scene>
-        <!--Fitting Battle Clinic Search Results View Controller - Battleclinic-->
+        <!--Battleclinic-->
         <scene sceneID="QZK-wc-kBy">
             <objects>
                 <tableViewController id="cxq-2r-bSJ" customClass="NCFittingBattleClinicSearchResultsViewController" sceneMemberID="viewController">
@@ -575,7 +548,6 @@
                                     <subviews>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Nwy-RV-xwD">
                                             <rect key="frame" x="15" y="5" width="32" height="32"/>
-                                            <autoresizingMask key="autoresizingMask"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="32" id="QJE-hr-Hq4"/>
                                                 <constraint firstAttribute="width" constant="32" id="sLv-hs-rsV"/>
@@ -583,14 +555,12 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="wefwef" lineBreakMode="tailTruncation" numberOfLines="2" minimumScaleFactor="0.5" preferredMaxLayoutWidth="217" translatesAutoresizingMaskIntoConstraints="NO" id="qmI-7X-VJs">
                                             <rect key="frame" x="55" y="4" width="217" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="123" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sIG-qh-8jZ">
                                             <rect key="frame" x="75" y="22" width="50" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="7kr-mz-HDN"/>
                                             </constraints>
@@ -600,7 +570,6 @@
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="thumbsUp.png" translatesAutoresizingMaskIntoConstraints="NO" id="BX8-O3-T24">
                                             <rect key="frame" x="55" y="21" width="16" height="16"/>
-                                            <autoresizingMask key="autoresizingMask"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="16" id="cAn-Q3-nZz"/>
                                                 <constraint firstAttribute="height" constant="16" id="eDM-YH-57D"/>
@@ -608,14 +577,12 @@
                                         </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="123" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="V5t-Fo-UKf">
                                             <rect key="frame" x="153" y="22" width="21" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="thumbsDown.png" translatesAutoresizingMaskIntoConstraints="NO" id="FwE-gp-xBS">
                                             <rect key="frame" x="133" y="21" width="16" height="16"/>
-                                            <autoresizingMask key="autoresizingMask"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="JHX-Xj-EiB"/>
                                                 <constraint firstAttribute="width" constant="16" id="LYm-Mm-Vk6"/>
@@ -754,7 +721,7 @@
             </objects>
             <point key="canvasLocation" x="-2577" y="-1281"/>
         </scene>
-        <!--Fitting Damage Patterns View Controller - Damage Patterns-->
+        <!--Damage Patterns-->
         <scene sceneID="9DZ-z6-jT0">
             <objects>
                 <tableViewController storyboardIdentifier="NCFittingDamagePatternsViewController" id="bWl-Ik-2uJ" customClass="NCFittingDamagePatternsViewController" sceneMemberID="viewController">
@@ -772,22 +739,19 @@
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Damage Pattern name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="FZf-n3-mYx">
                                             <rect key="frame" x="15" y="2" width="290" height="19"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="RXc-f4-ELR" customClass="NCProgressLabel">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="RXc-f4-ELR" customClass="NCProgressLabel">
                                             <rect key="frame" x="236" y="23" width="69" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.60000002379999995" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2DE-D9-HlI" customClass="NCProgressLabel">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="2DE-D9-HlI" customClass="NCProgressLabel">
                                             <rect key="frame" x="162" y="23" width="70" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -795,7 +759,6 @@
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1xa-76-bcD" customClass="NCProgressLabel">
                                             <rect key="frame" x="88" y="23" width="70" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.8078432083" green="0.231372565" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -803,7 +766,6 @@
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mt2-IL-pGA" customClass="NCProgressLabel">
                                             <rect key="frame" x="15" y="23" width="69" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.25098040700000002" green="0.58823531870000001" blue="0.81568634510000004" alpha="1" colorSpace="deviceRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -925,7 +887,6 @@
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qsv-wq-d2f" customClass="NCProgressTextField">
                                                     <rect key="frame" x="15" y="2" width="51" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.25098040700000002" green="0.58823531870000001" blue="0.81568634510000004" alpha="1" colorSpace="deviceRGB"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -936,7 +897,6 @@
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MlQ-nI-N1n" customClass="NCProgressTextField">
                                                     <rect key="frame" x="70" y="2" width="51" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.8078432083" green="0.231372565" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -947,7 +907,6 @@
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0aH-Re-6MM" customClass="NCProgressTextField">
                                                     <rect key="frame" x="125" y="2" width="51" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.69803923369999998" green="0.69803923369999998" blue="0.69803923369999998" alpha="1" colorSpace="deviceRGB"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -958,7 +917,6 @@
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c2s-JN-QJ7" customClass="NCProgressTextField">
                                                     <rect key="frame" x="180" y="2" width="51" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.8078432083" green="0.60000002379999995" blue="0.21568629149999999" alpha="1" colorSpace="deviceRGB"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -969,7 +927,6 @@
                                                 </textField>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Total: 100%" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1gr-aX-Yt9" customClass="NCProgressLabel">
                                                     <rect key="frame" x="235" y="2" width="70" height="27"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.0017923390769999999" green="0.578680203" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="bV0-is-a8x"/>
@@ -1031,7 +988,7 @@
             </objects>
             <point key="canvasLocation" x="-2522" y="583"/>
         </scene>
-        <!--FittingNPC Picker View Controller - NPC-->
+        <!--NPC-->
         <scene sceneID="cWC-Dt-Kr9">
             <objects>
                 <tableViewController id="l0z-RE-XAP" customClass="NCFittingNPCPickerViewController" sceneMemberID="viewController">
@@ -1158,7 +1115,7 @@
             </objects>
             <point key="canvasLocation" x="-2669" y="-3426"/>
         </scene>
-        <!--Database Group Picker View Contoller - Ship Class-->
+        <!--Ship Class-->
         <scene sceneID="aLr-fn-84k">
             <objects>
                 <tableViewController id="yRZ-Vo-V45" customClass="NCDatabaseGroupPickerViewContoller" sceneMemberID="viewController">
@@ -1219,7 +1176,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LFA-WH-DrQ"/>
+        <segue reference="UFB-q5-l1b"/>
         <segue reference="tfi-SB-LwK"/>
     </inferredMetricsTieBreakers>
 </document>

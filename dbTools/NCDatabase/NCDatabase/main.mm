@@ -148,6 +148,8 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			icon.image.image = imageRep;
 			dictionary[@(NCDBCertMasteryLevelIconsStartID + i)] = icon;
 		}
+		else
+			NSLog(@"Unable to load icon %@", iconImageName);
 	}
 	
 	[database execSQLRequest:@"SELECT * FROM ramActivities" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -173,6 +175,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 						icon.image.image = imageRep;
 						dictionary[eveActivity.iconNo] = icon;
 					}
+					NSLog(@"Unable to load icon %@", eveActivity.iconNo);
 				}
 			}
 		}
@@ -191,6 +194,8 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 			icon.image.image = imageRep;
 			dictionary[eveNpcGroup.iconName] = icon;
 		}
+		else
+			NSLog(@"Unable to load icon %@", eveNpcGroup.iconName);
 	}];
 	
 	[database execSQLRequest:@"SELECT * FROM invTypes WHERE imageName IS NOT NULL GROUP BY imageName" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -227,6 +232,9 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
 					icon.image.image = imageRep;
 					dictionary[iconNo] = icon;
+				}
+				else {
+					NSLog(@"Unable to load icon %@", iconNo);
 				}
 			}
 		}

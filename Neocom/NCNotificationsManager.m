@@ -67,7 +67,6 @@
 											 title:nil
 											 block:^(NCTask *task) {
 												 NSMutableArray* todayRows = [NSMutableArray new];
-												 NCTodayRow* row = [NCTodayRow new];
 												 
 												 for (NCAccount* account in accountsManager.accounts) {
 													 if (account.accountType != NCAccountTypeCharacter)
@@ -75,6 +74,7 @@
 													 if (!account.uuid)
 														 continue;
 
+													 NCTodayRow* row = [NCTodayRow new];
 													 row.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]]];
 													 row.name = account.characterInfo.characterName;
 													 row.uuid = account.uuid;

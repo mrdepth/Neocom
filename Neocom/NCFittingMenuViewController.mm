@@ -77,7 +77,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? 4 : [(NSArray*) self.sections[section - 1] count];
+    return section == 0 ? 3 : [(NSArray*) self.sections[section - 1] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -167,7 +167,7 @@
 	
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
-		if (indexPath.row == 2) {
+		if (indexPath.row == 1) {
 			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
 			
 			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
@@ -187,7 +187,7 @@
 												 [self dismissAnimated];
 											 }];
 		}
-		else if (indexPath.row == 3) {
+		else if (indexPath.row == 2) {
 			self.typePickerViewController.title = NSLocalizedString(@"Control Towers", nil);
 			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory controlTowersCategory]
 //										 presentWithConditions:@[@"invTypes.marketGroupID = 478"]

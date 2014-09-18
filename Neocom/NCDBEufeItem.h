@@ -2,7 +2,7 @@
 //  NCDBEufeItem.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 19.06.14.
+//  Created by Артем Шиманский on 18.09.14.
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @interface NCDBEufeItem : NSManagedObject
 
+@property (nonatomic, retain) NCDBEufeItemCategory *charge;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NCDBInvType *type;
-@property (nonatomic, retain) NCDBEufeItemCategory *charge;
 @end
 
 @interface NCDBEufeItem (CoreDataGeneratedAccessors)

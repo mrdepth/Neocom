@@ -75,13 +75,15 @@
 			else {
 				NSNumber* level = @(self.skillsLevel);
 				NCDatabase* database = [NCDatabase sharedDatabase];
-				[database.backgroundManagedObjectContext performBlockAndWait:^{
-					NSEntityDescription* entity = [NSEntityDescription entityForName:@"InvType" inManagedObjectContext:database.backgroundManagedObjectContext];
+				NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
+
+				[context performBlockAndWait:^{
+					NSEntityDescription* entity = [NSEntityDescription entityForName:@"InvType" inManagedObjectContext:context];
 					NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
 					request.predicate = [NSPredicate predicateWithFormat:@"published == TRUE AND group.category.categoryID == 16"];
 					request.resultType = NSDictionaryResultType;
 					request.propertiesToFetch = @[entity.propertiesByName[@"typeID"]];
-					for (NSDictionary* object in [database.backgroundManagedObjectContext executeFetchRequest:request error:nil]) {
+					for (NSDictionary* object in [context executeFetchRequest:request error:nil]) {
 						mSkills[object[@"typeID"]] = level;
 					}
 				}];

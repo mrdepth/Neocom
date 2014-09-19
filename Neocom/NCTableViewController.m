@@ -102,7 +102,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCAccountDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NCStorageDidChangeNotification object:nil];
-	[self.taskManager cancelAllOperations];
+	[_taskManager cancelAllOperations];
 //	self.searchDisplayController.searchResultsDataSource = nil;
 //	self.searchDisplayController.searchResultsDelegate = nil;
 //	self.searchDisplayController.delegate = nil;

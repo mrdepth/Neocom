@@ -73,6 +73,7 @@
 @end
 
 @implementation NCContractsDetailsViewControllerDataRow
+@synthesize description = _description;
 
 - (id) initWithTitle:(NSString*) title description:(NSString*) description {
 	if (self = [super init]) {
@@ -195,7 +196,10 @@
 	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	else
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.0;
 }
 
 #pragma mark - NCTableViewController
@@ -378,9 +382,9 @@
 					_contractBids = contractBids;
 					NCCache* cache = [NCCache sharedCache];
 					[cache.managedObjectContext performBlockAndWait:^{
-						self.cacheRecord.data.data = contractBids;
-						self.cacheRecord.date = contractBids.cacheDate;
-						self.cacheRecord.expireDate = contractBids.cacheExpireDate;
+						self.contractBidsCacheRecord.data.data = contractBids;
+						self.contractBidsCacheRecord.date = contractBids.cacheDate;
+						self.contractBidsCacheRecord.expireDate = contractBids.cacheExpireDate;
 						[cache saveContext];
 					}];
 

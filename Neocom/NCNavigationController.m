@@ -58,8 +58,11 @@
 
 - (void) onTap:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded) {
-		CGPoint location = [recognizer locationInView:nil];
-        if (![self.view pointInside:[self.view convertPoint:location fromView:self.view.window] withEvent:nil]) {
+		//CGPoint location = [recognizer locationInView:nil];
+		CGPoint location = [recognizer locationInView:self.view];
+		
+       // if (![self.view pointInside:[self.view convertPoint:location fromView:self.view.window] withEvent:nil]) {
+		if (!CGRectContainsPoint(self.view.bounds, location)) {
 			[self dismissViewControllerAnimated:YES completion:nil];
 			self.tapOutsideGestureRecognizer = nil;
         }

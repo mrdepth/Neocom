@@ -22,6 +22,24 @@
 	return UIStatusBarStyleLightContent;
 }
 
+- (UIViewController*) viewControllerForUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender {
+	__weak __block UIViewController* (^weakFind)(UIViewController*);
+	
+	UIViewController* (^find)(UIViewController*) = ^(UIViewController* controller) {
+		if ([controller canPerformUnwindSegueAction:action fromViewController:fromViewController withSender:sender])
+			return controller;
+		for (UIViewController* ctrl in controller.childViewControllers) {
+			UIViewController* result = weakFind(ctrl);
+			if (result)
+				return result;
+		}
+		return (UIViewController*) nil;
+	};
+	weakFind = find;
+	
+	return find(self);
+}
+
 #pragma mark - UISplitViewControllerDelegate
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {

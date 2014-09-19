@@ -102,7 +102,11 @@
 		if (self.needsLayout) {
 			UIView* header = self.tableView.tableHeaderView;
 			CGRect frame = header.frame;
-			frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+			if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+				frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+			else
+				frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height;
+
 			if (!CGRectEqualToRect(header.frame, frame)) {
 				header.frame = frame;
 				self.tableView.tableHeaderView = header;
@@ -238,7 +242,10 @@
 	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	else
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

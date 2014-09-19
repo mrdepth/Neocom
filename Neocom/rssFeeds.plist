@@ -9,64 +9,40 @@
 		<array>
 			<dict>
 				<key>title</key>
-				<string>ccp: announcements</string>
+				<string>EVE Online News</string>
 				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=1</string>
+				<string>http://newsfeed.eveonline.com/en-US/44/articles/page/1/20</string>
 			</dict>
 			<dict>
 				<key>title</key>
-				<string>ic: amarr</string>
+				<string>Game World news</string>
 				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=2</string>
+				<string>http://newsfeed.eveonline.com/en-US/42/articles/page/1/20</string>
 			</dict>
 			<dict>
 				<key>title</key>
-				<string>ic: minmatar</string>
+				<string>Press Releases</string>
 				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=3</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>ccp: roleplayed</string>
-				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=4</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>ic: gallente</string>
-				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=5</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>ic: caldari</string>
-				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=6</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>ic: alliance</string>
-				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfnews.asp?tid=7</string>
+				<string>http://newsfeed.eveonline.com/en-US/43/articles/page/1/20</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
 		<key>title</key>
-		<string>Miscellaneous</string>
+		<string>Dev Corner</string>
 		<key>feeds</key>
 		<array>
 			<dict>
 				<key>title</key>
-				<string>Patch Notes</string>
+				<string>Dev Blogs</string>
 				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfpatchnotes.asp</string>
+				<string>http://newsfeed.eveonline.com/en-US/2/articles/page/1/20</string>
 			</dict>
 			<dict>
 				<key>title</key>
-				<string>Dev Blog</string>
+				<string>Patch Notes</string>
 				<key>url</key>
-				<string>http://www.eveonline.com/feed/rdfdevblog.asp</string>
+				<string>http://newsfeed.eveonline.com/en-US/15/articles/page/1/5</string>
 			</dict>
 		</array>
 	</dict>

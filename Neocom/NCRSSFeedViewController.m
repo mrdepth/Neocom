@@ -32,6 +32,7 @@
 			item.shortDescription = shortDescriptions[i];
 			item.plainTitle = plainTitles[i];
 			item.updatedDateString = dates[i];
+			i++;
 		}
 	}
 	return self;
@@ -126,7 +127,10 @@
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+	else
+		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.0;
 }
 
 #pragma mark - NCTableViewController

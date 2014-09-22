@@ -65,34 +65,41 @@
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return self.rows.count;
+	return self.rows.count > 0 ? self.rows.count : 1;
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTodayCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-	NCTodayRow* row = self.rows[indexPath.row];
-	cell.nameLabel.text = row.name;
-	cell.iconImageView.image = row.image;
-	
-	NSString *text;
-	UIColor *color = nil;
-	if (row.skillQueueEndDate) {
-		NSTimeInterval timeLeft = [row.skillQueueEndDate timeIntervalSinceNow];
-		if (timeLeft > 3600 * 24)
-			color = [UIColor greenColor];
-		else
-			color = [UIColor yellowColor];
-		text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:timeLeft]];
+	if (self.rows.count > 0) {
+		NCTodayCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+		NCTodayRow* row = self.rows[indexPath.row];
+		cell.nameLabel.text = row.name;
+		cell.iconImageView.image = row.image;
+		
+		NSString *text;
+		UIColor *color = nil;
+		if (row.skillQueueEndDate) {
+			NSTimeInterval timeLeft = [row.skillQueueEndDate timeIntervalSinceNow];
+			if (timeLeft > 3600 * 24)
+				color = [UIColor greenColor];
+			else
+				color = [UIColor yellowColor];
+			text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:timeLeft]];
+		}
+		else {
+			text = NSLocalizedString(@"Training queue is inactive", nil);
+			color = [UIColor redColor];
+		}
+		cell.skillQueueLabel.text = text;
+		cell.skillQueueLabel.textColor = color;
+		cell.leftMarginConstraint.constant = self.defaultMarginInsets.left;
+		cell.separatorInset = UIEdgeInsetsMake(0, self.defaultMarginInsets.left, 0, cell.separatorInset.right);
+		return cell;
 	}
 	else {
-		text = NSLocalizedString(@"Training queue is inactive", nil);
-		color = [UIColor redColor];
+		UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"PlaceholderCell" forIndexPath:indexPath];
+		cell.separatorInset = UIEdgeInsetsMake(0, self.defaultMarginInsets.left, 0, cell.separatorInset.right);
+		return cell;
 	}
-	cell.skillQueueLabel.text = text;
-	cell.skillQueueLabel.textColor = color;
-	cell.leftMarginConstraint.constant = self.defaultMarginInsets.left;
-	cell.separatorInset = UIEdgeInsetsMake(0, self.defaultMarginInsets.left, 0, cell.separatorInset.right);
-	return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -103,8 +110,12 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-	NCTodayRow* row = self.rows[indexPath.row];
-	[self.extensionContext openURL:[NSURL URLWithString:[NSString stringWithFormat:@"ncaccount:%@", row.uuid]] completionHandler:nil];
+	if (self.rows.count > 0) {
+		NCTodayRow* row = self.rows[indexPath.row];
+		[self.extensionContext openURL:[NSURL URLWithString:[NSString stringWithFormat:@"ncaccount:%@", row.uuid]] completionHandler:nil];
+	}
+	else
+		[self.extensionContext openURL:[NSURL URLWithString:@"ncaccount:"] completionHandler:nil];
 }
 
 #pragma mark - Private

@@ -209,6 +209,9 @@
 //		if ([NCAccount currentAccount] == account.account) {
 //			[tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 //		}
+		if ([NCAccount currentAccount] == account.account) {
+			[NCAccount setCurrentAccount:nil];
+		}
 		
 		[[NCAccountsManager sharedManager] removeAccount:account.account];
 		[data.accounts removeObjectAtIndex:indexPath.row];

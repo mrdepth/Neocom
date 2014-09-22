@@ -32,7 +32,7 @@
 #define NCPlexRate (209.94 / 12.0 * 1000000000.0)
 
 @interface NCMainMenuViewController ()
-@property (nonatomic, strong) NSMutableArray* allSections;
+@property (nonatomic, strong) NSArray* allSections;
 @property (nonatomic, strong) NSMutableArray* sections;
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
 @property (nonatomic, strong) EVESkillQueue* skillQueue;
@@ -75,6 +75,8 @@
 	[self.dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB"]];
 	self.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	[self.dateFormatter setDateFormat:@"HH:mm:ss"];
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.view.translatesAutoresizingMaskIntoConstraints = YES;
 }
 
 - (void)didReceiveMemoryWarning

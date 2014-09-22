@@ -162,6 +162,7 @@
 												 }
 											 }
 								 completionHandler:^(NCTask *task) {
+									 self.notificationsUpdating = NO;
 									 if (![task isCancelled]) {
 										 if (accounts.count == 0)
 											 return;
@@ -178,7 +179,6 @@
 									 }
 									 if (completionHandler)
 										 completionHandler(accounts.count > 0);
-									 self.notificationsUpdating = NO;
 								 }];
 	}
 	else {

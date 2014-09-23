@@ -598,20 +598,12 @@
 
 - (IBAction) unwindFromCharacterPicker:(UIStoryboardSegue*) segue {
 	NCFittingCharacterPickerViewController* sourceViewController = segue.sourceViewController;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 @synchronized(self) {
-												 if (sourceViewController.selectedCharacter)
-													 sourceViewController.fit.character = sourceViewController.selectedCharacter;
-												 else if ([sourceViewController.fit.character isDeleted]) {
-													 sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
-												 }
-											 }
-										 }
-							 completionHandler:^(NCTask *task) {
-								 [self reload];
-							 }];
+	if (sourceViewController.selectedCharacter)
+		sourceViewController.fit.character = sourceViewController.selectedCharacter;
+	else if ([sourceViewController.fit.character isDeleted]) {
+		sourceViewController.fit.character = [[NCStorage sharedStorage] characterWithSkillsLevel:5];
+	}
+	[self reload];
 }
 
 - (IBAction) unwindFromFitPicker:(UIStoryboardSegue*) segue {

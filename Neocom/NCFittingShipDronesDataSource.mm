@@ -217,15 +217,15 @@
 			return 162;
 		}
 		else {
+			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
+				return UITableViewAutomaticDimension;
+
 			if (!self.offscreenCell)
 				self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
 			[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
 			self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
 			[self.offscreenCell layoutIfNeeded];
-			if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
-				return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
-			else
-				return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.5;
+			return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 		}
 	}
 }

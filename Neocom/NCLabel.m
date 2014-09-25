@@ -15,21 +15,26 @@
 @implementation NCLabel
 
 - (void) awakeFromNib {
-	self.widthConstraint = [NSLayoutConstraint constraintWithItem:self
-														attribute:NSLayoutAttributeWidth
-														relatedBy:NSLayoutRelationEqual
-														   toItem:nil
-														attribute:0
-													   multiplier:1
-														 constant:self.bounds.size.width];
-	self.widthConstraint.priority = UILayoutPriorityFittingSizeLevel;
-	[self addConstraint:self.widthConstraint];
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+		self.widthConstraint = [NSLayoutConstraint constraintWithItem:self
+															attribute:NSLayoutAttributeWidth
+															relatedBy:NSLayoutRelationEqual
+															   toItem:nil
+															attribute:0
+														   multiplier:1
+															 constant:self.bounds.size.width];
+		self.widthConstraint.priority = UILayoutPriorityFittingSizeLevel;
+		[self addConstraint:self.widthConstraint];
+	}
 }
 
 - (void) layoutSubviews {
 	[super layoutSubviews];
-	self.widthConstraint.constant = self.bounds.size.width;
-	self.preferredMaxLayoutWidth = self.bounds.size.width;
+	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+		self.widthConstraint.constant = self.bounds.size.width;
+		self.preferredMaxLayoutWidth = self.bounds.size.width;
+	}
 }
+
 
 @end

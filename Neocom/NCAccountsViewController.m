@@ -279,6 +279,9 @@
 //}
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
+		return UITableViewAutomaticDimension;
+
 	NCAccountsViewControllerData* data = self.data;
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	NSString *cellIdentifier;
@@ -302,10 +305,7 @@
 	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell layoutIfNeeded];
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	else
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.0;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 /*

@@ -160,7 +160,7 @@
 																		   views:bindings][0];
 	[self.contentView addConstraint:self.indentationConstraint];
 	
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[iconView]-8-[titleLabel]-8-|"
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[iconView]-8-[titleLabel]-8@900-|"
 																options:0
 																metrics:nil
 																  views:bindings]];
@@ -171,6 +171,7 @@
 																			   views:bindings]];
 
 	[titleLabel setContentHuggingPriority:249 forAxis:UILayoutConstraintAxisVertical];
+	[titleLabel setContentCompressionResistancePriority:800 forAxis:UILayoutConstraintAxisVertical];
 
 	
 	[titleLabel setContentHuggingPriority:750 forAxis:UILayoutConstraintAxisHorizontal];

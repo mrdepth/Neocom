@@ -105,7 +105,7 @@
 			if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
 				frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 			else
-				frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height;
+				frame.size.height = [header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:999 verticalFittingPriority:1].height;
 
 			if (!CGRectEqualToRect(header.frame, frame)) {
 				header.frame = frame;
@@ -231,7 +231,9 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
 		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-	
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
+		return UITableViewAutomaticDimension;
+
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	NSString *cellIdentifier = row.cellIdentifier;
 	if (!cellIdentifier)
@@ -242,10 +244,7 @@
 	
 	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
 	[cell layoutIfNeeded];
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	else
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height + 1.0;
+	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

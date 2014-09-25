@@ -96,7 +96,7 @@
 				if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
 					frame.size.height = [self.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
 				else
-					frame.size.height = [self.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:1000 verticalFittingPriority:1].height;
+					frame.size.height = [self.tableHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize withHorizontalFittingPriority:999 verticalFittingPriority:1].height;
 
 				if (!CGRectEqualToRect(self.tableHeaderView.frame, frame)) {
 					self.tableHeaderView.frame = frame;

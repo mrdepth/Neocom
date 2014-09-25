@@ -57,13 +57,7 @@
 - (void) setText:(NSString *)text {
 	[super setText:text];
 	[self setNeedsLayout];
-}
-
-- (void) drawRect:(CGRect)rect {
-}
-
-- (void) layoutSubviews {
-	[super layoutSubviews];
+	
 	CGRect bounds = [self textRectForBounds:CGRectMake(0, 0, 2048, self.bounds.size.height) limitedToNumberOfLines:1];
 	bounds.origin.x += 15;
 	bounds.size.height = self.bounds.size.height;
@@ -103,6 +97,14 @@
 		[layer addAnimation:animation forKey:@"transform"];
 		self.animation = animation;
 	}
+
+}
+
+- (void) drawRect:(CGRect)rect {
+}
+
+- (void) layoutSubviews {
+	[super layoutSubviews];
 }
 
 - (void) didMoveToWindow {

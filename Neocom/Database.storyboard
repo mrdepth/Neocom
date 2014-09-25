@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -21,7 +20,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="446"/>
         </scene>
-        <!--Database View Controller - Database-->
+        <!--Database-->
         <scene sceneID="VPG-1H-jaK">
             <objects>
                 <tableViewController id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
@@ -111,7 +110,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="1168"/>
         </scene>
-        <!--Database Market View Controller - Market-->
+        <!--Market-->
         <scene sceneID="jEJ-dz-n4I">
             <objects>
                 <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
@@ -179,7 +178,7 @@
             </objects>
             <point key="canvasLocation" x="-855" y="1168"/>
         </scene>
-        <!--Database Certificates View Controller - Certificates-->
+        <!--Certificates-->
         <scene sceneID="5tt-L0-cHf">
             <objects>
                 <tableViewController id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
@@ -242,7 +241,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="1868"/>
         </scene>
-        <!--Database Type Info View Controller - Info-->
+        <!--Info-->
         <scene sceneID="rfB-z4-tJP">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="dFj-mD-7QZ" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
@@ -256,7 +255,6 @@
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="s5t-gK-Wwc">
                                     <rect key="frame" x="15" y="15" width="64" height="64"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="64" id="OLS-HM-rom"/>
                                         <constraint firstAttribute="width" constant="64" id="er8-6h-wKM"/>
@@ -264,14 +262,12 @@
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="EvT-51-Y7k" customClass="NCLabel">
                                     <rect key="frame" x="87" y="53" width="218" height="26"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="sH6-hb-ETj" customClass="NCLabel">
                                     <rect key="frame" x="15" y="79" width="290" height="218"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -402,42 +398,36 @@
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-K5-hJE">
                                             <rect key="frame" x="15" y="22" width="74" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d0L-9z-KIz">
                                             <rect key="frame" x="15" y="37" width="290" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekU-dw-Sqg">
                                             <rect key="frame" x="253" y="6" width="52" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Jumps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18a-Z1-FYP">
                                             <rect key="frame" x="267" y="22" width="38" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
                                             <rect key="frame" x="15" y="4" width="35" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHt-kE-cLL">
                                             <rect key="frame" x="225" y="6" width="20" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -519,7 +509,7 @@
             </objects>
             <point key="canvasLocation" x="-221" y="1176"/>
         </scene>
-        <!--Database Type Variations View Controller - Variations-->
+        <!--Variations-->
         <scene sceneID="WxF-GY-BVg">
             <objects>
                 <tableViewController id="h8M-vq-ZAF" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
@@ -555,7 +545,7 @@
             </objects>
             <point key="canvasLocation" x="291" y="446"/>
         </scene>
-        <!--Database Type Mastery View Controller - Mastery-->
+        <!--Mastery-->
         <scene sceneID="Qgr-cU-BXc">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" id="eTY-fq-Zqi" customClass="NCDatabaseTypeMasteryViewController" sceneMemberID="viewController">
@@ -614,7 +604,6 @@
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1nz-PG-LVe">
                                     <rect key="frame" x="15" y="15" width="64" height="64"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="64" id="G0J-Qb-GHS"/>
                                         <constraint firstAttribute="height" constant="64" id="Plh-jk-tGW"/>
@@ -622,14 +611,12 @@
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="6z7-Sz-5Cd" customClass="NCLabel">
                                     <rect key="frame" x="87" y="53" width="218" height="26"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="3lh-aX-v1P" customClass="NCLabel">
                                     <rect key="frame" x="15" y="79" width="290" height="218"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -721,7 +708,7 @@
             </objects>
             <point key="canvasLocation" x="-1371" y="2666"/>
         </scene>
-        <!--DatabaseNPC View Controller - NPC-->
+        <!--NPC-->
         <scene sceneID="ytX-d2-sFZ">
             <objects>
                 <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
@@ -786,7 +773,7 @@
             </objects>
             <point key="canvasLocation" x="-823" y="2666"/>
         </scene>
-        <!--Database Type Picker Content View Controller - Categories-->
+        <!--Categories-->
         <scene sceneID="2YB-SZ-oay">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypePickerContentViewController" id="zhh-zy-fcT" customClass="NCDatabaseTypePickerContentViewController" sceneMemberID="viewController">
@@ -873,11 +860,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="r4q-Am-NEf"/>
-        <segue reference="7iv-ne-LEg"/>
+        <segue reference="raC-Em-4AD"/>
         <segue reference="edv-w8-2To"/>
-        <segue reference="Vbq-vg-5yp"/>
         <segue reference="qyD-gc-O13"/>
+        <segue reference="7iv-ne-LEg"/>
+        <segue reference="Vbq-vg-5yp"/>
         <segue reference="6M7-4Q-PK5"/>
         <segue reference="dFJ-0K-RGe"/>
     </inferredMetricsTieBreakers>

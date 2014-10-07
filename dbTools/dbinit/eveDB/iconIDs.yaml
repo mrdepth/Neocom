@@ -867,7 +867,7 @@
   iconFile: '22_23'
 1400:
   description: power attribute - Unknown
-  iconFile: '22_08'
+  iconFile: '02_07'
 1401:
   description: agility - Unknown
   iconFile: '22_24'
@@ -3798,7 +3798,8 @@
   description: Icon reference for Pator Tech School (CorporationID 1000172)
   iconFile: c_43_4
 10190:
-  description: This is an extremely ugly wide-rimmed hat that once adorned the head of one Uchi Pakkori. The burn marks and blood smears don't improve the looks.
+  description: This is an extremely ugly wide-rimmed hat that once adorned the head
+    of one Uchi Pakkori. The burn marks and blood smears don't improve the looks.
   iconFile: '79_13'
 10191:
   description: Icon record for Academy of Aggressive Behaviour (CorporationID 1000178)
@@ -3807,85 +3808,86 @@
   description: Icon record for Material Institute (CorporationID 1000177)
   iconFile: c_45_4
 10204:
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3992_1063.png
+  description: 3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed.png
 10205:
-  description: bottomouter_3997_1050
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3997_1050.png
+  description: 3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray.png
 10206:
-  description: bottomouter_3998_980
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3998_980.png
+  description: 3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray.png
 10207:
-  description: bottomouter_3999_1036
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3999_1036.png
+  description: 3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax.png
 10208:
-  description: bottomouter_4078_986
-  iconFile: res:/UI/Asset/mannequin/bottomouter_4078_986.png
+  description: 4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo.png
 10209:
-  description: bottomouter_4085_1037
-  iconFile: res:/UI/Asset/mannequin/bottomouter_4085_1037.png
+  description: 4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black.png
 10210:
-  description: glasses_3958_1065
-  iconFile: res:/UI/Asset/mannequin/glasses_3958_1065.png
+  description: 3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01.png
 10211:
   description: glasses_3965_1039
-  iconFile: res:/UI/Asset/mannequin/glasses_3965_1039.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_3965_1039.png
 10212:
   description: glasses_3969_1045
-  iconFile: res:/UI/Asset/mannequin/glasses_3969_1045.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_3969_1045.png
 10213:
   description: glasses_4000_993
-  iconFile: res:/UI/Asset/mannequin/glasses_4000_993.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4000_993.png
 10214:
-  description: glasses_4037_999
-  iconFile: res:/UI/Asset/mannequin/glasses_4037_999.png
+  description: 4037_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightDark
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4037_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightDark.png
 10215:
-  description: glasses_4038_960
-  iconFile: res:/UI/Asset/mannequin/glasses_4038_960.png
+  description: 4038_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightGray
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4038_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightGray.png
 10216:
-  description: glasses_4039_1010
-  iconFile: res:/UI/Asset/mannequin/glasses_4039_1010.png
+  description: 4039_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightGold
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4039_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_RightGold.png
 10217:
   description: glasses_4040_971
-  iconFile: res:/UI/Asset/mannequin/glasses_4040_971.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4040_971.png
 10218:
   description: glasses_4041_965
-  iconFile: res:/UI/Asset/mannequin/glasses_4041_965.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4041_965.png
 10219:
-  description: glasses_4042_975
-  iconFile: res:/UI/Asset/mannequin/glasses_4042_975.png
+  description: 4042_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGray
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4042_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGray.png
 10220:
-  description: glasses_4043_1021
-  iconFile: res:/UI/Asset/mannequin/glasses_4043_1021.png
+  description: 4043_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftDark
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4043_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftDark.png
 10221:
-  description: glasses_4046_979
-  iconFile: res:/UI/Asset/mannequin/glasses_4046_979.png
+  description: 4046_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftGold
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4046_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftGold.png
 10222:
-  description: glasses_4048_988
-  iconFile: res:/UI/Asset/mannequin/glasses_4048_988.png
+  description: 4048_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftGray
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4048_female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftGray.png
 10223:
-  description: glasses_4050_1015
-  iconFile: res:/UI/Asset/mannequin/glasses_4050_1015.png
+  description: 4050_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_LeftGold
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4050_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_LeftGold.png
 10224:
-  description: glasses_4052_1004
-  iconFile: res:/UI/Asset/mannequin/glasses_4052_1004.png
+  description: 4052_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_LeftGray
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4052_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_LeftGray.png
 10225:
   description: glasses_4053_1059
-  iconFile: res:/UI/Asset/mannequin/glasses_4053_1059.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4053_1059.png
 10226:
   description: glasses_4056_1024
-  iconFile: res:/UI/Asset/mannequin/glasses_4056_1024.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4056_1024.png
 10227:
   description: glasses_4081_967
-  iconFile: res:/UI/Asset/mannequin/glasses_4081_967.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4081_967.png
 10228:
   description: glasses_4092_973
-  iconFile: res:/UI/Asset/mannequin/glasses_4092_973.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4092_973.png
 10229:
   description: glasses_4094_1052
-  iconFile: res:/UI/Asset/mannequin/glasses_4094_1052.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4094_1052.png
 10230:
   description: glasses_4095_1022
-  iconFile: res:/UI/Asset/mannequin/glasses_4095_1022.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4095_1022.png
 10231:
   description: hair_4086_947
   iconFile: res:/UI/Asset/mannequin/hair_4086_947.png
@@ -3896,71 +3898,71 @@
   description: hair_4096_1005
   iconFile: res:/UI/Asset/mannequin/hair_4096_1005.png
 10234:
-  description: outer_4054_1011
-  iconFile: res:/UI/Asset/mannequin/outer_4054_1011.png
+  description: 4054_female_Outer_JacketMilF01_Types_JacketMilF01_blackgray
+  iconFile: res:/UI/Asset/mannequin/outer/4054_female_Outer_JacketMilF01_Types_JacketMilF01_blackgray.png
 10235:
-  description: outer_4097_1012
-  iconFile: res:/UI/Asset/mannequin/outer_4097_1012.png
+  description: 4097_male_outer_JacketMilM01_Types_JacketMilM01_blackyellow
+  iconFile: res:/UI/Asset/mannequin/outer/4097_male_outer_JacketMilM01_Types_JacketMilM01_blackyellow.png
 10236:
-  description: outer_4098_957
-  iconFile: res:/UI/Asset/mannequin/outer_4098_957.png
+  description: 4098_male_outer_JacketMilM02_Types_JacketMilM02_blackgray
+  iconFile: res:/UI/Asset/mannequin/outer/4098_male_outer_JacketMilM02_Types_JacketMilM02_blackgray.png
 10237:
-  description: topmiddle_4066_953
-  iconFile: res:/UI/Asset/mannequin/topmiddle_4066_953.png
+  description: 4066_female_TopMiddle_ShirtQF01_Types_shirtqf01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4066_female_TopMiddle_ShirtQF01_Types_shirtqf01.png
 10238:
-  description: topmiddle_4067_946
-  iconFile: res:/UI/Asset/mannequin/topmiddle_4067_946.png
+  description: 4067_male_TopMiddle_ShirtQM01_Types_shirtqm01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4067_male_TopMiddle_ShirtQM01_Types_shirtqm01.png
 10239:
-  description: topouter_4057_1049
-  iconFile: res:/UI/Asset/mannequin/topouter_4057_1049.png
+  description: 4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black.png
 10240:
-  description: topouter_4058_1000
-  iconFile: res:/UI/Asset/mannequin/topouter_4058_1000.png
+  description: 4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue.png
 10241:
-  description: topouter_4059_994
-  iconFile: res:/UI/Asset/mannequin/topouter_4059_994.png
+  description: 4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust.png
 10242:
-  description: topouter_4060_1035
-  iconFile: res:/UI/Asset/mannequin/topouter_4060_1035.png
+  description: 4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive.png
 10243:
-  description: topouter_4061_1017
-  iconFile: res:/UI/Asset/mannequin/topouter_4061_1017.png
+  description: 4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black.png
 10244:
-  description: topouter_4062_976
-  iconFile: res:/UI/Asset/mannequin/topouter_4062_976.png
+  description: 4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue.png
 10245:
-  description: topouter_4063_1047
-  iconFile: res:/UI/Asset/mannequin/topouter_4063_1047.png
+  description: 4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust.png
 10246:
-  description: topouter_4064_1056
-  iconFile: res:/UI/Asset/mannequin/topouter_4064_1056.png
+  description: 4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive.png
 10247:
-  description: topouter_4065_1028
-  iconFile: res:/UI/Asset/mannequin/topouter_4065_1028.png
+  description: 4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey
+  iconFile: res:/UI/Asset/mannequin/topouter/4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey.png
 10248:
-  description: topouter_4068_974
-  iconFile: res:/UI/Asset/mannequin/topouter_4068_974.png
+  description: 4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone
+  iconFile: res:/UI/Asset/mannequin/topouter/4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone.png
 10249:
-  description: outer_3975_1075
-  iconFile: res:/UI/Asset/mannequin/outer_3975_1075.png
+  description: 3975_female_Outer_JacketMilF02_Types_JacketMilF02_blue
+  iconFile: res:/UI/Asset/mannequin/outer/3975_female_Outer_JacketMilF02_Types_JacketMilF02_blue.png
 10250:
-  description: feet_4002_1071
-  iconFile: res:/UI/Asset/mannequin/feet_4002_1071.png
+  description: 4002_female_Feet_BootsMilF01_Types_BootsMilF01_black
+  iconFile: res:/UI/Asset/mannequin/feet/4002_female_Feet_BootsMilF01_Types_BootsMilF01_black.png
 10251:
-  description: feet_4003_1073
-  iconFile: res:/UI/Asset/mannequin/feet_4003_1073.png
+  description: 4003_female_Feet_BootsMilF02_Types_BootsMilF02_black
+  iconFile: res:/UI/Asset/mannequin/feet/4003_female_Feet_BootsMilF02_Types_BootsMilF02_black.png
 10252:
-  description: feet_4004_1074
-  iconFile: res:/UI/Asset/mannequin/feet_4004_1074.png
+  description: 4004_female_Feet_BootsMilF03_Types_BootsMilF03_black
+  iconFile: res:/UI/Asset/mannequin/feet/4004_female_Feet_BootsMilF03_Types_BootsMilF03_black.png
 10253:
-  description: feet_4008_1068
-  iconFile: res:/UI/Asset/mannequin/feet_4008_1068.png
+  description: 4008_male_Feet_BootsMilM01_Types_BootsMilM01_black
+  iconFile: res:/UI/Asset/mannequin/feet/4008_male_Feet_BootsMilM01_Types_BootsMilM01_black.png
 10254:
-  description: feet_3966_1069
-  iconFile: res:/UI/Asset/mannequin/feet_3966_1069.png
+  description: 3966_male_Feet_BootsMilM02_Types_BootsMilM02_black
+  iconFile: res:/UI/Asset/mannequin/feet/3966_male_Feet_BootsMilM02_Types_BootsMilM02_black.png
 10255:
-  description: feet_4001_1070
-  iconFile: res:/UI/Asset/mannequin/feet_4001_1070.png
+  description: 4001_male_Feet_BootsMilM03_Types_BootsMilM03_black
+  iconFile: res:/UI/Asset/mannequin/feet/4001_male_Feet_BootsMilM03_Types_BootsMilM03_black.png
 10256:
   description: 'The store icon. It looks like a rack of clothes. '
   iconFile: '65_03'
@@ -3968,41 +3970,41 @@
   description: NPE arc, all factions
   iconFile: res:/UI/netres/mission_content/arc_npe.png
 10545:
-  description: bottomouter_3992_1063
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3992_1063.png
+  description: 3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed.png
 10546:
-  description: bottomouter_3997_1050
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3997_1050.png
+  description: 3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray.png
 10547:
-  description: bottomouter_3998_980
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3998_980.png
+  description: 3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray.png
 10548:
-  description: bottomouter_3999_1036
-  iconFile: res:/UI/Asset/mannequin/bottomouter_3999_1036.png
+  description: 3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax.png
 10549:
-  description: bottomouter_4078_986
-  iconFile: res:/UI/Asset/mannequin/bottomouter_4078_986.png
+  description: 4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo.png
 10550:
-  description: bottomouter_4085_1037
-  iconFile: res:/UI/Asset/mannequin/bottomouter_4085_1037.png
+  description: 4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black.png
 10551:
-  description: feet_3966_1069
-  iconFile: res:/UI/Asset/mannequin/feet_3966_1069.png
+  description: 3966_male_Feet_BootsMilM02_Types_BootsMilM02_black
+  iconFile: res:/UI/Asset/mannequin/feet/3966_male_Feet_BootsMilM02_Types_BootsMilM02_black.png
 10552:
-  description: feet_4001_1070
-  iconFile: res:/UI/Asset/mannequin/feet_4001_1070.png
+  description: 4001_male_Feet_BootsMilM03_Types_BootsMilM03_black
+  iconFile: res:/UI/Asset/mannequin/feet/4001_male_Feet_BootsMilM03_Types_BootsMilM03_black.png
 10553:
-  description: feet_4002_1071
-  iconFile: res:/UI/Asset/mannequin/feet_4002_1071.png
+  description: 4002_female_Feet_BootsMilF01_Types_BootsMilF01_black
+  iconFile: res:/UI/Asset/mannequin/feet/4002_female_Feet_BootsMilF01_Types_BootsMilF01_black.png
 10554:
-  description: feet_4003_1073
-  iconFile: res:/UI/Asset/mannequin/feet_4003_1073.png
+  description: 4003_female_Feet_BootsMilF02_Types_BootsMilF02_black
+  iconFile: res:/UI/Asset/mannequin/feet/4003_female_Feet_BootsMilF02_Types_BootsMilF02_black.png
 10555:
-  description: feet_4004_1074
-  iconFile: res:/UI/Asset/mannequin/feet_4004_1074.png
+  description: 4004_female_Feet_BootsMilF03_Types_BootsMilF03_black
+  iconFile: res:/UI/Asset/mannequin/feet/4004_female_Feet_BootsMilF03_Types_BootsMilF03_black.png
 10556:
-  description: feet_4008_1068
-  iconFile: res:/UI/Asset/mannequin/feet_4008_1068.png
+  description: 4008_male_Feet_BootsMilM01_Types_BootsMilM01_black
+  iconFile: res:/UI/Asset/mannequin/feet/4008_male_Feet_BootsMilM01_Types_BootsMilM01_black.png
 10557:
   description: Female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftDark
   iconFile: res:/UI/Asset/mannequin/Female_Accessories_Glasses_EyeImp01_Types_EyeImpF01_LeftDark.png
@@ -4037,203 +4039,203 @@
   description: Female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGray
   iconFile: res:/UI/Asset/mannequin/Female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGray.png
 10568:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_black.png
+  description: 4016_female_bottomOuter_PantsMilF01_Types_PantsMilF01_black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4016_female_bottomOuter_PantsMilF01_Types_PantsMilF01_black.png
 10569:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackbluegold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackbluegold.png
+  description: 4017_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackbluegold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4017_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackbluegold.png
 10570:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgold.png
+  description: 4018_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4018_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgold.png
 10571:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgoldline
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgoldline.png
+  description: 4019_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgoldline
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4019_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgoldline.png
 10572:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray.png
+  description: 3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3997_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackgray.png
 10573:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackredgold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackredgold.png
+  description: 4020_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackredgold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4020_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blackredgold.png
 10574:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blacksilver
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_blacksilver.png
+  description: 4021_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blacksilver
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4021_female_bottomOuter_PantsMilF01_Types_PantsMilF01_blacksilver.png
 10575:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_gold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_gold.png
+  description: 4022_female_bottomOuter_PantsMilF01_Types_PantsMilF01_gold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4022_female_bottomOuter_PantsMilF01_Types_PantsMilF01_gold.png
 10576:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matblue
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matblue.png
+  description: 4026_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matblue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4026_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matblue.png
 10577:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matgreen
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matgreen.png
+  description: 4028_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matgreen
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4028_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matgreen.png
 10578:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matred
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_matred.png
+  description: 4030_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matred
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4030_female_bottomOuter_PantsMilF01_Types_PantsMilF01_matred.png
 10579:
-  description: Female_bottomOuter_PantsMilF01_Types_PantsMilF01_silver
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_PantsMilF01_Types_PantsMilF01_silver.png
+  description: 4032_female_bottomOuter_PantsMilF01_Types_PantsMilF01_silver
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4032_female_bottomOuter_PantsMilF01_Types_PantsMilF01_silver.png
 10580:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_blackleather
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_blackleather.png
+  description: 4033_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_blackleather
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4033_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_blackleather.png
 10581:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax.png
+  description: 3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3999_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Blackwax.png
 10582:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_brownleather
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_brownleather.png
+  description: 4034_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_brownleather
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4034_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_brownleather.png
 10583:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_graphite
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_graphite.png
+  description: 4035_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_graphite
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4035_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_graphite.png
 10584:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray.png
+  description: 3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3998_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_Gray.png
 10585:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_greengold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_greengold.png
+  description: 4036_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_greengold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4036_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_greengold.png
 10586:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_marine
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_marine.png
+  description: 4069_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_marine
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4069_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_marine.png
 10587:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblack
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblack.png
+  description: 4070_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4070_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblack.png
 10588:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblue
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblue.png
+  description: 4071_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4071_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matblue.png
 10589:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matred
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matred.png
+  description: 4072_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matred
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4072_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_matred.png
 10590:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_redgold
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_redgold.png
+  description: 4073_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_redgold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4073_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_redgold.png
 10591:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_silver
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_silver.png
+  description: 4074_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_silver
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4074_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_silver.png
 10592:
-  description: Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_white
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_white.png
+  description: 4075_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_white
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4075_female_bottomOuter_SkirtMilF01_Types_SkirtMilF01_white.png
 10593:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black.png
+  description: 4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4085_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Black.png
 10594:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackred
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackred.png
+  description: 4076_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackred
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4076_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackred.png
 10595:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackwhite
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackwhite.png
+  description: 4101_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackwhite
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4101_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blackwhite.png
 10596:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blue
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blue.png
+  description: 4102_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4102_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_blue.png
 10597:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo.png
+  description: 4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4078_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_Camo.png
 10598:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graphite
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graphite.png
+  description: 4103_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graphite
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4103_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graphite.png
 10599:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_gray
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_gray.png
+  description: 4104_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_gray
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4104_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_gray.png
 10600:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graystripes
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graystripes.png
+  description: 4105_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graystripes
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4105_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_graystripes.png
 10601:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_green
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_green.png
+  description: 4106_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_green
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4106_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_green.png
 10602:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenblack
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenblack.png
+  description: 4107_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4107_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenblack.png
 10603:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenstripes
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenstripes.png
+  description: 4108_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenstripes
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4108_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_greenstripes.png
 10604:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_khaki
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_khaki.png
+  description: 4109_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_khaki
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4109_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_khaki.png
 10605:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_marine
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_marine.png
+  description: 4110_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_marine
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4110_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_marine.png
 10606:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_matblack
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_matblack.png
+  description: 4111_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_matblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4111_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_matblack.png
 10607:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_red
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_red.png
+  description: 4112_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_red
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4112_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_red.png
 10608:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redleather
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redleather.png
+  description: 4113_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redleather
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4113_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redleather.png
 10609:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redstripes
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redstripes.png
+  description: 4114_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redstripes
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4114_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_redstripes.png
 10610:
-  description: Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_whitestripes
-  iconFile: res:/UI/Asset/mannequin/Female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_whitestripes.png
+  description: 4115_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_whitestripes
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4115_female_bottomOuter_SkirtMilF02_Types_SkirtMilF02_whitestripes.png
 10611:
   description: Female_Feet_BootsMilF01_Types_BootsMilF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_black.png
+  iconFile: res:/UI/Asset/mannequin/feet/Female_feet_BootsMilF01_Types_BootsMilF01_black.png
 10612:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_blackgold
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_blackgold.png
+  description: 4116_female_Feet_BootsMilF01_Types_BootsMilF01_blackgold
+  iconFile: res:/UI/Asset/mannequin/feet/4116_female_Feet_BootsMilF01_Types_BootsMilF01_blackgold.png
 10613:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_blackred
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_blackred.png
+  description: 4117_female_Feet_BootsMilF01_Types_BootsMilF01_blackred
+  iconFile: res:/UI/Asset/mannequin/feet/4117_female_Feet_BootsMilF01_Types_BootsMilF01_blackred.png
 10614:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_blue
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_blue.png
+  description: 4118_female_Feet_BootsMilF01_Types_BootsMilF01_blue
+  iconFile: res:/UI/Asset/mannequin/feet/4118_female_Feet_BootsMilF01_Types_BootsMilF01_blue.png
 10615:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_gold
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_gold.png
+  description: 4119_female_Feet_BootsMilF01_Types_BootsMilF01_gold
+  iconFile: res:/UI/Asset/mannequin/feet/4119_female_Feet_BootsMilF01_Types_BootsMilF01_gold.png
 10616:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_graphwhite
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_graphwhite.png
+  description: 4120_female_Feet_BootsMilF01_Types_BootsMilF01_graphwhite
+  iconFile: res:/UI/Asset/mannequin/feet/4120_female_Feet_BootsMilF01_Types_BootsMilF01_graphwhite.png
 10617:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_greenblack
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_greenblack.png
+  description: 4121_female_Feet_BootsMilF01_Types_BootsMilF01_greenblack
+  iconFile: res:/UI/Asset/mannequin/feet/4121_female_Feet_BootsMilF01_Types_BootsMilF01_greenblack.png
 10618:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_matblack
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_matblack.png
+  description: 4122_female_Feet_BootsMilF01_Types_BootsMilF01_matblack
+  iconFile: res:/UI/Asset/mannequin/feet/4122_female_Feet_BootsMilF01_Types_BootsMilF01_matblack.png
 10619:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_matred
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_matred.png
+  description: 4123_female_Feet_BootsMilF01_Types_BootsMilF01_matred
+  iconFile: res:/UI/Asset/mannequin/feet/4123_female_Feet_BootsMilF01_Types_BootsMilF01_matred.png
 10620:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_red
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_red.png
+  description: 4124_female_Feet_BootsMilF01_Types_BootsMilF01_red
+  iconFile: res:/UI/Asset/mannequin/feet/4124_female_Feet_BootsMilF01_Types_BootsMilF01_red.png
 10621:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_silver
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_silver.png
+  description: 4125_female_Feet_BootsMilF01_Types_BootsMilF01_silver
+  iconFile: res:/UI/Asset/mannequin/feet/4125_female_Feet_BootsMilF01_Types_BootsMilF01_silver.png
 10622:
-  description: Female_Feet_BootsMilF01_Types_BootsMilF01_turquoise
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF01_Types_BootsMilF01_turquoise.png
+  description: 4126_female_Feet_BootsMilF01_Types_BootsMilF01_turquoise
+  iconFile: res:/UI/Asset/mannequin/feet/4126_female_Feet_BootsMilF01_Types_BootsMilF01_turquoise.png
 10623:
   description: Female_Feet_BootsMilF02_Types_BootsMilF02_black
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_black.png
+  iconFile: res:/UI/Asset/mannequin/feet/Female_feet_BootsMilF02_Types_BootsMilF02_black.png
 10624:
-  description: Female_Feet_BootsMilF02_Types_BootsMilF02_blackgold
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_blackgold.png
+  description: 4127_female_Feet_BootsMilF02_Types_BootsMilF02_blackgold
+  iconFile: res:/UI/Asset/mannequin/feet/4127_female_Feet_BootsMilF02_Types_BootsMilF02_blackgold.png
 10625:
-  description: Female_Feet_BootsMilF02_Types_BootsMilF02_brown
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_brown.png
+  description: 4128_female_Feet_BootsMilF02_Types_BootsMilF02_brown
+  iconFile: res:/UI/Asset/mannequin/feet/4128_female_Feet_BootsMilF02_Types_BootsMilF02_brown.png
 10626:
-  description: Female_Feet_BootsMilF02_Types_BootsMilF02_matbrown
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_matbrown.png
+  description: 4129_female_Feet_BootsMilF02_Types_BootsMilF02_matbrown
+  iconFile: res:/UI/Asset/mannequin/feet/4129_female_Feet_BootsMilF02_Types_BootsMilF02_matbrown.png
 10627:
-  description: Female_Feet_BootsMilF02_Types_BootsMilF02_matgray
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_matgray.png
+  description: 4130_female_Feet_BootsMilF02_Types_BootsMilF02_matgray
+  iconFile: res:/UI/Asset/mannequin/feet/4130_female_Feet_BootsMilF02_Types_BootsMilF02_matgray.png
 10628:
-  description: Female_Feet_BootsMilF02_Types_BootsMilF02_red
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF02_Types_BootsMilF02_red.png
+  description: 4131_female_Feet_BootsMilF02_Types_BootsMilF02_red
+  iconFile: res:/UI/Asset/mannequin/feet/4131_female_Feet_BootsMilF02_Types_BootsMilF02_red.png
 10629:
   description: Female_Feet_BootsMilF03_Types_BootsMilF03_black
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF03_Types_BootsMilF03_black.png
+  iconFile: res:/UI/Asset/mannequin/feet/Female_feet_BootsMilF03_Types_BootsMilF03_black.png
 10630:
-  description: Female_Feet_BootsMilF03_Types_BootsMilF03_blackwhite
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF03_Types_BootsMilF03_blackwhite.png
+  description: 4132_female_Feet_BootsMilF03_Types_BootsMilF03_blackwhite
+  iconFile: res:/UI/Asset/mannequin/feet/4132_female_Feet_BootsMilF03_Types_BootsMilF03_blackwhite.png
 10631:
-  description: Female_Feet_BootsMilF03_Types_BootsMilF03_brownblack
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF03_Types_BootsMilF03_brownblack.png
+  description: 4133_female_Feet_BootsMilF03_Types_BootsMilF03_brownblack
+  iconFile: res:/UI/Asset/mannequin/feet/4133_female_Feet_BootsMilF03_Types_BootsMilF03_brownblack.png
 10632:
-  description: Female_Feet_BootsMilF03_Types_BootsMilF03_red
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF03_Types_BootsMilF03_red.png
+  description: 4134_female_Feet_BootsMilF03_Types_BootsMilF03_red
+  iconFile: res:/UI/Asset/mannequin/feet/4134_female_Feet_BootsMilF03_Types_BootsMilF03_red.png
 10633:
-  description: Female_Feet_BootsMilF03_Types_BootsMilF03_whiteblack
-  iconFile: res:/UI/Asset/mannequin/Female_Feet_BootsMilF03_Types_BootsMilF03_whiteblack.png
+  description: 4135_female_Feet_BootsMilF03_Types_BootsMilF03_whiteblack
+  iconFile: res:/UI/Asset/mannequin/feet/4135_female_Feet_BootsMilF03_Types_BootsMilF03_whiteblack.png
 10634:
   description: Female_hair_Hair_CurlyShoulderLength_01_Types_hair_curlyshoulderlength_01
   iconFile: res:/UI/Asset/mannequin/Female_hair_Hair_CurlyShoulderLength_01_Types_hair_curlyshoulderlength_01.png
@@ -4241,305 +4243,305 @@
   description: Female_hair_Hair_ShortPixieTop_01_Types_hair_shortpixietop_01
   iconFile: res:/UI/Asset/mannequin/Female_hair_Hair_ShortPixieTop_01_Types_hair_shortpixietop_01.png
 10636:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_black.png
+  description: 4136_female_Outer_JacketMilF01_Types_JacketMilF01_black
+  iconFile: res:/UI/Asset/mannequin/outer/4136_female_Outer_JacketMilF01_Types_JacketMilF01_black.png
 10637:
   description: Female_Outer_JacketMilF01_Types_JacketMilF01_blackgray
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_blackgray.png
+  iconFile: res:/UI/Asset/mannequin/outer/Female_Outer_JacketMilF01_Types_JacketMilF01_blackgray.png
 10638:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_graphite
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_graphite.png
+  description: 4137_female_Outer_JacketMilF01_Types_JacketMilF01_graphite
+  iconFile: res:/UI/Asset/mannequin/outer/4137_female_Outer_JacketMilF01_Types_JacketMilF01_graphite.png
 10639:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_greengold
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_greengold.png
+  description: 4138_female_Outer_JacketMilF01_Types_JacketMilF01_greengold
+  iconFile: res:/UI/Asset/mannequin/outer/4138_female_Outer_JacketMilF01_Types_JacketMilF01_greengold.png
 10640:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_matblue
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_matblue.png
+  description: 4139_female_Outer_JacketMilF01_Types_JacketMilF01_matblue
+  iconFile: res:/UI/Asset/mannequin/outer/4139_female_Outer_JacketMilF01_Types_JacketMilF01_matblue.png
 10641:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_matred
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_matred.png
+  description: 4140_female_Outer_JacketMilF01_Types_JacketMilF01_matred
+  iconFile: res:/UI/Asset/mannequin/outer/4140_female_Outer_JacketMilF01_Types_JacketMilF01_matred.png
 10642:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_redgold
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_redgold.png
+  description: 4141_female_Outer_JacketMilF01_Types_JacketMilF01_redgold
+  iconFile: res:/UI/Asset/mannequin/outer/4141_female_Outer_JacketMilF01_Types_JacketMilF01_redgold.png
 10643:
-  description: Female_Outer_JacketMilF01_Types_JacketMilF01_silver
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF01_Types_JacketMilF01_silver.png
+  description: 4142_female_Outer_JacketMilF01_Types_JacketMilF01_silver
+  iconFile: res:/UI/Asset/mannequin/outer/4142_female_Outer_JacketMilF01_Types_JacketMilF01_silver.png
 10644:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_black
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_black.png
+  description: 4143_female_Outer_JacketMilF02_Types_JacketMilF02_black
+  iconFile: res:/UI/Asset/mannequin/outer/4143_female_Outer_JacketMilF02_Types_JacketMilF02_black.png
 10645:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_blackwhite
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_blackwhite.png
+  description: 4144_female_Outer_JacketMilF02_Types_JacketMilF02_blackwhite
+  iconFile: res:/UI/Asset/mannequin/outer/4144_female_Outer_JacketMilF02_Types_JacketMilF02_blackwhite.png
 10646:
   description: Female_Outer_JacketMilF02_Types_JacketMilF02_blue
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_blue.png
+  iconFile: res:/UI/Asset/mannequin/outer/Female_Outer_JacketMilF02_Types_JacketMilF02_blue.png
 10647:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_brown
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_brown.png
+  description: 4145_female_Outer_JacketMilF02_Types_JacketMilF02_brown
+  iconFile: res:/UI/Asset/mannequin/outer/4145_female_Outer_JacketMilF02_Types_JacketMilF02_brown.png
 10648:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_goldblack
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_goldblack.png
+  description: 4146_female_Outer_JacketMilF02_Types_JacketMilF02_goldblack
+  iconFile: res:/UI/Asset/mannequin/outer/4146_female_Outer_JacketMilF02_Types_JacketMilF02_goldblack.png
 10649:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_graphite
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_graphite.png
+  description: 4149_female_Outer_JacketMilF02_Types_JacketMilF02_graphite
+  iconFile: res:/UI/Asset/mannequin/outer/4149_female_Outer_JacketMilF02_Types_JacketMilF02_graphite.png
 10650:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_green
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_green.png
+  description: 4150_female_Outer_JacketMilF02_Types_JacketMilF02_green
+  iconFile: res:/UI/Asset/mannequin/outer/4150_female_Outer_JacketMilF02_Types_JacketMilF02_green.png
 10651:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_matblue
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_matblue.png
+  description: 4151_female_Outer_JacketMilF02_Types_JacketMilF02_matblue
+  iconFile: res:/UI/Asset/mannequin/outer/4151_female_Outer_JacketMilF02_Types_JacketMilF02_matblue.png
 10652:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_matred
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_matred.png
+  description: 4152_female_Outer_JacketMilF02_Types_JacketMilF02_matred
+  iconFile: res:/UI/Asset/mannequin/outer/4152_female_Outer_JacketMilF02_Types_JacketMilF02_matred.png
 10653:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_red
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_red.png
+  description: 4153_female_Outer_JacketMilF02_Types_JacketMilF02_red
+  iconFile: res:/UI/Asset/mannequin/outer/4153_female_Outer_JacketMilF02_Types_JacketMilF02_red.png
 10654:
-  description: Female_Outer_JacketMilF02_Types_JacketMilF02_turquoise
-  iconFile: res:/UI/Asset/mannequin/Female_Outer_JacketMilF02_Types_JacketMilF02_turquoise.png
+  description: 4154_female_Outer_JacketMilF02_Types_JacketMilF02_turquoise
+  iconFile: res:/UI/Asset/mannequin/outer/4154_female_Outer_JacketMilF02_Types_JacketMilF02_turquoise.png
 10655:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_black.png
+  description: 4201_female_TopMiddle_ShirtGF01_Types_ShirtGF01_black
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4201_female_TopMiddle_ShirtGF01_Types_ShirtGF01_black.png
 10656:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_blue2
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_blue2.png
+  description: 4202_female_TopMiddle_ShirtGF01_Types_ShirtGF01_blue2
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4202_female_TopMiddle_ShirtGF01_Types_ShirtGF01_blue2.png
 10657:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_brown
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_brown.png
+  description: 4203_female_TopMiddle_ShirtGF01_Types_ShirtGF01_brown
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4203_female_TopMiddle_ShirtGF01_Types_ShirtGF01_brown.png
 10658:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_cream
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_cream.png
+  description: 4204_female_TopMiddle_ShirtGF01_Types_ShirtGF01_cream
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4204_female_TopMiddle_ShirtGF01_Types_ShirtGF01_cream.png
 10659:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkblue
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkblue.png
+  description: 4205_female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkblue
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4205_female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkblue.png
 10660:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkred
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkred.png
+  description: 4206_female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkred
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4206_female_TopMiddle_ShirtGF01_Types_ShirtGF01_darkred.png
 10661:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_gray
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_gray.png
+  description: 4207_female_TopMiddle_ShirtGF01_Types_ShirtGF01_gray
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4207_female_TopMiddle_ShirtGF01_Types_ShirtGF01_gray.png
 10662:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_green
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_green.png
+  description: 4208_female_TopMiddle_ShirtGF01_Types_ShirtGF01_green
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4208_female_TopMiddle_ShirtGF01_Types_ShirtGF01_green.png
 10663:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_khaki
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_khaki.png
+  description: 4209_female_TopMiddle_ShirtGF01_Types_ShirtGF01_khaki
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4209_female_TopMiddle_ShirtGF01_Types_ShirtGF01_khaki.png
 10664:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_olive
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_olive.png
+  description: 4210_female_TopMiddle_ShirtGF01_Types_ShirtGF01_olive
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4210_female_TopMiddle_ShirtGF01_Types_ShirtGF01_olive.png
 10665:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_orange
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_orange.png
+  description: 4211_female_TopMiddle_ShirtGF01_Types_ShirtGF01_orange
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4211_female_TopMiddle_ShirtGF01_Types_ShirtGF01_orange.png
 10666:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_darkcaldari
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_darkcaldari.png
+  description: 4212_female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_darkcaldari
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4212_female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_darkcaldari.png
 10667:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_desertcamo
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_desertcamo.png
+  description: 4213_female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_desertcamo
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4213_female_TopMiddle_ShirtGF01_Types_ShirtGF01_p_desertcamo.png
 10668:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_red
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_red.png
+  description: 4214_female_TopMiddle_ShirtGF01_Types_ShirtGF01_red
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4214_female_TopMiddle_ShirtGF01_Types_ShirtGF01_red.png
 10669:
-  description: Female_TopMiddle_ShirtGF01_Types_ShirtGF01_white
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtGF01_Types_ShirtGF01_white.png
+  description: 4215_female_TopMiddle_ShirtGF01_Types_ShirtGF01_white
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4215_female_TopMiddle_ShirtGF01_Types_ShirtGF01_white.png
 10670:
   description: Female_TopMiddle_ShirtQF01_Types_shirtqf01
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtQF01_Types_shirtqf01.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/Female_TopMiddle_ShirtQF01_Types_shirtqf01.png
 10671:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_black.png
+  description: 4216_female_TopMiddle_TanktopF01_Types_TanktopF01_black
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4216_female_TopMiddle_TanktopF01_Types_TanktopF01_black.png
 10672:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_blackleather
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_blackleather.png
+  description: 4217_female_TopMiddle_TanktopF01_Types_TanktopF01_blackleather
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4217_female_TopMiddle_TanktopF01_Types_TanktopF01_blackleather.png
 10673:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_blue
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_blue.png
+  description: 4218_female_TopMiddle_TanktopF01_Types_TanktopF01_blue
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4218_female_TopMiddle_TanktopF01_Types_TanktopF01_blue.png
 10674:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_brown
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_brown.png
+  description: 4219_female_TopMiddle_TanktopF01_Types_TanktopF01_brown
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4219_female_TopMiddle_TanktopF01_Types_TanktopF01_brown.png
 10675:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_gray
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_gray.png
+  description: 4220_female_TopMiddle_TanktopF01_Types_TanktopF01_gray
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4220_female_TopMiddle_TanktopF01_Types_TanktopF01_gray.png
 10676:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_green
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_green.png
+  description: 4221_female_TopMiddle_TanktopF01_Types_TanktopF01_green
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4221_female_TopMiddle_TanktopF01_Types_TanktopF01_green.png
 10677:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_orange
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_orange.png
+  description: 4222_female_TopMiddle_TanktopF01_Types_TanktopF01_orange
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4222_female_TopMiddle_TanktopF01_Types_TanktopF01_orange.png
 10678:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p01
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p01.png
+  description: 4223_female_TopMiddle_TanktopF01_Types_TanktopF01_p01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4223_female_TopMiddle_TanktopF01_Types_TanktopF01_p01.png
 10679:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p02
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p02.png
+  description: 4224_female_TopMiddle_TanktopF01_Types_TanktopF01_p02
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4224_female_TopMiddle_TanktopF01_Types_TanktopF01_p02.png
 10680:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p03
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p03.png
+  description: 4225_female_TopMiddle_TanktopF01_Types_TanktopF01_p03
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4225_female_TopMiddle_TanktopF01_Types_TanktopF01_p03.png
 10681:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p04
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p04.png
+  description: 4226_female_TopMiddle_TanktopF01_Types_TanktopF01_p04
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4226_female_TopMiddle_TanktopF01_Types_TanktopF01_p04.png
 10682:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p05
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p05.png
+  description: 4227_female_TopMiddle_TanktopF01_Types_TanktopF01_p05
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4227_female_TopMiddle_TanktopF01_Types_TanktopF01_p05.png
 10683:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p06
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p06.png
+  description: 4228_female_TopMiddle_TanktopF01_Types_TanktopF01_p06
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4228_female_TopMiddle_TanktopF01_Types_TanktopF01_p06.png
 10684:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p07
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p07.png
+  description: 4229_female_TopMiddle_TanktopF01_Types_TanktopF01_p07
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4229_female_TopMiddle_TanktopF01_Types_TanktopF01_p07.png
 10685:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_p08
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_p08.png
+  description: 4230_female_TopMiddle_TanktopF01_Types_TanktopF01_p08
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4230_female_TopMiddle_TanktopF01_Types_TanktopF01_p08.png
 10686:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_red
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_red.png
+  description: 4231_female_TopMiddle_TanktopF01_Types_TanktopF01_red
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4231_female_TopMiddle_TanktopF01_Types_TanktopF01_red.png
 10687:
-  description: Female_TopMiddle_TanktopF01_Types_TanktopF01_white
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_TanktopF01_Types_TanktopF01_white.png
+  description: 4232_female_TopMiddle_TanktopF01_Types_TanktopF01_white
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4232_female_TopMiddle_TanktopF01_Types_TanktopF01_white.png
 10688:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black.png
+  description: 4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black.png
 10689:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackleather
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackleather.png
+  description: 4155_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackleather
+  iconFile: res:/UI/Asset/mannequin/topouter/4155_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackleather.png
 10690:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackwhite
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackwhite.png
+  description: 4156_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackwhite
+  iconFile: res:/UI/Asset/mannequin/topouter/4156_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blackwhite.png
 10691:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue.png
+  description: 4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue.png
 10692:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust.png
+  description: 4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust.png
 10693:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_gold
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_gold.png
+  description: 4157_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_gold
+  iconFile: res:/UI/Asset/mannequin/topouter/4157_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_gold.png
 10694:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_graphite
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_graphite.png
+  description: 4158_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_graphite
+  iconFile: res:/UI/Asset/mannequin/topouter/4158_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_graphite.png
 10695:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_greensatin
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_greensatin.png
+  description: 4159_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_greensatin
+  iconFile: res:/UI/Asset/mannequin/topouter/4159_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_greensatin.png
 10696:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey.png
+  description: 4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey
+  iconFile: res:/UI/Asset/mannequin/topouter/4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey.png
 10697:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblack
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblack.png
+  description: 4160_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblack
+  iconFile: res:/UI/Asset/mannequin/topouter/4160_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblack.png
 10698:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblue
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblue.png
+  description: 4161_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblue
+  iconFile: res:/UI/Asset/mannequin/topouter/4161_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matblue.png
 10699:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matolive
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matolive.png
+  description: 4162_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matolive
+  iconFile: res:/UI/Asset/mannequin/topouter/4162_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_matolive.png
 10700:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive.png
+  description: 4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive.png
 10701:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_orangesatin
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_orangesatin.png
+  description: 4163_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_orangesatin
+  iconFile: res:/UI/Asset/mannequin/topouter/4163_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_orangesatin.png
 10702:
-  description: Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_redsatin
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_redsatin.png
+  description: 4164_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_redsatin
+  iconFile: res:/UI/Asset/mannequin/topouter/4164_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_redsatin.png
 10703:
-  description: glasses_3958_1065
-  iconFile: res:/UI/Asset/mannequin/glasses_3958_1065.png
+  description: 3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01.png
 10704:
-  description: glasses_3958_464
-  iconFile: res:/UI/Asset/mannequin/glasses_3958_464.png
+  description: 3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/3958_female_Accessories_Glasses_Goggles_01_Types_goggles_01.png
 10705:
   description: glasses_3965_1039
-  iconFile: res:/UI/Asset/mannequin/glasses_3965_1039.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_3965_1039.png
 10706:
   description: glasses_3969_1045
-  iconFile: res:/UI/Asset/mannequin/glasses_3969_1045.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_3969_1045.png
 10707:
   description: glasses_4000_993
-  iconFile: res:/UI/Asset/mannequin/glasses_4000_993.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4000_993.png
 10708:
   description: glasses_4009_965
-  iconFile: res:/UI/Asset/mannequin/glasses_4009_965.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4009_965.png
 10709:
   description: glasses_4009_967
-  iconFile: res:/UI/Asset/mannequin/glasses_4009_967.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4009_967.png
 10710:
   description: glasses_4037_1039
-  iconFile: res:/UI/Asset/mannequin/glasses_4037_1039.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4037_1039.png
 10711:
   description: glasses_4037_999
-  iconFile: res:/UI/Asset/mannequin/glasses_4037_999.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4037_999.png
 10712:
   description: glasses_4038_1045
-  iconFile: res:/UI/Asset/mannequin/glasses_4038_1045.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4038_1045.png
 10713:
   description: glasses_4038_960
-  iconFile: res:/UI/Asset/mannequin/glasses_4038_960.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4038_960.png
 10714:
   description: glasses_4039_1010
-  iconFile: res:/UI/Asset/mannequin/glasses_4039_1010.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4039_1010.png
 10715:
   description: glasses_4039_993
-  iconFile: res:/UI/Asset/mannequin/glasses_4039_993.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4039_993.png
 10716:
   description: glasses_4040_971
-  iconFile: res:/UI/Asset/mannequin/glasses_4040_971.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4040_971.png
 10717:
   description: glasses_4041_965
-  iconFile: res:/UI/Asset/mannequin/glasses_4041_965.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4041_965.png
 10718:
   description: glasses_4042_971
-  iconFile: res:/UI/Asset/mannequin/glasses_4042_971.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4042_971.png
 10719:
   description: glasses_4042_975
-  iconFile: res:/UI/Asset/mannequin/glasses_4042_975.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4042_975.png
 10720:
   description: glasses_4043_1021
-  iconFile: res:/UI/Asset/mannequin/glasses_4043_1021.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4043_1021.png
 10721:
   description: glasses_4043_1059
-  iconFile: res:/UI/Asset/mannequin/glasses_4043_1059.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4043_1059.png
 10722:
   description: glasses_4046_1024
-  iconFile: res:/UI/Asset/mannequin/glasses_4046_1024.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4046_1024.png
 10723:
   description: glasses_4046_979
-  iconFile: res:/UI/Asset/mannequin/glasses_4046_979.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4046_979.png
 10724:
   description: glasses_4048_973
-  iconFile: res:/UI/Asset/mannequin/glasses_4048_973.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4048_973.png
 10725:
   description: glasses_4048_988
-  iconFile: res:/UI/Asset/mannequin/glasses_4048_988.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4048_988.png
 10726:
   description: glasses_4050_1015
-  iconFile: res:/UI/Asset/mannequin/glasses_4050_1015.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4050_1015.png
 10727:
   description: glasses_4050_1052
-  iconFile: res:/UI/Asset/mannequin/glasses_4050_1052.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4050_1052.png
 10728:
   description: glasses_4052_1004
-  iconFile: res:/UI/Asset/mannequin/glasses_4052_1004.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4052_1004.png
 10729:
   description: glasses_4052_1022
-  iconFile: res:/UI/Asset/mannequin/glasses_4052_1022.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4052_1022.png
 10730:
   description: glasses_4053_1059
-  iconFile: res:/UI/Asset/mannequin/glasses_4053_1059.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4053_1059.png
 10731:
   description: glasses_4056_1024
-  iconFile: res:/UI/Asset/mannequin/glasses_4056_1024.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4056_1024.png
 10732:
   description: glasses_4081_967
-  iconFile: res:/UI/Asset/mannequin/glasses_4081_967.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4081_967.png
 10733:
   description: glasses_4092_973
-  iconFile: res:/UI/Asset/mannequin/glasses_4092_973.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4092_973.png
 10734:
   description: glasses_4094_1052
-  iconFile: res:/UI/Asset/mannequin/glasses_4094_1052.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4094_1052.png
 10735:
   description: glasses_4095_1022
-  iconFile: res:/UI/Asset/mannequin/glasses_4095_1022.png
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/glasses_4095_1022.png
 10736:
   description: hair_4086_947
   iconFile: res:/UI/Asset/mannequin/hair_4086_947.png
@@ -4583,239 +4585,239 @@
   description: Male_Accessories_Glasses_Monocle_01_Types_MonocleM01_RightGray
   iconFile: res:/UI/Asset/mannequin/Male_Accessories_Glasses_Monocle_01_Types_MonocleM01_RightGray.png
 10750:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_black
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_black.png
+  description: 4165_male_bottomOuter_PantsMilM01_Types_PantsMilM01_black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4165_male_bottomOuter_PantsMilM01_Types_PantsMilM01_black.png
 10751:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed.png
+  description: 3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed
+  iconFile: res:/UI/Asset/mannequin/bottomouter/3992_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blackwaxed.png
 10752:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_blue
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_blue.png
+  description: 4166_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4166_male_bottomOuter_PantsMilM01_Types_PantsMilM01_blue.png
 10753:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_goldblack
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_goldblack.png
+  description: 4167_male_bottomOuter_PantsMilM01_Types_PantsMilM01_goldblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4167_male_bottomOuter_PantsMilM01_Types_PantsMilM01_goldblack.png
 10754:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_grayblack
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_grayblack.png
+  description: 4168_male_bottomOuter_PantsMilM01_Types_PantsMilM01_grayblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4168_male_bottomOuter_PantsMilM01_Types_PantsMilM01_grayblack.png
 10755:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_p_browncamo
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_p_browncamo.png
+  description: 4169_male_bottomOuter_PantsMilM01_Types_PantsMilM01_p_browncamo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4169_male_bottomOuter_PantsMilM01_Types_PantsMilM01_p_browncamo.png
 10756:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_p_greencamo
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_p_greencamo.png
+  description: 4170_male_bottomOuter_PantsMilM01_Types_PantsMilM01_p_greencamo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4170_male_bottomOuter_PantsMilM01_Types_PantsMilM01_p_greencamo.png
 10757:
-  description: Male_BottomOuter_PantsMilM01_Types_PantsMilM01_redblack
-  iconFile: res:/UI/Asset/mannequin/Male_BottomOuter_PantsMilM01_Types_PantsMilM01_redblack.png
+  description: 4171_male_bottomOuter_PantsMilM01_Types_PantsMilM01_redblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/4171_male_bottomOuter_PantsMilM01_Types_PantsMilM01_redblack.png
 10758:
   description: Male_Feet_BootsMilM01_Types_BootsMilM01_black
   iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM01_Types_BootsMilM01_black.png
 10759:
-  description: Male_Feet_BootsMilM01_Types_BootsMilM01_trueblack
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM01_Types_BootsMilM01_trueblack.png
+  description: 4172_male_Feet_BootsMilM01_Types_BootsMilM01_trueblack
+  iconFile: res:/UI/Asset/mannequin/feet/4172_male_Feet_BootsMilM01_Types_BootsMilM01_trueblack.png
 10760:
-  description: Male_Feet_BootsMilM01_Types_BootsMilM01_wornbrown
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM01_Types_BootsMilM01_wornbrown.png
+  description: 4173_male_Feet_BootsMilM01_Types_BootsMilM01_wornbrown
+  iconFile: res:/UI/Asset/mannequin/feet/4173_male_Feet_BootsMilM01_Types_BootsMilM01_wornbrown.png
 10761:
   description: Male_Feet_BootsMilM02_Types_BootsMilM02_black
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM02_Types_BootsMilM02_black.png
+  iconFile: res:/UI/Asset/mannequin/feet/Male_Feet_BootsMilM02_Types_BootsMilM02_black.png
 10762:
-  description: Male_Feet_BootsMilM02_Types_BootsMilM02_brown
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM02_Types_BootsMilM02_brown.png
+  description: 4174_male_Feet_BootsMilM02_Types_BootsMilM02_brown
+  iconFile: res:/UI/Asset/mannequin/feet/4174_male_Feet_BootsMilM02_Types_BootsMilM02_brown.png
 10763:
-  description: Male_Feet_BootsMilM02_Types_BootsMilM02_gray
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM02_Types_BootsMilM02_gray.png
+  description: 4175_male_Feet_BootsMilM02_Types_BootsMilM02_gray
+  iconFile: res:/UI/Asset/mannequin/feet/4175_male_Feet_BootsMilM02_Types_BootsMilM02_gray.png
 10764:
-  description: Male_Feet_BootsMilM02_Types_BootsMilM02_tan
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM02_Types_BootsMilM02_tan.png
+  description: 4176_male_Feet_BootsMilM02_Types_BootsMilM02_tan
+  iconFile: res:/UI/Asset/mannequin/feet/4176_male_Feet_BootsMilM02_Types_BootsMilM02_tan.png
 10765:
   description: Male_Feet_BootsMilM03_Types_BootsMilM03_black
   iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM03_Types_BootsMilM03_black.png
 10766:
-  description: Male_Feet_BootsMilM03_Types_BootsMilM03_brown
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM03_Types_BootsMilM03_brown.png
+  description: 4177_male_Feet_BootsMilM03_Types_BootsMilM03_brown
+  iconFile: res:/UI/Asset/mannequin/feet/4177_male_Feet_BootsMilM03_Types_BootsMilM03_brown.png
 10767:
-  description: Male_Feet_BootsMilM03_Types_BootsMilM03_gray
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM03_Types_BootsMilM03_gray.png
+  description: 4178_male_Feet_BootsMilM03_Types_BootsMilM03_gray
+  iconFile: res:/UI/Asset/mannequin/feet/4178_male_Feet_BootsMilM03_Types_BootsMilM03_gray.png
 10768:
-  description: Male_Feet_BootsMilM03_Types_BootsMilM03_tan
-  iconFile: res:/UI/Asset/mannequin/Male_Feet_BootsMilM03_Types_BootsMilM03_tan.png
+  description: 4179_male_Feet_BootsMilM03_Types_BootsMilM03_tan
+  iconFile: res:/UI/Asset/mannequin/feet/4179_male_Feet_BootsMilM03_Types_BootsMilM03_tan.png
 10769:
   description: Male_hair_Hair_Stubble_01_Types_Hair_Stubble_01
   iconFile: res:/UI/Asset/mannequin/Male_hair_Hair_Stubble_01_Types_Hair_Stubble_01.png
 10770:
   description: Male_Outer_JacketMilM01_Types_JacketMilM01_blackyellow
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM01_Types_JacketMilM01_blackyellow.png
+  iconFile: res:/UI/Asset/mannequin/outer/Male_Outer_JacketMilM01_Types_JacketMilM01_blackyellow.png
 10771:
-  description: Male_Outer_JacketMilM01_Types_JacketMilM01_green
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM01_Types_JacketMilM01_green.png
+  description: 4244_male_outer_JacketMilM01_Types_JacketMilM01_green
+  iconFile: res:/UI/Asset/mannequin/outer/4244_male_outer_JacketMilM01_Types_JacketMilM01_green.png
 10772:
-  description: Male_Outer_JacketMilM01_Types_JacketMilM01_silver
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM01_Types_JacketMilM01_silver.png
+  description: 4245_male_outer_JacketMilM01_Types_JacketMilM01_silver
+  iconFile: res:/UI/Asset/mannequin/outer/4245_male_outer_JacketMilM01_Types_JacketMilM01_silver.png
 10773:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_black
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_black.png
+  description: 4233_male_outer_JacketMilM02_Types_JacketMilM02_black
+  iconFile: res:/UI/Asset/mannequin/outer/4233_male_outer_JacketMilM02_Types_JacketMilM02_black.png
 10774:
   description: Male_Outer_JacketMilM02_Types_JacketMilM02_blackgray
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_blackgray.png
+  iconFile: res:/UI/Asset/mannequin/outer/Male_Outer_JacketMilM02_Types_JacketMilM02_blackgray.png
 10775:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_greengold
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_greengold.png
+  description: 4234_male_outer_JacketMilM02_Types_JacketMilM02_greengold
+  iconFile: res:/UI/Asset/mannequin/outer/4234_male_outer_JacketMilM02_Types_JacketMilM02_greengold.png
 10776:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_matgraphite
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_matgraphite.png
+  description: 4235_male_outer_JacketMilM02_Types_JacketMilM02_matgraphite
+  iconFile: res:/UI/Asset/mannequin/outer/4235_male_outer_JacketMilM02_Types_JacketMilM02_matgraphite.png
 10777:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_matgray
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_matgray.png
+  description: 4236_male_outer_JacketMilM02_Types_JacketMilM02_matgray
+  iconFile: res:/UI/Asset/mannequin/outer/4236_male_outer_JacketMilM02_Types_JacketMilM02_matgray.png
 10778:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_matgreen
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_matgreen.png
+  description: 4237_male_outer_JacketMilM02_Types_JacketMilM02_matgreen
+  iconFile: res:/UI/Asset/mannequin/outer/4237_male_outer_JacketMilM02_Types_JacketMilM02_matgreen.png
 10779:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_redgold
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_redgold.png
+  description: 4238_male_outer_JacketMilM02_Types_JacketMilM02_redgold
+  iconFile: res:/UI/Asset/mannequin/outer/4238_male_outer_JacketMilM02_Types_JacketMilM02_redgold.png
 10780:
-  description: Male_Outer_JacketMilM02_Types_JacketMilM02_silver
-  iconFile: res:/UI/Asset/mannequin/Male_Outer_JacketMilM02_Types_JacketMilM02_silver.png
+  description: 4239_male_outer_JacketMilM02_Types_JacketMilM02_silver
+  iconFile: res:/UI/Asset/mannequin/outer/4239_male_outer_JacketMilM02_Types_JacketMilM02_silver.png
 10781:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_black
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_black.png
+  description: 4180_male_TopMiddle_ShirtGM01_Types_ShirtGM01_black
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4180_male_TopMiddle_ShirtGM01_Types_ShirtGM01_black.png
 10782:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_blue2
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_blue2.png
+  description: 4181_male_TopMiddle_ShirtGM01_Types_ShirtGM01_blue2
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4181_male_TopMiddle_ShirtGM01_Types_ShirtGM01_blue2.png
 10783:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_brown
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_brown.png
+  description: 4182_male_TopMiddle_ShirtGM01_Types_ShirtGM01_brown
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4182_male_TopMiddle_ShirtGM01_Types_ShirtGM01_brown.png
 10784:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_darkblue
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_darkblue.png
+  description: 4183_male_TopMiddle_ShirtGM01_Types_ShirtGM01_darkblue
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4183_male_TopMiddle_ShirtGM01_Types_ShirtGM01_darkblue.png
 10785:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_darkred
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_darkred.png
+  description: 4184_male_TopMiddle_ShirtGM01_Types_ShirtGM01_darkred
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4184_male_TopMiddle_ShirtGM01_Types_ShirtGM01_darkred.png
 10786:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_khaki
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_khaki.png
+  description: 4185_male_TopMiddle_ShirtGM01_Types_ShirtGM01_khaki
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4185_male_TopMiddle_ShirtGM01_Types_ShirtGM01_khaki.png
 10787:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_lightgray
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_lightgray.png
+  description: 4186_male_TopMiddle_ShirtGM01_Types_ShirtGM01_lightgray
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4186_male_TopMiddle_ShirtGM01_Types_ShirtGM01_lightgray.png
 10788:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_olive
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_olive.png
+  description: 4187_male_TopMiddle_ShirtGM01_Types_ShirtGM01_olive
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4187_male_TopMiddle_ShirtGM01_Types_ShirtGM01_olive.png
 10789:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_p_darkcaldari
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_p_darkcaldari.png
+  description: 4188_male_TopMiddle_ShirtGM01_Types_ShirtGM01_p_darkcaldari
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4188_male_TopMiddle_ShirtGM01_Types_ShirtGM01_p_darkcaldari.png
 10790:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_p_desertcamo
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_p_desertcamo.png
+  description: 4189_male_TopMiddle_ShirtGM01_Types_ShirtGM01_p_desertcamo
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4189_male_TopMiddle_ShirtGM01_Types_ShirtGM01_p_desertcamo.png
 10791:
-  description: Male_topMiddle_ShirtGM01_Types_ShirtGM01_white
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtGM01_Types_ShirtGM01_white.png
+  description: 4190_male_TopMiddle_ShirtGM01_Types_ShirtGM01_white
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4190_male_TopMiddle_ShirtGM01_Types_ShirtGM01_white.png
 10792:
   description: Male_topMiddle_ShirtQM01_Types_shirtqm01
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_ShirtQM01_Types_shirtqm01.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/Male_topMiddle_ShirtQM01_Types_shirtqm01.png
 10793:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_black
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_black.png
+  description: 4191_male_TopMiddle_TanktopM01_Types_TanktopM01_black
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4191_male_TopMiddle_TanktopM01_Types_TanktopM01_black.png
 10794:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_blue
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_blue.png
+  description: 4192_male_TopMiddle_TanktopM01_Types_TanktopM01_blue
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4192_male_TopMiddle_TanktopM01_Types_TanktopM01_blue.png
 10795:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_brown
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_brown.png
+  description: 4193_male_TopMiddle_TanktopM01_Types_TanktopM01_brown
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4193_male_TopMiddle_TanktopM01_Types_TanktopM01_brown.png
 10796:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_gray
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_gray.png
+  description: 4194_male_TopMiddle_TanktopM01_Types_TanktopM01_gray
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4194_male_TopMiddle_TanktopM01_Types_TanktopM01_gray.png
 10797:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_green
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_green.png
+  description: 4195_male_TopMiddle_TanktopM01_Types_TanktopM01_green
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4195_male_TopMiddle_TanktopM01_Types_TanktopM01_green.png
 10798:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_p01
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_p01.png
+  description: 4196_male_TopMiddle_TanktopM01_Types_TanktopM01_p01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4196_male_TopMiddle_TanktopM01_Types_TanktopM01_p01.png
 10799:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_p02
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_p02.png
+  description: 4197_male_TopMiddle_TanktopM01_Types_TanktopM01_p02
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4197_male_TopMiddle_TanktopM01_Types_TanktopM01_p02.png
 10800:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_p03
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_p03.png
+  description: 4198_male_TopMiddle_TanktopM01_Types_TanktopM01_p03
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4198_male_TopMiddle_TanktopM01_Types_TanktopM01_p03.png
 10801:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_p04
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_p04.png
+  description: 4199_male_TopMiddle_TanktopM01_Types_TanktopM01_p04
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4199_male_TopMiddle_TanktopM01_Types_TanktopM01_p04.png
 10802:
-  description: Male_topMiddle_TanktopM01_Types_TanktopM01_white
-  iconFile: res:/UI/Asset/mannequin/Male_topMiddle_TanktopM01_Types_TanktopM01_white.png
+  description: 4200_male_TopMiddle_TanktopM01_Types_TanktopM01_white
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4200_male_TopMiddle_TanktopM01_Types_TanktopM01_white.png
 10803:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_black
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_black.png
+  description: 4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black.png
 10804:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_blue
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_blue.png
+  description: 4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue.png
 10805:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_dust
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_dust.png
+  description: 4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust.png
 10806:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_goldleather
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_goldleather.png
+  description: 4240_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_goldleather
+  iconFile: res:/UI/Asset/mannequin/topouter/4240_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_goldleather.png
 10807:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_gray
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_gray.png
+  description: 4241_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_gray
+  iconFile: res:/UI/Asset/mannequin/topouter/4241_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_gray.png
 10808:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_ishukone
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_ishukone.png
+  description: 4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone
+  iconFile: res:/UI/Asset/mannequin/topouter/4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone.png
 10809:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_olive
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_olive.png
+  description: 4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive.png
 10810:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_redblackleather
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_redblackleather.png
+  description: 4242_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_redblackleather
+  iconFile: res:/UI/Asset/mannequin/topouter/4242_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_redblackleather.png
 10811:
-  description: Male_topOuter_ShirtMilM01_Types_ShirtMilM01_whiteblue
-  iconFile: res:/UI/Asset/mannequin/Male_topOuter_ShirtMilM01_Types_ShirtMilM01_whiteblue.png
+  description: 4243_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_whiteblue
+  iconFile: res:/UI/Asset/mannequin/topouter/4243_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_whiteblue.png
 10812:
-  description: outer_3975_1075
-  iconFile: res:/UI/Asset/mannequin/outer_3975_1075.png
+  description: 3975_female_Outer_JacketMilF02_Types_JacketMilF02_blue
+  iconFile: res:/UI/Asset/mannequin/outer/3975_female_Outer_JacketMilF02_Types_JacketMilF02_blue.png
 10813:
-  description: outer_4054_1011
-  iconFile: res:/UI/Asset/mannequin/outer_4054_1011.png
+  description: 4054_female_Outer_JacketMilF01_Types_JacketMilF01_blackgray
+  iconFile: res:/UI/Asset/mannequin/outer/4054_female_Outer_JacketMilF01_Types_JacketMilF01_blackgray.png
 10814:
-  description: outer_4097_1012
-  iconFile: res:/UI/Asset/mannequin/outer_4097_1012.png
+  description: 4097_male_outer_JacketMilM01_Types_JacketMilM01_blackyellow
+  iconFile: res:/UI/Asset/mannequin/outer/4097_male_outer_JacketMilM01_Types_JacketMilM01_blackyellow.png
 10815:
-  description: outer_4098_957
-  iconFile: res:/UI/Asset/mannequin/outer_4098_957.png
+  description: 4098_male_outer_JacketMilM02_Types_JacketMilM02_blackgray
+  iconFile: res:/UI/Asset/mannequin/outer/4098_male_outer_JacketMilM02_Types_JacketMilM02_blackgray.png
 10816:
-  description: topmiddle_4066_953
-  iconFile: res:/UI/Asset/mannequin/topmiddle_4066_953.png
+  description: 4066_female_TopMiddle_ShirtQF01_Types_shirtqf01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4066_female_TopMiddle_ShirtQF01_Types_shirtqf01.png
 10817:
-  description: topmiddle_4067_946
-  iconFile: res:/UI/Asset/mannequin/topmiddle_4067_946.png
+  description: 4067_male_TopMiddle_ShirtQM01_Types_shirtqm01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4067_male_TopMiddle_ShirtQM01_Types_shirtqm01.png
 10818:
-  description: topouter_4057_1049
-  iconFile: res:/UI/Asset/mannequin/topouter_4057_1049.png
+  description: 4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4057_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_black.png
 10819:
-  description: topouter_4058_1000
-  iconFile: res:/UI/Asset/mannequin/topouter_4058_1000.png
+  description: 4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4058_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_blue.png
 10820:
-  description: topouter_4059_994
-  iconFile: res:/UI/Asset/mannequin/topouter_4059_994.png
+  description: 4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4059_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_dust.png
 10821:
-  description: topouter_4060_1035
-  iconFile: res:/UI/Asset/mannequin/topouter_4060_1035.png
+  description: 4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4060_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_olive.png
 10822:
-  description: topouter_4061_1017
-  iconFile: res:/UI/Asset/mannequin/topouter_4061_1017.png
+  description: 4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black
+  iconFile: res:/UI/Asset/mannequin/topouter/4061_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_black.png
 10823:
-  description: topouter_4062_976
-  iconFile: res:/UI/Asset/mannequin/topouter_4062_976.png
+  description: 4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue
+  iconFile: res:/UI/Asset/mannequin/topouter/4062_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_blue.png
 10824:
-  description: topouter_4063_1047
-  iconFile: res:/UI/Asset/mannequin/topouter_4063_1047.png
+  description: 4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust
+  iconFile: res:/UI/Asset/mannequin/topouter/4063_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_dust.png
 10825:
-  description: topouter_4064_1056
-  iconFile: res:/UI/Asset/mannequin/topouter_4064_1056.png
+  description: 4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive
+  iconFile: res:/UI/Asset/mannequin/topouter/4064_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_olive.png
 10826:
-  description: topouter_4065_1028
-  iconFile: res:/UI/Asset/mannequin/topouter_4065_1028.png
+  description: 4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey
+  iconFile: res:/UI/Asset/mannequin/topouter/4065_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_lightgrey.png
 10827:
-  description: topouter_4068_974
-  iconFile: res:/UI/Asset/mannequin/topouter_4068_974.png
+  description: 4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone
+  iconFile: res:/UI/Asset/mannequin/topouter/4068_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_ishukone.png
 10828:
   description: apparel_accessories_glasses_3958_1065
   iconFile: 'res:/UI/Texture/market/apparel_accessories_glasses_3958_1065.png '
@@ -4841,20 +4843,20 @@
   description: Minmatar Fuel Block
   iconFile: res:/UI/Texture/Icons/ComprFuel_Minmatar.png
 10838:
-  description: Female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGold
-  iconFile: res:/UI/Asset/mannequin/Female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGold.png
+  description: 4009_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGold
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/4009_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightGold.png
 10840:
-  description: Icon for the a shirt
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtQF01_Types_shirtqf02.png
+  description: 4366_female_TopMiddle_ShirtQF01_Types_shirtqf02
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4366_female_TopMiddle_ShirtQF01_Types_shirtqf02.png
 10841:
-  description: an icon for a shirt
-  iconFile: res:/UI/Asset/mannequin/Female_TopOuter_ShirtMilF01_Types_ShirtMilF01_whiteblacknexon.png
+  description: 4368_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_whiteblacknexon
+  iconFile: res:/UI/Asset/mannequin/topouter/4368_female_TopOuter_ShirtMilF01_Types_ShirtMilF01_whiteblacknexon.png
 10842:
-  description: an icon for a male shirt
-  iconFile: res:/UI/Asset/mannequin/Male_TopMiddle_ShirtQM01_Types_shirtqm02.png
+  description: 4365_male_TopMiddle_ShirtQM01_Types_shirtqm02
+  iconFile: res:/UI/Asset/mannequin/topmiddle/4365_male_TopMiddle_ShirtQM01_Types_shirtqm02.png
 10843:
-  description: an icon for a male shirt
-  iconFile: res:/UI/Asset/mannequin/Male_TopOuter_ShirtMilM01_Types_ShirtMilM01_whiteblacknexon.png
+  description: 4367_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_whiteblacknexon
+  iconFile: res:/UI/Asset/mannequin/topouter/4367_male_TopOuter_ShirtMilM01_Types_ShirtMilM01_whiteblacknexon.png
 10847:
   description: Icon used for dust infantry gear on the market
   iconFile: res:/UI/Texture/Icons/infantry_gear.png
@@ -5212,11 +5214,11 @@
 20976:
   iconFile: res:/UI/Texture/Icons/DudeYourChin_64px_Icon.jpg
 20977:
-  description: feet_33064_14733 Boots.ini
-  iconFile: res:/UI/Asset/mannequin/feet_33064_14733.png
+  description: Boots.ini - 33064_female_Feet_BootsMilF02_Types_BootsMilF02_bootini
+  iconFile: res:/UI/Asset/mannequin/feet/33064_female_Feet_BootsMilF02_Types_BootsMilF02_bootini.png
 20979:
-  description: Female_TopMiddle_ShirtQF01_Types_shirtredstarf01
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtQF01_Types_shirtredstarf01.png
+  description: 33063_female_TopMiddle_ShirtQF01_Types_shirtredstarf01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33063_female_TopMiddle_ShirtQF01_Types_shirtredstarf01.png
 20980:
   description: Corp Logo - Algintal Core
   iconFile: res:/UI/Texture/Corps/algintal_core.png
@@ -5224,8 +5226,8 @@
   description: Corp Logo - Amarr Templars
   iconFile: res:/UI/Texture/Corps/amarr_templars.png
 20982:
-  description: Male_TopMiddle_ShirtQM01_Types_shirtredstarm01
-  iconFile: res:/UI/Asset/mannequin/Male_TopMiddle_ShirtQM01_Types_shirtredstarm01.png
+  description: 33062_male_TopMiddle_ShirtQM01_Types_shirtredstarm01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33062_male_TopMiddle_ShirtQM01_Types_shirtredstarm01.png
 20984:
   description: Corp Logo - Arkombine
   iconFile: res:/UI/Texture/Corps/arkombine.png
@@ -5286,14 +5288,14 @@
   description: Male_Accessories_Glasses_Monocle_M_T02_Types_Monocle_M_T02_black_right.png
   iconFile: res:/UI/Asset/mannequin/Male_Accessories_Glasses_Monocle_M_T02_Types_Monocle_M_T02_black_right.png
 21012:
-  description: Female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_right
-  iconFile: res:/UI/Asset/mannequin/Female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_right.png
+  description: 32853_female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_right
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/32853_female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_right.png
 21013:
-  description: Male_TopMiddle_ShirtQM01_Types_shirtqm03
-  iconFile: res:/UI/Asset/mannequin/Male_TopMiddle_ShirtQM01_Types_shirtqm03.png
+  description: 33107_male_TopMiddle_ShirtQM01_Types_shirtqm03
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33107_male_TopMiddle_ShirtQM01_Types_shirtqm03.png
 21014:
-  description: Female_TopMiddle_ShirtQF01_Types_shirtqf03
-  iconFile: res:/UI/Asset/mannequin/Female_TopMiddle_ShirtQF01_Types_shirtqf03.png
+  description: 33109_female_TopMiddle_ShirtQF01_Types_shirtqf03
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33109_female_TopMiddle_ShirtQF01_Types_shirtqf03.png
 21021:
   iconFile: res:/UI/Texture/Icons/110_128_01.png
 21022:
@@ -5328,29 +5330,29 @@
   description: Genolution Auroral Icon
   iconFile: res:/UI/Texture/Icons/107_64_4.png
 21048:
-  description: res:/UI/Asset/mannequin/tattoo_armleft_sleeve04.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armleft_sleeve04.png
+  description: 33377_male_tattoo_armleft_sleeve04__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33377_male_tattoo_armleft_sleeve04__.png
 21050:
-  description: res:/UI/Asset/mannequin/tattoo_armleft_sleeve05.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armleft_sleeve05.png
+  description: 33378_male_tattoo_armleft_sleeve05__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33378_male_tattoo_armleft_sleeve05__.png
 21051:
-  description: res:/UI/Asset/mannequin/tattoo_armleft_sleeve14.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armleft_sleeve14.png
+  description: 33379_male_tattoo_armleft_sleeve14__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33379_male_tattoo_armleft_sleeve14__.png
 21052:
-  description: res:/UI/Asset/mannequin/tattoo_armleft_sleeve08.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armleft_sleeve08.png
+  description: 33380_male_tattoo_armleft_sleeve08__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33380_male_tattoo_armleft_sleeve08__.png
 21053:
-  description: res:/UI/Asset/mannequin/tattoo_armright_sleeve04.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armright_sleeve04.png
+  description: 33381_male_tattoo_armright_sleeve04__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/33381_male_tattoo_armright_sleeve04__.png
 21054:
-  description: res:/UI/Asset/mannequin/tattoo_armright_sleeve05.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armright_sleeve05.png
+  description: 33382_male_tattoo_armright_sleeve05__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/33382_male_tattoo_armright_sleeve05__.png
 21055:
-  description: res:/UI/Asset/mannequin/tattoo_armright_sleeve14.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armright_sleeve14.png
+  description: 33383_male_tattoo_armright_sleeve14__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/33383_male_tattoo_armright_sleeve14__.png
 21056:
-  description: res:/UI/Asset/mannequin/tattoo_armright_sleeve08.png
-  iconFile: res:/UI/Asset/mannequin/tattoo_armright_sleeve08.png
+  description: 33384_male_tattoo_armright_sleeve08__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/33384_male_tattoo_armright_sleeve08__.png
 21057:
   iconFile: res:/UI/Texture/Icons/113_64_1.png
 21058:
@@ -5378,3 +5380,764 @@
 21066:
   description: Assassination Contract
   iconFile: '114_2'
+21070:
+  description: 33487_female_TopMiddle_ShirtQF01_Types_lvf01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33487_female_TopMiddle_ShirtQF01_Types_lvf01.png
+21071:
+  description: 33488_male_TopMiddle_ShirtQM01_Types_lvm01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33488_male_TopMiddle_ShirtQM01_Types_lvm01.png
+21074:
+  description: Rapid Heavy Missile Launcher
+  iconFile: res:/ui/texture/icons/109_64_1.png
+21075:
+  description: Marauder Bastion Module
+  iconFile: res:/ui/texture/icons/109_64_2.png
+21078:
+  description: 33551_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_White
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/33551_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_White.png
+21080:
+  description: 33549_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_WhiteGray
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/33549_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_WhiteGray.png
+21081:
+  description: 33550_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_WhiteGray
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/33550_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_WhiteGray.png
+21082:
+  description: 33552_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_White
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/33552_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_White.png
+21084:
+  description: Fedo
+  iconFile: res:/UI/Texture/Icons/icons111_07.png
+21085:
+  description: Villard Wheel
+  iconFile: res:/UI/Texture/Icons/icons111_08.png
+21086:
+  description: Shattered Villard Wheel
+  iconFile: res:/UI/Texture/Icons/icons111_09.png
+21089:
+  description: 33579_female_TopMiddle_ShirtQF01_Types_soerff01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33579_female_TopMiddle_ShirtQF01_Types_soerff01.png
+21090:
+  description: 33578_male_TopMiddle_ShirtQM01_Types_soerfm01
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33578_male_TopMiddle_ShirtQM01_Types_soerfm01.png
+21092:
+  description: Corp Logo - State Peacekeepers
+  iconFile: res:/UI/Texture/Corps/state_peacekeepers.png
+21093:
+  description: Corp Logo - Federal Marines
+  iconFile: res:/UI/Texture/Corps/federal_marines.png
+21094:
+  description: Corp Logo - Republic Command
+  iconFile: res:/UI/Texture/Corps/republic_command.png
+21095:
+  iconFile: '107_14'
+21096:
+  iconFile: '107_13'
+21097:
+  iconFile: '107_16'
+21098:
+  iconFile: '107_15'
+21100:
+  description: 33744_female_bottomOuter_PantsALF_01_Types_PantsALF_01_blackleather
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33744_female_bottomOuter_PantsALF_01_Types_PantsALF_01_blackleather.png
+21101:
+  description: 33745_female_bottomOuter_PantsALF_01_Types_PantsALF_01_blackmatte.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33745_female_bottomOuter_PantsALF_01_Types_PantsALF_01_blackmatte.png
+21102:
+  description: 33746_female_bottomOuter_PantsALF_01_Types_PantsALF_01_brownpattern.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33746_female_bottomOuter_PantsALF_01_Types_PantsALF_01_brownpattern.png
+21103:
+  description: 33747_female_bottomOuter_PantsALF_01_Types_PantsALF_01_cream.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33747_female_bottomOuter_PantsALF_01_Types_PantsALF_01_cream.png
+21104:
+  description: 33748_female_bottomOuter_PantsALF_01_Types_PantsALF_01_green.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33748_female_bottomOuter_PantsALF_01_Types_PantsALF_01_green.png
+21105:
+  description: 33749_female_bottomOuter_PantsALF_01_Types_PantsALF_01_gunpattern.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33749_female_bottomOuter_PantsALF_01_Types_PantsALF_01_gunpattern.png
+21106:
+  description: 33750_female_bottomOuter_PantsALF_01_Types_PantsALF_01_gunshiny.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33750_female_bottomOuter_PantsALF_01_Types_PantsALF_01_gunshiny.png
+21107:
+  description: 33751_female_bottomOuter_PantsALF_01_Types_PantsALF_01_navy.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33751_female_bottomOuter_PantsALF_01_Types_PantsALF_01_navy.png
+21108:
+  description: 33752_female_bottomOuter_PantsALF_01_Types_PantsALF_01_red.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33752_female_bottomOuter_PantsALF_01_Types_PantsALF_01_red.png
+21109:
+  description: 33753_female_bottomOuter_PantsALF_01_Types_PantsALF_01_redleather.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33753_female_bottomOuter_PantsALF_01_Types_PantsALF_01_redleather.png
+21110:
+  description: 33754_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33754_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_black.png
+21111:
+  description: 33755_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_blue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33755_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_blue.png
+21112:
+  description: 33756_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_camo
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33756_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_camo.png
+21113:
+  description: 33757_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_greyflat.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33757_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_greyflat.png
+21114:
+  description: 33758_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_orangegloss.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33758_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_orangegloss.png
+21115:
+  description: 33759_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_red
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33759_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_red.png
+21116:
+  description: 33760_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_reddark.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33760_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_reddark.png
+21117:
+  description: 33761_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_yellowgloss.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33761_female_bottomOuter_PantsSLF_01_Types_PantsSLF_01_yellowgloss.png
+21118:
+  description: 33714_female_Feet_BootsALF_01_Types_BootsALF_01_blackgold.png
+  iconFile: res:/UI/Asset/mannequin/feet/33714_female_Feet_BootsALF_01_Types_BootsALF_01_blackgold.png
+21119:
+  description: 33716_female_Feet_BootsALF_01_Types_BootsALF_01_brown.png
+  iconFile: res:/UI/Asset/mannequin/feet/33716_female_Feet_BootsALF_01_Types_BootsALF_01_brown.png
+21120:
+  description: 33717_female_Feet_BootsALF_01_Types_BootsALF_01_cream.png
+  iconFile: res:/UI/Asset/mannequin/feet/33717_female_Feet_BootsALF_01_Types_BootsALF_01_cream.png
+21121:
+  description: 33718_female_Feet_BootsALF_01_Types_BootsALF_01_navy.png
+  iconFile: res:/UI/Asset/mannequin/feet/33718_female_Feet_BootsALF_01_Types_BootsALF_01_navy.png
+21122:
+  description: 33719_female_Feet_BootsALF_01_Types_BootsALF_01_red.png
+  iconFile: res:/UI/Asset/mannequin/feet/33719_female_Feet_BootsALF_01_Types_BootsALF_01_red.png
+21123:
+  description: 33720_female_Feet_BootsSLF_01_Types_BootsSLF_01_black.png
+  iconFile: res:/UI/Asset/mannequin/feet/33720_female_Feet_BootsSLF_01_Types_BootsSLF_01_black.png
+21124:
+  description: 33721_female_Feet_BootsSLF_01_Types_BootsSLF_01_blue.png
+  iconFile: res:/UI/Asset/mannequin/feet/33721_female_Feet_BootsSLF_01_Types_BootsSLF_01_blue.png
+21125:
+  description: 33722_female_Feet_BootsSLF_01_Types_BootsSLF_01_brown.png
+  iconFile: res:/UI/Asset/mannequin/feet/33722_female_Feet_BootsSLF_01_Types_BootsSLF_01_brown.png
+21126:
+  description: 33723_female_Feet_BootsSLF_01_Types_BootsSLF_01_felt.png
+  iconFile: res:/UI/Asset/mannequin/feet/33723_female_Feet_BootsSLF_01_Types_BootsSLF_01_felt.png
+21127:
+  description: 33724_female_Feet_BootsSLF_01_Types_BootsSLF_01_mouse.png
+  iconFile: res:/UI/Asset/mannequin/feet/33724_female_Feet_BootsSLF_01_Types_BootsSLF_01_mouse.png
+21128:
+  description: 33725_female_Feet_BootsSLF_01_Types_BootsSLF_01_red.png
+  iconFile: res:/UI/Asset/mannequin/feet/33725_female_Feet_BootsSLF_01_Types_BootsSLF_01_red.png
+21129:
+  description: 33726_female_Outer_JacketALF_01_Types_JacketALF_01_blackgold
+  iconFile: res:/UI/Asset/mannequin/outer/33726_female_Outer_JacketALF_01_Types_JacketALF_01_blackgold.png
+21130:
+  description: 33728_female_Outer_JacketALF_01_Types_JacketALF_01_bluesilver.png
+  iconFile: res:/UI/Asset/mannequin/outer/33728_female_Outer_JacketALF_01_Types_JacketALF_01_bluesilver.png
+21131:
+  description: 33727_female_Outer_JacketALF_01_Types_JacketALF_01_brownpattern.png
+  iconFile: res:/UI/Asset/mannequin/outer/33727_female_Outer_JacketALF_01_Types_JacketALF_01_brownpattern.png
+21132:
+  description: 33715_female_Outer_JacketALF_01_Types_JacketALF_01_creamgold.png
+  iconFile: res:/UI/Asset/mannequin/outer/33715_female_Outer_JacketALF_01_Types_JacketALF_01_creamgold.png
+21133:
+  description: 33729_female_Outer_JacketALF_01_Types_JacketALF_01_darkgreen.png
+  iconFile: res:/UI/Asset/mannequin/outer/33729_female_Outer_JacketALF_01_Types_JacketALF_01_darkgreen.png
+21134:
+  description: 33730_female_Outer_JacketALF_01_Types_JacketALF_01_darkredgun.png
+  iconFile: res:/UI/Asset/mannequin/outer/33730_female_Outer_JacketALF_01_Types_JacketALF_01_darkredgun.png
+21135:
+  description: 33731_female_Outer_JacketALF_01_Types_JacketALF_01_greengold.png
+  iconFile: res:/UI/Asset/mannequin/outer/33731_female_Outer_JacketALF_01_Types_JacketALF_01_greengold.png
+21136:
+  description: 33732_female_Outer_JacketALF_01_Types_JacketALF_01_redsilver.png
+  iconFile: res:/UI/Asset/mannequin/outer/33732_female_Outer_JacketALF_01_Types_JacketALF_01_redsilver.png
+21137:
+  description: 33733_female_Outer_JacketSLF_01_Types_JacketSLF_01_black.png
+  iconFile: res:/UI/Asset/mannequin/outer/33733_female_Outer_JacketSLF_01_Types_JacketSLF_01_black.png
+21138:
+  description: 33734_female_Outer_JacketSLF_01_Types_JacketSLF_01_blackv1.png
+  iconFile: res:/UI/Asset/mannequin/outer/33734_female_Outer_JacketSLF_01_Types_JacketSLF_01_blackv1.png
+21139:
+  description: 33735_female_Outer_JacketSLF_01_Types_JacketSLF_01_blue.png
+  iconFile: res:/UI/Asset/mannequin/outer/33735_female_Outer_JacketSLF_01_Types_JacketSLF_01_blue.png
+21140:
+  description: 33736_female_Outer_JacketSLF_01_Types_JacketSLF_01_coppstars.png
+  iconFile: res:/UI/Asset/mannequin/outer/33736_female_Outer_JacketSLF_01_Types_JacketSLF_01_coppstars.png
+21141:
+  description: 33738_female_Outer_JacketSLF_01_Types_JacketSLF_01_copv1.png
+  iconFile: res:/UI/Asset/mannequin/outer/33738_female_Outer_JacketSLF_01_Types_JacketSLF_01_copv1.png
+21142:
+  description: 33737_female_Outer_JacketSLF_01_Types_JacketSLF_01_darkgrey.png
+  iconFile: res:/UI/Asset/mannequin/outer/33737_female_Outer_JacketSLF_01_Types_JacketSLF_01_darkgrey.png
+21143:
+  description: 33739_female_Outer_JacketSLF_01_Types_JacketSLF_01_green.png
+  iconFile: res:/UI/Asset/mannequin/outer/33739_female_Outer_JacketSLF_01_Types_JacketSLF_01_green.png
+21144:
+  description: 33740_female_Outer_JacketSLF_01_Types_JacketSLF_01_movcircles.png
+  iconFile: res:/UI/Asset/mannequin/outer/33740_female_Outer_JacketSLF_01_Types_JacketSLF_01_movcircles.png
+21145:
+  description: 33741_female_Outer_JacketSLF_01_Types_JacketSLF_01_redv1.png
+  iconFile: res:/UI/Asset/mannequin/outer/33741_female_Outer_JacketSLF_01_Types_JacketSLF_01_redv1.png
+21146:
+  description: 33742_female_Outer_JacketSLF_01_Types_JacketSLF_01_white.png
+  iconFile: res:/UI/Asset/mannequin/outer/33742_female_Outer_JacketSLF_01_Types_JacketSLF_01_white.png
+21147:
+  description: 33743_female_Outer_JacketSLF_01_Types_JacketSLF_01_whitegreen.png
+  iconFile: res:/UI/Asset/mannequin/outer/33743_female_Outer_JacketSLF_01_Types_JacketSLF_01_whitegreen.png
+21148:
+  description: 33767_female_TopMiddle_ShirtQF01_Types_neof2014A.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33767_female_TopMiddle_ShirtQF01_Types_neof2014A.png
+21149:
+  description: 33768_female_TopMiddle_ShirtQF01_Types_neof2014B.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33768_female_TopMiddle_ShirtQF01_Types_neof2014B.png
+21150:
+  description: 33790_male_bottomOuter_PantsALM01_Types_PantsALM01_BlackSilver.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33790_male_bottomOuter_PantsALM01_Types_PantsALM01_BlackSilver.png
+21152:
+  description: 33789_male_bottomOuter_PantsALM01_Types_PantsALM01_BlueShiny.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33789_male_bottomOuter_PantsALM01_Types_PantsALM01_BlueShiny.png
+21153:
+  description: 33788_male_bottomOuter_PantsALM01_Types_PantsALM01_DarkredBlackGold.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33788_male_bottomOuter_PantsALM01_Types_PantsALM01_DarkredBlackGold.png
+21154:
+  description: 33787_male_bottomOuter_PantsALM01_Types_PantsALM01_Royal
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33787_male_bottomOuter_PantsALM01_Types_PantsALM01_Royal.png
+21155:
+  description: 33786_male_bottomOuter_PantsALM01_Types_PantsALM01_WhiteBlackGold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33786_male_bottomOuter_PantsALM01_Types_PantsALM01_WhiteBlackGold.png
+21156:
+  description: 33785_male_bottomOuter_PantsCLM01_Types_PantsCLM01_BlackLeather.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33785_male_bottomOuter_PantsCLM01_Types_PantsCLM01_BlackLeather.png
+21157:
+  description: 33784_male_bottomOuter_PantsCLM01_Types_PantsCLM01_DarkRed.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33784_male_bottomOuter_PantsCLM01_Types_PantsCLM01_DarkRed.png
+21158:
+  description: 33783_male_bottomOuter_PantsCLM01_Types_PantsCLM01_Graphite.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33783_male_bottomOuter_PantsCLM01_Types_PantsCLM01_Graphite.png
+21159:
+  description: 33782_male_bottomOuter_PantsCLM01_Types_PantsCLM01_GreenCamo.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33782_male_bottomOuter_PantsCLM01_Types_PantsCLM01_GreenCamo.png
+21160:
+  description: 33781_male_bottomOuter_PantsCLM01_Types_PantsCLM01_White.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/33781_male_bottomOuter_PantsCLM01_Types_PantsCLM01_White.png
+21161:
+  description: 33780_male_Feet_BootsALM01_Types_BootsALM01_BrownGold.png
+  iconFile: res:/UI/Asset/mannequin/feet/33780_male_Feet_BootsALM01_Types_BootsALM01_BrownGold.png
+21162:
+  description: 33779_male_Feet_BootsALM01_Types_BootsALM01_DarkRedBlack.png
+  iconFile: res:/UI/Asset/mannequin/feet/33779_male_Feet_BootsALM01_Types_BootsALM01_DarkRedBlack.png
+21163:
+  description: 33778_male_Feet_BootsALM01_Types_BootsALM01_GreySilver.png
+  iconFile: res:/UI/Asset/mannequin/feet/33778_male_Feet_BootsALM01_Types_BootsALM01_GreySilver.png
+21164:
+  description: 33777_male_Feet_BootsALM01_Types_BootsALM01_Royal.png
+  iconFile: res:/UI/Asset/mannequin/feet/33777_male_Feet_BootsALM01_Types_BootsALM01_Royal.png
+21165:
+  description: 33776_male_Feet_BootsALM01_Types_BootsALM01_WhiteGold.png
+  iconFile: res:/UI/Asset/mannequin/feet/33776_male_Feet_BootsALM01_Types_BootsALM01_WhiteGold.png
+21166:
+  description: 33775_male_Feet_BootsCLM01_Types_BootsCLM01_Black.png
+  iconFile: res:/UI/Asset/mannequin/feet/33775_male_Feet_BootsCLM01_Types_BootsCLM01_Black.png
+21167:
+  description: 33774_male_Feet_BootsCLM01_Types_BootsCLM01_BlueShiny.png
+  iconFile: res:/UI/Asset/mannequin/feet/33774_male_Feet_BootsCLM01_Types_BootsCLM01_BlueShiny.png
+21168:
+  description: 33773_male_Feet_BootsCLM01_Types_BootsCLM01_Brown
+  iconFile: res:/UI/Asset/mannequin/feet/33773_male_Feet_BootsCLM01_Types_BootsCLM01_Brown.png
+21169:
+  description: 33772_male_Feet_BootsCLM01_Types_BootsCLM01_Graphite.png
+  iconFile: res:/UI/Asset/mannequin/feet/33772_male_Feet_BootsCLM01_Types_BootsCLM01_Graphite.png
+21170:
+  description: 33771_male_Feet_BootsCLM01_Types_BootsCLM01_White
+  iconFile: res:/UI/Asset/mannequin/feet/33771_male_Feet_BootsCLM01_Types_BootsCLM01_White.png
+21171:
+  description: 33800_male_outer_JacketALM01_Types_JacketALM01_BlackSilver.png
+  iconFile: res:/UI/Asset/mannequin/outer/33800_male_outer_JacketALM01_Types_JacketALM01_BlackSilver.png
+21172:
+  description: 33799_male_outer_JacketALM01_Types_JacketALM01_BrownBlackGold.png
+  iconFile: res:/UI/Asset/mannequin/outer/33799_male_outer_JacketALM01_Types_JacketALM01_BrownBlackGold.png
+21173:
+  description: 33798_male_outer_JacketALM01_Types_JacketALM01_RedGold.png
+  iconFile: res:/UI/Asset/mannequin/outer/33798_male_outer_JacketALM01_Types_JacketALM01_RedGold.png
+21174:
+  description: 33797_male_outer_JacketALM01_Types_JacketALM01_Royal.png
+  iconFile: res:/UI/Asset/mannequin/outer/33797_male_outer_JacketALM01_Types_JacketALM01_Royal.png
+21175:
+  description: 33796_male_outer_JacketALM01_Types_JacketALM01_WhiteGold.png
+  iconFile: res:/UI/Asset/mannequin/outer/33796_male_outer_JacketALM01_Types_JacketALM01_WhiteGold.png
+21176:
+  description: 33795_male_outer_JacketCLM01_Types_JacketCLM01_BlueShiny.png
+  iconFile: res:/UI/Asset/mannequin/outer/33795_male_outer_JacketCLM01_Types_JacketCLM01_BlueShiny.png
+21177:
+  description: 33794_male_outer_JacketCLM01_Types_JacketCLM01_DarkRed.png
+  iconFile: res:/UI/Asset/mannequin/outer/33794_male_outer_JacketCLM01_Types_JacketCLM01_DarkRed.png
+21178:
+  description: 33793_male_outer_JacketCLM01_Types_JacketCLM01_Graphite
+  iconFile: res:/UI/Asset/mannequin/outer/33793_male_outer_JacketCLM01_Types_JacketCLM01_Graphite.png
+21179:
+  description: 33792_male_outer_JacketCLM01_Types_JacketCLM01_GreenCamo.png
+  iconFile: res:/UI/Asset/mannequin/outer/33792_male_outer_JacketCLM01_Types_JacketCLM01_GreenCamo.png
+21180:
+  description: 33791_male_outer_JacketCLM01_Types_JacketCLM01_White.png
+  iconFile: res:/UI/Asset/mannequin/outer/33791_male_outer_JacketCLM01_Types_JacketCLM01_White.png
+21181:
+  description: 33769_male_TopMiddle_ShirtQM01_Types_neom2014A.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33769_male_TopMiddle_ShirtQM01_Types_neom2014A.png
+21182:
+  description: 33770_male_TopMiddle_ShirtQM01_Types_neom2014B.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33770_male_TopMiddle_ShirtQM01_Types_neom2014B.png
+21183:
+  description: 33804_female_Outer_JacketMilF01_Types_JacketMilF01_silverV2.png
+  iconFile: res:/UI/Asset/mannequin/outer/33804_female_Outer_JacketMilF01_Types_JacketMilF01_silverV2.png
+21184:
+  description: 33803_male_outer_JacketMilM02_Types_JacketMilM02_blackV2.png
+  iconFile: res:/UI/Asset/mannequin/outer/33803_male_outer_JacketMilM02_Types_JacketMilM02_blackV2.png
+21186:
+  description: res:/UI/Texture/Icons/sourceBook.png
+  iconFile: res:/UI/Texture/Icons/sourceBook.png
+21192:
+  description: 33813_female_TopMiddle_ShirtQF01_Types_shirtqf04
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33813_female_TopMiddle_ShirtQF01_Types_shirtqf04.png
+21193:
+  description: 33812_male_TopMiddle_ShirtQM01_Types_shirtqm04
+  iconFile: res:/UI/Asset/mannequin/topmiddle/33812_male_TopMiddle_ShirtQM01_Types_shirtqm04.png
+21195:
+  description: 34056_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Black
+  iconFile: res:/UI/Asset/mannequin/hair/34056_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Black.png
+21197:
+  description: 34057_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_Black
+  iconFile: res:/UI/Asset/mannequin/hair/34057_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_Black.png
+21198:
+  description: 34058_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_White
+  iconFile: res:/UI/Asset/mannequin/hair/34058_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_White.png
+21199:
+  description: 34059_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Silver
+  iconFile: res:/UI/Asset/mannequin/hair/34059_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Silver.png
+21200:
+  description: 34060_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Gold
+  iconFile: res:/UI/Asset/mannequin/hair/34060_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Gold.png
+21201:
+  description: 34061_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Bronze
+  iconFile: res:/UI/Asset/mannequin/hair/34061_male_hair_HeadWear_Amarr_Types_HeadWear_Amarr_Bronze.png
+21202:
+  description: 34062_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_Metal
+  iconFile: res:/UI/Asset/mannequin/hair/34062_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_Metal.png
+21203:
+  description: 34063_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_BlackShiny
+  iconFile: res:/UI/Asset/mannequin/hair/34063_male_hair_HeadWear_Caldari_Types_HeadWear_Caldari_BlackShiny.png
+21204:
+  description: 34064_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Cyan
+  iconFile: res:/UI/Asset/mannequin/hair/34064_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Cyan.png
+21205:
+  description: 34065_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Gunmetal
+  iconFile: res:/UI/Asset/mannequin/hair/34065_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Gunmetal.png
+21206:
+  description: 34066_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Blue
+  iconFile: res:/UI/Asset/mannequin/hair/34066_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Blue.png
+21207:
+  description: 34067_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Platinum
+  iconFile: res:/UI/Asset/mannequin/hair/34067_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Platinum.png
+21208:
+  description: 34068_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Black
+  iconFile: res:/UI/Asset/mannequin/hair/34068_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Black.png
+21209:
+  description: 34069_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Gold
+  iconFile: res:/UI/Asset/mannequin/hair/34069_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Gold.png
+21210:
+  description: 34070_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Orange
+  iconFile: res:/UI/Asset/mannequin/hair/34070_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Orange.png
+21211:
+  description: 34071_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Black
+  iconFile: res:/UI/Asset/mannequin/hair/34071_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Black.png
+21212:
+  description: 34072_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Copper
+  iconFile: res:/UI/Asset/mannequin/hair/34072_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Copper.png
+21213:
+  description: 34073_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Metallic
+  iconFile: res:/UI/Asset/mannequin/hair/34073_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Metallic.png
+21214:
+  description: 34074_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Jade
+  iconFile: res:/UI/Asset/mannequin/hair/34074_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Jade.png
+21215:
+  description: 34075_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Simple
+  iconFile: res:/UI/Asset/mannequin/hair/34075_female_hair_Hair_Medium_Hp_01_Types_Hair_Medium_Hp_01_Simple.png
+21216:
+  description: 34076_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Clear
+  iconFile: res:/UI/Asset/mannequin/hair/34076_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Clear.png
+21217:
+  description: 34077_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Gold
+  iconFile: res:/UI/Asset/mannequin/hair/34077_female_hair_Hair_Lace_01_Types_Hair_Lace_01_Gold.png
+21218:
+  description: 34078_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Black
+  iconFile: res:/UI/Asset/mannequin/hair/34078_female_hair_Hair_Bun_Hp_02_Types_Hair_Bun_Hp_02_Black.png
+21219:
+  description: 34006_male_tattoo_armright_sleeve01__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34006_male_tattoo_armright_sleeve01__.png
+21220:
+  description: 34007_male_tattoo_armright_sleeve02__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34007_male_tattoo_armright_sleeve02__.png
+21221:
+  description: 34008_male_tattoo_armright_sleeve03__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34008_male_tattoo_armright_sleeve03__.png
+21222:
+  description: 34009_male_tattoo_armright_sleeve06__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34009_male_tattoo_armright_sleeve06__.png
+21223:
+  description: 34010_male_tattoo_armright_sleeve07__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34010_male_tattoo_armright_sleeve07__.png
+21224:
+  description: 34011_male_tattoo_armright_sleeve09__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34011_male_tattoo_armright_sleeve09__.png
+21225:
+  description: 34012_male_tattoo_armright_sleeve10__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34012_male_tattoo_armright_sleeve10__.png
+21226:
+  description: 34013_male_tattoo_armright_sleeve11__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34013_male_tattoo_armright_sleeve11__.png
+21227:
+  description: 34014_male_tattoo_armright_sleeve12__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34014_male_tattoo_armright_sleeve12__.png
+21228:
+  description: 34015_male_tattoo_armright_sleeve13__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34015_male_tattoo_armright_sleeve13__.png
+21229:
+  description: 34016_male_tattoo_armright_sleeve15__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armright/34016_male_tattoo_armright_sleeve15__.png
+21230:
+  description: 33995_male_tattoo_armleft_sleeve01__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33995_male_tattoo_armleft_sleeve01__.png
+21231:
+  description: 33996_male_tattoo_armleft_sleeve02__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33996_male_tattoo_armleft_sleeve02__.png
+21232:
+  description: 33997_male_tattoo_armleft_sleeve03__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33997_male_tattoo_armleft_sleeve03__.png
+21233:
+  description: 33998_male_tattoo_armleft_sleeve06__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33998_male_tattoo_armleft_sleeve06__.png
+21234:
+  description: 33999_male_tattoo_armleft_sleeve07__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/33999_male_tattoo_armleft_sleeve07__.png
+21235:
+  description: 34000_male_tattoo_armleft_sleeve09__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34000_male_tattoo_armleft_sleeve09__.png
+21236:
+  description: 34001_male_tattoo_armleft_sleeve10__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34001_male_tattoo_armleft_sleeve10__.png
+21237:
+  description: 34002_male_tattoo_armleft_sleeve11__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34002_male_tattoo_armleft_sleeve11__.png
+21238:
+  description: 34003_male_tattoo_armleft_sleeve12__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34003_male_tattoo_armleft_sleeve12__.png
+21239:
+  description: 34004_male_tattoo_armleft_sleeve13__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34004_male_tattoo_armleft_sleeve13__.png
+21240:
+  description: 34005_male_tattoo_armleft_sleeve15__
+  iconFile: res:/UI/Asset/mannequin/tattoo_armleft/34005_male_tattoo_armleft_sleeve15__.png
+21241:
+  description: 34031_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_Black
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34031_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_Black.png
+21242:
+  description: 34032_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackOrangeMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34032_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackOrangeMech.png
+21243:
+  description: 34033_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackShinyMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34033_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackShinyMech.png
+21244:
+  description: 34034_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34034_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlackYellow.png
+21245:
+  description: 34035_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlueBlackShinyMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34035_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlueBlackShinyMech.png
+21246:
+  description: 34036_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlueWhite
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34036_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_BlueWhite.png
+21247:
+  description: 34037_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_WhiteGrayMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34037_female_Makeup_ArmRight_CyborgArmF01_R_Types_CyborgArmF01_R_WhiteGrayMech.png
+21248:
+  description: 34038_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackOrange
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34038_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackOrange.png
+21249:
+  description: 34039_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackRed
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34039_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackRed.png
+21250:
+  description: 34040_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34040_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlackYellow.png
+21251:
+  description: 34041_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlueWhite
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34041_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_BlueWhite.png
+21252:
+  description: 34042_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_GreenCamo
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34042_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_GreenCamo.png
+21253:
+  description: 34043_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_GreenYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34043_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_GreenYellow.png
+21254:
+  description: 34044_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_Gunmetal
+  iconFile: res:/UI/Asset/mannequin/makeup_armright/34044_male_Makeup_ArmRight_CyborgArmM01_R_Types_CyborgArmM01_R_Gunmetal.png
+21255:
+  description: 34017_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_Black
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34017_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_Black.png
+21256:
+  description: 34018_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackOrangeMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34018_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackOrangeMech.png
+21257:
+  description: 34019_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackShinyMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34019_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackShinyMech.png
+21258:
+  description: 34020_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34020_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlackYellow.png
+21259:
+  description: 34021_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlueBlackShinyMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34021_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlueBlackShinyMech.png
+21260:
+  description: 34022_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlueWhite
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34022_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_BlueWhite.png
+21261:
+  description: 34023_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_WhiteGrayMech
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34023_female_Makeup_ArmLeft_CyborgArmF01_L_Types_CyborgArmF01_L_WhiteGrayMech.png
+21262:
+  description: 34024_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackOrange
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34024_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackOrange.png
+21263:
+  description: 34025_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackRed
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34025_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackRed.png
+21264:
+  description: 34026_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34026_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlackYellow.png
+21265:
+  description: 34027_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlueWhite
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34027_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_BlueWhite.png
+21266:
+  description: 34028_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_GreenCamo
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34028_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_GreenCamo.png
+21267:
+  description: 34029_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_GreenYellow
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34029_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_GreenYellow.png
+21268:
+  description: 34030_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_Gunmetal
+  iconFile: res:/UI/Asset/mannequin/makeup_armleft/34030_male_Makeup_ArmLeft_CyborgArmM01_L_Types_CyborgArmM01_L_Gunmetal.png
+21269:
+  description: 33992_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightBlack
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/33992_female_Accessories_Glasses_Monocle_01_Types_MonocleF01_RightBlack.png
+21270:
+  description: 33993_female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_left
+  iconFile: res:/UI/Asset/mannequin/accessories_glasses/33993_female_Accessories_Glasses_Monocle_F_T02_Types_Monocle_F_T02_black_left.png
+21271:
+  description: 33989_female_bottomMiddle_TightsF01_Types_TightsF01_black
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/33989_female_bottomMiddle_TightsF01_Types_TightsF01_black.png
+21272:
+  description: 34045_female_bottomMiddle_TightsF01_Types_TightsF01_light
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34045_female_bottomMiddle_TightsF01_Types_TightsF01_light.png
+21273:
+  description: 34046_female_bottomMiddle_TightsF01_Types_TightsF01_orange
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34046_female_bottomMiddle_TightsF01_Types_TightsF01_orange.png
+21274:
+  description: 34047_female_bottomMiddle_TightsF01_Types_TightsF01_pink
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34047_female_bottomMiddle_TightsF01_Types_TightsF01_pink.png
+21275:
+  description: 34048_female_bottomMiddle_TightsF01_Types_TightsF01_red
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34048_female_bottomMiddle_TightsF01_Types_TightsF01_red.png
+21276:
+  description: 34049_female_bottomMiddle_TightsF01_Types_TightsF01_thickblack
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34049_female_bottomMiddle_TightsF01_Types_TightsF01_thickblack.png
+21277:
+  description: 34051_female_bottomMiddle_TightsF01_Types_TightsF01_thickgray
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34051_female_bottomMiddle_TightsF01_Types_TightsF01_thickgray.png
+21278:
+  description: 34053_female_bottomMiddle_TightsF01_Types_TightsF01_thickpurple
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34053_female_bottomMiddle_TightsF01_Types_TightsF01_thickpurple.png
+21279:
+  description: 34054_female_bottomMiddle_TightsF01_Types_TightsF01_white
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34054_female_bottomMiddle_TightsF01_Types_TightsF01_white.png
+21280:
+  description: 34055_female_bottomMiddle_TightsF01_Types_TightsF01_yellow
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34055_female_bottomMiddle_TightsF01_Types_TightsF01_yellow.png
+21281:
+  description: 34050_female_bottomMiddle_TightsF01_Types_TightsF01_thickblue
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34050_female_bottomMiddle_TightsF01_Types_TightsF01_thickblue.png
+21282:
+  description: 34052_female_bottomMiddle_TightsF01_Types_TightsF01_thickmatblack
+  iconFile: res:/UI/Asset/mannequin/bottommiddle/34052_female_bottomMiddle_TightsF01_Types_TightsF01_thickmatblack.png
+21283:
+  description: 34101_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_black
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34101_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_black.png
+21284:
+  description: 34102_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_blackgold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34102_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_blackgold.png
+21285:
+  description: 34103_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_blue
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34103_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_blue.png
+21286:
+  description: 34104_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_brown
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34104_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_brown.png
+21287:
+  description: 34105_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_greengold
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34105_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_greengold.png
+21288:
+  description: 34106_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_orange
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34106_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_orange.png
+21289:
+  description: 34107_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_red
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34107_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_red.png
+21290:
+  description: 34108_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_redblack
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34108_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_redblack.png
+21291:
+  description: 34109_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_stealth
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34109_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_stealth.png
+21292:
+  description: 34110_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_white
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34110_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_white.png
+21293:
+  description: 34111_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_yellow
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34111_female_bottomOuter_SpaceSuit_01_Types_spacesuit_01_f_yellow.png
+21294:
+  description: 34079_female_Feet_SpaceBoots01F_Types_spaceboots01f_black
+  iconFile: res:/UI/Asset/mannequin/feet/34079_female_Feet_SpaceBoots01F_Types_spaceboots01f_black.png
+21295:
+  description: 34080_female_Feet_SpaceBoots01F_Types_spaceboots01f_blackgold
+  iconFile: res:/UI/Asset/mannequin/feet/34080_female_Feet_SpaceBoots01F_Types_spaceboots01f_blackgold.png
+21296:
+  description: 34081_female_Feet_SpaceBoots01F_Types_spaceboots01f_blue
+  iconFile: res:/UI/Asset/mannequin/feet/34081_female_Feet_SpaceBoots01F_Types_spaceboots01f_blue.png
+21297:
+  description: 34082_female_Feet_SpaceBoots01F_Types_spaceboots01f_brown
+  iconFile: res:/UI/Asset/mannequin/feet/34082_female_Feet_SpaceBoots01F_Types_spaceboots01f_brown.png
+21298:
+  description: 34083_female_Feet_SpaceBoots01F_Types_spaceboots01f_greengold
+  iconFile: res:/UI/Asset/mannequin/feet/34083_female_Feet_SpaceBoots01F_Types_spaceboots01f_greengold.png
+21299:
+  description: 34084_female_Feet_SpaceBoots01F_Types_spaceboots01f_orange
+  iconFile: res:/UI/Asset/mannequin/feet/34084_female_Feet_SpaceBoots01F_Types_spaceboots01f_orange.png
+21300:
+  description: 34085_female_Feet_SpaceBoots01F_Types_spaceboots01f_red
+  iconFile: res:/UI/Asset/mannequin/feet/34085_female_Feet_SpaceBoots01F_Types_spaceboots01f_red.png
+21301:
+  description: 34086_female_Feet_SpaceBoots01F_Types_spaceboots01f_redblack
+  iconFile: res:/UI/Asset/mannequin/feet/34086_female_Feet_SpaceBoots01F_Types_spaceboots01f_redblack.png
+21302:
+  description: 34087_female_Feet_SpaceBoots01F_Types_spaceboots01f_stealth
+  iconFile: res:/UI/Asset/mannequin/feet/34087_female_Feet_SpaceBoots01F_Types_spaceboots01f_stealth.png
+21303:
+  description: 34088_female_Feet_SpaceBoots01F_Types_spaceboots01f_white
+  iconFile: res:/UI/Asset/mannequin/feet/34088_female_Feet_SpaceBoots01F_Types_spaceboots01f_white.png
+21304:
+  description: 34089_female_Feet_SpaceBoots01F_Types_spaceboots01f_yellow
+  iconFile: res:/UI/Asset/mannequin/feet/34089_female_Feet_SpaceBoots01F_Types_spaceboots01f_yellow.png
+21305:
+  description: 34090_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_black
+  iconFile: res:/UI/Asset/mannequin/outer/34090_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_black.png
+21306:
+  description: 34091_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_blackgold
+  iconFile: res:/UI/Asset/mannequin/outer/34091_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_blackgold.png
+21307:
+  description: 34092_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_blue
+  iconFile: res:/UI/Asset/mannequin/outer/34092_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_blue.png
+21308:
+  description: 34093_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_brown
+  iconFile: res:/UI/Asset/mannequin/outer/34093_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_brown.png
+21309:
+  description: 34094_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_greengold
+  iconFile: res:/UI/Asset/mannequin/outer/34094_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_greengold.png
+21310:
+  description: 34095_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_orange
+  iconFile: res:/UI/Asset/mannequin/outer/34095_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_orange.png
+21311:
+  description: 34096_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_red
+  iconFile: res:/UI/Asset/mannequin/outer/34096_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_red.png
+21312:
+  description: 34097_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_redblack
+  iconFile: res:/UI/Asset/mannequin/outer/34097_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_redblack.png
+21313:
+  description: 34098_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_stealth
+  iconFile: res:/UI/Asset/mannequin/outer/34098_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_stealth.png
+21314:
+  description: 34099_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_white
+  iconFile: res:/UI/Asset/mannequin/outer/34099_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_white.png
+21315:
+  description: 34100_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_yellow
+  iconFile: res:/UI/Asset/mannequin/outer/34100_female_Outer_SpaceSuit_Top_01_Types_spacesuit_01_top_f_yellow.png
+21335:
+  description: Pilot's Body Resculpt Certificate
+  iconFile: res:/UI/Texture/Icons/character_resculpt.png
+21336:
+  description: Multiple Pilot Training Certificate
+  iconFile: res:/UI/Texture/Icons/multiple_training.png
+21347:
+  description: 34156_male_outer_JacketMFBR01_Types_JacketMFBR01_Caldari.png
+  iconFile: res:/UI/Asset/mannequin/outer/34156_male_outer_JacketMFBR01_Types_JacketMFBR01_Caldari.png
+21348:
+  description: 34157_male_outer_JacketMFBR01_Types_JacketMFBR01_Amarr.png
+  iconFile: res:/UI/Asset/mannequin/outer/34157_male_outer_JacketMFBR01_Types_JacketMFBR01_Amarr.png
+21349:
+  description: 34158_male_outer_JacketMFBR01_Types_JacketMFBR01_Minmatar.png
+  iconFile: res:/UI/Asset/mannequin/outer/34158_male_outer_JacketMFBR01_Types_JacketMFBR01_Minmatar.png
+21350:
+  description: 34159_male_outer_JacketMFBR01_Types_JacketMFBR01_Gallente.png
+  iconFile: res:/UI/Asset/mannequin/outer/34159_male_outer_JacketMFBR01_Types_JacketMFBR01_Gallente.png
+21351:
+  description: 34160_male_outer_JacketMFBR01_Types_JacketMFBR01_ORE.png
+  iconFile: res:/UI/Asset/mannequin/outer/34160_male_outer_JacketMFBR01_Types_JacketMFBR01_ORE.png
+21352:
+  description: 34161_male_outer_JacketMFBR01_Types_JacketMFBR01_SOE.png
+  iconFile: res:/UI/Asset/mannequin/outer/34161_male_outer_JacketMFBR01_Types_JacketMFBR01_SOE.png
+21353:
+  description: 34162_male_outer_JacketMFBR01_Types_JacketMFBR01_Mordus.png
+  iconFile: res:/UI/Asset/mannequin/outer/34162_male_outer_JacketMFBR01_Types_JacketMFBR01_Mordus.png
+21354:
+  description: 34163_male_outer_JacketMFBR01_Types_JacketMFBR01_Interbus.png
+  iconFile: res:/UI/Asset/mannequin/outer/34163_male_outer_JacketMFBR01_Types_JacketMFBR01_Interbus.png
+21355:
+  description: 34164_male_outer_JacketMFBR01_Types_JacketMFBR01_Angel.png
+  iconFile: res:/UI/Asset/mannequin/outer/34164_male_outer_JacketMFBR01_Types_JacketMFBR01_Angel.png
+21356:
+  description: 34165_male_outer_JacketMFBR01_Types_JacketMFBR01_Sansha.png
+  iconFile: res:/UI/Asset/mannequin/outer/34165_male_outer_JacketMFBR01_Types_JacketMFBR01_Sansha.png
+21357:
+  description: 34166_male_outer_JacketMFBR01_Types_JacketMFBR01_Bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/outer/34166_male_outer_JacketMFBR01_Types_JacketMFBR01_Bloodraiders.png
+21358:
+  description: 34167_male_outer_JacketMFBR01_Types_JacketMFBR01_Guristas.png
+  iconFile: res:/UI/Asset/mannequin/outer/34167_male_outer_JacketMFBR01_Types_JacketMFBR01_Guristas.png
+21359:
+  description: 34168_male_outer_JacketMFBR01_Types_JacketMFBR01_Serpentis.png
+  iconFile: res:/UI/Asset/mannequin/outer/34168_male_outer_JacketMFBR01_Types_JacketMFBR01_Serpentis.png
+21360:
+  description: 34169_female_Outer_JacketFBR01_Types_JacketFBR01_caldari.png
+  iconFile: res:/UI/Asset/mannequin/outer/34169_female_Outer_JacketFBR01_Types_JacketFBR01_caldari.png
+21361:
+  description: 34170_female_Outer_JacketFBR01_Types_JacketFBR01_amarr.png
+  iconFile: res:/UI/Asset/mannequin/outer/34170_female_Outer_JacketFBR01_Types_JacketFBR01_amarr.png
+21362:
+  description: 34171_female_Outer_JacketFBR01_Types_JacketFBR01_minmatar.png
+  iconFile: res:/UI/Asset/mannequin/outer/34171_female_Outer_JacketFBR01_Types_JacketFBR01_minmatar.png
+21363:
+  description: 34173_female_Outer_JacketFBR01_Types_JacketFBR01_ore.png
+  iconFile: res:/UI/Asset/mannequin/outer/34173_female_Outer_JacketFBR01_Types_JacketFBR01_ore.png
+21364:
+  description: 34174_female_Outer_JacketFBR01_Types_JacketFBR01_soe.png
+  iconFile: res:/UI/Asset/mannequin/outer/34174_female_Outer_JacketFBR01_Types_JacketFBR01_soe.png
+21365:
+  description: 34175_female_Outer_JacketFBR01_Types_JacketFBR01_mordus.png
+  iconFile: res:/UI/Asset/mannequin/outer/34175_female_Outer_JacketFBR01_Types_JacketFBR01_mordus.png
+21366:
+  description: 34176_female_Outer_JacketFBR01_Types_JacketFBR01_interbus.png
+  iconFile: res:/UI/Asset/mannequin/outer/34176_female_Outer_JacketFBR01_Types_JacketFBR01_interbus.png
+21367:
+  description: 34177_female_Outer_JacketFBR01_Types_JacketFBR01_angel.png
+  iconFile: res:/UI/Asset/mannequin/outer/34177_female_Outer_JacketFBR01_Types_JacketFBR01_angel.png
+21368:
+  description: 34178_female_Outer_JacketFBR01_Types_JacketFBR01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/outer/34178_female_Outer_JacketFBR01_Types_JacketFBR01_sansha.png
+21369:
+  description: 34179_female_Outer_JacketFBR01_Types_JacketFBR01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/outer/34179_female_Outer_JacketFBR01_Types_JacketFBR01_bloodraiders.png
+21370:
+  description: 34180_female_Outer_JacketFBR01_Types_JacketFBR01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/outer/34180_female_Outer_JacketFBR01_Types_JacketFBR01_guristas.png
+21371:
+  description: 34181_female_Outer_JacketFBR01_Types_JacketFBR01_serpentis.png
+  iconFile: res:/UI/Asset/mannequin/outer/34181_female_Outer_JacketFBR01_Types_JacketFBR01_serpentis.png
+21373:
+  description: 34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png
+  iconFile: res:/UI/Asset/mannequin/outer/34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png

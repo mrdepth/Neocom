@@ -20,12 +20,28 @@ int main(int argc, const char * argv[])
 		NSMutableArray* records = [NSMutableArray new];
 		NSMutableDictionary* record;
 		int state = 0;
+		NSString* lastKey = nil;
 		for (NSString* line in [fileContents componentsSeparatedByString:@"\n"]) {
 			NSArray* components = [line componentsSeparatedByString:@": "];
 			if (components.count == 1) {
-				record = [NSMutableDictionary new];
-				record[@"iconID"] = [line substringToIndex:[line rangeOfString:@":"].location];
-				[records addObject:record];
+				NSInteger i = [line rangeOfString:@":"].location;
+				if (i == NSNotFound) {
+					if (lastKey) {
+						const char* s = [line cStringUsingEncoding:NSUTF8StringEncoding];
+						NSInteger n = [line lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+						for (i = 0; i < n; i++) {
+							if (s[i] != ' ' && s[i] != '\t')
+								break;
+						}
+						NSString* value = [line substringFromIndex:i];
+						record[lastKey] = [NSString stringWithFormat:@"%@ %@", record[lastKey], value];
+					}
+				}
+				else {
+					record = [NSMutableDictionary new];
+					record[@"iconID"] = [line substringToIndex:[line rangeOfString:@":"].location];
+					[records addObject:record];
+				}
 			}
 			else {
 				NSString* key = components[0];
@@ -35,6 +51,7 @@ int main(int argc, const char * argv[])
 					state = 0;
 				else
 					state++;
+				lastKey = key;
 			}
 		}
 		

@@ -124,7 +124,7 @@ CREATE TABLE "invTypeMaterials" (
 
 CREATE TABLE "mapConstellations" (
   "regionID" int DEFAULT NULL,
-  "constellationID" int NOT NULL DEFAULT '0',
+  "constellationID" int NOT NULL,
   "constellationName" longtext,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE "mapConstellations" (
   PRIMARY KEY ("constellationID")
 );
 CREATE TABLE "mapDenormalize" (
-  "itemID" int NOT NULL DEFAULT '0',
+  "itemID" int NOT NULL,
   "typeID" int DEFAULT NULL,
   "groupID" int DEFAULT NULL,
   "solarSystemID" int DEFAULT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE "mapDenormalize" (
   PRIMARY KEY ("itemID")
 );
 CREATE TABLE "mapRegions" (
-  "regionID" int NOT NULL DEFAULT '0',
+  "regionID" int NOT NULL,
   "regionName" longtext,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,
@@ -176,7 +176,7 @@ CREATE TABLE "mapRegions" (
 CREATE TABLE "mapSolarSystems" (
   "regionID" int DEFAULT NULL,
   "constellationID" int DEFAULT NULL,
-  "solarSystemID" int NOT NULL DEFAULT '0',
+  "solarSystemID" int NOT NULL,
   "solarSystemName" longtext,
   "x" double DEFAULT NULL,
   "y" double DEFAULT NULL,

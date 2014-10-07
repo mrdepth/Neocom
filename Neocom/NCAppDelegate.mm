@@ -397,8 +397,11 @@
 				[contentViewController dismissViewControllerAnimated:YES completion:nil];
 				[contentViewController pushViewController:controller animated:YES];
 			}
-			else
-				[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+			else {
+				UINavigationController* contentViewController = [[UINavigationController alloc] initWithRootViewController:controller];
+				contentViewController.navigationBar.barStyle = UIBarStyleBlack;
+				[self.window.rootViewController.sideMenuViewController setContentViewController:contentViewController animated:YES];
+			}
 		}
 	}
 }

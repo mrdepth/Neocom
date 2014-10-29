@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -862,10 +863,10 @@
     <inferredMetricsTieBreakers>
         <segue reference="raC-Em-4AD"/>
         <segue reference="edv-w8-2To"/>
+        <segue reference="LHH-Wy-jrm"/>
         <segue reference="qyD-gc-O13"/>
-        <segue reference="7iv-ne-LEg"/>
         <segue reference="Vbq-vg-5yp"/>
+        <segue reference="7iv-ne-LEg"/>
         <segue reference="6M7-4Q-PK5"/>
-        <segue reference="dFJ-0K-RGe"/>
     </inferredMetricsTieBreakers>
 </document>

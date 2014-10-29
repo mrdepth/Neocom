@@ -28,6 +28,7 @@ OUTPATH = "./"
 
 from reverence import blue
 import os
+import ConfigParser
 
 MODE = MODE.upper()
 if MODE not in ("SQL", "XML"):
@@ -211,6 +212,21 @@ def dump(objects, table):
 	del f
 	f2.close()
 
+config = ConfigParser.RawConfigParser(allow_no_value=True)
+config.read(os.path.join(EVEPATH, "start.ini"))
+version = config.get("main", "version")
+build = config.get("main", "build")
+
+f = open( os.path.join(OUTPATH, "version.sql"), "w")
+print >>f, "DROP TABLE IF EXISTS \"version\";\nCREATE TABLE \"version\" (\n\"build\"  INTEGER NOT NULL,\n\"version\"  TEXT(10));"
+print >>f, "INSERT INTO version (build, version) VALUES (%s, \"%s\");" % (build, version)
+f.close()
+
+f = open( os.path.join(OUTPATH, "version.json"), "w")
+print >>f, "{\"build\": %s, \"version\": \"%s\"}" % (build, version)
+f.close()
+
+
 #dump(c.LoadCachedMethodCall(("dogma", "GetExpressionsForChar")), "dgmExpressions");
 dump(c.LoadCachedMethodCall(("dogma", "GetOperandsForChar")), "dgmOperands");
 #dump(c.LoadCachedMethodCall(("marketProxy", "GetMarketGroups")), "invMarketGroups");
@@ -223,3 +239,4 @@ dump(c.LoadBulk("600004"), "invTypes");
 dump(c.LoadBulk("600002"), "invGroups");
 dump(c.LoadBulk("600001"), "invCategories");
 dump(c.LoadCachedMethodCall(("posMgr", "GetControlTowerFuelRequirements")), "invControlTowerResources");
+

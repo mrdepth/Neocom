@@ -15,25 +15,25 @@
 		<key>6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195</key>
 		<string>https://github.com/mrdepth/tools.git</string>
 		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
-		<string>ssh://github.com/mrdepth/EVEUniverse.git</string>
+		<string>https://github.com/mrdepth/EVEUniverse.git</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
-		<string>ssh://github.com/mrdepth/eufe.git</string>
+		<string>https://github.com/mrdepth/eufe.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Neocom.xcodeproj/project.xcworkspace</string>
+	<string>Neocom.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0F0B6FB3121415B4BFE652B8CA72F270CA803FB0</key>
-		<string>../../ThirdParty/EVEOnlineAPI</string>
+		<string>../..ThirdParty/EVEOnlineAPI/</string>
 		<key>6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195</key>
-		<string>../../ThirdParty/tools</string>
+		<string>../..ThirdParty/tools/</string>
 		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
 		<string>../..</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
-		<string>../../ThirdParty/eufe</string>
+		<string>../..ThirdParty/eufe/</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/mrdepth/EVEUniverse.git</string>
+	<string>https://github.com/mrdepth/EVEUniverse.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -62,7 +62,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</string>
 			<key>IDESourceControlWCCName</key>
-			<string>EVEUniverse</string>
+			<string>Neocom</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

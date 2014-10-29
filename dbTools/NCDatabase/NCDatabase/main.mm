@@ -1254,6 +1254,16 @@ int main(int argc, const char * argv[])
 		[EVEDBDatabase setSharedDatabase:database];
 		
 		@autoreleasepool {
+			
+			[database execSQLRequest:@"select version, build from version"
+						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+							 const char* version = (const char*) sqlite3_column_text(stmt, 0);
+							 int32_t build = sqlite3_column_int(stmt, 1);
+							 NCDBVersion* dbVersion = [NSEntityDescription insertNewObjectForEntityForName:@"Version" inManagedObjectContext:context];
+							 dbVersion.version = [NSString stringWithCString:version encoding:NSUTF8StringEncoding];
+							 dbVersion.build = build;
+						 }];
+			
 			NSLog(@"convertEveIcons");
 			eveIcons = convertEveIcons(context, database);
 			NSLog(@"convertChrRaces");

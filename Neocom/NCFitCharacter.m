@@ -39,6 +39,11 @@
 	NCFitCharacter* character = [[NCFitCharacter alloc] initWithEntity:[NSEntityDescription entityForName:@"FitCharacter" inManagedObjectContext:self.managedObjectContext] insertIntoManagedObjectContext:nil];
 	character.account = account;
 	character.name = account.characterSheet.name;
+	NSMutableArray* implants = [NSMutableArray new];
+
+	for (EVECharacterSheetImplant* implant in account.characterSheet.implants)
+		[implants addObject:@(implant.typeID)];
+	character.implants = implants;
 	return character;
 }
 
@@ -58,6 +63,7 @@
 
 @synthesize account = _account;
 @synthesize skillsLevel = _skillsLevel;
+@synthesize implants = _implants;
 
 
 - (NSDictionary*) skills {

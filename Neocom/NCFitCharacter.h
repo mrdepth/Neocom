@@ -20,8 +20,9 @@
 
 @interface NCFitCharacter : NSManagedObject
 
-@property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSDictionary* skills;
+@property (nonatomic, strong) NSString* name;
+@property (nonatomic, strong) NSDictionary* skills;
+@property (nonatomic, strong) NSArray* implants;
 
 
 @end

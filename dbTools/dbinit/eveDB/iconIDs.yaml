@@ -2994,7 +2994,8 @@
   description: sensor booster - range - sensor booster - range
   iconFile: '74_02'
 3341:
-  description: Remote Sensor Dampener - scan resolution - Remote Sensor Dampener - scan resolution
+  description: Remote Sensor Dampener - scan resolution - Remote Sensor Dampener -
+    scan resolution
   iconFile: '74_03'
 3342:
   description: Remote Sensor Dampener - range - Remote Sensor Dampener - range
@@ -6141,3 +6142,27 @@
 21373:
   description: 34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png
   iconFile: res:/UI/Asset/mannequin/outer/34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png
+21375:
+  description: 34210_male_TopMiddle_ShirtQM01_Types_lvm02
+  iconFile: res:/UI/Asset/mannequin/topmiddle/34210_male_TopMiddle_ShirtQM01_Types_lvm02.png
+21376:
+  description: 34211_female_TopMiddle_ShirtQF01_Types_lvf02.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/34211_female_TopMiddle_ShirtQF01_Types_lvf02.png
+21378:
+  description: Hull repair module
+  iconFile: '1337_22'
+21379:
+  description: Cynosural field generators
+  iconFile: '1337_21'
+21380:
+  description: Honorary Fabricator-General Baton
+  iconFile: res:/UI/Texture/Icons/commendationAmarr.png
+21381:
+  description: Honorary Brigadier of Engineers Insignia
+  iconFile: res:/UI/Texture/Icons/commendationCaldari.png
+21382:
+  description: Honorary Federal Harbormaster Pennon
+  iconFile: res:/UI/Texture/Icons/commendationGallente.png
+21383:
+  description: Honorary Fleet Architect Badge
+  iconFile: res:/UI/Texture/Icons/commendationMinmatar.png

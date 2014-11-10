@@ -49,6 +49,12 @@
 #define NCHangarOrOfficeGroupID 471
 #define NCShipMaintenanceArrayGroupID 363
 
+#define NCCharismaBonusAttributeID 175
+#define NCIntelligenceBonusAttributeID 176
+#define NCMemoryBonusAttributeID 177
+#define NCPerceptionBonusAttributeID 178
+#define NCWillpowerBonusAttributeID 179
+
 #define NCInAppFullProductID @"com.shimanski.eveuniverse.full"
 #define NCInAppDonate1ProductID @"com.shimanski.eveuniverse.donation"
 #define NCInAppDonate5ProductID @"com.shimanski.eveuniverse.donation5"

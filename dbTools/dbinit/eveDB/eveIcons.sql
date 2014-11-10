@@ -2116,4 +2116,12 @@ INSERT INTO eveIcons VALUES (21368, "res:/UI/Asset/mannequin/outer/34178_female_
 INSERT INTO eveIcons VALUES (21369, "res:/UI/Asset/mannequin/outer/34179_female_Outer_JacketFBR01_Types_JacketFBR01_bloodraiders.png", "34179_female_Outer_JacketFBR01_Types_JacketFBR01_bloodraiders.png");
 INSERT INTO eveIcons VALUES (21370, "res:/UI/Asset/mannequin/outer/34180_female_Outer_JacketFBR01_Types_JacketFBR01_guristas.png", "34180_female_Outer_JacketFBR01_Types_JacketFBR01_guristas.png");
 INSERT INTO eveIcons VALUES (21371, "res:/UI/Asset/mannequin/outer/34181_female_Outer_JacketFBR01_Types_JacketFBR01_serpentis.png", "34181_female_Outer_JacketFBR01_Types_JacketFBR01_serpentis.png");
-INSERT INTO eveIcons VALUES (21373, "res:/UI/Asset/mannequin/outer/34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png ", "34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png");
+INSERT INTO eveIcons VALUES (21373, "res:/UI/Asset/mannequin/outer/34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png", "34172_female_Outer_JacketFBR01_Types_JacketFBR01_gallente.png");
+INSERT INTO eveIcons VALUES (21375, "res:/UI/Asset/mannequin/topmiddle/34210_male_TopMiddle_ShirtQM01_Types_lvm02.png", "34210_male_TopMiddle_ShirtQM01_Types_lvm02");
+INSERT INTO eveIcons VALUES (21376, "res:/UI/Asset/mannequin/topmiddle/34211_female_TopMiddle_ShirtQF01_Types_lvf02.png", "34211_female_TopMiddle_ShirtQF01_Types_lvf02.png");
+INSERT INTO eveIcons VALUES (21378, "1337_22", "Hull repair module");
+INSERT INTO eveIcons VALUES (21379, "1337_21", "Cynosural field generators");
+INSERT INTO eveIcons VALUES (21380, "res:/UI/Texture/Icons/commendationAmarr.png", "Honorary Fabricator-General Baton");
+INSERT INTO eveIcons VALUES (21381, "res:/UI/Texture/Icons/commendationCaldari.png", "Honorary Brigadier of Engineers Insignia");
+INSERT INTO eveIcons VALUES (21382, "res:/UI/Texture/Icons/commendationGallente.png", "Honorary Federal Harbormaster Pennon");
+INSERT INTO eveIcons VALUES (21383, "res:/UI/Texture/Icons/commendationMinmatar.png ", "Honorary Fleet Architect Badge");

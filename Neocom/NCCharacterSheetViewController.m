@@ -319,70 +319,78 @@
 		self.subscriptionLabel.text = nil;
 	}
 	
-	EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
-	EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
-	EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
-	EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
-	EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
-	
-	for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-		switch (enhancer.attribute) {
-			case EVECharacterAttributeCharisma:
-				charismaEnhancer = enhancer;
-				break;
-			case EVECharacterAttributeIntelligence:
-				intelligenceEnhancer = enhancer;
-				break;
-			case EVECharacterAttributeMemory:
-				memoryEnhancer = enhancer;
-				break;
-			case EVECharacterAttributePerception:
-				perceptionEnhancer = enhancer;
-				break;
-			case EVECharacterAttributeWillpower:
-				willpowerEnhancer = enhancer;
-				break;
-		}
-	}
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
+	__block NCDBInvType* charismaEnhancer = nil;
+	__block NCDBInvType* intelligenceEnhancer = nil;
+	__block NCDBInvType* memoryEnhancer = nil;
+	__block NCDBInvType* perceptionEnhancer = nil;
+	__block NCDBInvType* willpowerEnhancer = nil;
 
-	if (intelligenceEnhancer)
+	[context performBlockAndWait:^{
+		for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+			NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+			if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[(NCDBDgmTypeAttribute*) @(NCCharismaBonusAttributeID)] value] > 0)
+				charismaEnhancer = type;
+			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
+				intelligenceEnhancer = type;
+			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
+				memoryEnhancer = type;
+			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
+				perceptionEnhancer = type;
+			else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
+				willpowerEnhancer = type;
+		}
+	}];
+	
+	if (intelligenceEnhancer) {
+		int32_t value = [(NCDBDgmTypeAttribute*) intelligenceEnhancer.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
 		self.intelligenceLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
-									   characterSheet.attributes.intelligence + intelligenceEnhancer.augmentatorValue,
+									   characterSheet.attributes.intelligence + value,
 									   characterSheet.attributes.intelligence,
-									   intelligenceEnhancer.augmentatorValue];
+									   value];
+	}
 	else
 		self.intelligenceLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.intelligence];
 	
-	if (memoryEnhancer)
+	if (memoryEnhancer) {
+		int32_t value = [(NCDBDgmTypeAttribute*) memoryEnhancer.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
 		self.memoryLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
-								 characterSheet.attributes.memory + memoryEnhancer.augmentatorValue,
+								 characterSheet.attributes.memory + value,
 								 characterSheet.attributes.memory,
-								 memoryEnhancer.augmentatorValue];
+								 value];
+	}
 	else
 		self.memoryLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.memory];
 	
 	
-	if (perceptionEnhancer)
+	if (perceptionEnhancer) {
+		int32_t value = [(NCDBDgmTypeAttribute*) perceptionEnhancer.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
 		self.perceptionLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
-									 characterSheet.attributes.perception + perceptionEnhancer.augmentatorValue,
+									 characterSheet.attributes.perception + value,
 									 characterSheet.attributes.perception,
-									 perceptionEnhancer.augmentatorValue];
+									 value];
+	}
 	else
 		self.perceptionLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.perception];
 	
-	if (willpowerEnhancer)
+	if (willpowerEnhancer) {
+		int32_t value = [(NCDBDgmTypeAttribute*) willpowerEnhancer.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
 		self.willpowerLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
-									characterSheet.attributes.willpower + willpowerEnhancer.augmentatorValue,
+									characterSheet.attributes.willpower + value,
 									characterSheet.attributes.willpower,
-									willpowerEnhancer.augmentatorValue];
+									value];
+	}
 	else
 		self.willpowerLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.willpower];
 	
-	if (charismaEnhancer)
+	if (charismaEnhancer) {
+		int32_t value = [(NCDBDgmTypeAttribute*) charismaEnhancer.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
 		self.charismaLabel.text = [NSString stringWithFormat:@"%d (%d + %d)",
-								   characterSheet.attributes.charisma + charismaEnhancer.augmentatorValue,
+								   characterSheet.attributes.charisma + value,
 								   characterSheet.attributes.charisma,
-								   charismaEnhancer.augmentatorValue];
+								   value];
+	}
 	else
 		self.charismaLabel.text = [NSString stringWithFormat:@"%d", characterSheet.attributes.charisma];
 	

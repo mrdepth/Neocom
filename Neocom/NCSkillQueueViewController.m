@@ -285,41 +285,41 @@
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NCCharacterAttributesCell* cell = (NCCharacterAttributesCell*) tableViewCell;
-			
-			EVECharacterSheetAttributeEnhancer* charismaEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* intelligenceEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* memoryEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* perceptionEnhancer = nil;
-			EVECharacterSheetAttributeEnhancer* willpowerEnhancer = nil;
-			
 			EVECharacterSheet* characterSheet = self.account.characterSheet;
-			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-				switch (enhancer.attribute) {
-					case EVECharacterAttributeCharisma:
-						charismaEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeIntelligence:
-						intelligenceEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeMemory:
-						memoryEnhancer = enhancer;
-						break;
-					case EVECharacterAttributePerception:
-						perceptionEnhancer = enhancer;
-						break;
-					case EVECharacterAttributeWillpower:
-						willpowerEnhancer = enhancer;
-						break;
-				}
-			}
+
 			
-			NSAttributedString* (^attributesString)(int32_t, EVECharacterSheetAttributeEnhancer*, int32_t) = ^(int32_t attribute, EVECharacterSheetAttributeEnhancer* enhancer, int32_t currentAttribute) {
+			NCDatabase* database = [NCDatabase sharedDatabase];
+			NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
+			__block NCDBInvType* charismaEnhancer = nil;
+			__block NCDBInvType* intelligenceEnhancer = nil;
+			__block NCDBInvType* memoryEnhancer = nil;
+			__block NCDBInvType* perceptionEnhancer = nil;
+			__block NCDBInvType* willpowerEnhancer = nil;
+			
+			[context performBlockAndWait:^{
+				for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+					NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+					if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value] > 0)
+						charismaEnhancer = type;
+					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value] > 0)
+						intelligenceEnhancer = type;
+					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value] > 0)
+						memoryEnhancer = type;
+					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value] > 0)
+						perceptionEnhancer = type;
+					else if ([(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value] > 0)
+						willpowerEnhancer = type;
+				}
+			}];
+
+			
+			NSAttributedString* (^attributesString)(int32_t, int32_t, int32_t) = ^(int32_t attribute, int32_t enhancer, int32_t currentAttribute) {
 				NSString* text;
-				if (enhancer)
+				if (enhancer > 0)
 					text = [NSString stringWithFormat:@"%d (%d + %d)",
-							attribute + enhancer.augmentatorValue,
+							attribute + enhancer,
 							attribute,
-							enhancer.augmentatorValue];
+							enhancer];
 				else
 					text = [NSString stringWithFormat:@"%d", attribute];
 				
@@ -342,11 +342,11 @@
 				return s;
 			};
 			
-			cell.intelligenceLabel.attributedText = attributesString(self.optimalAttributes.intelligence, intelligenceEnhancer, characterSheet.attributes.intelligence);
-			cell.memoryLabel.attributedText = attributesString(self.optimalAttributes.memory, memoryEnhancer, characterSheet.attributes.memory);
-			cell.perceptionLabel.attributedText = attributesString(self.optimalAttributes.perception, perceptionEnhancer, characterSheet.attributes.perception);
-			cell.willpowerLabel.attributedText = attributesString(self.optimalAttributes.willpower, willpowerEnhancer, characterSheet.attributes.willpower);
-			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, charismaEnhancer, characterSheet.attributes.charisma);
+			cell.intelligenceLabel.attributedText = attributesString(self.optimalAttributes.intelligence, [(NCDBDgmTypeAttribute*) intelligenceEnhancer.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value], characterSheet.attributes.intelligence);
+			cell.memoryLabel.attributedText = attributesString(self.optimalAttributes.memory, [(NCDBDgmTypeAttribute*) memoryEnhancer.attributesDictionary[@(NCMemoryBonusAttributeID)] value], characterSheet.attributes.memory);
+			cell.perceptionLabel.attributedText = attributesString(self.optimalAttributes.perception, [(NCDBDgmTypeAttribute*) perceptionEnhancer.attributesDictionary[@(NCPerceptionBonusAttributeID)] value], characterSheet.attributes.perception);
+			cell.willpowerLabel.attributedText = attributesString(self.optimalAttributes.willpower, [(NCDBDgmTypeAttribute*) willpowerEnhancer.attributesDictionary[@(NCWillpowerBonusAttributeID)] value], characterSheet.attributes.willpower);
+			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, [(NCDBDgmTypeAttribute*) charismaEnhancer.attributesDictionary[@(NCCharismaBonusAttributeID)] value], characterSheet.attributes.charisma);
 		}
 		else {
 			UITableViewCell* cell = tableViewCell;
@@ -524,25 +524,19 @@
 	
 	if (characterSheet) {
 		
-		for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-			switch (enhancer.attribute) {
-				case EVECharacterAttributeCharisma:
-					optimalAttributes.charisma += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeIntelligence:
-					optimalAttributes.intelligence += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeMemory:
-					optimalAttributes.memory += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributePerception:
-					optimalAttributes.perception += enhancer.augmentatorValue;
-					break;
-				case EVECharacterAttributeWillpower:
-					optimalAttributes.willpower += enhancer.augmentatorValue;
-					break;
+		NCDatabase* database = [NCDatabase sharedDatabase];
+		NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
+		
+		[context performBlockAndWait:^{
+			for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+				NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+				optimalAttributes.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
+				optimalAttributes.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
+				optimalAttributes.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
+				optimalAttributes.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
+				optimalAttributes.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
 			}
-		}
+		}];
 	}
 	_optimalTrainingTime = [self.skillPlan.trainingQueue trainingTimeWithCharacterAttributes:optimalAttributes];
 }

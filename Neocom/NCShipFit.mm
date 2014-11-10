@@ -899,6 +899,8 @@
 	if (self.pilot) {
 		self.pilot->setCharacterName([character.name UTF8String]);
 		[self setSkillLevels:character.skills];
+		for (NSNumber* implantID in character.implants)
+			self.pilot->addImplant([implantID intValue]);
 	}
 }
 

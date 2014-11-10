@@ -132,25 +132,19 @@
 			self.perception = characterSheet.attributes.perception;
 			self.willpower = characterSheet.attributes.willpower;
 			
-			for (EVECharacterSheetAttributeEnhancer *enhancer in characterSheet.attributeEnhancers) {
-				switch (enhancer.attribute) {
-					case EVECharacterAttributeCharisma:
-						self.charisma += enhancer.augmentatorValue;
-						break;
-					case EVECharacterAttributeIntelligence:
-						self.intelligence += enhancer.augmentatorValue;
-						break;
-					case EVECharacterAttributeMemory:
-						self.memory += enhancer.augmentatorValue;
-						break;
-					case EVECharacterAttributePerception:
-						self.perception += enhancer.augmentatorValue;
-						break;
-					case EVECharacterAttributeWillpower:
-						self.willpower += enhancer.augmentatorValue;
-						break;
+			NCDatabase* database = [NCDatabase sharedDatabase];
+			NSManagedObjectContext* context = [NSThread isMainThread] ? database.managedObjectContext : database.backgroundManagedObjectContext;
+
+			[context performBlockAndWait:^{
+				for (EVECharacterSheetImplant* implant in characterSheet.implants) {
+					NCDBInvType* type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+					self.charisma += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCCharismaBonusAttributeID)] value];
+					self.intelligence += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCIntelligenceBonusAttributeID)] value];
+					self.memory += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCMemoryBonusAttributeID)] value];
+					self.perception += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCPerceptionBonusAttributeID)] value];
+					self.willpower += [(NCDBDgmTypeAttribute*) type.attributesDictionary[@(NCWillpowerBonusAttributeID)] value];
 				}
-			}
+			}];
 		}
 		else {
 			self.charisma = 19;

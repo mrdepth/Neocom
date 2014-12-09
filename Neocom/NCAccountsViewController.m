@@ -445,15 +445,14 @@
 				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
 			
 			if (characterSheet) {
-				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@/%@ SP (%@ skills)", nil),
+				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP (%@ skills)", nil),
 										 [NSString shortStringWithFloat:characterInfo.skillPoints unit:nil],
-										 [NSString shortStringWithFloat:characterSheet.cloneSkillPoints unit:nil],
 										 [NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]];
-				cell.skillsLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
+				//cell.skillsLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
 			}
 			else {
 				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP", nil), [NSString shortStringWithFloat:characterInfo.skillPoints unit:nil]];
-				cell.skillsLabel.textColor = [UIColor lightGrayColor];
+				//cell.skillsLabel.textColor = [UIColor lightGrayColor];
 			}
 		}
 		else

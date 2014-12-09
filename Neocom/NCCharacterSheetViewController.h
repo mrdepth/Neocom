@@ -21,7 +21,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shipLabel;
 @property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
-@property (weak, nonatomic) IBOutlet UILabel *cloneLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentSkillLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillQueueLabel;

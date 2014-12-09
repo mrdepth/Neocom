@@ -251,12 +251,9 @@
 		
 		self.shipLabel.text = characterInfo.shipTypeName;
 		
-		self.cloneLabel.text = characterSheet.cloneName	? [NSString stringWithFormat:@"%@ (%@)", characterSheet.cloneName, [NSString shortStringWithFloat:characterSheet.cloneSkillPoints unit:@"SP"]] : nil;
-		
 		self.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@ skills)", nil),
 								 [NSString shortStringWithFloat:characterInfo.skillPoints unit:@"SP"],
 								 [NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]];
-		self.cloneLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
 
 		if (skillQueue) {
 			NSString *text;

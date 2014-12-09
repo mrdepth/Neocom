@@ -17,10 +17,12 @@
 	#import <MessageUI/MessageUI.h>
 	#import <StoreKit/StoreKit.h>
 	#import <CoreText/CoreText.h>
+	#import <EventKit/EventKit.h>
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
+#define NCSettingsNotificationsLastEventsUpdateTimeKey @"NCSettingsNotificationsLastEventsUpdateTimeKey"
 #define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"
 #define NCSettingsAPIAlwaysUploadFitsKey @"NCSettingsAPIAlwaysUploadFitsKey"
 #define NCSettingsUDIDKey @"NCSettingsUDIDKey"

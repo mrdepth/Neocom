@@ -102,6 +102,7 @@
 			
 			if ([application respondsToSelector:@selector(setMinimumBackgroundFetchInterval:)])
 				[application setMinimumBackgroundFetchInterval:60 * 60 * 4];
+			[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
 		};
 
 		void (^initStorage)(BOOL) = ^(BOOL useCloud) {

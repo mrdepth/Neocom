@@ -172,6 +172,7 @@
 		12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */; };
 		124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */; };
 		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
+		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
@@ -964,6 +965,7 @@
 		124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
+		1256923C1A37799A008F6468 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		125F681818852DA9005732FA /* NCSkillsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsViewController.h; sourceTree = "<group>"; };
 		125F681918852DA9005732FA /* NCSkillsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillsViewController.m; sourceTree = "<group>"; };
 		125F682018853230005732FA /* NCSkillData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillData.h; sourceTree = "<group>"; };
@@ -1740,6 +1742,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */,
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
 				124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */,
@@ -1861,6 +1864,7 @@
 		120968511845F0CB00921A37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1256923C1A37799A008F6468 /* EventKit.framework */,
 				12A38E5A190BED24000102D4 /* iAd.framework */,
 				1261594A18EE7FCB0049B9CE /* Security.framework */,
 				12F9562318CDB8A2005CEAD6 /* CoreTelephony.framework */,

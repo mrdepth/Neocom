@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NCCharacterAttributes* optimalAttributes;
 @property (nonatomic, assign) NSTimeInterval optimalTrainingTime;
 @property (nonatomic, strong) UIDocumentInteractionController* documentInteractionController;
+@property (nonatomic, strong) NCTrainingQueue* fullTrainingQueue;
 
 - (IBAction)onSkills:(id)sender;
 
@@ -133,7 +134,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
-		return self.skillPlan.trainingQueue.skills.count > 0 ? 2 : 0;
+		return 2;//self.skillPlan.trainingQueue.skills.count > 0 ? 2 : 0;
 	else if (section == 1)
 		return self.skillQueueRows.count;
 	else if (section == 2)
@@ -351,7 +352,7 @@
 		else {
 			UITableViewCell* cell = tableViewCell;
 			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.skillPlan.trainingQueue.trainingTime - self.optimalTrainingTime]];
+			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.fullTrainingQueue.trainingTime - self.optimalTrainingTime]];
 		}
 	}
 	else {
@@ -432,12 +433,11 @@
 - (void) update {
 	NCAccount* account = [NCAccount currentAccount];
 	self.account = account;
-	self.skillPlan = account.activeSkillPlan;
 
 	[super update];
 	
-	[self.account.characterSheet updateSkillPointsFromSkillQueue:self.account.skillQueue];
-	[self.skillPlan updateSkillPoints];
+	[account.characterSheet updateSkillPointsFromSkillQueue:account.skillQueue];
+	[account.activeSkillPlan updateSkillPoints];
 	
 	NSMutableArray* skillQueueRows = [NSMutableArray new];
 	
@@ -469,6 +469,7 @@
 							 completionHandler:^(NCTask *task) {
 								 if (![task isCancelled]) {
 									 self.skillQueueRows = skillQueueRows;
+									 self.skillPlan = account.activeSkillPlan;
 									 [self.tableView reloadData];
 								 }
 							 }];
@@ -512,7 +513,13 @@
 
 - (void) setSkillPlanSkills:(NSMutableArray *)skillPlanSkills {
 	_skillPlanSkills = skillPlanSkills;
-	_optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:self.skillPlan.trainingQueue];
+	NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:self.account];
+	for (NCSkillData* skillData in self.skillQueueRows)
+		[trainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
+	for (NCSkillData* skillData in self.skillPlan.trainingQueue.skills)
+		[trainingQueue addSkill:skillData.type withLevel:skillData.targetLevel];
+	
+	_optimalAttributes = [NCCharacterAttributes optimalAttributesWithTrainingQueue:trainingQueue];
 	EVECharacterSheet* characterSheet = self.account.characterSheet;
 	
 	NCCharacterAttributes* optimalAttributes = [NCCharacterAttributes new];
@@ -538,7 +545,8 @@
 			}
 		}];
 	}
-	_optimalTrainingTime = [self.skillPlan.trainingQueue trainingTimeWithCharacterAttributes:optimalAttributes];
+	_optimalTrainingTime = [trainingQueue trainingTimeWithCharacterAttributes:optimalAttributes];
+	self.fullTrainingQueue = trainingQueue;
 }
 
 - (IBAction)onSkills:(id)sender {

@@ -160,15 +160,8 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-	UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
-		
-	}];
 	[[NCStorage sharedStorage] saveContext];
-	
-	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
-		[[NCCache sharedCache] clearInvalidData];
-		[application endBackgroundTask:task];
-	}];
+	[[NCCache sharedCache] clearInvalidData];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -180,6 +173,14 @@
 {
 	application.applicationIconBadgeNumber = 0;
 	[self reconnectStoreIfNeeded];
+	
+	UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
+		
+	}];
+	
+	[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:^(BOOL newData) {
+		[application endBackgroundTask:task];
+	}];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -266,6 +267,8 @@
 				NCAccountsManager* accountsManager = [[NCAccountsManager alloc] initWithStorage:storage];
 				[NCAccountsManager setSharedManager:accountsManager];
 				[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+				[[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+				[[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
 			}
 			else {
 				__block NCStorage* storage = nil;
@@ -292,6 +295,8 @@
 												 }];
 											 }
 											 [[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:storage userInfo:nil];
+											 [[NCNotificationsManager sharedManager] setNeedsUpdateNotifications];
+											 [[NCNotificationsManager sharedManager] updateNotificationsIfNeededWithCompletionHandler:nil];
 										 }];
 			}
 		};

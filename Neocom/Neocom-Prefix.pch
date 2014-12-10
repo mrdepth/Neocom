@@ -28,6 +28,7 @@
 #define NCSettingsUDIDKey @"NCSettingsUDIDKey"
 #define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
+#define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 

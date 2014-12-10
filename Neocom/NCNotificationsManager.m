@@ -12,8 +12,10 @@
 #import "NCTodayRow.h"
 #import "NCStorage.h"
 #import "NCSetting.h"
+#import "NSString+HTML.h"
 
-#define NCNotificationsManagerUpdateTime (60 * 30)
+//#define NCNotificationsManagerUpdateTime (60 * 30)
+#define NCNotificationsManagerUpdateTime (60 * 10)
 
 @interface NCEvent : NSObject<NSCoding>
 @property (nonatomic, strong) EVEUpcomingCalendarEventsItem* event;
@@ -320,16 +322,26 @@
 			if (!events)
 				events = [NSMutableDictionary new];
 			
-			EKCalendar* calendar;
-			for (calendar in [eventStore calendarsForEntityType:EKEntityTypeEvent]) {
-				if ([calendar.title isEqualToString:@"Neocom"] && calendar.allowsContentModifications)
-					break;
+			NSString* calendarIdentifier = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCalendarIdentifierKey];
+			EKCalendar* calendar = calendarIdentifier ? [eventStore calendarWithIdentifier:calendarIdentifier] : nil;
+			
+			if (!calendar) {
+				for (calendar in [eventStore calendarsForEntityType:EKEntityTypeEvent]) {
+					if ([calendar.title isEqualToString:@"Neocom"] && calendar.allowsContentModifications)
+						break;
+				}
 			}
+			
 			if (!calendar) {
 				calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:eventStore];
 				calendar.title = @"Neocom";
-				calendar.source = [[[eventStore sources] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"sourceType == %ld", (long) EKSourceTypeLocal]] lastObject];
-				[eventStore saveCalendar:calendar commit:NO error:nil];
+				calendar.source = [[[eventStore sources] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"sourceType == %ld", (long) EKSourceTypeSubscribed]] lastObject];
+				calendar.CGColor = [[UIColor darkGrayColor] CGColor];
+				
+				NSError* error;
+				[eventStore saveCalendar:calendar commit:YES error:&error];
+				if (calendar.calendarIdentifier)
+					[[NSUserDefaults standardUserDefaults] setValue:calendar.calendarIdentifier forKey:NCSettingsCalendarIdentifierKey];
 			}
 			
 			NSMutableSet* characterIDs = [NSMutableSet new];
@@ -389,7 +401,7 @@
 												 if (!ekEvent)
 													 ekEvent = [EKEvent eventWithEventStore:eventStore];
 												 ekEvent.title = [NSString stringWithFormat:@"%@: %@", event.event.ownerName, event.event.eventTitle];
-												 ekEvent.notes = event.event.eventText;
+												 ekEvent.notes = [[event.event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
 												 ekEvent.startDate = event.localDate;
 												 ekEvent.endDate = [event.localDate dateByAddingTimeInterval:event.event.duration > 0 ? event.event.duration * 60 : 3600];
 												 ekEvent.calendar = calendar;
@@ -408,7 +420,7 @@
 											 event.eventIdentifier = ekEvent.eventIdentifier;
 										 }
 										 NSArray* allEvents = [events allValues];
-										 [eventStore enumerateEventsMatchingPredicate:[eventStore predicateForEventsWithStartDate:[NSDate dateWithTimeIntervalSinceNow:0] endDate:[NSDate distantFuture]
+										 [eventStore enumerateEventsMatchingPredicate:[eventStore predicateForEventsWithStartDate:[NSDate date] endDate:[NSDate distantFuture]
 																														calendars:@[calendar]]
 																		   usingBlock:^(EKEvent *event, BOOL *stop) {
 											 NSArray* filtered = [allEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventIdentifier = %@", event.eventIdentifier]];

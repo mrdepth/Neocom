@@ -6166,3 +6166,63 @@
 21383:
   description: Honorary Fleet Architect Badge
   iconFile: res:/UI/Texture/Icons/commendationMinmatar.png
+21384:
+  description: 34347_male_outer_JacketPrtm01_Types_JacketPrtm01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/outer/34347_male_outer_JacketPrtm01_Types_JacketPrtm01_bloodraiders.png
+21385:
+  description: 34348_male_outer_JacketPrtm01_Types_JacketPrtm01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/outer/34348_male_outer_JacketPrtm01_Types_JacketPrtm01_sansha.png
+21386:
+  description: 34349_male_outer_JacketPrtm01_Types_JacketPrtm01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/outer/34349_male_outer_JacketPrtm01_Types_JacketPrtm01_guristas.png
+21387:
+  description: 34393_male_outer_JacketPrtm01_Types_JacketPrtm01_orange.png
+  iconFile: res:/UI/Asset/mannequin/outer/34393_male_outer_JacketPrtm01_Types_JacketPrtm01_orange.png
+21388:
+  description: 34350_female_Outer_JacketPrtF01_Types_JacketPrtF01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/outer/34350_female_Outer_JacketPrtF01_Types_JacketPrtF01_sansha.png
+21389:
+  description: 34353_female_Outer_JacketPrtF01_Types_JacketPrtF01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/outer/34353_female_Outer_JacketPrtF01_Types_JacketPrtF01_bloodraiders.png
+21390:
+  description: 34394_female_Outer_JacketPrtF01_Types_JacketPrtF01_orange.png
+  iconFile: res:/UI/Asset/mannequin/outer/34394_female_Outer_JacketPrtF01_Types_JacketPrtF01_orange.png
+21391:
+  description: 34354_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34354_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_bloodraiders.png
+21392:
+  description: 34355_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34355_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_sansha.png
+21393:
+  description: 34356_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34356_male_bottomOuter_PantsPrtm01_Types_PantsPrtm01_guristas.png
+21394:
+  description: 34357_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34357_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_bloodraiders.png
+21395:
+  description: 34358_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34358_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_sansha.png
+21396:
+  description: 34359_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/bottomouter/34359_female_bottomOuter_PantsPrtF01_Types_PantsPrtF01_guristas.png
+21397:
+  description: 34360_male_Feet_BootsPrtm01_Types_BootsPrtm01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/feet/34360_male_Feet_BootsPrtm01_Types_BootsPrtm01_bloodraiders.png
+21398:
+  description: 34361_male_Feet_BootsPrtm01_Types_BootsPrtm01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/feet/34361_male_Feet_BootsPrtm01_Types_BootsPrtm01_sansha.png
+21399:
+  description: 34362_male_Feet_BootsPrtm01_Types_BootsPrtm01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/feet/34362_male_Feet_BootsPrtm01_Types_BootsPrtm01_guristas.png
+21400:
+  description: 34363_female_Feet_BootsPrtF01_Types_BootsPrtF01_bloodraiders.png
+  iconFile: res:/UI/Asset/mannequin/feet/34363_female_Feet_BootsPrtF01_Types_BootsPrtF01_bloodraiders.png
+21401:
+  description: 34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png
+  iconFile: res:/UI/Asset/mannequin/feet/34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png
+21402:
+  description: 34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/feet/34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png
+21403:
+  description: 34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png
+  iconFile: res:/UI/Asset/mannequin/outer/34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png

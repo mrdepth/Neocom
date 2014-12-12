@@ -20,6 +20,5 @@
 @dynamic eufeCategories;
 @dynamic icon;
 @dynamic types;
-@dynamic products;
 
 @end

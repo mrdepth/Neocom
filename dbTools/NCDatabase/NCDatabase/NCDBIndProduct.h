@@ -17,6 +17,6 @@
 @property (nonatomic) float probability;
 @property (nonatomic, retain) NCDBIndActivity *activity;
 @property (nonatomic, retain) NCDBInvType *productType;
-@property (nonatomic, retain) NCDBChrRace *race;
+//@property (nonatomic, retain) NCDBChrRace *race;
 
 @end

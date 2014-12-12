@@ -64,12 +64,6 @@ CREATE TABLE "industryActivityProducts" (
   "productTypeID" int DEFAULT NULL,
   "quantity" int DEFAULT NULL
 );
-CREATE TABLE "industryActivityRaces" (
-  "typeID" int DEFAULT NULL,
-  "activityID" int DEFAULT NULL,
-  "productTypeID" int DEFAULT NULL,
-  "raceID" int DEFAULT NULL
-);
 CREATE TABLE "industryActivitySkills" (
   "typeID" int DEFAULT NULL,
   "activityID" int DEFAULT NULL,
@@ -258,9 +252,6 @@ CREATE INDEX "staStations_staStations_IX_type" ON "staStations" ("stationTypeID"
 CREATE INDEX "staStations_staStations_IX_corporation" ON "staStations" ("corporationID");
 CREATE INDEX "industryActivitySkills_typeID" ON "industryActivitySkills" ("typeID");
 CREATE INDEX "industryActivitySkills_typeID_2" ON "industryActivitySkills" ("typeID","activityID");
-CREATE INDEX "industryActivityRaces_typeID" ON "industryActivityRaces" ("typeID");
-CREATE INDEX "industryActivityRaces_typeID_2" ON "industryActivityRaces" ("typeID","activityID");
-CREATE INDEX "industryActivityRaces_productTypeID" ON "industryActivityRaces" ("productTypeID");
 CREATE INDEX "mapRegions_mapRegions_IX_region" ON "mapRegions" ("regionID");
 CREATE INDEX "industryActivityMaterials_typeID" ON "industryActivityMaterials" ("typeID");
 CREATE INDEX "industryActivityMaterials_typeID_2" ON "industryActivityMaterials" ("typeID","activityID");
@@ -271,6 +262,7 @@ CREATE INDEX "mapDenormalize_mapDenormalize_IX_system" ON "mapDenormalize" ("sol
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_constellation" ON "mapDenormalize" ("constellationID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_region" ON "mapDenormalize" ("regionID");
 CREATE INDEX "mapDenormalize_mapDenormalize_IX_orbit" ON "mapDenormalize" ("orbitID");
+CREATE INDEX "mapDenormalize_mapDenormalize_gis" ON "mapDenormalize" ("solarSystemID","x","y","z","itemName","itemID");
 CREATE INDEX "mapConstellations_mapConstellations_IX_region" ON "mapConstellations" ("regionID");
 CREATE INDEX "industryActivityProbabilities_typeID" ON "industryActivityProbabilities" ("typeID");
 CREATE INDEX "industryActivityProbabilities_typeID_2" ON "industryActivityProbabilities" ("typeID","activityID");
@@ -279,6 +271,7 @@ CREATE INDEX "industryActivity_activityID" ON "industryActivity" ("activityID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_region" ON "mapSolarSystems" ("regionID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_constellation" ON "mapSolarSystems" ("constellationID");
 CREATE INDEX "mapSolarSystems_mapSolarSystems_IX_security" ON "mapSolarSystems" ("security");
+CREATE INDEX "mapSolarSystems_mss_name" ON "mapSolarSystems" ("solarSystemName");
 CREATE INDEX "industryActivityProducts_typeID" ON "industryActivityProducts" ("typeID");
 CREATE INDEX "industryActivityProducts_typeID_2" ON "industryActivityProducts" ("typeID","activityID");
 CREATE INDEX "industryActivityProducts_productTypeID" ON "industryActivityProducts" ("productTypeID");

@@ -18,6 +18,5 @@
 @dynamic probability;
 @dynamic activity;
 @dynamic productType;
-@dynamic race;
 
 @end

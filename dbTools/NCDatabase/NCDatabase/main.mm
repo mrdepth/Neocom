@@ -908,13 +908,13 @@ void convertIndustryActivityProbabilities(NSManagedObjectContext* context, EVEDB
 	}];
 }
 
-void convertIndustryActivityRaces(NSManagedObjectContext* context, EVEDBDatabase* database) {
+/*void convertIndustryActivityRaces(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM industryActivityRaces" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 		EVEDBIndustryActivityRace* eveActivityRace = [[EVEDBIndustryActivityRace alloc] initWithStatement:stmt];
 		NCDBIndProduct* product = indProducts[[NSString stringWithFormat:@"%d.%d.%d", eveActivityRace.typeID, eveActivityRace.activityID, eveActivityRace.productTypeID]];
 		product.race = chrRaces[@(eveActivityRace.raceID)];
 	}];
-}
+}*/
 
 void convertIndustryActivitySkills(NSManagedObjectContext* context, EVEDBDatabase* database) {
 	[database execSQLRequest:@"SELECT * FROM industryActivitySkills" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
@@ -1342,8 +1342,8 @@ int main(int argc, const char * argv[])
 			indProducts = convertIndustryActivityProducts(context, database);
 			NSLog(@"convertIndustryActivityProbabilities");
 			convertIndustryActivityProbabilities(context, database);
-			NSLog(@"convertIndustryActivityRaces");
-			convertIndustryActivityRaces(context, database);
+//			NSLog(@"convertIndustryActivityRaces");
+//			convertIndustryActivityRaces(context, database);
 			NSLog(@"convertIndustryActivitySkills");
 			convertIndustryActivitySkills(context, database);
 		}

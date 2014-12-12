@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -29,7 +29,6 @@
         <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="eufeCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemCategory" inverseName="race" inverseEntity="EufeItemCategory" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
-        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="race" inverseEntity="IndProduct" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="DgmAttributeCategory" representedClassName="NCDBDgmAttributeCategory" syncable="YES">
@@ -118,7 +117,6 @@
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="products" inverseEntity="IndActivity" syncable="YES"/>
         <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="products" inverseEntity="InvType" syncable="YES"/>
-        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="products" inverseEntity="ChrRace" syncable="YES"/>
     </entity>
     <entity name="IndRequiredMaterial" representedClassName="NCDBIndRequiredMaterial" syncable="YES">
         <attribute name="consume" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -307,7 +305,7 @@
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="88"/>
         <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="103"/>
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="88"/>
-        <element name="ChrRace" positionX="9" positionY="54" width="128" height="135"/>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="120"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="88"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="163"/>
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
@@ -320,7 +318,7 @@
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="88"/>
         <element name="IndActivity" positionX="-171" positionY="198" width="128" height="133"/>
         <element name="IndBlueprintType" positionX="-180" positionY="189" width="128" height="88"/>
-        <element name="IndProduct" positionX="-162" positionY="207" width="128" height="118"/>
+        <element name="IndProduct" positionX="-162" positionY="207" width="128" height="105"/>
         <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="103"/>
         <element name="IndRequiredSkill" positionX="-144" positionY="225" width="128" height="88"/>
         <element name="InvCategory" positionX="9" positionY="54" width="128" height="118"/>

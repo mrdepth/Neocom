@@ -34,7 +34,7 @@ INSERT INTO eveDB.industryActivity SELECT * FROM industryActivity;
 INSERT INTO eveDB.industryActivityMaterials SELECT * FROM industryActivityMaterials;
 INSERT INTO eveDB.industryActivityProbabilities SELECT * FROM industryActivityProbabilities;
 INSERT INTO eveDB.industryActivityProducts SELECT * FROM industryActivityProducts;
-INSERT INTO eveDB.industryActivityRaces SELECT * FROM industryActivityRaces;
+--INSERT INTO eveDB.industryActivityRaces SELECT * FROM industryActivityRaces;
 INSERT INTO eveDB.industryActivitySkills SELECT * FROM industryActivitySkills;
 INSERT INTO eveDB.industryBlueprints SELECT * FROM industryBlueprints;
 

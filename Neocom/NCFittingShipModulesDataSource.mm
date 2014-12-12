@@ -83,7 +83,7 @@
 	
 	eufe::Ship* ship = self.controller.fit.pilot->getShip();
 	
-	eufe::Module::Slot slots[] = {eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
+	eufe::Module::Slot slots[] = {eufe::Module::SLOT_MODE, eufe::Module::SLOT_HI, eufe::Module::SLOT_MED, eufe::Module::SLOT_LOW, eufe::Module::SLOT_RIG, eufe::Module::SLOT_SUBSYSTEM};
 	int n = sizeof(slots) / sizeof(eufe::Module::Slot);
 	
 //	@synchronized(self.controller) {
@@ -209,9 +209,10 @@
 				header.imageView.image = [UIImage imageNamed:@"slotSubsystem.png"];
 				header.titleLabel.text = NSLocalizedString(@"Subsystem slots", nil);
 				break;
+			case eufe::Module::SLOT_MODE:
 			default:
 				header.imageView.image = nil;
-				header.titleLabel.text = nil;
+				header.titleLabel.text = NSLocalizedString(@"Mode", nil);
 		}
 		return header;
 	}

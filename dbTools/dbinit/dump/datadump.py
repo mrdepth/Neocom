@@ -218,7 +218,7 @@ version = config.get("main", "version")
 build = config.get("main", "build")
 
 f = open( os.path.join(OUTPATH, "version.sql"), "w")
-print >>f, "DROP TABLE IF EXISTS \"version\";\nCREATE TABLE \"version\" (\n\"build\"  INTEGER NOT NULL,\n\"version\"  TEXT(10));"
+print >>f, "DROP TABLE IF EXISTS version;\nCREATE TABLE \"version\" (\n\"build\"  INTEGER NOT NULL,\n\"version\"  TEXT,\nPRIMARY KEY (\"build\"));"
 print >>f, "INSERT INTO version (build, version) VALUES (%s, \"%s\");" % (build, version)
 f.close()
 

@@ -18,7 +18,6 @@
 @property (nonatomic, retain) NSSet *eufeCategories;
 @property (nonatomic, retain) NCDBEveIcon *icon;
 @property (nonatomic, retain) NSSet *types;
-@property (nonatomic, retain) NSSet *products;
 @end
 
 @interface NCDBChrRace (CoreDataGeneratedAccessors)
@@ -32,10 +31,5 @@
 - (void)removeTypesObject:(NCDBInvType *)value;
 - (void)addTypes:(NSSet *)values;
 - (void)removeTypes:(NSSet *)values;
-
-- (void)addProductsObject:(NCDBIndProduct *)value;
-- (void)removeProductsObject:(NCDBIndProduct *)value;
-- (void)addProducts:(NSSet *)values;
-- (void)removeProducts:(NSSet *)values;
 
 @end

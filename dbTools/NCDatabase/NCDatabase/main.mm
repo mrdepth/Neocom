@@ -934,12 +934,13 @@ typedef enum {
 	SLOT_RIG,
 	SLOT_SUBSYSTEM,
 	SLOT_STRUCTURE,
+	SLOT_MODE,
 	SLOT_CHARGE,
 	SLOT_DRONE,
 	SLOT_IMPLANT,
 	SLOT_BOOSTER,
 	SLOT_SHIP,
-	SLOT_CONTROL_TOWER
+	SLOT_CONTROL_TOWER,
 } Slot;
 
 void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) {
@@ -1177,6 +1178,33 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 	process(@[@"invTypes.groupID <> 365",
 			  @"invTypes.groupID = invGroups.groupID",
 			  @"invGroups.categoryID = 23"], category, @"Structures");
+	
+	[database execSQLRequest:@"SELECT typeID FROM dgmTypeAttributes WHERE attributeID=10000"
+				 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+					 int32_t typeID = sqlite3_column_int(stmt, 0);
+					 NCDBEufeItemCategory* category = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemCategory" inManagedObjectContext:context];
+					 category.category = SLOT_MODE;
+					 category.subcategory = typeID;
+					 
+					 NCDBEufeItemGroup* itemGroup = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItemGroup" inManagedObjectContext:context];
+					 itemGroup.category = category;
+					 itemGroup.parentGroup = nil;
+					 itemGroup.groupName = @"Tactical Mode";
+					 itemGroup.icon = nil;
+
+					 
+					 [database execSQLRequest:[NSString stringWithFormat:@"SELECT a.typeID FROM dgmTypeEffects AS a, dgmTypeAttributes AS b WHERE effectID=10005 AND attributeID=1302 AND a.typeID=b.typeID AND value=%d;", typeID]
+								  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+									  int32_t typeID = sqlite3_column_int(stmt, 0);
+									  NCDBInvType* invType = invTypes[@(typeID)];
+									  if (invType) {
+										  if (!invType.eufeItem)
+											  invType.eufeItem = [NSEntityDescription insertNewObjectForEntityForName:@"EufeItem" inManagedObjectContext:context];
+										  [itemGroup addItemsObject:invType.eufeItem];
+									  }
+								  }];
+				 }];
+
 	
 	NSMutableDictionary* chargeCategories = [NSMutableDictionary new];
 	[database execSQLRequest:@"SELECT b.* FROM dgmTypeAttributes as a, invTypes as b where a.attributeID in (604, 605, 606, 609, 610) and a.typeID=b.typeID group by a.typeID;"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CertCertificate" representedClassName="NCDBCertCertificate" syncable="YES">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
@@ -61,8 +61,8 @@
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="eufeItem" inverseEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="EufeItemCategory" representedClassName="NCDBEufeItemCategory" syncable="YES">
-        <attribute name="category" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="subcategory" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="subcategory" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="eufeItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItem" inverseName="charge" inverseEntity="EufeItem" syncable="YES"/>
         <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EufeItemGroup" inverseName="category" inverseEntity="EufeItemGroup" syncable="YES"/>
         <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="eufeCategories" inverseEntity="ChrRace" syncable="YES"/>
@@ -311,7 +311,7 @@
         <element name="DgmEffect" positionX="36" positionY="81" width="128" height="73"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="88"/>
         <element name="EufeItem" positionX="-171" positionY="198" width="128" height="88"/>
-        <element name="EufeItemCategory" positionX="-189" positionY="180" width="128" height="118"/>
+        <element name="EufeItemCategory" positionX="-189" positionY="180" width="128" height="120"/>
         <element name="EufeItemGroup" positionX="-180" positionY="189" width="128" height="133"/>
         <element name="EveIcon" positionX="18" positionY="63" width="128" height="238"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="73"/>

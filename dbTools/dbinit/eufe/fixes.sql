@@ -65,3 +65,20 @@ INSERT INTO "dgmEffects" (effectID,effectName,effectCategory,preExpression,postE
  VALUES ("10004","naniteRepairPasteArmorDamageBonus","0","59","59","eufe: Ancillary Armor Repairer chargedArmorDamageMultiplier bonus","0","0");
 
 INSERT INTO "dgmTypeEffects" VALUES ("28668","10004","0");
+
+--Tactical Modes
+INSERT INTO "dgmEffects" (effectID,effectName,effectCategory,preExpression,postExpression,description,isOffensive,isAssistance)
+VALUES ("10005","tacticalMode","0","131","131","eufe: Tactical Mode Slot","0","0");
+
+INSERT INTO "dgmTypeEffects" VALUES ("34319","10005","0");
+INSERT INTO "dgmTypeEffects" VALUES ("34321","10005","0");
+INSERT INTO "dgmTypeEffects" VALUES ("34323","10005","0");
+
+INSERT INTO "dgmTypeAttributes" VALUES (34319,1302,34317);
+INSERT INTO "dgmTypeAttributes" VALUES (34321,1302,34317);
+INSERT INTO "dgmTypeAttributes" VALUES (34323,1302,34317);
+
+INSERT INTO "dgmAttributeTypes" (attributeID,attributeName,attributeCategory,published,unitID,displayName,stackable,highIsGood,categoryID,iconID)
+VALUES (10000, "tacticalModes", 4, 0, 122, "Tactical Modes", 1, 1, 1, NULL);
+
+INSERT INTO "dgmTypeAttributes" VALUES (34317,10000,1);

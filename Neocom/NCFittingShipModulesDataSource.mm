@@ -251,30 +251,21 @@
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
 		NCDBInvType* type = [self.controller typeWithItem:ship];
 		NSString* title;
-		NSArray* conditions;
 		NCDBEufeItemCategory* category;
 		switch (section.slot) {
 			case eufe::Module::SLOT_HI:
-				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 12"];
 				title = NSLocalizedString(@"Hi slot", nil);
 				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotHi size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_MED:
-				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 13"];
 				title = NSLocalizedString(@"Med slot", nil);
 				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMed size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_LOW:
-				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID", @"dgmTypeEffects.effectID = 11"];
 				title = NSLocalizedString(@"Low slot", nil);
 				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotLow size:0 race:nil];
 				break;
 			case eufe::Module::SLOT_RIG:
-				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID",
-							   @"dgmTypeEffects.effectID = 2663",
-							   @"dgmTypeAttributes.typeID = invTypes.typeID",
-							   @"dgmTypeAttributes.attributeID = 1547",
-							   [NSString stringWithFormat:@"dgmTypeAttributes.value = %d", static_cast<int>(ship->getAttribute(1547)->getValue())]];
 				title = NSLocalizedString(@"Rigs", nil);
 				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotRig size:ship->getAttribute(1547)->getValue() race:nil];
 				break;
@@ -294,12 +285,13 @@
 						title = NSLocalizedString(@"Gallente Subsystems", nil);
 						break;
 				}
-				conditions = @[@"dgmTypeEffects.typeID = invTypes.typeID",
-							   @"dgmTypeEffects.effectID = 3772",
-							   [NSString stringWithFormat:@"invTypes.raceID=%d", raceID]];
 				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotSubsystem size:0 race:type.race];
 				break;
 			}
+			case eufe::Module::SLOT_MODE:
+				title = NSLocalizedString(@"Tactical Mode", nil);
+				category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
+				break;
 			default:
 				return;
 		}

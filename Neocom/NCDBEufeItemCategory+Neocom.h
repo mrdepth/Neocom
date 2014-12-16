@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, NCDBEufeItemSlot) {
 	NCDBEufeItemSlotRig,
 	NCDBEufeItemSlotSubsystem,
 	NCDBEufeItemSlotStructure,
+	NCDBEufeItemSlotMode,
 	NCDBEufeItemSlotCharge,
 	NCDBEufeItemSlotDrone,
 	NCDBEufeItemSlotImplant,

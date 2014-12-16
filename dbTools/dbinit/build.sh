@@ -15,6 +15,7 @@ sqlite3 ./eufe.sqlite ".read dgmCompiledEffects.sql"
 	
 echo ".read init.sql"
 sqlite3 ./eveDB/eve.sqlite ".read init.sql"
+sqlite3 ./eveDB/eve.sqlite ".read eufe/fixes.sql"
 
 #sqlite3 ./eveDB/eve.sqlite ".read invMarketGroupsFix.sql"
 

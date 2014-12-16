@@ -13,8 +13,8 @@
 
 @interface NCDBEufeItemCategory : NSManagedObject
 
-@property (nonatomic) int16_t category;
-@property (nonatomic) int16_t subcategory;
+@property (nonatomic) int32_t category;
+@property (nonatomic) int32_t subcategory;
 @property (nonatomic, retain) NSSet *eufeItems;
 @property (nonatomic, retain) NSSet *itemGroups;
 @property (nonatomic, retain) NCDBChrRace *race;

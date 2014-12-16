@@ -120,6 +120,7 @@
 		12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
 		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
+		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
 		122947ED18EAB3950093FAB8 /* Fitting_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122947EC18EAB3950093FAB8 /* Fitting_iPad.storyboard */; };
@@ -877,6 +878,7 @@
 		12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoCell.m; sourceTree = "<group>"; };
 		12160493187EE2AA00BD1DCF /* NCAccountCharacterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCharacterCell.h; sourceTree = "<group>"; };
 		12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCharacterCell.m; sourceTree = "<group>"; };
+		1225A0B61A400954005DD73B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		1229475B18EA8B2E0093FAB8 /* NCSkillQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillQueueViewController.h; sourceTree = "<group>"; };
 		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
 		122947E918EAA51D0093FAB8 /* NCSkillsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillsContainerViewController.h; sourceTree = "<group>"; };
@@ -1942,6 +1944,7 @@
 				1209685E1845F0CB00921A37 /* main.m */,
 				120968601845F0CB00921A37 /* Neocom-Prefix.pch */,
 				12ACDCAB18A0B39F00566DFE /* damagePatterns.plist */,
+				1225A0B61A400954005DD73B /* Launch Screen.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -4800,6 +4803,7 @@
 				12C66E5718D0377C0037124A /* toolbar@2x.png in Resources */,
 				126F1CBB1954032300E5CD4F /* icon04_07.png in Resources */,
 				120B507718FCFFCB0033AF78 /* level_051.gif in Resources */,
+				1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */,
 				127C50C118CF550C0074877C /* buttonBackgroundDone.png in Resources */,
 				127123A018979E40005F46EE /* NCFittingSectionGenericHeaderView.xib in Resources */,
 				128A1F3818990DA200005C4F /* NCFittingSectionHiSlotHeaderView.xib in Resources */,

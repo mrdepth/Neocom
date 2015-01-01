@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray* cargo;
 @property (nonatomic, strong) NSArray* implants;
 @property (nonatomic, strong) NSArray* boosters;
+@property (nonatomic, assign) eufe::TypeID mode;
 @end
 
 @interface NCLoadoutDataShipModule : NSObject<NSCoding>

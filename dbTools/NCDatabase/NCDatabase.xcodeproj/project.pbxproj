@@ -283,7 +283,7 @@
 		12476C2A19501A4C009E07C6 /* Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
 		12476C2B19501A4C009E07C6 /* Drone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drone.cpp; sourceTree = "<group>"; };
 		12476C2C19501A4C009E07C6 /* Drone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drone.h; sourceTree = "<group>"; };
-		12476C2D19501A4C009E07C6 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; };
+		12476C2D19501A4C009E07C6 /* Effect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Effect.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		12476C2E19501A4C009E07C6 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		12476C2F19501A4C009E07C6 /* EffectAdaptiveArmorHardener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EffectAdaptiveArmorHardener.cpp; sourceTree = "<group>"; };
 		12476C3019501A4C009E07C6 /* EffectAdaptiveArmorHardener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectAdaptiveArmorHardener.h; sourceTree = "<group>"; };

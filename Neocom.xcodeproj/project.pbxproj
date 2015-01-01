@@ -171,7 +171,6 @@
 		1243761C189653980078F526 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1243761B189653980078F526 /* Character.storyboard */; };
 		1243771518969E590078F526 /* NCDatabaseNPCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1243771418969E590078F526 /* NCDatabaseNPCViewController.m */; };
 		12476C11194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */; };
-		124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */; };
 		1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */; };
 		1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1256923C1A37799A008F6468 /* EventKit.framework */; };
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
@@ -481,6 +480,7 @@
 		12D011C018A2101400C0A228 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12D011BE18A2101400C0A228 /* checkmark@2x.png */; };
 		12D6DC0C1920A296003FC5ED /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */; };
 		12D6DC0D1920A296003FC5ED /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12D6DC0B1920A296003FC5ED /* README.txt */; };
+		12E0384C1A55690600499546 /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12E0384B1A55690600499546 /* libFlurry_6.0.0.a */; };
 		12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */; };
 		12E86940195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
 		12E86941195EC14D004B66D0 /* NCTodayRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E8693F195EC14D004B66D0 /* NCTodayRow.m */; };
@@ -675,6 +675,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 12B68566195EB1B20043B30A;
 			remoteInfo = today;
+		};
+		12E038501A55690700499546 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1271238D18978235005F46EE /* eufe.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1242EC1E1A4DFF5B00FD488A;
+			remoteInfo = dbpatch;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -964,7 +971,6 @@
 		1243771418969E590078F526 /* NCDatabaseNPCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseNPCViewController.m; sourceTree = "<group>"; };
 		12476C0F194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBMapSolarSystem+Neocom.h"; sourceTree = "<group>"; };
 		12476C10194F2335009E07C6 /* NCDBMapSolarSystem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBMapSolarSystem+Neocom.m"; sourceTree = "<group>"; };
-		124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.3.0.a; sourceTree = "<group>"; };
 		1251E95918BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCKillMailDetailsAttackerCell.h; sourceTree = "<group>"; };
 		1251E95A18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCKillMailDetailsAttackerCell.m; sourceTree = "<group>"; };
 		1256923C1A37799A008F6468 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -1522,6 +1528,7 @@
 		12D6DC091920A296003FC5ED /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		12D6DC0A1920A296003FC5ED /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		12D6DC0B1920A296003FC5ED /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		12E0384B1A55690600499546 /* libFlurry_6.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.0.0.a; sourceTree = "<group>"; };
 		12E5437F18880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeVariationsViewController.h; sourceTree = "<group>"; };
 		12E5438018880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeVariationsViewController.m; sourceTree = "<group>"; };
 		12E8693E195EC14D004B66D0 /* NCTodayRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTodayRow.h; sourceTree = "<group>"; };
@@ -1747,7 +1754,6 @@
 				1256923D1A37799A008F6468 /* EventKit.framework in Frameworks */,
 				12A38E5B190BED24000102D4 /* iAd.framework in Frameworks */,
 				1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */,
-				124C3D9B19C2C36400FCF18E /* libFlurry_5.3.0.a in Frameworks */,
 				12F9562418CDB8A2005CEAD6 /* CoreTelephony.framework in Frameworks */,
 				123A97F318C7017E001045F5 /* MessageUI.framework in Frameworks */,
 				12F9562218CDB835005CEAD6 /* AdSupport.framework in Frameworks */,
@@ -1762,6 +1768,7 @@
 				84FA63E3188C5227008FD761 /* ImageIO.framework in Frameworks */,
 				129FEE4A186032B100F75FA6 /* libsqlite3.dylib in Frameworks */,
 				121112401859A54D009E5106 /* CoreData.framework in Frameworks */,
+				12E0384C1A55690600499546 /* libFlurry_6.0.0.a in Frameworks */,
 				120968551845F0CB00921A37 /* CoreGraphics.framework in Frameworks */,
 				120968571845F0CB00921A37 /* UIKit.framework in Frameworks */,
 				120968531845F0CB00921A37 /* Foundation.framework in Frameworks */,
@@ -2422,7 +2429,7 @@
 			isa = PBXGroup;
 			children = (
 				1261594718EE7F9C0049B9CE /* Flurry.h */,
-				124C3D9A19C2C36400FCF18E /* libFlurry_5.3.0.a */,
+				12E0384B1A55690600499546 /* libFlurry_6.0.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -3106,6 +3113,7 @@
 				1271239318978236005F46EE /* compiler */,
 				1271239518978236005F46EE /* libeufe.a */,
 				124C3D9919C2C29B00FCF18E /* eufeTests.xctest */,
+				12E038511A55690700499546 /* dbpatch */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4717,6 +4725,13 @@
 			fileType = archive.ar;
 			path = libeufe.a;
 			remoteRef = 1271239418978236005F46EE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		12E038511A55690700499546 /* dbpatch */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = dbpatch;
+			remoteRef = 12E038501A55690700499546 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

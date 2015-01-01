@@ -212,7 +212,7 @@
 			case eufe::Module::SLOT_MODE:
 			default:
 				header.imageView.image = nil;
-				header.titleLabel.text = NSLocalizedString(@"Mode", nil);
+				header.titleLabel.text = NSLocalizedString(@"Tactical Mode", nil);
 		}
 		return header;
 	}
@@ -247,7 +247,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	if (indexPath.row >= section.modules.size()) {
+	if (indexPath.row >= section.modules.size() || section.slot == eufe::Module::SLOT_MODE) {
 		eufe::Ship* ship = self.controller.fit.pilot->getShip();
 		NCDBInvType* type = [self.controller typeWithItem:ship];
 		NSString* title;
@@ -302,6 +302,12 @@
 																 inView:cell
 															   animated:YES
 													  completionHandler:^(NCDBInvType *type) {
+														  if (section.slot == eufe::Module::SLOT_MODE) {
+															  eufe::ModulesList modes;
+															  ship->getModules(eufe::Module::SLOT_MODE, std::inserter(modes, modes.end()));
+															  for (auto i:modes)
+																  ship->removeModule(i);
+														  }
 														  ship->addModule(type.typeID);
 														  [self.controller reload];
 														  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)

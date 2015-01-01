@@ -5,6 +5,7 @@ cd dump
 cd ..
 sqlite3 database.sqlite ".read init.sql"
 sqlite3 database.sqlite ".read eufe/fixes.sql"
+./dbpatch database.sqlite
 ./compiler database.sqlite ./
 
 echo ".read eufeInit.sql"

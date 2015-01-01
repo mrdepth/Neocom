@@ -31,7 +31,7 @@
 	self.refreshControl = nil;
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	self.versionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
-	self.sdeVersionLabel.text = @"Phoebe 1.0";
+	self.sdeVersionLabel.text = @"Rhea 1.0";
 }
 
 - (void)didReceiveMemoryWarning

@@ -55,17 +55,23 @@
 	[Flurry startSession:@"DP6GYKKHQVCR2G6QPJ33"];
 #endif
 	
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
+	/*if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SettingsNoAds"]) {
 		ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
 		purchase.purchased = YES;
 		[[NSUserDefaults standardUserDefaults] setValue:nil forKeyPath:@"SettingsNoAds"];
-	}
+	}*/
 
 	[self setupAppearance];
 	[self setupDefaultSettings];
 	
 	if (![[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsUDIDKey])
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString uuidString] forKey:NCSettingsUDIDKey];
+	
+	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+		[application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert
+																						categories:nil]];
+		
+	}
 
 	self.taskManager = [NCTaskManager new];
 	SKPaymentQueue *paymentQueue = [SKPaymentQueue defaultQueue];

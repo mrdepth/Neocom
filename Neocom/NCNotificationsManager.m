@@ -19,7 +19,6 @@
 
 @interface NCEvent : NSObject<NSCoding>
 @property (nonatomic, strong) EVEUpcomingCalendarEventsItem* event;
-@property (nonatomic, strong) NSMutableArray* characterIDs;
 @property (nonatomic, strong) NSString* eventIdentifier;
 @property (nonatomic, strong) NSDate* localDate;
 @end
@@ -28,7 +27,6 @@
 
 - (id) init {
 	if (self = [super init]) {
-		self.characterIDs = [NSMutableArray new];
 	}
 	return self;
 }
@@ -38,18 +36,14 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
 	if (self = [super init]) {
 		self.event = [aDecoder decodeObjectForKey:@"event"];
-		self.characterIDs = [[aDecoder decodeObjectForKey:@"characterIDs"] mutableCopy];
 		self.eventIdentifier = [aDecoder decodeObjectForKey:@"eventIdentifier"];
 		self.localDate = [aDecoder decodeObjectForKey:@"localDate"];
-		if (!self.characterIDs)
-			self.characterIDs = [NSMutableArray new];
 	}
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)aCoder {
 	[aCoder encodeObject:self.event forKey:@"event"];
-	[aCoder encodeObject:self.characterIDs forKey:@"characterIDs"];
 	[aCoder encodeObject:self.eventIdentifier forKey:@"eventIdentifier"];
 	[aCoder encodeObject:self.localDate forKey:@"localDate"];
 }
@@ -305,6 +299,10 @@
 		}
 		else if (ekAuthorizationStatus == EKAuthorizationStatusAuthorized) {
 			[self updateEventsWithEventStore:[EKEventStore new] completionHandler:^(BOOL completed) {
+				if (completed) {
+					self.lastEventsUpdate = [NSDate date];
+					[[NSUserDefaults standardUserDefaults] setValue:self.lastEventsUpdate forKey:NCSettingsNotificationsLastEventsUpdateTimeKey];
+				}
 				self.eventsUpdating = NO;
 			}];
 		}
@@ -344,11 +342,6 @@
 					[[NSUserDefaults standardUserDefaults] setValue:calendar.calendarIdentifier forKey:NCSettingsCalendarIdentifierKey];
 			}
 			
-			NSMutableSet* characterIDs = [NSMutableSet new];
-			[events enumerateKeysAndObjectsUsingBlock:^(id key, NCEvent* event, BOOL *stop) {
-				[characterIDs addObjectsFromArray:event.characterIDs];
-			}];
-			
 			[[self taskManager] addTaskWithIndentifier:nil
 												 title:nil
 												 block:^(NCTask *task) {
@@ -365,12 +358,7 @@
 																																					if ([task isCancelled])
 																																						*stop = YES;
 																																				}];
-														 [characterIDs removeObject:@(account.characterID)];
 														 if (calendarEvents) {
-															 NSArray* filteredEvents = [events.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"characterIDs CONTAINS %d", account.characterID]];
-															 for (NCEvent* event in filteredEvents)
-																 [event.characterIDs removeObject:@(account.characterID)];
-															 
 															 for (EVEUpcomingCalendarEventsItem* eventItem in calendarEvents.upcomingCalendarEvents) {
 																 NCEvent* event = events[@(eventItem.eventID)];
 																 if (!event) {
@@ -378,7 +366,6 @@
 																	 event.event = eventItem;
 																	 event.localDate = [calendarEvents localTimeWithServerTime:eventItem.eventDate];
 																 }
-																 [event.characterIDs addObject:@(account.characterID)];
 															 }
 														 }
 													 }
@@ -388,26 +375,27 @@
 										 NSMutableArray* updates = [NSMutableArray new];
 										 NSMutableArray* removes = [NSMutableArray new];
 										 [events enumerateKeysAndObjectsUsingBlock:^(id key, NCEvent* event, BOOL *stop) {
-											 if (event.characterIDs.count == 0 && event.eventIdentifier) {
-												 EKEvent* ekEvent = [eventStore eventWithIdentifier:event.eventIdentifier];
-												 [eventStore removeEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
-												 [removes addObject:key];
+
+											 EKEvent* ekEvent;
+											 if (event.eventIdentifier)
+												 ekEvent = [eventStore eventWithIdentifier:event.eventIdentifier];
+											 
+											 if ([event.localDate timeIntervalSinceNow] < -3600 * 24) {
+												 [removes addObject:event];
+												 if (ekEvent)
+													 [eventStore removeEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
+												 return;
 											 }
-											 else if (event.characterIDs.count > 0) {
-												 EKEvent* ekEvent;
-												 if (event.eventIdentifier)
-													 ekEvent = [eventStore eventWithIdentifier:event.eventIdentifier];
-												 
-												 if (!ekEvent)
-													 ekEvent = [EKEvent eventWithEventStore:eventStore];
-												 ekEvent.title = [NSString stringWithFormat:@"%@: %@", event.event.ownerName, event.event.eventTitle];
-												 ekEvent.notes = [[event.event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
-												 ekEvent.startDate = event.localDate;
-												 ekEvent.endDate = [event.localDate dateByAddingTimeInterval:event.event.duration > 0 ? event.event.duration * 60 : 3600];
-												 ekEvent.calendar = calendar;
-												 [eventStore saveEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
-												 [updates addObject:@{@"ekEvent": ekEvent, @"event": event}];
-											 }
+
+											 if (!ekEvent)
+												 ekEvent = [EKEvent eventWithEventStore:eventStore];
+											 ekEvent.title = [NSString stringWithFormat:@"%@: %@", event.event.ownerName, event.event.eventTitle];
+											 ekEvent.notes = [[event.event.eventText stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
+											 ekEvent.startDate = event.localDate;
+											 ekEvent.endDate = [event.localDate dateByAddingTimeInterval:event.event.duration > 0 ? event.event.duration * 60 : 3600];
+											 ekEvent.calendar = calendar;
+											 [eventStore saveEvent:ekEvent span:EKSpanThisEvent commit:NO error:nil];
+											 [updates addObject:@{@"ekEvent": ekEvent, @"event": event}];
 										 }];
 										 
 										 if (removes.count > 0)

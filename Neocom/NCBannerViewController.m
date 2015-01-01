@@ -45,11 +45,14 @@
     [super viewDidLoad];
 	self.bannerView.intrinsicContentSize = CGSizeZero;
 	
+#warning Remove
+	return;
+	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		if (![ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
-			self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:CGPointMake(0, 0)];
-			self.gadBannerView.adSize = kGADAdSizeBanner;
+			self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
+			self.gadBannerView.adSize = kGADAdSizeSmartBannerPortrait;
 			self.gadBannerView.rootViewController = self;
 			self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
 			self.gadBannerView.delegate = self;
@@ -89,7 +92,7 @@
 #pragma mark - GADBannerViewDelegate
 
 - (void)adViewDidReceiveAd:(GADBannerView *)view {
-	self.bannerView.intrinsicContentSize = self.gadBannerView.adSize.size;
+	self.bannerView.intrinsicContentSize = CGSizeFromGADAdSize(self.gadBannerView.adSize);
 	[self.bannerView invalidateIntrinsicContentSize];
 	if (!self.gadBannerView.superview) {
 		[self.bannerView addSubview:self.gadBannerView];

@@ -28,6 +28,7 @@
 		self.cargo = [aDecoder decodeObjectForKey:@"cargo"];
 		self.implants = [aDecoder decodeObjectForKey:@"implants"];
 		self.boosters = [aDecoder decodeObjectForKey:@"boosters"];
+		self.mode = [aDecoder decodeInt32ForKey:@"mode"];
 	}
 	return self;
 }
@@ -51,7 +52,8 @@
 		[aCoder encodeObject:self.implants forKey:@"implants"];
 	if (self.boosters)
 		[aCoder encodeObject:self.boosters forKey:@"boosters"];
-	
+	if (self.mode)
+		[aCoder encodeInt32:self.mode forKey:@"mode"];
 	
 }
 
@@ -64,6 +66,8 @@
 		if (a != b && ![a isEqualToArray:b])
 			return NO;
 	}
+	if (self.mode != [[object valueForKey:@"mode"] intValue])
+		return NO;
 	return YES;
 }
 
@@ -749,6 +753,7 @@
 	NSMutableArray* cargo = [NSMutableArray new];
 	NSMutableArray* implants = [NSMutableArray new];
 	NSMutableArray* boosters = [NSMutableArray new];
+	eufe::TypeID modeID = 0;
 	
 	for(auto i : ship->getModules()) {
 		eufe::Charge* charge = i->getCharge();
@@ -772,6 +777,9 @@
 				break;
 			case eufe::Module::SLOT_SUBSYSTEM:
 				[subsystems addObject:module];
+				break;
+			case eufe::Module::SLOT_MODE:
+				modeID = module.typeID;
 				break;
 			default:
 				break;
@@ -820,6 +828,7 @@
 	self.loadoutData.cargo = cargo;
 	self.loadoutData.implants = implants;
 	self.loadoutData.boosters = boosters;
+	self.loadoutData.mode = modeID;
 }
 
 - (void) save {
@@ -890,6 +899,18 @@
 						module->setCharge(item.typeID);
 				}
 			}
+		}
+		
+		if (ship->getFreeSlots(eufe::Module::SLOT_MODE) > 0) {
+			eufe::TypeID modeID = self.loadoutData.mode;
+			if (!modeID) {
+				NCDBEufeItemCategory* category = [NCDBEufeItemCategory categoryWithSlot:NCDBEufeItemSlotMode size:ship->getTypeID() race:nil];
+				NCDBEufeItemGroup* group = [category.itemGroups anyObject];
+				NCDBEufeItem* item = [group.items anyObject];
+				modeID = item.type.typeID;
+			}
+			if (modeID > 0)
+				ship->addModule(modeID);
 		}
 	}
 }

@@ -1193,7 +1193,7 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 					 itemGroup.icon = nil;
 
 					 
-					 [database execSQLRequest:[NSString stringWithFormat:@"SELECT a.typeID FROM dgmTypeEffects AS a, dgmTypeAttributes AS b WHERE effectID=10005 AND attributeID=1302 AND a.typeID=b.typeID AND value=%d;", typeID]
+					 [database execSQLRequest:[NSString stringWithFormat:@"SELECT a.typeID FROM dgmTypeEffects AS a, dgmTypeAttributes AS b WHERE effectID=%d AND attributeID=1302 AND a.typeID=b.typeID AND value=%d;", eufe::TACTICAL_MODE_EFFECT_ID, typeID]
 								  resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 									  int32_t typeID = sqlite3_column_int(stmt, 0);
 									  NCDBInvType* invType = invTypes[@(typeID)];

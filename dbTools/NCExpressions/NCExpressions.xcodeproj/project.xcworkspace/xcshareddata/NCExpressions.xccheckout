@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F9EF93EC-53CA-4374-8115-3D6387A42E07</string>
+	<key>IDESourceControlProjectName</key>
+	<string>NCExpressions</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
+		<string>https://github.com/mrdepth/EVEUniverse.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>dbTools/NCExpressions/NCExpressions.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mrdepth/EVEUniverse.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Neocom</string>
+		</dict>
+	</array>
+</dict>
+</plist>

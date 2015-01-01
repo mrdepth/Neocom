@@ -26,8 +26,10 @@
 }
 
 - (id) initWithInvType:(NCDBInvType*) type {
+	if (!type)
+		return nil;
+
 	if (self = [super init]) {
-		assert(type);
 		self.type = type;
 	}
 	return self;

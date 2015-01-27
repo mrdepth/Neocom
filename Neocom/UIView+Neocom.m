@@ -11,16 +11,7 @@
 @implementation UIView (Neocom)
 
 - (UIView*) snapshot {
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-		UIGraphicsBeginImageContextWithOptions(self.bounds.size, YES, self.contentScaleFactor);
-		[self.layer drawInContext:UIGraphicsGetCurrentContext()];
-		UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		return [[UIImageView alloc] initWithImage:image];
-	}
-	else {
-		return [self snapshotViewAfterScreenUpdates:YES];
-	}
+	return [self snapshotViewAfterScreenUpdates:YES];
 }
 
 

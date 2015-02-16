@@ -17,6 +17,7 @@
 #import "NCAPIKeyAccessMaskViewController.h"
 #import "NCStoryboardPopoverSegue.h"
 #import "NCSetting.h"
+#import "NSAttributedString+Neocom.h"
 
 @interface NCAccountsViewControllerDataAccount : NSObject<NSCoding>
 @property (nonatomic, strong) NCAccount* account;
@@ -120,6 +121,14 @@
 	self.modeSegmentedControl.selectedSegmentIndex = [self.modeSetting.value boolValue] ? 1 : 0;
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+		NSLog(@"%@", self.presentingViewController);
+		NSLog(@"%@", self.transitionCoordinator);
+	} completion:nil];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -169,29 +178,6 @@
 	NCAccountsViewControllerData* data = self.data;
 	return data.accounts.count;
 }
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NCAccountsViewControllerData* data = self.data;
-	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-	
-	UITableViewCell* cell = nil;
-	if ([self.modeSetting.value boolValue]) {
-		if (account.account.accountType == NCAccountTypeCharacter)
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCharacterCompactCell"];
-		else
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCorporationCompactCell"];
-	}
-	else {
-		if (account.account.accountType == NCAccountTypeCharacter)
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCharacterCell"];
-		else
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCorporationCell"];
-	}
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -274,38 +260,8 @@
 
 #pragma mark - Table view delegate
 
-//- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
-//	return section == 0 ? UITableViewAutomaticDimension : 44;
-//}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	NCAccountsViewControllerData* data = self.data;
-	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
-	NSString *cellIdentifier;
-	
-	if ([self.modeSetting.value boolValue]) {
-		if (account.account.accountType == NCAccountTypeCharacter)
-			cellIdentifier = @"NCAccountCharacterCompactCell";
-		else
-			cellIdentifier = @"NCAccountCorporationCompactCell";
-	}
-	else {
-		if (account.account.accountType == NCAccountTypeCharacter)
-			cellIdentifier = @"NCAccountCharacterCell";
-		else
-			cellIdentifier = @"NCAccountCorporationCell";
-	}
-	
-	
-	UITableViewCell* cell = [self tableView:self.tableView offscreenCellWithIdentifier:cellIdentifier];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 102;
 }
 
 /*
@@ -429,6 +385,7 @@
 	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
 	
 	if (account.account.accountType == NCAccountTypeCharacter) {
+		NSMutableAttributedString* s = [NSMutableAttributedString new];
 		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) tableViewCell;
 		
 		cell.characterImageView.image = nil;
@@ -439,33 +396,43 @@
 		EVECharacterInfo* characterInfo = account.account.characterInfo;
 		EVECharacterSheet* characterSheet = account.account.characterSheet;
 		
+		NSAttributedString* lastKnownLocation;
+		NSAttributedString* skills;
+		NSAttributedString* balance;
+
+		if (characterInfo.lastKnownLocation && characterInfo.shipTypeName)
+			lastKnownLocation =[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, %@\n", characterInfo.lastKnownLocation, characterInfo.shipTypeName] attributes:nil];
+
 		if (characterInfo) {
 			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
 			if (characterInfo.allianceID)
 				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
 			
+			NSMutableAttributedString* sp = [[NSMutableAttributedString alloc] initWithString:[NSString shortStringWithFloat:characterInfo.skillPoints unit:nil]
+																	 attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+			[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" SP", nil) attributes:nil]];
+			
 			if (characterSheet) {
-				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP (%@ skills)", nil),
-										 [NSString shortStringWithFloat:characterInfo.skillPoints unit:nil],
-										 [NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]];
-				//cell.skillsLabel.textColor = characterInfo.skillPoints > characterSheet.cloneSkillPoints ? [UIColor redColor] : [UIColor greenColor];
+				[sp appendAttributedString:[[NSAttributedString alloc] initWithString:@" (" attributes:nil]];
+				[sp appendAttributedString:[[NSAttributedString alloc] initWithString:[NSNumberFormatter neocomLocalizedStringFromNumber:@(characterSheet.skills.count)]
+								attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}]];
+				[sp appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@" skills)", nil) attributes:nil]];
 			}
-			else {
-				cell.skillsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ SP", nil), [NSString shortStringWithFloat:characterInfo.skillPoints unit:nil]];
-				//cell.skillsLabel.textColor = [UIColor lightGrayColor];
-			}
+			skills = sp;
 		}
 		else
 			cell.skillsLabel.text = nil;
+		balance = [NSAttributedString shortAttributedStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
 		
 		cell.characterNameLabel.text = characterInfo.characterName ? characterInfo.characterName : NSLocalizedString(@"Unknown Error", nil);
 		cell.corporationNameLabel.text = characterInfo.corporation;
 		cell.allianceNameLabel.text = characterInfo.alliance;
 		
-		cell.locationLabel.text = characterInfo.lastKnownLocation;
-		cell.shipLabel.text = characterInfo.shipTypeName;
 		
-		cell.balanceLabel.text = [NSString shortStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
+		//cell.locationLabel.text = characterInfo.lastKnownLocation;
+		//cell.shipLabel.text = characterInfo.shipTypeName;
+		
+		//cell.balanceLabel.text = [NSString shortStringWithFloat:characterSheet.balance unit:NSLocalizedString(@"ISK", nil)];
 		
 		if (account.account.skillQueue) {
 			NSString *text;
@@ -555,6 +522,26 @@
 		
 		NSString* string = [NSString stringWithFormat:NSLocalizedString(@"API Key %d. Tap to see Access Mask", nil), account.account.apiKey.keyID];
 		[cell.apiKeyButton setTitle:string forState:UIControlStateNormal];
+	}
+}
+
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCAccountsViewControllerData* data = self.data;
+	NCAccountsViewControllerDataAccount* account = data.accounts[indexPath.row];
+	
+	UITableViewCell* cell = nil;
+	if ([self.modeSetting.value boolValue]) {
+		if (account.account.accountType == NCAccountTypeCharacter)
+			return @"NCAccountCharacterCompactCell";
+		else
+			return @"NCAccountCorporationCompactCell";
+	}
+	else {
+		if (account.account.accountType == NCAccountTypeCharacter)
+			return @"NCAccountCharacterCell";
+		else
+			return @"NCAccountCorporationCell";
 	}
 }
 

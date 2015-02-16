@@ -37,5 +37,6 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath;
 - (id) tableView:(UITableView *)tableView offscreenCellWithIdentifier:(NSString*) identifier;
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

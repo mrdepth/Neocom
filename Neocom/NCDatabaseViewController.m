@@ -109,28 +109,6 @@
 	return sectionInfo.numberOfObjects;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
-	if ([row isKindOfClass:[NCDBInvType class]]) {
-		static NSString *CellIdentifier = @"TypeCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-	else {
-		static NSString *CellIdentifier = @"CategoryGroupCell";
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
@@ -140,26 +118,6 @@
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 37;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
-
-	NSString *CellIdentifier;
-	if ([row isKindOfClass:[NCDBInvType class]])
-		CellIdentifier = @"TypeCell";
-	else
-		CellIdentifier = @"CategoryGroupCell";
-	
-	UITableViewCell* cell = [self tableView:self.tableView offscreenCellWithIdentifier:CellIdentifier];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController
@@ -250,6 +208,14 @@
 			cell.iconView.image = [[[NCDBEveIcon defaultGroupIcon] image] image];
 		cell.object = row;
 	}
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	id row = tableView == self.tableView ? [self.result objectAtIndexPath:indexPath] : [self.searchResult objectAtIndexPath:indexPath];
+	if ([row isKindOfClass:[NCDBInvType class]])
+		return @"TypeCell";
+	else
+		return @"CategoryGroupCell";
 }
 
 #pragma mark - Private

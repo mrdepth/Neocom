@@ -11,7 +11,10 @@
 @interface NCTableViewCell : UITableViewCell
 @property (nonatomic, strong) id object;
 
-@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
-@property (nonatomic, strong) IBOutlet UILabel* subtitleLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* iconView;
+@property (nonatomic, weak) IBOutlet UILabel* titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel* subtitleLabel;
+@property (nonatomic, weak) IBOutlet UIImageView* iconView;
+
+
+@property (nonatomic, weak) IBOutlet UIView* layoutContentView;
 @end

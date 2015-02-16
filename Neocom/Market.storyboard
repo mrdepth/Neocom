@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="NqN-qQ-eq1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Assets-->
         <scene sceneID="eXL-lR-1hs">
             <objects>
-                <tableViewController id="WPG-Pb-Y5G" customClass="NCAssetsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCAssetsViewController" id="WPG-Pb-Y5G" customClass="NCAssetsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LOD-6x-LaA" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -50,6 +50,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="u7V-24-vab" id="yuo-F3-bre"/>
                         <segue destination="TvR-8U-ty6" kind="push" identifier="NCAssetsContainerViewController" id="Fen-pK-A2o"/>
@@ -66,23 +67,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1997" y="1202"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Zvy-IC-EmL">
-            <objects>
-                <navigationController storyboardIdentifier="NCAssetsViewController" definesPresentationContext="YES" id="NqN-qQ-eq1" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="JUc-U7-B4o">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="WPG-Pb-Y5G" kind="relationship" relationship="rootViewController" id="qT6-KY-Gxl"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HsX-yS-cH7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2415" y="1208"/>
+            <point key="canvasLocation" x="-1891" y="332"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="iYZ-Uq-9vu">
@@ -111,7 +96,7 @@
         <!--Market Orders-->
         <scene sceneID="L15-3N-u0g">
             <objects>
-                <tableViewController id="VQG-7T-K43" customClass="NCMarketOrdersViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCMarketOrdersViewController" id="VQG-7T-K43" customClass="NCMarketOrdersViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="1mi-fc-Qyj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -220,10 +205,11 @@
                     <navigationItem key="navigationItem" title="Market Orders" id="FzJ-Lp-FIr">
                         <barButtonItem key="backBarButtonItem" title="Back" id="PgI-aS-jhT"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5c-SK-98H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1879" y="351"/>
+            <point key="canvasLocation" x="-1139" y="-417"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="DuA-xg-qcl">
@@ -374,23 +360,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d7X-97-B9J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1249" y="399"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="RI7-Ew-JZs">
-            <objects>
-                <navigationController storyboardIdentifier="NCMarketOrdersViewController" definesPresentationContext="YES" id="tRt-HT-3t7" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wGN-3n-oP9">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="VQG-7T-K43" kind="relationship" relationship="rootViewController" id="Gfy-dx-jOc"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sjJ-Pw-foH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2415" y="351"/>
+            <point key="canvasLocation" x="-1388" y="221"/>
         </scene>
         <!--Assets-->
         <scene sceneID="X3O-Ap-RDL">
@@ -452,7 +422,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-1388" y="1202"/>
+            <point key="canvasLocation" x="-1388" y="946"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="PZu-CC-jw3">
@@ -476,12 +446,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="apb-lK-XfR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-935" y="1208"/>
+            <point key="canvasLocation" x="-997" y="946"/>
         </scene>
         <!--Wallet Transactions-->
         <scene sceneID="uee-CC-nKM">
             <objects>
-                <tableViewController id="Gll-RC-swb" customClass="NCWalletTransactionsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCWalletTransactionsViewController" id="Gll-RC-swb" customClass="NCWalletTransactionsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="18f-sy-IBS" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -594,31 +564,16 @@
                     <navigationItem key="navigationItem" title="Wallet Transactions" id="etP-qz-qZP">
                         <barButtonItem key="backBarButtonItem" title="Back" id="eU3-SI-k6h"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cNF-fg-MUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1891" y="-417"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="VnU-cj-n1A">
-            <objects>
-                <navigationController storyboardIdentifier="NCWalletTransactionsViewController" definesPresentationContext="YES" id="qQn-VB-CEk" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="QGi-HA-5j0">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Gll-RC-swb" kind="relationship" relationship="rootViewController" id="hrN-Yd-w0P"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vRY-j3-QG0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2427" y="-417"/>
-        </scene>
         <!--Wallet Journal-->
         <scene sceneID="N47-BF-31I">
             <objects>
-                <tableViewController id="EVq-4f-yEN" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCWalletJournalViewController" id="EVq-4f-yEN" customClass="NCWalletJournalViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="102" sectionHeaderHeight="22" sectionFooterHeight="22" id="r1T-Ep-Pnp" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -709,31 +664,16 @@
                     <navigationItem key="navigationItem" title="Wallet Journal" id="Uum-dM-npZ">
                         <barButtonItem key="backBarButtonItem" title="Back" id="pUA-yE-u1L"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9YX-mQ-uk6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-569" y="-417"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="hfH-gY-08p">
-            <objects>
-                <navigationController storyboardIdentifier="NCWalletJournalViewController" definesPresentationContext="YES" id="odi-IN-ooe" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="28E-e4-als">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="EVq-4f-yEN" kind="relationship" relationship="rootViewController" id="gvJ-nC-QSh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9Gg-oZ-6TM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1105" y="-417"/>
+            <point key="canvasLocation" x="-1507" y="-417"/>
         </scene>
         <!--Industry Jobs-->
         <scene sceneID="nPf-Cd-G5Q">
             <objects>
-                <tableViewController id="ISd-ft-9N5" customClass="NCIndustryJobsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCIndustryJobsViewController" id="ISd-ft-9N5" customClass="NCIndustryJobsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="108" sectionHeaderHeight="22" sectionFooterHeight="22" id="6hK-1g-Ewg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -841,10 +781,11 @@
                     <navigationItem key="navigationItem" title="Industry Jobs" id="PBz-B5-Ewv">
                         <barButtonItem key="backBarButtonItem" title="Back" id="2fV-4h-a2Z"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O7O-rU-Ugh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1954" y="1963"/>
+            <point key="canvasLocation" x="-1910" y="1581"/>
         </scene>
         <!--Industry Job-->
         <scene sceneID="PD1-kD-Bgy">
@@ -888,28 +829,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRs-bb-wEQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1588" y="1964"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="VsQ-8r-1u6">
-            <objects>
-                <navigationController storyboardIdentifier="NCIndustryJobsViewController" definesPresentationContext="YES" id="Wpc-zm-vaR" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="XtA-ES-iqC">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="ISd-ft-9N5" kind="relationship" relationship="rootViewController" id="wbm-lX-3YB"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nuo-mZ-WtF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2367" y="1963"/>
+            <point key="canvasLocation" x="-1544" y="1582"/>
         </scene>
         <!--Contracts-->
         <scene sceneID="1e2-O8-f5U">
             <objects>
-                <tableViewController id="QAb-VU-lag" customClass="NCContractsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCContractsViewController" id="QAb-VU-lag" customClass="NCContractsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="164" sectionHeaderHeight="22" sectionFooterHeight="22" id="ueZ-a5-CaF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1120,10 +1045,11 @@
                     <navigationItem key="navigationItem" title="Contracts" id="KIk-da-dZH">
                         <barButtonItem key="backBarButtonItem" title="Back" id="biS-xT-UrD"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tQU-5D-fQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1818" y="2724"/>
+            <point key="canvasLocation" x="-1910" y="2248"/>
         </scene>
         <!--Contract-->
         <scene sceneID="gYo-p6-Bfh">
@@ -1167,28 +1093,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OZI-fL-REZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1301" y="2724"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="8ZJ-Nw-FgQ">
-            <objects>
-                <navigationController storyboardIdentifier="NCContractsViewController" definesPresentationContext="YES" id="VrK-3E-pRH" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="1L5-fr-MjC">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="QAb-VU-lag" kind="relationship" relationship="rootViewController" id="1Wc-ZD-pnt"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7h1-Ti-q3w" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2322" y="2724"/>
+            <point key="canvasLocation" x="-1544" y="2248"/>
         </scene>
         <!--POS'es-->
         <scene sceneID="dHe-HT-a1E">
             <objects>
-                <tableViewController id="gwB-G1-aln" customClass="NCStarbasesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCStarbasesViewController" id="gwB-G1-aln" customClass="NCStarbasesViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="rMf-fU-Z7z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1277,26 +1187,11 @@
                     <navigationItem key="navigationItem" title="POS'es" id="MfL-0X-ySI">
                         <barButtonItem key="backBarButtonItem" title="Back" id="60I-hh-hme"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rK7-lS-TMv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1948" y="3493"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="phg-8b-yNT">
-            <objects>
-                <navigationController storyboardIdentifier="NCStarbasesViewController" definesPresentationContext="YES" id="L4d-fu-SVF" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="iDu-Wu-wm8">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="gwB-G1-aln" kind="relationship" relationship="rootViewController" id="1fh-Pg-CX2"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8Ut-kj-TWF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2322" y="3493"/>
+            <point key="canvasLocation" x="-1910" y="2883"/>
         </scene>
         <!--POS-->
         <scene sceneID="SDT-4b-WJ6">
@@ -1331,7 +1226,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FcB-jS-W9V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1537" y="3493"/>
+            <point key="canvasLocation" x="-1544" y="2883"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1340,7 +1235,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="1xb-28-SWH"/>
         <segue reference="Fen-pK-A2o"/>
+        <segue reference="BNX-6i-yr8"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -189,6 +189,8 @@
 		12640B1C18BB2947005C311D /* NCKillMailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B1B18BB2947005C311D /* NCKillMailsCell.m */; };
 		12640C4C18BB73A4005C311D /* NCKillMailDetailsViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12640C4B18BB73A4005C311D /* NCKillMailDetailsViewController.mm */; };
 		126648F418C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 126648F318C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m */; };
+		126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */; };
+		1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */; };
 		126A0E00185F3B9300A8E8A3 /* BCEveLoadout.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */; };
 		126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCD185F3B9100A8E8A3 /* BCEveLoadoutsList.m */; };
 		126A0E02185F3B9300A8E8A3 /* BCEveLoadoutsTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 126A0CCF185F3B9100A8E8A3 /* BCEveLoadoutsTags.m */; };
@@ -469,6 +471,8 @@
 		12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
+		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
+		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
 		12F82A5018AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A4F18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.m */; };
 		12F82A5418AC98B100A967B5 /* NCFittingAPIFlagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F82A5318AC98B100A967B5 /* NCFittingAPIFlagsViewController.m */; };
@@ -986,6 +990,10 @@
 		12640C4B18BB73A4005C311D /* NCKillMailDetailsViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCKillMailDetailsViewController.mm; sourceTree = "<group>"; };
 		126648F218C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCZKillBoardSearchResultsViewController.h; sourceTree = "<group>"; };
 		126648F318C07D1000ADBBE1 /* NCZKillBoardSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCZKillBoardSearchResultsViewController.m; sourceTree = "<group>"; };
+		126703041A8FD22700F816F9 /* NSAttributedString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Neocom.h"; sourceTree = "<group>"; };
+		126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Neocom.m"; sourceTree = "<group>"; };
+		1267030A1A911A0800F816F9 /* NSMutableAttributedString+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+Neocom.h"; sourceTree = "<group>"; };
+		1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+Neocom.m"; sourceTree = "<group>"; };
 		126A0CC9185F3B9100A8E8A3 /* BattleClinicAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BattleClinicAPI.h; sourceTree = "<group>"; };
 		126A0CCA185F3B9100A8E8A3 /* BCEveLoadout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEveLoadout.h; sourceTree = "<group>"; };
 		126A0CCB185F3B9100A8E8A3 /* BCEveLoadout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEveLoadout.m; sourceTree = "<group>"; };
@@ -1498,6 +1506,9 @@
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
 		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
+		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
+		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
+		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
 		12F7108718B63EA100D9C08A /* NCContractsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCContractsDetailsViewController.h; sourceTree = "<group>"; };
 		12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCContractsDetailsViewController.m; sourceTree = "<group>"; };
 		12F82A4E18AC932100A967B5 /* NCDatabaseGroupPickerViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseGroupPickerViewContoller.h; sourceTree = "<group>"; };
@@ -3291,6 +3302,8 @@
 			children = (
 				129421A7187FDF7200977CB8 /* NSString+Neocom.h */,
 				129421A8187FDF7200977CB8 /* NSString+Neocom.m */,
+				126703041A8FD22700F816F9 /* NSAttributedString+Neocom.h */,
+				126703051A8FD22700F816F9 /* NSAttributedString+Neocom.m */,
 				129421AA187FDFAE00977CB8 /* NSNumberFormatter+Neocom.h */,
 				129421AB187FDFAE00977CB8 /* NSNumberFormatter+Neocom.m */,
 				127AAFE918841F6B008003E5 /* UIColor+Neocom.h */,
@@ -3311,6 +3324,8 @@
 				12FA32AE18E1673D0053DDC5 /* UIView+Neocom.m */,
 				126F1BC019531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.h */,
 				126F1BC119531C9300E5CD4F /* EVECentralQuickLookOrder+Neocom.m */,
+				1267030A1A911A0800F816F9 /* NSMutableAttributedString+Neocom.h */,
+				1267030B1A911A0800F816F9 /* NSMutableAttributedString+Neocom.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3800,6 +3815,7 @@
 		12BF345E18814CB400368CD4 /* NCTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				12F407561A8D24E40031FB35 /* NCDefaultTableViewCell */,
 				12BF345F18814CC700368CD4 /* NCTableViewCell.h */,
 				12BF346018814CC700368CD4 /* NCTableViewCell.m */,
 			);
@@ -3975,6 +3991,16 @@
 				12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */,
 			);
 			name = NCNotificationsManager;
+			sourceTree = "<group>";
+		};
+		12F407561A8D24E40031FB35 /* NCDefaultTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */,
+				12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */,
+				12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */,
+			);
+			name = NCDefaultTableViewCell;
 			sourceTree = "<group>";
 		};
 		12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */ = {
@@ -4717,6 +4743,7 @@
 				849B9FC81896D24A00D4DD2B /* offline.png in Resources */,
 				849B9FB31896D24A00D4DD2B /* booster.png in Resources */,
 				126F1CED195407B500E5CD4F /* expanded.png in Resources */,
+				12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */,
 				120B507E18FCFFCB0033AF78 /* level_141.gif in Resources */,
 				8418BB1C1891970500B99A7E /* eventTemplate.html in Resources */,
 				126F1CE61954069F00E5CD4F /* intelligence.png in Resources */,
@@ -4931,6 +4958,7 @@
 				126A0E6A185F3B9300A8E8A3 /* EVEKills.m in Sources */,
 				12A7DB9C18B34B0900343D25 /* NSString+ASHTTPServer.m in Sources */,
 				1206C5F218929B960010BEE8 /* NCMessageCell.m in Sources */,
+				126703061A8FD22700F816F9 /* NSAttributedString+Neocom.m in Sources */,
 				126A0E80185F3B9300A8E8A3 /* NSData+MD5.m in Sources */,
 				123EE6F818F3D97400641B03 /* NCDatabaseSolarSystemPickerRegionCell.m in Sources */,
 				126A0E74185F3B9300A8E8A3 /* RSSParser.m in Sources */,
@@ -5191,6 +5219,7 @@
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
 				12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
+				12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */,
 				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,
 				129D2626187E923300E2062C /* NSString+UUID.m in Sources */,
@@ -5261,6 +5290,7 @@
 				12B992351913718900448D01 /* NCAssetsAccountsViewController.m in Sources */,
 				1211124D1859E1AF009E5106 /* NCCacheRecord.m in Sources */,
 				12CC8D6C188178570058C5DF /* NCTableViewEmptyHeaderView.m in Sources */,
+				1267030C1A911A0900F816F9 /* NSMutableAttributedString+Neocom.m in Sources */,
 				120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */,
 				126A0E5B185F3B9300A8E8A3 /* EVEStarbaseList.m in Sources */,
 				12E86944195EC700004B66D0 /* NCTodayCell.m in Sources */,

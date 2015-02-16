@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fMd-jc-Ej0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fQN-VN-Su3">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="j3a-oE-aeX">
-            <objects>
-                <navigationController storyboardIdentifier="NCDatabaseViewController" definesPresentationContext="YES" id="fMd-jc-Ej0" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bWk-9L-lbA">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="fQN-VN-Su3" kind="relationship" relationship="rootViewController" id="NZA-Xm-9UK"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mdE-d5-SAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1371" y="446"/>
-        </scene>
         <!--Database-->
         <scene sceneID="VPG-1H-jaK">
             <objects>
-                <tableViewController id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-KK-Gfj">
+                <tableViewController storyboardIdentifier="NCDatabaseViewController" id="fQN-VN-Su3" customClass="NCDatabaseViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-KK-Gfj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,7 +23,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="WHp-Mq-BUa" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="WHp-Mq-BUa" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WHp-Mq-BUa" id="Shw-5U-cdz">
@@ -51,7 +35,7 @@
                                     <segue destination="fQN-VN-Su3" kind="push" identifier="NCDatabaseViewController" id="XCS-La-EyZ"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eUp-d6-v1a" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eUp-d6-v1a" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="171" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eUp-d6-v1a" id="cnc-zd-sRz">
@@ -95,26 +79,10 @@
             </objects>
             <point key="canvasLocation" x="-855" y="446"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="EL6-jd-GTK">
-            <objects>
-                <navigationController storyboardIdentifier="NCDatabaseMarketViewController" definesPresentationContext="YES" id="d0F-gf-Hwr" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="diK-TM-jy4">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="lEO-4A-qIj" kind="relationship" relationship="rootViewController" id="6M7-4Q-PK5"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0lb-2b-9WR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1371" y="1168"/>
-        </scene>
         <!--Market-->
         <scene sceneID="jEJ-dz-n4I">
             <objects>
-                <tableViewController id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseMarketViewController" id="lEO-4A-qIj" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="j3L-Vy-TYS" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +150,7 @@
         <!--Certificates-->
         <scene sceneID="5tt-L0-cHf">
             <objects>
-                <tableViewController id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseCertificatesViewController" id="igD-MV-bsc" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="HLV-HU-SWV" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -225,22 +193,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Te0-4J-OJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-855" y="1868"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="I00-dz-wQ1">
-            <objects>
-                <navigationController storyboardIdentifier="NCDatabaseCertificatesViewController" definesPresentationContext="YES" id="oS0-Bs-ODj" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Aj8-R9-741">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="igD-MV-bsc" kind="relationship" relationship="rootViewController" id="Vbq-vg-5yp"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wts-Zn-1Bz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1371" y="1868"/>
         </scene>
         <!--Info-->
         <scene sceneID="rfB-z4-tJP">
@@ -693,26 +645,10 @@
             </objects>
             <point key="canvasLocation" x="-221" y="1868"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="eHp-nh-qwt">
-            <objects>
-                <navigationController storyboardIdentifier="NCDatabaseNPCViewController" definesPresentationContext="YES" id="Akf-cN-gq9" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ReS-oE-a5w">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="dG5-dx-SwW" kind="relationship" relationship="rootViewController" id="7iv-ne-LEg"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KJO-Vn-frZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1371" y="2666"/>
-        </scene>
         <!--NPC-->
         <scene sceneID="ytX-d2-sFZ">
             <objects>
-                <tableViewController id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCDatabaseNPCViewController" id="dG5-dx-SwW" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="opI-2D-O7f">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -861,12 +797,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="raC-Em-4AD"/>
-        <segue reference="edv-w8-2To"/>
-        <segue reference="LHH-Wy-jrm"/>
         <segue reference="qyD-gc-O13"/>
-        <segue reference="Vbq-vg-5yp"/>
-        <segue reference="7iv-ne-LEg"/>
-        <segue reference="6M7-4Q-PK5"/>
+        <segue reference="r4q-Am-NEf"/>
+        <segue reference="edv-w8-2To"/>
+        <segue reference="dFJ-0K-RGe"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

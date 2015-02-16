@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCAccountCharacterCell : UITableViewCell
+@interface NCAccountCharacterCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *characterImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *corporationImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
@@ -23,5 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *skillQueueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subscriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *apiKeyButton;
+@property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 
 @end

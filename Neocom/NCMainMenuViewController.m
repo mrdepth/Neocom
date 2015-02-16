@@ -13,7 +13,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NSString+Neocom.h"
 #import "NSString+Neocom.h"
-#import "NCTableViewCell.h"
+#import "NCDefaultTableViewCell.h"
 #import "EVECentralAPI.h"
 #import "NCSplitViewController.h"
 
@@ -132,27 +132,6 @@
     return [self.sections[section] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	static NSString *CellIdentifier = @"Cell";
-	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
-	
-	cell.titleLabel.text = row[@"title"];
-	cell.iconView.image = [UIImage imageNamed:row[@"image"]];
-	NSString* detailsKeyPath = row[@"detailsKeyPath"];
-	if (detailsKeyPath)
-		cell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
-	else
-		cell.subtitleLabel.text = nil;
-	
-	if (!cell.accessoryView) {
-		cell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 44)];
-		cell.accessoryView.hidden = NO;
-	}
-	return cell;
-}
-
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return nil;
@@ -162,20 +141,8 @@
 
 #pragma mark - Table view delegate
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
-	NSString* detailsKeyPath = row[@"detailsKeyPath"];
-	NSString* details = nil;
-	if (detailsKeyPath)
-		details = [self valueForKey:detailsKeyPath];
-	if (details) {
-		if (details && [details rangeOfString:@"\n"].location != NSNotFound)
-			return 56;
-		else
-			return 42;
-	}
-	else
-		return 37;
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 37;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -229,6 +196,29 @@
 	else
 		[self updatePrices];
 	[self didFinishLoadData:nil withCacheDate:nil expireDate:nil];
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDefaultTableViewCell* tableViewCell = (NCDefaultTableViewCell*) cell;
+	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
+	
+	tableViewCell.titleLabel.text = row[@"title"];
+	tableViewCell.iconView.image = [UIImage imageNamed:row[@"image"]];
+	NSString* detailsKeyPath = row[@"detailsKeyPath"];
+	if (detailsKeyPath)
+		tableViewCell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
+	else
+		tableViewCell.subtitleLabel.text = nil;
+	
+	if (!tableViewCell.accessoryView) {
+		tableViewCell.accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 32, 44)];
+		tableViewCell.accessoryView.hidden = NO;
+	}
+
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
 }
 
 #pragma mark - Private

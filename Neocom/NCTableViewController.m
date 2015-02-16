@@ -15,6 +15,7 @@
 #import "NCSetting.h"
 #import "NCStorage.h"
 #import "UIColor+Neocom.h"
+#import "NCTableViewCell.h"
 
 @interface NCTableViewController ()
 @property (nonatomic, strong, readwrite) NCTaskManager* taskManager;
@@ -50,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.contentSizeForViewInPopover = CGSizeMake(320, 768);
+	self.preferredContentSize = CGSizeMake(320, 768);
 	self.offscreenCells = [NSMutableDictionary new];
 	
 	if (!self.tableView.backgroundView) {
@@ -325,6 +326,11 @@
 	return cell;
 }
 
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return nil;
+}
+
+
 #pragma mark - UISearchDisplayDelegate
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
@@ -347,6 +353,18 @@
 
 - (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	[self updateCacheTime];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
+	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	if (!cell && tableView != self.tableView)
+		cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+	
+	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+	return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -384,6 +402,22 @@
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
+		return UITableViewAutomaticDimension;
+
+	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
+	NCTableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:identifier];
+	if ([cell isKindOfClass:[NCTableViewCell class]]) {
+		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
+		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell layoutIfNeeded];
+		return cell.layoutContentView.frame.size.height;
+	}
+	else
+		return [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
 #pragma mark - CollapsableTableViewDelegate

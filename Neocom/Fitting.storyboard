@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="yvF-4n-Sgb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="lhY-Pd-wMi">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -8,7 +8,7 @@
         <!--Fitting-->
         <scene sceneID="LYA-jm-DFx">
             <objects>
-                <tableViewController id="lhY-Pd-wMi" customClass="NCFittingMenuViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingMenuViewController" id="lhY-Pd-wMi" customClass="NCFittingMenuViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="41" sectionHeaderHeight="22" sectionFooterHeight="22" id="LJT-zf-EVu" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -211,6 +211,7 @@
                     <navigationItem key="navigationItem" title="Fitting" id="n0C-y8-TNe">
                         <barButtonItem key="backBarButtonItem" title="Back" id="rXG-rZ-m4g"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <segue destination="40u-Jb-rvi" kind="push" identifier="NCFittingShipViewController" id="UFB-q5-l1b"/>
                         <segue destination="R9P-3o-dJE" kind="push" identifier="NCFittingPOSViewController" id="Qao-xX-nA1"/>
@@ -634,22 +635,6 @@
             </objects>
             <point key="canvasLocation" x="-2632" y="-2070"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="3pp-yp-9KP">
-            <objects>
-                <navigationController storyboardIdentifier="NCFittingMenuViewController" definesPresentationContext="YES" id="yvF-4n-Sgb" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="D0G-fz-ovM">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="lhY-Pd-wMi" kind="relationship" relationship="rootViewController" id="J5V-un-n1e"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sMf-eK-qWw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3930" y="-1281"/>
-        </scene>
         <!--View Controller-->
         <scene sceneID="XPd-or-t5O">
             <objects>
@@ -696,7 +681,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="61G-gb-o3Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3704" y="-267"/>
+            <point key="canvasLocation" x="-3456" y="-617"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="vEm-uc-LGM">

@@ -60,6 +60,7 @@
 	frame.origin.y = self.navigationController.navigationBar.frame.size.height - frame.size.height;
 	self.navigationCharacterButton.frame = frame;
 	[self.navigationController.navigationBar addSubview:self.navigationCharacterButton];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.navigationCharacterButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,11 +104,11 @@
 								   options:UIViewAnimationOptionAllowAnimatedContent
 								animations:^{
 									dropDownViewController.view.transform = CGAffineTransformIdentity;
-									if ([dropDownViewController.view isKindOfClass:[UIScrollView class]]) {
+/*									if ([dropDownViewController.view isKindOfClass:[UIScrollView class]]) {
 										UIScrollView* scrollView = (UIScrollView*) dropDownViewController.view;
 										UITableViewController* menuViewController = (UITableViewController*) self.menuViewController;
 										scrollView.contentInset = menuViewController.tableView.contentInset;
-									}
+									}*/
 								}
 								completion:^(BOOL finished) {
 									[dropDownViewController didMoveToParentViewController:self];

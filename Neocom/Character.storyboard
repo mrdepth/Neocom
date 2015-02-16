@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pqG-qC-BFW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="mXH-qe-y3n">
-            <objects>
-                <navigationController storyboardIdentifier="NCCharacterSheetViewController" definesPresentationContext="YES" id="pqG-qC-BFW" sceneMemberID="viewController">
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bh5-Pc-862">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="N9k-WA-lg6" kind="relationship" relationship="rootViewController" id="Lyb-o2-Rr3"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PYb-SP-cxy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-458" y="193"/>
-        </scene>
         <!--Character Sheet-->
         <scene sceneID="EqE-ib-xTJ">
             <objects>
-                <tableViewController id="N9k-WA-lg6" customClass="NCCharacterSheetViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCCharacterSheetViewController" id="N9k-WA-lg6" customClass="NCCharacterSheetViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9wk-zc-kaC">
                         <rect key="frame" x="0.0" y="0.0" width="500" height="700"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -451,6 +434,7 @@
                     <navigationItem key="navigationItem" title="Character Sheet" id="bA5-N8-zYF">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Bb7-el-nl7"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="500" height="700"/>
                     <connections>
@@ -487,7 +471,7 @@
         <!--Calendar Events-->
         <scene sceneID="hfJ-kJ-SVs">
             <objects>
-                <tableViewController id="Qgx-ef-093" customClass="NCCalendarEventsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCCalendarEventsViewController" id="Qgx-ef-093" customClass="NCCalendarEventsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="62" sectionHeaderHeight="22" sectionFooterHeight="22" id="hjp-ZR-d61">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -545,6 +529,7 @@
                     <navigationItem key="navigationItem" title="Calendar Events" id="DGH-dt-0zz">
                         <barButtonItem key="backBarButtonItem" title="Back" id="9S1-g8-Dx6"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HCr-Hi-k3K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -593,7 +578,7 @@
         <!--Messages-->
         <scene sceneID="gQX-i2-1OV">
             <objects>
-                <tableViewController id="EOg-63-G75" customClass="NCMailBoxViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCMailBoxViewController" id="EOg-63-G75" customClass="NCMailBoxViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="97" sectionHeaderHeight="22" sectionFooterHeight="22" id="kKU-Sm-kLT" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -659,42 +644,11 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pay-3V-EDf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="70" y="1021"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="fhJ-NE-boH">
-            <objects>
-                <navigationController storyboardIdentifier="NCMailBoxViewController" definesPresentationContext="YES" id="mCp-Y5-iAk" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="UNb-Ca-DSj">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="EOg-63-G75" kind="relationship" relationship="rootViewController" id="zil-Jo-Jzj"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VfS-jr-8EP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-466" y="1021"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="dtO-fI-oFo">
-            <objects>
-                <navigationController storyboardIdentifier="NCCalendarEventsViewController" definesPresentationContext="YES" id="XpG-tU-szV" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="xz4-1o-fie">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Qgx-ef-093" kind="relationship" relationship="rootViewController" id="iFv-XY-5n4"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cWM-Wh-ONP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-466" y="1807"/>
         </scene>
         <!--Message-->
         <scene sceneID="FAY-fj-3Zm">
@@ -736,26 +690,10 @@
             </objects>
             <point key="canvasLocation" x="485" y="1021"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="MAY-r2-jwp">
-            <objects>
-                <navigationController storyboardIdentifier="NCSkillsViewController" definesPresentationContext="YES" id="XbC-yT-GOe" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="7n9-eT-vBb">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="J7G-6w-aDZ" kind="relationship" relationship="rootViewController" id="ktd-5S-EHc"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ktz-JQ-teN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-458" y="2531"/>
-        </scene>
         <!--Skill Queue-->
         <scene sceneID="Dg4-HL-4pr">
             <objects>
-                <tableViewController id="J7G-6w-aDZ" customClass="NCSkillQueueViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCSkillsViewController" id="J7G-6w-aDZ" customClass="NCSkillQueueViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="42" sectionHeaderHeight="22" sectionFooterHeight="22" id="IpJ-LB-43V" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1089,6 +1027,7 @@
                     <navigationItem key="navigationItem" title="Skill Queue" id="sCx-Ia-NAY">
                         <barButtonItem key="backBarButtonItem" title="Back" id="Bd0-rA-7JX"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <segue destination="AGY-qS-Iku" kind="push" identifier="NCSkillPlansViewController" id="2xz-3f-Ae5"/>
                         <segue destination="Tdv-xs-pKj" kind="push" identifier="NCSkillPlanImportViewController" id="aRk-Z8-VGY"/>

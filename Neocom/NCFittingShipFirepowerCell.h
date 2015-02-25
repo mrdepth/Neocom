@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingShipFirepowerCell : UITableViewCell
+@interface NCFittingShipFirepowerCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *weaponDPSLabel;
 @property (nonatomic, weak) IBOutlet UILabel *droneDPSLabel;
 @property (nonatomic, weak) IBOutlet UILabel *volleyDamageLabel;

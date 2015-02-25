@@ -145,7 +145,7 @@
 	else {
 		if (indexPath.section == 1 && indexPath.row == self.customDamagePatterns.count) {
 			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-			cell.textLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
+			//cell.textLabel.text = NSLocalizedString(@"Add Damage Pattern", nil);
 			return cell;
 		}
 		else {

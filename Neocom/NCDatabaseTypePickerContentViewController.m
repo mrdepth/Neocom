@@ -87,57 +87,12 @@
 	return sectionInfo.numberOfObjects;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
-	
-	NCTableViewCell *cell = nil;
-	if ([row isKindOfClass:[NCDBEufeItem class]]) {
-		static NSString *CellIdentifier = @"TypeCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	}
-	else {
-		static NSString *CellIdentifier = @"MarketGroupCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	}
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView ? self.result.sections[section] : self.searchResult.sections[section];
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
-	
-	NCTableViewCell *cell = nil;
-	if ([row isKindOfClass:[NCDBEufeItem class]])
-		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"TypeCell"];
-	else
-		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"MarketGroupCell"];
-	
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
@@ -177,6 +132,16 @@
 		self.searchResult = nil;
 		[self.searchDisplayController.searchResultsTableView reloadData];
 	}
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
+	
+	if ([row isKindOfClass:[NCDBEufeItem class]])
+		return @"TypeCell";
+	else
+		return @"MarketGroupCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

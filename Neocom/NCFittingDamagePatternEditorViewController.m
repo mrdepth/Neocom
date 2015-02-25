@@ -31,7 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.refreshControl = nil;
+	if (!self.tableView.backgroundView) {
+		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor clearColor];
+		self.tableView.backgroundView = view;
+	}
+	
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	self.tableView.separatorColor = [UIColor appearanceTableViewSeparatorColor];
+	
 	self.title = self.damagePattern.name;
 
 	self.emTextField.progress = self.damagePattern.em;

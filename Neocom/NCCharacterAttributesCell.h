@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCCharacterAttributesCell : UITableViewCell
+@interface NCCharacterAttributesCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *intelligenceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *memoryLabel;
 @property (weak, nonatomic) IBOutlet UILabel *perceptionLabel;

@@ -16,5 +16,7 @@
 @property (nonatomic, weak) NCFittingShipViewController* controller;
 
 - (void) reload;
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath;
 
 @end

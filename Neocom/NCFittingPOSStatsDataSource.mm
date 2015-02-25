@@ -131,10 +131,70 @@
 	return 0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 0)
+		return NSLocalizedString(@"Resources", nil);
+	else if (section == 1)
+		return NSLocalizedString(@"Resistances", nil);
+	else if (section == 2)
+		return NSLocalizedString(@"Defense/Offense", nil);
+	else if (section == 3)
+		return NSLocalizedString(@"Cost", nil);
+	else
+		return nil;
+}
+
+#pragma mark - Table view delegate
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	if (title) {
+		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+		view.textLabel.text = title;
+		return view;
+	}
+	else
+		return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
+	return title ? 44 : 0;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 1 && indexPath.row == 4)
+		[self.controller performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+#pragma mark - Private
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return @"NCFittingPOSResourcesCell";
+	else if (indexPath.section == 1) {
+		if (indexPath.row == 0)
+			return @"NCFittingResistancesHeaderCell";
+		else if (indexPath.row == 5)
+			return @"NCFittingEHPCell";
+		else
+			return @"NCFittingResistancesCell";
+	}
+	else if (indexPath.section == 2)
+		return @"NCFittingPOSDefenseOffenseCell";
+	else if (indexPath.section == 3)
+		return @"Cell";
+	else
+		return nil;
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
 		
-		NCFittingPOSResourcesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSResourcesCell"];
+		NCFittingPOSResourcesCell* cell = (NCFittingPOSResourcesCell*) tableViewCell;
 		
 		if (self.posStats) {
 			cell.powerGridLabel.text = [NSString stringWithTotalResources:self.posStats.totalPG usedResources:self.posStats.usedPG unit:@"MW"];
@@ -142,20 +202,16 @@
 			cell.cpuLabel.text = [NSString stringWithTotalResources:self.posStats.totalCPU usedResources:self.posStats.usedCPU unit:@"tf"];
 			cell.cpuLabel.progress = self.posStats.usedCPU > 0 ? self.posStats.usedCPU / self.posStats.totalCPU : 0;
 		}
-		return cell;
 	}
 	else if (indexPath.section == 1) {
 		if (indexPath.row == 0) {
-			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesHeaderCell"];
-			return cell;
 		}
 		else if (indexPath.row == 5) {
-			NCFittingEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingEHPCell"];
+			NCFittingEHPCell* cell = (NCFittingEHPCell*) tableViewCell;
 			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.posStats.ehp unit:nil]];
-			return cell;
 		}
 		else {
-			NCFittingResistancesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesCell"];
+			NCFittingResistancesCell* cell = (NCFittingResistancesCell*) tableViewCell;
 			if (self.posStats) {
 				float values[5] = {0};
 				NSString* imageName = nil;
@@ -208,21 +264,19 @@
 				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
 				cell.categoryImageView.image = [UIImage imageNamed:imageName];
 			}
-			return cell;
 		}
 	}
 	else if (indexPath.section == 2) {
-		NCFittingPOSDefenseOffenseCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSDefenseOffenseCell"];
+		NCFittingPOSDefenseOffenseCell* cell = (NCFittingPOSDefenseOffenseCell*) tableViewCell;
 		if (self.posStats) {
 			cell.shieldRecharge.text = [NSString stringWithFormat:@"%.1f", self.posStats.rtank.passiveShield];
 			cell.effectiveShieldRecharge.text = [NSString stringWithFormat:@"%.1f", self.posStats.ertank.passiveShield];
 			cell.weaponDPSLabel.text = [NSString stringWithFormat:@"%.0f", self.posStats.weaponDPS];
 			cell.weaponVolleyLabel.text = [NSString stringWithFormat:@"%.0f", self.posStats.volleyDamage];
 		}
-		return cell;
 	}
 	else if (indexPath.section == 3) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
 		cell.accessoryView = nil;
 		
 		if (indexPath.row == 0) {
@@ -253,78 +307,8 @@
 													[NSNumberFormatter neocomLocalizedStringFromNumber:@(self.priceStats.posCost)]];
 			}
 		}
-		return cell;
 	}
-	else
-		return nil;
 }
-
-
-- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
-		return NSLocalizedString(@"Resources", nil);
-	else if (section == 1)
-		return NSLocalizedString(@"Resistances", nil);
-	else if (section == 2)
-		return NSLocalizedString(@"Defense/Offense", nil);
-	else if (section == 3)
-		return NSLocalizedString(@"Cost", nil);
-	else
-		return nil;
-}
-
-#pragma mark - Table view delegate
-
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	if (title) {
-		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
-		view.textLabel.text = title;
-		return view;
-	}
-	else
-		return nil;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-	return title ? 44 : 0;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	static NSMutableDictionary* heights = nil;
-	if (!heights)
-		heights = [NSMutableDictionary new];
-	NSNumber* height = heights[indexPath];
-	if (height)
-		return [height floatValue];
-	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	
-	height = @([cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5);
-
-	heights[indexPath] = height;
-	return [height floatValue];
-}
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 1 && indexPath.row == 4)
-		[self.controller performSegueWithIdentifier:@"NCFittingDamagePatternsViewController" sender:[tableView cellForRowAtIndexPath:indexPath]];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-
-#pragma mark - Private
 
 - (void) updatePrice {
 	NCFittingPOSStatsDataSourcePriceStats* stats = [NCFittingPOSStatsDataSourcePriceStats new];

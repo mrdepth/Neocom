@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingEHPCell : UITableViewCell
+@interface NCFittingEHPCell : NCTableViewCell
 @property (nonatomic, strong) IBOutlet UILabel* ehpLabel;
 @end

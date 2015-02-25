@@ -65,4 +65,8 @@
 	return [self appearanceTableViewBackgroundColor];
 }
 
++ (instancetype) urlColor {
+	return [UIColor colorWithUInteger:0xffa500ff];
+}
+
 @end

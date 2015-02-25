@@ -156,31 +156,6 @@
     return self.rows.count + 1;
 }
 
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	if (indexPath.row >= self.rows.count) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-	else {
-		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-			return cell;
-		}
-		else {
-			NCFittingPOSStructureCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
-			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-			return cell;
-		}
-	}
-}
-
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -193,33 +168,6 @@
 		amountCell.pickerView.delegate = self;
 		[amountCell.pickerView reloadAllComponents];
 		[amountCell.pickerView selectRow:pickerRow.associatedRow.structures.size() - 1 inComponent:0 animated:NO];
-	}
-}
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.rows.count) {
-		return 41;
-	}
-	else {
-		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]]) {
-			return 162;
-		}
-		else {
-			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-				return UITableViewAutomaticDimension;
-
-			if (!self.offscreenCell)
-				self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingPOSStructureCell"];
-			[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
-			self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
-			[self.offscreenCell layoutIfNeeded];
-			return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
-		}
 	}
 }
 
@@ -492,6 +440,19 @@
 								 block(row.structures);
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	if (indexPath.row >= self.rows.count)
+		return @"Cell";
+	else {
+		NCFittingPOSStructuresDataSourceRow* row = self.rows[indexPath.row];
+		if ([row isKindOfClass:[NCFittingPOSStructuresDataSourcePickerRow class]])
+			return @"NCFittingAmountCell";
+		else
+			return @"NCFittingPOSStructureCell";
+	}
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

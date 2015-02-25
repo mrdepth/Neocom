@@ -105,22 +105,6 @@
     return section == 0 ? self.rows.count : 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	if (indexPath.section == 0) {
-		NCFittingImplantSetsViewControllerRow* row = self.rows[indexPath.row];
-		cell.titleLabel.text = row.implantSet.name;
-		cell.subtitleLabel.text = row.description;
-		cell.object = row.implantSet;
-	}
-	else {
-		cell.titleLabel.text = NSLocalizedString(@"New Implant Set", nil);
-		cell.subtitleLabel.text = nil;
-		cell.object = nil;
-	}
-	return cell;
-}
-
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	return indexPath.section == 0;
 }
@@ -139,20 +123,6 @@
 }
 
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
@@ -189,6 +159,25 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	if (indexPath.section == 0) {
+		NCFittingImplantSetsViewControllerRow* row = self.rows[indexPath.row];
+		cell.titleLabel.text = row.implantSet.name;
+		cell.subtitleLabel.text = row.description;
+		cell.object = row.implantSet;
+	}
+	else {
+		cell.titleLabel.text = NSLocalizedString(@"New Implant Set", nil);
+		cell.subtitleLabel.text = nil;
+		cell.object = nil;
+	}
 }
 
 #pragma mark - Private

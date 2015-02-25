@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingShipTankCell : UITableViewCell
+@interface NCFittingShipTankCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *categoryLabel;
 @property (nonatomic, weak) IBOutlet UILabel *shieldRecharge;
 @property (nonatomic, weak) IBOutlet UILabel *shieldBoost;

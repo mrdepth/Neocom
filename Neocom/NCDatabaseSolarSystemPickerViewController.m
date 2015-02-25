@@ -96,63 +96,11 @@
 		return [self.searchResults[section][@"rows"] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	id row;
-	if (tableView == self.tableView)
-		row = self.rows[indexPath.row];
-	else
-		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
-	
-	UITableViewCell* cell = nil;
-	if ([row isKindOfClass:[NCDBMapRegion class]]) {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:@"RegionCell"];
-	}
-	else {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:@"SolarSystemCell"];
-	}
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (tableView == self.tableView)
 		return nil;
 	else
 		return self.searchResults[section][@"title"];
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	id row;
-	if (tableView == self.tableView)
-		row = self.rows[indexPath.row];
-	else
-		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
-	
-	UITableViewCell* cell = nil;
-	if ([row isKindOfClass:[NCDBMapRegion class]])
-		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"RegionCell"];
-	else
-		cell = [self tableView:self.tableView offscreenCellWithIdentifier:@"SolarSystemCell"];
-	
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
 }
 
 #pragma mark - NCTableViewController
@@ -195,6 +143,19 @@
 	}
 	self.searchResults = searchResults;
 	[self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	id row;
+	if (tableView == self.tableView)
+		row = self.rows[indexPath.row];
+	else
+		row = self.searchResults[indexPath.section][@"rows"][indexPath.row];
+	
+	if ([row isKindOfClass:[NCDBMapRegion class]])
+		return @"RegionCell";
+	else
+		return @"SolarSystemCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

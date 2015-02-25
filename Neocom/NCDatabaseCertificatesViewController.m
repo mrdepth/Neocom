@@ -76,51 +76,6 @@
     return self.rows.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	id row = self.rows[indexPath.row];
-	NCTableViewCell *cell;
-	if ([row isKindOfClass:[NCDBCertCertificate class]]) {
-		static NSString *CellIdentifier = @"CertificateCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	}
-	else {
-		static NSString *CellIdentifier = @"GroupCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		
-		cell.titleLabel.text = [row groupName];
-	}
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	id row = self.rows[indexPath.row];
-	UITableViewCell *cell;
-	if ([row isKindOfClass:[NCDBCertCertificate class]])
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"CertificateCell"];
-	else
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"GroupCell"];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell setNeedsLayout];
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
 
 #pragma mark - NCTableViewController
 
@@ -136,6 +91,15 @@
 
 - (void) didChangeStorage {
 	[self reload];
+}
+
+- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	id row = self.rows[indexPath.row];
+	NCTableViewCell *cell;
+	if ([row isKindOfClass:[NCDBCertCertificate class]])
+		return @"CertificateCell";
+	else
+		return @"GroupCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

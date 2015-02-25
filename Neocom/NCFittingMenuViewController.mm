@@ -80,19 +80,6 @@
     return section == 0 ? 3 : [(NSArray*) self.sections[section - 1] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		NSString *CellIdentifier = [NSString stringWithFormat:@"MenuItem%ldCell", (long)indexPath.row];
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		return cell;
-	}
-	else {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return nil;
@@ -133,27 +120,6 @@
 }
 
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 37;
-	else
-		return 42;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 37;
-	else {
-		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-			return UITableViewAutomaticDimension;
-
-		UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
-}
 
 - (BOOL) tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
 	return indexPath.section != 0;
@@ -232,12 +198,22 @@
 	return nil;
 }
 
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return [NSString stringWithFormat:@"MenuItem%ldCell", (long)indexPath.row];
+	else
+		return @"Cell";
+}
+
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
-	NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-	cell.titleLabel.text = loadout.type.typeName;
-	cell.subtitleLabel.text = loadout.name;
-	cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	if (indexPath.section > 0) {
+		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
+		cell.titleLabel.text = loadout.type.typeName;
+		cell.subtitleLabel.text = loadout.name;
+		cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	}
 }
 
 

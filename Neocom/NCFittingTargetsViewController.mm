@@ -56,8 +56,28 @@
 		return self.targets.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == self.targets.count)
+		self.selectedTarget = nil;
+	else
+		self.selectedTarget = self.targets[indexPath.row];
+	[self performSegueWithIdentifier:@"Unwind" sender:[tableView cellForRowAtIndexPath:indexPath]];
+}
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 	
 	if (indexPath.row == self.targets.count) {
 		cell.titleLabel.text = NSLocalizedString(@"Clear target", nil);
@@ -76,28 +96,6 @@
 		else
 			cell.accessoryView = nil;
 	}
-	
-	return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 42;
-}
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == self.targets.count)
-		self.selectedTarget = nil;
-	else
-		self.selectedTarget = self.targets[indexPath.row];
-	[self performSegueWithIdentifier:@"Unwind" sender:[tableView cellForRowAtIndexPath:indexPath]];
-}
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
 }
 
 @end

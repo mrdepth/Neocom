@@ -31,6 +31,7 @@
 
 - (void) layoutSubviews {
 	[super layoutSubviews];
+	[self.contentView layoutIfNeeded];
 	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
 		self.separatorInset = UIEdgeInsetsMake(0, self.titleLabel.frame.origin.x, 0, 0);
 	}
@@ -40,12 +41,31 @@
 - (void) awakeFromNib {
 	NSArray* views = [[UINib nibWithNibName:@"NCDefaultTableViewCell" bundle:nil] instantiateWithOwner:self options:nil];
 	self.layoutContentView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.layoutContentView addConstraint:[NSLayoutConstraint constraintWithItem:self.layoutContentView
+																	   attribute:NSLayoutAttributeHeight
+																	   relatedBy:NSLayoutRelationGreaterThanOrEqual
+																		  toItem:nil
+																	   attribute:NSLayoutAttributeNotAnAttribute
+																	  multiplier:1
+																		constant:36]];
+	
 	[self.contentView addSubview:[views lastObject]];
 	NSDictionary* bindings = @{@"view": self.layoutContentView};
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-																			 options:0
-																			 metrics:nil
-																			   views:bindings]];
+	
+	NSArray* c = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
+														 options:0
+														 metrics:nil
+														   views:bindings];
+	for (NSLayoutConstraint* constraint in c) {
+		if (constraint.firstAttribute == NSLayoutAttributeBottom) {
+			constraint.priority = UILayoutPriorityDefaultHigh;
+			break;
+		}
+	}
+	
+	[self.contentView addConstraints:c];
+
+
 	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|"
 																			 options:0
 																			 metrics:nil

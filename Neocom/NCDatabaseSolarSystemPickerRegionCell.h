@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCDatabaseSolarSystemPickerRegionCell : UITableViewCell
+@interface NCDatabaseSolarSystemPickerRegionCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (nonatomic, strong) id object;
 @end

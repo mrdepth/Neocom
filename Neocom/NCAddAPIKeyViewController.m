@@ -12,9 +12,11 @@
 #import "NCAccountsManager.h"
 #import "UIAlertView+Error.h"
 #import "UIAlertView+Block.h"
+#import "UIColor+Neocom.h"
 
 @interface NCAddAPIKeyViewController ()<ASHTTPServerDelegate>
 @property (nonatomic, strong) ASHTTPServer* server;
+@property (nonatomic, strong) NCTaskManager* taskManager;
 @end
 
 @implementation NCAddAPIKeyViewController
@@ -31,8 +33,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.refreshControl = nil;
-	// Do any additional setup after loading the view.
+	if (!self.tableView.backgroundView) {
+		UIView* view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor clearColor];
+		self.tableView.backgroundView = view;
+	}
+	
+	self.tableView.backgroundColor = [UIColor appearanceTableViewBackgroundColor];
+	self.tableView.separatorColor = [UIColor appearanceTableViewSeparatorColor];
+	
+	self.taskManager = [[NCTaskManager alloc] initWithViewController:self];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -100,12 +110,6 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.row == 3)
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://support.eveonline.com/api/Key/ActivateInstallLinks"]];
-}
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
 }
 
 #pragma mark - UITextFieldDelegate

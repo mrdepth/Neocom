@@ -81,24 +81,6 @@
     return section == 0 ? 1 : [(NSArray*) self.sections[section - 1] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		NSString *CellIdentifier = [NSString stringWithFormat:@"MenuItem%ldCell", (long)indexPath.row];
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		return cell;
-	}
-	else {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
-		cell.titleLabel.text = loadout.type.typeName;
-		cell.subtitleLabel.text = loadout.name;
-		cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		return cell;
-	}
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return nil;
@@ -113,13 +95,6 @@
 
 
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 37;
-	else
-		return 42;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -168,6 +143,25 @@
 			return [rows[0] valueForKeyPath:@"type.group.groupID"];
 	}
 	return nil;
+}
+
+- (NSString* )tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return [NSString stringWithFormat:@"MenuItem%ldCell", (long)indexPath.row];
+	else
+		return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+	}
+	else {
+		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+		NCLoadout* loadout = self.sections[indexPath.section - 1][indexPath.row];
+		cell.titleLabel.text = loadout.type.typeName;
+		cell.subtitleLabel.text = loadout.name;
+		cell.iconView.image = loadout.type.icon ? loadout.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	}
 }
 
 @end

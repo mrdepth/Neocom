@@ -183,9 +183,51 @@
     return section == 0 ? 5 : 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+#pragma mark - Table view delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
 	if (indexPath.section == 0) {
-		NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+		if (indexPath.row == 0) {
+			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
+			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
+											  inViewController:self
+													  fromRect:cell.bounds
+														inView:cell
+													  animated:YES
+											 completionHandler:^(NCDBInvType *type) {
+												 self.type = type;
+												 [self dismissAnimated];
+												 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+												 [self update];
+											 }];
+		}
+		else if (indexPath.row == 1) {
+			[self performSegueWithIdentifier:@"NCDatabaseGroupPickerViewContoller" sender:cell];
+		}
+		else if (indexPath.row == 2 || indexPath.row == 3) {
+			[self performSegueWithIdentifier:@"NCFittingAPIFlagsViewController" sender:cell];
+		}
+	}
+}
+
+
+#pragma mark - NCTableViewController
+
+- (NSString*) recordID {
+	return nil;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0)
+		return @"Cell";
+	else
+		return @"SearchResultsCell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if (indexPath.row < 4) {
@@ -286,66 +328,22 @@
 				cell.accessoryView = switchView;
 			}
 		}
-		return cell;
 	}
 	else {
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultsCell" forIndexPath:indexPath];
+		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
 		if (self.lookup.count > 0) {
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ loadouts", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.lookup.count]];
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ loadouts", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.lookup.count]];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 		else if (self.error) {
-			cell.textLabel.text = [self.error localizedDescription];
+			cell.titleLabel.text = [self.error localizedDescription];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 		else {
-			cell.textLabel.text = NSLocalizedString(@"No Results", nil);
+			cell.titleLabel.text = NSLocalizedString(@"No Results", nil);
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
-		return cell;
 	}
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0)
-		return 42;
-	else
-		return 37;
-}
-
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			self.typePickerViewController.title = NSLocalizedString(@"Ships", nil);
-			[self.typePickerViewController presentWithCategory:[NCDBEufeItemCategory shipsCategory]
-											  inViewController:self
-													  fromRect:cell.bounds
-														inView:cell
-													  animated:YES
-											 completionHandler:^(NCDBInvType *type) {
-												 self.type = type;
-												 [self dismissAnimated];
-												 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-												 [self update];
-											 }];
-		}
-		else if (indexPath.row == 1) {
-			[self performSegueWithIdentifier:@"NCDatabaseGroupPickerViewContoller" sender:cell];
-		}
-		else if (indexPath.row == 2 || indexPath.row == 3) {
-			[self performSegueWithIdentifier:@"NCFittingAPIFlagsViewController" sender:cell];
-		}
-	}
-}
-
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
 }
 
 #pragma mark - Unwind

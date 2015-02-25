@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 #import "NCProgressLabel.h"
 
-@interface NCFittingResistancesCell : UITableViewCell
+@interface NCFittingResistancesCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UIImageView* categoryImageView;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *emLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *thermalLabel;

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
 @class EVEUpcomingCalendarEventsItem;
-@interface NCCalendarEventCell : UITableViewCell
+@interface NCCalendarEventCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *importantImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;

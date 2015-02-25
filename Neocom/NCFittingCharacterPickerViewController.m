@@ -107,33 +107,6 @@
 		return 6;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"Cell";
-	NCTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	
-	if (indexPath.section == 0) {
-		NCAccount* account = self.accounts[indexPath.row];
-		cell.titleLabel.text = account.characterSheet.name;
-		cell.iconView.image = [UIImage emptyImageWithSize:CGSizeMake(32, 32)];
-		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
-	}
-	else if (indexPath.section == 1) {
-		if (indexPath.row == self.customCharacters.count) {
-			cell.titleLabel.text = NSLocalizedString(@"Add Character", nil);
-		}
-		else {
-			NCFitCharacter* character = self.customCharacters[indexPath.row];
-			cell.titleLabel.text = character.name;
-		}
-		cell.iconView.image = nil;
-	}
-	else {
-		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), indexPath.row];
-		cell.iconView.image = nil;
-	}
-	return cell;
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return NSLocalizedString(@"EVE Characters", nil);
@@ -225,6 +198,35 @@
 
 - (id) identifierForSection:(NSInteger)section {
 	return @(section);
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	
+	if (indexPath.section == 0) {
+		NCAccount* account = self.accounts[indexPath.row];
+		cell.titleLabel.text = account.characterSheet.name;
+		cell.iconView.image = [UIImage emptyImageWithSize:CGSizeMake(32, 32)];
+		[cell.iconView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina32 error:nil]];
+	}
+	else if (indexPath.section == 1) {
+		if (indexPath.row == self.customCharacters.count) {
+			cell.titleLabel.text = NSLocalizedString(@"Add Character", nil);
+		}
+		else {
+			NCFitCharacter* character = self.customCharacters[indexPath.row];
+			cell.titleLabel.text = character.name;
+		}
+		cell.iconView.image = nil;
+	}
+	else {
+		cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"All Skills %d", nil), indexPath.row];
+		cell.iconView.image = nil;
+	}
 }
 
 @end

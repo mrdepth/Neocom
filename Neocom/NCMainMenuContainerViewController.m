@@ -91,10 +91,12 @@
 		[self.navigationItem setRightBarButtonItem:dropDownViewController.navigationItem.rightBarButtonItem animated:YES];
 		[dropDownViewController.navigationItem addObserver:self forKeyPath:@"rightBarButtonItem" options:NSKeyValueObservingOptionNew context:nil];
 
-		CGRect frame = self.view.bounds;
+		CGRect frame = self.menuViewController.view.superview.bounds;
 		dropDownViewController.view.frame = frame;
 		dropDownViewController.view.layer.zPosition = 1.0;
 		dropDownViewController.view.transform = CGAffineTransformMakeTranslation(0.0f, -frame.size.height);
+		dropDownViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+		dropDownViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
 		[self addChildViewController:dropDownViewController];
 		self.navigationCharacterButton.userInteractionEnabled = NO;

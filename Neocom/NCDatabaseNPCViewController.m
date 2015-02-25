@@ -70,51 +70,6 @@
 	return sectionInfo.numberOfObjects;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
-	NCTableViewCell *cell;
-	if ([row isKindOfClass:[NCDBInvType class]]) {
-		static NSString *CellIdentifier = @"TypeCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	}
-	else {
-		static NSString *CellIdentifier = @"NpcGroupCell";
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (!cell)
-			cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	}
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
-	id row = sectionInfo.objects[indexPath.row];
-	NCTableViewCell *cell;
-	if ([row isKindOfClass:[NCDBInvType class]])
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"TypeCell"];
-	else
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NpcGroupCell"];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
-
 #pragma mark - NCTableViewController
 
 - (NSString*) recordID {
@@ -132,6 +87,15 @@
 	self.searchResult = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:database.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	[self.searchResult performFetch:nil];
 	[self.searchDisplayController.searchResultsTableView reloadData];
+}
+
+- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	id <NSFetchedResultsSectionInfo> sectionInfo = tableView == self.tableView  ? self.result.sections[indexPath.section] : self.searchResult.sections[indexPath.section];
+	id row = sectionInfo.objects[indexPath.row];
+	if ([row isKindOfClass:[NCDBInvType class]])
+		return @"TypeCell";
+	else
+		return @"NpcGroupCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

@@ -19,4 +19,6 @@
 + (instancetype) appearanceTableViewSeparatorColor;
 + (instancetype) appearancePopoberBackgroundColor;
 
++ (instancetype) urlColor;
+
 @end

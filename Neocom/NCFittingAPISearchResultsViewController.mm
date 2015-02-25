@@ -81,12 +81,49 @@
     return rows.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+#pragma mark - NCTableViewController
+
+- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
+	__block NSError* error = nil;
+	__block NAPISearch* search = nil;
+	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
+										 title:NCTaskManagerDefaultTitle
+										 block:^(NCTask *task) {
+											 search = [NAPISearch searchWithCriteria:self.criteria order:self.order cachePolicy:cachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
+												 task.progress = progress;
+											 }];
+										 }
+							 completionHandler:^(NCTask *task) {
+								 if (!task.isCancelled) {
+									 if (error) {
+										 [self didFailLoadDataWithError:error];
+									 }
+									 else {
+										 [self didFinishLoadData:search.loadouts withCacheDate:[NSDate date] expireDate:search.cacheExpireDate];
+									 }
+								 }
+							 }];
+}
+
+- (NSString*) recordID {
+	NSMutableArray* components = [NSMutableArray new];
+	[self.criteria enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		[components addObject:[NSString stringWithFormat:@"%@.%@", key, obj]];
+	}];
+	return [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), self.order, (unsigned long)[[components componentsJoinedByString:@","] hash]];
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSArray* rows = self.data;
 	NAPISearchItem* item = rows[indexPath.row];
-
-    NCFittingAPISearchResultsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	
+	NCFittingAPISearchResultsCell *cell = (NCFittingAPISearchResultsCell*) tableViewCell;
 	
 	NCDBInvType* ship = self.types[@(item.typeID)];
 	if (!ship) {
@@ -140,51 +177,8 @@
 	cell.falloffLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Falloff: %@ m", nil),
 							  [NSNumberFormatter neocomLocalizedStringFromInteger:item.falloff]];
 	cell.capacitorLabel.text = item.flags & NeocomAPIFlagCapStable ? NSLocalizedString(@"Capacitor is Stable", nil) : NSLocalizedString(@"Capacitor is Unstable", nil);
-	return cell;
 }
 
-#pragma mark -
-#pragma mark Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return 99;
-	else
-		return 121;
-}
-
-
-#pragma mark - NCTableViewController
-
-- (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
-	__block NSError* error = nil;
-	__block NAPISearch* search = nil;
-	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
-										 title:NCTaskManagerDefaultTitle
-										 block:^(NCTask *task) {
-											 search = [NAPISearch searchWithCriteria:self.criteria order:self.order cachePolicy:cachePolicy error:&error progressHandler:^(CGFloat progress, BOOL *stop) {
-												 task.progress = progress;
-											 }];
-										 }
-							 completionHandler:^(NCTask *task) {
-								 if (!task.isCancelled) {
-									 if (error) {
-										 [self didFailLoadDataWithError:error];
-									 }
-									 else {
-										 [self didFinishLoadData:search.loadouts withCacheDate:[NSDate date] expireDate:search.cacheExpireDate];
-									 }
-								 }
-							 }];
-}
-
-- (NSString*) recordID {
-	NSMutableArray* components = [NSMutableArray new];
-	[self.criteria enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		[components addObject:[NSString stringWithFormat:@"%@.%@", key, obj]];
-	}];
-	return [NSString stringWithFormat:@"%@.%@.%lu", NSStringFromClass(self.class), self.order, (unsigned long)[[components componentsJoinedByString:@","] hash]];
-}
 
 - (NSTimeInterval) defaultCacheExpireTime {
 	return 60 * 60 * 24;

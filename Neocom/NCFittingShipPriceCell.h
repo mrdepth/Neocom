@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingShipPriceCell : UITableViewCell
+@interface NCFittingShipPriceCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *shipPriceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *fittingsPriceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *totalPriceLabel;

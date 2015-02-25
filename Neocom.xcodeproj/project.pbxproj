@@ -3237,10 +3237,6 @@
 		128BCE6A18856F67000E1922 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */,
-				12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */,
-				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
-				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
 				84E9E6991885B07D003ADB9B /* NCDatabaseViewController */,
 				841534E9188A91EA00B42433 /* NCDatabaseMarketViewController */,
 				12C7EE68188673E400F90763 /* NCDatabaseTypeInfoViewController */,
@@ -3249,6 +3245,10 @@
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
+				128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */,
+				12F82A4C18AC92BB00A967B5 /* NCDatabaseGroupPickerViewContoller */,
+				84C1182418983ADC00A35516 /* NCDatabaseTypePickerViewController */,
+				84C1182A18983E6B00A35516 /* NCDatabaseTypePickerContentViewController */,
 				1243771218969E390078F526 /* NCDatabaseNPCViewController */,
 				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
 			);

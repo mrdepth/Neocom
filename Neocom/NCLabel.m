@@ -8,58 +8,69 @@
 
 #import "NCLabel.h"
 
-@interface NCLabel()
-@property (nonatomic, strong) NSLayoutConstraint* widthConstraint;
+@interface NCLabel()<UIGestureRecognizerDelegate>
+@property (nonatomic, strong) UITapGestureRecognizer* recognizer;
+- (void) onTap:(UITapGestureRecognizer*) recognizer;
+- (NSURL*) urlAtPoint:(CGPoint) point;
 @end
 
 @implementation NCLabel
 
 - (void) awakeFromNib {
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-		self.widthConstraint = [NSLayoutConstraint constraintWithItem:self
-															attribute:NSLayoutAttributeWidth
-															relatedBy:NSLayoutRelationEqual
-															   toItem:nil
-															attribute:0
-														   multiplier:1
-															 constant:self.bounds.size.width];
-		self.widthConstraint.priority = UILayoutPriorityFittingSizeLevel;
-		[self addConstraint:self.widthConstraint];
+	self.recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+	self.recognizer.delegate = self;
+	[self addGestureRecognizer:self.recognizer];
+	self.tintColor = [UIColor whiteColor];
+	self.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+	if (gestureRecognizer == self.recognizer) {
+		NSURL *url = [self urlAtPoint:[gestureRecognizer locationInView:self]];
+		if (url)
+			return YES;
+		else
+			return NO;
 	}
-//	else
-//		self.preferredMaxLayoutWidth = 0;
+	else	
+		return YES;
 }
 
-- (id) initWithFrame:(CGRect)frame {
-	if (self = [super initWithFrame:frame]) {
-		if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-			self.widthConstraint = [NSLayoutConstraint constraintWithItem:self
-																attribute:NSLayoutAttributeWidth
-																relatedBy:NSLayoutRelationEqual
-																   toItem:nil
-																attribute:0
-															   multiplier:1
-																 constant:self.bounds.size.width];
-			self.widthConstraint.priority = UILayoutPriorityFittingSizeLevel;
-			[self addConstraint:self.widthConstraint];
-		}
-//		else
-//s			self.preferredMaxLayoutWidth = 0;
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+	if (otherGestureRecognizer == self.recognizer)
+		return YES;
+	else
+		return NO;
+}
+
+#pragma mark - Private
+
+- (void) onTap:(UITapGestureRecognizer*) recognizer {
+	NSURL *url = [self urlAtPoint:[recognizer locationInView:self]];
+	if (url)
+		[[UIApplication sharedApplication] openURL:url];
+}
+
+- (NSURL*) urlAtPoint:(CGPoint) point {
+	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
+	CGSize size = self.bounds.size;
+	size.height += 10;
+	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:size];
+	container.maximumNumberOfLines = self.numberOfLines;
+	NSTextStorage* textStorage= [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
+	[textStorage addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, textStorage.string.length)];
+	[textStorage addLayoutManager:manager];
+	[manager addTextContainer:container];
+	
+	NSUInteger i = [manager glyphIndexForPoint:point inTextContainer:container];
+	if (i != NSNotFound) {
+		NSURL* url = [self.attributedText attributesAtIndex:i effectiveRange:NULL][@"NSURL"];
+		return url;
 	}
-	return self;
+	else
+		return nil;
 }
-
-- (void) layoutSubviews {
-	[super layoutSubviews];
-	if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-		self.widthConstraint.constant = self.bounds.size.width;
-		self.preferredMaxLayoutWidth = self.bounds.size.width;
-	}
-}
-
-- (CGSize) intrinsicContentSize {
-	return [self textRectForBounds:CGRectMake(0, 0, self.bounds.size.width, 2048) limitedToNumberOfLines:self.numberOfLines].size;
-}
-
 
 @end

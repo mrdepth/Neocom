@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingShipCapacitorCell : UITableViewCell
+@interface NCFittingShipCapacitorCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel *capacitorCapacityLabel;
 @property (nonatomic, weak) IBOutlet UILabel *capacitorStateLabel;
 @property (nonatomic, weak) IBOutlet UILabel *capacitorRechargeTimeLabel;

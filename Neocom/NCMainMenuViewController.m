@@ -200,13 +200,16 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDefaultTableViewCell* tableViewCell = (NCDefaultTableViewCell*) cell;
+	tableViewCell.subtitleLabel.numberOfLines = 2;
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
 	
 	tableViewCell.titleLabel.text = row[@"title"];
 	tableViewCell.iconView.image = [UIImage imageNamed:row[@"image"]];
 	NSString* detailsKeyPath = row[@"detailsKeyPath"];
-	if (detailsKeyPath)
+	if (detailsKeyPath) {
 		tableViewCell.subtitleLabel.text = [self valueForKey:detailsKeyPath];
+		tableViewCell.subtitleLabel.numberOfLines = [tableViewCell.subtitleLabel.text componentsSeparatedByString:@"\n"].count;
+	}
 	else
 		tableViewCell.subtitleLabel.text = nil;
 	

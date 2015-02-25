@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 #import "NCProgressLabel.h"
 
-@interface NCFittingPOSResourcesCell : UITableViewCell
+@interface NCFittingPOSResourcesCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet NCProgressLabel *powerGridLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel *cpuLabel;
 @end

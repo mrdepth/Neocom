@@ -183,6 +183,14 @@
 	[self reload];
 }
 
+- (NSString *)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
+	NSString *cellIdentifier = row.cellIdentifier;
+	if (!cellIdentifier)
+		cellIdentifier = @"Cell";
+	return cellIdentifier;
+}
+
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
 	
@@ -211,40 +219,7 @@
 	return self.sections[section][@"title"];
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	NSString *cellIdentifier = row.cellIdentifier;
-	if (!cellIdentifier)
-		cellIdentifier = @"Cell";
-	
-	NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 42;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	NSString *cellIdentifier = row.cellIdentifier;
-	if (!cellIdentifier)
-		cellIdentifier = @"Cell";
-
-	UITableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:cellIdentifier];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];

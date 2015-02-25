@@ -14,12 +14,13 @@
 @implementation NCTableViewCell
 
 - (void) awakeFromNib {
+	[super awakeFromNib];
 	for (NSLayoutConstraint* constraint in self.contentView.constraints) {
 		if (constraint.firstAttribute == NSLayoutAttributeBottom) {
 			if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1)
 				constraint.priority = UILayoutPriorityFittingSizeLevel;
 			else
-				constraint.priority = UILayoutPriorityRequired;
+				constraint.priority = 999;
 			break;
 		}
 	}

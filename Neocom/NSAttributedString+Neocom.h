@@ -13,5 +13,6 @@
 + (NSAttributedString*) shortAttributedStringWithFloat:(float) value unit:(NSString*) unit;
 + (NSAttributedString*) attributedStringWithTimeLeft:(NSTimeInterval) timeLeft;
 + (NSAttributedString*) attributedStringWithTimeLeft:(NSTimeInterval) timeLeft componentsLimit:(NSInteger) componentsLimit;
++ (NSAttributedString*) attributedStringWithString:(NSString*) string url:(NSURL*) url;
 
 @end

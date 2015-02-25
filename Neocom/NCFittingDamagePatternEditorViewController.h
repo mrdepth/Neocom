@@ -11,7 +11,7 @@
 #import "NCProgressLabel.h"
 
 @class NCDamagePattern;
-@interface NCFittingDamagePatternEditorViewController : NCTableViewController
+@interface NCFittingDamagePatternEditorViewController : UITableViewController
 @property (weak, nonatomic) IBOutlet NCProgressTextField *emTextField;
 @property (weak, nonatomic) IBOutlet NCProgressTextField *thermalTextField;
 @property (weak, nonatomic) IBOutlet NCProgressTextField *kineticTextField;

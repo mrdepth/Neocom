@@ -165,20 +165,6 @@
 		return std::max(section.numberOfSlots, static_cast<int>(section.modules.size()));
 }
 
-- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
-	if (indexPath.row >= section.modules.size()) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-	else {
-		NCFittingShipModuleCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipModuleCell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-}
-
 #pragma mark - Table view delegate
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionIndex {
@@ -220,28 +206,6 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return 44;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
-	if (indexPath.row >= section.modules.size()) {
-		return 41;
-	}
-	else {
-		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-			return UITableViewAutomaticDimension;
-
-		if (!self.offscreenCell)
-			self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipModuleCell"];
-		[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
-		self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
-		[self.offscreenCell layoutIfNeeded];
-		return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
-	}
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -321,6 +285,14 @@
 }
 
 #pragma mark - Private
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
+	if (indexPath.row >= section.modules.size())
+		return @"Cell";
+	else
+		return @"NCFittingShipModuleCell";
+}
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];

@@ -236,195 +236,6 @@
 }
 
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			NCFittingShipWeaponsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipWeaponsCell"];
-			
-			if (self.shipStats) {
-				cell.turretsLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.usedTurretHardpoints, self.shipStats.totalTurretHardpoints];
-				cell.launchersLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.usedMissileHardpoints, self.shipStats.totalMissileHardpoints];
-				
-				cell.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) self.shipStats.usedCalibration, (int) self.shipStats.totalCalibration];
-				if (self.shipStats.usedCalibration > self.shipStats.totalCalibration)
-					cell.calibrationLabel.textColor = [UIColor redColor];
-				else
-					cell.calibrationLabel.textColor = [UIColor whiteColor];
-				
-				cell.dronesLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.activeDrones, self.shipStats.maxActiveDrones];
-				if (self.shipStats.activeDrones > self.shipStats.maxActiveDrones)
-					cell.dronesLabel.textColor = [UIColor redColor];
-				else
-					cell.dronesLabel.textColor = [UIColor whiteColor];
-			}
-			return cell;
-		}
-		else {
-			NCFittingShipResourcesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipResourcesCell"];
-			
-			if (self.shipStats) {
-				cell.powerGridLabel.text = [NSString stringWithTotalResources:self.shipStats.totalPG usedResources:self.shipStats.usedPG unit:@"MW"];
-				cell.powerGridLabel.progress = self.shipStats.totalPG > 0 ? self.shipStats.usedPG / self.shipStats.totalPG : 0;
-				cell.cpuLabel.text = [NSString stringWithTotalResources:self.shipStats.totalCPU usedResources:self.shipStats.usedCPU unit:@"tf"];
-				cell.cpuLabel.progress = self.shipStats.usedCPU > 0 ? self.shipStats.usedCPU / self.shipStats.totalCPU : 0;
-				
-				cell.droneBandwidthLabel.text = [NSString stringWithTotalResources:self.shipStats.totalBandwidth usedResources:self.shipStats.usedBandwidth unit:@"Mbit/s"];
-				cell.droneBandwidthLabel.progress = self.shipStats.totalBandwidth > 0 ? self.shipStats.usedBandwidth / self.shipStats.totalBandwidth : 0;
-				cell.droneBayLabel.text = [NSString stringWithTotalResources:self.shipStats.totalDB usedResources:self.shipStats.usedDB unit:@"m3"];
-				cell.droneBayLabel.progress = self.shipStats.totalDB > 0 ? self.shipStats.usedDB / self.shipStats.totalDB : 0;
-			}
-			return cell;
-		}
-	}
-	else if (indexPath.section == 1) {
-		if (indexPath.row == 0) {
-			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesHeaderCell"];
-			return cell;
-		}
-		else if (indexPath.row == 5) {
-			NCFittingEHPCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingEHPCell"];
-			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.shipStats.ehp unit:nil]];
-			return cell;
-		}
-		else {
-			NCFittingResistancesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingResistancesCell"];
-			if (self.shipStats) {
-				float values[5] = {0};
-				NSString* imageName = nil;
-				if (indexPath.row == 1) {
-					values[0] = self.shipStats.resistances.shield.em;
-					values[1] = self.shipStats.resistances.shield.thermal;
-					values[2] = self.shipStats.resistances.shield.kinetic;
-					values[3] = self.shipStats.resistances.shield.explosive;
-					values[4] = self.shipStats.hp.shield;
-					imageName = @"shield.png";
-				}
-				else if (indexPath.row == 2) {
-					values[0] = self.shipStats.resistances.armor.em;
-					values[1] = self.shipStats.resistances.armor.thermal;
-					values[2] = self.shipStats.resistances.armor.kinetic;
-					values[3] = self.shipStats.resistances.armor.explosive;
-					values[4] = self.shipStats.hp.armor;
-					imageName = @"armor.png";
-				}
-				else if (indexPath.row == 3) {
-					values[0] = self.shipStats.resistances.hull.em;
-					values[1] = self.shipStats.resistances.hull.thermal;
-					values[2] = self.shipStats.resistances.hull.kinetic;
-					values[3] = self.shipStats.resistances.hull.explosive;
-					values[4] = self.shipStats.hp.hull;
-					imageName = @"hull.png";
-				}
-				else if (indexPath.row == 4) {
-					if (self.shipStats.damagePattern) {
-						values[0] = self.shipStats.damagePattern.em;
-						values[1] = self.shipStats.damagePattern.thermal;
-						values[2] = self.shipStats.damagePattern.kinetic;
-						values[3] = self.shipStats.damagePattern.explosive;
-					}
-					else {
-						values[0] = 0.25;
-						values[1] = 0.25;
-						values[2] = 0.25;
-						values[3] = 0.25;
-					}
-					values[4] = 0;
-					imageName = @"damagePattern.png";
-				}
-				
-				NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
-				for (int i = 0; i < 4; i++) {
-					labels[i].progress = values[i];
-					labels[i].text = [NSString stringWithFormat:@"%.1f%%", values[i] * 100];
-				}
-				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
-				cell.categoryImageView.image = [UIImage imageNamed:imageName];
-			}
-			return cell;
-		}
-	}
-	else if (indexPath.section == 2) {
-		NCFittingShipCapacitorCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipCapacitorCell"];
-		if (self.shipStats) {
-			cell.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString shortStringWithFloat:self.shipStats.capCapacity unit:@"GJ"]];
-			if (self.shipStats.capStable)
-				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), self.shipStats.capState];
-			else
-				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capState]];
-			cell.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capacitorRechargeTime]];
-			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%@", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", [NSString shortStringWithFloat:self.shipStats.delta unit:@"GJ/s"]];
-		}
-		return cell;
-	}
-	else if (indexPath.section == 3) {
-		if (indexPath.row == 0) {
-			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipTankHeaderCell"];
-			return cell;
-		}
-		else {
-			NCFittingShipTankCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipTankCell"];
-			
-			if (self.shipStats) {
-				if (indexPath.row == 1) {
-					cell.categoryLabel.text = NSLocalizedString(@"Reinforced", nil);
-					cell.shieldRecharge.text = nil;
-					cell.shieldBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.shieldRepair, self.shipStats.ertank.shieldRepair];
-					cell.armorRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.armorRepair, self.shipStats.ertank.armorRepair];
-					cell.hullRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.hullRepair, self.shipStats.ertank.hullRepair];
-				}
-				else {
-					cell.categoryLabel.text = NSLocalizedString(@"Sustained", nil);
-					cell.shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.passiveShield, self.shipStats.estank.passiveShield];
-					cell.shieldBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.shieldRepair, self.shipStats.estank.shieldRepair];
-					cell.armorRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.armorRepair, self.shipStats.estank.armorRepair];
-					cell.hullRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.hullRepair, self.shipStats.estank.hullRepair];
-				}
-			}
-			return cell;
-		}
-	}
-	else if (indexPath.section == 4) {
-		NCFittingShipFirepowerCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipFirepowerCell"];
-		
-		if (self.shipStats) {
-			cell.weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.weaponDPS)]];
-			cell.droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.droneDPS)]];
-			cell.volleyDamageLabel.text = [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.volleyDamage)];
-			cell.dpsLabel.text = [NSString stringWithFormat:@"%@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.dps)]];
-		}
-		return cell;
-	}
-	else if (indexPath.section == 5) {
-		NCFittingShipMiscCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipMiscCell"];
-		if (self.shipStats) {
-			cell.targetsLabel.text = [NSString stringWithFormat:@"%d", self.shipStats.targets];
-			cell.targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.targetRange];
-			cell.scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", self.shipStats.scanRes];
-			cell.sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", self.shipStats.sensorStr];
-			cell.speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", self.shipStats.speed];
-			cell.alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", self.shipStats.alignTime];
-			cell.signatureLabel.text = [NSString stringWithFormat:@"%.0f", self.shipStats.signature];
-			cell.cargoLabel.text = [NSString shortStringWithFloat:self.shipStats.cargo unit:@"m3"];
-			cell.sensorImageView.image = self.shipStats.sensorImage;
-			cell.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.droneRange];
-			cell.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", self.shipStats.warpSpeed];
-		}
-		return cell;
-	}
-	else if (indexPath.section == 6) {
-		NCFittingShipPriceCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipPriceCell"];
-		if (self.priceStats) {
-			cell.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.shipPrice unit:nil]];
-			cell.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.fittingsPrice unit:nil]];
-			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.totalPrice unit:nil]];
-		}
-		return cell;
-	}
-	else
-		return nil;
-}
-
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return NSLocalizedString(@"Resources", nil);
@@ -461,32 +272,6 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	NSString* title = [self tableView:tableView titleForHeaderInSection:section];
 	return title ? 44 : 0;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
-	static NSMutableDictionary* heights = nil;
-	if (!heights)
-		heights = [NSMutableDictionary new];
-	NSNumber* height = heights[indexPath];
-	if (height)
-		return [height floatValue];
-	
-	UITableViewCell* cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	
-	height = @([cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5);
-
-	heights[indexPath] = height;
-	return [height floatValue];
-	//return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -548,5 +333,212 @@
 										}];
 }
 
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0)
+			return @"NCFittingShipWeaponsCell";
+		else
+			return @"NCFittingShipResourcesCell";
+	}
+	else if (indexPath.section == 1) {
+		if (indexPath.row == 0)
+			return @"NCFittingResistancesHeaderCell";
+		else if (indexPath.row == 5)
+			return @"NCFittingEHPCell";
+		else
+			return @"NCFittingResistancesCell";
+	}
+	else if (indexPath.section == 2)
+		return @"NCFittingShipCapacitorCell";
+	else if (indexPath.section == 3) {
+		if (indexPath.row == 0)
+			return @"NCFittingShipTankHeaderCell";
+		else
+			return @"NCFittingShipTankCell";
+	}
+	else if (indexPath.section == 4)
+		return @"NCFittingShipFirepowerCell";
+	else if (indexPath.section == 5)
+		return @"NCFittingShipMiscCell";
+	else if (indexPath.section == 6)
+		return @"NCFittingShipPriceCell";
+	else
+		return nil;
+}
+
+// Customize the appearance of table view cells.
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			NCFittingShipWeaponsCell* cell = (NCFittingShipWeaponsCell*) tableViewCell;
+			
+			if (self.shipStats) {
+				cell.turretsLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.usedTurretHardpoints, self.shipStats.totalTurretHardpoints];
+				cell.launchersLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.usedMissileHardpoints, self.shipStats.totalMissileHardpoints];
+				
+				cell.calibrationLabel.text = [NSString stringWithFormat:@"%d/%d", (int) self.shipStats.usedCalibration, (int) self.shipStats.totalCalibration];
+				if (self.shipStats.usedCalibration > self.shipStats.totalCalibration)
+					cell.calibrationLabel.textColor = [UIColor redColor];
+				else
+					cell.calibrationLabel.textColor = [UIColor whiteColor];
+				
+				cell.dronesLabel.text = [NSString stringWithFormat:@"%d/%d", self.shipStats.activeDrones, self.shipStats.maxActiveDrones];
+				if (self.shipStats.activeDrones > self.shipStats.maxActiveDrones)
+					cell.dronesLabel.textColor = [UIColor redColor];
+				else
+					cell.dronesLabel.textColor = [UIColor whiteColor];
+			}
+		}
+		else {
+			NCFittingShipResourcesCell* cell = (NCFittingShipResourcesCell*) tableViewCell;
+			
+			if (self.shipStats) {
+				cell.powerGridLabel.text = [NSString stringWithTotalResources:self.shipStats.totalPG usedResources:self.shipStats.usedPG unit:@"MW"];
+				cell.powerGridLabel.progress = self.shipStats.totalPG > 0 ? self.shipStats.usedPG / self.shipStats.totalPG : 0;
+				cell.cpuLabel.text = [NSString stringWithTotalResources:self.shipStats.totalCPU usedResources:self.shipStats.usedCPU unit:@"tf"];
+				cell.cpuLabel.progress = self.shipStats.usedCPU > 0 ? self.shipStats.usedCPU / self.shipStats.totalCPU : 0;
+				
+				cell.droneBandwidthLabel.text = [NSString stringWithTotalResources:self.shipStats.totalBandwidth usedResources:self.shipStats.usedBandwidth unit:@"Mbit/s"];
+				cell.droneBandwidthLabel.progress = self.shipStats.totalBandwidth > 0 ? self.shipStats.usedBandwidth / self.shipStats.totalBandwidth : 0;
+				cell.droneBayLabel.text = [NSString stringWithTotalResources:self.shipStats.totalDB usedResources:self.shipStats.usedDB unit:@"m3"];
+				cell.droneBayLabel.progress = self.shipStats.totalDB > 0 ? self.shipStats.usedDB / self.shipStats.totalDB : 0;
+			}
+		}
+	}
+	else if (indexPath.section == 1) {
+		if (indexPath.row == 0) {
+		}
+		else if (indexPath.row == 5) {
+			NCFittingEHPCell* cell = (NCFittingEHPCell*) tableViewCell;
+
+			cell.ehpLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EHP: %@", nil), [NSString shortStringWithFloat:self.shipStats.ehp unit:nil]];
+		}
+		else {
+			NCFittingResistancesCell* cell = (NCFittingResistancesCell*) tableViewCell;
+			if (self.shipStats) {
+				float values[5] = {0};
+				NSString* imageName = nil;
+				if (indexPath.row == 1) {
+					values[0] = self.shipStats.resistances.shield.em;
+					values[1] = self.shipStats.resistances.shield.thermal;
+					values[2] = self.shipStats.resistances.shield.kinetic;
+					values[3] = self.shipStats.resistances.shield.explosive;
+					values[4] = self.shipStats.hp.shield;
+					imageName = @"shield.png";
+				}
+				else if (indexPath.row == 2) {
+					values[0] = self.shipStats.resistances.armor.em;
+					values[1] = self.shipStats.resistances.armor.thermal;
+					values[2] = self.shipStats.resistances.armor.kinetic;
+					values[3] = self.shipStats.resistances.armor.explosive;
+					values[4] = self.shipStats.hp.armor;
+					imageName = @"armor.png";
+				}
+				else if (indexPath.row == 3) {
+					values[0] = self.shipStats.resistances.hull.em;
+					values[1] = self.shipStats.resistances.hull.thermal;
+					values[2] = self.shipStats.resistances.hull.kinetic;
+					values[3] = self.shipStats.resistances.hull.explosive;
+					values[4] = self.shipStats.hp.hull;
+					imageName = @"hull.png";
+				}
+				else if (indexPath.row == 4) {
+					if (self.shipStats.damagePattern) {
+						values[0] = self.shipStats.damagePattern.em;
+						values[1] = self.shipStats.damagePattern.thermal;
+						values[2] = self.shipStats.damagePattern.kinetic;
+						values[3] = self.shipStats.damagePattern.explosive;
+					}
+					else {
+						values[0] = 0.25;
+						values[1] = 0.25;
+						values[2] = 0.25;
+						values[3] = 0.25;
+					}
+					values[4] = 0;
+					imageName = @"damagePattern.png";
+				}
+				
+				NCProgressLabel* labels[] = {cell.emLabel, cell.thermalLabel, cell.kineticLabel, cell.explosiveLabel};
+				for (int i = 0; i < 4; i++) {
+					labels[i].progress = values[i];
+					labels[i].text = [NSString stringWithFormat:@"%.1f%%", values[i] * 100];
+				}
+				cell.hpLabel.text = values[4] > 0 ? [NSString shortStringWithFloat:values[4] unit:nil] : nil;
+				cell.categoryImageView.image = [UIImage imageNamed:imageName];
+			}
+		}
+	}
+	else if (indexPath.section == 2) {
+		NCFittingShipCapacitorCell* cell = (NCFittingShipCapacitorCell*) tableViewCell;
+		if (self.shipStats) {
+			cell.capacitorCapacityLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Total: %@", nil), [NSString shortStringWithFloat:self.shipStats.capCapacity unit:@"GJ"]];
+			if (self.shipStats.capStable)
+				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Stable: %.1f%%", nil), self.shipStats.capState];
+			else
+				cell.capacitorStateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Lasts: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capState]];
+			cell.capacitorRechargeTimeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Recharge Time: %@", nil), [NSString stringWithTimeLeft:self.shipStats.capacitorRechargeTime]];
+			cell.capacitorDeltaLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Delta: %@%@", nil), self.shipStats.delta >= 0.0 ? @"+" : @"", [NSString shortStringWithFloat:self.shipStats.delta unit:@"GJ/s"]];
+		}
+	}
+	else if (indexPath.section == 3) {
+		if (indexPath.row == 0) {
+		}
+		else {
+			NCFittingShipTankCell* cell = (NCFittingShipTankCell*) tableViewCell;
+			
+			if (self.shipStats) {
+				if (indexPath.row == 1) {
+					cell.categoryLabel.text = NSLocalizedString(@"Reinforced", nil);
+					cell.shieldRecharge.text = nil;
+					cell.shieldBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.shieldRepair, self.shipStats.ertank.shieldRepair];
+					cell.armorRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.armorRepair, self.shipStats.ertank.armorRepair];
+					cell.hullRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.rtank.hullRepair, self.shipStats.ertank.hullRepair];
+				}
+				else {
+					cell.categoryLabel.text = NSLocalizedString(@"Sustained", nil);
+					cell.shieldRecharge.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.passiveShield, self.shipStats.estank.passiveShield];
+					cell.shieldBoost.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.shieldRepair, self.shipStats.estank.shieldRepair];
+					cell.armorRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.armorRepair, self.shipStats.estank.armorRepair];
+					cell.hullRepair.text = [NSString stringWithFormat:@"%.1f\n%.1f", self.shipStats.stank.hullRepair, self.shipStats.estank.hullRepair];
+				}
+			}
+		}
+	}
+	else if (indexPath.section == 4) {
+		NCFittingShipFirepowerCell* cell = (NCFittingShipFirepowerCell*) tableViewCell;
+		
+		if (self.shipStats) {
+			cell.weaponDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.weaponDPS)]];
+			cell.droneDPSLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ DPS", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.droneDPS)]];
+			cell.volleyDamageLabel.text = [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.volleyDamage)];
+			cell.dpsLabel.text = [NSString stringWithFormat:@"%@", [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.dps)]];
+		}
+	}
+	else if (indexPath.section == 5) {
+		NCFittingShipMiscCell* cell = (NCFittingShipMiscCell*) tableViewCell;
+		if (self.shipStats) {
+			cell.targetsLabel.text = [NSString stringWithFormat:@"%d", self.shipStats.targets];
+			cell.targetRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.targetRange];
+			cell.scanResLabel.text = [NSString stringWithFormat:@"%.0f mm", self.shipStats.scanRes];
+			cell.sensorStrLabel.text = [NSString stringWithFormat:@"%.0f", self.shipStats.sensorStr];
+			cell.speedLabel.text = [NSString stringWithFormat:@"%.0f m/s", self.shipStats.speed];
+			cell.alignTimeLabel.text = [NSString stringWithFormat:@"%.1f s", self.shipStats.alignTime];
+			cell.signatureLabel.text = [NSString stringWithFormat:@"%.0f", self.shipStats.signature];
+			cell.cargoLabel.text = [NSString shortStringWithFloat:self.shipStats.cargo unit:@"m3"];
+			cell.sensorImageView.image = self.shipStats.sensorImage;
+			cell.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.droneRange];
+			cell.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", self.shipStats.warpSpeed];
+		}
+	}
+	else if (indexPath.section == 6) {
+		NCFittingShipPriceCell* cell = (NCFittingShipPriceCell*) tableViewCell;
+		if (self.priceStats) {
+			cell.shipPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.shipPrice unit:nil]];
+			cell.fittingsPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.fittingsPrice unit:nil]];
+			cell.totalPriceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSString shortStringWithFloat:self.priceStats.totalPrice unit:nil]];
+		}
+	}
+}
 
 @end

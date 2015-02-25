@@ -359,10 +359,10 @@
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
-	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
 	if (!cell && tableView != self.tableView)
-		cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-	
+		cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+//	cell.frame = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath]);
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 	return cell;
 }
@@ -402,6 +402,11 @@
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
+//	[cell layoutIfNeeded];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return self.tableView.rowHeight;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

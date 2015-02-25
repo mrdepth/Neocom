@@ -17,6 +17,7 @@
 #import "NSArray+Neocom.h"
 #import "NSData+Neocom.h"
 #import "NCCharacterAttributesCell.h"
+#import "NCDefaultTableViewCell.h"
 
 @interface NCSkillQueueViewController ()
 @property (nonatomic, strong) NCSkillPlan* skillPlan;
@@ -143,39 +144,6 @@
 		return 0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0) {
-			NCCharacterAttributesCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCCharacterAttributesCell"];
-			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-			return cell;
-		}
-		else {
-			UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-			return cell;
-		}
-	}
-	else {
-		NCSkillData* row;
-		
-		if (indexPath.section == 1)
-			row = self.skillQueueRows[indexPath.row];
-		else if (indexPath.section == 2)
-			row = self.skillPlan.trainingQueue.skills[indexPath.row];
-		
-		
-		NCSkillCell* cell = nil;
-		if (row.trainedLevel >= 0)
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
-		else
-			cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCompactCell"];
-				
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
 		return NSLocalizedString(@"Optimal neural remap", nil);
@@ -235,39 +203,7 @@
 	if (indexPath.section == 0 && indexPath.row == 0)
 		return 73;
 	else
-		return 42;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == 0) {
-		if (indexPath.row == 0)
-			return 73;
-		else
-			return 42;
-	}
-	else {
-		if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-			return UITableViewAutomaticDimension;
-
-		NCSkillData* row;
-		
-		if (indexPath.section == 1)
-			row = self.skillQueueRows[indexPath.row];
-		else if (indexPath.section == 2)
-			row = self.skillPlan.trainingQueue.skills[indexPath.row];
-		
-		
-		UITableViewCell* cell = nil;
-		if (row.trainedLevel >= 0)
-			cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCell"];
-		else
-			cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCompactCell"];
-		
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-		[cell layoutIfNeeded];
-		return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-	}
+		return self.tableView.rowHeight;
 }
 
 #pragma mark - NCTableViewController
@@ -278,6 +214,28 @@
 
 - (NSDate*) cacheDate {
 	return self.account.skillQueue.cacheDate;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0)
+			return @"NCCharacterAttributesCell";
+		else
+			return @"Cell";
+	}
+	else {
+		NCSkillData* row;
+		
+		if (indexPath.section == 1)
+			row = self.skillQueueRows[indexPath.row];
+		else if (indexPath.section == 2)
+			row = self.skillPlan.trainingQueue.skills[indexPath.row];
+		
+		if (row.trainedLevel >= 0)
+			return @"NCSkillCell";
+		else
+			return @"NCSkillCompactCell";
+	}
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
@@ -348,9 +306,9 @@
 			cell.charismaLabel.attributedText = attributesString(self.optimalAttributes.charisma, [(NCDBDgmTypeAttribute*) charismaEnhancer.attributesDictionary[@(NCCharismaBonusAttributeID)] value], characterSheet.attributes.charisma);
 		}
 		else {
-			UITableViewCell* cell = tableViewCell;
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
-			cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.fullTrainingQueue.trainingTime - self.optimalTrainingTime]];
+			NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", nil), [NSString stringWithTimeLeft:self.optimalTrainingTime]];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ better than current", nil), [NSString stringWithTimeLeft:self.fullTrainingQueue.trainingTime - self.optimalTrainingTime]];
 		}
 	}
 	else {

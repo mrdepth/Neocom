@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import "NCTableViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface NCAddAPIKeyViewController : NCTableViewController<UITextFieldDelegate>
+@interface NCAddAPIKeyViewController : UITableViewController<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *urlLabel;
 @property (weak, nonatomic) IBOutlet UITextField *keyIDTextField;
 @property (weak, nonatomic) IBOutlet UITextField *vCodeTextField;

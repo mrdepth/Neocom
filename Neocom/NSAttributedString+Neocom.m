@@ -8,6 +8,7 @@
 
 #import "NSAttributedString+Neocom.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "UIColor+Neocom.h"
 
 @implementation NSAttributedString (Neocom)
 
@@ -98,6 +99,14 @@
 		[text appendFormat:@"%ds", sec];
 	}
 	return [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+}
+
++ (NSAttributedString*) attributedStringWithString:(NSString*) string url:(NSURL*) url {
+	return [[NSAttributedString alloc] initWithString:string
+										   attributes:@{@"NSURL":url,
+														NSForegroundColorAttributeName:[UIColor whiteColor],
+														NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)
+														}];
 }
 
 #pragma mark - Private

@@ -114,12 +114,6 @@
 	return sectionInfo.name.length > 0 ? sectionInfo.name : nil;
 }
 
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 37;
-}
-
 #pragma mark - NCTableViewController
 
 - (NSString*) recordID {

@@ -13,8 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;
 @property (weak, nonatomic) IBOutlet UILabel *corporationNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *allianceNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
-@property (weak, nonatomic) IBOutlet UIButton *apiKeyButton;
-@property (weak, nonatomic) IBOutlet UILabel *ceoNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *membersLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @end

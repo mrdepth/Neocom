@@ -166,27 +166,6 @@
 }
 
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.rows.count) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-	else {
-		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
-			NCFittingAmountCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingAmountCell"];
-			return cell;
-		}
-		else {
-			NCFittingShipDroneCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
-			[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-			return cell;
-		}
-	}
-}
-
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -200,33 +179,6 @@
 		amountCell.pickerView.delegate = self;
 		[amountCell.pickerView reloadAllComponents];
 		[amountCell.pickerView selectRow:pickerRow.associatedRow.drones.size() - 1 inComponent:0 animated:NO];
-	}
-}
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 41;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row >= self.rows.count) {
-		return 41;
-	}
-	else {
-		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
-		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]]) {
-			return 162;
-		}
-		else {
-			if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-				return UITableViewAutomaticDimension;
-
-			if (!self.offscreenCell)
-				self.offscreenCell = [tableView dequeueReusableCellWithIdentifier:@"NCFittingShipDroneCell"];
-			[self tableView:tableView configureCell:self.offscreenCell forRowAtIndexPath:indexPath];
-			self.offscreenCell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(self.offscreenCell.bounds));
-			[self.offscreenCell layoutIfNeeded];
-			return [self.offscreenCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.5;
-		}
 	}
 }
 
@@ -460,6 +412,18 @@
 							 }
 						 } cancelBlock:nil] showFromRect:cell.bounds inView:cell animated:YES];
 	
+}
+
+- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row >= self.rows.count)
+		return @"Cell";
+	else {
+		NCFittingShipDronesDataSourceRow* row = self.rows[indexPath.row];
+		if ([row isKindOfClass:[NCFittingShipDronesDataSourcePickerRow class]])
+			return @"NCFittingAmountCell";
+		else
+			return @"NCFittingShipDroneCell";
+	}
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 #import "NCProgressLabel.h"
 
-@interface NCFittingDamagePatternCell : UITableViewCell
+@interface NCFittingDamagePatternCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UILabel* titleLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel* emLabel;
 @property (nonatomic, weak) IBOutlet NCProgressLabel* kineticLabel;

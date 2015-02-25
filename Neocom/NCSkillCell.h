@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
 @class NCSkillData;
-@interface NCSkillCell : UITableViewCell
+@interface NCSkillCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *skillImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *skillPointsLabel;

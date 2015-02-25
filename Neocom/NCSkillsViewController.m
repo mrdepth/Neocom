@@ -111,36 +111,6 @@
 	}
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCSkillData* row;
-	
-	switch (self.mode) {
-		case NCSkillsViewControllerModeKnownSkills:
-			row = [self.knownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeAllSkills:
-			row = [self.allSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeNotKnownSkills:
-			row = [self.notKnownSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		case NCSkillsViewControllerModeCanTrainSkills:
-			row = [self.canTrainSkillsSections[indexPath.section] rows][indexPath.row];
-			break;
-		default:
-			break;
-	}
-
-	NCSkillCell* cell = nil;
-	if (row.trainedLevel >= 0)
-		cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCell"];
-	else
-		cell = [tableView dequeueReusableCellWithIdentifier:@"NCSkillCompactCell"];
-
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	switch (self.mode) {
 		case NCSkillsViewControllerModeKnownSkills:
@@ -156,16 +126,13 @@
 	}
 }
 
-#pragma mark - Table view delegate
+#pragma mark - NCTableViewController
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 42;
+- (NSString*) recordID {
+	return nil;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-
+- (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCSkillData* row;
 	
 	switch (self.mode) {
@@ -185,22 +152,10 @@
 			break;
 	}
 	
-	UITableViewCell* cell = nil;
 	if (row.trainedLevel >= 0)
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCell"];
+		return @"NCSkillCell";
 	else
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCSkillCompactCell"];
-	
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
-
-#pragma mark - NCTableViewController
-
-- (NSString*) recordID {
-	return nil;
+		return @"NCSkillCompactCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

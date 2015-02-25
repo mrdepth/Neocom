@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCFittingAmountCell : UITableViewCell
+@interface NCFittingAmountCell : NCTableViewCell
 @property (nonatomic, weak) IBOutlet UIPickerView* pickerView;
 @end

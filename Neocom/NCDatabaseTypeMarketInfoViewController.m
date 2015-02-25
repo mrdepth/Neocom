@@ -220,51 +220,6 @@
 		return tableView == self.tableView ? [data.buyOrdersSections[section] title] : [self.filteredBuyOrdersSections[section] title];
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
-	NCDatabaseTypeMarketInfoViewControllerRow* row;
-
-	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
-		if (indexPath.section == 0)
-			row = tableView == self.tableView ? data.sellSummary[indexPath.row] : self.filteredSellSummary[indexPath.row];
-		else
-			row = tableView == self.tableView ? data.buySummary[indexPath.row] : self.filteredBuySummary[indexPath.row];;
-	}
-	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
-		row = tableView == self.tableView ? [data.sellOrdersSections[indexPath.section] rows][indexPath.row] : [self.filteredSellOrdersSections[indexPath.section] rows][indexPath.row];
-	else
-		row = tableView == self.tableView ? [data.buyOrdersSections[indexPath.section] rows][indexPath.row] : [self.filteredBuyOrdersSections[indexPath.section] rows][indexPath.row];
-
-	static NSString *cellIdentifier = @"NCDatabaseTypeMarketInfoCell";
-	
-	
-	NCDatabaseTypeMarketInfoCell* cell = (NCDatabaseTypeMarketInfoCell*) [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	cell.priceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.order.price)]];
-	cell.quantityLabel.text = [NSString stringWithFormat:@"Qty: %@", [NSNumberFormatter neocomLocalizedStringFromInteger:row.order.volRemain]];
-	
-	NSString* ss = [NSString stringWithFormat:@"%.1f", row.order.security];
-	NSString* s;
-	if (row.order.station)
-		s = [NSString stringWithFormat:@"%@ %@ / %@", ss, row.order.station.solarSystem.solarSystemName, row.order.region.regionName];
-	else
-		s = [NSString stringWithFormat:@"%@ %@", ss, row.order.region.regionName];
-	
-	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
-	[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.order.security] range:NSMakeRange(0, ss.length)];
-	cell.solarSystemlabel.attributedText = title;
-
-	cell.stationLabel.text = row.order.stationName;
-	cell.jumpsLabel.text = nil;
-	
-	int32_t reported = [[NSDate date] timeIntervalSinceDate:row.order.reportedTime] / (3600 * 24);
-	if (reported < 0)
-		reported = 0;
-	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Reported: %dd ago", nil), reported];
-
-	return cell;
-}
-
 #pragma mark - NCTableViewController
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
@@ -471,6 +426,51 @@
 		return [data.sellOrdersSections[section] title];
 	else
 		return [data.buyOrdersSections[section] title];
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+// Customize the appearance of table view cells.
+- (void)tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDatabaseTypeMarketInfoViewControllerData* data = self.data;
+	NCDatabaseTypeMarketInfoViewControllerRow* row;
+	
+	if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSummary) {
+		if (indexPath.section == 0)
+			row = tableView == self.tableView ? data.sellSummary[indexPath.row] : self.filteredSellSummary[indexPath.row];
+		else
+			row = tableView == self.tableView ? data.buySummary[indexPath.row] : self.filteredBuySummary[indexPath.row];;
+	}
+	else if (self.mode == NCDatabaseTypeMarketInfoViewControllerModeSellOrders)
+		row = tableView == self.tableView ? [data.sellOrdersSections[indexPath.section] rows][indexPath.row] : [self.filteredSellOrdersSections[indexPath.section] rows][indexPath.row];
+	else
+		row = tableView == self.tableView ? [data.buyOrdersSections[indexPath.section] rows][indexPath.row] : [self.filteredBuyOrdersSections[indexPath.section] rows][indexPath.row];
+	
+	
+	NCDatabaseTypeMarketInfoCell* cell = (NCDatabaseTypeMarketInfoCell*) tableViewCell;
+	cell.priceLabel.text = [NSString stringWithFormat:@"%@ ISK", [NSNumberFormatter neocomLocalizedStringFromNumber:@(row.order.price)]];
+	cell.quantityLabel.text = [NSString stringWithFormat:@"Qty: %@", [NSNumberFormatter neocomLocalizedStringFromInteger:row.order.volRemain]];
+	
+	NSString* ss = [NSString stringWithFormat:@"%.1f", row.order.security];
+	NSString* s;
+	if (row.order.station)
+		s = [NSString stringWithFormat:@"%@ %@ / %@", ss, row.order.station.solarSystem.solarSystemName, row.order.region.regionName];
+	else
+		s = [NSString stringWithFormat:@"%@ %@", ss, row.order.region.regionName];
+	
+	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
+	[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.order.security] range:NSMakeRange(0, ss.length)];
+	cell.solarSystemlabel.attributedText = title;
+	
+	cell.stationLabel.text = row.order.stationName;
+	cell.jumpsLabel.text = nil;
+	
+	int32_t reported = [[NSDate date] timeIntervalSinceDate:row.order.reportedTime] / (3600 * 24);
+	if (reported < 0)
+		reported = 0;
+	cell.dateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Reported: %dd ago", nil), reported];
 }
 
 @end

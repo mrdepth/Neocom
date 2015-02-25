@@ -83,19 +83,19 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8he-mr-CNy">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="36"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon26_02.png" translatesAutoresizingMaskIntoConstraints="NO" id="351-tg-1Mc">
-                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="32" id="7gs-qt-Juw"/>
-                                                        <constraint firstAttribute="width" constant="32" id="UWN-Gb-UoE"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Browse Community Fits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJC-ER-h5w">
                                                     <rect key="frame" x="55" y="4" width="217" height="28"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ships.png" translatesAutoresizingMaskIntoConstraints="NO" id="351-tg-1Mc">
+                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="7gs-qt-Juw"/>
+                                                        <constraint firstAttribute="width" constant="32" id="UWN-Gb-UoE"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -133,19 +133,19 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cdT-OL-1NY">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon17_04.png" translatesAutoresizingMaskIntoConstraints="NO" id="qgN-9O-g1V">
-                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="32" id="13A-6R-KWp"/>
-                                                        <constraint firstAttribute="width" constant="32" id="Stx-gZ-hUZ"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXe-O0-ifO">
                                                     <rect key="frame" x="55" y="4" width="250" height="28"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fitting.png" translatesAutoresizingMaskIntoConstraints="NO" id="qgN-9O-g1V">
+                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="13A-6R-KWp"/>
+                                                        <constraint firstAttribute="width" constant="32" id="Stx-gZ-hUZ"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -182,19 +182,19 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qLw-o9-o2T">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon07_06.png" translatesAutoresizingMaskIntoConstraints="NO" id="x1E-b9-cgA">
-                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="32" id="aaE-xX-Gfi"/>
-                                                        <constraint firstAttribute="width" constant="32" id="fck-vt-Flf"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New POS Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pzf-e8-wHs">
                                                     <rect key="frame" x="55" y="4" width="250" height="28"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="station.png" translatesAutoresizingMaskIntoConstraints="NO" id="x1E-b9-cgA">
+                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="aaE-xX-Gfi"/>
+                                                        <constraint firstAttribute="width" constant="32" id="fck-vt-Flf"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -231,6 +231,12 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jKa-E9-NAa">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                             <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOe-IF-Sw5">
+                                                    <rect key="frame" x="55" y="4" width="250" height="28"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon94_03.png" translatesAutoresizingMaskIntoConstraints="NO" id="3pW-Eq-aeS">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
                                                     <constraints>
@@ -238,12 +244,6 @@
                                                         <constraint firstAttribute="height" constant="32" id="uBr-Ey-eye"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOe-IF-Sw5">
-                                                    <rect key="frame" x="55" y="4" width="250" height="28"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -894,7 +894,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="icon04_07.png" translatesAutoresizingMaskIntoConstraints="NO" id="VoJ-ij-yKB">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="concord.png" translatesAutoresizingMaskIntoConstraints="NO" id="VoJ-ij-yKB">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="70z-RF-qUa"/>
@@ -1278,13 +1278,13 @@
         <image name="armor.png" width="32" height="32"/>
         <image name="battleclinic.png" width="32" height="32"/>
         <image name="capacitor.png" width="64" height="64"/>
+        <image name="concord.png" width="64" height="64"/>
         <image name="droneBandwidth.png" width="64" height="64"/>
         <image name="falloff.png" width="32" height="32"/>
-        <image name="icon04_07.png" width="64" height="64"/>
-        <image name="icon07_06.png" width="64" height="64"/>
-        <image name="icon17_04.png" width="128" height="128"/>
-        <image name="icon26_02.png" width="64" height="64"/>
+        <image name="fitting.png" width="64" height="64"/>
         <image name="icon94_03.png" width="64" height="64"/>
+        <image name="ships.png" width="64" height="64"/>
+        <image name="station.png" width="64" height="64"/>
         <image name="targetingRange.png" width="32" height="32"/>
         <image name="thumbsDown.png" width="105" height="105"/>
         <image name="thumbsUp.png" width="105" height="105"/>
@@ -1297,7 +1297,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LFA-WH-DrQ"/>
+        <segue reference="UFB-q5-l1b"/>
         <segue reference="tfi-SB-LwK"/>
     </inferredMetricsTieBreakers>
 </document>

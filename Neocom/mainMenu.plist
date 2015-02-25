@@ -9,7 +9,7 @@
 			<key>title</key>
 			<string>Character Sheet</string>
 			<key>image</key>
-			<string>icon02_16.png</string>
+			<string>charactersheet.png</string>
 			<key>charAccessMask</key>
 			<integer>16777224</integer>
 			<key>corpAccessMask</key>
@@ -25,7 +25,7 @@
 			<key>title</key>
 			<string>Skills</string>
 			<key>image</key>
-			<string>icon50_13.png</string>
+			<string>skills.png</string>
 			<key>charAccessMask</key>
 			<integer>17170440</integer>
 			<key>corpAccessMask</key>
@@ -39,7 +39,7 @@
 			<key>title</key>
 			<string>EVE Mail</string>
 			<key>image</key>
-			<string>icon12_01.png</string>
+			<string>evemail.png</string>
 			<key>charAccessMask</key>
 			<integer>3584</integer>
 			<key>corpAccessMask</key>
@@ -53,7 +53,7 @@
 			<key>title</key>
 			<string>Calendar Events</string>
 			<key>image</key>
-			<string>icon94_12.png</string>
+			<string>calendar.png</string>
 			<key>charAccessMask</key>
 			<integer>1</integer>
 			<key>corpAccessMask</key>
@@ -67,7 +67,7 @@
 			<key>title</key>
 			<string>Database</string>
 			<key>image</key>
-			<string>icon99_08.png</string>
+			<string>items.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -79,7 +79,7 @@
 			<key>title</key>
 			<string>Certificates</string>
 			<key>image</key>
-			<string>icon79_06.png</string>
+			<string>certificates.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -91,7 +91,7 @@
 			<key>title</key>
 			<string>Market</string>
 			<key>image</key>
-			<string>icon18_01.png</string>
+			<string>market.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -103,7 +103,7 @@
 			<key>title</key>
 			<string>NPC</string>
 			<key>image</key>
-			<string>icon04_07.png</string>
+			<string>concord.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -117,7 +117,7 @@
 			<key>title</key>
 			<string>Fitting</string>
 			<key>image</key>
-			<string>icon17_04.png</string>
+			<string>fitting.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -129,7 +129,7 @@
 			<key>title</key>
 			<string>Kill Reports</string>
 			<key>image</key>
-			<string>icon50_15.png</string>
+			<string>killreport.png</string>
 			<key>charAccessMask</key>
 			<integer>256</integer>
 			<key>corpAccessMask</key>
@@ -141,7 +141,7 @@
 			<key>title</key>
 			<string>zKillBoard Reports</string>
 			<key>image</key>
-			<string>icon61_03.png</string>
+			<string>killrights.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -155,7 +155,7 @@
 			<key>title</key>
 			<string>Assets</string>
 			<key>image</key>
-			<string>icon07_13.png</string>
+			<string>assets.png</string>
 			<key>charAccessMask</key>
 			<integer>2</integer>
 			<key>corpAccessMask</key>
@@ -167,7 +167,7 @@
 			<key>title</key>
 			<string>Market Orders</string>
 			<key>image</key>
-			<string>icon06_03.png</string>
+			<string>marketdeliveries.png</string>
 			<key>charAccessMask</key>
 			<integer>4096</integer>
 			<key>corpAccessMask</key>
@@ -179,7 +179,7 @@
 			<key>title</key>
 			<string>Contracts</string>
 			<key>image</key>
-			<string>icon64_10.png</string>
+			<string>contacts.png</string>
 			<key>charAccessMask</key>
 			<integer>67108864</integer>
 			<key>corpAccessMask</key>
@@ -191,7 +191,7 @@
 			<key>title</key>
 			<string>Wallet Transactions</string>
 			<key>image</key>
-			<string>icon64_15.png</string>
+			<string>wallet.png</string>
 			<key>charAccessMask</key>
 			<integer>4194304</integer>
 			<key>corpAccessMask</key>
@@ -203,7 +203,7 @@
 			<key>title</key>
 			<string>Wallet Journal</string>
 			<key>image</key>
-			<string>icon07_12.png</string>
+			<string>journal.png</string>
 			<key>charAccessMask</key>
 			<integer>2097152</integer>
 			<key>corpAccessMask</key>
@@ -215,7 +215,7 @@
 			<key>title</key>
 			<string>Industry Jobs</string>
 			<key>image</key>
-			<string>icon33_02.png</string>
+			<string>industry.png</string>
 			<key>charAccessMask</key>
 			<integer>128</integer>
 			<key>corpAccessMask</key>
@@ -227,7 +227,7 @@
 			<key>title</key>
 			<string>POS&apos;es</string>
 			<key>image</key>
-			<string>icon07_06.png</string>
+			<string>station.png</string>
 			<key>charAccessMask</key>
 			<integer>-1</integer>
 			<key>corpAccessMask</key>
@@ -241,7 +241,7 @@
 			<key>title</key>
 			<string>News</string>
 			<key>image</key>
-			<string>rss.png</string>
+			<string>newspost.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -253,7 +253,7 @@
 			<key>title</key>
 			<string>About</string>
 			<key>image</key>
-			<string>icon101_05.png</string>
+			<string>info.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -265,7 +265,7 @@
 			<key>title</key>
 			<string>Remove Ads</string>
 			<key>image</key>
-			<string>icon64_09.png</string>
+			<string>votes.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -277,7 +277,43 @@
 			<key>title</key>
 			<string>Settings</string>
 			<key>image</key>
-			<string>icon79_10.png</string>
+			<string>other.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=418895101&amp;pageNumber=0&amp;type=Purple+Software&amp;mt=8</string>
+			<key>title</key>
+			<string>Rate &amp; Review</string>
+			<key>image</key>
+			<string>rate.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>https://www.facebook.com/groups/Neocom</string>
+			<key>title</key>
+			<string>Follow us on Facebook</string>
+			<key>image</key>
+			<string>facebook.png</string>
+			<key>charAccessMask</key>
+			<integer>0</integer>
+			<key>corpAccessMask</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>url</key>
+			<string>http://vk.com/eveneocom</string>
+			<key>title</key>
+			<string>Follow us on VK</string>
+			<key>image</key>
+			<string>vk.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>

@@ -154,7 +154,14 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* row = self.sections[indexPath.section][indexPath.row];
-	[self performSegueWithIdentifier:row[@"segueIdentifier"] sender:[tableView cellForRowAtIndexPath:indexPath]];
+	NSString* identifier = row[@"segueIdentifier"];
+	if (identifier)
+		[self performSegueWithIdentifier:row[@"segueIdentifier"] sender:[tableView cellForRowAtIndexPath:indexPath]];
+	else {
+		NSString* urlString = row[@"url"];
+		if (urlString)
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+	}
 }
 
 #pragma mark - NCTableViewController

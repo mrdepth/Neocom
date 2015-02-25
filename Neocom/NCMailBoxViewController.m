@@ -250,8 +250,11 @@
 	
 	NSInteger myID = self.mailBox.account.characterID;
 	
-	if (row.sender.contactID == myID)
-		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
+	if (row.sender.contactID == myID) {
+		NSArray* recipients = [row.recipients valueForKey:@"name"];
+		NSString* recipient = [recipients componentsJoinedByString:@", "];
+		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"to %@", nil), recipient.length > 0 ? recipient : NSLocalizedString(@"Unknown", nil)];
+	}
 	else
 		cell.senderLabel.text = [NSString stringWithFormat:NSLocalizedString(@"from %@", nil), row.sender.name.length > 0 ? row.sender.name : NSLocalizedString(@"Unknown", nil)];
 	cell.message = row;

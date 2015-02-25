@@ -1772,19 +1772,19 @@ IAogA
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pkb-pr-6rB">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon17_04.png" translatesAutoresizingMaskIntoConstraints="NO" id="DbR-7P-KKa">
-                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" priority="900" constant="32" id="Gky-xA-uHj"/>
-                                                        <constraint firstAttribute="width" constant="32" id="Vjr-lE-54v"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kKV-e2-naG">
                                                     <rect key="frame" x="55" y="2" width="250" height="32"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fitting.png" translatesAutoresizingMaskIntoConstraints="NO" id="DbR-7P-KKa">
+                                                    <rect key="frame" x="15" y="2" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" priority="900" constant="32" id="Gky-xA-uHj"/>
+                                                        <constraint firstAttribute="width" constant="32" id="Vjr-lE-54v"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -2233,8 +2233,8 @@ IAogA
         <image name="droneRange.png" width="64" height="64"/>
         <image name="em.png" width="32" height="32"/>
         <image name="explosion.png" width="32" height="32"/>
+        <image name="fitting.png" width="64" height="64"/>
         <image name="hullRepairer.png" width="64" height="64"/>
-        <image name="icon17_04.png" width="128" height="128"/>
         <image name="kinetic.png" width="32" height="32"/>
         <image name="launchers.png" width="64" height="64"/>
         <image name="powerGrid.png" width="64" height="64"/>

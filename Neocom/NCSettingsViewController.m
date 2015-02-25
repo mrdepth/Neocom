@@ -13,6 +13,7 @@
 #import "NCCache.h"
 #import "NCAppDelegate.h"
 #import "UIColor+Neocom.h"
+#import "UIColor+Neocom.h"
 
 @interface NCSettingsViewController ()
 
@@ -85,10 +86,6 @@
 }
 
 #pragma mark - Table view delegate
-
-- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

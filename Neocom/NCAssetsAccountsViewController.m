@@ -57,56 +57,6 @@
 	return self.accounts.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCAccount* account = self.accounts[indexPath.row];
-	if (account.accountType == NCAccountTypeCharacter) {
-		NCAccountCharacterCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCharacterCell"];
-		
-		cell.characterImageView.image = nil;
-		cell.corporationImageView.image = nil;
-		cell.allianceImageView.image = nil;
-		
-		[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]];
-		EVECharacterInfo* characterInfo = account.characterInfo;
-		
-		if (characterInfo) {
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
-			if (characterInfo.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
-		}
-		
-		cell.characterNameLabel.text = characterInfo.characterName ? characterInfo.characterName : NSLocalizedString(@"Unknown Error", nil);
-		cell.corporationNameLabel.text = characterInfo.corporation;
-		cell.allianceNameLabel.text = characterInfo.alliance;
-		
-		cell.accessoryView = [self.selectedAccounts containsObject:account] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
-		return cell;
-	}
-	else {
-		NCAccountCorporationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NCAccountCorporationCell"];
-		
-		cell.corporationImageView.image = nil;
-		cell.allianceImageView.image = nil;
-		
-		EVECorporationSheet* corporationSheet = account.corporationSheet;
-		
-		if (corporationSheet) {
-			cell.corporationNameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
-			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina128 error:nil]];
-			if (corporationSheet.allianceID)
-				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
-		}
-		else
-			cell.corporationNameLabel.text = NSLocalizedString(@"Unknown Error", nil);
-		
-		
-		cell.allianceNameLabel.text = corporationSheet.allianceName;
-
-		cell.accessoryView = [self.selectedAccounts containsObject:account] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
-		return cell;
-	}
-}
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -155,6 +105,63 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCAccount* account = self.accounts[indexPath.row];
+	if (account.accountType == NCAccountTypeCharacter)
+		return @"NCAccountCharacterCell";
+
+	else
+		return @"NCAccountCorporationCell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCAccount* account = self.accounts[indexPath.row];
+	if (account.accountType == NCAccountTypeCharacter) {
+		NCAccountCharacterCell *cell = (NCAccountCharacterCell*) tableViewCell;
+		
+		cell.characterImageView.image = nil;
+		cell.corporationImageView.image = nil;
+		cell.allianceImageView.image = nil;
+		
+		[cell.characterImageView setImageWithContentsOfURL:[EVEImage characterPortraitURLWithCharacterID:account.characterID size:EVEImageSizeRetina64 error:nil]];
+		EVECharacterInfo* characterInfo = account.characterInfo;
+		
+		if (characterInfo) {
+			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:characterInfo.corporationID size:EVEImageSizeRetina32 error:nil]];
+			if (characterInfo.allianceID)
+				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:characterInfo.allianceID size:EVEImageSizeRetina32 error:nil]];
+		}
+		
+		cell.characterNameLabel.text = characterInfo.characterName ? characterInfo.characterName : NSLocalizedString(@"Unknown Error", nil);
+		cell.corporationNameLabel.text = characterInfo.corporation;
+		cell.allianceNameLabel.text = characterInfo.alliance;
+		
+		cell.accessoryView = [self.selectedAccounts containsObject:account] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	}
+	else {
+		NCAccountCorporationCell *cell = (NCAccountCorporationCell*) tableViewCell;
+		
+		cell.corporationImageView.image = nil;
+		cell.allianceImageView.image = nil;
+		
+		EVECorporationSheet* corporationSheet = account.corporationSheet;
+		
+		if (corporationSheet) {
+			cell.corporationNameLabel.text = [NSString stringWithFormat:@"%@ [%@]", corporationSheet.corporationName, corporationSheet.ticker];
+			[cell.corporationImageView setImageWithContentsOfURL:[EVEImage corporationLogoURLWithCorporationID:corporationSheet.corporationID size:EVEImageSizeRetina128 error:nil]];
+			if (corporationSheet.allianceID)
+				[cell.allianceImageView setImageWithContentsOfURL:[EVEImage allianceLogoURLWithAllianceID:corporationSheet.allianceID size:EVEImageSizeRetina32 error:nil]];
+		}
+		else
+			cell.corporationNameLabel.text = NSLocalizedString(@"Unknown Error", nil);
+		
+		
+		cell.allianceNameLabel.text = corporationSheet.allianceName;
+		
+		cell.accessoryView = [self.selectedAccounts containsObject:account] ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark.png"]] : nil;
+	}
 }
 
 @end

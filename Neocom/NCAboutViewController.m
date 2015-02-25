@@ -9,6 +9,7 @@
 #import "NCAboutViewController.h"
 #import "UIAlertView+Block.h"
 #import "NCCache.h"
+#import "UIColor+Neocom.h"
 
 @interface NCAboutViewController ()
 
@@ -28,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
 	self.refreshControl = nil;
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	self.versionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
@@ -53,6 +55,7 @@
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/mrdepth"]];
 	}
 }
+
 
 #pragma mark - NCTableViewController
 

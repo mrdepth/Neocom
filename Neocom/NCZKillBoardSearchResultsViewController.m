@@ -126,40 +126,7 @@
 	return section.title;
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCZKillBoardSearchResultsViewControllerData* data = self.data;
-	NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[indexPath.section];
-	EVEKillLogKill* row = section.kills[indexPath.row];
-	
-	NCKillMailsCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	cell.object = row;
-	cell.typeImageView.image = row.victim.shipType.icon ? row.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-	cell.titleLabel.text = row.victim.shipType.typeName;
-	
-	if (row.solarSystem) {
-		NSString* ss = [NSString stringWithFormat:@"%.1f", row.solarSystem.security];
-		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, row.solarSystem.solarSystemName];
-		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
-		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.solarSystem.security] range:NSMakeRange(0, ss.length)];
-		cell.locationLabel.attributedText = title;
-	}
-	else {
-		cell.locationLabel.attributedText = nil;
-		cell.locationLabel.text = NSLocalizedString(@"Unknown Location", nil);
-	}
-	
-	
-	cell.characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Victim: %@", nil), row.victim.characterName];
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.killTime];
-	return cell;
-}
-
 #pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 57;
-}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCZKillBoardSearchResultsViewControllerData* data = self.data;
@@ -214,6 +181,37 @@
 		[components addObject:[NSString stringWithFormat:@"%@=%@", key, obj]];
 	}];
 	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), @([[components componentsJoinedByString:@","] hash])];
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCZKillBoardSearchResultsViewControllerData* data = self.data;
+	NCZKillBoardSearchResultsViewControllerDataSection* section = data.sections[indexPath.section];
+	EVEKillLogKill* row = section.kills[indexPath.row];
+	
+	NCKillMailsCell* cell = (NCKillMailsCell*) tableViewCell;
+	cell.object = row;
+	cell.typeImageView.image = row.victim.shipType.icon ? row.victim.shipType.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.titleLabel.text = row.victim.shipType.typeName;
+	
+	if (row.solarSystem) {
+		NSString* ss = [NSString stringWithFormat:@"%.1f", row.solarSystem.security];
+		NSString* s = [NSString stringWithFormat:@"%@ %@", ss, row.solarSystem.solarSystemName];
+		NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:s];
+		[title addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithSecurity:row.solarSystem.security] range:NSMakeRange(0, ss.length)];
+		cell.locationLabel.attributedText = title;
+	}
+	else {
+		cell.locationLabel.attributedText = nil;
+		cell.locationLabel.text = NSLocalizedString(@"Unknown Location", nil);
+	}
+	
+	
+	cell.characterLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Victim: %@", nil), row.victim.characterName];
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:row.killTime];
 }
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {

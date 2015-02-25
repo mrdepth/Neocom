@@ -108,36 +108,6 @@
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NCDonationCell* cell;
-	if ([ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased)
-		cell = [tableView dequeueReusableCellWithIdentifier:@"DonateCell"];
-	else
-		cell = [tableView dequeueReusableCellWithIdentifier:@"UpgradeCell"];
-	if (self.inAppActive) {
-		cell.userInteractionEnabled = NO;
-		[cell.activityIndicatorView startAnimating];
-	}
-	else {
-		cell.userInteractionEnabled = YES;
-		[cell.activityIndicatorView stopAnimating];
-	}
-	return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 86 : 104;
-	else
-		return [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased ? 104 : 140;
-}
 
 #pragma mark SKPaymentTransactionObserver
 
@@ -193,6 +163,25 @@
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased)
+		return @"DonateCell";
+	else
+		return @"UpgradeCell";
+}
+
+- (void)tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDonationCell* cell = (NCDonationCell*) tableViewCell;
+	if (self.inAppActive) {
+		cell.userInteractionEnabled = NO;
+		[cell.activityIndicatorView startAnimating];
+	}
+	else {
+		cell.userInteractionEnabled = YES;
+		[cell.activityIndicatorView stopAnimating];
+	}
 }
 
 #pragma mark - Private

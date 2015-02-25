@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCStarbasesCell : UITableViewCell
+@interface NCStarbasesCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *typeImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *resourceTypeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;

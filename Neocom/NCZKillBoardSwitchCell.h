@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCZKillBoardSwitchCell : UITableViewCell
+@interface NCZKillBoardSwitchCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UISwitch* switchView;
 @end

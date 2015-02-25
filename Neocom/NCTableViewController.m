@@ -359,6 +359,9 @@
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
+	if (!identifier)
+		return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+	
 	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
 	if (!cell && tableView != self.tableView)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
@@ -410,10 +413,14 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
+	if (!identifier)
+		return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+
 	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
 		return UITableViewAutomaticDimension;
 
-	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
+	
 	NCTableViewCell* cell = [self tableView:tableView offscreenCellWithIdentifier:identifier];
 	if ([cell isKindOfClass:[NCTableViewCell class]]) {
 		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];

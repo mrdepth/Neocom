@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Artem Shimanski. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NCTableViewCell.h"
 
-@interface NCKillMailDetailsAttackerCell : UITableViewCell
+@interface NCKillMailDetailsAttackerCell : NCTableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *characterImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *corporationImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *allianceImageView;

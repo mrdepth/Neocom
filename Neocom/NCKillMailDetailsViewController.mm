@@ -175,47 +175,18 @@
 	return section.title;
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.segmentedControl.selectedSegmentIndex == 0) {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-	else {
-		NCKillMailDetailsAttackerCell* cell = [tableView dequeueReusableCellWithIdentifier:@"NCKillMailDetailsAttackerCell"];
-		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-		return cell;
-	}
-}
-
-#pragma mark - Table view delegate
-
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.segmentedControl.selectedSegmentIndex == 0 ? 42 : 105;
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1)
-		return UITableViewAutomaticDimension;
-	
-	UITableViewCell* cell;
-	
-	if (self.segmentedControl.selectedSegmentIndex == 0)
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"Cell"];
-	else
-		cell = [self tableView:tableView offscreenCellWithIdentifier:@"NCKillMailDetailsAttackerCell"];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	
-	cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
-	[cell layoutIfNeeded];
-	return [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1.0;
-}
 
 #pragma mark - NCTableViewController
 
 - (NSString*) recordID {
 	return nil;
+}
+
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.segmentedControl.selectedSegmentIndex == 0)
+		return @"Cell";
+	else
+		return @"NCKillMailDetailsAttackerCell";
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {

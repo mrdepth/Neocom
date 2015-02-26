@@ -103,7 +103,7 @@
 			<key>title</key>
 			<string>NPC</string>
 			<key>image</key>
-			<string>concord.png</string>
+			<string>criminal.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>
@@ -277,7 +277,7 @@
 			<key>title</key>
 			<string>Settings</string>
 			<key>image</key>
-			<string>other.png</string>
+			<string>settings.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>

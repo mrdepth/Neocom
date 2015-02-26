@@ -894,7 +894,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="concord.png" translatesAutoresizingMaskIntoConstraints="NO" id="VoJ-ij-yKB">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="criminal.png" translatesAutoresizingMaskIntoConstraints="NO" id="VoJ-ij-yKB">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="70z-RF-qUa"/>
@@ -1278,7 +1278,7 @@
         <image name="armor.png" width="32" height="32"/>
         <image name="battleclinic.png" width="32" height="32"/>
         <image name="capacitor.png" width="64" height="64"/>
-        <image name="concord.png" width="64" height="64"/>
+        <image name="criminal.png" width="64" height="64"/>
         <image name="droneBandwidth.png" width="64" height="64"/>
         <image name="falloff.png" width="32" height="32"/>
         <image name="fitting.png" width="64" height="64"/>

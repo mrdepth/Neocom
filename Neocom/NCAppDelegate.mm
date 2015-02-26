@@ -24,6 +24,7 @@
 #import "NCMainMenuViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
 #import "Flurry.h"
+#import "NCAPIKeyAccessMaskViewController.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -476,11 +477,32 @@
 				NCDatabaseTypeInfoViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewController"];
 				controller.type = (id) type;
 
-				UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
-				if ([contentViewController isKindOfClass:[UINavigationController class]])
-					[contentViewController pushViewController:controller animated:YES];
-				else
-					[self.window.rootViewController.sideMenuViewController setContentViewController:controller animated:YES];
+				UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+				if ([navigationController isKindOfClass:[UINavigationController class]])
+					[navigationController pushViewController:controller animated:YES];
+			}
+		}
+		else {
+			NSURL* url = [NSURL URLWithString:resourceSpecifier];
+			if (url) {
+				NCStorage* storage = [NCStorage sharedStorage];
+				[storage.managedObjectContext performBlock:^{
+					NSManagedObjectID* objectID = [storage.persistentStoreCoordinator managedObjectIDForURIRepresentation:url];
+					if (objectID) {
+						NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:objectID error:nil];
+						if ([account isKindOfClass:[NCAccount class]]) {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								NCAPIKeyAccessMaskViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+								controller.account = account;
+								
+								UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+								if ([navigationController isKindOfClass:[UINavigationController class]])
+									[navigationController pushViewController:controller animated:YES];
+
+							});
+						}
+					}
+				}];
 			}
 		}
 	}

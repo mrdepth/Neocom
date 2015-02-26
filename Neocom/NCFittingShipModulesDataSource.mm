@@ -321,6 +321,10 @@
 				cell.iconView.image = [UIImage imageNamed:@"slotSubsystem.png"];
 				cell.titleLabel.text = NSLocalizedString(@"Subsystem slot", nil);
 				break;
+			case eufe::Module::SLOT_MODE:
+				cell.iconView.image = [UIImage imageNamed:@"ships.png"];
+				cell.titleLabel.text = NSLocalizedString(@"Tactical mode", nil);
+				break;
 			default:
 				cell.iconView.image = nil;
 				cell.titleLabel.text = nil;

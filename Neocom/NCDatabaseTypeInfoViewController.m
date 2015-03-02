@@ -245,11 +245,8 @@
 	NCDBInvType* type = self.type;
 
 	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %d", type.typeName, type.typeID]];
-	NSRange titleRange = NSMakeRange(0, type.typeName.length);
 	NSRange typeIDRange = NSMakeRange(type.typeName.length + 1, title.length - type.typeName.length - 1);
-	[title addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:21]}
-							  range:titleRange];
-	[title addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12],
+	[title addAttributes:@{NSFontAttributeName: [self.titleLabel.font fontWithSize:self.titleLabel.font.pointSize * 0.6],
 									  (__bridge NSString*) (kCTSuperscriptAttributeName): @(-1),
 									  NSForegroundColorAttributeName: [UIColor lightTextColor]}
 							  range:typeIDRange];

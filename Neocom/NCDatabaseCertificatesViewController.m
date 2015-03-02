@@ -95,7 +95,6 @@
 
 - (NSString*)tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	id row = self.rows[indexPath.row];
-	NCTableViewCell *cell;
 	if ([row isKindOfClass:[NCDBCertCertificate class]])
 		return @"CertificateCell";
 	else

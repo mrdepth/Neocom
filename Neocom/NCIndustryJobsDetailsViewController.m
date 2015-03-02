@@ -172,7 +172,6 @@
 // Customize the appearance of table view cells.
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCIndustryJobsDetailsViewControllerRow* row = self.rows[indexPath.row];
-	NCTableViewCell* cell;
 	if (row.object)
 		return @"TypeCell";
 	else

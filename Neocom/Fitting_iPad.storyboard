@@ -284,52 +284,6 @@
                         <segue destination="C9c-Js-vUD" kind="push" identifier="NCFittingPOSViewController" id="C6v-9A-Yor"/>
                     </connections>
                 </tableViewController>
-                <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItem4Cell" id="e15-Pc-dKC" customClass="NCTableViewCell">
-                    <rect key="frame" x="0.0" y="0.0" width="703" height="41"/>
-                    <autoresizingMask key="autoresizingMask"/>
-                    <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e15-Pc-dKC" id="e3T-1H-J5K">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3nm-FS-Pk4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Export" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aqt-va-MST">
-                                        <rect key="frame" x="55" y="4" width="250" height="28"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon94_03.png" translatesAutoresizingMaskIntoConstraints="NO" id="kAl-0Y-Jxe">
-                                        <rect key="frame" x="15" y="2" width="32" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="1DR-wU-qil"/>
-                                            <constraint firstAttribute="width" constant="32" id="io3-jd-32W"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="Aqt-va-MST" firstAttribute="leading" secondItem="kAl-0Y-Jxe" secondAttribute="trailing" constant="8" id="J3K-bg-M9w"/>
-                                    <constraint firstItem="Aqt-va-MST" firstAttribute="top" secondItem="3nm-FS-Pk4" secondAttribute="top" constant="4" id="csE-4A-Vzo"/>
-                                    <constraint firstItem="kAl-0Y-Jxe" firstAttribute="leading" secondItem="3nm-FS-Pk4" secondAttribute="leading" constant="15" id="egf-gg-9Qx"/>
-                                    <constraint firstItem="kAl-0Y-Jxe" firstAttribute="top" secondItem="3nm-FS-Pk4" secondAttribute="top" constant="2" id="lox-Xz-4H2"/>
-                                    <constraint firstAttribute="bottom" secondItem="Aqt-va-MST" secondAttribute="bottom" constant="4" id="lqe-5f-r2Q"/>
-                                    <constraint firstAttribute="bottom" secondItem="kAl-0Y-Jxe" secondAttribute="bottom" constant="2" id="uk1-UT-kQb"/>
-                                    <constraint firstAttribute="trailing" secondItem="Aqt-va-MST" secondAttribute="trailing" constant="15" id="xyf-DC-yPL"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="3nm-FS-Pk4" secondAttribute="bottom" priority="250" id="V5d-Ns-Vzg"/>
-                            <constraint firstAttribute="trailing" secondItem="3nm-FS-Pk4" secondAttribute="trailing" id="eY1-fn-nyI"/>
-                            <constraint firstItem="3nm-FS-Pk4" firstAttribute="leading" secondItem="e3T-1H-J5K" secondAttribute="leading" id="hTx-KH-eaA"/>
-                            <constraint firstItem="3nm-FS-Pk4" firstAttribute="top" secondItem="e3T-1H-J5K" secondAttribute="top" id="nRn-Dl-4aA"/>
-                        </constraints>
-                    </tableViewCellContentView>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <inset key="separatorInset" minX="55" minY="0.0" maxX="0.0" maxY="0.0"/>
-                </tableViewCell>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Urv-xr-iBT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3016" y="-969"/>

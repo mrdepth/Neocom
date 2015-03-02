@@ -24,7 +24,11 @@
 	UIGraphicsPushContext(ctx);
 	CGContextSetStrokeColorWithColor(ctx, [self.textColor CGColor]);
 	CGContextSetFillColorWithColor(ctx, [self.textColor CGColor]);
-	[self.text drawInRect:self.bounds withFont:self.font lineBreakMode:NSLineBreakByClipping];
+	NSMutableParagraphStyle* paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	paragraph.lineBreakMode = NSLineBreakByClipping;
+	
+	[self.text drawInRect:self.bounds withAttributes:@{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:paragraph}];
+	//[self.text drawInRect:self.bounds withFont:self.font lineBreakMode:NSLineBreakByClipping];
 	UIGraphicsPopContext();
 }
 

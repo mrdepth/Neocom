@@ -8,7 +8,7 @@
 
 #import "NCBannerViewController.h"
 #import "ASInAppPurchase.h"
-#import "GADBannerView.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 #import "NCSkillPlanViewController.h"
 
 @interface NCBannerView()
@@ -51,14 +51,16 @@
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		if (![ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
-			self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
-			self.gadBannerView.adSize = kGADAdSizeSmartBannerPortrait;
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(320, 50)) origin:CGPointMake(0, 0)];
+			else
+				self.gadBannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:CGPointMake(0, 0)];
+
 			self.gadBannerView.rootViewController = self;
 			self.gadBannerView.adUnitID = @"ca-app-pub-0434787749004673/2607342948";
 			self.gadBannerView.delegate = self;
 			
 			GADRequest *request = [GADRequest request];
-			request.testDevices = @[GAD_SIMULATOR_ID];
 			[self.gadBannerView loadRequest:request];
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidRemoveAdds:) name:NCApplicationDidRemoveAddsNotification object:nil];
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];

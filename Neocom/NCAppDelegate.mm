@@ -400,20 +400,18 @@
 				[navigationController dismissViewControllerAnimated:YES completion:nil];
 				[navigationController pushViewController:controller animated:YES];
 			}
-			else
-				[splitViewController setViewControllers:@[splitViewController.viewControllers[0], controller]];
+			else {
+				UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+				navigationController.navigationBar.barStyle = UIBarStyleBlack;
+				[splitViewController setViewControllers:@[splitViewController.viewControllers[0], navigationController]];
+			}
 
 		}
 		else {
-			UINavigationController* contentViewController = (UINavigationController*) self.window.rootViewController.sideMenuViewController.contentViewController;
-			if ([contentViewController isKindOfClass:[UINavigationController class]]) {
-				[contentViewController dismissViewControllerAnimated:YES completion:nil];
-				[contentViewController pushViewController:controller animated:YES];
-			}
-			else {
-				UINavigationController* contentViewController = [[UINavigationController alloc] initWithRootViewController:controller];
-				contentViewController.navigationBar.barStyle = UIBarStyleBlack;
-				[self.window.rootViewController.sideMenuViewController setContentViewController:contentViewController animated:YES];
+			UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+			if ([navigationController isKindOfClass:[UINavigationController class]]) {
+				[navigationController dismissViewControllerAnimated:YES completion:nil];
+				[navigationController pushViewController:controller animated:YES];
 			}
 		}
 	}
@@ -469,6 +467,7 @@
 					UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCDatabaseTypeInfoViewNavigationController"];
 					navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 					NCDatabaseTypeInfoViewController* controller = navigationController.viewControllers[0];
+					controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
 					controller.type = (id) type;
 					[presentedViewController presentViewController:navigationController animated:YES completion:nil];
 				}
@@ -492,13 +491,23 @@
 						NCAccount* account = (NCAccount*) [storage.managedObjectContext existingObjectWithID:objectID error:nil];
 						if ([account isKindOfClass:[NCAccount class]]) {
 							dispatch_async(dispatch_get_main_queue(), ^{
-								NCAPIKeyAccessMaskViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
-								controller.account = account;
-								
-								UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
-								if ([navigationController isKindOfClass:[UINavigationController class]])
-									[navigationController pushViewController:controller animated:YES];
-
+								if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+									UINavigationController* navigationController = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+									NCAPIKeyAccessMaskViewController* controller = navigationController.viewControllers[0];
+									controller.account = account;
+									controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:controller action:@selector(dismissAnimated)];
+									[self.window.rootViewController presentViewController:navigationController animated:YES completion:nil];
+								}
+								else {
+									NCAPIKeyAccessMaskViewController* controller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"NCAPIKeyAccessMaskViewController"];
+									
+									controller.account = account;
+									
+									UINavigationController* navigationController = (UINavigationController*) self.window.rootViewController.childViewControllers[0];
+									if ([navigationController isKindOfClass:[UINavigationController class]])
+										[navigationController pushViewController:controller animated:YES];
+								}
 							});
 						}
 					}

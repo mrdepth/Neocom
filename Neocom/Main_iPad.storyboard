@@ -536,7 +536,7 @@
         <!--Navigation Controller-->
         <scene sceneID="VlR-tx-kwd">
             <objects>
-                <navigationController definesPresentationContext="YES" id="4nD-uI-nHO" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NCAPIKeyAccessMaskViewController" definesPresentationContext="YES" id="4nD-uI-nHO" sceneMemberID="viewController">
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1024"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ad4-l3-xnD">

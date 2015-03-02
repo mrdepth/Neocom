@@ -280,7 +280,6 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell* cell = nil;
 	if (indexPath.section == 1)
 		return @"TypeCell";
 	else

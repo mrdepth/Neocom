@@ -40,6 +40,18 @@
 	</dict>
 	<dict>
 		<key>name</key>
+		<string>Drifters</string>
+		<key>em</key>
+		<real>0.33</real>
+		<key>thermal</key>
+		<integer>0</integer>
+		<key>kinetic</key>
+		<real>0.33</real>
+		<key>explosive</key>
+		<real>0.33</real>
+	</dict>
+	<dict>
+		<key>name</key>
 		<string>Guristas Pirates</string>
 		<key>em</key>
 		<real>0.02</real>

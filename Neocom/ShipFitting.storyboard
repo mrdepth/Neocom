@@ -1720,7 +1720,7 @@ IAogA
                                     <outlet property="layoutContentView" destination="OSg-30-GI0" id="juR-5d-Ktg"/>
                                     <outlet property="skillLevelLabel" destination="8BW-go-AVD" id="Zli-UG-KxA"/>
                                     <outlet property="skillNameLabel" destination="gaU-wr-jDI" id="bUB-u8-ZiT"/>
-                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" id="koD-Rf-cio"/>
+                                    <segue destination="oxw-Gk-0JF" kind="push" identifier="NCDatabaseTypeInfoViewController" trigger="accessoryAction" id="cmu-Cl-2Ty"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1772,12 +1772,6 @@ IAogA
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pkb-pr-6rB">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kKV-e2-naG">
-                                                    <rect key="frame" x="55" y="2" width="250" height="32"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fitting.png" translatesAutoresizingMaskIntoConstraints="NO" id="DbR-7P-KKa">
                                                     <rect key="frame" x="15" y="2" width="32" height="32"/>
                                                     <constraints>
@@ -1785,6 +1779,12 @@ IAogA
                                                         <constraint firstAttribute="width" constant="32" id="Vjr-lE-54v"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Ship Fit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kKV-e2-naG">
+                                                    <rect key="frame" x="55" y="2" width="250" height="32"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -2260,6 +2260,6 @@ IAogA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="wmr-bV-V4i"/>
-        <segue reference="M1g-g8-PJm"/>
+        <segue reference="cmu-Cl-2Ty"/>
     </inferredMetricsTieBreakers>
 </document>

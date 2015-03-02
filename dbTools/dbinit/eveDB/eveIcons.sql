@@ -2144,4 +2144,5 @@ INSERT INTO eveIcons VALUES (21399, "res:/UI/Asset/mannequin/feet/34362_male_Fee
 INSERT INTO eveIcons VALUES (21400, "res:/UI/Asset/mannequin/feet/34363_female_Feet_BootsPrtF01_Types_BootsPrtF01_bloodraiders.png", "34363_female_Feet_BootsPrtF01_Types_BootsPrtF01_bloodraiders.png");
 INSERT INTO eveIcons VALUES (21401, "res:/UI/Asset/mannequin/feet/34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png", "34364_female_Feet_BootsPrtF01_Types_BootsPrtF01_sansha.png");
 INSERT INTO eveIcons VALUES (21402, "res:/UI/Asset/mannequin/feet/34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png", "34365_female_Feet_BootsPrtF01_Types_BootsPrtF01_guristas.png");
-INSERT INTO eveIcons VALUES (21403, "res:/UI/Asset/mannequin/outer/34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png ", "34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png");
+INSERT INTO eveIcons VALUES (21403, "res:/UI/Asset/mannequin/outer/34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png", "34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png");
+INSERT INTO eveIcons VALUES (21404, "117_2 ", "Drifter Faction Icon");

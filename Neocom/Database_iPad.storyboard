@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -26,7 +27,7 @@
         <scene sceneID="sec-5y-3ce">
             <objects>
                 <tableViewController id="cil-bl-Uc7" customClass="NCDatabaseViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="zIM-te-3Qd">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="zIM-te-3Qd">
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,7 +41,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="uss-dx-eeD" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="uss-dx-eeD" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="703" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uss-dx-eeD" id="6tx-lx-3wx">
@@ -52,7 +53,7 @@
                                     <segue destination="cil-bl-Uc7" kind="push" identifier="NCDatabaseViewController" id="Dia-wF-Tz2"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="5o1-JF-LFc" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="5o1-JF-LFc" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="171" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5o1-JF-LFc" id="nKX-JE-6Ar">
@@ -117,7 +118,7 @@
         <scene sceneID="0My-tM-RL7">
             <objects>
                 <tableViewController id="mTN-tC-KVr" customClass="NCDatabaseMarketViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="S3c-sB-i76" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="S3c-sB-i76" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -131,7 +132,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="oIV-7M-AAN" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="oIV-7M-AAN" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oIV-7M-AAN" id="cHH-sQ-rbU">
@@ -143,7 +144,7 @@
                                     <segue destination="mTN-tC-KVr" kind="push" identifier="NCDatabaseMarketViewController" id="sMZ-Ct-zwi"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="hQb-Ui-cAe" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="hQb-Ui-cAe" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="174" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hQb-Ui-cAe" id="shK-CN-hl7">
@@ -185,12 +186,12 @@
         <scene sceneID="IvU-D7-PcR">
             <objects>
                 <tableViewController id="me6-Ve-VI4" customClass="NCDatabaseCertificatesViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="t3w-YW-4pm" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="t3w-YW-4pm" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="TWZ-90-6j8" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="TWZ-90-6j8" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="86" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TWZ-90-6j8" id="50p-ZZ-46k">
@@ -202,7 +203,7 @@
                                     <segue destination="me6-Ve-VI4" kind="push" identifier="NCDatabaseCertificatesViewController" id="ypZ-Gg-WAj"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CertificateCell" id="yiJ-An-HAG" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CertificateCell" id="yiJ-An-HAG" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yiJ-An-HAG" id="4NS-LT-Ifo">
@@ -266,7 +267,7 @@
         <scene sceneID="6XL-XT-kh4">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" id="zSF-Eq-Szl" customClass="NCDatabaseTypeInfoViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dHG-eX-klh" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="dHG-eX-klh" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -281,16 +282,16 @@
                                         <constraint firstAttribute="width" constant="64" id="icQ-dM-Vkz"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="438" translatesAutoresizingMaskIntoConstraints="NO" id="0QL-yO-ixM" customClass="NCLabel">
-                                    <rect key="frame" x="87" y="53" width="438" height="26"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="438" translatesAutoresizingMaskIntoConstraints="NO" id="0QL-yO-ixM">
+                                    <rect key="frame" x="87" y="59" width="438" height="20"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="510" translatesAutoresizingMaskIntoConstraints="NO" id="GWG-ya-20s" customClass="NCLabel">
                                     <rect key="frame" x="15" y="79" width="510" height="218"/>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -310,7 +311,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="93G-g4-Yro" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="93G-g4-Yro" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="363" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="93G-g4-Yro" id="CnU-dq-e8e">
@@ -319,7 +320,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="AcL-nM-Kte" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="AcL-nM-Kte" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="407" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AcL-nM-Kte" id="zba-y4-l1R">
@@ -331,7 +332,7 @@
                                     <segue destination="emB-sr-OBq" kind="push" identifier="NCDatabaseViewController" id="01H-Qm-y5M"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="jdP-Mz-tip" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="jdP-Mz-tip" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="451" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jdP-Mz-tip" id="UUJ-Sp-G33">
@@ -343,7 +344,7 @@
                                     <segue destination="zSF-Eq-Szl" kind="push" identifier="NCDatabaseTypeInfoViewController" id="pGi-Ks-L75"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VariationsCell" id="yUt-M9-MbF" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VariationsCell" id="yUt-M9-MbF" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="495" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yUt-M9-MbF" id="jbv-3I-wN1">
@@ -355,7 +356,7 @@
                                     <segue destination="gi5-8P-Iij" kind="push" identifier="NCDatabaseTypeVariationsViewController" id="K1q-7J-HvP"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MasteryCell" id="chJ-zu-wev" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MasteryCell" id="chJ-zu-wev" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="539" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="chJ-zu-wev" id="Aev-lY-5aX">
@@ -432,76 +433,88 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NCDatabaseTypeMarketInfoCell" id="wtI-Dm-eoD" customClass="NCDatabaseTypeMarketInfoCell">
-                                <rect key="frame" x="0.0" y="110" width="540" height="57"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="Tts-wu-Pu0" customClass="NCDatabaseTypeMarketInfoCell">
+                                <rect key="frame" x="0.0" y="130" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wtI-Dm-eoD" id="sxH-Zz-fCX">
-                                    <rect key="frame" x="0.0" y="0.0" width="540" height="56"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tts-wu-Pu0" id="8VY-sQ-rvz">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="idH-na-6tG">
-                                            <rect key="frame" x="15" y="22" width="74" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Station" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hve-Xg-rRU">
-                                            <rect key="frame" x="15" y="37" width="290" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="37l-T5-JKc">
-                                            <rect key="frame" x="253" y="6" width="52" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Jumps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEM-Hb-PeN">
-                                            <rect key="frame" x="267" y="22" width="38" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PkB-YI-sr6">
-                                            <rect key="frame" x="15" y="4" width="35" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" misplaced="YES" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1iu-8b-EHE">
-                                            <rect key="frame" x="225" y="6" width="20" height="15"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0R3-YQ-xcp">
+                                            <rect key="frame" x="0.0" y="0.0" width="540" height="51"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQi-YB-FAF">
+                                                    <rect key="frame" x="15" y="2" width="33" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jU0-vi-fh8">
+                                                    <rect key="frame" x="15" y="19" width="74" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rFc-Ja-YFg">
+                                                    <rect key="frame" x="15" y="34" width="510" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reported" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uQS-po-49k">
+                                                    <rect key="frame" x="473" y="4" width="52" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Jumps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tM3-lM-Nv1">
+                                                    <rect key="frame" x="487" y="19" width="38" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Qty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyG-v1-kV2">
+                                                    <rect key="frame" x="445" y="4" width="20" height="15"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="uQS-po-49k" firstAttribute="trailing" secondItem="tM3-lM-Nv1" secondAttribute="trailing" id="15D-Qf-wy9"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="bottom" secondItem="GyG-v1-kV2" secondAttribute="bottom" id="KCZ-3r-egf"/>
+                                                <constraint firstAttribute="bottom" secondItem="rFc-Ja-YFg" secondAttribute="bottom" constant="2" id="M4V-i6-Xbc"/>
+                                                <constraint firstAttribute="trailing" secondItem="uQS-po-49k" secondAttribute="trailing" constant="15" id="Stv-Lt-Aua"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="jU0-vi-fh8" secondAttribute="leading" id="UKA-i8-Gzb"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="top" secondItem="0R3-YQ-xcp" secondAttribute="top" constant="2" id="W7u-l0-hES"/>
+                                                <constraint firstItem="jU0-vi-fh8" firstAttribute="top" secondItem="xQi-YB-FAF" secondAttribute="bottom" id="YAz-uI-hgB"/>
+                                                <constraint firstItem="rFc-Ja-YFg" firstAttribute="top" secondItem="jU0-vi-fh8" secondAttribute="bottom" id="ZA4-Vi-Lse"/>
+                                                <constraint firstItem="uQS-po-49k" firstAttribute="trailing" secondItem="rFc-Ja-YFg" secondAttribute="trailing" id="i0x-8F-cnT"/>
+                                                <constraint firstItem="uQS-po-49k" firstAttribute="leading" secondItem="GyG-v1-kV2" secondAttribute="trailing" constant="8" id="iDd-5G-Ui5"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="bottom" secondItem="uQS-po-49k" secondAttribute="bottom" id="jdc-Iq-xcF"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="rFc-Ja-YFg" secondAttribute="leading" id="ni4-ds-TcC"/>
+                                                <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="0R3-YQ-xcp" secondAttribute="leading" constant="15" id="sXu-0v-rWi"/>
+                                                <constraint firstItem="tM3-lM-Nv1" firstAttribute="top" secondItem="uQS-po-49k" secondAttribute="bottom" id="zB6-5x-OvK"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="1iu-8b-EHE" firstAttribute="centerY" secondItem="37l-T5-JKc" secondAttribute="centerY" id="4Gc-19-lsP"/>
-                                        <constraint firstItem="1iu-8b-EHE" firstAttribute="centerY" secondItem="PkB-YI-sr6" secondAttribute="centerY" id="5vC-jv-81x"/>
-                                        <constraint firstItem="PkB-YI-sr6" firstAttribute="leading" secondItem="sxH-Zz-fCX" secondAttribute="leading" constant="15" id="9kM-Nu-643"/>
-                                        <constraint firstItem="idH-na-6tG" firstAttribute="leading" secondItem="PkB-YI-sr6" secondAttribute="leading" id="Bsb-U9-XOA"/>
-                                        <constraint firstItem="37l-T5-JKc" firstAttribute="leading" secondItem="1iu-8b-EHE" secondAttribute="trailing" constant="8" id="Gjq-5x-paE"/>
-                                        <constraint firstItem="YEM-Hb-PeN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="idH-na-6tG" secondAttribute="trailing" constant="8" id="OLf-Tp-4he"/>
-                                        <constraint firstItem="PkB-YI-sr6" firstAttribute="top" secondItem="sxH-Zz-fCX" secondAttribute="top" constant="4" id="R57-CQ-SaI"/>
-                                        <constraint firstItem="hve-Xg-rRU" firstAttribute="trailing" secondItem="37l-T5-JKc" secondAttribute="trailing" id="Ty3-ui-b6y"/>
-                                        <constraint firstItem="1iu-8b-EHE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="PkB-YI-sr6" secondAttribute="trailing" constant="8" id="XeF-xP-lkM"/>
-                                        <constraint firstItem="hve-Xg-rRU" firstAttribute="trailing" secondItem="YEM-Hb-PeN" secondAttribute="trailing" id="ZbM-vN-FVr"/>
-                                        <constraint firstItem="hve-Xg-rRU" firstAttribute="top" secondItem="idH-na-6tG" secondAttribute="bottom" id="fLf-KO-J8C"/>
-                                        <constraint firstItem="idH-na-6tG" firstAttribute="leading" secondItem="hve-Xg-rRU" secondAttribute="leading" id="pwP-sv-Ncy"/>
-                                        <constraint firstItem="idH-na-6tG" firstAttribute="top" secondItem="YEM-Hb-PeN" secondAttribute="top" id="r6E-6f-vUa"/>
-                                        <constraint firstAttribute="trailing" secondItem="37l-T5-JKc" secondAttribute="trailing" constant="15" id="u89-Ra-NwB"/>
-                                        <constraint firstItem="idH-na-6tG" firstAttribute="top" secondItem="PkB-YI-sr6" secondAttribute="bottom" id="v87-gI-bYF"/>
+                                        <constraint firstAttribute="bottom" secondItem="0R3-YQ-xcp" secondAttribute="bottom" priority="250" id="XmU-wY-8lQ"/>
+                                        <constraint firstItem="0R3-YQ-xcp" firstAttribute="top" secondItem="8VY-sQ-rvz" secondAttribute="top" id="Ysa-Ad-eEX"/>
+                                        <constraint firstAttribute="trailing" secondItem="0R3-YQ-xcp" secondAttribute="trailing" id="ejG-FA-zsv"/>
+                                        <constraint firstItem="0R3-YQ-xcp" firstAttribute="leading" secondItem="8VY-sQ-rvz" secondAttribute="leading" id="i3N-Hu-Z6u"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="dateLabel" destination="37l-T5-JKc" id="0vJ-h0-4u1"/>
-                                    <outlet property="jumpsLabel" destination="YEM-Hb-PeN" id="fux-TQ-WAE"/>
-                                    <outlet property="priceLabel" destination="PkB-YI-sr6" id="Pgg-rn-TdX"/>
-                                    <outlet property="quantityLabel" destination="1iu-8b-EHE" id="P2W-XJ-Qnd"/>
-                                    <outlet property="solarSystemlabel" destination="idH-na-6tG" id="fB7-4R-ccd"/>
-                                    <outlet property="stationLabel" destination="hve-Xg-rRU" id="s6x-GL-q2I"/>
+                                    <outlet property="dateLabel" destination="uQS-po-49k" id="xLT-6S-4XG"/>
+                                    <outlet property="jumpsLabel" destination="tM3-lM-Nv1" id="G1a-9K-sxJ"/>
+                                    <outlet property="priceLabel" destination="xQi-YB-FAF" id="kpz-Bq-iEw"/>
+                                    <outlet property="quantityLabel" destination="GyG-v1-kV2" id="cXu-c6-HmU"/>
+                                    <outlet property="solarSystemlabel" destination="jU0-vi-fh8" id="tNq-5y-Z8u"/>
+                                    <outlet property="stationLabel" destination="rFc-Ja-YFg" id="Ivf-rz-0h4"/>
+                                    <segue destination="zSF-Eq-Szl" kind="push" id="V6M-1T-fkl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -521,7 +534,7 @@
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ZXf-vo-l1a">
                             <rect key="frame" x="195" y="6" width="150" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <state key="normal" title="Summary ▾">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -562,12 +575,12 @@
         <scene sceneID="8Nd-Hv-fE7">
             <objects>
                 <tableViewController id="gi5-8P-Iij" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="RVN-tP-VUX" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="RVN-tP-VUX" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="JPV-Yw-e9Q" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="JPV-Yw-e9Q" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="66" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JPV-Yw-e9Q" id="zxk-O6-BFn">
@@ -598,12 +611,12 @@
         <scene sceneID="kOf-cn-kHi">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" id="Hc7-x7-P96" customClass="NCDatabaseTypeMasteryViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="e9V-hV-clG" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="e9V-hV-clG" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="F1s-OU-zj2" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="F1s-OU-zj2" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="66" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1s-OU-zj2" id="WMU-4D-tdC">
@@ -612,7 +625,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eYi-tx-CqZ" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="eYi-tx-CqZ" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="110" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eYi-tx-CqZ" id="eJ4-55-mn4">
@@ -644,7 +657,7 @@
         <scene sceneID="lGv-kN-HLM">
             <objects>
                 <tableViewController id="tem-Sa-zdy" customClass="NCDatabaseCertificateInfoViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PjL-Uo-kzr" customClass="CollapsableTableView">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="PjL-Uo-kzr" customClass="CollapsableTableView">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -660,15 +673,15 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="438" translatesAutoresizingMaskIntoConstraints="NO" id="6ko-Sw-ekl" customClass="NCLabel">
-                                    <rect key="frame" x="87" y="53" width="438" height="26"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                    <rect key="frame" x="87" y="59" width="438" height="20"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="510" translatesAutoresizingMaskIntoConstraints="NO" id="eFW-0O-umt" customClass="NCLabel">
                                     <rect key="frame" x="15" y="79" width="510" height="218"/>
                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -688,7 +701,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="mzb-If-PNO" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="mzb-If-PNO" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="363" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mzb-If-PNO" id="uMY-bt-zFM">
@@ -697,7 +710,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="CSb-KA-Tfl" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="CSb-KA-Tfl" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="407" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CSb-KA-Tfl" id="BKL-hw-Ajm">
@@ -770,7 +783,7 @@
         <scene sceneID="IM0-yA-OSt">
             <objects>
                 <tableViewController id="ecB-jM-BVA" customClass="NCDatabaseNPCViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="1qf-z1-Aqi">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="1qf-z1-Aqi">
                         <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -784,7 +797,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NpcGroupCell" id="eqI-Q3-0FB" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NpcGroupCell" id="eqI-Q3-0FB" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eqI-Q3-0FB" id="Gd9-iR-WEw">
@@ -796,7 +809,7 @@
                                     <segue destination="ecB-jM-BVA" kind="push" identifier="NCDatabaseNPCViewController" id="CTL-nF-KPC"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="pRC-sQ-esw" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="pRC-sQ-esw" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="174" width="703" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pRC-sQ-esw" id="uNI-Rh-CWd">
@@ -835,7 +848,7 @@
         <scene sceneID="nuH-b0-9ef">
             <objects>
                 <tableViewController storyboardIdentifier="NCDatabaseTypePickerContentViewController" id="MIa-oZ-7Mz" customClass="NCDatabaseTypePickerContentViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7lz-au-EFG">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="7lz-au-EFG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -849,7 +862,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="xVQ-C3-NGe" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MarketGroupCell" id="xVQ-C3-NGe" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="130" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xVQ-C3-NGe" id="2Xi-WE-8H8">
@@ -861,7 +874,7 @@
                                     <segue destination="MIa-oZ-7Mz" kind="push" identifier="NCDatabaseTypePickerContentViewController" id="jYM-Uh-Ay8"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="s2I-cj-AUO" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="s2I-cj-AUO" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="174" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s2I-cj-AUO" id="dx8-MK-Nkg">
@@ -918,7 +931,7 @@
         <scene sceneID="h8a-Cq-uuq">
             <objects>
                 <tableViewController id="emB-sr-OBq" customClass="NCDatabaseViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="VU4-I7-lup">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="VU4-I7-lup">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -932,7 +945,7 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="9rL-sy-BhU" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoryGroupCell" rowHeight="41" id="9rL-sy-BhU" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="110" width="540" height="41"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9rL-sy-BhU" id="spU-N1-qAc">
@@ -944,7 +957,7 @@
                                     <segue destination="emB-sr-OBq" kind="push" identifier="NCDatabaseViewController" id="cui-Xc-NFy"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="qgC-6L-3kv" customClass="NCTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeCell" id="qgC-6L-3kv" customClass="NCDefaultTableViewCell">
                                 <rect key="frame" x="0.0" y="151" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qgC-6L-3kv" id="ApA-uw-ACw">
@@ -1012,14 +1025,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="D4Y-OJ-c0f"/>
-        <segue reference="THO-d5-G64"/>
-        <segue reference="ojV-wi-W6u"/>
-        <segue reference="9zE-3c-7d8"/>
-        <segue reference="bTb-0b-9f9"/>
+        <segue reference="bSQ-JI-nGb"/>
+        <segue reference="Zf5-j1-cwh"/>
         <segue reference="01H-Qm-y5M"/>
+        <segue reference="9b8-7J-8K4"/>
         <segue reference="20I-Ju-Smn"/>
         <segue reference="qsv-5o-k5F"/>
-        <segue reference="bSQ-JI-nGb"/>
+        <segue reference="bTb-0b-9f9"/>
+        <segue reference="ojV-wi-W6u"/>
+        <segue reference="D4Y-OJ-c0f"/>
     </inferredMetricsTieBreakers>
 </document>

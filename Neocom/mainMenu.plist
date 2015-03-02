@@ -191,7 +191,7 @@
 			<key>title</key>
 			<string>Wallet Transactions</string>
 			<key>image</key>
-			<string>wallet.png</string>
+			<string>journal.png</string>
 			<key>charAccessMask</key>
 			<integer>4194304</integer>
 			<key>corpAccessMask</key>
@@ -203,7 +203,7 @@
 			<key>title</key>
 			<string>Wallet Journal</string>
 			<key>image</key>
-			<string>journal.png</string>
+			<string>wallet.png</string>
 			<key>charAccessMask</key>
 			<integer>2097152</integer>
 			<key>corpAccessMask</key>

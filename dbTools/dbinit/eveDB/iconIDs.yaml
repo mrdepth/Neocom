@@ -6226,3 +6226,6 @@
 21403:
   description: 34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png
   iconFile: res:/UI/Asset/mannequin/outer/34351_female_Outer_JacketPrtF01_Types_JacketPrtF01_guristas.png
+21404:
+  description: Drifter Faction Icon
+  iconFile: '117_2'

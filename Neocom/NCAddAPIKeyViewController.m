@@ -104,12 +104,16 @@
 							 }];
 }
 
-#pragma mark - Table view data source
+#pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.row == 3)
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://support.eveonline.com/api/Key/ActivateInstallLinks"]];
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 #pragma mark - UITextFieldDelegate

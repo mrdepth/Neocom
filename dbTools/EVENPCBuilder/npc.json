@@ -1179,6 +1179,15 @@
 			 ]
   },
   {
+  "groupName": "Drifters",
+  "groups": [
+			 {
+			 "groupName": "Drifters Battleship",
+			 "groupID": "1310"
+			 }
+			 ]
+  },
+  {
   "groupName": "Other",
   "groups": [
 			 {

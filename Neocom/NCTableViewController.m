@@ -424,6 +424,8 @@
 	if ([cell isKindOfClass:[NCTableViewCell class]]) {
 		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));
+		[cell.contentView setNeedsLayout];
+		[cell.layoutContentView setNeedsLayout];
 		[cell layoutIfNeeded];
 		return cell.layoutContentView.frame.size.height;
 	}

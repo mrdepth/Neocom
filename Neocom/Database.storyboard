@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fQN-VN-Su3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="fQN-VN-Su3">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -419,6 +419,7 @@
                                 <connections>
                                     <outlet property="dateLabel" destination="ekU-dw-Sqg" id="Grn-tt-zzk"/>
                                     <outlet property="jumpsLabel" destination="18a-Z1-FYP" id="11t-2f-pcF"/>
+                                    <outlet property="layoutContentView" destination="yRu-6v-3hr" id="6Qg-Vj-sP5"/>
                                     <outlet property="priceLabel" destination="ipV-W6-Vem" id="ZKp-Tm-2gh"/>
                                     <outlet property="quantityLabel" destination="QHt-kE-cLL" id="dWI-RT-WIZ"/>
                                     <outlet property="solarSystemlabel" destination="gfs-K5-hJE" id="imT-I9-XeI"/>
@@ -808,10 +809,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="edv-w8-2To"/>
-        <segue reference="SQ9-TP-fSp"/>
-        <segue reference="LHH-Wy-jrm"/>
         <segue reference="qyD-gc-O13"/>
+        <segue reference="He4-ED-1Vg"/>
+        <segue reference="LHH-Wy-jrm"/>
+        <segue reference="edv-w8-2To"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

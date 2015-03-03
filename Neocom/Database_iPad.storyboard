@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -510,6 +510,7 @@
                                 <connections>
                                     <outlet property="dateLabel" destination="uQS-po-49k" id="xLT-6S-4XG"/>
                                     <outlet property="jumpsLabel" destination="tM3-lM-Nv1" id="G1a-9K-sxJ"/>
+                                    <outlet property="layoutContentView" destination="0R3-YQ-xcp" id="jp8-Jm-Vte"/>
                                     <outlet property="priceLabel" destination="xQi-YB-FAF" id="kpz-Bq-iEw"/>
                                     <outlet property="quantityLabel" destination="GyG-v1-kV2" id="cXu-c6-HmU"/>
                                     <outlet property="solarSystemlabel" destination="jU0-vi-fh8" id="tNq-5y-Z8u"/>
@@ -1025,13 +1026,13 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="qsv-5o-k5F"/>
+        <segue reference="rfC-Ia-PBO"/>
+        <segue reference="20I-Ju-Smn"/>
+        <segue reference="01H-Qm-y5M"/>
         <segue reference="bSQ-JI-nGb"/>
         <segue reference="Zf5-j1-cwh"/>
-        <segue reference="01H-Qm-y5M"/>
-        <segue reference="9zE-3c-7d8"/>
         <segue reference="bTb-0b-9f9"/>
-        <segue reference="20I-Ju-Smn"/>
-        <segue reference="qsv-5o-k5F"/>
         <segue reference="ojV-wi-W6u"/>
         <segue reference="D4Y-OJ-c0f"/>
     </inferredMetricsTieBreakers>

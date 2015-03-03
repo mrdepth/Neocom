@@ -27,15 +27,11 @@
 	[self setNeedsUpdateConstraints];
 }
 
-
-
 - (void) layoutSubviews {
 	[super layoutSubviews];
-	[self.contentView layoutIfNeeded];
 	if ([self respondsToSelector:@selector(setSeparatorInset:)]) {
 		self.separatorInset = UIEdgeInsetsMake(0, self.titleLabel.frame.origin.x, 0, 0);
 	}
-	
 }
 
 - (void) awakeFromNib {
@@ -52,17 +48,11 @@
 	[self.contentView addSubview:[views lastObject]];
 	NSDictionary* bindings = @{@"view": self.layoutContentView};
 	
-	NSArray* c = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0-|"
-														 options:0
-														 metrics:nil
-														   views:bindings];
-	for (NSLayoutConstraint* constraint in c) {
-		if (constraint.firstAttribute == NSLayoutAttributeBottom) {
-			constraint.priority = UILayoutPriorityDefaultHigh;
-			break;
-		}
-	}
-	
+	NSArray* c = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[view]-0@999-|"
+													options:0
+													metrics:nil
+													  views:bindings];
+
 	[self.contentView addConstraints:c];
 
 

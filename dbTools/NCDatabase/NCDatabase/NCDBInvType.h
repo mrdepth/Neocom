@@ -41,7 +41,7 @@
 @property (nonatomic, retain) NCDBInvMetaGroup *metaGroup;
 @property (nonatomic, retain) NCDBInvType *parentType;
 @property (nonatomic, retain) NCDBChrRace *race;
-@property (nonatomic, retain) NSSet *reguiredForSkill;
+@property (nonatomic, retain) NSSet *requiredForSkill;
 @property (nonatomic, retain) NSOrderedSet *requiredSkills;
 @property (nonatomic, retain) NSSet *stations;
 @property (nonatomic, retain) NCDBTxtDescription *typeDescription;
@@ -92,10 +92,10 @@
 - (void)addMasterySkills:(NSSet *)values;
 - (void)removeMasterySkills:(NSSet *)values;
 
-- (void)addReguiredForSkillObject:(NCDBInvTypeRequiredSkill *)value;
-- (void)removeReguiredForSkillObject:(NCDBInvTypeRequiredSkill *)value;
-- (void)addReguiredForSkill:(NSSet *)values;
-- (void)removeReguiredForSkill:(NSSet *)values;
+- (void)addRequiredForSkillObject:(NCDBInvTypeRequiredSkill *)value;
+- (void)removeRequiredForSkillObject:(NCDBInvTypeRequiredSkill *)value;
+- (void)addRequiredForSkill:(NSSet *)values;
+- (void)removeRequiredForSkill:(NSSet *)values;
 
 - (void)insertObject:(NCDBInvTypeRequiredSkill *)value inRequiredSkillsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromRequiredSkillsAtIndex:(NSUInteger)idx;

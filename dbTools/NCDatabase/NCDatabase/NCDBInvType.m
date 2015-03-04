@@ -61,7 +61,7 @@
 @dynamic metaGroup;
 @dynamic parentType;
 @dynamic race;
-@dynamic reguiredForSkill;
+@dynamic requiredForSkill;
 @dynamic requiredSkills;
 @dynamic stations;
 @dynamic typeDescription;

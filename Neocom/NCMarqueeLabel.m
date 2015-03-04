@@ -27,7 +27,7 @@
 	NSMutableParagraphStyle* paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	paragraph.lineBreakMode = NSLineBreakByClipping;
 	
-	[self.text drawInRect:self.bounds withAttributes:@{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:paragraph}];
+	[self.text drawInRect:self.bounds withAttributes:@{NSFontAttributeName:self.font, NSParagraphStyleAttributeName:paragraph, NSForegroundColorAttributeName:self.textColor}];
 	//[self.text drawInRect:self.bounds withFont:self.font lineBreakMode:NSLineBreakByClipping];
 	UIGraphicsPopContext();
 }

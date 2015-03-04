@@ -22,6 +22,7 @@
 #import "NCTableViewCell.h"
 #import "UIColor+Neocom.h"
 #import "NSArray+Neocom.h"
+#import "NCDatabaseTypeRequirementsViewController.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -164,6 +165,10 @@
 		NCDatabaseTypeMasteryViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = self.type;
 		destinationViewController.masteryLevel = row.object;
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeRequirementsViewController"]) {
+		NCDatabaseTypeRequirementsViewController* destinationViewController = segue.destinationViewController;
+		destinationViewController.type = self.type;
 	}
 }
 
@@ -590,6 +595,21 @@
 													   [sections addObject:section];
 											   }
 											   if (type.group.category.categoryID == EVEDBCategoryIDSkill) { //Skill
+												   NSInteger requiredForCount = type.requiredForSkill.count;
+												   if (requiredForCount > 0) {
+													   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+													   NSMutableArray *rows = [NSMutableArray array];
+													   section[@"title"] = NSLocalizedString(@"Required for", nil);
+													   section[@"rows"] = rows;
+													   
+													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+													   row.title = [NSString stringWithFormat:NSLocalizedString(@"%ld items", nil), (long) requiredForCount];
+													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
+													   row.cellIdentifier = @"RequirementsCell";
+													   [rows addObject:row];
+													   [sections addObject:section];
+												   }
+												   
 												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
 												   NSMutableArray *rows = [NSMutableArray array];
 												   section[@"title"] = NSLocalizedString(@"Training time", nil);

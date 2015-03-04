@@ -11,6 +11,7 @@
 #import "NCAccount.h"
 #import "NCTaskManager.h"
 #import "CollapsableTableView.h"
+#import "NCDefaultTableViewCell.h"
 
 @interface NCTableViewController : UITableViewController<UISearchDisplayDelegate, CollapsableTableViewDelegate>
 @property (nonatomic, strong, readonly) NCTaskManager* taskManager;

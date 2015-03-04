@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -368,6 +368,18 @@
                                     <segue destination="Hc7-x7-P96" kind="push" identifier="NCDatabaseTypeMasteryViewController" id="Ypu-2P-cTq"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RequirementsCell" id="DOl-Yd-qk9" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="568" width="540" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DOl-Yd-qk9" id="XsA-gr-Rtk">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="UGF-FU-pJc" kind="push" identifier="NCDatabaseTypeRequirementsViewController" id="vSC-S1-aw1"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="zSF-Eq-Szl" id="XAU-ne-dSz"/>
@@ -577,7 +589,7 @@
             <objects>
                 <tableViewController id="gi5-8P-Iij" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="RVN-tP-VUX" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1019,6 +1031,42 @@
             </objects>
             <point key="canvasLocation" x="746" y="2234"/>
         </scene>
+        <!--RequiredFor-->
+        <scene sceneID="nIk-jK-Tax">
+            <objects>
+                <tableViewController id="UGF-FU-pJc" userLabel="RequiredFor" customClass="NCDatabaseTypeRequirementsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="yRf-Bj-xIK" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="iN4-D6-L0W" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iN4-D6-L0W" id="5x1-SA-UrP">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="zSF-Eq-Szl" kind="push" identifier="NCDatabaseTypeInfoViewController" id="i3g-rc-KCy"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="UGF-FU-pJc" id="YA9-Y7-m9k"/>
+                            <outlet property="delegate" destination="UGF-FU-pJc" id="yI6-k1-SXE"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Required for" id="6bT-Rn-0jh">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="Cka-Cz-bXt"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="91A-zI-kHn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4119" y="-202"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1027,13 +1075,13 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="qsv-5o-k5F"/>
-        <segue reference="rfC-Ia-PBO"/>
-        <segue reference="20I-Ju-Smn"/>
-        <segue reference="01H-Qm-y5M"/>
         <segue reference="bSQ-JI-nGb"/>
         <segue reference="Zf5-j1-cwh"/>
+        <segue reference="D4Y-OJ-c0f"/>
+        <segue reference="i3g-rc-KCy"/>
+        <segue reference="20I-Ju-Smn"/>
+        <segue reference="01H-Qm-y5M"/>
         <segue reference="bTb-0b-9f9"/>
         <segue reference="ojV-wi-W6u"/>
-        <segue reference="D4Y-OJ-c0f"/>
     </inferredMetricsTieBreakers>
 </document>

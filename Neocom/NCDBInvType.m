@@ -63,7 +63,7 @@
 @dynamic parentType;
 @dynamic products;
 @dynamic race;
-@dynamic reguiredForSkill;
+@dynamic requiredForSkill;
 @dynamic requiredSkills;
 @dynamic stations;
 @dynamic typeDescription;

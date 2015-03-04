@@ -151,6 +151,7 @@
 		1219C1421A9F8FC400FF6205 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C1411A9F8FC400FF6205 /* settings.png */; };
 		1219C14A1AA4FF0000FF6205 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */; };
 		1219C14C1AA4FFF100FF6205 /* libFlurry_6.2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1219C14B1AA4FFF100FF6205 /* libFlurry_6.2.0.a */; };
+		1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */; };
 		1225A0B71A400954005DD73B /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1225A0B61A400954005DD73B /* Launch Screen.xib */; };
 		1229475D18EA8B2E0093FAB8 /* NCSkillQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */; };
 		122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 122947EA18EAA51D0093FAB8 /* NCSkillsContainerViewController.m */; };
@@ -903,6 +904,8 @@
 		1219C1411A9F8FC400FF6205 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		1219C1491AA4FF0000FF6205 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
 		1219C14B1AA4FFF100FF6205 /* libFlurry_6.2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.2.0.a; sourceTree = "<group>"; };
+		1219C1521AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseTypeRequirementsViewController.h; sourceTree = "<group>"; };
+		1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeRequirementsViewController.m; sourceTree = "<group>"; };
 		1225A0B61A400954005DD73B /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		1229475B18EA8B2E0093FAB8 /* NCSkillQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCSkillQueueViewController.h; sourceTree = "<group>"; };
 		1229475C18EA8B2E0093FAB8 /* NCSkillQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillQueueViewController.m; sourceTree = "<group>"; };
@@ -2075,6 +2078,15 @@
 			path = MainMenu;
 			sourceTree = "<group>";
 		};
+		1219C14E1AA78F7600FF6205 /* NCDatabaseTypeRequirementsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1219C1521AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.h */,
+				1219C1531AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m */,
+			);
+			name = NCDatabaseTypeRequirementsViewController;
+			sourceTree = "<group>";
+		};
 		1229475918EA8B130093FAB8 /* NCSkillQueueViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3237,6 +3249,7 @@
 				12124AA81889149F00F01C59 /* NCDatabaseTypeMarketInfoViewController */,
 				12E5437B18880ABA00DDFE7F /* NCDatabaseTypeVariationsViewController */,
 				122C51F2188FB7E0000AEC2C /* NCDatabaseTypeMasteryViewController */,
+				1219C14E1AA78F7600FF6205 /* NCDatabaseTypeRequirementsViewController */,
 				127E1BDE188FEBF000F65EA8 /* NCDatabaseCertificatesViewController */,
 				1296C6BF1890ED4E00ADF2E7 /* NCDatabaseCertificateInfoViewController */,
 				128C9B0618BF427B0086F7B3 /* NCDatabaseSolarSystemPickerViewController */,
@@ -5026,6 +5039,7 @@
 				1251E95B18BC6E4800DDAA62 /* NCKillMailDetailsAttackerCell.m in Sources */,
 				120C336119CAB0A90093EECA /* NCDBInvCategory.m in Sources */,
 				1271238518978148005F46EE /* NCFittingShipViewController.mm in Sources */,
+				1219C1541AA78FA900FF6205 /* NCDatabaseTypeRequirementsViewController.m in Sources */,
 				126F1BBF19530EAD00E5CD4F /* NCDBRamActivity+Neocom.m in Sources */,
 				129D263D187E98C100E2062C /* NCNavigationCharacterButton.m in Sources */,
 				12C9DCA118617A6300A654C5 /* NCAccountsManager.m in Sources */,

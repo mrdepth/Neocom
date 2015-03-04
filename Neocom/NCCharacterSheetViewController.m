@@ -14,6 +14,11 @@
 #import "NSString+Neocom.h"
 #import "NCDatabase.h"
 #import "UIColor+Neocom.h"
+#import "NCLocationsManager.h"
+#import "NCDefaultTableViewCell.h"
+#import <objc/runtime.h>
+#import "NCDatabaseTypeInfoViewController.h"
+
 
 @interface NCCharacterSheetViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) EVECharacterSheet* characterSheet;
@@ -60,8 +65,19 @@
 
 @end
 
+@interface NCCharacterSheetViewControllerJumpClone : NSObject
+@property (nonatomic, strong) EVECharacterSheetJumpClone* jumpClone;
+@property (nonatomic, strong) NSArray* implants;
+@property (nonatomic, strong) NCLocationsManagerItem* location;
+@end
+
+@implementation NCCharacterSheetViewControllerJumpClone
+@end
+
 @interface NCCharacterSheetViewController ()
 @property (nonatomic, assign) BOOL needsLayout;
+@property (nonatomic, strong) NSArray* jumpClones;
+- (void) loadJumpClones;
 
 @end
 
@@ -119,6 +135,45 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+	if ([identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		return [sender object] != nil;
+	}
+	else
+		return YES;
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.type = [sender object];
+	}
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return self.jumpClones.count;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	NCCharacterSheetViewControllerJumpClone* jumpClone = self.jumpClones[section];
+	return MAX(jumpClone.implants.count, 1);
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NCCharacterSheetViewControllerJumpClone* jumpClone = self.jumpClones[section];
+	NSString* location = jumpClone.location.name.length > 0 ? jumpClone.location.name : NSLocalizedString(@"Unknown Location", nil);
+	NSString* name = jumpClone.jumpClone.cloneName.length > 0 ? jumpClone.jumpClone.cloneName : NSLocalizedString(@"Jump Clone", nil);
+	return [NSString stringWithFormat:@"%@ - %@", name, location];
+}
+
+
 #pragma mark - NCTableViewController
 
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
@@ -173,8 +228,35 @@
 							 }];
 }
 
+- (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
+
+- (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+	NCCharacterSheetViewControllerJumpClone* jumpClone = self.jumpClones[indexPath.section];
+	if (indexPath.row < jumpClone.implants.count) {
+		EVECharacterSheetJumpCloneImplant* implant = jumpClone.implants[indexPath.row];
+		NCDBInvType* type = objc_getAssociatedObject(implant, @"type");
+		if (!type) {
+			type = [NCDBInvType invTypeWithTypeID:implant.typeID];
+			objc_setAssociatedObject(implant, @"type", type, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		}
+		cell.titleLabel.text = implant.typeName;
+		cell.iconView.image = type.icon.image.image;
+		cell.object = type;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	else {
+		cell.titleLabel.text = nil;
+		cell.subtitleLabel.text = NSLocalizedString(@"No Implants", nil);
+		cell.iconView.image = nil;
+		cell.object = nil;
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+}
+
 - (void) update {
-	[super update];
 	NCCharacterSheetViewControllerData* data = self.data;
 	self.characterImageView.image = nil;
 	self.corporationImageView.image = nil;
@@ -393,6 +475,9 @@
 	
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];
+	
+	[self loadJumpClones];
+	[super update];
 }
 
 - (void) didChangeAccount:(NCAccount *)account {
@@ -401,5 +486,19 @@
 		[self reloadFromCache];
 }
 
+- (void) loadJumpClones {
+	NCCharacterSheetViewControllerData* data = self.data;
+
+	NSMutableArray* jumpClones = [NSMutableArray new];
+	for (EVECharacterSheetJumpClone* eveClone in data.characterSheet.jumpClones) {
+		NCCharacterSheetViewControllerJumpClone* jumpClone = [NCCharacterSheetViewControllerJumpClone new];
+		jumpClone.jumpClone = eveClone;
+		jumpClone.implants = [data.characterSheet.jumpCloneImplants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"jumpCloneID == %d", eveClone.jumpCloneID]];
+		
+		jumpClone.location = [[NCLocationsManager defaultManager] locationsNamesWithIDs:@[@(eveClone.locationID)]][@(eveClone.locationID)];
+		[jumpClones addObject:jumpClone];
+	}
+	self.jumpClones = jumpClones;
+}
 
 @end

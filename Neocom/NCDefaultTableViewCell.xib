@@ -75,12 +75,10 @@
                 <constraint firstAttribute="bottom" secondItem="gMn-eb-Gh6" secondAttribute="bottom" id="5dp-bN-b8F"/>
                 <constraint firstAttribute="bottom" secondItem="mlU-g2-0bK" secondAttribute="bottom" id="84o-X8-JU5"/>
                 <constraint firstItem="mlU-g2-0bK" firstAttribute="leading" secondItem="dqg-r7-DUo" secondAttribute="leading" constant="15" id="9NO-Nw-f7o"/>
-                <constraint firstAttribute="bottom" secondItem="SeI-dQ-sEB" secondAttribute="bottom" constant="2" id="ART-jv-VEe"/>
                 <constraint firstItem="SeI-dQ-sEB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dqg-r7-DUo" secondAttribute="top" priority="250" constant="2" id="K83-Jt-48V"/>
                 <constraint firstAttribute="trailing" secondItem="IqN-5m-dZb" secondAttribute="trailing" constant="15" id="Lko-jm-7Gn"/>
                 <constraint firstAttribute="centerY" secondItem="SeI-dQ-sEB" secondAttribute="centerY" id="TWp-nH-Yj5"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IqN-5m-dZb" secondAttribute="bottom" constant="2" id="WnJ-KI-CG7"/>
-                <constraint firstItem="SeI-dQ-sEB" firstAttribute="top" secondItem="dqg-r7-DUo" secondAttribute="top" constant="2" id="aa7-v4-P5h"/>
                 <constraint firstItem="gMn-eb-Gh6" firstAttribute="leading" secondItem="SeI-dQ-sEB" secondAttribute="trailing" id="bdr-3y-Llj"/>
                 <constraint firstAttribute="centerY" secondItem="IqN-5m-dZb" secondAttribute="centerY" id="fv6-sF-cWQ"/>
                 <constraint firstItem="IqN-5m-dZb" firstAttribute="leading" secondItem="gMn-eb-Gh6" secondAttribute="trailing" id="pOg-Xo-3BK"/>

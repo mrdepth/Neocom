@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class NCTableViewController;
 @class NCFittingShipViewController;
 @class NCTask;
 @interface NCFittingShipDataSource : NSObject<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong, readonly) UIView* tableHeaderView;
 @property (nonatomic, weak) UITableView* tableView;
 @property (nonatomic, weak) NCFittingShipViewController* controller;
+@property (nonatomic, weak) NCTableViewController* tableViewController;
 
 - (void) reload;
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;

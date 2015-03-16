@@ -120,18 +120,22 @@
 								 self.modulesDataSource = [NCFittingShipModulesDataSource new];
 								 self.modulesDataSource.controller = self;
 								 self.modulesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.modulesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.dronesDataSource = [NCFittingShipDronesDataSource new];
 								 self.dronesDataSource.controller = self;
 								 self.dronesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.dronesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.implantsDataSource = [NCFittingShipImplantsDataSource new];
 								 self.implantsDataSource.controller = self;
 								 self.implantsDataSource.tableView = self.workspaceViewController.tableView;
+								 self.implantsDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.fleetDataSource = [NCFittingShipFleetDataSource new];
 								 self.fleetDataSource.controller = self;
 								 self.fleetDataSource.tableView = self.workspaceViewController.tableView;
+								 self.fleetDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.statsDataSource = [NCFittingShipStatsDataSource new];
 								 self.statsDataSource.controller = self;
@@ -139,9 +143,11 @@
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
+									 self.statsDataSource.tableViewController = self.statsViewController;
 								 }
 								 else {
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+									 self.statsDataSource.tableViewController = self.workspaceViewController;
 								 }
 								 
 								 NCFittingShipDataSource* dataSources[] = {self.modulesDataSource, self.dronesDataSource, self.implantsDataSource, self.fleetDataSource, self.statsDataSource};

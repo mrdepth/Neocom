@@ -77,10 +77,12 @@
 								 self.structuresDataSource = [NCFittingPOSStructuresDataSource new];
 								 self.structuresDataSource.controller = self;
 								 self.structuresDataSource.tableView = self.workspaceViewController.tableView;
+								 self.structuresDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.assemblyLinesDataSource = [NCFittingPOSAssemblyLinesDataSource new];
 								 self.assemblyLinesDataSource.controller = self;
 								 self.assemblyLinesDataSource.tableView = self.workspaceViewController.tableView;
+								 self.assemblyLinesDataSource.tableViewController = self.workspaceViewController;
 								 
 								 self.statsDataSource = [NCFittingPOSStatsDataSource new];
 								 self.statsDataSource.controller = self;
@@ -88,9 +90,11 @@
 									 self.statsDataSource.tableView = self.statsViewController.tableView;
 									 self.statsViewController.tableView.dataSource = self.statsDataSource;
 									 self.statsViewController.tableView.delegate = self.statsDataSource;
+									 self.statsDataSource.tableViewController = self.statsViewController;
 								 }
 								 else {
 									 self.statsDataSource.tableView = self.workspaceViewController.tableView;
+									 self.statsDataSource.tableViewController = self.workspaceViewController;
 								 }
 								 
 								 NCFittingPOSDataSource* dataSources[] = {self.structuresDataSource, self.assemblyLinesDataSource, self.statsDataSource};

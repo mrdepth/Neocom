@@ -52,7 +52,7 @@
 		return UITableViewAutomaticDimension;
 	
 	NSString* identifier = [self tableView:tableView cellIdentifierForRowAtIndexPath:indexPath];
-	NCTableViewCell* cell = [self.controller.workspaceViewController tableView:tableView offscreenCellWithIdentifier:identifier];
+	NCTableViewCell* cell = [self.tableViewController tableView:tableView offscreenCellWithIdentifier:identifier];
 	if ([cell isKindOfClass:[NCTableViewCell class]]) {
 		[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
 		cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView.bounds), CGRectGetHeight(cell.bounds));

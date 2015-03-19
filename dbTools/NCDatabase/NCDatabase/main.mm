@@ -22,6 +22,71 @@
 #define NCDBMetaGroupAttributeID 1692
 #define NCDBMetaLevelAttributeID 633
 
+typedef enum : uint32_t {
+	/* Typeface info (lower 16 bits of UIFontDescriptorSymbolicTraits ) */
+	UIFontDescriptorTraitItalic = 1u << 0,
+	UIFontDescriptorTraitBold = 1u << 1,
+	UIFontDescriptorTraitExpanded = 1u << 5,
+	UIFontDescriptorTraitCondensed = 1u << 6,
+	UIFontDescriptorTraitMonoSpace = 1u << 10,
+	UIFontDescriptorTraitVertical = 1u << 11,
+	UIFontDescriptorTraitUIOptimized = 1u << 12,
+	UIFontDescriptorTraitTightLeading = 1u << 15,
+	UIFontDescriptorTraitLooseLeading = 1u << 16,
+	
+	/* Font appearance info (upper 16 bits of UIFontDescriptorSymbolicTraits */
+	UIFontDescriptorClassMask = 0xF0000000,
+	
+	UIFontDescriptorClassUnknown = 0u << 28,
+	UIFontDescriptorClassOldStyleSerifs = 1u << 28,
+	UIFontDescriptorClassTransitionalSerifs = 2u << 28,
+	UIFontDescriptorClassModernSerifs = 3u << 28,
+	UIFontDescriptorClassClarendonSerifs = 4u << 28,
+	UIFontDescriptorClassSlabSerifs = 5u << 28,
+	UIFontDescriptorClassFreeformSerifs = 7u << 28,
+	UIFontDescriptorClassSansSerif = 8u << 28,
+	UIFontDescriptorClassOrnamentals = 9u << 28,
+	UIFontDescriptorClassScripts = 10u << 28,
+	UIFontDescriptorClassSymbolic = 12u << 28
+} UIFontDescriptorSymbolicTraits;
+
+@interface NSColor(NCDatabase)
+
++ (instancetype) colorWithString:(NSString*) string;
++ (instancetype) colorWithUInteger:(NSUInteger) rgba;
+@end
+
+
+@implementation NSColor(NCDatabase)
+
++ (instancetype) colorWithString:(NSString*) string {
+	unsigned int rgba;
+	if ([[NSScanner scannerWithString:string] scanHexInt:&rgba]) {
+		return [self colorWithUInteger:rgba];
+	}
+	else {
+		NSString* key = [string capitalizedString];
+		for (NSColorList* colorList in [NSColorList availableColorLists]) {
+			NSColor* color = [colorList colorWithKey:key];
+			if (color)
+				return color;
+		}
+	}
+	return nil;
+}
+
++ (instancetype) colorWithUInteger:(NSUInteger) rgba {
+	float components[4];
+	for (int i = 3; i >= 0; i--) {
+		components[i] = (rgba & 0xff) / 255.0;
+		rgba >>= 8;
+	}
+	return [NSColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
+}
+
+@end
+
+
 @interface EVEDBInvMarketGroup (NCDatabaseTypePickerViewController)
 @property (nonatomic, strong, readonly) NSMutableArray* subgroups;
 @end
@@ -113,6 +178,69 @@ static NSManagedObjectContext *managedObjectContext()
         }
     }
     return context;
+}
+
+static NSAttributedString* attributedStringFromHTMLString(NSString* html) {
+	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(a[^>]*href|url)=[\"']?(.*?)[\"']?\\s*?>([^<]*)<\\/(a|url)>"
+																				   options:NSRegularExpressionCaseInsensitive
+																				  error:nil];
+	NSTextCheckingResult* result;
+	
+	html = [html stringByUnescapingHTML];
+	NSMutableString* mHtml = [html mutableCopy];
+	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:0 range:NSMakeRange(0, mHtml.length)];
+	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:0 range:NSMakeRange(0, mHtml.length)];
+
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:mHtml attributes:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		[s replaceCharactersInRange:[result rangeAtIndex:0]
+			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:3]]
+																	attributes:@{@"NSURL":[NSURL URLWithString:[s.string substringWithRange:[result rangeAtIndex:2]]]}]];
+	}
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<b[^>]*>([^<]*)</b>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		[s replaceCharactersInRange:[result rangeAtIndex:0]
+			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
+																	attributes:@{@"UIFontDescriptorTraitsAttribute":@(UIFontDescriptorTraitBold)}]];
+	}
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<i[^>]*>([^<]*)</i>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		[s replaceCharactersInRange:[result rangeAtIndex:0]
+			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
+																	attributes:@{@"UIFontDescriptorTraitsAttribute":@(UIFontDescriptorTraitItalic)}]];
+	}
+
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<u[^>]*>([^<]*)</u>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		[s replaceCharactersInRange:[result rangeAtIndex:0]
+			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
+																	attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}]];
+	}
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>([^<]*)</(color|font)>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
+		NSString* colorString = [s.string substringWithRange:[result rangeAtIndex:2]];
+		NSColor* color = [NSColor colorWithString:colorString];
+		[s replaceCharactersInRange:[result rangeAtIndex:0]
+			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:3]]
+																	attributes:color ? @{NSForegroundColorAttributeName:color} : nil]];
+	}
+
+	return s;
 }
 
 NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* database) {
@@ -1277,11 +1405,18 @@ int main(int argc, const char * argv[])
 
 	@autoreleasepool {
 		NSManagedObjectContext *context = managedObjectContext();
+/*		NSLog(@"%@", attributedStringFromHTMLString(@"bonus to <b><a href=showinfo:3422>Remote Shield Booster</a></b> transfer range\nreduction in <a href=showinfo:3303>Small Energy Turret</a> activation cost"));*/
+		NSLog(@"%@", [[NSAttributedString alloc] initWithData:[@"\\u6cf0\\u5766\\u4f1a\\u6218\\u9057\\u5740" dataUsingEncoding:NSUTF8StringEncoding]
+													  options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
+																 NSCharacterEncodingDocumentAttribute :@(NSUTF8StringEncoding) }
+										   documentAttributes:nil
+														error:nil]);
 
 		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:@"./evedb.sqlite"];
 		[EVEDBDatabase setSharedDatabase:database];
 		
 		@autoreleasepool {
+			NSLog(@"%@", [NSColor colorWithCatalogName:@"Web" colorName:@"Yellow"]);
 			
 			[database execSQLRequest:@"select version, build from version"
 						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {

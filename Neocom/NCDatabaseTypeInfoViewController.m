@@ -259,7 +259,7 @@
 	self.titleLabel.attributedText = title;
 	self.imageView.image = type.icon.image.image ? type.icon.image.image : self.defaultIcon.image.image;
 	
-	if (type.typeDescription.text.length > 0) {
+	/*if (type.typeDescription.text.length > 0) {
 		NSMutableAttributedString* descriptionAttributesString = [[NSMutableAttributedString alloc] initWithString:type.typeDescription.text
 																								   attributes:@{NSFontAttributeName: self.descriptionLabel.font,
 																												NSForegroundColorAttributeName: self.descriptionLabel.textColor}];
@@ -289,7 +289,8 @@
 		self.descriptionLabel.attributedText = descriptionAttributesString;
 	}
 	else
-		self.descriptionLabel.text = nil;
+		self.descriptionLabel.text = nil;*/
+	self.descriptionLabel.attributedText = type.typeDescription.text;
 
 	
 	

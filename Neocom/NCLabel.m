@@ -24,6 +24,64 @@
 	self.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
 }
 
+- (void) setAttributedText:(NSAttributedString *)attributedText {
+	NSMutableAttributedString* s = [attributedText mutableCopy];
+	[attributedText enumerateAttributesInRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+		__block BOOL hasFont = NO;
+		[attrs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			if ([key isEqualToString:@"UIFontDescriptorSymbolicTraits"]) {
+				UIFontDescriptor* fontDescriptor = [self.font.fontDescriptor fontDescriptorWithSymbolicTraits:[obj unsignedIntValue]];
+				if (fontDescriptor) {
+					UIFont* font = [UIFont fontWithDescriptor:fontDescriptor size:self.font.pointSize];
+					if (font) {
+						[s addAttribute:NSFontAttributeName value:font range:range];
+						hasFont = YES;
+					}
+				}
+			}
+			else if ([key isEqualToString:@"NSURL"]) {
+				UIFontDescriptor* fontDescriptor = [self.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+				UIFont* font = fontDescriptor ? [UIFont fontWithDescriptor:fontDescriptor size:self.font.pointSize] : self.font;
+				[s addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:font} range:range];
+				hasFont = YES;
+			}
+		}];
+		if (!hasFont) {
+			UIFont* font = attrs[NSFontAttributeName];
+			if (!font)
+				[s addAttribute:NSFontAttributeName value:self.font range:range];
+		}
+	}];
+	
+	NSMutableParagraphStyle* paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+	paragraph.lineBreakMode = self.lineBreakMode;
+//	[s addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, s.string.length)];
+//	[s addAttribute:NSKernAttributeName value:[NSNull null] range:NSMakeRange(0, s.string.length)];
+	[super setAttributedText:s];
+}
+
+- (void) drawRect:(CGRect)rect {
+//	[super drawRect:rect];
+	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
+	CGSize size = self.bounds.size;
+	size.height *= 2;
+	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:size];
+	NSTextStorage* textStorage= [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
+	[manager addTextContainer:container];
+	[textStorage addLayoutManager:manager];
+	
+	container.maximumNumberOfLines = self.numberOfLines;
+	
+	
+	[textStorage addLayoutManager:manager];
+	[manager addTextContainer:container];
+	
+	//rect.size = [manager usedRectForTextContainer:container].size;
+	
+	//[textStorage drawWithRect:rect options:0 context:nil];
+	[textStorage drawInRect:rect];
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
@@ -56,16 +114,28 @@
 - (NSURL*) urlAtPoint:(CGPoint) point {
 	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
 	CGSize size = self.bounds.size;
-	size.height += 10;
+	size.height *= 2;
 	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:size];
-	container.maximumNumberOfLines = self.numberOfLines;
 	NSTextStorage* textStorage= [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
-	[textStorage addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, textStorage.string.length)];
-	[textStorage addLayoutManager:manager];
 	[manager addTextContainer:container];
+	[textStorage addLayoutManager:manager];
+
+	container.maximumNumberOfLines = self.numberOfLines;
 	
-	NSUInteger i = [manager glyphIndexForPoint:point inTextContainer:container];
+	
+//	[textStorage addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, textStorage.string.length)];
+//	[textStorage addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, textStorage.string.length)];
+	
+	
+	
+	CGFloat f = 0;
+	//NSUInteger i = [manager glyphIndexForPoint:point inTextContainer:container fractionOfDistanceThroughGlyph:&f];
+	NSUInteger i = [manager characterIndexForPoint:point inTextContainer:container fractionOfDistanceBetweenInsertionPoints:&f];
+	NSLog(@"%f", f);
+	CGRect r = [manager usedRectForTextContainer:container];
+	CGRect r2 = [self textRectForBounds:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height * 2) limitedToNumberOfLines:0];
 	if (i != NSNotFound) {
+		NSLog(@"%@", [textStorage.string substringFromIndex:i]);
 		NSURL* url = [self.attributedText attributesAtIndex:i effectiveRange:NULL][@"NSURL"];
 		return url;
 	}

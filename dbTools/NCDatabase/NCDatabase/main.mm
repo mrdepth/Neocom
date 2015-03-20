@@ -9,6 +9,7 @@
 #import "EVEDBAPI.h"
 #import "NCDatabase.h"
 #import "NSString+HTML.h"
+#import "NSMutableString+HTML.h"
 #include "eufe.h"
 #import <objc/runtime.h>
 
@@ -75,12 +76,13 @@ typedef enum : uint32_t {
 	return nil;
 }
 
-+ (instancetype) colorWithUInteger:(NSUInteger) rgba {
++ (instancetype) colorWithUInteger:(NSUInteger) argb {
 	float components[4];
-	for (int i = 3; i >= 0; i--) {
-		components[i] = (rgba & 0xff) / 255.0;
-		rgba >>= 8;
+	for (int i = 3; i > 0; i--) {
+		components[i - 1] = (argb & 0xff) / 255.0;
+		argb >>= 8;
 	}
+	components[3] = (argb & 0xff) / 255.0;
 	return [NSColor colorWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
 }
 
@@ -181,64 +183,76 @@ static NSManagedObjectContext *managedObjectContext()
 }
 
 static NSAttributedString* attributedStringFromHTMLString(NSString* html) {
-	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(a[^>]*href|url)=[\"']?(.*?)[\"']?\\s*?>([^<]*)<\\/(a|url)>"
+	NSMutableString* mHtml = [html mutableCopy];
+	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
+	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, mHtml.length)];
+	
+	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:mHtml attributes:nil];
+
+	
+	NSRegularExpression* expression = [NSRegularExpression regularExpressionWithPattern:@"<(a[^>]*href|url)=[\"']?(.*?)[\"']?>(.*?)<\\/(a|url)>"
 																				   options:NSRegularExpressionCaseInsensitive
 																				  error:nil];
+	
 	NSTextCheckingResult* result;
-	
-	html = [html stringByUnescapingHTML];
-	NSMutableString* mHtml = [html mutableCopy];
-	[mHtml replaceOccurrencesOfString:@"<br>" withString:@"\n" options:0 range:NSMakeRange(0, mHtml.length)];
-	[mHtml replaceOccurrencesOfString:@"<p>" withString:@"\n" options:0 range:NSMakeRange(0, mHtml.length)];
-
-	NSMutableAttributedString* s = [[NSMutableAttributedString alloc] initWithString:mHtml attributes:nil];
-	
 	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
-		[s replaceCharactersInRange:[result rangeAtIndex:0]
-			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:3]]
-																	attributes:@{@"NSURL":[NSURL URLWithString:[s.string substringWithRange:[result rangeAtIndex:2]]]}]];
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:3]] mutableCopy];
+		[replace addAttribute:@"NSURL" value:[NSURL URLWithString:[[s.string substringWithRange:[result rangeAtIndex:2]] stringByReplacingOccurrencesOfString:@" " withString:@""]] range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
 	}
 	
-	expression = [NSRegularExpression regularExpressionWithPattern:@"<b[^>]*>([^<]*)</b>"
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<b[^>]*>(.*?)</b>"
 														   options:NSRegularExpressionCaseInsensitive
 															 error:nil];
 	
 	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
-		[s replaceCharactersInRange:[result rangeAtIndex:0]
-			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
-																	attributes:@{@"UIFontDescriptorTraitsAttribute":@(UIFontDescriptorTraitBold)}]];
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:@"UIFontDescriptorSymbolicTraits" value:@(UIFontDescriptorTraitBold) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
 	}
-	expression = [NSRegularExpression regularExpressionWithPattern:@"<i[^>]*>([^<]*)</i>"
+	
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<i[^>]*>(.*?)</i>"
 														   options:NSRegularExpressionCaseInsensitive
 															 error:nil];
 	
 	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
-		[s replaceCharactersInRange:[result rangeAtIndex:0]
-			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
-																	attributes:@{@"UIFontDescriptorTraitsAttribute":@(UIFontDescriptorTraitItalic)}]];
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:@"UIFontDescriptorSymbolicTraits" value:@(UIFontDescriptorTraitItalic) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
 	}
 
-	expression = [NSRegularExpression regularExpressionWithPattern:@"<u[^>]*>([^<]*)</u>"
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<u[^>]*>(.*?)</u>"
 														   options:NSRegularExpressionCaseInsensitive
 															 error:nil];
 	
 	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
-		[s replaceCharactersInRange:[result rangeAtIndex:0]
-			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:1]]
-																	attributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle)}]];
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:1]] mutableCopy];
+		[replace addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
 	}
 	
-	expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>([^<]*)</(color|font)>"
+	expression = [NSRegularExpression regularExpressionWithPattern:@"<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>(.*?)</(color|font)>"
 														   options:NSRegularExpressionCaseInsensitive
 															 error:nil];
 	
 	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil) {
 		NSString* colorString = [s.string substringWithRange:[result rangeAtIndex:2]];
 		NSColor* color = [NSColor colorWithString:colorString];
-		[s replaceCharactersInRange:[result rangeAtIndex:0]
-			   withAttributedString:[[NSAttributedString alloc] initWithString:[s.string substringWithRange:[result rangeAtIndex:3]]
-																	attributes:color ? @{NSForegroundColorAttributeName:color} : nil]];
+		
+		NSMutableAttributedString* replace = [[s attributedSubstringFromRange:[result rangeAtIndex:3]] mutableCopy];
+		if (color)
+			[replace addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, replace.length)];
+		[s replaceCharactersInRange:[result rangeAtIndex:0] withAttributedString:replace];
 	}
+
+	expression = [NSRegularExpression regularExpressionWithPattern:@"</?.*?>"
+														   options:NSRegularExpressionCaseInsensitive
+															 error:nil];
+	
+	while ((result = [expression firstMatchInString:s.string options:0 range:NSMakeRange(0, s.length)]) != nil)
+		[s replaceCharactersInRange:result.range withAttributedString:[[NSAttributedString alloc] initWithString:@"" attributes:nil]];
+	
+	[s.mutableString unescapeHTML];
 
 	return s;
 }
@@ -441,18 +455,20 @@ NSDictionary* convertInvTypes(NSManagedObjectContext* context, EVEDBDatabase* da
 		
 		dictionary[@(eveType.typeID)] = type;
 		
-		NSString* s = [[eveType.description stringByRemovingHTMLTags] stringByReplacingHTMLEscapes];
-		NSMutableString* description = [NSMutableString stringWithString:s ? s : @""];
-		[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
-		[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
-		[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
+		NSMutableString* description = [eveType.description mutableCopy];
+		//[description replaceOccurrencesOfString:@"\\r" withString:@"" options:0 range:NSMakeRange(0, description.length)];
+		//[description replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:NSMakeRange(0, description.length)];
+		//[description replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:NSMakeRange(0, description.length)];
 		
 		if (eveType.traitsString.length > 0) {
-			[description appendFormat:@"\n%@", eveType.traitsString];
+			if (description)
+				[description appendFormat:@"\n%@", eveType.traitsString];
+			else
+				description = [eveType.traitsString mutableCopy];
 		}
 		
 		type.typeDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
-		type.typeDescription.text = description;
+		type.typeDescription.text = attributedStringFromHTMLString(description);
 	}];
 	
 	return dictionary;
@@ -635,7 +651,7 @@ NSDictionary* convertCertCertificates(NSManagedObjectContext* context, EVEDBData
 		dictionary[@(certificate.certificateID)] = certificate;
 		
 		certificate.certificateDescription = [NSEntityDescription insertNewObjectForEntityForName:@"TxtDescription" inManagedObjectContext:context];
-		certificate.certificateDescription.text = eveCertificate.description;
+		certificate.certificateDescription.text = attributedStringFromHTMLString(eveCertificate.description);
 	}];
 	
 	return dictionary;
@@ -1405,19 +1421,10 @@ int main(int argc, const char * argv[])
 
 	@autoreleasepool {
 		NSManagedObjectContext *context = managedObjectContext();
-/*		NSLog(@"%@", attributedStringFromHTMLString(@"bonus to <b><a href=showinfo:3422>Remote Shield Booster</a></b> transfer range\nreduction in <a href=showinfo:3303>Small Energy Turret</a> activation cost"));*/
-		NSLog(@"%@", [[NSAttributedString alloc] initWithData:[@"\\u6cf0\\u5766\\u4f1a\\u6218\\u9057\\u5740" dataUsingEncoding:NSUTF8StringEncoding]
-													  options:@{ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType,
-																 NSCharacterEncodingDocumentAttribute :@(NSUTF8StringEncoding) }
-										   documentAttributes:nil
-														error:nil]);
-
 		EVEDBDatabase* database = [[EVEDBDatabase alloc] initWithDatabasePath:@"./evedb.sqlite"];
 		[EVEDBDatabase setSharedDatabase:database];
 		
 		@autoreleasepool {
-			NSLog(@"%@", [NSColor colorWithCatalogName:@"Web" colorName:@"Yellow"]);
-			
 			[database execSQLRequest:@"select version, build from version"
 						 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
 							 const char* version = (const char*) sqlite3_column_text(stmt, 0);

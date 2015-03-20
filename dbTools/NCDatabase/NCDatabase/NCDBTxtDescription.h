@@ -13,7 +13,7 @@
 
 @interface NCDBTxtDescription : NSManagedObject
 
-@property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSAttributedString* text;
 @property (nonatomic, retain) NCDBCertCertificate *certificate;
 @property (nonatomic, retain) NCDBInvType *type;
 

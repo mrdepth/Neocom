@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -455,14 +455,14 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0R3-YQ-xcp">
                                             <rect key="frame" x="0.0" y="0.0" width="540" height="51"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQi-YB-FAF">
-                                                    <rect key="frame" x="15" y="2" width="33" height="17"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xQi-YB-FAF">
+                                                    <rect key="frame" x="15" y="2" width="422" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jU0-vi-fh8">
-                                                    <rect key="frame" x="15" y="19" width="74" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jU0-vi-fh8">
+                                                    <rect key="frame" x="15" y="19" width="464" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -497,6 +497,7 @@
                                                 <constraint firstItem="uQS-po-49k" firstAttribute="trailing" secondItem="tM3-lM-Nv1" secondAttribute="trailing" id="15D-Qf-wy9"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="bottom" secondItem="GyG-v1-kV2" secondAttribute="bottom" id="KCZ-3r-egf"/>
                                                 <constraint firstAttribute="bottom" secondItem="rFc-Ja-YFg" secondAttribute="bottom" constant="2" id="M4V-i6-Xbc"/>
+                                                <constraint firstItem="GyG-v1-kV2" firstAttribute="leading" secondItem="xQi-YB-FAF" secondAttribute="trailing" constant="8" id="OYF-TU-9TT"/>
                                                 <constraint firstAttribute="trailing" secondItem="uQS-po-49k" secondAttribute="trailing" constant="15" id="Stv-Lt-Aua"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="jU0-vi-fh8" secondAttribute="leading" id="UKA-i8-Gzb"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="top" secondItem="0R3-YQ-xcp" secondAttribute="top" constant="2" id="W7u-l0-hES"/>
@@ -504,6 +505,7 @@
                                                 <constraint firstItem="rFc-Ja-YFg" firstAttribute="top" secondItem="jU0-vi-fh8" secondAttribute="bottom" id="ZA4-Vi-Lse"/>
                                                 <constraint firstItem="uQS-po-49k" firstAttribute="trailing" secondItem="rFc-Ja-YFg" secondAttribute="trailing" id="i0x-8F-cnT"/>
                                                 <constraint firstItem="uQS-po-49k" firstAttribute="leading" secondItem="GyG-v1-kV2" secondAttribute="trailing" constant="8" id="iDd-5G-Ui5"/>
+                                                <constraint firstItem="tM3-lM-Nv1" firstAttribute="leading" secondItem="jU0-vi-fh8" secondAttribute="trailing" constant="8" id="iYH-hP-ato"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="bottom" secondItem="uQS-po-49k" secondAttribute="bottom" id="jdc-Iq-xcF"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="rFc-Ja-YFg" secondAttribute="leading" id="ni4-ds-TcC"/>
                                                 <constraint firstItem="xQi-YB-FAF" firstAttribute="leading" secondItem="0R3-YQ-xcp" secondAttribute="leading" constant="15" id="sXu-0v-rWi"/>
@@ -589,7 +591,7 @@
             <objects>
                 <tableViewController id="gi5-8P-Iij" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="RVN-tP-VUX" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -692,7 +694,7 @@
                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="438" translatesAutoresizingMaskIntoConstraints="NO" id="6ko-Sw-ekl" customClass="NCLabel">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="438" translatesAutoresizingMaskIntoConstraints="NO" id="6ko-Sw-ekl">
                                     <rect key="frame" x="87" y="59" width="438" height="20"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1036,7 +1038,7 @@
             <objects>
                 <tableViewController id="UGF-FU-pJc" userLabel="RequiredFor" customClass="NCDatabaseTypeRequirementsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="yRf-Bj-xIK" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1074,14 +1076,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="ojV-wi-W6u"/>
         <segue reference="qsv-5o-k5F"/>
-        <segue reference="bSQ-JI-nGb"/>
         <segue reference="Zf5-j1-cwh"/>
+        <segue reference="bSQ-JI-nGb"/>
         <segue reference="D4Y-OJ-c0f"/>
-        <segue reference="i3g-rc-KCy"/>
+        <segue reference="bTb-0b-9f9"/>
+        <segue reference="9zE-3c-7d8"/>
         <segue reference="20I-Ju-Smn"/>
         <segue reference="01H-Qm-y5M"/>
-        <segue reference="bTb-0b-9f9"/>
-        <segue reference="ojV-wi-W6u"/>
     </inferredMetricsTieBreakers>
 </document>

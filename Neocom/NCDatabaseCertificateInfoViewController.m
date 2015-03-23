@@ -201,7 +201,8 @@
 	self.titleLabel.text = self.certificate.certificateName;
 	NCDBEveIcon* icon = objc_getAssociatedObject(self.certificate, @"icon");
 	self.imageView.image = icon ? icon.image.image : [[[NCDBEveIcon eveIconWithIconFile:@"79_01"] image] image];
-	self.descriptionLabel.text = self.certificate.certificateDescription.text;
+	//self.descriptionLabel.text = self.certificate.certificateDescription.text;
+	self.descriptionLabel.attributedText = self.certificate.certificateDescription.text;
 
 	self.needsLayout = YES;
 	[self.view setNeedsLayout];

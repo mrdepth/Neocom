@@ -475,6 +475,10 @@
 		12E86946195EC7E1004B66D0 /* NSString+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 129421A8187FDF7200977CB8 /* NSString+Neocom.m */; };
 		12EC0AC118C0B18D0010169C /* KillBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EC0AC018C0B18D0010169C /* KillBoard.storyboard */; };
 		12EC0AC618C0BAA20010169C /* NCNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */; };
+		12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */; };
+		12ED82BD1AC04B0F00C593C4 /* EVEPlanetaryPins.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */; };
+		12ED82C01AC04B3600C593C4 /* EVEPlanetaryRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */; };
+		12ED82C31AC04B4C00C593C4 /* EVEPlanetaryLinks.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
@@ -1497,6 +1501,14 @@
 		12EC0AC018C0B18D0010169C /* KillBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillBoard.storyboard; sourceTree = "<group>"; };
 		12EC0AC418C0BAA20010169C /* NCNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCNotificationsManager.h; sourceTree = "<group>"; };
 		12EC0AC518C0BAA20010169C /* NCNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCNotificationsManager.m; sourceTree = "<group>"; };
+		12ED82B51AC04AF900C593C4 /* EVEPlanetaryColonies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryColonies.h; sourceTree = "<group>"; };
+		12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryColonies.m; sourceTree = "<group>"; };
+		12ED82BB1AC04B0F00C593C4 /* EVEPlanetaryPins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryPins.h; sourceTree = "<group>"; };
+		12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryPins.m; sourceTree = "<group>"; };
+		12ED82BE1AC04B3600C593C4 /* EVEPlanetaryRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryRoutes.h; sourceTree = "<group>"; };
+		12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryRoutes.m; sourceTree = "<group>"; };
+		12ED82C11AC04B4C00C593C4 /* EVEPlanetaryLinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryLinks.h; sourceTree = "<group>"; };
+		12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryLinks.m; sourceTree = "<group>"; };
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
@@ -2758,6 +2770,14 @@
 				126A0D71185F3B9200A8E8A3 /* EVEStandings.m */,
 				126A0D72185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.h */,
 				126A0D73185F3B9200A8E8A3 /* EVEUpcomingCalendarEvents.m */,
+				12ED82B51AC04AF900C593C4 /* EVEPlanetaryColonies.h */,
+				12ED82B61AC04AF900C593C4 /* EVEPlanetaryColonies.m */,
+				12ED82BB1AC04B0F00C593C4 /* EVEPlanetaryPins.h */,
+				12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */,
+				12ED82BE1AC04B3600C593C4 /* EVEPlanetaryRoutes.h */,
+				12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */,
+				12ED82C11AC04B4C00C593C4 /* EVEPlanetaryLinks.h */,
+				12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */,
 			);
 			path = Character;
 			sourceTree = "<group>";
@@ -5164,6 +5184,7 @@
 				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */,
+				12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */,
 				12A7DBAF18B3739B00343D25 /* NCWalletTransactionsCell.m in Sources */,
 				126A0E57185F3B9300A8E8A3 /* EVEOutpostList.m in Sources */,
 				129D261A187E923300E2062C /* LUITextField.m in Sources */,
@@ -5180,6 +5201,7 @@
 				12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */,
 				126A0E06185F3B9300A8E8A3 /* EVECentralQuickLook.m in Sources */,
 				129D2623187E923300E2062C /* NSDate+DaysAgo.m in Sources */,
+				12ED82C01AC04B3600C593C4 /* EVEPlanetaryRoutes.m in Sources */,
 				120C334C19CAB0A80093EECA /* NCDBEufeItemGroup.m in Sources */,
 				126A0E4A185F3B9300A8E8A3 /* EVEStandings.m in Sources */,
 				126A0E59185F3B9300A8E8A3 /* EVEShareholders.m in Sources */,
@@ -5200,9 +5222,11 @@
 				126A0E01185F3B9300A8E8A3 /* BCEveLoadoutsList.m in Sources */,
 				120C337C19CAB0AA0093EECA /* NCDBNpcGroup.m in Sources */,
 				126A0E7B185F3B9300A8E8A3 /* RSSItem.m in Sources */,
+				12ED82C31AC04B4C00C593C4 /* EVEPlanetaryLinks.m in Sources */,
 				120C336D19CAB0AA0093EECA /* NCDBMapDenormalize.m in Sources */,
 				12F8E1F818E9A53700CEA658 /* NCSplitViewController.m in Sources */,
 				122947EB18EAA51D0093FAB8 /* NCSkillsContainerViewController.m in Sources */,
+				12ED82BD1AC04B0F00C593C4 /* EVEPlanetaryPins.m in Sources */,
 				1235E3F418E562E300BC2607 /* NCNavigationController.m in Sources */,
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,

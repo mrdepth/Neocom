@@ -213,7 +213,7 @@
                                         <constraint firstAttribute="width" constant="64" id="er8-6h-wKM"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="EvT-51-Y7k" customClass="NCLabel">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="EvT-51-Y7k">
                                     <rect key="frame" x="87" y="59" width="218" height="20"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -364,14 +364,14 @@
                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yRu-6v-3hr">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
-                                                    <rect key="frame" x="15" y="2" width="33" height="17"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ipV-W6-Vem">
+                                                    <rect key="frame" x="15" y="2" width="202" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-K5-hJE">
-                                                    <rect key="frame" x="15" y="19" width="74" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Solar System" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-K5-hJE">
+                                                    <rect key="frame" x="15" y="19" width="244" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -413,10 +413,12 @@
                                                 <constraint firstItem="ipV-W6-Vem" firstAttribute="bottom" secondItem="ekU-dw-Sqg" secondAttribute="bottom" id="Wl4-NC-v66"/>
                                                 <constraint firstItem="gfs-K5-hJE" firstAttribute="top" secondItem="ipV-W6-Vem" secondAttribute="bottom" id="XoN-Ao-gkY"/>
                                                 <constraint firstItem="ipV-W6-Vem" firstAttribute="leading" secondItem="yRu-6v-3hr" secondAttribute="leading" constant="15" id="cvk-Ut-Ui4"/>
+                                                <constraint firstItem="QHt-kE-cLL" firstAttribute="leading" secondItem="ipV-W6-Vem" secondAttribute="trailing" constant="8" id="dDn-FC-AWK"/>
                                                 <constraint firstAttribute="trailing" secondItem="ekU-dw-Sqg" secondAttribute="trailing" constant="15" id="dca-Bj-FAY"/>
                                                 <constraint firstItem="ipV-W6-Vem" firstAttribute="leading" secondItem="gfs-K5-hJE" secondAttribute="leading" id="huh-Fa-2Y3"/>
                                                 <constraint firstItem="d0L-9z-KIz" firstAttribute="top" secondItem="gfs-K5-hJE" secondAttribute="bottom" id="lNR-hV-Mdr"/>
                                                 <constraint firstItem="ekU-dw-Sqg" firstAttribute="leading" secondItem="QHt-kE-cLL" secondAttribute="trailing" constant="8" id="mFX-yY-W7v"/>
+                                                <constraint firstItem="18a-Z1-FYP" firstAttribute="leading" secondItem="gfs-K5-hJE" secondAttribute="trailing" constant="8" id="twF-3R-gmo"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -586,7 +588,7 @@
                                         <constraint firstAttribute="height" constant="64" id="Plh-jk-tGW"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="6z7-Sz-5Cd" customClass="NCLabel">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dominix" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="6z7-Sz-5Cd">
                                     <rect key="frame" x="87" y="59" width="218" height="20"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -858,7 +860,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="qyD-gc-O13"/>
-        <segue reference="XrT-kA-Ioo"/>
+        <segue reference="He4-ED-1Vg"/>
         <segue reference="LHH-Wy-jrm"/>
         <segue reference="edv-w8-2To"/>
     </inferredMetricsTieBreakers>

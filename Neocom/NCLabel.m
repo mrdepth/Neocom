@@ -9,7 +9,14 @@
 #import "NCLabel.h"
 
 @interface NCLabel()<UIGestureRecognizerDelegate>
+@property (nonatomic, strong) UIFont* defualtFont;
+@property (nonatomic, strong) UIColor* defualtTextColor;
 @property (nonatomic, strong) UITapGestureRecognizer* recognizer;
+
+@property (nonatomic, strong) NSTextStorage* textStorage;
+@property (nonatomic, strong) NSTextContainer* textContainer;
+@property (nonatomic, strong) NSLayoutManager* layoutManager;
+
 - (void) onTap:(UITapGestureRecognizer*) recognizer;
 - (NSURL*) urlAtPoint:(CGPoint) point;
 @end
@@ -22,17 +29,21 @@
 	[self addGestureRecognizer:self.recognizer];
 	self.tintColor = [UIColor whiteColor];
 	self.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+	
+	self.defualtFont = self.font;
+	self.defualtTextColor = self.textColor;
 }
 
 - (void) setAttributedText:(NSAttributedString *)attributedText {
 	NSMutableAttributedString* s = [attributedText mutableCopy];
 	[attributedText enumerateAttributesInRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
 		__block BOOL hasFont = NO;
+		__block BOOL hasColor = NO;
 		[attrs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 			if ([key isEqualToString:@"UIFontDescriptorSymbolicTraits"]) {
-				UIFontDescriptor* fontDescriptor = [self.font.fontDescriptor fontDescriptorWithSymbolicTraits:[obj unsignedIntValue]];
+				UIFontDescriptor* fontDescriptor = [self.defualtFont.fontDescriptor fontDescriptorWithSymbolicTraits:[obj unsignedIntValue]];
 				if (fontDescriptor) {
-					UIFont* font = [UIFont fontWithDescriptor:fontDescriptor size:self.font.pointSize];
+					UIFont* font = [UIFont fontWithDescriptor:fontDescriptor size:self.defualtFont.pointSize];
 					if (font) {
 						[s addAttribute:NSFontAttributeName value:font range:range];
 						hasFont = YES;
@@ -40,46 +51,51 @@
 				}
 			}
 			else if ([key isEqualToString:@"NSURL"]) {
-				UIFontDescriptor* fontDescriptor = [self.font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-				UIFont* font = fontDescriptor ? [UIFont fontWithDescriptor:fontDescriptor size:self.font.pointSize] : self.font;
+				UIFontDescriptor* fontDescriptor = [self.defualtFont.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+				UIFont* font = fontDescriptor ? [UIFont fontWithDescriptor:fontDescriptor size:self.defualtFont.pointSize] : self.defualtFont;
 				[s addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:font} range:range];
 				hasFont = YES;
+				hasColor = YES;
 			}
+			else if ([key isEqualToString:NSForegroundColorAttributeName])
+				hasColor = YES;
 		}];
 		if (!hasFont) {
 			UIFont* font = attrs[NSFontAttributeName];
 			if (!font)
-				[s addAttribute:NSFontAttributeName value:self.font range:range];
+				[s addAttribute:NSFontAttributeName value:self.defualtFont range:range];
 		}
+		if (!hasColor)
+			[s addAttribute:NSForegroundColorAttributeName value:self.defualtTextColor range:range];
 	}];
 	
 	NSMutableParagraphStyle* paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-	paragraph.lineBreakMode = self.lineBreakMode;
-//	[s addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, s.string.length)];
+	paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+	[s addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, s.string.length)];
 //	[s addAttribute:NSKernAttributeName value:[NSNull null] range:NSMakeRange(0, s.string.length)];
 	[super setAttributedText:s];
+	
+	if (s) {
+		self.textStorage = [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
+		self.textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(self.bounds.size.width, 1024)];
+		self.layoutManager = [[NSLayoutManager alloc] init];
+		self.textContainer.maximumNumberOfLines = self.numberOfLines;
+		[self.textStorage addLayoutManager:self.layoutManager];
+		[self.layoutManager setTextContainer:self.textContainer forGlyphRange:NSMakeRange(0, self.layoutManager.numberOfGlyphs)];
+		[self.layoutManager addTextContainer:self.textContainer];
+		self.layoutManager.usesFontLeading = NO;
+		[self invalidateIntrinsicContentSize];
+	}
+	else {
+		self.textStorage = nil;
+		self.textContainer = nil;
+		self.layoutManager = nil;
+	}
 }
 
 - (void) drawRect:(CGRect)rect {
 //	[super drawRect:rect];
-	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
-	CGSize size = self.bounds.size;
-	size.height *= 2;
-	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:size];
-	NSTextStorage* textStorage= [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
-	[manager addTextContainer:container];
-	[textStorage addLayoutManager:manager];
-	
-	container.maximumNumberOfLines = self.numberOfLines;
-	
-	
-	[textStorage addLayoutManager:manager];
-	[manager addTextContainer:container];
-	
-	//rect.size = [manager usedRectForTextContainer:container].size;
-	
-	//[textStorage drawWithRect:rect options:0 context:nil];
-	[textStorage drawInRect:rect];
+	[self.layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, self.layoutManager.numberOfGlyphs) atPoint:rect.origin];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -103,6 +119,11 @@
 		return NO;
 }
 
+- (CGSize) intrinsicContentSize {
+	[self.layoutManager ensureLayoutForTextContainer:self.textContainer];
+	return [self.layoutManager usedRectForTextContainer:self.textContainer].size;
+}
+
 #pragma mark - Private
 
 - (void) onTap:(UITapGestureRecognizer*) recognizer {
@@ -112,30 +133,8 @@
 }
 
 - (NSURL*) urlAtPoint:(CGPoint) point {
-	NSLayoutManager* manager = [[NSLayoutManager alloc] init];
-	CGSize size = self.bounds.size;
-	size.height *= 2;
-	NSTextContainer* container = [[NSTextContainer alloc] initWithSize:size];
-	NSTextStorage* textStorage= [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
-	[manager addTextContainer:container];
-	[textStorage addLayoutManager:manager];
-
-	container.maximumNumberOfLines = self.numberOfLines;
-	
-	
-//	[textStorage addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, textStorage.string.length)];
-//	[textStorage addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, textStorage.string.length)];
-	
-	
-	
-	CGFloat f = 0;
-	//NSUInteger i = [manager glyphIndexForPoint:point inTextContainer:container fractionOfDistanceThroughGlyph:&f];
-	NSUInteger i = [manager characterIndexForPoint:point inTextContainer:container fractionOfDistanceBetweenInsertionPoints:&f];
-	NSLog(@"%f", f);
-	CGRect r = [manager usedRectForTextContainer:container];
-	CGRect r2 = [self textRectForBounds:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height * 2) limitedToNumberOfLines:0];
+	NSUInteger i = [self.layoutManager characterIndexForPoint:point inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
 	if (i != NSNotFound) {
-		NSLog(@"%@", [textStorage.string substringFromIndex:i]);
 		NSURL* url = [self.attributedText attributesAtIndex:i effectiveRange:NULL][@"NSURL"];
 		return url;
 	}

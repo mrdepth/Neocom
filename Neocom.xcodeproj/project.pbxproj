@@ -479,6 +479,7 @@
 		12ED82BD1AC04B0F00C593C4 /* EVEPlanetaryPins.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BC1AC04B0F00C593C4 /* EVEPlanetaryPins.m */; };
 		12ED82C01AC04B3600C593C4 /* EVEPlanetaryRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */; };
 		12ED82C31AC04B4C00C593C4 /* EVEPlanetaryLinks.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */; };
+		12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */; };
 		12F407551A8D181D0031FB35 /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */; };
 		12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */; };
 		12F7108918B63EA100D9C08A /* NCContractsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F7108818B63EA100D9C08A /* NCContractsDetailsViewController.m */; };
@@ -1509,6 +1510,8 @@
 		12ED82BF1AC04B3600C593C4 /* EVEPlanetaryRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryRoutes.m; sourceTree = "<group>"; };
 		12ED82C11AC04B4C00C593C4 /* EVEPlanetaryLinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EVEPlanetaryLinks.h; sourceTree = "<group>"; };
 		12ED82C21AC04B4C00C593C4 /* EVEPlanetaryLinks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EVEPlanetaryLinks.m; sourceTree = "<group>"; };
+		12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPlanetaryViewController.h; sourceTree = "<group>"; };
+		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPlanetaryViewController.m; sourceTree = "<group>"; };
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
@@ -2676,12 +2679,12 @@
 		126A0D32185F3B9200A8E8A3 /* EVEOnlineAPI */ = {
 			isa = PBXGroup;
 			children = (
+				126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */,
 				126A0D33185F3B9200A8E8A3 /* Account */,
 				126A0D3A185F3B9200A8E8A3 /* API */,
 				126A0D3D185F3B9200A8E8A3 /* Character */,
 				126A0D74185F3B9200A8E8A3 /* Corporation */,
 				126A0D97185F3B9200A8E8A3 /* EVE */,
-				126A0DAE185F3B9200A8E8A3 /* EVEOnlineAPI.h */,
 				126A0DAF185F3B9200A8E8A3 /* Map */,
 				126A0DB8185F3B9200A8E8A3 /* Misc */,
 				126A0DBB185F3B9200A8E8A3 /* Server */,
@@ -3983,6 +3986,15 @@
 			name = NCNotificationsManager;
 			sourceTree = "<group>";
 		};
+		12ED82D41AC137FB00C593C4 /* NCPlanetaryViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12ED82D81AC13CD500C593C4 /* NCPlanetaryViewController.h */,
+				12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */,
+			);
+			name = NCPlanetaryViewController;
+			sourceTree = "<group>";
+		};
 		12F407561A8D24E40031FB35 /* NCDefaultTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -4232,6 +4244,7 @@
 				12F7108518B63E8300D9C08A /* NCContractsDetailsViewController */,
 				12640AF618B72E01005C311D /* NCStarbasesViewController */,
 				12640B0618B74C9F005C311D /* NCStarbasesDetailsViewController */,
+				12ED82D41AC137FB00C593C4 /* NCPlanetaryViewController */,
 			);
 			name = Market;
 			sourceTree = "<group>";
@@ -5302,6 +5315,7 @@
 				122C98B318B6026100386EDE /* NCIndustryJobsDetailsViewController.m in Sources */,
 				129D262E187E923300E2062C /* UIAlertView+Error.m in Sources */,
 				126A0E51185F3B9300A8E8A3 /* EVECorpWalletJournal.m in Sources */,
+				12ED82DA1AC13CD500C593C4 /* NCPlanetaryViewController.m in Sources */,
 				126A0E54185F3B9300A8E8A3 /* EVEMemberSecurity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

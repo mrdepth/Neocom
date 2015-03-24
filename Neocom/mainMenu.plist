@@ -233,6 +233,18 @@
 			<key>corpAccessMask</key>
 			<integer>655360</integer>
 		</dict>
+		<dict>
+			<key>segueIdentifier</key>
+			<string>NCPlanetaryViewController</string>
+			<key>title</key>
+			<string>Planetary</string>
+			<key>image</key>
+			<string>station.png</string>
+			<key>charAccessMask</key>
+			<integer>2</integer>
+			<key>corpAccessMask</key>
+			<integer>-1</integer>
+		</dict>
 	</array>
 	<array>
 		<dict>

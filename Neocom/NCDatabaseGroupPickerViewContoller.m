@@ -79,7 +79,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCDBInvGroup* row = self.rows[indexPath.row];
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.groupName;
 	
 	cell.iconView.image = row.icon ? row.icon.image.image : [[[NCDBEveIcon defaultGroupIcon] image] image];

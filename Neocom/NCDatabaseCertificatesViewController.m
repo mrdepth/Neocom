@@ -103,7 +103,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	id row = self.rows[indexPath.row];
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	if ([row isKindOfClass:[NCDBCertCertificate class]]) {
 		NCDBCertCertificate* certificate = row;
 		cell.titleLabel.text = certificate.certificateName;

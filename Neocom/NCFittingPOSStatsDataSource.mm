@@ -276,7 +276,7 @@
 		}
 	}
 	else if (indexPath.section == 3) {
-		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.accessoryView = nil;
 		
 		if (indexPath.row == 0) {

@@ -22,6 +22,13 @@
 @end
 
 
+@implementation NCPlanetaryViewControllerDataColony
+@end
+
+@implementation NCPlanetaryViewControllerData
+@end
+
+
 @interface NCPlanetaryViewController ()
 @property (nonatomic, strong) NSDateFormatter* dateFormatter;
 

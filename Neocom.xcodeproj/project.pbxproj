@@ -1885,7 +1885,7 @@
 				126ED31A188128E10009FA39 /* Character */,
 				128BCE6A18856F67000E1922 /* Database */,
 				849B9FDE1896D2F900D4DD2B /* Fitting */,
-				843C2EFC18AD34CE00221721 /* Market */,
+				843C2EFC18AD34CE00221721 /* Business */,
 				12640B0A18B75EBF005C311D /* KillBoard */,
 				123A97F918C71452001045F5 /* Help */,
 				120968611845F0CB00921A37 /* NCAppDelegate.h */,
@@ -4228,7 +4228,7 @@
 			name = NCFittingRequiredSkillsViewController;
 			sourceTree = "<group>";
 		};
-		843C2EFC18AD34CE00221721 /* Market */ = {
+		843C2EFC18AD34CE00221721 /* Business */ = {
 			isa = PBXGroup;
 			children = (
 				120D5B3E18B1FE40007ED9B4 /* NCLocationsManager */,
@@ -4246,7 +4246,7 @@
 				12640B0618B74C9F005C311D /* NCStarbasesDetailsViewController */,
 				12ED82D41AC137FB00C593C4 /* NCPlanetaryViewController */,
 			);
-			name = Market;
+			name = Business;
 			sourceTree = "<group>";
 		};
 		843C2EFF18AD41B300221721 /* NCAssetsViewController */ = {

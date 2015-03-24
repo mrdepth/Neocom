@@ -193,7 +193,7 @@
 	if (self.segmentedControl.selectedSegmentIndex == 0) {
 		NCKillMailDetailsViewControllerSection* section = self.items[indexPath.section];
 		NCKillMailItem* row = section.rows[indexPath.row];
-		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.object = row.type;
 		cell.iconView.image = row.type.icon ? row.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.titleLabel.text = row.type.typeName;

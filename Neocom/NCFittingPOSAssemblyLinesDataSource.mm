@@ -141,7 +141,7 @@
 	return @"Cell";
 }
 
-- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+- (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingPOSAssemblyLinesDataSourceRow* row = self.sections[indexPath.section][indexPath.row];
 	cell.titleLabel.text = [NSString stringWithFormat:@"%@ (x%d)", row.assemblyLineType.assemblyLineTypeName, (int32_t) row.count];
 	cell.iconView.image = row.assemblyLineType.activity.icon ? row.assemblyLineType.activity.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];

@@ -74,7 +74,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-    NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+    NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	NSDictionary* feed = self.sections[indexPath.section][@"feeds"][indexPath.row];
 	cell.iconView.image = [UIImage imageNamed:@"rss.png"];
 	cell.titleLabel.text = feed[@"title"];

@@ -187,7 +187,7 @@
 	self.masteriesSections[indexPath.section][@"rows"][indexPath.row] :
 	self.requiredForSections[indexPath.section][@"rows"][indexPath.row];
 	
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.detail;
 	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultIcon.image.image;

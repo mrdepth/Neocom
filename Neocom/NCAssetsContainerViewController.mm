@@ -314,7 +314,7 @@
 	NCAssetsContainerViewControllerSection* section = sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	
 	cell.titleLabel.text = asset.title;

@@ -505,7 +505,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell* cell = (NCTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
 		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
@@ -516,7 +516,7 @@
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];
 	EVEAssetListItem* asset = section.assets[indexPath.row];
 	
-	NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	
 	cell.titleLabel.text = asset.title;

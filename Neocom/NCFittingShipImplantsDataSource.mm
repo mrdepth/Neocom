@@ -182,7 +182,7 @@
 	return @"Cell";
 }
 
-- (void) tableView:(UITableView *)tableView configureCell:(NCTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
+- (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	cell.subtitleLabel.text = nil;
 	cell.accessoryView = nil;
 	

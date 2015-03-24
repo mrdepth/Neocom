@@ -77,7 +77,7 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+	NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 	
 	if (indexPath.row == self.targets.count) {
 		cell.titleLabel.text = NSLocalizedString(@"Clear target", nil);

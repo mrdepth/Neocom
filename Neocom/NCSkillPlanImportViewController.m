@@ -109,7 +109,7 @@
 		return cell;
 	}
 	else {
-		NCTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+		NCDefaultTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 		NSString* file = self.rows[indexPath.row];
 		cell.object = file;
 		cell.titleLabel.text = file;

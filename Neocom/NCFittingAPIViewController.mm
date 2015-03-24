@@ -227,7 +227,7 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell *)tableViewCell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == 0) {
-		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		if (indexPath.row < 4) {
@@ -330,7 +330,7 @@
 		}
 	}
 	else {
-		NCTableViewCell *cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell *cell = (NCDefaultTableViewCell*) tableViewCell;
 		if (self.lookup.count > 0) {
 			cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ loadouts", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:self.lookup.count]];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

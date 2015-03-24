@@ -297,7 +297,7 @@
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCFittingShipModulesDataSourceSection* section = self.sections[indexPath.section];
 	if (indexPath.row >= section.modules.size()) {
-		NCTableViewCell* cell = (NCTableViewCell*) tableViewCell;
+		NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 		cell.subtitleLabel.text = nil;
 		cell.accessoryView = nil;
 		switch (section.slot) {

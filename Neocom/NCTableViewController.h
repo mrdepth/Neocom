@@ -40,4 +40,7 @@
 - (id) tableView:(UITableView *)tableView offscreenCellWithIdentifier:(NSString*) identifier;
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
 
+- (NSAttributedString *)tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section;
+
+
 @end

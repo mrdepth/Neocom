@@ -330,6 +330,10 @@
 	return nil;
 }
 
+- (NSAttributedString *)tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {
+	return nil;
+}
+
 
 #pragma mark - UISearchDisplayDelegate
 
@@ -373,25 +377,32 @@
 #pragma mark - UITableViewDelegate
 
 - (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	if ([self respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
-		NSString* title = [self tableView:tableView titleForHeaderInSection:section];
-		if (title) {
-			NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
-			if ([view isKindOfClass:[NCTableViewCollapsedHeaderView class]]) {
-				BOOL recognizerExists = NO;
-				for (UIGestureRecognizer* recognizer in view.gestureRecognizers) {
-					if ([recognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-						recognizerExists = YES;
-						break;
-					}
+	NSAttributedString* attributedTitle = [self tableView:tableView attributedTitleForHeaderInSection:section];
+	NSString* title = nil;
+	
+	if (!attributedTitle && [self respondsToSelector:@selector(tableView:titleForHeaderInSection:)])
+		title = [self tableView:tableView titleForHeaderInSection:section];
+	
+	if (title || attributedTitle) {
+		NCTableViewHeaderView* view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"NCTableViewHeaderView"];
+		if ([view isKindOfClass:[NCTableViewCollapsedHeaderView class]]) {
+			BOOL recognizerExists = NO;
+			for (UIGestureRecognizer* recognizer in view.gestureRecognizers) {
+				if ([recognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+					recognizerExists = YES;
+					break;
 				}
-				if (!recognizerExists)
-					[view addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)]];
 			}
-			return view;
+			if (!recognizerExists)
+				[view addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)]];
 		}
+		
+		if (attributedTitle)
+			view.textLabel.attributedText = attributedTitle;
 		else
-			return nil;
+			view.textLabel.text = title;
+		
+		return view;
 	}
 	else
 		return nil;

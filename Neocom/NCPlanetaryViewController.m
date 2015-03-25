@@ -7,6 +7,10 @@
 //
 
 #import "NCPlanetaryViewController.h"
+#import "UIColor+Neocom.h"
+#import "EVEPlanetaryPinsItem+Neocom.h"
+#import "NSString+Neocom.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCPlanetaryViewControllerDataColony : NSObject<NSCoding>
 @property (nonatomic, strong) EVEPlanetaryColoniesItem* colony;
@@ -23,9 +27,56 @@
 
 
 @implementation NCPlanetaryViewControllerDataColony
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+	if (self = [super init]) {
+		self.colony = [aDecoder decodeObjectForKey:@"colony"];
+		self.security = [aDecoder decodeFloatForKey:@"security"];
+		
+		self.extractors = [aDecoder decodeObjectForKey:@"extractors"];
+		self.currentTime = [aDecoder decodeObjectForKey:@"currentTime"];
+		self.cacheDate = [aDecoder decodeObjectForKey:@"cacheDate"];
+		
+		if (!self.extractors)
+			self.extractors = @[];
+	}
+	return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+	if (self.colony)
+		[aCoder encodeObject:self.colony forKey:@"colony"];
+	[aCoder encodeFloat:self.security forKey:@"security"];
+	
+	if (self.extractors)
+		[aCoder encodeObject:self.extractors forKey:@"extractors"];
+	
+	if (self.currentTime)
+		[aCoder encodeObject:self.currentTime forKey:@"currentTime"];
+	if (self.cacheDate)
+		[aCoder encodeObject:self.cacheDate forKey:@"cacheDate"];
+}
+
+
 @end
 
 @implementation NCPlanetaryViewControllerData
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+	if (self = [super init]) {
+		self.colonies = [aDecoder decodeObjectForKey:@"colonies"];
+		
+		if (!self.colonies)
+			self.colonies = @[];
+	}
+	return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+	if (self.colonies)
+		[aCoder encodeObject:self.colonies forKey:@"colonies"];
+}
+
 @end
 
 
@@ -51,7 +102,14 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"NCIndustryJobsDetailsViewController"]) {
+	if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		controller.type = [sender object];
 	}
 }
 
@@ -159,6 +217,43 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
+	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerDataColony* colony = data.colonies[indexPath.section];
+	EVEPlanetaryPinsItem* row = colony.extractors[indexPath.row];
+	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+	
+	cell.titleLabel.text = row.typeName;
+	cell.iconView.image = row.type.icon.image.image;
+	cell.object = row.type;
+	
+	NSDate* currentDate = [NSDate dateWithTimeInterval:[colony.currentTime timeIntervalSinceDate:colony.cacheDate] sinceDate:[NSDate date]];
+	
+
+	NSTimeInterval remainsTime = [row.expiryTime timeIntervalSinceDate:currentDate];
+	if (remainsTime <= 0 || !row.expiryTime) {
+		cell.subtitleLabel.text = NSLocalizedString(@"Expired", nil);
+		cell.subtitleLabel.textColor = [UIColor redColor];
+	}
+	else {
+		if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+			cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@ (%@)", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
+		else
+			cell.subtitleLabel.text = [NSString stringWithFormat:@"Expires: %@\n%@", [self.dateFormatter stringFromDate:row.expiryTime], [NSString stringWithTimeLeft:remainsTime]];
+
+		if (remainsTime < 3600 * 24)
+			cell.subtitleLabel.textColor = [UIColor yellowColor];
+		else
+			cell.subtitleLabel.textColor = [UIColor greenColor];
+	}
+
+}
+
+- (NSAttributedString*) tableView:(UITableView *)tableView attributedTitleForHeaderInSection:(NSInteger)section {
+	NCPlanetaryViewControllerData* data = self.data;
+	NCPlanetaryViewControllerDataColony* colony = data.colonies[section];
+	NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", colony.security] attributes:@{NSForegroundColorAttributeName:[UIColor colorWithSecurity:colony.security]}];
+	[title appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@ / %@", colony.colony.planetName, colony.colony.planetTypeName] attributes:nil]];
+	return title;
 }
 
 @end

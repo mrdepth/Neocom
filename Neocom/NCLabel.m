@@ -78,13 +78,14 @@
 	if (s) {
 		self.textStorage = [[NSTextStorage alloc] initWithAttributedString:self.attributedText];
 		self.textContainer = [[NSTextContainer alloc] initWithSize:CGSizeMake(self.bounds.size.width, 1024)];
+		self.textContainer.lineFragmentPadding = 0;
 		self.layoutManager = [[NSLayoutManager alloc] init];
 		self.textContainer.maximumNumberOfLines = self.numberOfLines;
 		[self.textStorage addLayoutManager:self.layoutManager];
 		[self.layoutManager setTextContainer:self.textContainer forGlyphRange:NSMakeRange(0, self.layoutManager.numberOfGlyphs)];
 		[self.layoutManager addTextContainer:self.textContainer];
-		self.layoutManager.usesFontLeading = NO;
-		[self invalidateIntrinsicContentSize];
+		//self.layoutManager.usesFontLeading = NO;
+		//[self invalidateIntrinsicContentSize];
 	}
 	else {
 		self.textStorage = nil;
@@ -93,10 +94,14 @@
 	}
 }
 
-- (void) drawRect:(CGRect)rect {
+//- (void) setText:(NSString *)text {
+//	[self setAttributedText:[[NSAttributedString alloc] initWithString:text attributes:nil]];
+//}
+
+///- (void) drawRect:(CGRect)rect {
 //	[super drawRect:rect];
-	[self.layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, self.layoutManager.numberOfGlyphs) atPoint:rect.origin];
-}
+//	[self.layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, self.layoutManager.numberOfGlyphs) atPoint:rect.origin];
+//}
 
 #pragma mark - UIGestureRecognizerDelegate
 
@@ -119,10 +124,10 @@
 		return NO;
 }
 
-- (CGSize) intrinsicContentSize {
-	[self.layoutManager ensureLayoutForTextContainer:self.textContainer];
-	return [self.layoutManager usedRectForTextContainer:self.textContainer].size;
-}
+//- (CGSize) intrinsicContentSize {
+//	[self.layoutManager ensureLayoutForTextContainer:self.textContainer];
+//	return [self.layoutManager usedRectForTextContainer:self.textContainer].size;
+//}
 
 #pragma mark - Private
 

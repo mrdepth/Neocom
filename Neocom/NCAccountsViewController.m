@@ -116,6 +116,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	[[NCAccountsManager sharedManager] reload];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.logoutItem.enabled = [NCAccount currentAccount] != nil;
 	self.modeSetting = [[NCStorage sharedStorage] settingWithKey:@"NCAccountsViewController.mode"];

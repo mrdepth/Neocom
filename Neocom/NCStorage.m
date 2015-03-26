@@ -120,7 +120,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														   configuration:@"Cloud"
 																	 URL:storeURL
-																 options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																   error:&error])
 				break;
 			else
@@ -139,7 +140,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														  configuration:@"Local"
 																	URL:storeURL
-																options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																  error:&error])
 				break;
 			else
@@ -220,7 +222,8 @@ static NCStorage* sharedStorage;
 			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 														  configuration:@"Local"
 																	URL:storeURL
-																options:nil
+																options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																		  NSMigratePersistentStoresAutomaticallyOption : @(YES)}
 																  error:&error])
 				break;
 			else

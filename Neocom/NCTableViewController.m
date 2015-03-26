@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSMutableDictionary* sectionsCollapsState;
 @property (nonatomic, strong) NSDictionary* previousCollapsState;
 @property (nonatomic, strong) NSMutableDictionary* offscreenCells;
+@property (nonatomic, strong) NSMutableDictionary* estimatedRowHeights;
 
 - (IBAction) onRefresh:(id) sender;
 
@@ -51,6 +52,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//	self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+//	self.tableView.rowHeight = UITableViewAutomaticDimension;
+	
+	self.estimatedRowHeights = [NSMutableDictionary new];
+	
 	self.preferredContentSize = CGSizeMake(320, 768);
 	self.offscreenCells = [NSMutableDictionary new];
 	
@@ -414,12 +420,21 @@
 //	return UITableViewAutomaticDimension;
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return 0;
+}
+
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	self.estimatedRowHeights[indexPath] = @(cell.frame.size.height);
 	cell.backgroundColor = [UIColor appearanceTableViewCellBackgroundColor];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return self.tableView.rowHeight;
+	NSNumber* height = self.estimatedRowHeights[indexPath];
+	if (height)
+		return [height floatValue];
+	else
+		return self.tableView.rowHeight;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

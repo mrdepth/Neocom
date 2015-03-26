@@ -1515,6 +1515,7 @@
 		12ED82D91AC13CD500C593C4 /* NCPlanetaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPlanetaryViewController.m; sourceTree = "<group>"; };
 		12ED82E71AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEPlanetaryPinsItem+Neocom.h"; sourceTree = "<group>"; };
 		12ED82E81AC2958500C593C4 /* EVEPlanetaryPinsItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EVEPlanetaryPinsItem+Neocom.m"; sourceTree = "<group>"; };
+		12ED82F21AC3D36400C593C4 /* NCStorage 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NCStorage 2.xcdatamodel"; sourceTree = "<group>"; };
 		12F407541A8D181D0031FB35 /* NCDefaultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultTableViewCell.xib; sourceTree = "<group>"; };
 		12F407571A8D25220031FB35 /* NCDefaultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDefaultTableViewCell.h; sourceTree = "<group>"; };
 		12F407581A8D25220031FB35 /* NCDefaultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDefaultTableViewCell.m; sourceTree = "<group>"; };
@@ -5634,9 +5635,10 @@
 		129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				12ED82F21AC3D36400C593C4 /* NCStorage 2.xcdatamodel */,
 				129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */,
 			);
-			currentVersion = 129FEE14186030FD00F75FA6 /* NCStorage.xcdatamodel */;
+			currentVersion = 12ED82F21AC3D36400C593C4 /* NCStorage 2.xcdatamodel */;
 			path = NCStorage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

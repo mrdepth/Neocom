@@ -74,8 +74,8 @@
         <element name="DamagePattern" positionX="0" positionY="0" width="128" height="120"/>
         <element name="FitCharacter" positionX="0" positionY="0" width="128" height="75"/>
         <element name="ImplantSet" positionX="9" positionY="54" width="128" height="75"/>
-        <element name="Loadout" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="LoadoutData" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Loadout" positionX="0" positionY="0" width="128" height="103"/>
+        <element name="LoadoutData" positionX="0" positionY="0" width="128" height="73"/>
         <element name="MailBox" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Setting" positionX="0" positionY="0" width="128" height="75"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="128" height="105"/>

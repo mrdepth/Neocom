@@ -110,6 +110,8 @@
 		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
+		120EED1B1AC53DB200947614 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 120EED1A1AC53DB200947614 /* NCShoppingItem.m */; };
+		120EED1E1AC53DB300947614 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 120EED1D1AC53DB300947614 /* NCShoppingList.m */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -861,6 +863,10 @@
 		120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersViewController.m; sourceTree = "<group>"; };
 		120D5B5118B22AC0007ED9B4 /* NCMarketOrdersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersCell.h; sourceTree = "<group>"; };
 		120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersCell.m; sourceTree = "<group>"; };
+		120EED191AC53DB200947614 /* NCShoppingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingItem.h; sourceTree = "<group>"; };
+		120EED1A1AC53DB200947614 /* NCShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingItem.m; sourceTree = "<group>"; };
+		120EED1C1AC53DB300947614 /* NCShoppingList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingList.h; sourceTree = "<group>"; };
+		120EED1D1AC53DB300947614 /* NCShoppingList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingList.m; sourceTree = "<group>"; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -2008,6 +2014,13 @@
 			name = NCMarketOrdersCell;
 			sourceTree = "<group>";
 		};
+		120EED571AC58FEF00947614 /* NCShoppingListVIewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = NCShoppingListVIewController;
+			sourceTree = "<group>";
+		};
 		1211122B185989CC009E5106 /* NCTaskManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -2579,6 +2592,7 @@
 				12EC0AC318C0BA680010169C /* NCNotificationsManager */,
 				128C9B0018BF03210086F7B3 /* NCCharacterID */,
 				12056E5B18C45CC4008D8755 /* NCPriceManager */,
+				120EED571AC58FEF00947614 /* NCShoppingListVIewController */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -3673,6 +3687,10 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
+				120EED1C1AC53DB300947614 /* NCShoppingList.h */,
+				120EED1D1AC53DB300947614 /* NCShoppingList.m */,
+				120EED191AC53DB200947614 /* NCShoppingItem.h */,
+				120EED1A1AC53DB200947614 /* NCShoppingItem.m */,
 				129FEE161860313D00F75FA6 /* NCStorage.h */,
 				129FEE171860313D00F75FA6 /* NCStorage.m */,
 				12FDA32C18E00710007B091D /* NCImplantSet.h */,
@@ -4994,6 +5012,7 @@
 				120C333719CAB0A70093EECA /* NCDBCertMasteryLevel.m in Sources */,
 				126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */,
 				126F1BB61952D3AF00E5CD4F /* NCDBStaStation+Neocom.m in Sources */,
+				120EED1B1AC53DB200947614 /* NCShoppingItem.m in Sources */,
 				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
 				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
 				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
@@ -5097,6 +5116,7 @@
 				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
+				120EED1E1AC53DB300947614 /* NCShoppingList.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,

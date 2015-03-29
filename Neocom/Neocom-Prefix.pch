@@ -21,6 +21,7 @@
 #endif
 
 #define NCSettingsCurrentAccountKey @"NCSettingsCurrentAccountKey"
+#define NCSettingsCurrentShoppingListKey @"NCSettingsCurrentShoppingListKey"
 #define NCSettingsNotificationsLastUpdateTimeKey @"NCSettingsNotificationsLastUpdateTimeKey"
 #define NCSettingsNotificationsLastEventsUpdateTimeKey @"NCSettingsNotificationsLastEventsUpdateTimeKey"
 #define NCSettingsAPINextSyncDateKey @"NCSettingsAPINextSyncDateKey"

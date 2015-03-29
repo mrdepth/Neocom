@@ -8,13 +8,23 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "NCStorage.h"
 
 @class NCShoppingItem;
+
+@interface NCStorage(NCShoppingList)
+- (NSArray*) allShoppingLists;
+@end
+
 
 @interface NCShoppingList : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSSet *items;
+
++ (instancetype) currentShoppingList;
++ (void) setCurrentShoppingList:(NCShoppingList*) shoppingList;
+
 @end
 
 @interface NCShoppingList (CoreDataGeneratedAccessors)

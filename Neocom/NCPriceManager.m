@@ -59,6 +59,15 @@
 
 @implementation NCPriceManager
 
++ (instancetype) sharedManager {
+	static NCPriceManager* sharedManager = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedManager = [NCPriceManager new];
+	});
+	return sharedManager;
+}
+
 - (EVECentralMarketStatType*) priceWithType:(NSInteger) typeID {
 	return [self pricesWithTypes:@[@(typeID)]][@(typeID)];
 }

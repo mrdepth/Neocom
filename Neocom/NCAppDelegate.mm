@@ -25,6 +25,7 @@
 #import "NCDatabaseTypeInfoViewController.h"
 #import "Flurry.h"
 #import "NCAPIKeyAccessMaskViewController.h"
+#import "NCShoppingList.h"
 
 @interface NCAppDelegate()<SKPaymentTransactionObserver>
 @property (nonatomic, strong) NCTaskManager* taskManager;
@@ -268,6 +269,7 @@
 			
 			if (!useCloud || !currentCloudToken) {
 				[NCAccount setCurrentAccount:nil];
+				[NCShoppingList setCurrentShoppingList:nil];
 				
 				NCStorage* storage = [NCStorage fallbackStorage];
 				[NCStorage setSharedStorage:storage];
@@ -290,6 +292,7 @@
 													 }
 										 completionHandler:^(NCTask *task) {
 											 [NCAccount setCurrentAccount:nil];
+											 [NCShoppingList setCurrentShoppingList:nil];
 											 
 											 [NCStorage setSharedStorage:storage];
 											 [NCAccountsManager setSharedManager:accountsManager];

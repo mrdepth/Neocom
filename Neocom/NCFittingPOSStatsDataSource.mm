@@ -63,7 +63,7 @@
 
 - (id) init {
 	if (self = [super init]) {
-		self.priceManager = [NCPriceManager new];
+		self.priceManager = [NCPriceManager sharedManager];
 	}
 	return self;
 }

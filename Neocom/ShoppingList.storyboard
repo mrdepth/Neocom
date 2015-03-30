@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
-        <!--New Shopping Item View Controller-->
+        <!--Shopping List-->
         <scene sceneID="xXm-wr-x24">
             <objects>
                 <tableViewController storyboardIdentifier="NCNewShoppingItemViewController" id="Uv3-1i-7Hj" customClass="NCNewShoppingItemViewController" sceneMemberID="viewController">
@@ -14,16 +14,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TypeCell" id="arg-l3-cdF" customClass="NCDefaultTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="arg-l3-cdF" customClass="NCDefaultTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="arg-l3-cdF" id="60y-j5-6Y9">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShoppingListCell" id="MHC-4f-6EL" customClass="NCDefaultTableViewCell">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MHC-4f-6EL" id="8Ht-as-L2g">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -34,25 +27,75 @@
                             <outlet property="delegate" destination="Uv3-1i-7Hj" id="dc3-pX-y4z"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="aoH-Jl-cQ5">
-                        <nil key="title"/>
-                        <stepper key="titleView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" maximumValue="1000" id="3FI-oH-FB4">
-                            <rect key="frame" x="113" y="8" width="94" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" id="D7L-sy-L6I">
+                            <stepper key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" maximumValue="1000000" id="hbK-o3-RMa">
+                                <rect key="frame" x="-47" y="-14" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="onChangeQuantity:" destination="Uv3-1i-7Hj" eventType="valueChanged" id="b9b-t2-r59"/>
+                                </connections>
+                            </stepper>
+                        </barButtonItem>
+                        <barButtonItem title="1" width="40" id="t4Y-et-NF7">
                             <connections>
-                                <action selector="onChangeQuantity:" destination="Uv3-1i-7Hj" eventType="valueChanged" id="gTD-BC-gdo"/>
+                                <action selector="onSetQuantity:" destination="Uv3-1i-7Hj" id="ae1-a8-cy0"/>
                             </connections>
-                        </stepper>
-                        <barButtonItem key="rightBarButtonItem" title="Add" style="done" id="3QA-cf-tO5"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Izl-nU-ajt">
+                            <connections>
+                                <action selector="onChangeQuantity:" destination="Uv3-1i-7Hj" id="bPN-Pa-4YH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Add" id="cua-EQ-LZO"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Shopping List" id="aoH-Jl-cQ5">
+                        <barButtonItem key="rightBarButtonItem" title="Default" style="done" id="3QA-cf-tO5">
+                            <connections>
+                                <segue destination="zuD-az-qdm" kind="push" id="86N-Ro-lnd"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black"/>
                     <connections>
-                        <outlet property="stepper" destination="3FI-oH-FB4" id="KML-nc-UKB"/>
+                        <outlet property="quantityItem" destination="t4Y-et-NF7" id="Jox-hl-cYQ"/>
+                        <outlet property="stepper" destination="hbK-o3-RMa" id="j8b-ta-GAK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hf2-TD-wn0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="144" y="291"/>
+            <point key="canvasLocation" x="-245" y="295"/>
+        </scene>
+        <!--Shopping Lists-->
+        <scene sceneID="4BS-gF-B0D">
+            <objects>
+                <tableViewController id="zuD-az-qdm" customClass="NCShoppingListsManagerViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="7nt-ej-OfO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="zFd-sp-9K6" customClass="NCDefaultTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zFd-sp-9K6" id="1oZ-XF-GI2">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="zuD-az-qdm" id="Zvv-S7-3sk"/>
+                            <outlet property="delegate" destination="zuD-az-qdm" id="Bba-iw-y1U"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Shopping Lists" id="cVn-Fc-bCJ"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ox-Nw-Lhe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="204" y="295"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

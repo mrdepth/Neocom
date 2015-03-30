@@ -11,13 +11,13 @@
 #import "NCShoppingItem+Neocom.h"
 #import "NCPriceManager.h"
 #import "NSString+Neocom.h"
+#import "UIAlertView+Block.h"
 
 @interface NCNewShoppingItemViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
 @property (nonatomic, strong) NSArray* shoppingListItems;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
 @property (nonatomic, strong) NSString* shoppingListName;
-@property (nonatomic, assign) NSInteger itemsCount;
 @property (nonatomic, assign) double totalPrice;
 
 - (void) reload;
@@ -34,35 +34,66 @@
 }
 
 - (IBAction)onChangeQuantity:(id)sender {
+	[self.quantityItem setTitle:[NSString stringWithFormat:@"%.0f", self.stepper.value]];
 	[self.tableView reloadData];
+}
+
+- (IBAction)onSetQuantity:(id)sender {
+	UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Enter Quantity", nil)
+													 message:nil
+										   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+										   otherButtonTitles:@[NSLocalizedString(@"Ok", nil)]
+											 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+												 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+													 UITextField* textField = [alertView textFieldAtIndex:0];
+													 int32_t quantity = [textField.text intValue];
+													 quantity = MIN(self.stepper.maximumValue, MAX(self.stepper.minimumValue, quantity));
+													 self.stepper.value = quantity;
+													 [self.quantityItem setTitle:[NSString stringWithFormat:@"%.0f", self.stepper.value]];
+													 [self.tableView reloadData];
+												 }
+											 }
+												 cancelBlock:nil];
+	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+	UITextField* textField = [alertView textFieldAtIndex:0];
+	textField.keyboardType = UIKeyboardTypeDecimalPad;
+	textField.text = [NSString stringWithFormat:@"%.0f", self.stepper.value];
+	[alertView show];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self.navigationController setToolbarHidden:NO animated:animated];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[self.navigationController setToolbarHidden:YES animated:animated];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 3;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if (section == 0)
 		return self.rows.count;
-	else if (section == 1)
-		return 1;
 	else
 		return self.shoppingListItems.count;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ items costs %@", nil),
-				[NSString shortStringWithFloat:self.itemsCount * self.stepper.value unit:nil],
+		return [NSString stringWithFormat:NSLocalizedString(@"%d records costs %@", nil),
+				(int) self.rows.count,
+//				(int) self.stepper.value,
 				[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
-	else if (section == 1)
-		return NSLocalizedString(@"Shopping list", nil);
 	else
-		return NSLocalizedString(@"Contents", nil);
+		return NSLocalizedString(@"Shopping list", nil);
 }
 
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -85,29 +116,22 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(NCDefaultTableViewCell*) cell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	if (indexPath.section == 1) {
-		cell.titleLabel.text = self.shoppingListName;
-		cell.subtitleLabel.text = nil;
-		cell.imageView.image = nil;
-	}
-	else {
-		NCShoppingItem* item = indexPath.section == 0 ? self.rows[indexPath.row] : self.shoppingListItems[indexPath.row];
-		cell.titleLabel.text = item.type.typeName;
-		if (item.price)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, Cost %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
-		else
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d", nil), item.quantity * (int32_t) self.stepper.value];
-		cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-		cell.object = item.type;
-	}
+	NCShoppingItem* item = indexPath.section == 0 ? self.rows[indexPath.row] : self.shoppingListItems[indexPath.row];
+	cell.titleLabel.text = item.type.typeName;
+	if (item.price)
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, Cost %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
+	else
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d", nil), item.quantity * (int32_t) self.stepper.value];
+	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.object = item.type;
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return @"Cell";
+}
 
-	if (indexPath.section == 1)
-		return @"ShoppingListCell";
-	else
-		return @"TypeCell";
+- (void) didChangeStorage {
+	[self reload];
 }
 
 #pragma mark - Private
@@ -136,28 +160,26 @@
 										   }
 									   }
 						   completionHandler:^(NCTask *task) {
-							   self.rows = rows;
-							   self.items = items;
-							   [self reloadSummary];
-							   [self.shoppingList.managedObjectContext performBlockAndWait:^{
-								   self.shoppingListName = self.shoppingList.name;
-							   }];
-							   if (!self.shoppingListName)
-								   self.shoppingListName = NSLocalizedString(@"Default", nil);
-							   [self.tableView reloadData];
-							   self.stepper.enabled = YES;
+							   if (![task isCancelled]) {
+								   self.rows = rows;
+								   self.items = items;
+								   [self reloadSummary];
+								   [self.shoppingList.managedObjectContext performBlockAndWait:^{
+									   self.shoppingListName = self.shoppingList.name;
+								   }];
+								   if (!self.shoppingListName)
+									   self.shoppingListName = NSLocalizedString(@"Default", nil);
+								   [self.tableView reloadData];
+								   self.stepper.enabled = YES;
+							   }
 						   }];
 }
 
 - (void) reloadSummary {
-	NSInteger itemsCount = 0;
 	double totalPrice = 0;
 
-	for (NCShoppingItem* item in self.rows) {
+	for (NCShoppingItem* item in self.rows)
 		totalPrice += item.quantity * item.price.sell.percentile;
-		itemsCount += item.quantity;
-	}
-	self.itemsCount = itemsCount;
 	self.totalPrice = totalPrice;
 }
 

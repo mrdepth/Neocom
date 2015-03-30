@@ -210,6 +210,7 @@
 		125F681A18852DA9005732FA /* NCSkillsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F681918852DA9005732FA /* NCSkillsViewController.m */; };
 		125F682218853230005732FA /* NCSkillData.m in Sources */ = {isa = PBXBuildFile; fileRef = 125F682118853230005732FA /* NCSkillData.m */; };
 		125F6825188537FF005732FA /* NCCharacterAttributes.mm in Sources */ = {isa = PBXBuildFile; fileRef = 125F6824188537FF005732FA /* NCCharacterAttributes.mm */; };
+		12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; };
 		1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593B18EE7BFD0049B9CE /* eufe.sqlite */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
 		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
@@ -1016,6 +1017,8 @@
 		125F682118853230005732FA /* NCSkillData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCSkillData.m; sourceTree = "<group>"; };
 		125F6823188537FF005732FA /* NCCharacterAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCharacterAttributes.h; sourceTree = "<group>"; };
 		125F6824188537FF005732FA /* NCCharacterAttributes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCCharacterAttributes.mm; sourceTree = "<group>"; };
+		12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingListsManagerViewController.h; sourceTree = "<group>"; };
+		12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingListsManagerViewController.m; sourceTree = "<group>"; };
 		1261593B18EE7BFD0049B9CE /* eufe.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = eufe.sqlite; sourceTree = "<group>"; };
 		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2031,6 +2034,8 @@
 				12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */,
 				12B42E6F1AC8432900A0D956 /* NCShoppingItem+Neocom.h */,
 				12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */,
+				12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */,
+				12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */,
 			);
 			name = ShoppingList;
 			sourceTree = "<group>";
@@ -5178,6 +5183,7 @@
 				126A0E4F185F3B9300A8E8A3 /* EVECorpMedals.m in Sources */,
 				849FEE3818A41B8500A4F85E /* NCFittingShipDronesTableHeaderView.m in Sources */,
 				12640B1218B77B87005C311D /* NCKillMail.mm in Sources */,
+				12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */,
 				126A0E75185F3B9300A8E8A3 /* RSSParser10.m in Sources */,
 				12F86DD318E59C8800AFDA97 /* EVEOwnerID.m in Sources */,
 				127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */,

@@ -10,6 +10,8 @@
 
 @interface NCNewShoppingItemViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet UIStepper *stepper;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *quantityItem;
 @property (nonatomic, strong) NSArray* items;
 - (IBAction)onChangeQuantity:(id)sender;
+- (IBAction)onSetQuantity:(id)sender;
 @end

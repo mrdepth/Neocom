@@ -22,6 +22,7 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	self.refreshControl = nil;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	[self reload];
 }
@@ -59,6 +60,34 @@
 		[self.rows removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
+	else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"New Shopping List", nil)
+														 message:nil
+											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+											   otherButtonTitles:@[NSLocalizedString(@"Create", nil)]
+												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+														 UITextField* textField = [alertView textFieldAtIndex:0];
+														 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
+														 
+														 NCStorage* storage = [NCStorage sharedStorage];
+														 NSManagedObjectContext* context = [storage managedObjectContext];
+														 __block NCShoppingList* shoppingList;
+														 [context performBlockAndWait:^{
+															 shoppingList = [[NCShoppingList alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingList" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+															 shoppingList.name = name;
+															 [context save:nil];
+														 }];
+														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
+														 [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+													 }
+												 }
+													 cancelBlock:nil];
+		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+		UITextField* textField = [alertView textFieldAtIndex:0];
+		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		[alertView show];
+	}
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -71,19 +100,40 @@
 	if (indexPath.row == self.rows.count)
 		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 	else {
-		UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"New Shopping List", nil)
-														 message:nil
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-											   otherButtonTitles:@[NSLocalizedString(@"Done", nil)]
-												 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
-													 if (selectedButtonIndex != alertView.cancelButtonIndex) {
-														 UITextField* textField = [alertView textFieldAtIndex:0];
-														 
+		NSDictionary* row = self.rows[indexPath.row];
+		NCShoppingList* shoppingList = row[@"object"];
+
+		if (self.editing) {
+			UIAlertView* alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"Rename Shopping List", nil)
+															 message:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+												   otherButtonTitles:@[NSLocalizedString(@"Rename", nil)]
+													 completionBlock:^(UIAlertView *alertView, NSInteger selectedButtonIndex) {
+														 if (selectedButtonIndex != alertView.cancelButtonIndex) {
+															 UITextField* textField = [alertView textFieldAtIndex:0];
+															 NSString* name = textField.text.length > 0 ? textField.text : NSLocalizedString(@"Unnamed", nil);
+															 
+															 NCStorage* storage = [NCStorage sharedStorage];
+															 NSManagedObjectContext* context = [storage managedObjectContext];
+															 [context performBlockAndWait:^{
+																 shoppingList.name = name;
+																 [context save:nil];
+															 }];
+															 [self.rows replaceObjectAtIndex:indexPath.row withObject:@{@"name":name, @"object":shoppingList}];
+															 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+														 }
 													 }
-												 }
-													 cancelBlock:nil];
-		alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-		[alertView show];
+														 cancelBlock:nil];
+			alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+			UITextField* textField = [alertView textFieldAtIndex:0];
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+			textField.text = row[@"name"];
+			[alertView show];
+		}
+		else {
+			[NCShoppingList setCurrentShoppingList:shoppingList];
+			[self performSegueWithIdentifier:@"Unwind" sender:nil];
+		}
 	}
 }
 
@@ -101,11 +151,18 @@
 		int records = [row[@"records"] intValue];
 		cell.subtitleLabel.text =  records > 0 ? [NSString stringWithFormat:NSLocalizedString(@"%d records", nil), records] : NSLocalizedString(@"Empty", nil);
 		cell.object = row[@"object"];
+		
+		UIImage* accessoryImage = nil;
+		if (cell.object == [NCShoppingList currentShoppingList])
+			accessoryImage = [UIImage imageNamed:@"checkmark.png"];
+		cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
+
 	}
 	else {
 		cell.titleLabel.text = NSLocalizedString(@"Add Shopping List", nil);
 		cell.subtitleLabel.text = nil;
 		cell.object = nil;
+		cell.accessoryView = nil;
 	}
 }
 

@@ -104,10 +104,10 @@
 	return [self.sections[section][@"rows"] count];
 }
 
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	//NCMailBoxViewControllerData* data = self.data;
 	return self.sections[section][@"title"];
-}*/
+}
 
 
 #pragma mark - NCTableViewController

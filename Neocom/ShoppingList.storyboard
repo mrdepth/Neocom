@@ -92,8 +92,12 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Shopping Lists" id="cVn-Fc-bCJ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <segue destination="lJs-nG-Xqv" kind="unwind" identifier="Unwind" unwindAction="unwindFromShoppingListsManager:" id="DkR-LW-70A"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ox-Nw-Lhe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="lJs-nG-Xqv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="204" y="295"/>
         </scene>

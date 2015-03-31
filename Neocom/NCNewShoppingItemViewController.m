@@ -28,6 +28,7 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	self.refreshControl = nil;
 	self.shoppingList = [NCShoppingList currentShoppingList];
 	if (self.shoppingList)
 		[self reload];
@@ -69,6 +70,13 @@
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	[self.navigationController setToolbarHidden:YES animated:animated];
+}
+
+#pragma mark - Navigation
+
+- (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
+	self.shoppingList = [NCShoppingList currentShoppingList];
+	[self reload];
 }
 
 #pragma mark - Table view data source
@@ -140,6 +148,15 @@
 	__block NSMutableArray* rows;
 	__block NSArray* items;
 	self.stepper.enabled = NO;
+	
+	if (self.shoppingList) {
+		[self.shoppingList.managedObjectContext performBlock:^{
+			NSString* name = self.shoppingList.name;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.navigationItem.rightBarButtonItem.title = name;
+			});
+		}];
+	}
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 									   title:NCTaskManagerDefaultTitle

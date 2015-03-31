@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
-        <!--Shopping List-->
+        <!--Add Items-->
         <scene sceneID="xXm-wr-x24">
             <objects>
                 <tableViewController storyboardIdentifier="NCNewShoppingItemViewController" id="Uv3-1i-7Hj" customClass="NCNewShoppingItemViewController" sceneMemberID="viewController">
@@ -47,9 +47,13 @@
                                 <action selector="onChangeQuantity:" destination="Uv3-1i-7Hj" id="bPN-Pa-4YH"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Add" id="cua-EQ-LZO"/>
+                        <barButtonItem title="Add" id="cua-EQ-LZO">
+                            <connections>
+                                <action selector="onAdd:" destination="Uv3-1i-7Hj" id="RAA-CN-Pel"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Shopping List" id="aoH-Jl-cQ5">
+                    <navigationItem key="navigationItem" title="Add Items" id="aoH-Jl-cQ5">
                         <barButtonItem key="rightBarButtonItem" title="Default" style="done" id="3QA-cf-tO5">
                             <connections>
                                 <segue destination="zuD-az-qdm" kind="push" id="86N-Ro-lnd"/>
@@ -61,9 +65,11 @@
                     <connections>
                         <outlet property="quantityItem" destination="t4Y-et-NF7" id="Jox-hl-cYQ"/>
                         <outlet property="stepper" destination="hbK-o3-RMa" id="j8b-ta-GAK"/>
+                        <segue destination="oqz-YE-NDo" kind="unwind" identifier="Unwind" unwindAction="unwindFromNewShoppingItem:" id="mgb-Oz-EpJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hf2-TD-wn0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="oqz-YE-NDo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-245" y="295"/>
         </scene>
@@ -92,6 +98,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Shopping Lists" id="cVn-Fc-bCJ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="lJs-nG-Xqv" kind="unwind" identifier="Unwind" unwindAction="unwindFromShoppingListsManager:" id="DkR-LW-70A"/>
                     </connections>
@@ -101,10 +108,53 @@
             </objects>
             <point key="canvasLocation" x="204" y="295"/>
         </scene>
+        <!--Shopping List-->
+        <scene sceneID="MW4-aN-rMR">
+            <objects>
+                <tableViewController storyboardIdentifier="NCShoppingListViewController" id="CIf-EL-iQp" customClass="NCShoppingListViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="cxj-S5-fAC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="egy-vI-KmP" customClass="NCDefaultTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="egy-vI-KmP" id="hm2-sT-uHj">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="CIf-EL-iQp" id="OQ4-Ud-uE2"/>
+                            <outlet property="delegate" destination="CIf-EL-iQp" id="U0J-NJ-dg5"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Shopping List" id="A3R-oD-PPS">
+                        <barButtonItem key="rightBarButtonItem" title="Default" style="done" id="tMg-Jb-Bk6">
+                            <connections>
+                                <segue destination="zuD-az-qdm" kind="push" id="PRs-ol-l4I"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <connections>
+                        <segue destination="LQp-dM-bVt" kind="unwind" identifier="Unwind" unwindAction="unwindFromNewShoppingItem:" id="1XY-94-d1R"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cWK-e3-3gn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="LQp-dM-bVt" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-245" y="916"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="PRs-ol-l4I"/>
+    </inferredMetricsTieBreakers>
 </document>

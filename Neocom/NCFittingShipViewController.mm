@@ -795,6 +795,10 @@
 	}
 }
 
+- (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
+	
+}
+
 - (void) performExport {
 	if (self.actionSheet) {
 		[self.actionSheet dismissWithClickedButtonIndex:self.actionSheet.cancelButtonIndex animated:YES];

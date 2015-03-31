@@ -14,4 +14,5 @@
 @property (nonatomic, strong) NSArray* items;
 - (IBAction)onChangeQuantity:(id)sender;
 - (IBAction)onSetQuantity:(id)sender;
+- (IBAction)onAdd:(id)sender;
 @end

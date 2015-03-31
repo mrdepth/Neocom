@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NCShoppingList* shoppingList;
 @property (nonatomic, strong) NSString* shoppingListName;
 @property (nonatomic, assign) double totalPrice;
+@property (nonatomic, assign) double totalContentsPrice;
 
 - (void) reload;
 - (void) reloadSummary;
@@ -62,6 +63,30 @@
 	[alertView show];
 }
 
+- (IBAction)onAdd:(id)sender {
+	NSArray* rows = self.rows;
+	NCShoppingList* shoppingList = self.shoppingList;
+	[shoppingList.managedObjectContext performBlock:^{
+		NSMutableDictionary* items = [NSMutableDictionary new];
+		for (NCShoppingItem* item in shoppingList.items)
+			items[@(item.typeID)] = item;
+		
+		for (NCShoppingItem* row in rows) {
+			NCShoppingItem* item = items[@(row.typeID)];
+			if (!item) {
+				[shoppingList.managedObjectContext insertObject:row];
+				row.shoppingList = shoppingList;
+				items[@(row.typeID)] = row;
+			}
+			else
+				item.quantity += row.quantity;
+		}
+		if ([shoppingList.managedObjectContext hasChanges])
+			[shoppingList.managedObjectContext save:nil];
+	}];
+	[self performSegueWithIdentifier:@"Unwind" sender:nil];
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:NO animated:animated];
@@ -96,12 +121,13 @@
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return [NSString stringWithFormat:NSLocalizedString(@"%d records costs %@", nil),
+		return [NSString stringWithFormat:NSLocalizedString(@"%d records, %@", nil),
 				(int) self.rows.count,
-//				(int) self.stepper.value,
 				[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
 	else
-		return NSLocalizedString(@"Shopping list", nil);
+		return [NSString stringWithFormat:NSLocalizedString(@"Contents: %d records, %@", nil),
+				(int) self.shoppingListItems.count,
+				[NSString shortStringWithFloat:self.totalContentsPrice unit:@"ISK"]];
 }
 
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -127,7 +153,7 @@
 	NCShoppingItem* item = indexPath.section == 0 ? self.rows[indexPath.row] : self.shoppingListItems[indexPath.row];
 	cell.titleLabel.text = item.type.typeName;
 	if (item.price)
-		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, Cost %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
+		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, cost %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
 	else
 		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d", nil), item.quantity * (int32_t) self.stepper.value];
 	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
@@ -169,6 +195,7 @@
 										   NSMutableArray* itemsWithoutPrice = [NSMutableArray new];
 										   [itemsWithoutPrice addObjectsFromArray:[rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
 										   [itemsWithoutPrice addObjectsFromArray:[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
+										   
 										   if (itemsWithoutPrice.count > 0) {
 											   NCPriceManager* priceManager = [NCPriceManager sharedManager];
 											   NSDictionary* prices = [priceManager pricesWithTypes:[itemsWithoutPrice valueForKey:@"typeID"]];
@@ -179,7 +206,7 @@
 						   completionHandler:^(NCTask *task) {
 							   if (![task isCancelled]) {
 								   self.rows = rows;
-								   self.items = items;
+								   self.shoppingListItems = items;
 								   [self reloadSummary];
 								   [self.shoppingList.managedObjectContext performBlockAndWait:^{
 									   self.shoppingListName = self.shoppingList.name;
@@ -194,10 +221,14 @@
 
 - (void) reloadSummary {
 	double totalPrice = 0;
+	double totalContentsPrice = 0;
 
 	for (NCShoppingItem* item in self.rows)
 		totalPrice += item.quantity * item.price.sell.percentile;
+	for (NCShoppingItem* item in self.shoppingListItems)
+		totalContentsPrice += item.quantity * item.price.sell.percentile;
 	self.totalPrice = totalPrice;
+	self.totalContentsPrice = totalContentsPrice;
 }
 
 @end

@@ -20,6 +20,7 @@
 		1204156C189A454A00B15BB5 /* NCFittingShipPriceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1204156B189A454A00B15BB5 /* NCFittingShipPriceCell.m */; };
 		1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */; };
 		12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */; };
+		12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */; };
 		12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
@@ -440,6 +441,7 @@
 		12B42E6C1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */; };
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
 		12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */; };
+		12B42E741ACB113D00A0D956 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E731ACB113D00A0D956 /* folder.png */; };
 		12B68569195EB1B30043B30A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68568195EB1B30043B30A /* NotificationCenter.framework */; };
 		12B6856F195EB1B30043B30A /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B6856E195EB1B30043B30A /* TodayViewController.m */; };
 		12B68571195EB1B30043B30A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B68570195EB1B30043B30A /* MainInterface.storyboard */; };
@@ -726,6 +728,8 @@
 		1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShipStatsDataSource.mm; sourceTree = "<group>"; };
 		12041570189A4C3D00B15BB5 /* NCFittingEHPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingEHPCell.h; sourceTree = "<group>"; };
 		12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingEHPCell.m; sourceTree = "<group>"; };
+		12045E441ACB20D100AD32F8 /* NCShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingListViewController.h; sourceTree = "<group>"; };
+		12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingListViewController.m; sourceTree = "<group>"; };
 		12056E5C18C45F2E008D8755 /* NCPriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPriceManager.h; sourceTree = "<group>"; };
 		12056E5D18C45F2E008D8755 /* NCPriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPriceManager.m; sourceTree = "<group>"; };
 		1206C5E818922FB10010BEE8 /* NCMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBox.h; sourceTree = "<group>"; };
@@ -1453,6 +1457,7 @@
 		12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList.storyboard; sourceTree = "<group>"; };
 		12B42E6F1AC8432900A0D956 /* NCShoppingItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCShoppingItem+Neocom.h"; sourceTree = "<group>"; };
 		12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCShoppingItem+Neocom.m"; sourceTree = "<group>"; };
+		12B42E731ACB113D00A0D956 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.shimanski.eveuniverse.today.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B68568195EB1B30043B30A /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		12B6856C195EB1B30043B30A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2036,6 +2041,8 @@
 				12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */,
 				12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */,
 				12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */,
+				12045E441ACB20D100AD32F8 /* NCShoppingListViewController.h */,
+				12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */,
 			);
 			name = ShoppingList;
 			sourceTree = "<group>";
@@ -2096,6 +2103,7 @@
 		1219C1041A9E662C00FF6205 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				12B42E731ACB113D00A0D956 /* folder.png */,
 				1219C13F1A9F8F5400FF6205 /* criminal.png */,
 				1219C13D1A9E66D100FF6205 /* ships.png */,
 				1219C1051A9E662C00FF6205 /* assets.png */,
@@ -4839,6 +4847,7 @@
 				84EEFCE51896C69C007962A0 /* bloodRaider@2x.png in Resources */,
 				1209686B1845F0CB00921A37 /* Images.xcassets in Resources */,
 				120B506F18FCFFCB0033AF78 /* level_011.gif in Resources */,
+				12B42E741ACB113D00A0D956 /* folder.png in Resources */,
 				849B9FC41896D24A00D4DD2B /* Ladar.png in Resources */,
 				126F1CD71954047100E5CD4F /* priceTotal.png in Resources */,
 				849B9FD91896D24A00D4DD2B /* thermal.png in Resources */,
@@ -5276,6 +5285,7 @@
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
 				12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
+				12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */,
 				12F407591A8D25220031FB35 /* NCDefaultTableViewCell.m in Sources */,
 				126A0E2F185F3B9300A8E8A3 /* EVECharacters.m in Sources */,
 				128A1F3618990D9600005C4F /* NCFittingSectionHiSlotHeaderView.m in Sources */,

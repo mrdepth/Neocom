@@ -2,12 +2,13 @@
 //  NCShoppingList.m
 //  Neocom
 //
-//  Created by Артем Шиманский on 27.03.15.
+//  Created by Артем Шиманский on 01.04.15.
 //  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
 #import "NCShoppingList.h"
 #import "NCShoppingItem.h"
+
 
 static NCShoppingList* currentShoppingList;
 
@@ -32,7 +33,7 @@ static NCShoppingList* currentShoppingList;
 @implementation NCShoppingList
 
 @dynamic name;
-@dynamic items;
+@dynamic shoppingGroups;
 
 + (instancetype) currentShoppingList {
 	@synchronized(self) {
@@ -40,7 +41,7 @@ static NCShoppingList* currentShoppingList;
 			NSString* urlString = [[NSUserDefaults standardUserDefaults] valueForKey:NCSettingsCurrentShoppingListKey];
 			NCStorage* storage = [NCStorage sharedStorage];
 			NSManagedObjectContext* context = [NSThread isMainThread] ? storage.managedObjectContext : storage.backgroundManagedObjectContext;
-
+			
 			if (urlString && context) {
 				NSURL* url = [NSURL URLWithString:urlString];
 				if (url) {

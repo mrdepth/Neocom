@@ -12,10 +12,11 @@
 #import "NCPriceManager.h"
 #import "NSString+Neocom.h"
 #import "UIAlertView+Block.h"
+#import "NCShoppingGroup.h"
 
 @interface NCNewShoppingItemViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
-@property (nonatomic, strong) NSArray* shoppingListItems;
+@property (nonatomic, strong) NSArray* contents;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
 @property (nonatomic, strong) NSString* shoppingListName;
 @property (nonatomic, assign) double totalPrice;
@@ -67,8 +68,8 @@
 	NSArray* rows = self.rows;
 	NCShoppingList* shoppingList = self.shoppingList;
 	[shoppingList.managedObjectContext performBlock:^{
-		NSMutableDictionary* items = [NSMutableDictionary new];
-		for (NCShoppingItem* item in shoppingList.items)
+/*		NSMutableDictionary* items = [NSMutableDictionary new];
+		for (NCShoppingItem* item in shoppingList.shoppingItems)
 			items[@(item.typeID)] = item;
 		
 		for (NCShoppingItem* row in rows) {
@@ -82,7 +83,7 @@
 				item.quantity += row.quantity;
 		}
 		if ([shoppingList.managedObjectContext hasChanges])
-			[shoppingList.managedObjectContext save:nil];
+			[shoppingList.managedObjectContext save:nil];*/
 	}];
 	[self performSegueWithIdentifier:@"Unwind" sender:nil];
 }
@@ -172,7 +173,7 @@
 
 - (void) reload {
 	__block NSMutableArray* rows;
-	__block NSArray* items;
+	__block NSArray* shoppingGroups;
 	self.stepper.enabled = NO;
 	
 	if (self.shoppingList) {
@@ -187,14 +188,15 @@
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 									   title:NCTaskManagerDefaultTitle
 									   block:^(NCTask *task) {
-										   rows = [self.items mutableCopy];
+										   rows = [[self.shoppingGroup.shoppingItems allObjects] mutableCopy];
 										   [rows sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
 										   
-										   items = [self.shoppingList.items sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"type.typeName" ascending:YES]]];
+										   shoppingGroups = [self.shoppingList.shoppingGroups sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
 										   
 										   NSMutableArray* itemsWithoutPrice = [NSMutableArray new];
 										   [itemsWithoutPrice addObjectsFromArray:[rows filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
-										   [itemsWithoutPrice addObjectsFromArray:[items filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
+										   for (NCShoppingGroup* group in shoppingGroups)
+											   [itemsWithoutPrice addObjectsFromArray:[[group.shoppingItems allObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"price == nil"]]];
 										   
 										   if (itemsWithoutPrice.count > 0) {
 											   NCPriceManager* priceManager = [NCPriceManager sharedManager];
@@ -206,7 +208,7 @@
 						   completionHandler:^(NCTask *task) {
 							   if (![task isCancelled]) {
 								   self.rows = rows;
-								   self.shoppingListItems = items;
+								   self.contents = shoppingGroups;
 								   [self reloadSummary];
 								   [self.shoppingList.managedObjectContext performBlockAndWait:^{
 									   self.shoppingListName = self.shoppingList.name;

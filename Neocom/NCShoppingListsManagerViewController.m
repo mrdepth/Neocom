@@ -183,7 +183,7 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 for (NCShoppingList* shoppingList in [[NCStorage sharedStorage] allShoppingLists]) {
-												 NSInteger records = shoppingList.items.count;
+												 NSInteger records = shoppingList.shoppingItems.count;
 												 if (shoppingList.name)
 													 [rows addObject:@{@"object":shoppingList, @"records":@(records), @"name":shoppingList.name}];
 												 else

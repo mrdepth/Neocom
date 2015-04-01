@@ -111,8 +111,6 @@
 		120D5B4218B1FE5B007ED9B4 /* NCLocationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4118B1FE5B007ED9B4 /* NCLocationsManager.m */; };
 		120D5B4718B203BD007ED9B4 /* NCMarketOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */; };
 		120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */; };
-		120EED1B1AC53DB200947614 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 120EED1A1AC53DB200947614 /* NCShoppingItem.m */; };
-		120EED1E1AC53DB300947614 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 120EED1D1AC53DB300947614 /* NCShoppingList.m */; };
 		1211122E185989E1009E5106 /* NCTaskManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211122D185989E1009E5106 /* NCTaskManager.m */; };
 		1211123118598B09009E5106 /* NCTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1211123018598B09009E5106 /* NCTask.m */; };
 		121112341859929E009E5106 /* NCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 121112331859929E009E5106 /* NCTableViewController.m */; };
@@ -442,6 +440,10 @@
 		12B42E6E1AC7182000A0D956 /* ShoppingList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */; };
 		12B42E711AC8432900A0D956 /* NCShoppingItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */; };
 		12B42E741ACB113D00A0D956 /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 12B42E731ACB113D00A0D956 /* folder.png */; };
+		12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */; };
+		12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */; };
+		12B5EFFE1ACBC33A003CDF65 /* NCShoppingGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5EFFD1ACBC33A003CDF65 /* NCShoppingGroup.m */; };
+		12B5F0011ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B5F0001ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m */; };
 		12B68569195EB1B30043B30A /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68568195EB1B30043B30A /* NotificationCenter.framework */; };
 		12B6856F195EB1B30043B30A /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B6856E195EB1B30043B30A /* TodayViewController.m */; };
 		12B68571195EB1B30043B30A /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B68570195EB1B30043B30A /* MainInterface.storyboard */; };
@@ -871,10 +873,6 @@
 		120D5B4618B203BD007ED9B4 /* NCMarketOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersViewController.m; sourceTree = "<group>"; };
 		120D5B5118B22AC0007ED9B4 /* NCMarketOrdersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMarketOrdersCell.h; sourceTree = "<group>"; };
 		120D5B5218B22AC0007ED9B4 /* NCMarketOrdersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCMarketOrdersCell.m; sourceTree = "<group>"; };
-		120EED191AC53DB200947614 /* NCShoppingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingItem.h; sourceTree = "<group>"; };
-		120EED1A1AC53DB200947614 /* NCShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingItem.m; sourceTree = "<group>"; };
-		120EED1C1AC53DB300947614 /* NCShoppingList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingList.h; sourceTree = "<group>"; };
-		120EED1D1AC53DB300947614 /* NCShoppingList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingList.m; sourceTree = "<group>"; };
 		1211122C185989E1009E5106 /* NCTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTaskManager.h; sourceTree = "<group>"; };
 		1211122D185989E1009E5106 /* NCTaskManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCTaskManager.m; sourceTree = "<group>"; };
 		1211122F18598B09009E5106 /* NCTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCTask.h; sourceTree = "<group>"; };
@@ -1458,6 +1456,14 @@
 		12B42E6F1AC8432900A0D956 /* NCShoppingItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCShoppingItem+Neocom.h"; sourceTree = "<group>"; };
 		12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCShoppingItem+Neocom.m"; sourceTree = "<group>"; };
 		12B42E731ACB113D00A0D956 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		12B5EFF01ACBC154003CDF65 /* NCShoppingList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingList.h; sourceTree = "<group>"; };
+		12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingList.m; sourceTree = "<group>"; };
+		12B5EFF31ACBC154003CDF65 /* NCShoppingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingItem.h; sourceTree = "<group>"; };
+		12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingItem.m; sourceTree = "<group>"; };
+		12B5EFFC1ACBC33A003CDF65 /* NCShoppingGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingGroup.h; sourceTree = "<group>"; };
+		12B5EFFD1ACBC33A003CDF65 /* NCShoppingGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingGroup.m; sourceTree = "<group>"; };
+		12B5EFFF1ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCShoppingGroup+Neocom.h"; sourceTree = "<group>"; };
+		12B5F0001ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCShoppingGroup+Neocom.m"; sourceTree = "<group>"; };
 		12B68567195EB1B20043B30A /* com.shimanski.eveuniverse.today.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = com.shimanski.eveuniverse.today.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B68568195EB1B30043B30A /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		12B6856C195EB1B30043B30A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2039,6 +2045,8 @@
 				12B42E6B1AC6FA7A00A0D956 /* NCNewShoppingItemViewController.m */,
 				12B42E6F1AC8432900A0D956 /* NCShoppingItem+Neocom.h */,
 				12B42E701AC8432900A0D956 /* NCShoppingItem+Neocom.m */,
+				12B5EFFF1ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.h */,
+				12B5F0001ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m */,
 				12614EED1AC92522007620DA /* NCShoppingListsManagerViewController.h */,
 				12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */,
 				12045E441ACB20D100AD32F8 /* NCShoppingListViewController.h */,
@@ -3713,10 +3721,12 @@
 			isa = PBXGroup;
 			children = (
 				129FEE13186030FD00F75FA6 /* NCStorage.xcdatamodeld */,
-				120EED1C1AC53DB300947614 /* NCShoppingList.h */,
-				120EED1D1AC53DB300947614 /* NCShoppingList.m */,
-				120EED191AC53DB200947614 /* NCShoppingItem.h */,
-				120EED1A1AC53DB200947614 /* NCShoppingItem.m */,
+				12B5EFFC1ACBC33A003CDF65 /* NCShoppingGroup.h */,
+				12B5EFFD1ACBC33A003CDF65 /* NCShoppingGroup.m */,
+				12B5EFF31ACBC154003CDF65 /* NCShoppingItem.h */,
+				12B5EFF41ACBC154003CDF65 /* NCShoppingItem.m */,
+				12B5EFF01ACBC154003CDF65 /* NCShoppingList.h */,
+				12B5EFF11ACBC154003CDF65 /* NCShoppingList.m */,
 				129FEE161860313D00F75FA6 /* NCStorage.h */,
 				129FEE171860313D00F75FA6 /* NCStorage.m */,
 				12FDA32C18E00710007B091D /* NCImplantSet.h */,
@@ -4971,6 +4981,7 @@
 				126A0E65185F3B9300A8E8A3 /* EVEFacWarTopStats.m in Sources */,
 				129D261F187E923300E2062C /* NSURL+MD5.m in Sources */,
 				12CDB7F2188EA9EA002079C0 /* NSHTTPURLResponse+ASHTTPServer.m in Sources */,
+				12B5EFF51ACBC154003CDF65 /* NCShoppingItem.m in Sources */,
 				126A0E07185F3B9300A8E8A3 /* EVECentralRequest.m in Sources */,
 				129D260F187E923300E2062C /* ASInAppPurchase.m in Sources */,
 				126A0E72185F3B9300A8E8A3 /* NAPIUpload.m in Sources */,
@@ -5040,7 +5051,6 @@
 				120C333719CAB0A70093EECA /* NCDBCertMasteryLevel.m in Sources */,
 				126A0E4B185F3B9300A8E8A3 /* EVEUpcomingCalendarEvents.m in Sources */,
 				126F1BB61952D3AF00E5CD4F /* NCDBStaStation+Neocom.m in Sources */,
-				120EED1B1AC53DB200947614 /* NCShoppingItem.m in Sources */,
 				126A0E03185F3B9300A8E8A3 /* BCRequest.m in Sources */,
 				126A0E3D185F3B9300A8E8A3 /* EVEContracts.m in Sources */,
 				84FA63E1188C50A2008FD761 /* UIImageView+Neocom.m in Sources */,
@@ -5145,7 +5155,6 @@
 				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
-				120EED1E1AC53DB300947614 /* NCShoppingList.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
@@ -5153,6 +5162,7 @@
 				129D2625187E923300E2062C /* NSString+UTI.m in Sources */,
 				126A0E40185F3B9300A8E8A3 /* EVELocations.m in Sources */,
 				123A980C18C716B9001045F5 /* NCRSSFeedCell.m in Sources */,
+				12B5EFF21ACBC154003CDF65 /* NCShoppingList.m in Sources */,
 				12F9560218CDB5D4005CEAD6 /* NCBannerViewController.m in Sources */,
 				120D5B5318B22AC0007ED9B4 /* NCMarketOrdersCell.m in Sources */,
 				12436E141946E4670090D4A6 /* NCDBImageValueTransformer.m in Sources */,
@@ -5266,6 +5276,7 @@
 				126A0E5C185F3B9300A8E8A3 /* EVETitles.m in Sources */,
 				123C628218DB1E6A00B03156 /* NCLabel.m in Sources */,
 				126A0E6D185F3B9300A8E8A3 /* EVEServerStatus.m in Sources */,
+				12B5EFFE1ACBC33A003CDF65 /* NCShoppingGroup.m in Sources */,
 				12E5438118880B1E00DDFE7F /* NCDatabaseTypeVariationsViewController.m in Sources */,
 				127123891897818D005F46EE /* NCFittingShipModulesDataSource.mm in Sources */,
 				12F9562918CDF133005CEAD6 /* NCAPIKeyAccessMaskViewController.m in Sources */,
@@ -5354,6 +5365,7 @@
 				126A0E5F185F3B9300A8E8A3 /* EVECharacterID.m in Sources */,
 				120C336A19CAB0A90093EECA /* NCDBInvControlTower.m in Sources */,
 				126A0E3C185F3B9300A8E8A3 /* EVEContractItems.m in Sources */,
+				12B5F0011ACBC6AD003CDF65 /* NCShoppingGroup+Neocom.m in Sources */,
 				129D2610187E923300E2062C /* CollapsableTableView.m in Sources */,
 				126A0E05185F3B9300A8E8A3 /* EVECentralMarketStat.m in Sources */,
 				12436DAB1945A0310090D4A6 /* NCDatabase.xcdatamodeld in Sources */,

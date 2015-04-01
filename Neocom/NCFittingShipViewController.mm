@@ -30,6 +30,7 @@
 #import "NCStoryboardPopoverSegue.h"
 #import "UIColor+Neocom.h"
 #import "NCShoppingItem+Neocom.h"
+#import "NCShoppingGroup.h"
 #import "NCNewShoppingItemViewController.h"
 
 #include <set>
@@ -542,11 +543,18 @@
 		
 		eufe::Character* character = self.fit.pilot;
 		eufe::Ship* ship = character->getShip();
+		
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+												  insertIntoManagedObjectContext:nil];
+		shoppingGroup.name = self.fit.loadout.name.length > 0 ? self.fit.loadout.name : self.fit.type.typeName;
+		shoppingGroup.quantity = 1;
+		
 
 		void (^addItem)(eufe::Item*, int32_t) = ^(eufe::Item* item, int32_t quanity) {
 			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
 			if (!shoppingItem) {
 				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
+				shoppingItem.shoppingGroup = shoppingGroup;
 				if (shoppingItem)
 					items[@(item->getTypeID())] = shoppingItem;
 			}
@@ -574,7 +582,14 @@
 		for (auto drone: ship->getDrones())
 			addItem(drone, 1);
 		
-		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:[items allValues]];
+		
+		NSMutableString* identifier = [NSMutableString new];
+		for (NCShoppingItem* item in [[shoppingGroup.shoppingItems allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeID" ascending:YES]]])
+			[identifier appendFormat:@"%d:%d;", item.typeID, item.quantity];
+		shoppingGroup.identifier = identifier;
+		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
+		
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
 	};
 
 	

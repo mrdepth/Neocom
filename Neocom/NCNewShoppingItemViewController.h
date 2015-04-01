@@ -8,10 +8,11 @@
 
 #import "NCTableViewController.h"
 
+@class NCShoppingGroup;
 @interface NCNewShoppingItemViewController : NCTableViewController
 @property (weak, nonatomic) IBOutlet UIStepper *stepper;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *quantityItem;
-@property (nonatomic, strong) NSArray* items;
+@property (nonatomic, strong) NCShoppingGroup* shoppingGroup;
 - (IBAction)onChangeQuantity:(id)sender;
 - (IBAction)onSetQuantity:(id)sender;
 - (IBAction)onAdd:(id)sender;

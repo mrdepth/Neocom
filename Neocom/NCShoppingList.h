@@ -2,7 +2,7 @@
 //  NCShoppingList.h
 //  Neocom
 //
-//  Created by Артем Шиманский on 27.03.15.
+//  Created by Артем Шиманский on 01.04.15.
 //  Copyright (c) 2015 Artem Shimanski. All rights reserved.
 //
 
@@ -16,11 +16,10 @@
 - (NSArray*) allShoppingLists;
 @end
 
-
 @interface NCShoppingList : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *items;
+@property (nonatomic, retain) NSSet *shoppingGroups;
 
 + (instancetype) currentShoppingList;
 + (void) setCurrentShoppingList:(NCShoppingList*) shoppingList;
@@ -29,9 +28,9 @@
 
 @interface NCShoppingList (CoreDataGeneratedAccessors)
 
-- (void)addItemsObject:(NCShoppingItem *)value;
-- (void)removeItemsObject:(NCShoppingItem *)value;
-- (void)addItems:(NSSet *)values;
-- (void)removeItems:(NSSet *)values;
+- (void)addShoppingGroupsObject:(NSManagedObject *)value;
+- (void)removeShoppingGroupsObject:(NSManagedObject *)value;
+- (void)addShoppingGroups:(NSSet *)values;
+- (void)removeShoppingGroups:(NSSet *)values;
 
 @end

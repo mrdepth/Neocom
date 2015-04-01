@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic) int32_t quantity;
+@property (nonatomic) BOOL immutable;
 @property (nonatomic, retain) NSString* identifier;
 @property (nonatomic, retain) NSSet *shoppingItems;
 @property (nonatomic, retain) NCShoppingList *shoppingList;

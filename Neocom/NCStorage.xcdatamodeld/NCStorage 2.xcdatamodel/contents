@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="13F34" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -51,13 +51,14 @@
     <entity name="ShoppingGroup" representedClassName="NCShoppingGroup" syncable="YES">
         <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="immutable" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingGroup" inverseEntity="ShoppingItem" syncable="YES"/>
         <relationship name="shoppingList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingList" inverseName="shoppingGroups" inverseEntity="ShoppingList" syncable="YES"/>
     </entity>
     <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES">
-        <attribute name="finished" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="finished" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="shoppingGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingGroup" inverseName="shoppingItems" inverseEntity="ShoppingGroup" syncable="YES"/>
@@ -98,9 +99,9 @@
         <element name="LoadoutData" positionX="0" positionY="0" width="128" height="73"/>
         <element name="MailBox" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Setting" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="ShoppingItem" positionX="27" positionY="72" width="128" height="103"/>
+        <element name="ShoppingGroup" positionX="27" positionY="72" width="128" height="148"/>
+        <element name="ShoppingItem" positionX="27" positionY="72" width="128" height="105"/>
         <element name="ShoppingList" positionX="45" positionY="81" width="128" height="73"/>
         <element name="SkillPlan" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="ShoppingGroup" positionX="27" positionY="72" width="128" height="133"/>
     </elements>
 </model>

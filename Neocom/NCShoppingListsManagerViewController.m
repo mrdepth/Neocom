@@ -10,6 +10,7 @@
 #import "NCShoppingList.h"
 #import "NCStorage.h"
 #import "UIAlertView+Block.h"
+#import "NCShoppingGroup.h"
 
 @interface NCShoppingListsManagerViewController()
 @property (nonatomic, strong) NSMutableArray* rows;
@@ -183,7 +184,9 @@
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
 											 for (NCShoppingList* shoppingList in [[NCStorage sharedStorage] allShoppingLists]) {
-												 NSInteger records = shoppingList.shoppingItems.count;
+												 NSInteger records = 0;
+												 for (NCShoppingGroup* group in shoppingList.shoppingGroups)
+													 records += group.shoppingItems.count;
 												 if (shoppingList.name)
 													 [rows addObject:@{@"object":shoppingList, @"records":@(records), @"name":shoppingList.name}];
 												 else

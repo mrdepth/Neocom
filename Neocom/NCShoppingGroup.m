@@ -15,6 +15,7 @@
 
 @dynamic name;
 @dynamic quantity;
+@dynamic immutable;
 @dynamic identifier;
 @dynamic shoppingItems;
 @dynamic shoppingList;

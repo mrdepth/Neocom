@@ -503,14 +503,6 @@
 	return @"Cell";
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	if (!cell)
-		cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell"];
-	[self tableView:tableView configureCell:cell forRowAtIndexPath:indexPath];
-	return cell;
-}
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCAssetsViewControllerData* data = tableView == self.tableView ? self.data : self.searchResults;
 	NCAssetsViewControllerDataSection* section = data.sections[indexPath.section];

@@ -554,7 +554,7 @@
 			NCShoppingItem* shoppingItem = items[@(item->getTypeID())];
 			if (!shoppingItem) {
 				shoppingItem = [NCShoppingItem shoppingItemWithType:[self typeWithItem:item] quantity:quanity];
-				//shoppingItem.shoppingGroup = shoppingGroup;
+				shoppingItem.shoppingGroup = shoppingGroup;
 				[shoppingGroup addShoppingItemsObject:shoppingItem];
 				if (shoppingItem)
 					items[@(item->getTypeID())] = shoppingItem;
@@ -588,7 +588,7 @@
 		for (NCShoppingItem* item in [[shoppingGroup.shoppingItems allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeID" ascending:YES]]])
 			[identifier appendFormat:@"%d:%d;", item.typeID, item.quantity];
 		shoppingGroup.identifier = identifier;
-		
+		shoppingGroup.immutable = YES;
 		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
 		
 		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];

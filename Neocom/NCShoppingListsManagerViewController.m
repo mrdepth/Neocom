@@ -28,18 +28,6 @@
 	[self reload];
 }
 
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
-	BOOL changed = editing != self.editing;
-	[super setEditing:editing animated:animated];
-
-	if (changed) {
-		if (editing)
-			[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.rows.count inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-		else
-			[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.rows.count inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-	}
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -49,7 +37,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return self.rows.count + (self.editing ? 1 : 0);
+	return self.rows.count + 1;
 }
 
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -58,6 +46,14 @@
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NCShoppingList* list = self.rows[indexPath.row][@"object"];
+		[list.managedObjectContext performBlock:^{
+			[list.managedObjectContext deleteObject:list];
+			[list.managedObjectContext save:nil];
+			if (list == [NCShoppingList currentShoppingList])
+				[NCShoppingList setCurrentShoppingList:nil];
+			
+		}];
 		[self.rows removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
@@ -164,7 +160,7 @@
 		cell.subtitleLabel.text = nil;
 		cell.object = nil;
 		cell.accessoryView = nil;
-		cell.iconView.image = nil;
+		cell.iconView.image = [UIImage imageNamed:@"folder.png"];
 	}
 }
 

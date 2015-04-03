@@ -9,5 +9,6 @@
 #import "NCTableViewController.h"
 
 @interface NCAssetsViewController : NCTableViewController
+@property (weak, nonatomic) IBOutlet UILabel *balanceLabel;
 
 @end

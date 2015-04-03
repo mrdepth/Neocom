@@ -105,6 +105,10 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:NO animated:animated];
+	if (self.shoppingList != [NCShoppingList currentShoppingList]) {
+		self.shoppingList = [NCShoppingList currentShoppingList];
+		[self reload];
+	}
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -136,7 +140,7 @@
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, %d records, %@", nil),
+		return [NSString stringWithFormat:NSLocalizedString(@"x%d, %d items, %@", nil),
 				(int) self.stepper.value,
 				(int) self.rows.count,
 				[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
@@ -145,7 +149,7 @@
 		for (NCShoppingGroup* group in self.contents)
 			records += group.shoppingItems.count;
 
-		return [NSString stringWithFormat:NSLocalizedString(@"Contents: %d records, %@", nil),
+		return [NSString stringWithFormat:NSLocalizedString(@"Contents: %d items, %@", nil),
 				records,
 				[NSString shortStringWithFloat:self.totalContentsPrice unit:@"ISK"]];
 	}
@@ -175,9 +179,9 @@
 		NCShoppingItem* item = self.rows[indexPath.row];
 		cell.titleLabel.text = item.type.typeName;
 		if (item.price)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil), item.quantity * (int32_t) self.stepper.value, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity * self.stepper.value unit:@"ISK"]];
 		else
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d", nil), item.quantity * (int32_t) self.stepper.value];
+			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"x%d", nil), item.quantity * (int32_t) self.stepper.value];
 		cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		cell.object = item.type;
 	}
@@ -185,10 +189,15 @@
 		NCShoppingGroup* group = self.contents[indexPath.row];
 		cell.titleLabel.text = group.name;
 		double price = group.price;
-		if (price > 0)
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, %d records, %@", nil), group.quantity, group.shoppingItems.count, [NSString shortStringWithFloat:price unit:@"ISK"]];
+		NSMutableString* title = [NSMutableString new];
+		if (group.immutable)
+			[title appendFormat:NSLocalizedString(@"x%d, %d items", nil), group.quantity, group.shoppingItems.count];
 		else
-			cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, %d records", nil), group.quantity, group.shoppingItems.count];
+			[title appendFormat:NSLocalizedString(@"%d items", nil), group.shoppingItems.count];
+		
+		if (price > 0)
+			[title appendFormat:NSLocalizedString(@"%@", nil), [NSString shortStringWithFloat:price unit:@"ISK"]];
+		
 		cell.iconView.image = group.iconFile ? [[[NCDBEveIcon eveIconWithIconFile:group.iconFile] image] image] : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		if (!cell.iconView.image)
 			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];

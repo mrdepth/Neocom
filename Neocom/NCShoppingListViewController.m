@@ -15,6 +15,8 @@
 #import "EVECentralAPI.h"
 #import "NSString+Neocom.h"
 #import "NCLocationsManager.h"
+#import "NCPriceManager.h"
+#import "NSNumberFormatter+Neocom.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -30,7 +32,7 @@
 
 @interface NCShoppingListViewControllerSection : NSObject
 @property (nonatomic, strong) NSMutableArray* rows;
-@property (nonatomic, strong) NSString* title;
+@property (nonatomic, strong) NSString* name;
 @property (nonatomic, assign) double price;
 @end
 
@@ -42,7 +44,7 @@
 
 @interface NCShoppingListViewControllerAsset : NSObject
 @property (nonatomic, strong) EVEAssetListItem* asset;
-@property (nonatomic, strong) EVEAssetListItem* parentAsset;
+@property (nonatomic, strong) EVEAssetListItem* parent;
 @end
 
 @implementation NCShoppingListViewControllerSection;
@@ -90,7 +92,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
 	NCShoppingListViewControllerSection* section = self.groupedSections[sectionIndex];
-	return section.title;
+	if (section.price > 0)
+		return [NSString stringWithFormat:@"%@, %@", section.name, [NSString shortStringWithFloat:section.price unit:@"ISK"]];
+	else
+		return section.name;
 }
 
 #pragma mark - Table view delegate
@@ -295,15 +300,43 @@
 }
 
 - (void) update {
-	EVEAssetList* assets = self.data;
+	NCAssetsViewControllerData* data = self.data;
 	NSMutableArray* groupedSections = [NSMutableArray new];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
 										 block:^(NCTask *task) {
+											 NSMutableDictionary* assets = [NSMutableDictionary new];
+											 
+											 __weak __block void (^weakProcess)(EVEAssetListItem*) = nil;
+											 void (^process)(EVEAssetListItem*) = ^(EVEAssetListItem* item) {
+												 NSMutableArray* array = assets[@(item.typeID)];
+												 if (!array)
+													 assets[@(item.typeID)] = array = [NSMutableArray new];
+												 NCShoppingListViewControllerAsset* asset = [NCShoppingListViewControllerAsset new];
+												 asset.asset = item;
+												 asset.parent = item.parent;
+												 [array addObject:asset];
+												 
+												 for (EVEAssetListItem* subItem in item.contents) {
+													 weakProcess(subItem);
+												 }
+											 };
+											 
+											 weakProcess = process;
+
+											 for (NCAssetsViewControllerDataSection* section in data.sections) {
+												 for (EVEAssetListItem* item in section.assets) {
+													 process(item);
+												 }
+											 }
+
+											 
 											 NCStorage* storage = [NCStorage sharedStorage];
-											 NSMutableDictionary* assetsDic = [NSMutableDictionary new];
+											 NSMutableArray* itemsWithoutPrice = [NSMutableArray new];
+
 											 [storage.backgroundManagedObjectContext performBlockAndWait:^{
+												 
 												 for (NCShoppingGroup* group in self.shoppingList.shoppingGroups) {
 													 NCShoppingListViewControllerSection* section = [NCShoppingListViewControllerSection new];
 													 section.rows = [NSMutableArray new];
@@ -312,10 +345,34 @@
 														 NCShoppingListViewControllerRow* row = [NCShoppingListViewControllerRow new];
 														 row.items = @[item];
 														 [section.rows addObject:row];
+														 row.assets = assets[@(item.typeID)];
+														 
+														 if (item.price == nil)
+															 [itemsWithoutPrice addObject:item];
 													 }
-													 
-													 section.title = [NSString stringWithFormat:NSLocalizedString(@"%@, qty. %d", nil), group.name, group.quantity];
+													 if (group.immutable)
+														 section.name = [NSString stringWithFormat:NSLocalizedString(@"%@, x%d", nil), group.name, group.quantity];
+													 else
+														 section.name = group.name;
 													 [groupedSections addObject:section];
+												 }
+											 }];
+											 
+											 if (itemsWithoutPrice.count > 0) {
+												 NCPriceManager* priceManager = [NCPriceManager sharedManager];
+												 NSDictionary* prices = [priceManager pricesWithTypes:[itemsWithoutPrice valueForKey:@"typeID"]];
+												 for (NCShoppingItem* item in itemsWithoutPrice)
+													 item.price = prices[@(item.typeID)];
+											 }
+											 
+											 [storage.backgroundManagedObjectContext performBlockAndWait:^{
+												 for (NCShoppingListViewControllerSection* section in groupedSections) {
+													 double price = 0;
+													 for (NCShoppingListViewControllerRow* row in section.rows) {
+														 for (NCShoppingItem* item in row.items)
+															 price += item.quantity * item.price.sell.percentile;
+													 }
+													 section.price = price;
 												 }
 											 }];
 										 }
@@ -349,10 +406,17 @@
 	NCShoppingItem* item = [row.items lastObject];
 	
 	cell.titleLabel.text = item.type.typeName;
+	NSMutableString* subtitle = [[NSMutableString alloc] initWithFormat:NSLocalizedString(@"x%d", nil), item.quantity];
+
 	if (item.price)
-		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d, %@", nil), item.quantity, [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity unit:@"ISK"]];
-	else
-		cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Qty. %d", nil), item.quantity];
+		[subtitle appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity unit:@"ISK"]];
+	
+	NSInteger available = [[row.assets valueForKeyPath:@"@sum.asset.quantity"] integerValue];
+	if (available > 0)
+		[subtitle appendFormat:NSLocalizedString(@", available %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:available]];
+	
+	cell.subtitleLabel.text = subtitle;
+	
 	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = item.type;
 

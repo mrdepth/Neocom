@@ -15,6 +15,8 @@
 #import "NCLocationsManager.h"
 #import "NCAssetsAccountsViewController.h"
 #import "NCStoryboardPopoverSegue.h"
+#import "NCPriceManager.h"
+#import "EVECentralAPI.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -25,6 +27,7 @@
 
 @interface NCAssetsViewControllerData : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* sections;
+@property (nonatomic, assign) double balance;
 @end
 
 @implementation NCAssetsViewControllerDataSection
@@ -85,6 +88,7 @@
 		for (NCAssetsViewControllerDataSection* section in self.sections)
 			for (EVEAssetListItem* asset in section.assets)
 				process(asset);
+		self.balance = [aDecoder decodeDoubleForKey:@"balance"];
 		
 	}
 	return self;
@@ -117,6 +121,7 @@
 			for (EVEAssetListItem* asset in section.assets)
 				process(asset);
 		[aCoder encodeObject:assetsDetails forKey:@"assetsDetails"];
+		[aCoder encodeDouble:self.balance forKey:@"balance"];
 	}
 	
 }
@@ -237,6 +242,15 @@
 	return [NSString stringWithFormat:@"%@.%@", NSStringFromClass(self.class), [ids componentsJoinedByString:@","]];
 }
 
+- (void) update {
+	[super update];
+	NCAssetsViewControllerData* data = self.data;
+	if (data.balance > 0)
+		self.balanceLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(data.balance)]];
+	else
+		self.balanceLabel.text = nil;
+}
+
 - (void) reloadDataWithCachePolicy:(NSURLRequestCachePolicy) cachePolicy {
 	__block NSError* error = nil;
 	NCAccount* account = [NCAccount currentAccount];
@@ -263,8 +277,9 @@
 											 NSMutableArray* freeSpaceItems = [NSMutableArray new];
 											 NSMutableArray* topLevelAssets = [NSMutableArray new];
 											 NSMutableSet* locationIDs = [NSMutableSet new];
-
 											 
+											 NSMutableDictionary* typeIDs = [NSMutableDictionary new];
+
 											 for (NCAccount* account in accounts) {
 												 BOOL corporate = account.accountType == NCAccountTypeCorporate;
 												 NSString* owner = corporate ? account.corporationSheet.corporationName : account.characterInfo.characterName;
@@ -297,7 +312,10 @@
 													 }
 													 
 													 asset.type = type;
-													 
+
+													 if (type.marketGroup)
+														 typeIDs[@(asset.typeID)] = @([typeIDs[@(asset.typeID)] longLongValue] + asset.quantity);
+
 													 if (asset.locationID > 0) {
 														 [locationIDs addObject:@(asset.locationID)];
 														 if (type.group.groupID == 365) { // ControlTower
@@ -406,9 +424,17 @@
 												 section.identifier = @(0);
 												 [sections addObject:section];
 											 }
+											 
+											 NSDictionary* prices = [[NCPriceManager sharedManager] pricesWithTypes:[typeIDs allKeys]];
+											 __block double balance = 0;
+											 [typeIDs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+												 EVECentralMarketStatType* price = prices[key];
+												 balance += price.sell.percentile * [obj longLongValue];
+											 }];
 
 											 [sections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 											 data.sections = sections;
+											 data.balance = balance;
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {

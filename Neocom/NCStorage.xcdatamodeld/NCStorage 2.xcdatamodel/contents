@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="13F34" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="NCAccount" syncable="YES">
         <attribute name="characterID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -59,8 +59,8 @@
     </entity>
     <entity name="ShoppingItem" representedClassName="NCShoppingItem" syncable="YES">
         <attribute name="finished" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="quantity" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="shoppingGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ShoppingGroup" inverseName="shoppingItems" inverseEntity="ShoppingGroup" syncable="YES"/>
     </entity>
     <entity name="ShoppingList" representedClassName="NCShoppingList" syncable="YES">

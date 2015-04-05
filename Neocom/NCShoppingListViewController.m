@@ -17,6 +17,8 @@
 #import "NCLocationsManager.h"
 #import "NCPriceManager.h"
 #import "NSNumberFormatter+Neocom.h"
+#import "NCShoppingItemCell.h"
+#import "NCTableViewHeaderView.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -37,7 +39,7 @@
 @end
 
 @interface NCShoppingListViewControllerRow : NSObject
-@property (nonatomic, strong) NSArray* items;
+@property (nonatomic, strong) NSMutableArray* items;
 @property (nonatomic, strong) NSArray* assets;
 @property (nonatomic, assign) CGFloat progress;
 @end
@@ -58,9 +60,10 @@
 
 @interface NCShoppingListViewController()
 @property (nonatomic, strong) NSArray* accounts;
-@property (nonatomic, strong) NSArray* groupedSections;
-@property (nonatomic, strong) NSArray* plainSections;
+@property (nonatomic, strong) NSMutableArray* groupedSections;
+@property (nonatomic, strong) NSMutableArray* plainSections;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
+- (void) reloadData;
 @end
 
 @implementation NCShoppingListViewController
@@ -78,20 +81,24 @@
 
 }
 
+- (IBAction)onChangeMode:(id)sender {
+	[self reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return self.groupedSections.count;
+	return self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections.count : self.plainSections.count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-	NCShoppingListViewControllerSection* section = self.groupedSections[sectionIndex];
+	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[sectionIndex] : self.plainSections[sectionIndex];
 	return section.rows.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)sectionIndex {
-	NCShoppingListViewControllerSection* section = self.groupedSections[sectionIndex];
+	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[sectionIndex] : self.plainSections[sectionIndex];
 	if (section.price > 0)
 		return [NSString stringWithFormat:@"%@, %@", section.name, [NSString shortStringWithFloat:section.price unit:@"ISK"]];
 	else
@@ -101,6 +108,76 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[indexPath.section] : self.plainSections[indexPath.section];
+	NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
+	for (NCShoppingItem* item in row.items)
+		item.finished = YES;
+}
+
+- (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[indexPath.section] : self.plainSections[indexPath.section];
+	NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
+	for (NCShoppingItem* item in row.items)
+		item.finished = NO;
+}
+
+- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSMutableArray* sections = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections : self.plainSections;
+		NCShoppingListViewControllerSection* section = sections[indexPath.section];
+		NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
+		
+		double price = section.price;
+		for (NCShoppingItem* item in row.items)
+			price -= item.price.sell.percentile * item.quantity * item.shoppingGroup.quantity;
+		section.price = price;
+		
+		[section.rows removeObjectAtIndex:indexPath.row];
+		
+		if (section.rows.count == 0) {
+			[sections removeObjectAtIndex:indexPath.section];
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		else {
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			NCTableViewHeaderView* headerView = (NCTableViewHeaderView*) [tableView headerViewForSection:indexPath.section];
+			headerView.textLabel.text = [self tableView:tableView titleForHeaderInSection:indexPath.section];
+		}
+		
+		sections = self.segmentedControl.selectedSegmentIndex == 1 ? self.groupedSections : self.plainSections;
+		
+		NSArray* items = row.items;
+		NSInteger sectionIndex = 0;
+		NSMutableIndexSet* deleteSections = [NSMutableIndexSet new];
+		for (NCShoppingListViewControllerSection* section in sections) {
+			NSInteger rowIndex = 0;
+			NSMutableIndexSet* deleteRows = [NSMutableIndexSet new];
+			for (NCShoppingListViewControllerRow* row in section.rows) {
+				[row.items removeObjectsInArray:items];
+				if (row.items.count == 0)
+					[deleteRows addIndex:rowIndex];
+				rowIndex++;
+			}
+			if (deleteRows.count > 0)
+				[section.rows removeObjectsAtIndexes:deleteRows];
+			if (section.rows.count == 0)
+				[deleteSections addIndex:sectionIndex];
+			else {
+				double price = 0;
+				for (NCShoppingListViewControllerRow* row in section.rows)
+					for (NCShoppingItem* item in row.items)
+						price += item.price.sell.percentile * item.quantity * item.shoppingGroup.quantity;
+				section.price = price;
+			}
+			sectionIndex++;
+		}
+		if (deleteSections.count > 0)
+			[sections removeObjectsAtIndexes:deleteSections];
+	}
 }
 
 #pragma mark - NCTableViewController
@@ -302,6 +379,7 @@
 - (void) update {
 	NCAssetsViewControllerData* data = self.data;
 	NSMutableArray* groupedSections = [NSMutableArray new];
+	NSMutableArray* plainSections = [NSMutableArray new];
 	
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto
 										 title:NCTaskManagerDefaultTitle
@@ -334,6 +412,7 @@
 											 
 											 NCStorage* storage = [NCStorage sharedStorage];
 											 NSMutableArray* itemsWithoutPrice = [NSMutableArray new];
+											 NSMutableDictionary* items = [NSMutableDictionary new];
 
 											 [storage.backgroundManagedObjectContext performBlockAndWait:^{
 												 
@@ -343,12 +422,17 @@
 													 
 													 for (NCShoppingItem* item in group.shoppingItems) {
 														 NCShoppingListViewControllerRow* row = [NCShoppingListViewControllerRow new];
-														 row.items = @[item];
+														 row.items = [NSMutableArray arrayWithObject:item];
 														 [section.rows addObject:row];
 														 row.assets = assets[@(item.typeID)];
 														 
 														 if (item.price == nil)
 															 [itemsWithoutPrice addObject:item];
+														 
+														 NSMutableArray* array = items[@(item.typeID)];
+														 if (!array)
+															 items[@(item.typeID)] = array = [NSMutableArray new];
+														 [array addObject:item];
 													 }
 													 if (group.immutable)
 														 section.name = [NSString stringWithFormat:NSLocalizedString(@"%@, x%d", nil), group.name, group.quantity];
@@ -370,17 +454,62 @@
 													 double price = 0;
 													 for (NCShoppingListViewControllerRow* row in section.rows) {
 														 for (NCShoppingItem* item in row.items)
-															 price += item.quantity * item.price.sell.percentile;
+															 price += item.quantity * item.shoppingGroup.quantity * item.price.sell.percentile;
 													 }
 													 section.price = price;
 												 }
+												 
+												 NSMutableDictionary* dic = [NSMutableDictionary new];
+												 [items enumerateKeysAndObjectsUsingBlock:^(id key, NSMutableArray* array, BOOL *stop) {
+													 NCShoppingItem* item = [array lastObject];
+													 NCDBInvMarketGroup* marketGroup = nil;
+													 for (marketGroup = item.type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
+													 NCShoppingListViewControllerSection* section = dic[@(marketGroup.marketGroupID)];
+													 if (!section) {
+														 section = [NCShoppingListViewControllerSection new];
+														 section.rows = [NSMutableArray new];
+														 section.name = marketGroup.marketGroupName;
+														 section.price = 0;
+														 dic[@(marketGroup.marketGroupID)] = section;
+													 }
+													 NCShoppingListViewControllerRow* row = [NCShoppingListViewControllerRow new];
+													 double price = section.price;
+													 for (NCShoppingItem* item in array)
+														 price += item.quantity * item.shoppingGroup.quantity * item.price.sell.percentile;
+													 
+													 section.price = price;
+
+													 row.items = array;
+													 row.assets = assets[@(item.typeID)];
+
+													 [section.rows addObject:row];
+												 }];
+												 [plainSections addObjectsFromArray:[dic allValues]];
 											 }];
+											 
+											 for (NCShoppingListViewControllerSection* section in groupedSections)
+												 [section.rows sortUsingComparator:^NSComparisonResult(NCShoppingListViewControllerRow* obj1, NCShoppingListViewControllerRow* obj2) {
+													 NCShoppingItem* item1 = [obj1.items lastObject];
+													 NCShoppingItem* item2 = [obj2.items lastObject];
+													 return [item1.type.typeName compare:item2.type.typeName];
+												 }];
+											 for (NCShoppingListViewControllerSection* section in plainSections)
+												 [section.rows sortUsingComparator:^NSComparisonResult(NCShoppingListViewControllerRow* obj1, NCShoppingListViewControllerRow* obj2) {
+													 NCShoppingItem* item1 = [obj1.items lastObject];
+													 NCShoppingItem* item2 = [obj2.items lastObject];
+													 return [item1.type.typeName compare:item2.type.typeName];
+												 }];
+											 [groupedSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+											 [plainSections sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
+											 
 										 }
 							 completionHandler:^(NCTask *task) {
 								 if (!task.isCancelled) {
 									 self.groupedSections = groupedSections;
+									 self.plainSections = plainSections;
 								 }
 								 [super update];
+								 [self reloadData];
 							 }];
 }
 
@@ -399,27 +528,59 @@
 }
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
-	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
+	NCShoppingItemCell* cell = (NCShoppingItemCell*) tableViewCell;
 	
-	NCShoppingListViewControllerSection* section = self.groupedSections[indexPath.section];
+	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[indexPath.section] : self.plainSections[indexPath.section];
 	NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
-	NCShoppingItem* item = [row.items lastObject];
-	
-	cell.titleLabel.text = item.type.typeName;
-	NSMutableString* subtitle = [[NSMutableString alloc] initWithFormat:NSLocalizedString(@"x%d", nil), item.quantity];
 
-	if (item.price)
-		[subtitle appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:item.price.sell.percentile * item.quantity unit:@"ISK"]];
+	int32_t quantity = 0;
+	for (NCShoppingItem* item in row.items)
+		quantity += item.quantity * item.shoppingGroup.quantity;
+
+	NCShoppingItem* item = [row.items lastObject];
+
+	cell.titleLabel.text = item.type.typeName;
+	NSMutableString* subtitle = [[NSMutableString alloc] initWithFormat:NSLocalizedString(@"x%d", nil), quantity];
+
+	if (item.price.sell.percentile > 0)
+		[subtitle appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:item.price.sell.percentile * quantity unit:@"ISK"]];
 	
 	NSInteger available = [[row.assets valueForKeyPath:@"@sum.asset.quantity"] integerValue];
-	if (available > 0)
+	if (available > 0) {
 		[subtitle appendFormat:NSLocalizedString(@", available %@", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:available]];
+		cell.widthConstraint.constant = 32;
+	}
+	else
+		cell.widthConstraint.constant = 0;
 	
 	cell.subtitleLabel.text = subtitle;
 	
 	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = item.type;
+	
+}
 
+#pragma mark - Private
+
+- (void) reloadData {
+	[self.tableView reloadData];
+	NSArray* sections = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections : self.plainSections;
+	NSInteger sectionIndex = 0;
+	for (NCShoppingListViewControllerSection* section in sections) {
+		NSInteger rowIndex = 0;
+		for (NCShoppingListViewControllerRow* row in section.rows) {
+			BOOL finished = YES;
+			for (NCShoppingItem* item in row.items)
+				if (!item.finished) {
+					finished = NO;
+					break;;
+				}
+			if (finished)
+				[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex] animated:NO scrollPosition:UITableViewScrollPositionNone];
+			rowIndex++;
+		}
+		sectionIndex++;
+	}
 }
 
 @end

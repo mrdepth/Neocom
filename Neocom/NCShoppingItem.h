@@ -13,7 +13,7 @@
 
 @interface NCShoppingItem : NSManagedObject
 
-@property (nonatomic, assign) int32_t finished;
+@property (nonatomic, assign) BOOL finished;
 @property (nonatomic, assign) int32_t quantity;
 @property (nonatomic, assign) int32_t typeID;
 @property (nonatomic, retain) NCShoppingGroup *shoppingGroup;

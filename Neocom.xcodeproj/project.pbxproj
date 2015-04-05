@@ -21,6 +21,8 @@
 		1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1204156E189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm */; };
 		12041572189A4C3D00B15BB5 /* NCFittingEHPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */; };
 		12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */; };
+		12045E4D1AD161CF00AD32F8 /* NCShoppingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */; };
+		12045E521AD16E9800AD32F8 /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 12045E511AD16E9800AD32F8 /* map.png */; };
 		12056E5E18C45F2E008D8755 /* NCPriceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12056E5D18C45F2E008D8755 /* NCPriceManager.m */; };
 		1206C5EA18922FB20010BEE8 /* NCMailBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5E918922FB20010BEE8 /* NCMailBox.m */; };
 		1206C5EF189280870010BEE8 /* NCMailBoxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1206C5EE189280870010BEE8 /* NCMailBoxViewController.m */; };
@@ -732,6 +734,9 @@
 		12041571189A4C3D00B15BB5 /* NCFittingEHPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCFittingEHPCell.m; sourceTree = "<group>"; };
 		12045E441ACB20D100AD32F8 /* NCShoppingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingListViewController.h; sourceTree = "<group>"; };
 		12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingListViewController.m; sourceTree = "<group>"; };
+		12045E4B1AD161CF00AD32F8 /* NCShoppingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCShoppingItemCell.h; sourceTree = "<group>"; };
+		12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCShoppingItemCell.m; sourceTree = "<group>"; };
+		12045E511AD16E9800AD32F8 /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
 		12056E5C18C45F2E008D8755 /* NCPriceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCPriceManager.h; sourceTree = "<group>"; };
 		12056E5D18C45F2E008D8755 /* NCPriceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCPriceManager.m; sourceTree = "<group>"; };
 		1206C5E818922FB10010BEE8 /* NCMailBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCMailBox.h; sourceTree = "<group>"; };
@@ -2051,6 +2056,8 @@
 				12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */,
 				12045E441ACB20D100AD32F8 /* NCShoppingListViewController.h */,
 				12045E451ACB20D100AD32F8 /* NCShoppingListViewController.m */,
+				12045E4B1AD161CF00AD32F8 /* NCShoppingItemCell.h */,
+				12045E4C1AD161CF00AD32F8 /* NCShoppingItemCell.m */,
 			);
 			name = ShoppingList;
 			sourceTree = "<group>";
@@ -2111,6 +2118,7 @@
 		1219C1041A9E662C00FF6205 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				12045E511AD16E9800AD32F8 /* map.png */,
 				12B42E731ACB113D00A0D956 /* folder.png */,
 				1219C13F1A9F8F5400FF6205 /* criminal.png */,
 				1219C13D1A9E66D100FF6205 /* ships.png */,
@@ -4831,6 +4839,7 @@
 				1219C1291A9E662C00FF6205 /* facebook@2x.png in Resources */,
 				849B9FB01896D24A00D4DD2B /* armor.png in Resources */,
 				120B507618FCFFCB0033AF78 /* level_050.gif in Resources */,
+				12045E521AD16E9800AD32F8 /* map.png in Resources */,
 				849B9FDA1896D24A00D4DD2B /* thumbsDown.png in Resources */,
 				126F1CE81954069F00E5CD4F /* perception.png in Resources */,
 				120B508E18FCFFCB0033AF78 /* level_450.gif in Resources */,
@@ -5313,6 +5322,7 @@
 				122F01C819483D2100D04D60 /* NCDBInvType+Neocom.mm in Sources */,
 				1203B69718B4A4FC003A0D72 /* NCWalletJournalViewController.m in Sources */,
 				120968631845F0CB00921A37 /* NCAppDelegate.mm in Sources */,
+				12045E4D1AD161CF00AD32F8 /* NCShoppingItemCell.m in Sources */,
 				120C332219CAB0A50093EECA /* NCDBIndActivity.m in Sources */,
 				129D2621187E923300E2062C /* UIView+Nib.m in Sources */,
 				120C337019CAB0AA0093EECA /* NCDBMapRegion.m in Sources */,

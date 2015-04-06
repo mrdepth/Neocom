@@ -19,6 +19,7 @@
 #import "NSNumberFormatter+Neocom.h"
 #import "NCShoppingItemCell.h"
 #import "NCTableViewHeaderView.h"
+#import "NCShoppingAssetsViewController.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -63,7 +64,7 @@
 @property (nonatomic, strong) NSMutableArray* groupedSections;
 @property (nonatomic, strong) NSMutableArray* plainSections;
 @property (nonatomic, strong) NCShoppingList* shoppingList;
-- (void) reloadData;
+- (void) updateSelections;
 @end
 
 @implementation NCShoppingListViewController
@@ -81,8 +82,28 @@
 
 }
 
+- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
+	[super setEditing:editing animated:animated];
+	[self updateSelections];
+}
+
 - (IBAction)onChangeMode:(id)sender {
-	[self reloadData];
+	[self.tableView reloadData];
+	[self updateSelections];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"NCShoppingAssetsViewController"]) {
+		NCShoppingAssetsViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		UIView* cell;
+		for (cell = sender; cell && ![cell isKindOfClass:[NCShoppingItemCell class]]; cell = cell.superview);
+		NCShoppingListViewControllerRow* row = [(NCShoppingItemCell*) cell object];
+		controller.assets = [row.assets valueForKeyPath:@"asset"];
+	}
 }
 
 #pragma mark - Table view data source
@@ -509,7 +530,7 @@
 									 self.plainSections = plainSections;
 								 }
 								 [super update];
-								 [self reloadData];
+								 [self updateSelections];
 							 }];
 }
 
@@ -556,14 +577,12 @@
 	cell.subtitleLabel.text = subtitle;
 	
 	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
-	cell.object = item.type;
-	
+	cell.object = row;
 }
 
 #pragma mark - Private
 
-- (void) reloadData {
-	[self.tableView reloadData];
+- (void) updateSelections {
 	NSArray* sections = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections : self.plainSections;
 	NSInteger sectionIndex = 0;
 	for (NCShoppingListViewControllerSection* section in sections) {

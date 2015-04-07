@@ -287,9 +287,7 @@
 		for (EVECharacterSheetSkill* skill in self.characterSheet.skills)
 			skillPoints += skill.skillpoints;
 
-		//return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)", nil), [NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count];
-		
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@ ISK", nil),
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ skillpoints (%d skills)\n%@", nil),
 				[NSNumberFormatter neocomLocalizedStringFromInteger:skillPoints], (int32_t) self.characterSheet.skills.count,
 				[NSString shortStringWithFloat:self.characterSheet.balance unit:NSLocalizedString(@"ISK", nil)]];
 	}

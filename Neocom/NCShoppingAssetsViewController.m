@@ -11,14 +11,24 @@
 #import "EVEOnlineAPI.h"
 #import "EVEAssetListItem+Neocom.h"
 
+@interface NCShoppingAssetsViewControllerRow : NSObject
+@property (nonatomic, strong) NSString* title;
+@property (nonatomic, assign) NSInteger quantity;
+@property (nonatomic, strong) id containerID;
+@property (nonatomic, strong) UIImage* icon;
+@end
+
 @interface NCShoppingAssetsViewControllerSection : NSObject
 @property (nonatomic, assign) float security;
 @property (nonatomic, strong) NSString* title;
 @property (nonatomic, strong) NSArray* rows;
 @end
 
-@implementation NCShoppingAssetsViewControllerSection;
 
+@implementation NCShoppingAssetsViewControllerRow
+@end
+
+@implementation NCShoppingAssetsViewControllerSection;
 @end
 
 @interface NCShoppingAssetsViewController()
@@ -30,6 +40,8 @@
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
+	EVEAssetListItem* asset = [self.assets lastObject];
+	self.title = asset.type.typeName;
 	self.refreshControl = nil;
 	[self reload];
 }
@@ -59,23 +71,15 @@
 
 - (void) tableView:(UITableView *)tableView configureCell:(UITableViewCell*) tableViewCell forRowAtIndexPath:(NSIndexPath*) indexPath {
 	NCShoppingAssetsViewControllerSection* section = self.sections[indexPath.section];
-	EVEAssetListItem* asset = section.rows[indexPath.row];
+	NCShoppingAssetsViewControllerRow* row = section.rows[indexPath.row];
 	
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
-	cell.iconView.image = asset.type.icon ? asset.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
+	cell.iconView.image = row.icon;
 	
-	cell.titleLabel.text = asset.type.typeName;
-	cell.subtitleLabel.text = [NSString stringWithFormat:@"x%d", asset.quantity];
-	cell.object = asset;
+	cell.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d items", nil), (int) row.quantity];
+	cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In %@", nil), row.title];
+	cell.object = row;
 	
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		if (asset.parent) {
-			if (asset.owner)
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@ (%@)", nil), asset.parent.title, asset.owner];
-			else
-				cell.subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"In: %@", nil), asset.parent.title];
-		}
-	}
 }
 
 - (NSString*) tableView:(UITableView *)tableView cellIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -95,22 +99,42 @@
 										 block:^(NCTask *task) {
 											 NSMutableDictionary* dic = [NSMutableDictionary new];
 											 
+											 id containerID = nil;
+											 
 											 for (EVEAssetListItem* asset in self.assets) {
 												 int32_t locationID = 0;
-												 if (asset.locationID > 0 )
-													 locationID = asset.locationID;
-												 else
+												 if (asset.parent) {
 													 locationID = asset.parent.locationID;
-												 NSMutableArray* array = dic[@(locationID)];
-												 if (!array)
-													 dic[@(locationID)] = array = [NSMutableArray new];
-												 [array addObject:asset];
+													 containerID = @(asset.parent.itemID);
+												 }
+												 else {
+													 locationID = asset.locationID;
+													 containerID = @(asset.flag);
+												 }
+												 
+												 NSMutableDictionary* rows = dic[@(locationID)];
+												 if (!rows)
+													 dic[@(locationID)] = rows = [NSMutableDictionary new];
+												 
+												 NCShoppingAssetsViewControllerRow* row = rows[containerID];
+												 if (!row) {
+													 rows[containerID] = row = [NCShoppingAssetsViewControllerRow new];
+													 if (asset.parent) {
+														 row.title = asset.parent.title;
+														 row.icon = asset.parent.type.icon ? asset.parent.type.icon.image.image : [NCDBEveIcon defaultTypeIcon].image.image;
+													 }
+													 else {
+														 row.title = NSLocalizedString(@"Hangar", nil);
+														 row.icon = [UIImage imageNamed:@"stationcontainer.png"];
+													 }
+												 }
+												 row.quantity += asset.quantity;
 											 }
 											 NSDictionary* locations = [[NCLocationsManager defaultManager] locationsNamesWithIDs:dic.allKeys];
 											 
 											 [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 												 NCShoppingAssetsViewControllerSection* section = [NCShoppingAssetsViewControllerSection new];
-												 section.rows = obj;
+												 section.rows = [[obj allValues] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
 												 NCLocationsManagerItem* location = locations[key];
 												 if (location)
 													 section.title = location.name;

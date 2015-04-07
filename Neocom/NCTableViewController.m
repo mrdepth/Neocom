@@ -533,7 +533,7 @@
 	if (recognizer.state == UIGestureRecognizerStateBegan) {
 		[self becomeFirstResponder];
 		UIMenuController* controller = [UIMenuController sharedMenuController];
-		controller.menuItems = @[[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Collaps All", nil) action:@selector(collapsAll:)],
+		controller.menuItems = @[[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Collapse All", nil) action:@selector(collapsAll:)],
 								 [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Expand All", nil) action:@selector(expandAll:)]];
 		[controller setTargetRect:recognizer.view.bounds inView:recognizer.view];
 		[controller setMenuVisible:YES animated:YES];

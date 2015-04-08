@@ -239,7 +239,7 @@
 			<key>title</key>
 			<string>Shopping List</string>
 			<key>image</key>
-			<string>station.png</string>
+			<string>note.png</string>
 			<key>charAccessMask</key>
 			<integer>0</integer>
 			<key>corpAccessMask</key>

@@ -23,6 +23,11 @@
 #import "UIColor+Neocom.h"
 #import "NSArray+Neocom.h"
 #import "NCDatabaseTypeRequirementsViewController.h"
+#import "NCPriceManager.h"
+#import "NCShoppingList.h"
+#import "NCShoppingItem+Neocom.h"
+#import "NCShoppingGroup+Neocom.h"
+#import "NCNewShoppingItemViewController.h"
 
 #define EVEDBUnitIDMillisecondsID 101
 #define EVEDBUnitIDInverseAbsolutePercentID 108
@@ -50,6 +55,7 @@
 @property (nonatomic, copy) NSString* detail;
 @property (nonatomic, strong) NCDBEveIcon* icon;
 @property (nonatomic, strong) NCDBEveIcon* accessoryIcon;
+@property (nonatomic, strong) UIImage* image;
 @property (nonatomic, strong) id object;
 @property (nonatomic, strong) NSString* cellIdentifier;
 @property (nonatomic, assign) NSInteger indentationLevel;
@@ -170,7 +176,20 @@
 		NCDatabaseTypeRequirementsViewController* destinationViewController = segue.destinationViewController;
 		destinationViewController.type = self.type;
 	}
+	else if ([segue.identifier isEqualToString:@"NCNewShoppingItemViewController"]) {
+		NCNewShoppingItemViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.shoppingGroup = sender;
+	}
 }
+
+- (IBAction) unwindFromNewShoppingItem:(UIStoryboardSegue*)segue {
+	
+}
+
 
 #pragma mark - NCTableViewController
 
@@ -202,7 +221,13 @@
 	NCDefaultTableViewCell* cell = (NCDefaultTableViewCell*) tableViewCell;
 	cell.titleLabel.text = row.title;
 	cell.subtitleLabel.text = row.detail;
-	cell.iconView.image = row.icon ? row.icon.image.image : self.defaultAttributeIcon.image.image;
+	if (row.image)
+		cell.iconView.image = row.image;
+	else if (row.icon)
+		cell.iconView.image = row.icon.image.image;
+	else
+		cell.iconView.image = self.defaultAttributeIcon.image.image;
+	
 	cell.indentationLevel = row.indentationLevel;
 	cell.indentationWidth = 16;
 	
@@ -228,7 +253,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NCDatabaseTypeInfoViewControllerRow* row = self.sections[indexPath.section][@"rows"][indexPath.row];
-	if (row.object && [row.object isKindOfClass:[NCTrainingQueue class]]) {
+	if ([row.object isKindOfClass:[NCTrainingQueue class]]) {
 		NCTrainingQueue* trainingQueue = row.object;
 		[[UIAlertView alertViewWithTitle:NSLocalizedString(@"Add to skill plan?", nil)
 								 message:[NSString stringWithFormat:NSLocalizedString(@"Training time: %@", nil), [NSString stringWithTimeLeft:trainingQueue.trainingTime]]
@@ -241,6 +266,21 @@
 							 }
 						 }
 							 cancelBlock:nil] show];
+	}
+	if ([row.object isKindOfClass:[NCShoppingList class]]) {
+		NCShoppingGroup* shoppingGroup = [[NCShoppingGroup alloc] initWithEntity:[NSEntityDescription entityForName:@"ShoppingGroup" inManagedObjectContext:[[NCStorage sharedStorage] managedObjectContext]]
+												  insertIntoManagedObjectContext:nil];
+		NCDBInvMarketGroup* marketGroup;
+		for (marketGroup = self.type.marketGroup; marketGroup.parentGroup; marketGroup = marketGroup.parentGroup);
+		shoppingGroup.name = marketGroup.marketGroupName;
+		shoppingGroup.immutable = NO;
+		NCShoppingItem* shoppingItem = [NCShoppingItem shoppingItemWithType:self.type quantity:1];
+		shoppingItem.shoppingGroup = shoppingGroup;
+		shoppingGroup.iconFile = marketGroup.icon.iconFile;
+		[shoppingGroup addShoppingItemsObject:shoppingItem];
+		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
+		
+		[self performSegueWithIdentifier:@"NCNewShoppingItemViewController" sender:shoppingGroup];
 	}
 }
 
@@ -323,27 +363,49 @@
 											   NCTrainingQueue* trainingQueue = [[NCTrainingQueue alloc] initWithAccount:account];
 											   [trainingQueue addRequiredSkillsForType:type];
 											   
-											   //NSDictionary *skillRequirementsMap = [NSArray arrayWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"skillRequirementsMap" ofType:@"plist"]]];
-											   //static NSArray* skillRequirementsMap = nil;
-											   //static int32_t requirementID[] = {182, 183, 184, 1285, 1289, 1290};
-											   //static int32_t skillLevelID[] = {277, 278, 279, 1286, 1287, 1288};
+											   if (type.marketGroup) {
+												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+												   section[@"title"] = NSLocalizedString(@"Shopping List", nil);
+												   NSMutableArray* rows = [NSMutableArray array];
+												   section[@"rows"] = rows;
+												   
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = NSLocalizedString(@"Add to Shopping List", nil);
+												   
+												   NCTask* priceTask = [[self taskManager] addTaskWithIndentifier:nil
+																											title:NCTaskManagerDefaultTitle
+																											block:^(NCTask *task) {
+																												NSDictionary* price = [[NCPriceManager sharedManager] pricesWithTypes:@[@(type.typeID)]];
+																												EVECentralMarketStatType* marketStat = price[@(type.typeID)];
+																												if (marketStat)
+																													row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ ISK", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(marketStat.sell.percentile)]];
+																											} completionHandler:^(NCTask *task) {
+																												if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0)
+																													[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+																											}];
+												   [priceTask addDependency:task];
+												   
+												   row.cellIdentifier = @"Cell";
+												   row.image = [UIImage imageNamed:@"note.png"];
+												   row.object = [NCShoppingList currentShoppingList];
+												   [rows addObject:row];
+												   [sections addObject:section];
+											   }
 											   
-											   {
-												   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
-												   if (count > 0) {
-													   NSMutableDictionary *section = [NSMutableDictionary dictionary];
-													   section[@"title"] = NSLocalizedString(@"Variations", nil);
-													   NSMutableArray* rows = [NSMutableArray array];
-													   section[@"rows"] = rows;
-													   
-													   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
-													   row.title = NSLocalizedString(@"Variations", nil);
-													   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
-													   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
-													   row.cellIdentifier = @"VariationsCell";
-													   [rows addObject:row];
-													   [sections addObject:section];
-												   }
+											   NSInteger count = type.parentType ? type.parentType.variations.count : type.variations.count;
+											   if (count > 0) {
+												   NSMutableDictionary *section = [NSMutableDictionary dictionary];
+												   section[@"title"] = NSLocalizedString(@"Variations", nil);
+												   NSMutableArray* rows = [NSMutableArray array];
+												   section[@"rows"] = rows;
+												   
+												   NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
+												   row.title = NSLocalizedString(@"Variations", nil);
+												   row.detail = [NSString stringWithFormat:@"%d", (int32_t) count + 1];
+												   row.icon = [NCDBEveIcon eveIconWithIconFile:@"09_07"];
+												   row.cellIdentifier = @"VariationsCell";
+												   [rows addObject:row];
+												   [sections addObject:section];
 											   }
 											   
 											   if (account && account.activeSkillPlan) {

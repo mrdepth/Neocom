@@ -62,7 +62,7 @@
 	return self;
 }
 
-- (void) addTaskWithIndentifier:(NSString*) identifier
+- (NCTask*) addTaskWithIndentifier:(NSString*) identifier
 						  title:(NSString*) title
 						  block:(void(^)(NCTask* task)) block
 			  completionHandler:(void(^)(NCTask* task)) completionHandler {
@@ -82,6 +82,7 @@
 		}
 	}
 	[self addOperation:task];
+	return task;
 }
 
 - (void) setActive:(BOOL)active {

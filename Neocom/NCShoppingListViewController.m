@@ -82,6 +82,23 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	if (self.shoppingList != [NCShoppingList currentShoppingList]) {
+		self.shoppingList = [NCShoppingList currentShoppingList];
+		[self reloadFromCache];
+	}
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	NCStorage* storage = [NCStorage sharedStorage];
+	[storage.managedObjectContext performBlock:^{
+		if ([storage.managedObjectContext hasChanges])
+			[storage.managedObjectContext save:nil];
+	}];
+}
+
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
 	[self updateSelections];
@@ -105,6 +122,12 @@
 		controller.assets = [row.assets valueForKeyPath:@"asset"];
 	}
 }
+
+- (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
+	self.shoppingList = [NCShoppingList currentShoppingList];
+	[self reloadFromCache];
+}
+
 
 #pragma mark - Table view data source
 
@@ -198,6 +221,26 @@
 		}
 		if (deleteSections.count > 0)
 			[sections removeObjectsAtIndexes:deleteSections];
+		
+		NCStorage* storage = [NCStorage sharedStorage];
+		[storage.managedObjectContext performBlock:^{
+			NSMutableSet* groups = [NSMutableSet new];
+			for (NCShoppingItem* item in row.items) {
+				[groups addObject:item.shoppingGroup];
+				[item.shoppingGroup removeShoppingItemsObject:item];
+				[storage.managedObjectContext deleteObject:item];
+			}
+			for (NCShoppingGroup* group in groups) {
+				if (group.shoppingItems.count == 0) {
+					[storage.managedObjectContext deleteObject:group];
+				}
+				else if (group.immutable) {
+					group.identifier = [group defaultIdentifier];
+				}
+			}
+//			if ([storage.managedObjectContext hasChanges])
+//				[storage.managedObjectContext save:nil];
+		}];
 	}
 }
 

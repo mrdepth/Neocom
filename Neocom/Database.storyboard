@@ -330,6 +330,7 @@
                         <outlet property="descriptionLabel" destination="sH6-hb-ETj" id="ZaM-FL-6ad"/>
                         <outlet property="imageView" destination="s5t-gK-Wwc" id="WVH-6q-z9J"/>
                         <outlet property="titleLabel" destination="EvT-51-Y7k" id="Fbd-P6-tzb"/>
+                        <segue destination="ufY-cW-LRt" kind="push" identifier="NCNewShoppingItemViewController" id="OPB-g6-4pw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aXK-Dz-dyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -851,6 +852,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ogi-VE-G7W" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="291" y="-226"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ayh-Ru-oa6">
+            <objects>
+                <viewController storyboardIdentifier="NCNewShoppingItemViewController" id="ufY-cW-LRt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="two-Co-ZW8"/>
+                        <viewControllerLayoutGuide type="bottom" id="duJ-ct-56k"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DpV-7s-Los">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="YgS-KN-Gdz">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="WIi-HP-LaV"/>
+                    </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShoppingList"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yOt-Gk-0Pp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="728" y="455"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

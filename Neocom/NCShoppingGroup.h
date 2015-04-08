@@ -20,7 +20,11 @@
 @property (nonatomic, retain) NSSet *shoppingItems;
 @property (nonatomic, retain) NCShoppingList *shoppingList;
 @property (nonatomic, retain) NSString* iconFile;
+
+- (NSString*) defaultIdentifier;
+
 @end
+
 
 @interface NCShoppingGroup (CoreDataGeneratedAccessors)
 

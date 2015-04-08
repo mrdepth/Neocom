@@ -75,8 +75,11 @@
 															 shoppingList.name = name;
 															 [context save:nil];
 														 }];
-														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
-														 [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+														 [NCShoppingList setCurrentShoppingList:shoppingList];
+														 [self performSegueWithIdentifier:@"Unwind" sender:nil];
+
+//														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
+//														 [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 													 }
 												 }
 													 cancelBlock:nil];
@@ -153,14 +156,14 @@
 		if (cell.object == [NCShoppingList currentShoppingList])
 			accessoryImage = [UIImage imageNamed:@"checkmark.png"];
 		cell.accessoryView = accessoryImage ? [[UIImageView alloc] initWithImage:accessoryImage] : nil;
-		cell.iconView.image = [UIImage imageNamed:@"folder.png"];
+		cell.iconView.image = [UIImage imageNamed:@"note.png"];
 	}
 	else {
 		cell.titleLabel.text = NSLocalizedString(@"Add Shopping List", nil);
 		cell.subtitleLabel.text = nil;
 		cell.object = nil;
 		cell.accessoryView = nil;
-		cell.iconView.image = [UIImage imageNamed:@"folder.png"];
+		cell.iconView.image = [UIImage imageNamed:@"note.png"];
 	}
 }
 

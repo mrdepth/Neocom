@@ -91,7 +91,14 @@
 					items[@(item.typeID)] = item;
 				for (NCShoppingItem* item in self.shoppingGroup.shoppingItems) {
 					NCShoppingItem* item2 = items[@(item.typeID)];
-					item2.quantity += item.quantity;
+					if (item2)
+						item2.quantity += item.quantity * quantity;
+					else {
+						[item.shoppingGroup removeShoppingItemsObject:item];
+						[group.managedObjectContext insertObject:item];
+						item.shoppingGroup = group;
+						item.quantity *= quantity;
+					}
 				}
 			}
 		}
@@ -120,7 +127,7 @@
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
 	self.shoppingList = [NCShoppingList currentShoppingList];
-	[self reload];
+//	[self reload];
 }
 
 #pragma mark - Table view data source
@@ -139,11 +146,18 @@
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
-		return [NSString stringWithFormat:NSLocalizedString(@"x%d, %d items, %@", nil),
-				(int) self.stepper.value,
-				(int) self.rows.count,
-				[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
+	if (section == 0) {
+		if (self.rows.count > 1)
+			return [NSString stringWithFormat:NSLocalizedString(@"x%d, %d items, %@", nil),
+					(int) self.stepper.value,
+					(int) self.rows.count,
+					[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
+		else
+			return [NSString stringWithFormat:NSLocalizedString(@"x%d, %@", nil),
+					(int) self.stepper.value,
+					[NSString shortStringWithFloat:self.totalPrice * self.stepper.value unit:@"ISK"]];
+
+	}
 	else {
 		int records = 0;
 		for (NCShoppingGroup* group in self.contents)
@@ -161,7 +175,9 @@
 
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete && indexPath.section == 0) {
+		[self.shoppingGroup removeShoppingItemsObject:self.rows[indexPath.row]];
 		[self.rows removeObjectAtIndex:indexPath.row];
+		self.shoppingGroup.identifier = [self.shoppingGroup defaultIdentifier];
 		//[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self reloadSummary];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -189,15 +205,16 @@
 		NCShoppingGroup* group = self.contents[indexPath.row];
 		cell.titleLabel.text = group.name;
 		double price = group.price;
-		NSMutableString* title = [NSMutableString new];
+		NSMutableString* s = [NSMutableString new];
 		if (group.immutable)
-			[title appendFormat:NSLocalizedString(@"x%d, %d items", nil), group.quantity, group.shoppingItems.count];
+			[s appendFormat:NSLocalizedString(@"x%d, %d items", nil), group.quantity, group.shoppingItems.count];
 		else
-			[title appendFormat:NSLocalizedString(@"%d items", nil), group.shoppingItems.count];
+			[s appendFormat:NSLocalizedString(@"%d items", nil), group.shoppingItems.count];
 		
 		if (price > 0)
-			[title appendFormat:NSLocalizedString(@"%@", nil), [NSString shortStringWithFloat:price unit:@"ISK"]];
+			[s appendFormat:NSLocalizedString(@", %@", nil), [NSString shortStringWithFloat:price unit:@"ISK"]];
 		
+		cell.subtitleLabel.text = s;
 		cell.iconView.image = group.iconFile ? [[[NCDBEveIcon eveIconWithIconFile:group.iconFile] image] image] : [[[NCDBEveIcon defaultTypeIcon] image] image];
 		if (!cell.iconView.image)
 			cell.iconView.image = [[[NCDBEveIcon defaultTypeIcon] image] image];

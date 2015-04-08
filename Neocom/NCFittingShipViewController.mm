@@ -584,10 +584,7 @@
 			addItem(drone, 1);
 		
 		
-		NSMutableString* identifier = [NSMutableString new];
-		for (NCShoppingItem* item in [[shoppingGroup.shoppingItems allObjects] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"typeID" ascending:YES]]])
-			[identifier appendFormat:@"%d:%d;", item.typeID, item.quantity];
-		shoppingGroup.identifier = identifier;
+		shoppingGroup.identifier = [shoppingGroup defaultIdentifier];
 		shoppingGroup.immutable = YES;
 		shoppingGroup.iconFile = self.fit.loadout.type.icon.iconFile;
 		

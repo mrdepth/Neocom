@@ -20,6 +20,7 @@
 #import "NCShoppingItemCell.h"
 #import "NCTableViewHeaderView.h"
 #import "NCShoppingAssetsViewController.h"
+#import "NCDatabaseTypeInfoViewController.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -101,12 +102,12 @@
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	[self updateSelections];
+//	[self updateSelections];
 }
 
 - (IBAction)onChangeMode:(id)sender {
 	[self.tableView reloadData];
-	[self updateSelections];
+//	[self updateSelections];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -120,6 +121,20 @@
 		for (cell = sender; cell && ![cell isKindOfClass:[NCShoppingItemCell class]]; cell = cell.superview);
 		NCShoppingListViewControllerRow* row = [(NCShoppingItemCell*) cell object];
 		controller.assets = [row.assets valueForKeyPath:@"asset"];
+	}
+	else if ([segue.identifier isEqualToString:@"NCDatabaseTypeInfoViewController"]) {
+		NCDatabaseTypeInfoViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		
+		UIView* cell;
+		for (cell = sender; cell && ![cell isKindOfClass:[NCShoppingItemCell class]]; cell = cell.superview);
+		NCShoppingListViewControllerRow* row = [(NCShoppingItemCell*) cell object];
+
+		NCShoppingItem* item = [row.items lastObject];
+		controller.type = item.type;
 	}
 }
 
@@ -152,17 +167,14 @@
 #pragma mark - Table view delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NCShoppingItemCell* cell = (NCShoppingItemCell*) [tableView cellForRowAtIndexPath:indexPath];
 	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[indexPath.section] : self.plainSections[indexPath.section];
 	NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
+	
+	cell.finished = !cell.finished;
 	for (NCShoppingItem* item in row.items)
-		item.finished = YES;
-}
-
-- (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-	NCShoppingListViewControllerSection* section = self.segmentedControl.selectedSegmentIndex == 0 ? self.groupedSections[indexPath.section] : self.plainSections[indexPath.section];
-	NCShoppingListViewControllerRow* row = section.rows[indexPath.row];
-	for (NCShoppingItem* item in row.items)
-		item.finished = NO;
+		item.finished = cell.finished;
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -573,7 +585,7 @@
 									 self.plainSections = plainSections;
 								 }
 								 [super update];
-								 [self updateSelections];
+//								 [self updateSelections];
 							 }];
 }
 
@@ -621,6 +633,14 @@
 	
 	cell.iconView.image = item.type.icon ? item.type.icon.image.image : [[[NCDBEveIcon defaultTypeIcon] image] image];
 	cell.object = row;
+
+	BOOL finished = YES;
+	for (NCShoppingItem* item in row.items)
+		if (!item.finished) {
+			finished = NO;
+			break;
+		}
+	cell.finished = finished;
 }
 
 #pragma mark - Private

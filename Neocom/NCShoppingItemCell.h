@@ -16,4 +16,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
 @property (weak, nonatomic) IBOutlet UIView *detailsView;
 @property (weak, nonatomic) IBOutlet UIView *anchorView;
+
+@property (assign, nonatomic) BOOL finished;
+
 @end

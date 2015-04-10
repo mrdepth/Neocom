@@ -8,6 +8,13 @@
 
 #import "NCTableViewController.h"
 
+@class NCShoppingListsManagerViewController;
+@class NCShoppingList;
+@protocol NCShoppingListsManagerViewControllerDelegate<NSObject>
+- (void) shoppingListsManagerViewController:(NCShoppingListsManagerViewController*) controller didSelectShoppingList:(NCShoppingList*) shoppingList;
+@end
+
 @interface NCShoppingListsManagerViewController : NCTableViewController
+@property (nonatomic, weak) id<NCShoppingListsManagerViewControllerDelegate> delegate;
 
 @end

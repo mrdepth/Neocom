@@ -106,7 +106,10 @@
 		if ([shoppingList.managedObjectContext hasChanges])
 			[shoppingList.managedObjectContext save:nil];
 	}];
-	[self performSegueWithIdentifier:@"Unwind" sender:nil];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[self dismissViewControllerAnimated:YES completion:nil];
+	else
+		[self performSegueWithIdentifier:@"Unwind" sender:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -127,7 +130,7 @@
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
 	self.shoppingList = [NCShoppingList currentShoppingList];
-//	[self reload];
+	[self reload];
 }
 
 #pragma mark - Table view data source
@@ -182,6 +185,12 @@
 		[self reloadSummary];
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 	}
+}
+
+#pragma mark - Table View Delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - NCTableViewController
@@ -240,12 +249,8 @@
 	self.stepper.enabled = NO;
 	
 	if (self.shoppingList) {
-		[self.shoppingList.managedObjectContext performBlock:^{
-			NSString* name = self.shoppingList.name;
-			dispatch_async(dispatch_get_main_queue(), ^{
-				self.navigationItem.rightBarButtonItem.title = name;
-			});
-		}];
+		NSString* name = self.shoppingList.name;
+		self.navigationItem.rightBarButtonItem.title = name;
 	}
 
 	[[self taskManager] addTaskWithIndentifier:NCTaskManagerIdentifierAuto

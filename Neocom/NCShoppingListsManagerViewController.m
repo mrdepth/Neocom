@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSMutableArray* rows;
 
 - (void) reload;
+- (void) unwind;
 
 @end
 
@@ -47,14 +48,20 @@
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NCShoppingList* list = self.rows[indexPath.row][@"object"];
-		[list.managedObjectContext performBlock:^{
+		[self.rows removeObjectAtIndex:indexPath.row];
+
+		[list.managedObjectContext performBlockAndWait:^{
 			[list.managedObjectContext deleteObject:list];
 			[list.managedObjectContext save:nil];
-			if (list == [NCShoppingList currentShoppingList])
-				[NCShoppingList setCurrentShoppingList:nil];
-			
+			if (list == [NCShoppingList currentShoppingList]) {
+				if (self.rows.count > 0)
+					[NCShoppingList setCurrentShoppingList:self.rows[0][@"object"]];
+				else
+					[NCShoppingList setCurrentShoppingList:nil];
+			}
 		}];
-		[self.rows removeObjectAtIndex:indexPath.row];
+		[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
+
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -76,7 +83,9 @@
 															 [context save:nil];
 														 }];
 														 [NCShoppingList setCurrentShoppingList:shoppingList];
-														 [self performSegueWithIdentifier:@"Unwind" sender:nil];
+														 [self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
+
+														 [self unwind];
 
 //														 [self.rows addObject:@{@"name":name, @"object":shoppingList}];
 //														 [tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -132,7 +141,8 @@
 		}
 		else {
 			[NCShoppingList setCurrentShoppingList:shoppingList];
-			[self performSegueWithIdentifier:@"Unwind" sender:nil];
+			[self.delegate shoppingListsManagerViewController:self didSelectShoppingList:[NCShoppingList currentShoppingList]];
+			[self unwind];
 		}
 	}
 }
@@ -198,6 +208,16 @@
 									 [self.tableView reloadData];
 								 }
 							 }];
+}
+
+- (void) unwind {
+	[self performSegueWithIdentifier:@"Unwind" sender:nil];
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if (self.navigationController.viewControllers[0] == self)
+			[self dismissViewControllerAnimated:YES completion:nil];
+	}
+
 }
 
 @end

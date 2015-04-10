@@ -21,6 +21,7 @@
 #import "NCTableViewHeaderView.h"
 #import "NCShoppingAssetsViewController.h"
 #import "NCDatabaseTypeInfoViewController.h"
+#import "NCShoppingListsManagerViewController.h"
 
 @interface NCAssetsViewControllerDataSection : NSObject<NSCoding>
 @property (nonatomic, strong) NSArray* assets;
@@ -60,7 +61,7 @@
 @implementation NCShoppingListViewControllerAsset;
 @end
 
-@interface NCShoppingListViewController()
+@interface NCShoppingListViewController()<NCShoppingListsManagerViewControllerDelegate>
 @property (nonatomic, strong) NSArray* accounts;
 @property (nonatomic, strong) NSMutableArray* groupedSections;
 @property (nonatomic, strong) NSMutableArray* plainSections;
@@ -88,6 +89,11 @@
 	if (self.shoppingList != [NCShoppingList currentShoppingList]) {
 		self.shoppingList = [NCShoppingList currentShoppingList];
 		[self reloadFromCache];
+	}
+	
+	if (self.shoppingList) {
+		NSString* name = self.shoppingList.name;
+		self.navigationItem.rightBarButtonItem.title = name;
 	}
 }
 
@@ -136,11 +142,17 @@
 		NCShoppingItem* item = [row.items lastObject];
 		controller.type = item.type;
 	}
+	else if ([segue.identifier isEqualToString:@"NCShoppingListsManagerViewController"]) {
+		NCShoppingListsManagerViewController* controller;
+		if ([segue.destinationViewController isKindOfClass:[UINavigationController class]])
+			controller = [segue.destinationViewController viewControllers][0];
+		else
+			controller = segue.destinationViewController;
+		controller.delegate = self;
+	}
 }
 
 - (IBAction)unwindFromShoppingListsManager:(UIStoryboardSegue*) segue {
-	self.shoppingList = [NCShoppingList currentShoppingList];
-	[self reloadFromCache];
 }
 
 
@@ -453,6 +465,7 @@
 }
 
 - (void) update {
+
 	NCAssetsViewControllerData* data = self.data;
 	NSMutableArray* groupedSections = [NSMutableArray new];
 	NSMutableArray* plainSections = [NSMutableArray new];
@@ -642,6 +655,16 @@
 		}
 	cell.finished = finished;
 }
+
+#pragma mark - NCShoppingListsManagerViewControllerDelegate
+
+- (void) shoppingListsManagerViewController:(NCShoppingListsManagerViewController*) controller didSelectShoppingList:(NCShoppingList*) shoppingList {
+	self.shoppingList = [NCShoppingList currentShoppingList];
+	[self reloadFromCache];
+	NSString* name = self.shoppingList.name;
+	self.navigationItem.rightBarButtonItem.title = name;
+}
+
 
 #pragma mark - Private
 

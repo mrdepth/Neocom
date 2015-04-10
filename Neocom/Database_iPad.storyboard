@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -404,6 +404,7 @@
                         <outlet property="descriptionLabel" destination="GWG-ya-20s" id="nzn-nW-8u8"/>
                         <outlet property="imageView" destination="oaM-R6-LqJ" id="lcE-Dp-hoQ"/>
                         <outlet property="titleLabel" destination="0QL-yO-ixM" id="UGe-zu-zfi"/>
+                        <segue destination="xim-9U-LTC" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCStoryboardPopoverSegue" id="omx-s3-AV1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Wx-aR-Hpi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1068,6 +1069,32 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="91A-zI-kHn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4119" y="-202"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="GJc-cc-ewy">
+            <objects>
+                <viewController storyboardIdentifier="NCNewShoppingItemViewController" id="xim-9U-LTC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BOU-OO-cB8"/>
+                        <viewControllerLayoutGuide type="bottom" id="10c-e8-I0i"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SoY-Dc-JgU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="640"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="CrB-Z6-Txi">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="0s6-4Z-H4v"/>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="640"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShoppingList_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jM3-HA-9Wu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3572" y="-1300"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

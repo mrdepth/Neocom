@@ -361,6 +361,7 @@
 		127123A91897A94E005F46EE /* NCProgressLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 127123A81897A94E005F46EE /* NCProgressLabel.m */; };
 		127123AA1897ABF3005F46EE /* libeufe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1271239518978236005F46EE /* libeufe.a */; };
 		127AAFEB18841F6B008003E5 /* UIColor+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */; };
+		127BF2611AD79B240037A401 /* ShoppingList_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */; };
 		127C50B718CF52DA0074877C /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 127C50B618CF52D90074877C /* clear.png */; };
 		127E1BE1188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */; };
 		128A1F32189906A400005C4F /* NCFittingShipWorkspaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128A1F31189906A400005C4F /* NCFittingShipWorkspaceViewController.m */; };
@@ -1315,6 +1316,7 @@
 		127123A81897A94E005F46EE /* NCProgressLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCProgressLabel.m; sourceTree = "<group>"; };
 		127AAFE918841F6B008003E5 /* UIColor+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Neocom.h"; sourceTree = "<group>"; };
 		127AAFEA18841F6B008003E5 /* UIColor+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Neocom.m"; sourceTree = "<group>"; };
+		127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShoppingList_iPad.storyboard; sourceTree = "<group>"; };
 		127C50B618CF52D90074877C /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
 		127E1BDF188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseCertificatesViewController.h; sourceTree = "<group>"; };
 		127E1BE0188FEC2000F65EA8 /* NCDatabaseCertificatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseCertificatesViewController.m; sourceTree = "<group>"; };
@@ -1968,6 +1970,7 @@
 				12430BBA18C881EA0025D971 /* Help.storyboard */,
 				12B971AA18EC4A38008F8740 /* Help_iPad.storyboard */,
 				12B42E6D1AC7182000A0D956 /* ShoppingList.storyboard */,
+				127BF2601AD79B240037A401 /* ShoppingList_iPad.storyboard */,
 				1209686A1845F0CB00921A37 /* Images.xcassets */,
 				1209685A1845F0CB00921A37 /* Neocom-Info.plist */,
 				1209685B1845F0CB00921A37 /* InfoPlist.strings */,
@@ -4851,6 +4854,7 @@
 				849B9FB01896D24A00D4DD2B /* armor.png in Resources */,
 				120B507618FCFFCB0033AF78 /* level_050.gif in Resources */,
 				12045E521AD16E9800AD32F8 /* map.png in Resources */,
+				127BF2611AD79B240037A401 /* ShoppingList_iPad.storyboard in Resources */,
 				849B9FDA1896D24A00D4DD2B /* thumbsDown.png in Resources */,
 				126F1CE81954069F00E5CD4F /* perception.png in Resources */,
 				120B508E18FCFFCB0033AF78 /* level_450.gif in Resources */,

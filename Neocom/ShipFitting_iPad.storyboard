@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="TJG-0a-PxB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="TJG-0a-PxB">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
         <!--Fitting Ship Workspace View Controller-->
@@ -359,6 +359,7 @@
                         <segue destination="wO2-On-Fww" kind="custom" identifier="NCFittingTypeVariationsViewController" customClass="NCStoryboardPopoverSegue" id="Sm3-AS-J5F"/>
                         <segue destination="1ld-C9-qGe" kind="custom" identifier="NCFittingRequiredSkillsViewController" customClass="NCStoryboardPopoverSegue" id="qRC-GT-P4Y"/>
                         <segue destination="ihG-oW-7xo" kind="modal" identifier="NCDatabaseTypeInfoViewController" modalPresentationStyle="formSheet" id="6de-rM-WXG"/>
+                        <segue destination="Abj-th-VUQ" kind="custom" identifier="NCNewShoppingItemViewController" customClass="NCStoryboardPopoverSegue" id="zgM-bO-agr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nmZ-zC-vXM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2428,6 +2429,32 @@ IAogA
             </objects>
             <point key="canvasLocation" x="1316" y="-699"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="TCJ-bN-4BD">
+            <objects>
+                <viewController storyboardIdentifier="NCNewShoppingItemViewController" id="Abj-th-VUQ" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2Ni-Lf-Qm1"/>
+                        <viewControllerLayoutGuide type="bottom" id="nOS-WZ-HYu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6q1-6G-t6w">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="620"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="IIk-FF-2gV">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="esu-3e-fsp"/>
+                    </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="620"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="ShoppingList_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgS-Fh-WuF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="400" y="-1301"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Gravimetric.png" width="32" height="32"/>
@@ -2471,6 +2498,6 @@ IAogA
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="2kd-1b-uC9"/>
-        <segue reference="M8o-qj-QTf"/>
+        <segue reference="Fiw-dF-eJ2"/>
     </inferredMetricsTieBreakers>
 </document>

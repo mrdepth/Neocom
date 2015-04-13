@@ -23,6 +23,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *buyoutTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rewardTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *collateralTitleLabel;
-@property (strong, nonatomic) id object;
 
 @end

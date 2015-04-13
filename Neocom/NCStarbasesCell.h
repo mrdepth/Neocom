@@ -15,5 +15,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *stateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *fuelLabel;
-@property (strong, nonatomic) id object;
 @end

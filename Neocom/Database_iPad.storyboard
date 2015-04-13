@@ -32,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="eE4-9A-BqP">
-                            <rect key="frame" x="0.0" y="64" width="703" height="44"/>
+                            <rect key="frame" x="0.0" y="44" width="703" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <textInputTraits key="textInputTraits"/>
@@ -378,6 +378,18 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="UGF-FU-pJc" kind="push" identifier="NCDatabaseTypeRequirementsViewController" id="vSC-S1-aw1"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResultsCell" id="xOn-CW-8sZ" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="568" width="540" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xOn-CW-8sZ" id="aMy-oq-ziM">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="jyk-Xo-pa7" kind="push" identifier="NCDatabaseFetchedResultsViewController" id="PiZ-46-qgw"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1096,6 +1108,42 @@
             </objects>
             <point key="canvasLocation" x="3572" y="-1300"/>
         </scene>
+        <!--Results-->
+        <scene sceneID="cI9-Ro-DUE">
+            <objects>
+                <tableViewController id="jyk-Xo-pa7" customClass="NCDatabaseFetchedResultsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="MmW-o7-XzV" customClass="CollapsableTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="QhR-Xd-4DP" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QhR-Xd-4DP" id="dCV-eL-R6y">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="emB-sr-OBq" kind="push" identifier="NCDatabaseViewController" id="8d4-pf-mMg"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="jyk-Xo-pa7" id="wAS-sA-3jK"/>
+                            <outlet property="delegate" destination="jyk-Xo-pa7" id="gcj-1f-6qX"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Results" id="aY9-VD-QAQ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="K8P-a6-cWV"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P0o-c6-lSK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4936" y="-108"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1103,14 +1151,14 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="3cm-Ks-iAp"/>
+        <segue reference="8d4-pf-mMg"/>
+        <segue reference="20I-Ju-Smn"/>
+        <segue reference="bSQ-JI-nGb"/>
+        <segue reference="bTb-0b-9f9"/>
+        <segue reference="u6h-Fe-EVA"/>
         <segue reference="ojV-wi-W6u"/>
         <segue reference="qsv-5o-k5F"/>
-        <segue reference="Zf5-j1-cwh"/>
-        <segue reference="bSQ-JI-nGb"/>
         <segue reference="D4Y-OJ-c0f"/>
-        <segue reference="bTb-0b-9f9"/>
-        <segue reference="9zE-3c-7d8"/>
-        <segue reference="20I-Ju-Smn"/>
-        <segue reference="01H-Qm-y5M"/>
     </inferredMetricsTieBreakers>
 </document>

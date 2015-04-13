@@ -14,5 +14,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *characterLabel;
-@property (strong, nonatomic) id object;
 @end

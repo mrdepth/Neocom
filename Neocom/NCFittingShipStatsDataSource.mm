@@ -67,6 +67,7 @@
 @property (nonatomic, assign) float alignTime;
 @property (nonatomic, assign) float signature;
 @property (nonatomic, assign) float cargo;
+@property (nonatomic, assign) float mass;
 @property (nonatomic, strong) UIImage *sensorImage;
 @property (nonatomic, strong) NCDamagePattern* damagePattern;
 @property (nonatomic, assign) float droneRange;
@@ -171,7 +172,8 @@
 															stats.alignTime = ship->getAlignTime();
 															stats.signature =ship->getSignatureRadius();
 															stats.cargo =ship->getAttribute(eufe::CAPACITY_ATTRIBUTE_ID)->getValue();
-															
+															stats.mass = ship->getMass();
+														
 															switch(ship->getScanType()) {
 																case eufe::Ship::SCAN_TYPE_GRAVIMETRIC:
 																	stats.sensorImage = [UIImage imageNamed:@"Gravimetric.png"];
@@ -529,6 +531,7 @@
 			cell.sensorImageView.image = self.shipStats.sensorImage;
 			cell.droneRangeLabel.text = [NSString stringWithFormat:@"%.1f km", self.shipStats.droneRange];
 			cell.warpSpeedLabel.text = [NSString stringWithFormat:@"%.2f AU/s", self.shipStats.warpSpeed];
+			cell.massLabel.text = [NSString stringWithFormat:@"%@ kg", [NSNumberFormatter neocomLocalizedStringFromNumber:@(self.shipStats.mass)]];
 		}
 	}
 	else if (indexPath.section == 6) {

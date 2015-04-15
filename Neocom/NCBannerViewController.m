@@ -142,9 +142,12 @@
 }
 
 - (void) updateBanner {
+	static int retry= 0;
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
-		if ([ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID].purchased) {
+	ASInAppPurchase* purchase = [ASInAppPurchase inAppPurchaseWithProductID:NCInAppFullProductID];
+	if (purchase || retry >= 3) {
+		retry = 0;
+		if (purchase.purchased) {
 			if (self.gadBannerView.superview) {
 				[self.gadBannerView removeFromSuperview];
 				self.bannerView.intrinsicContentSize = CGSizeZero;
@@ -169,6 +172,7 @@
 		}
 	}
 	else {
+		retry++;
 		[self performSelector:@selector(updateBanner) withObject:nil afterDelay:10];
 	}
 	

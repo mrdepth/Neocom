@@ -20,39 +20,39 @@
 						},
 						{
 						"groupName": "Commander Battleship",
-						"groupID": "793"
+						"groupID": "848"
 						},
 						{
 						"groupName": "Commander Cruiser",
-						"groupID": "793"
+						"groupID": "790"
 						},
 						{
 						"groupName": "Commander Destroyer",
-						"groupID": "793"
+						"groupID": "794"
 						},
 						{
 						"groupName": "Commander Frigate",
-						"groupID": "793"
+						"groupID": "789"
 						},
 						{
 						"groupName": "Cruiser",
-						"groupID": "793"
+						"groupID": "551"
 						},
 						{
 						"groupName": "Destroyer",
-						"groupID": "793"
+						"groupID": "575"
 						},
 						{
 						"groupName": "Frigate",
-						"groupID": "793"
+						"groupID": "550"
 						},
 						{
 						"groupName": "Hauler",
-						"groupID": "793"
+						"groupID": "554"
 						},
 						{
 						"groupName": "Officer",
-						"groupID": "793"
+						"groupID": "553"
 						}
 						]
 			 },

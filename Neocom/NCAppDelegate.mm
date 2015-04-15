@@ -49,7 +49,6 @@
 @implementation NCAppDelegate
 
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //#warning Enable Flurry
 #if !TARGET_IPHONE_SIMULATOR

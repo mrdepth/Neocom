@@ -7,7 +7,7 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>863436D1-F8A0-4AA1-9700-DB889B84C607</string>
 	<key>IDESourceControlProjectName</key>
-	<string>NCDatabase</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>0F0B6FB3121415B4BFE652B8CA72F270CA803FB0</key>
@@ -18,15 +18,15 @@
 		<string>github.com:mrdepth/eufe.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>dbTools/NCDatabase/NCDatabase.xcodeproj</string>
+	<string>dbTools/NCDatabase/NCDatabase.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0F0B6FB3121415B4BFE652B8CA72F270CA803FB0</key>
-		<string>../../../..ThirdParty/EVEOnlineAPI</string>
+		<string>../../../..ThirdParty/EVEOnlineAPI/</string>
 		<key>CBD3C72D1EC244FEC895CDE83582355773BC1B4F</key>
 		<string>../../../..</string>
 		<key>CE59D664C95604646A8898B717A20F0AFC1A609F</key>
-		<string>../../../..ThirdParty/eufe</string>
+		<string>../../../..ThirdParty/eufe/</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:mrdepth/EVEUniverse.git</string>

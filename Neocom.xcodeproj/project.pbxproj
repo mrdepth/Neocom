@@ -123,6 +123,11 @@
 		12124AAB188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAA188914E200F01C59 /* NCDatabaseTypeMarketInfoViewController.m */; };
 		12124AAF1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */; };
 		12160495187EE2AA00BD1DCF /* NCAccountCharacterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */; };
+		1216EB841AE0DFE20026AF58 /* NCDBWhType.m in Sources */ = {isa = PBXBuildFile; fileRef = 1216EB831AE0DFE20026AF58 /* NCDBWhType.m */; };
+		1216EB8A1AE0E0EA0026AF58 /* NCDBWhType+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 1216EB891AE0E0EA0026AF58 /* NCDBWhType+Neocom.m */; };
+		1216EB8C1AE0EDFA0026AF58 /* terminate.png in Resources */ = {isa = PBXBuildFile; fileRef = 1216EB8B1AE0EDFA0026AF58 /* terminate.png */; };
+		1216EB8E1AE0F5FF0026AF58 /* planetarycommodities.png in Resources */ = {isa = PBXBuildFile; fileRef = 1216EB8D1AE0F5FF0026AF58 /* planetarycommodities.png */; };
+		12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12190BF81ADFE7E0009E1C5E /* NCDatabaseWHViewController.m */; };
 		1219C1211A9E662C00FF6205 /* assets.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C1051A9E662C00FF6205 /* assets.png */; };
 		1219C1221A9E662C00FF6205 /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C1061A9E662C00FF6205 /* calendar.png */; };
 		1219C1231A9E662C00FF6205 /* certificates.png in Resources */ = {isa = PBXBuildFile; fileRef = 1219C1071A9E662C00FF6205 /* certificates.png */; };
@@ -906,6 +911,14 @@
 		12124AAE1889151000F01C59 /* NCDatabaseTypeMarketInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseTypeMarketInfoCell.m; sourceTree = "<group>"; };
 		12160493187EE2AA00BD1DCF /* NCAccountCharacterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAccountCharacterCell.h; sourceTree = "<group>"; };
 		12160494187EE2AA00BD1DCF /* NCAccountCharacterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAccountCharacterCell.m; sourceTree = "<group>"; };
+		1216EB821AE0DFE20026AF58 /* NCDBWhType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDBWhType.h; sourceTree = "<group>"; };
+		1216EB831AE0DFE20026AF58 /* NCDBWhType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDBWhType.m; sourceTree = "<group>"; };
+		1216EB881AE0E0EA0026AF58 /* NCDBWhType+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NCDBWhType+Neocom.h"; sourceTree = "<group>"; };
+		1216EB891AE0E0EA0026AF58 /* NCDBWhType+Neocom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NCDBWhType+Neocom.m"; sourceTree = "<group>"; };
+		1216EB8B1AE0EDFA0026AF58 /* terminate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = terminate.png; sourceTree = "<group>"; };
+		1216EB8D1AE0F5FF0026AF58 /* planetarycommodities.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = planetarycommodities.png; sourceTree = "<group>"; };
+		12190BF71ADFE7E0009E1C5E /* NCDatabaseWHViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCDatabaseWHViewController.h; sourceTree = "<group>"; };
+		12190BF81ADFE7E0009E1C5E /* NCDatabaseWHViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCDatabaseWHViewController.m; sourceTree = "<group>"; };
 		1219C1051A9E662C00FF6205 /* assets.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = assets.png; sourceTree = "<group>"; };
 		1219C1061A9E662C00FF6205 /* calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar.png; sourceTree = "<group>"; };
 		1219C1071A9E662C00FF6205 /* certificates.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = certificates.png; sourceTree = "<group>"; };
@@ -2141,9 +2154,20 @@
 			name = NCAccountCharacterCell;
 			sourceTree = "<group>";
 		};
+		12190BF31ADFE7C3009E1C5E /* NCDatabaseWHViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12190BF71ADFE7E0009E1C5E /* NCDatabaseWHViewController.h */,
+				12190BF81ADFE7E0009E1C5E /* NCDatabaseWHViewController.m */,
+			);
+			name = NCDatabaseWHViewController;
+			sourceTree = "<group>";
+		};
 		1219C1041A9E662C00FF6205 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				1216EB8D1AE0F5FF0026AF58 /* planetarycommodities.png */,
+				1216EB8B1AE0EDFA0026AF58 /* terminate.png */,
 				12B950A41ADB8F15009E31DB /* browser.png */,
 				12B950A21ADB8EC7009E31DB /* augmentations.png */,
 				124D38931AD4F872000D92CE /* note.png */,
@@ -2467,6 +2491,8 @@
 				126F1BBE19530EAD00E5CD4F /* NCDBRamActivity+Neocom.m */,
 				126F1BC319531D5C00E5CD4F /* NCDBMapRegion+Neocom.h */,
 				126F1BC419531D5C00E5CD4F /* NCDBMapRegion+Neocom.m */,
+				1216EB881AE0E0EA0026AF58 /* NCDBWhType+Neocom.h */,
+				1216EB891AE0E0EA0026AF58 /* NCDBWhType+Neocom.m */,
 			);
 			name = NCDatabase;
 			sourceTree = "<group>";
@@ -3261,6 +3287,8 @@
 		1288A9DD1948386E00C61334 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				1216EB821AE0DFE20026AF58 /* NCDBWhType.h */,
+				1216EB831AE0DFE20026AF58 /* NCDBWhType.m */,
 				120C332919CAB0A60093EECA /* NCDBCertCertificate.h */,
 				120C332A19CAB0A60093EECA /* NCDBCertCertificate.m */,
 				120C332C19CAB0A60093EECA /* NCDBCertMastery.h */,
@@ -3372,6 +3400,7 @@
 				1243771218969E390078F526 /* NCDatabaseNPCViewController */,
 				12C107DD1ADD5820008D60DF /* NCDatabaseFetchedResultsViewController */,
 				12C7EE9F1886CE5D00F90763 /* NCSkillHierarchy */,
+				12190BF31ADFE7C3009E1C5E /* NCDatabaseWHViewController */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -4872,6 +4901,7 @@
 				120B508218FCFFCB0033AF78 /* level_230.gif in Resources */,
 				1219C13B1A9E662C00FF6205 /* votes.png in Resources */,
 				849B9FBE1896D24A00D4DD2B /* explosion.png in Resources */,
+				1216EB8C1AE0EDFA0026AF58 /* terminate.png in Resources */,
 				849B9FC01896D24A00D4DD2B /* hull.png in Resources */,
 				1219C12D1A9E662C00FF6205 /* items.png in Resources */,
 				120B507C18FCFFCB0033AF78 /* level_131.gif in Resources */,
@@ -4933,6 +4963,7 @@
 				1243761C189653980078F526 /* Character.storyboard in Resources */,
 				849B9FB11896D24A00D4DD2B /* armorRepairer.png in Resources */,
 				849B9FCB1896D24A00D4DD2B /* powerGrid.png in Resources */,
+				1216EB8E1AE0F5FF0026AF58 /* planetarycommodities.png in Resources */,
 				12B971A318EC28D2008F8740 /* POSFitting_iPad.storyboard in Resources */,
 				1219C1271A9E662C00FF6205 /* evemail.png in Resources */,
 				1219C1311A9E662C00FF6205 /* market.png in Resources */,
@@ -5224,6 +5255,7 @@
 				12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */,
 				12436DAE1945A06B0090D4A6 /* NCDatabase.m in Sources */,
 				12FDA33518E03172007B091D /* NCFittingAmountCell.m in Sources */,
+				12190BF91ADFE7E0009E1C5E /* NCDatabaseWHViewController.m in Sources */,
 				129D261C187E923300E2062C /* LUIToolbar.m in Sources */,
 				12C5075F189BCC110064AC32 /* UIImage+Neocom.m in Sources */,
 				126A0E49185F3B9300A8E8A3 /* EVESkillQueue.m in Sources */,
@@ -5332,6 +5364,7 @@
 				120C338219CAB0AB0093EECA /* NCDBIndProduct.m in Sources */,
 				8452190E189AEEA700E7E3C1 /* NCLoadout.m in Sources */,
 				1271239E18979712005F46EE /* NCFittingShipModulesTableHeaderView.m in Sources */,
+				1216EB841AE0DFE20026AF58 /* NCDBWhType.m in Sources */,
 				126A0E70185F3B9300A8E8A3 /* NAPILookup.m in Sources */,
 				1204156F189A487B00B15BB5 /* NCFittingShipStatsDataSource.mm in Sources */,
 				12ED82B71AC04AF900C593C4 /* EVEPlanetaryColonies.m in Sources */,
@@ -5364,6 +5397,7 @@
 				128A1F3B1899141200005C4F /* NCFittingShipDroneCell.m in Sources */,
 				12C5074F189B6F170064AC32 /* NCShipFit.mm in Sources */,
 				120C338819CAB0AB0093EECA /* NCDBEufeItemCategory.m in Sources */,
+				1216EB8A1AE0E0EA0026AF58 /* NCDBWhType+Neocom.m in Sources */,
 				12041560189A44F400B15BB5 /* NCFittingShipCapacitorCell.m in Sources */,
 				128BCE70188579E8000E1922 /* NCDatabaseViewController.m in Sources */,
 				12045E461ACB20D100AD32F8 /* NCShoppingListViewController.m in Sources */,

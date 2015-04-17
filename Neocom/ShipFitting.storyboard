@@ -1412,13 +1412,13 @@ IAogA
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Fittings" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wtD-uw-4mE" customClass="LUILabel">
-                                                            <rect key="frame" x="143" y="2" width="67" height="15"/>
+                                                            <rect key="frame" x="143" y="2" width="68" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xMY-6Y-eFl">
-                                                            <rect key="frame" x="143" y="17" width="67" height="15"/>
+                                                            <rect key="frame" x="143" y="17" width="68" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1427,19 +1427,19 @@ IAogA
                                                             <rect key="frame" x="119" y="5" width="24" height="24"/>
                                                         </imageView>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Drones" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4Gc-OZ-OxM" customClass="LUILabel">
-                                                            <rect key="frame" x="242" y="2" width="67" height="15"/>
+                                                            <rect key="frame" x="243" y="2" width="67" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Nw2-wk-5tU">
-                                                            <rect key="frame" x="242" y="17" width="67" height="15"/>
+                                                            <rect key="frame" x="243" y="17" width="67" height="15"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </label>
                                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="drone.png" translatesAutoresizingMaskIntoConstraints="NO" id="UPO-sq-ejZ">
-                                                            <rect key="frame" x="218" y="5" width="24" height="24"/>
+                                                            <rect key="frame" x="219" y="5" width="24" height="24"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1451,7 +1451,7 @@ IAogA
                                                         <constraint firstItem="xMY-6Y-eFl" firstAttribute="width" secondItem="wtD-uw-4mE" secondAttribute="width" id="CG3-jO-98I"/>
                                                         <constraint firstItem="4Gc-OZ-OxM" firstAttribute="top" secondItem="t9F-rX-eoI" secondAttribute="top" id="GhH-qm-get"/>
                                                         <constraint firstItem="xMY-6Y-eFl" firstAttribute="width" secondItem="4Gc-OZ-OxM" secondAttribute="width" id="KE3-ER-HgP"/>
-                                                        <constraint firstAttribute="trailing" secondItem="4Gc-OZ-OxM" secondAttribute="trailing" priority="999" constant="10" id="KEN-fj-94u"/>
+                                                        <constraint firstAttribute="trailing" secondItem="4Gc-OZ-OxM" secondAttribute="trailing" constant="10" id="KEN-fj-94u"/>
                                                         <constraint firstItem="4Gc-OZ-OxM" firstAttribute="top" secondItem="wtD-uw-4mE" secondAttribute="top" id="KbK-WZ-eMa"/>
                                                         <constraint firstItem="t9F-rX-eoI" firstAttribute="leading" secondItem="2SY-Mx-E0H" secondAttribute="leading" id="KfY-MS-y6O"/>
                                                         <constraint firstAttribute="centerY" secondItem="Rru-bd-ZnM" secondAttribute="centerY" id="Kgy-FU-Uni"/>
@@ -1475,8 +1475,8 @@ IAogA
                                                         <constraint firstItem="UPO-sq-ejZ" firstAttribute="leading" secondItem="wtD-uw-4mE" secondAttribute="trailing" constant="8" id="ya3-0A-VGd"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Drones" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="m5S-Bl-LK3" customClass="LUILabel">
-                                                    <rect key="frame" x="269" y="37" width="40" height="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Total:" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="m5S-Bl-LK3" customClass="LUILabel">
+                                                    <rect key="frame" x="280" y="37" width="30" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1488,7 +1488,6 @@ IAogA
                                                 <constraint firstItem="m5S-Bl-LK3" firstAttribute="trailing" secondItem="Nw2-wk-5tU" secondAttribute="trailing" id="EnI-ue-Ng6"/>
                                                 <constraint firstAttribute="trailing" secondItem="z8z-Eg-JI9" secondAttribute="trailing" id="QYo-hU-cEp"/>
                                                 <constraint firstItem="z8z-Eg-JI9" firstAttribute="leading" secondItem="0cB-1A-dzi" secondAttribute="leading" id="X03-ED-dNh"/>
-                                                <constraint firstItem="t9F-rX-eoI" firstAttribute="trailing" secondItem="0cB-1A-dzi" secondAttribute="leading" constant="111" id="le4-C8-Rzn"/>
                                                 <constraint firstAttribute="bottom" secondItem="m5S-Bl-LK3" secondAttribute="bottom" constant="2" id="nSk-Ex-pkS"/>
                                                 <constraint firstItem="z8z-Eg-JI9" firstAttribute="top" secondItem="0cB-1A-dzi" secondAttribute="top" id="vTz-H4-qKn"/>
                                             </constraints>

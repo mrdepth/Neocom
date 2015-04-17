@@ -1416,6 +1416,26 @@ void convertEufeItems(NSManagedObjectContext* context, EVEDBDatabase* database) 
 				 }];
 }
 
+void convertWhTypes(NSManagedObjectContext* context, EVEDBDatabase* database) {
+	[database execSQLRequest:@"SELECT * FROM invTypes where groupID = 988" resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+		EVEDBInvType* type = [[EVEDBInvType alloc] initWithStatement:stmt];
+		
+		EVEDBDgmTypeAttribute* targetSystemClass = type.attributesDictionary[@(1381)];
+		EVEDBDgmTypeAttribute* maxStableTime = type.attributesDictionary[@(1382)];
+		EVEDBDgmTypeAttribute* maxStableMass = type.attributesDictionary[@(1383)];
+		EVEDBDgmTypeAttribute* maxRegeneration = type.attributesDictionary[@(1384)];
+		EVEDBDgmTypeAttribute* maxJumpMass = type.attributesDictionary[@(1385)];
+
+		NCDBWhType* wh = [NSEntityDescription insertNewObjectForEntityForName:@"WhType" inManagedObjectContext:context];
+		wh.type = invTypes[@(type.typeID)];
+		wh.targetSystemClass = targetSystemClass.value;
+		wh.maxJumpMass = maxJumpMass.value;
+		wh.maxRegeneration = maxRegeneration.value;
+		wh.maxStableMass = maxStableMass.value;
+		wh.maxStableTime = maxStableTime.value;
+	}];
+}
+
 int main(int argc, const char * argv[])
 {
 
@@ -1516,6 +1536,8 @@ int main(int argc, const char * argv[])
 //			convertIndustryActivityRaces(context, database);
 			NSLog(@"convertIndustryActivitySkills");
 			convertIndustryActivitySkills(context, database);
+			NSLog(@"convertWhTypes");
+			convertWhTypes(context, database);
 		}
 		NSLog(@"Saving...");
 

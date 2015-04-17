@@ -49,5 +49,6 @@
 #import "NCDBIndRequiredMaterial.h"
 #import "NCDBIndRequiredSkill.h"
 #import "NCDBVersion.h"
+#import "NCDBWhType.h"
 
 #endif

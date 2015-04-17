@@ -352,7 +352,7 @@
 		[self loadBlueprintAttributes];
 	else if (type.group.category.categoryID == 11)
 		[self loadNPCAttributes];
-	else if (type.group.groupID == 988)
+	else if (type.wormhole)
 		[self loadWHAttributes];
 	else
 		[self loadItemAttributes];
@@ -1976,73 +1976,61 @@
 											 NCDatabase* database = [NCDatabase sharedDatabase];
 											 [database.backgroundManagedObjectContext performBlockAndWait:^{
 												 NCDBInvType* type = (NCDBInvType*) [database.backgroundManagedObjectContext objectWithID:self.type.objectID];
+												 NCDBWhType* wh = type.wormhole;
 												 
 												 NSMutableArray* rows = [[NSMutableArray alloc] init];
 												 
-												 NCDBDgmTypeAttribute* targetSystemClass = type.attributesDictionary[@(1381)];
-												 NCDBDgmTypeAttribute* maxStableTime = type.attributesDictionary[@(1382)];
-												 NCDBDgmTypeAttribute* maxStableMass = type.attributesDictionary[@(1383)];
-												 NCDBDgmTypeAttribute* maxRegeneration = type.attributesDictionary[@(1384)];
-												 NCDBDgmTypeAttribute* maxJumpMass = type.attributesDictionary[@(1385)];
-												 
-												 
-												 
-												 if (targetSystemClass) {
+												 if (wh.targetSystemClass >= 0) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Leads into", nil);
-													 int32_t target = targetSystemClass.value;
-													 if (target >= 1 && target <= 6)
-														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"W-Space Class %d", nil), target];
-													 else if (target == 7)
-														 row.detail = NSLocalizedString(@"High-sec", nil);
-													 else if (target == 8)
-														 row.detail = NSLocalizedString(@"Low-sec", nil);
-													 else if (target == 9)
-														 row.detail = NSLocalizedString(@"0.0 system", nil);
-													 else if (target == 12)
-														 row.detail = NSLocalizedString(@"Thera", nil);
-													 else if (target == 13)
-														 row.detail = NSLocalizedString(@"W-Frig", nil);
-													 else
-														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"Unknown Class %d", nil), target];
-													 
-													 row.icon = self.defaultIcon;
+													 row.detail = wh.targetSystemClassDisplayName;
+													 row.icon = self.defaultAttributeIcon;
 													 [rows addObject:row];
 												 }
-												 if (maxStableTime) {
+												 if (wh.maxStableTime > 0) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Maximum Stable Time", nil);
-													 int32_t time = maxStableTime.value / 60;
+													 int32_t time = wh.maxStableTime / 60;
 													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%d h", nil), time];
 													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"22_16"];
 													 [rows addObject:row];
 												 }
-												 if (maxStableMass) {
+												 if (wh.maxStableMass > 0) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Maximum Stable Mass", nil);
-													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(maxStableMass.value)]];
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxStableMass)]];
 													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"02_10"];
 													 [rows addObject:row];
 												 }
-												 if (maxJumpMass) {
+												 if (wh.maxJumpMass) {
 													 NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"InvGroup"];
-													 request.predicate = [NSPredicate predicateWithFormat:@"ANY types.mass <= %f AND category.categoryID = 6", maxJumpMass.value];
+													 request.predicate = [NSPredicate predicateWithFormat:@"ANY types.mass <= %f AND category.categoryID = 6", wh.maxJumpMass];
 													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"category.categoryName" ascending:YES], [NSSortDescriptor sortDescriptorWithKey:@"groupName" ascending:YES]];
 													 NSFetchedResultsController* controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:type.managedObjectContext sectionNameKeyPath:@"category.categoryName" cacheName:nil];
 													 [controller performFetch:nil];
 													 
+													 request = [NSFetchRequest fetchRequestWithEntityName:@"InvType"];
+													 request.predicate = [NSPredicate predicateWithFormat:@"mass <= %f AND group.category.categoryID = 6", wh.maxJumpMass];
+													 request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"mass" ascending:NO]];
+													 request.fetchLimit = 1;
+													 NCDBInvType* maxMassShip = [[type.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+													 
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.cellIdentifier = @"ResultsCell";
 													 row.title = NSLocalizedString(@"Maximum Jump Mass", nil);
-													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(maxJumpMass.value)]];
+													 if (maxMassShip)
+														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg\n%@", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxJumpMass)], maxMassShip.group.groupName];
+													 else
+														 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxJumpMass)]];
+													 
 													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"36_13"];
 													 row.object = controller;
 													 [rows addObject:row];
 												 }
-												 if (maxRegeneration) {
+												 if (wh.maxRegeneration) {
 													 NCDatabaseTypeInfoViewControllerRow* row = [NCDatabaseTypeInfoViewControllerRow new];
 													 row.title = NSLocalizedString(@"Maximum Mass Regeneration", nil);
-													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(maxRegeneration.value)]];
+													 row.detail = [NSString stringWithFormat:NSLocalizedString(@"%@ kg", nil), [NSNumberFormatter neocomLocalizedStringFromNumber:@(wh.maxRegeneration)]];
 													 row.icon = [NCDBEveIcon eveIconWithIconFile:@"23_03"];
 													 [rows addObject:row];
 												 }

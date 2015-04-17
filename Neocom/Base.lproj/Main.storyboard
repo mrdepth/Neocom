@@ -611,6 +611,7 @@
                         <segue destination="FcJ-g8-V6g" kind="push" identifier="NCSettingsViewController" id="IyI-4N-xRj"/>
                         <segue destination="goZ-fd-4gY" kind="push" identifier="NCPlanetaryViewController" id="7j2-ey-Cmx"/>
                         <segue destination="Hjr-2C-ORo" kind="push" identifier="NCShoppingListViewController" id="MZw-Qn-QdC"/>
+                        <segue destination="BjX-0U-BRt" kind="push" identifier="NCDatabaseWHViewController" id="2fR-Wk-5IU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSS-DF-SnS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1226,6 +1227,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="925-7J-5fH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5258" y="2360"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="teI-Xg-bsX">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseWHViewController" id="BjX-0U-BRt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="E48-5T-Vfx"/>
+                        <viewControllerLayoutGuide type="bottom" id="3Cm-V5-YhU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="E7P-Ik-jqw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="474"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qt1-nV-f5P"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="isf-Gk-bID" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3918" y="-6"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

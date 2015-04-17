@@ -47,6 +47,7 @@
 #import "NCDBIndProduct.h"
 #import "NCDBIndRequiredMaterial.h"
 #import "NCDBIndRequiredSkill.h"
+#import "NCDBWhType.h"
 
 #import "NCDBEveIcon+Neocom.h"
 #import "NCDBInvType+Neocom.h"

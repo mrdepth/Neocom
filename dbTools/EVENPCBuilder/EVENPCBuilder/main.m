@@ -26,7 +26,9 @@ int parse(NSMutableArray* rows, NSArray* groups, int parentGroupID) {
 int main(int argc, const char * argv[])
 {
 	@autoreleasepool {
-		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:@"/Users/shimanski/Work/git/Neocom/dbTools/EVENPCBuilder/npc.json"]
+		NSString* input = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.json";
+		NSString* output = @"/Users/shimanski/Documents/git/EVEUniverse/dbTools/EVENPCBuilder/npc.sql";
+		NSArray* npc = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:input]
 													   options:0
 														 error:nil];
 		NSMutableArray* rows = [NSMutableArray new];
@@ -40,7 +42,7 @@ CREATE TABLE \"npcGroup\" (\n\
 PRIMARY KEY (\"npcGroupID\")\n\
 );\n"];
 		parse(rows, npc, 0);
-		[[rows componentsJoinedByString:@"\n"] writeToFile:@"/Users/shimanski/Work/git/Neocom/dbTools/EVENPCBuilder/npc.sql"
+		[[rows componentsJoinedByString:@"\n"] writeToFile:output
 												atomically:YES
 												  encoding:NSUTF8StringEncoding
 													 error:nil];

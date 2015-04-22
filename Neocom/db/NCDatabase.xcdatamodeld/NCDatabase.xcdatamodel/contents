@@ -298,6 +298,7 @@
     </entity>
     <entity name="Version" representedClassName="NCDBVersion" syncable="YES">
         <attribute name="build" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="expansion" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WhType" representedClassName="NCDBWhType" syncable="YES">
@@ -350,7 +351,7 @@
         <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="88"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="118"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
-        <element name="Version" positionX="-153" positionY="216" width="128" height="73"/>
+        <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="150"/>
     </elements>
 </model>

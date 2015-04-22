@@ -13,6 +13,8 @@
 #include "eufe.h"
 #import <objc/runtime.h>
 
+#define NCDBExpansion @"Scylla"
+
 #define NCDBCertMasteryLevelIconsStartID 1000000
 #define NCDBCertCertificateDisplayNameTranslationColumnID 1000
 #define NCDBCertCertificateDescriptionTranslationColumnID 1001
@@ -1452,6 +1454,7 @@ int main(int argc, const char * argv[])
 							 NCDBVersion* dbVersion = [NSEntityDescription insertNewObjectForEntityForName:@"Version" inManagedObjectContext:context];
 							 dbVersion.version = [NSString stringWithCString:version encoding:NSUTF8StringEncoding];
 							 dbVersion.build = build;
+							 dbVersion.expansion = NCDBExpansion;
 						 }];
 			
 			NSLog(@"convertEveIcons");

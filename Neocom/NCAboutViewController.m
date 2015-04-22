@@ -33,7 +33,10 @@
 	self.refreshControl = nil;
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	self.versionLabel.text = [NSString stringWithFormat:@"%@", [info valueForKey:@"CFBundleVersion"]];
-	self.sdeVersionLabel.text = @"Tiamat 1.0";
+	NCDatabase* database = [NCDatabase sharedDatabase];
+	NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Version"];
+	NCDBVersion* version = [[database.managedObjectContext executeFetchRequest:request error:nil] lastObject];
+	self.sdeVersionLabel.text = [NSString stringWithFormat:@"%@ (%@)", version.expansion, version.version];
 }
 
 - (void)didReceiveMemoryWarning

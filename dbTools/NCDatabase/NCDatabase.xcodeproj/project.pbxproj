@@ -776,10 +776,6 @@
 		12D6DCFD1922009C003FC5ED /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				1216EB7F1AE0DC020026AF58 /* NCDBWhType.h */,
-				1216EB801AE0DC020026AF58 /* NCDBWhType.m */,
-				12A049D219EF0D4000B1FF1D /* NCDBVersion.h */,
-				12A049D319EF0D4000B1FF1D /* NCDBVersion.m */,
 				12584E9219C9604B00847AB1 /* NCDBCertCertificate.h */,
 				12584E9319C9604B00847AB1 /* NCDBCertCertificate.m */,
 				12584EBC19C9604C00847AB1 /* NCDBCertMastery.h */,
@@ -858,6 +854,10 @@
 				12584EE119C9604D00847AB1 /* NCDBStaStation.m */,
 				12584EEF19C9604E00847AB1 /* NCDBTxtDescription.h */,
 				12584EF019C9604E00847AB1 /* NCDBTxtDescription.m */,
+				12A049D219EF0D4000B1FF1D /* NCDBVersion.h */,
+				12A049D319EF0D4000B1FF1D /* NCDBVersion.m */,
+				1216EB7F1AE0DC020026AF58 /* NCDBWhType.h */,
+				1216EB801AE0DC020026AF58 /* NCDBWhType.m */,
 			);
 			name = Generated;
 			sourceTree = "<group>";

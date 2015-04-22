@@ -13,5 +13,6 @@
 
 @dynamic version;
 @dynamic build;
+@dynamic expansion;
 
 @end

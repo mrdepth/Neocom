@@ -6229,3 +6229,15 @@
 21404:
   description: Drifter Faction Icon
   iconFile: '117_2'
+21408:
+  description: Antikthera Element Icon
+  iconFile: '118_1'
+21409:
+  description: Lux Kontos Icon
+  iconFile: '119_1'
+21414:
+  description: 34824_male_topMiddle_ShirtQM01_Types_ff2015m01.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/34824_male_topMiddle_ShirtQM01_Types_ff2015m01.png
+21415:
+  description: 34825_female_TopMiddle_ShirtQF01_Types_ff2015f01.png
+  iconFile: res:/UI/Asset/mannequin/topmiddle/34825_female_TopMiddle_ShirtQF01_Types_ff2015f01.png

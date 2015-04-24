@@ -79,14 +79,22 @@
 	[paymentQueue addTransactionObserver:self];
 
 //	__block NSError* error = nil;
+	
+	BOOL dontNeedsCloudTransfer = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer];
+	
 	[self migrateWithCompletionHandler:^{
-//		NCAccountsManager* accountsManager = [NCAccountsManager defaultManager];
-//		NSError* error = nil;
-//		[accountsManager addAPIKeyWithKeyID:521 vCode:@"m2jHirH1Zvw4LFXiEhuQWsofkpV1th970oz2XGLYZCorWlO4mRqvwHalS77nKYC1" error:&error];
-//		[accountsManager addAPIKeyWithKeyID:519 vCode:@"IiEPrrQTAdQtvWA2Aj805d0XBMtOyWBCc0zE57SGuqinJLKGTNrlinxc6v407Vmf" error:&error];
-//		[accountsManager addAPIKeyWithKeyID:661 vCode:@"fNYa9itvXjnU8IRRe8R6w3Pzls1l8JXK3b3rxTjHUkTSWasXMZ08ytWHE0HbdWed" error:&error];
-		
 		id cloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+		
+		if (cloudToken && [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey]) {
+			if (!dontNeedsCloudTransfer) {
+				[[UIAlertView alertViewWithTitle:nil
+										 message:NSLocalizedString(@"You need to update Neocom on all your devices to finish iCloud sync. Your data has been backed up to Local Store", nil)
+							   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+							   otherButtonTitles:nil
+								 completionBlock:nil
+									 cancelBlock:nil] show];
+				  }
+		}
 
 
 		void (^loadAccount)() = ^() {

@@ -27,6 +27,7 @@
 - (void) transferShipLoadouts;
 - (void) transferPOSLoadouts;
 - (void) transferSkillPlans;
++ (void) transferCloudToLocal;
 @end
 
 @implementation NCMigrationManager
@@ -51,10 +52,21 @@
 			}];
 			if ([migrationManager.oldStorage.managedObjectContext hasChanges])
 				[migrationManager.oldStorage.managedObjectContext save:nil];
+			
 		}
 		@catch(NSException* exc) {
 			
 		}
+	}
+	
+	@try {
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+			[self transferCloudToLocal];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+	}
+	@catch(NSException* exc) {
 	}
 	
 	if (errorPtr)
@@ -67,6 +79,7 @@
 			[fileManager removeItemAtPath:[documents stringByAppendingPathComponent:fileName] error:nil];
 		}
 	}
+	
 	return error == nil;
 }
 
@@ -288,6 +301,69 @@
 		}
 		if (transfered)
 			[self.oldStorage.managedObjectContext deleteObject:skillPlan];
+	}
+}
+
++ (void) transferCloudToLocal {
+	NSURL *sourceModelURL = [[NSBundle mainBundle] URLForResource:@"NCStorage.momd/NCStorage" withExtension:@"mom"];
+	NSManagedObjectModel* sourceManagedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:sourceModelURL];
+	
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return;
+	
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	[[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	
+	NSPersistentStoreCoordinator* sourceCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:sourceManagedObjectModel];
+	
+	if ([sourceCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:storeURL
+													   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																 NSPersistentStoreUbiquitousContentURLKey : url}
+														 error:nil]) {
+		NSURL *outputURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+		
+		NSError* error = nil;
+		[sourceCoordinator migratePersistentStore:[sourceCoordinator.persistentStores lastObject]
+											toURL:outputURL
+										  options:nil
+										 withType:NSSQLiteStoreType
+											error:&error];
+
+		
+	}
+	
+	
+
+/*	NSMigrationManager* migrationManager = [[NSMigrationManager alloc] initWithSourceModel:sourceManagedObjectModel
+																		  destinationModel:destinationManagedObjectModel];
+	
+	NSURL *outputURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+	NSError* error = nil;
+	NSMappingModel* mappingModel = [NSMappingModel mappingModelFromBundles:nil forSourceModel:sourceManagedObjectModel destinationModel:destinationManagedObjectModel];
+	[migrationManager migrateStoreFromURL:storeURL
+									 type:NSSQLiteStoreType
+								  options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+											NSPersistentStoreUbiquitousContentURLKey : url,
+											NSReadOnlyPersistentStoreOption:@(YES)}
+						 withMappingModel:mappingModel
+						 toDestinationURL:outputURL
+						  destinationType:NSSQLiteStoreType
+					   destinationOptions:@{NSInferMappingModelAutomaticallyOption : @(YES),
+											NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+									error:&error];*/
+
+	
+//	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:sourceManagedObjectModel];
+	
+	/*if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:storeURL
+													   options:options
+														 error:nil])*/ {
 	}
 }
 

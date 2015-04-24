@@ -30,6 +30,7 @@
 #define NCSettingsSkillQueueNotificationTimeKey @"NCSettingsSkillQueueNotificationTimeKey"
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 #define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
+#define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 

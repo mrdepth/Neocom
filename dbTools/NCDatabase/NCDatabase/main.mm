@@ -356,7 +356,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
-	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01", @"23_03"]) {
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01", @"23_03", @"18_02", @"33_02"]) {
 		__block EVEDBEveIcon* eveIcon = nil;
 		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
 					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {

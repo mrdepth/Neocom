@@ -223,6 +223,7 @@
 		12614EEF1AC92522007620DA /* NCShoppingListsManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12614EEE1AC92522007620DA /* NCShoppingListsManagerViewController.m */; };
 		1261593D18EE7BFD0049B9CE /* eufe.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1261593B18EE7BFD0049B9CE /* eufe.sqlite */; };
 		1261594B18EE7FCB0049B9CE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1261594A18EE7FCB0049B9CE /* Security.framework */; };
+		1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1263EA131AEA85C80052DC27 /* NCLoadoutsParser.mm */; };
 		12640AFA18B72E43005C311D /* NCStarbasesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640AF918B72E43005C311D /* NCStarbasesViewController.m */; };
 		12640B0118B7306C005C311D /* EVEStarbaseListItem+Neocom.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0018B7306C005C311D /* EVEStarbaseListItem+Neocom.m */; };
 		12640B0418B74048005C311D /* NCStarbasesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 12640B0318B74048005C311D /* NCStarbasesCell.m */; };
@@ -1060,6 +1061,8 @@
 		1261594718EE7F9C0049B9CE /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		1261594A18EE7FCB0049B9CE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1263AAE219055A9000AF522A /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Neocom.entitlements; sourceTree = "<group>"; };
+		1263EA121AEA85C80052DC27 /* NCLoadoutsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLoadoutsParser.h; sourceTree = "<group>"; };
+		1263EA131AEA85C80052DC27 /* NCLoadoutsParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCLoadoutsParser.mm; sourceTree = "<group>"; };
 		12640AF818B72E43005C311D /* NCStarbasesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCStarbasesViewController.h; sourceTree = "<group>"; };
 		12640AF918B72E43005C311D /* NCStarbasesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCStarbasesViewController.m; sourceTree = "<group>"; };
 		12640AFF18B7306C005C311D /* EVEStarbaseListItem+Neocom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EVEStarbaseListItem+Neocom.h"; sourceTree = "<group>"; };
@@ -2575,6 +2578,15 @@
 			path = flurry;
 			sourceTree = "<group>";
 		};
+		1263EA111AEA859F0052DC27 /* NCLoadoutsParser */ = {
+			isa = PBXGroup;
+			children = (
+				1263EA121AEA85C80052DC27 /* NCLoadoutsParser.h */,
+				1263EA131AEA85C80052DC27 /* NCLoadoutsParser.mm */,
+			);
+			name = NCLoadoutsParser;
+			sourceTree = "<group>";
+		};
 		12640AF618B72E01005C311D /* NCStarbasesViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3909,6 +3921,7 @@
 		12B9509E1ADB8D6B009E31DB /* NCFittingExportViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1263EA111AEA859F0052DC27 /* NCLoadoutsParser */,
 				12B9509F1ADB8D96009E31DB /* NCFittingExportViewController.h */,
 				12B950A01ADB8D96009E31DB /* NCFittingExportViewController.mm */,
 			);
@@ -5092,6 +5105,7 @@
 				84FC4F57187840910004073C /* NCAccountsViewController.m in Sources */,
 				126A0E45185F3B9300A8E8A3 /* EVENotifications.m in Sources */,
 				12C7EEA21886CFB100F90763 /* NCSkillHierarchy.m in Sources */,
+				1263EA141AEA85C80052DC27 /* NCLoadoutsParser.mm in Sources */,
 				129D2632187E923300E2062C /* UIImageView+URL.m in Sources */,
 				12C7EE9E1886B51D00F90763 /* NCTrainingQueue.m in Sources */,
 				129C585D18AA06AA00CA8787 /* NCPOSFit.mm in Sources */,

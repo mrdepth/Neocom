@@ -363,6 +363,19 @@
 				shouldReloadData = YES;
 				break;
 			}
+			if (account.accountType == NCAccountTypeCorporate) {
+				if (!account.corporationSheet) {
+					shouldReloadData = YES;
+					break;
+				}
+			}
+			else {
+				if (!account.characterInfo) {
+					shouldReloadData = YES;
+					break;
+				}
+			}
+
 		}
 	}
 	for (NCAccountsViewControllerDataAccount* accountData in [self.cacheRecord.data.data accounts]) {

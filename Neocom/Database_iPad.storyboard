@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="9O6-3Y-PNf">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -604,7 +604,7 @@
             <objects>
                 <tableViewController id="gi5-8P-Iij" customClass="NCDatabaseTypeVariationsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="RVN-tP-VUX" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1051,7 +1051,7 @@
             <objects>
                 <tableViewController id="UGF-FU-pJc" userLabel="RequiredFor" customClass="NCDatabaseTypeRequirementsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="yRf-Bj-xIK" customClass="CollapsableTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1144,6 +1144,80 @@
             </objects>
             <point key="canvasLocation" x="4936" y="-108"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="FF6-AE-1Vm">
+            <objects>
+                <navigationController storyboardIdentifier="NCDatabaseWHViewController" definesPresentationContext="YES" id="6Kk-hR-osX" sceneMemberID="viewController">
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="483-e2-0dU">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="nn3-7l-d7m" kind="relationship" relationship="rootViewController" id="Mhw-XN-bny"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8dL-e0-MNt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1363.5" y="4034"/>
+        </scene>
+        <!--Wormholes-->
+        <scene sceneID="ZUM-6u-XJR">
+            <objects>
+                <tableViewController id="nn3-7l-d7m" customClass="NCDatabaseWHViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="22" sectionFooterHeight="22" id="uly-Zp-hpK">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="0gj-nM-UuO">
+                            <rect key="frame" x="0.0" y="44" width="703" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="nn3-7l-d7m" id="f8F-sC-sNH"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="41" id="rnk-wZ-qpY" customClass="NCDefaultTableViewCell">
+                                <rect key="frame" x="0.0" y="130" width="703" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rnk-wZ-qpY" id="TBb-t7-h0G">
+                                    <rect key="frame" x="0.0" y="0.0" width="670" height="40"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="t4Y-WE-N5o" kind="modal" identifier="NCDatabaseTypeInfoViewController" modalPresentationStyle="formSheet" id="8eb-n4-obL"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nn3-7l-d7m" id="8S2-tr-dwM"/>
+                            <outlet property="delegate" destination="nn3-7l-d7m" id="EBW-ST-YOh"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Wormholes" id="GFL-KB-OLU">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="x94-sy-CPP"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="xcA-Wr-EGd" id="K1E-a4-3sR"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nqa-FL-xCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="xcA-Wr-EGd">
+                    <connections>
+                        <outlet property="delegate" destination="nn3-7l-d7m" id="XRI-ZG-ME1"/>
+                        <outlet property="searchBar" destination="0gj-nM-UuO" id="YVq-sM-7zW"/>
+                        <outlet property="searchContentsController" destination="nn3-7l-d7m" id="wUm-Vk-Lem"/>
+                        <outlet property="searchResultsDataSource" destination="nn3-7l-d7m" id="XNj-71-3ff"/>
+                        <outlet property="searchResultsDelegate" destination="nn3-7l-d7m" id="IVG-rA-81u"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-403.5" y="4034"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1154,11 +1228,11 @@
         <segue reference="3cm-Ks-iAp"/>
         <segue reference="8d4-pf-mMg"/>
         <segue reference="20I-Ju-Smn"/>
-        <segue reference="bSQ-JI-nGb"/>
         <segue reference="bTb-0b-9f9"/>
-        <segue reference="u6h-Fe-EVA"/>
         <segue reference="ojV-wi-W6u"/>
-        <segue reference="qsv-5o-k5F"/>
         <segue reference="D4Y-OJ-c0f"/>
+        <segue reference="8eb-n4-obL"/>
+        <segue reference="qsv-5o-k5F"/>
+        <segue reference="bSQ-JI-nGb"/>
     </inferredMetricsTieBreakers>
 </document>

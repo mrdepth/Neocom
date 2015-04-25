@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="cos-tx-HAD">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -681,6 +681,7 @@
                         <segue destination="rU9-0k-N0H" kind="modal" identifier="NCSettingsViewController" modalPresentationStyle="formSheet" id="2xo-g0-C0f"/>
                         <segue destination="hVb-tT-FHt" kind="custom" identifier="NCPlanetaryViewController" customClass="NCSideMenuViewControllerContentSegue" id="Pzb-iX-qST"/>
                         <segue destination="ian-cw-ECi" kind="custom" identifier="NCShoppingListViewController" customClass="NCSideMenuViewControllerContentSegue" id="1aF-fr-DU3"/>
+                        <segue destination="wWG-eM-xdX" kind="custom" identifier="NCDatabaseWHViewController" customClass="NCSideMenuViewControllerContentSegue" id="8IY-EZ-c41"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KUM-a3-TWC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1338,6 +1339,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rXZ-fs-tIn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10389.5" y="2384"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="n0o-XI-bsk">
+            <objects>
+                <viewController storyboardIdentifier="NCDatabaseWHViewController" id="wWG-eM-xdX" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q0y-Hp-gRL"/>
+                        <viewControllerLayoutGuide type="bottom" id="55g-T9-0Kx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="e8Q-Bg-2MV">
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Database_iPad"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AkR-jc-63m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7049.5" y="-1388"/>
         </scene>
     </scenes>
     <resources>

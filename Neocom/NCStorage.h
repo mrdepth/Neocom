@@ -31,4 +31,7 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 - (id) initFallbackStorage;
 - (id) initCloudStorage;
 - (BOOL) transferDataFromFallbackToCloud;
+
+- (BOOL) backupCloudData;
+- (BOOL) restoreCloudData;
 @end

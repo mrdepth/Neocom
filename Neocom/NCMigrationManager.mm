@@ -60,11 +60,12 @@
 	}
 	
 	@try {
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+//		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+			//return YES;
 			[self transferCloudToLocal];
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
 			[[NSUserDefaults standardUserDefaults] synchronize];
-		}
+//		}
 	}
 	@catch(NSException* exc) {
 	}
@@ -329,41 +330,13 @@
 		NSError* error = nil;
 		[sourceCoordinator migratePersistentStore:[sourceCoordinator.persistentStores lastObject]
 											toURL:outputURL
-										  options:nil
+										  options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+													NSMigratePersistentStoresAutomaticallyOption : @(YES),
+													NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
 										 withType:NSSQLiteStoreType
 											error:&error];
 
 		
-	}
-	
-	
-
-/*	NSMigrationManager* migrationManager = [[NSMigrationManager alloc] initWithSourceModel:sourceManagedObjectModel
-																		  destinationModel:destinationManagedObjectModel];
-	
-	NSURL *outputURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
-	NSError* error = nil;
-	NSMappingModel* mappingModel = [NSMappingModel mappingModelFromBundles:nil forSourceModel:sourceManagedObjectModel destinationModel:destinationManagedObjectModel];
-	[migrationManager migrateStoreFromURL:storeURL
-									 type:NSSQLiteStoreType
-								  options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
-											NSPersistentStoreUbiquitousContentURLKey : url,
-											NSReadOnlyPersistentStoreOption:@(YES)}
-						 withMappingModel:mappingModel
-						 toDestinationURL:outputURL
-						  destinationType:NSSQLiteStoreType
-					   destinationOptions:@{NSInferMappingModelAutomaticallyOption : @(YES),
-											NSMigratePersistentStoresAutomaticallyOption : @(YES)}
-									error:&error];*/
-
-	
-//	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:sourceManagedObjectModel];
-	
-	/*if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-												 configuration:@"Cloud"
-														   URL:storeURL
-													   options:options
-														 error:nil])*/ {
 	}
 }
 

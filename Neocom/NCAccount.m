@@ -428,6 +428,9 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) characterInfoCacheRecord {
 	@synchronized(self) {
+		if (!_characterInfoCacheRecord.managedObjectContext || _characterInfoCacheRecord.deleted)
+			_characterInfoCacheRecord = nil;
+		
 		if (!_characterInfoCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterInfoCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterInfo", self.uuid]];
@@ -440,6 +443,9 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) characterSheetCacheRecord {
 	@synchronized(self) {
+		if (!_characterSheetCacheRecord.managedObjectContext || _characterSheetCacheRecord.isDeleted)
+			_characterSheetCacheRecord = nil;
+
 		if (!_characterSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_characterSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.characterSheet", self.uuid]];
@@ -452,6 +458,9 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) corporationSheetCacheRecord {
 	@synchronized(self) {
+		if (!_corporationSheetCacheRecord.managedObjectContext || _corporationSheetCacheRecord.isDeleted)
+			_corporationSheetCacheRecord = nil;
+
 		if (!_corporationSheetCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_corporationSheetCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.corporationSheet", self.uuid]];
@@ -464,6 +473,9 @@ static NCAccount* currentAccount = nil;
 
 - (NCCacheRecord*) skillQueueCacheRecord {
 	@synchronized(self) {
+		if (!_skillQueueCacheRecord.managedObjectContext || _skillQueueCacheRecord.isDeleted)
+			_skillQueueCacheRecord = nil;
+
 		if (!_skillQueueCacheRecord) {
 			[[[NCCache sharedCache] managedObjectContext] performBlockAndWait:^{
 				_skillQueueCacheRecord = [NCCacheRecord cacheRecordWithRecordID:[NSString stringWithFormat:@"%@.skillQueue", self.uuid]];

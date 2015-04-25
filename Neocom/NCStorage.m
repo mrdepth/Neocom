@@ -15,6 +15,7 @@
 #import "NCImplantSet.h"
 #import "NCFitCharacter.h"
 #import <objc/runtime.h>
+#import "NSData+MD5.h"
 
 @interface NCValueTransformer : NSValueTransformer
 
@@ -67,6 +68,7 @@ static NCStorage* sharedStorage;
 
 - (void) didUpdateCloud:(NSNotification*) notification;
 - (void) notifyStorageChange;
+- (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator;
 
 @end
 
@@ -192,7 +194,6 @@ static NCStorage* sharedStorage;
 								  NSPersistentStoreUbiquitousContentURLKey : url,
 								  NSInferMappingModelAutomaticallyOption : @(YES),
 								  NSMigratePersistentStoresAutomaticallyOption : @(YES)};
-
 		
 		
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -200,14 +201,27 @@ static NCStorage* sharedStorage;
 		NSError *error = nil;
 		for (int n = 0; n < 2; n++) {
 			error = nil;
-			if ([_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-														  configuration:@"Cloud"
-																	URL:storeURL
-																options:options
-																  error:&error])
+			NSPersistentStore* persistentStore = nil;
+			@try {
+				persistentStore = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+																			configuration:@"Cloud"
+																					  URL:storeURL
+																				  options:options
+																					error:&error];
+			}
+			@catch (NSException *exception) {
+			}
+			@finally {
+			}
+			if (persistentStore)
 				break;
-			else
-				[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+			else {
+				options = @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+							NSPersistentStoreUbiquitousContentURLKey : url,
+							NSInferMappingModelAutomaticallyOption : @(YES),
+							NSMigratePersistentStoresAutomaticallyOption : @(YES),
+							NSPersistentStoreRebuildFromUbiquitousContentOption:@(YES)};
+			}
 		}
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -353,6 +367,74 @@ static NCStorage* sharedStorage;
 	return YES;
 }
 
+- (BOOL) backupCloudData {
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return NO;
+
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	NSURL *fallbackURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+
+	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+	
+	if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:storeURL
+													   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																 NSPersistentStoreUbiquitousContentURLKey : url,
+																 NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+														 error:nil]) {
+		NSError* error = nil;
+		if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]
+															toURL:fallbackURL
+														  options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES),
+																 NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
+			 
+														 withType:NSSQLiteStoreType
+															error:&error]) {
+			[self removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (BOOL) restoreCloudData {
+	NSURL* url = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+	if (!url)
+		return NO;
+	
+	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
+	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
+	NSURL *fallbackURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
+	
+	NSPersistentStoreCoordinator* persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+	
+	if ([persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+												 configuration:@"Cloud"
+														   URL:fallbackURL
+													   options:@{NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+														 error:nil]) {
+		NSError* error = nil;
+		if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]
+															toURL:storeURL
+													   options:@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+																 NSPersistentStoreUbiquitousContentURLKey : url,
+																 NSInferMappingModelAutomaticallyOption : @(YES),
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+														 withType:NSSQLiteStoreType
+															error:&error]) {
+			[self removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+			return YES;
+		}
+	}
+	return NO;
+}
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
@@ -442,6 +524,91 @@ static NCStorage* sharedStorage;
 			[[NSNotificationCenter defaultCenter] postNotificationName:NCStorageDidChangeNotification object:self userInfo:nil];
 		});
 	}
+}
+
+- (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator {
+	NSManagedObjectContext* context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+	[context setPersistentStoreCoordinator:persistentStoreCoordinator];
+	[context performBlockAndWait:^{
+		NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+		NSMutableSet* items = [NSMutableSet new];
+		for (NCAccount* account in [context executeFetchRequest:request error:nil]) {
+			if ([items containsObject:account.uuid]) {
+				account.apiKey = nil;
+				[context deleteObject:account];
+			}
+			else
+				[items addObject:account.uuid];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"APIKey"];
+		for (NCAPIKey* apiKey in [context executeFetchRequest:request error:nil]) {
+			if (apiKey.accounts.count == 0)
+				[context deleteObject:apiKey];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"Loadout"];
+		items = [NSMutableSet new];
+		for (NCLoadout* loadout in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:loadout.data.data forKey:@"data"];
+			[archiver encodeObject:loadout.name forKey:@"name"];
+			[archiver encodeInt32:loadout.typeID forKey:@"typeID"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:loadout];
+			else
+				[items addObject:item];
+		}
+
+		request = [NSFetchRequest fetchRequestWithEntityName:@"SkillPlan"];
+		items = [NSMutableSet new];
+		for (NCSkillPlan* skillPlan in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:skillPlan.skills forKey:@"skills"];
+			[archiver encodeObject:skillPlan.name forKey:@"name"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:skillPlan];
+			else
+				[items addObject:item];
+		}
+		
+		request = [NSFetchRequest fetchRequestWithEntityName:@"DamagePattern"];
+		items = [NSMutableSet new];
+		for (NCDamagePattern* damagePattern in [context executeFetchRequest:request error:nil]) {
+			NSString* item = [NSString stringWithFormat:@"%.2f,%.2f,%.2f,%.2f,%@", damagePattern.em, damagePattern.thermal, damagePattern.kinetic, damagePattern.explosive, damagePattern.name];
+			if ([items containsObject:item])
+				[context deleteObject:damagePattern];
+			else
+				[items addObject:item];
+		}
+		
+		request = [NSFetchRequest fetchRequestWithEntityName:@"FitCharacter"];
+		items = [NSMutableSet new];
+		for (NCFitCharacter* fitCharacter in [context executeFetchRequest:request error:nil]) {
+			NSMutableData* data = [NSMutableData new];
+			NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+			[archiver encodeObject:fitCharacter.skills forKey:@"skills"];
+			[archiver encodeObject:fitCharacter.name forKey:@"name"];
+			[archiver finishEncoding];
+			NSString* item = [data md5];
+			
+			if ([items containsObject:item])
+				[context deleteObject:fitCharacter];
+			else
+				[items addObject:item];
+		}
+
+		if ([context hasChanges])
+			[context save:nil];
+	}];
 }
 
 @end

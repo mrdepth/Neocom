@@ -80,20 +80,10 @@
 
 //	__block NSError* error = nil;
 	
-	BOOL dontNeedsCloudTransfer = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer];
-	
 	[self migrateWithCompletionHandler:^{
 		id cloudToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
 		
 		if (cloudToken && [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey]) {
-			if (!dontNeedsCloudTransfer) {
-				[[UIAlertView alertViewWithTitle:nil
-										 message:NSLocalizedString(@"You need to update Neocom on all your devices to finish iCloud sync. Your data has been backed up to Local Store", nil)
-							   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-							   otherButtonTitles:nil
-								 completionBlock:nil
-									 cancelBlock:nil] show];
-				  }
 		}
 
 
@@ -141,16 +131,7 @@
 														 [NCAccountsManager setSharedManager:accountsManager];
 													 }
 										 completionHandler:^(NCTask *task) {
-											 NCStorage* storage = [NCStorage sharedStorage];
-											 if (storage.storageType == NCStorageTypeCloud && ![[NSUserDefaults standardUserDefaults] valueForKey:@"NCSettingsMigratedToCloudKey"]) {
-												 [self askToTransferDataWithCompletionHandler:^(BOOL transfer) {
-													 if (transfer)
-														 [[NCStorage sharedStorage] transferDataFromFallbackToCloud];
-													 loadAccount();
-												 }];
-											 }
-											 else
-												 loadAccount();
+											 loadAccount();
 										 }];
 			}
 		};

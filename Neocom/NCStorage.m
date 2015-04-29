@@ -16,6 +16,7 @@
 #import "NCFitCharacter.h"
 #import <objc/runtime.h>
 #import "NSData+MD5.h"
+#import "NCMigrationManager.h"
 
 @interface NCValueTransformer : NSValueTransformer
 
@@ -65,10 +66,10 @@ static NCStorage* sharedStorage;
 
 @interface NCStorage()
 @property (nonatomic, assign, readwrite) NCStorageType storageType;
+@property (nonatomic, strong) id observer;
 
 - (void) didUpdateCloud:(NSNotification*) notification;
 - (void) notifyStorageChange;
-- (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator;
 
 @end
 
@@ -99,12 +100,50 @@ static NCStorage* sharedStorage;
 	}
 }
 
+- (void) willChange:(NSNotification*) notification {
+	if (!self.observer)
+		self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSPersistentStoreCoordinatorStoresDidChangeNotification
+																		  object:notification.object
+																		   queue:[NSOperationQueue mainQueue]
+																	  usingBlock:^(NSNotification *note) {
+//																		  [self removeDuplicatesFromPersistentStoreCoordinator:self.persistentStoreCoordinator];
+																		  [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+																		  self.observer = nil;
+																		  
+																		  [self notifyStorageChange];
+/*																		  NCStorage* storage = self;
+																		  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+																			  if (storage.allAccounts.count == 0 && storage.loadouts.count == 0) {
+																				  [storage restoreCloudData];
+																			  }
+																			  if (storage.allAccounts.count != 0 || storage.loadouts.count != 0) {
+																				  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
+																				  [[NSUserDefaults standardUserDefaults] synchronize];
+																			  }
+																		  }*/
+
+/*																		  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+																			  if ([self shipLoadouts].count == 0 && [self allAccounts].count == 0) {
+																				  [[NCMigrationManager new] transferCloudToLocal];
+																			  }
+																			  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
+																			  [[NSUserDefaults standardUserDefaults] synchronize];
+																		  }*/
+																	  }];
+}
 
 - (id) init {
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willChange:) name:NSPersistentStoreCoordinatorStoresWillChangeNotification object:nil];
 	}
 	return self;
+}
+
+- (void) dealloc {
+	if (self.observer)
+		[[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id) initFallbackStorage {
@@ -155,6 +194,7 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		[self notifyStorageChange];
 	}
 	return self;
 }
@@ -249,12 +289,9 @@ static NCStorage* sharedStorage;
 			});
 			return nil;
 		}
+		[self notifyStorageChange];
 	}
 	return self;
-}
-
-- (void) dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 }
 
 - (void)saveContext
@@ -407,6 +444,8 @@ static NCStorage* sharedStorage;
 	if (!url)
 		return NO;
 	
+	_persistentStoreCoordinator = nil;
+	
 	NSString* directory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"com.shimanski.neocom.store"];
 	NSURL *storeURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"cloudStore.sqlite"]];
 	NSURL *fallbackURL = [NSURL fileURLWithPath:[directory stringByAppendingPathComponent:@"fallbackStore.sqlite"]];
@@ -417,7 +456,8 @@ static NCStorage* sharedStorage;
 												 configuration:@"Cloud"
 														   URL:fallbackURL
 													   options:@{NSInferMappingModelAutomaticallyOption : @(YES),
-																 NSMigratePersistentStoresAutomaticallyOption : @(YES)}
+																 NSMigratePersistentStoresAutomaticallyOption : @(YES),
+																 NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
 														 error:nil]) {
 		NSError* error = nil;
 		if ([persistentStoreCoordinator migratePersistentStore:[persistentStoreCoordinator.persistentStores lastObject]

@@ -34,4 +34,7 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 
 - (BOOL) backupCloudData;
 - (BOOL) restoreCloudData;
+
+- (void) removeDuplicatesFromPersistentStoreCoordinator:(NSPersistentStoreCoordinator*) persistentStoreCoordinator;
+
 @end

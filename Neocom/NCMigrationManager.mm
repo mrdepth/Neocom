@@ -19,6 +19,11 @@
 #import "NCDatabase.h"
 #import "UIAlertView+Block.h"
 
+@interface NCStorage()
+- (void) notifyStorageChange;
+@end
+
+
 @interface NCMigrationManager()
 @property (nonatomic, strong) NCStorage* storage;
 @property (nonatomic, strong) NCAccountsManager* accountsManager;
@@ -328,6 +333,15 @@
 	
 	
 	void (^migrate)() = ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[UIAlertView alertViewWithTitle:nil
+									 message:NSLocalizedString(@"You need to update Neocom on all your devices to finish iCloud sync.", nil)
+						   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+						   otherButtonTitles:nil
+							 completionBlock:nil
+								 cancelBlock:nil] show];
+		});
+
 		void (^transfer)() = ^ {
 			NCStorage* storage = [NCStorage sharedStorage];
 			if (storage.allAccounts.count == 0 && storage.loadouts.count == 0) {
@@ -351,6 +365,7 @@
 																  withType:NSSQLiteStoreType
 																	 error:&error]) {
 						[storage removeDuplicatesFromPersistentStoreCoordinator:persistentStoreCoordinator];
+						[storage notifyStorageChange];
 					}
 				}
 
@@ -362,14 +377,17 @@
 			[[NSUserDefaults standardUserDefaults] synchronize];
 		};
 		
-		if (![NCStorage sharedStorage]) {
+		if (![NCStorage sharedStorage] || [NCStorage sharedStorage].storageType != NCStorageTypeCloud) {
 			self.storeChangedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NCStorageDidChangeNotification
 																						  object:nil
 																						   queue:[NSOperationQueue mainQueue]
 																					  usingBlock:^(NSNotification *note) {
-																						  transfer();
-																						  [[NSNotificationCenter defaultCenter] removeObserver:self.storeChangedObserver];
-																						  self.storeChangedObserver = nil;
+																						  NCStorage* storage = note.object;
+																						  if (storage.storageType == NCStorageTypeCloud) {
+																							  [[NSNotificationCenter defaultCenter] removeObserver:self.storeChangedObserver];
+																							  self.storeChangedObserver = nil;
+																							  transfer();
+																						  }
 																					  }];
 		}
 		else {
@@ -391,12 +409,6 @@
 															NSPersistentStoreRemoveUbiquitousMetadataOption:@(YES)}
 												 withType:NSSQLiteStoreType
 													error:nil]) {
-				[[UIAlertView alertViewWithTitle:nil
-										 message:NSLocalizedString(@"You need to update Neocom on all your devices to finish iCloud sync.", nil)
-							   cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-							   otherButtonTitles:nil
-								 completionBlock:nil
-									 cancelBlock:nil] show];
 				migrate();
 			}
 

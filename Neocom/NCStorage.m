@@ -80,17 +80,17 @@ static NCStorage* sharedStorage;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize backgroundManagedObjectContext = _backgroundManagedObjectContext;
 
-+ (id) sharedStorage {
++ (instancetype) sharedStorage {
 	@synchronized(self) {
-		return sharedStorage;
+		return sharedStorage.observer ? nil : sharedStorage;
 	}
 }
 
-+ (id) fallbackStorage {
++ (instancetype) fallbackStorage {
 	return [[self alloc] initFallbackStorage];
 }
 
-+ (id) cloudStorage {
++ (instancetype) cloudStorage {
 	return [[self alloc] initCloudStorage];
 }
 
@@ -100,35 +100,31 @@ static NCStorage* sharedStorage;
 	}
 }
 
+- (void) didChange:(NSNotification*) notification {
+	
+}
+
 - (void) willChange:(NSNotification*) notification {
-	if (!self.observer)
+	if (!self.observer && notification.object == self.persistentStoreCoordinator)
 		self.observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSPersistentStoreCoordinatorStoresDidChangeNotification
 																		  object:notification.object
 																		   queue:[NSOperationQueue mainQueue]
 																	  usingBlock:^(NSNotification *note) {
-//																		  [self removeDuplicatesFromPersistentStoreCoordinator:self.persistentStoreCoordinator];
-																		  [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
-																		  self.observer = nil;
-																		  
-																		  [self notifyStorageChange];
-/*																		  NCStorage* storage = self;
-																		  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
-																			  if (storage.allAccounts.count == 0 && storage.loadouts.count == 0) {
-																				  [storage restoreCloudData];
-																			  }
-																			  if (storage.allAccounts.count != 0 || storage.loadouts.count != 0) {
-																				  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
-																				  [[NSUserDefaults standardUserDefaults] synchronize];
-																			  }
-																		  }*/
 
-/*																		  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
-																			  if ([self shipLoadouts].count == 0 && [self allAccounts].count == 0) {
-																				  [[NCMigrationManager new] transferCloudToLocal];
+																		  if ([notification.userInfo[NSPersistentStoreUbiquitousTransitionTypeKey] integerValue] == NSPersistentStoreUbiquitousTransitionTypeInitialImportCompleted) {
+																			  if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudTransfer]) {
+																				  [[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeCloud forKey:NCSettingsStorageType];
+																				  [[NSUserDefaults standardUserDefaults] synchronize];
+																				  self.storageType = NCStorageTypeCloud;
 																			  }
-																			  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudTransfer];
-																			  [[NSUserDefaults standardUserDefaults] synchronize];
-																		  }*/
+//																			  [self removeDuplicatesFromPersistentStoreCoordinator:self.persistentStoreCoordinator];
+																		  }
+																		  
+																		  [[NSNotificationCenter defaultCenter] removeObserver:self.observer];
+
+																		  self.observer = nil;
+																		  [self notifyStorageChange];
+
 																	  }];
 }
 
@@ -136,6 +132,7 @@ static NCStorage* sharedStorage;
 	if (self = [super init]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCloud:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willChange:) name:NSPersistentStoreCoordinatorStoresWillChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChange:) name:NSPersistentStoreCoordinatorStoresDidChangeNotification object:nil];
 	}
 	return self;
 }
@@ -201,7 +198,6 @@ static NCStorage* sharedStorage;
 
 - (id) initCloudStorage {
 	if (self = [self init]) {
-		self.storageType = NCStorageTypeCloud;
 		BOOL useCloud = [[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsUseCloudKey];
 		if (!useCloud)
 			return nil;
@@ -230,15 +226,31 @@ static NCStorage* sharedStorage;
 		[[NSUserDefaults standardUserDefaults] setObject: tokenData forKey:NCSettingsCloudTokenKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
-		NSDictionary* options = @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
+		NSMutableDictionary* options = [@{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
 								  NSPersistentStoreUbiquitousContentURLKey : url,
 								  NSInferMappingModelAutomaticallyOption : @(YES),
-								  NSMigratePersistentStoresAutomaticallyOption : @(YES)};
+								  NSMigratePersistentStoresAutomaticallyOption : @(YES)} mutableCopy];
 		
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:NCSettingsDontNeedsCloudReset]) {
+			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
+			[[NSUserDefaults standardUserDefaults] setInteger:NCStorageTypeFallback forKey:NCSettingsStorageType];
+			self.storageType = NCStorageTypeFallback;
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:NCSettingsDontNeedsCloudReset];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+		else
+			self.storageType = [[NSUserDefaults standardUserDefaults] integerForKey:NCSettingsStorageType];
+
 		
 		_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
 		
 		NSError *error = nil;
+		
+//		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"NCCloudInitialization"])
+//			options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
+		
+//		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"NCCloudInitialization"];
+//		[[NSUserDefaults standardUserDefaults] synchronize];
 		for (int n = 0; n < 2; n++) {
 			error = nil;
 			NSPersistentStore* persistentStore = nil;
@@ -256,13 +268,11 @@ static NCStorage* sharedStorage;
 			if (persistentStore)
 				break;
 			else {
-				options = @{NSPersistentStoreUbiquitousContentNameKey : @"NCStorage",
-							NSPersistentStoreUbiquitousContentURLKey : url,
-							NSInferMappingModelAutomaticallyOption : @(YES),
-							NSMigratePersistentStoresAutomaticallyOption : @(YES),
-							NSPersistentStoreRebuildFromUbiquitousContentOption:@(YES)};
+				options[NSPersistentStoreRebuildFromUbiquitousContentOption] = @(YES);
 			}
 		}
+//		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NCCloudInitialization"];
+
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[[UIAlertView alertViewWithError:error] show];

@@ -21,9 +21,9 @@ typedef NS_ENUM(NSInteger, NCStorageType) {
 @property (nonatomic, assign, readonly) NCStorageType storageType;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *backgroundManagedObjectContext;
 
-+ (id) sharedStorage;
-+ (id) fallbackStorage;
-+ (id) cloudStorage;
++ (instancetype) sharedStorage;
++ (instancetype) fallbackStorage;
++ (instancetype) cloudStorage;
 
 + (void) setSharedStorage:(NCStorage*) storage;
 - (void) saveContext;

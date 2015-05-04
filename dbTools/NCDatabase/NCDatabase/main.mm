@@ -13,7 +13,7 @@
 #include "eufe.h"
 #import <objc/runtime.h>
 
-#define NCDBExpansion @"Scylla"
+#define NCDBExpansion @"Mosaic"
 
 #define NCDBCertMasteryLevelIconsStartID 1000000
 #define NCDBCertCertificateDisplayNameTranslationColumnID 1000
@@ -281,6 +281,34 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
+	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01", @"23_03", @"18_02", @"33_02"]) {
+		__block EVEDBEveIcon* eveIcon = nil;
+		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
+					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
+						 *needsMore = NO;
+						 eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
+					 }];
+		if (!eveIcon) {
+			NCDBEveIcon* icon = dictionary[iconNo];
+			if (!icon) {
+				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
+				
+				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
+				if (data) {
+					NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
+					NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
+					icon.iconFile = iconNo;
+					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
+					icon.image.image = imageRep;
+					dictionary[iconNo] = icon;
+				}
+				else {
+					NSLog(@"Unable to load icon %@", iconNo);
+				}
+			}
+		}
+	}
+	
 	for (int i = 0; i <= 5; i++) {
 		NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon79_0%d.png", i + 1];
 		NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
@@ -356,33 +384,7 @@ NSDictionary* convertEveIcons(NSManagedObjectContext* context, EVEDBDatabase* da
 		}
 	}];
 	
-	for (NSString* iconNo in @[@"09_07", @"105_32", @"50_13", @"38_193", @"38_194", @"38_195", @"38_174", @"17_04", @"74_14", @"79_01", @"23_03", @"18_02", @"33_02"]) {
-		__block EVEDBEveIcon* eveIcon = nil;
-		[database execSQLRequest:[NSString stringWithFormat:@"select * from eveIcons where iconFile=\"%@\"", iconNo]
-					 resultBlock:^(sqlite3_stmt *stmt, BOOL *needsMore) {
-						 *needsMore = NO;
-						 eveIcon = [[EVEDBEveIcon alloc] initWithStatement:stmt];
-					 }];
-		if (!eveIcon) {
-			NCDBEveIcon* icon = dictionary[iconNo];
-			if (!icon) {
-				NSString* iconImageName = [NSString stringWithFormat:@"./Icons/icon%@.png", iconNo];
-				
-				NSData* data = [[NSData alloc] initWithContentsOfFile:iconImageName];
-				if (data) {
-					NSBitmapImageRep* imageRep = [[NSBitmapImageRep alloc] initWithData:data];
-					NCDBEveIcon* icon = [NSEntityDescription insertNewObjectForEntityForName:@"EveIcon" inManagedObjectContext:context];
-					icon.iconFile = iconNo;
-					icon.image = [NSEntityDescription insertNewObjectForEntityForName:@"EveIconImage" inManagedObjectContext:context];
-					icon.image.image = imageRep;
-					dictionary[iconNo] = icon;
-				}
-				else {
-					NSLog(@"Unable to load icon %@", iconNo);
-				}
-			}
-		}
-	}
+
 	return dictionary;
 }
 

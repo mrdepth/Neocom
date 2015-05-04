@@ -31,6 +31,8 @@
 #define NCSettingsMarketPricesMonitorKey @"NCSettingsMarketPricesMonitorKey"
 #define NCSettingsCalendarIdentifierKey @"NCSettingsCalendarIdentifierKey"
 #define NCSettingsDontNeedsCloudTransfer @"NCSettingsDontNeedsCloudTransfer"
+#define NCSettingsDontNeedsCloudReset @"NCSettingsDontNeedsCloudReset"
+#define NCSettingsStorageType @"NCSettingsStorageType"
 
 #define NCSettingsSkillsViewControllerModeKey @"NCSettingsSkillsViewControllerModeKey"
 
